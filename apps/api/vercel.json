@@ -8,7 +8,6 @@
   ],
   "functions": {
     "src/server.ts": {
-      "runtime": "nodejs",
       "includeFiles": "../../packages/logger/dist/index.js"
     }
   }

@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "src/server.ts": {
+    "api/**/*.ts": {
       "includeFiles": "../../packages/logger/dist/index.js"
     }
   }

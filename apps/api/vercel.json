@@ -14,6 +14,5 @@
   ],
   "buildCommand": "cd ../.. && pnpm run build",
   "installCommand": "cd ../.. && pnpm install",
-  "outputDirectory": "dist",
-  "rootDirectory": "apps/api"
+  "outputDirectory": "dist"
 }

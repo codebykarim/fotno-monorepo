@@ -2,6 +2,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "dependsOn": ["^build"],
       "env": ["PORT"],
       "outputs": ["dist/**"]
     }

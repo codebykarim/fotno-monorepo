@@ -14,7 +14,7 @@ app.use(json());
 const port = process.env.PORT || 5001;
 
 app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello World" });
+  res.send("Hello World");
 });
 
 app.listen(port, () => {

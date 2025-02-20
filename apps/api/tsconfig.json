@@ -10,10 +10,10 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
-    // "paths": {
-    //   "@repo/logger": ["./packages/logger/src"]
-    // }
+    "resolveJsonModule": true,
+    "paths": {
+      "@repo/*": ["../../packages/*/src"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["."]

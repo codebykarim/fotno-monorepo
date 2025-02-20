@@ -3,13 +3,16 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/server.ts"
+      "dest": "src/server.ts"
     }
   ],
-  "functions": {
-    "api/**/*.ts": {
-      "includeFiles": "../../packages/logger/dist/index.js"
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/**", "../../packages/logger/dist/index.js"]
+      }
     }
-  },
-  "outputDirectory": "dist"
+  ]
 }

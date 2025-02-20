@@ -8,7 +8,7 @@
   ],
   "builds": [
     {
-      "src": "app.js",
+      "src": "src/server.ts",
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["dist/**", "../../packages/logger/dist/index.js"]

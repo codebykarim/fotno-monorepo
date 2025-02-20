@@ -3,7 +3,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "./server.ts"
+      "dest": "api/server.ts"
     }
   ],
   "functions": {

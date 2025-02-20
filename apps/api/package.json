@@ -5,8 +5,8 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "start": "node index.ts",
-    "dev": "tsup --watch --onSuccess \"node dist/index.cjs\"",
+    "start": "tsup && node dist/server.js",
+    "dev": "tsup --watch --onSuccess \"node dist/server.cjs\"",
     "build": "tsup",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
@@ -16,7 +16,6 @@
     "preset": "@repo/jest-presets/node"
   },
   "dependencies": {
-    "@repo/logger": "workspace:*",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^5.0.1",

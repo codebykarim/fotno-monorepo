@@ -14,8 +14,7 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@repo/*": ["../../packages/*"]
+      "@/*": ["./*"]
     }
   },
   "exclude": ["node_modules", "dist"],

@@ -10,5 +10,6 @@
     "api/**/*.ts": {
       "includeFiles": "../../packages/logger/dist/index.js"
     }
-  }
+  },
+  "outputDirectory": "dist"
 }

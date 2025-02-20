@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --inspect --ignore node_modules src/server.ts",
-    "build": "tsc",
+    "build": "tsc && cp -r ../../packages/logger ./dist/packages/logger",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
     "test": "jest --detectOpenHandles"

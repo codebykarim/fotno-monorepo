@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { json, urlencoded } from "body-parser";
-import { log } from "@repo/logger";
 
 const app = express();
 
@@ -13,7 +12,6 @@ app.use(json());
 const port = process.env.PORT || 5001;
 
 app.get("/", (req: Request, res: Response) => {
-  log("Hello World");
   res.json({
     message: "Hello World",
   });

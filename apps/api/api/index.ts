@@ -1,24 +1,12 @@
 import express, { Request, Response } from "express";
-import cors from "cors";
-import { json, urlencoded } from "body-parser";
-import logger from "@repo/logger";
-
 const app = express();
 
-app.use(cors());
-
-app.use(urlencoded({ extended: true }));
-app.use(json());
-
-const port = process.env.PORT || 5001;
-
-app.get("/", (req: Request, res: Response) => {
-  logger.log("Hello World");
-  res.json({
+app.get("/", (req: Request, res: Response) =>
+  res.send({
     message: "Hello World",
-  });
-});
+  })
+);
 
-app.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
-});
+app.listen(3000, () => console.log("Server ready on port 3000."));
+
+export default app;

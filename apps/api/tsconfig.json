@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "Node16",
+    "module": "es2015",
     "outDir": "./dist",
     "strict": true,
     "strictPropertyInitialization": false,
@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "Node16",
+    "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],

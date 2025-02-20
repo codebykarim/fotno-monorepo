@@ -1,6 +1,10 @@
 {
   "name": "kitchen-sink",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",

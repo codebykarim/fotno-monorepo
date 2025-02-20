@@ -1,5 +1,5 @@
 // import { log } from "@repo/logger";
-import { createServer } from "./server";
+import { createServer } from "./api/server";
 
 const port = process.env.PORT || 5001;
 const server = createServer();

@@ -1,8 +1,6 @@
-import pkg from "body-parser";
-const { urlencoded } = pkg;
-const { json } = pkg;
 import express, { Request, Response } from "express";
 import cors from "cors";
+import { json, urlencoded } from "body-parser";
 
 const app = express();
 
@@ -14,7 +12,9 @@ app.use(json());
 const port = process.env.PORT || 5001;
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
+  res.json({
+    message: "Hello World",
+  });
 });
 
 app.listen(port, () => {

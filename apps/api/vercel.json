@@ -9,7 +9,7 @@
   "functions": {
     "src/server.ts": {
       "runtime": "nodejs",
-      "includeFiles": ["src/server.ts", "../../packages/logger/dist/index.js"]
+      "includeFiles": "../../packages/logger/dist/index.js"
     }
   }
 }

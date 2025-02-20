@@ -1,7 +1,7 @@
 {
   "name": "@repo/logger",
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "private": true,
   "files": [
     "dist"

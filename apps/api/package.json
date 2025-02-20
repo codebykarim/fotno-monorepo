@@ -20,8 +20,7 @@
     "express": "^5.0.1",
     "morgan": "^1.10.0",
     "@types/body-parser": "^1.19.5",
-    "@types/express-serve-static-core": "^5.0.1",
-    "@repo/logger": "workspace:*"
+    "@types/express-serve-static-core": "^5.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

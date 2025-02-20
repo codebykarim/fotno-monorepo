@@ -11,7 +11,8 @@
       "src": "src/server.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**", "../../packages/logger/dist/index.js"]
+        "includeFiles": ["../../packages/**/*"],
+        "buildCommand": "cd ../.. && pnpm install && pnpm run build"
       }
     }
   ]

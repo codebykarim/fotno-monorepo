@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { json, urlencoded } from "body-parser";
-import logger from "@repo/logger";
+import logger from "../../../packages/logger/dist";
 
 const app = express();
 

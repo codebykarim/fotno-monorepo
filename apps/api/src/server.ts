@@ -1,4 +1,6 @@
-import { json, urlencoded } from "body-parser";
+import pkg from "body-parser";
+const { urlencoded } = pkg;
+const { json } = pkg;
 import express, { Request, Response } from "express";
 import cors from "cors";
 

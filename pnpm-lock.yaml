@@ -54,6 +54,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@repo/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@types/body-parser':
         specifier: ^1.19.5
         version: 1.19.5

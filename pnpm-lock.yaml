@@ -57,6 +57,9 @@ importers:
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@types/body-parser':
         specifier: ^1.19.5
         version: 1.19.5

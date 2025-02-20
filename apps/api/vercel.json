@@ -11,5 +11,9 @@
       "src": "/(.*)",
       "dest": "src/server.ts"
     }
-  ]
+  ],
+  "buildCommand": "cd ../.. && pnpm run build",
+  "installCommand": "cd ../.. && pnpm install",
+  "outputDirectory": "dist",
+  "rootDirectory": "apps/api"
 }

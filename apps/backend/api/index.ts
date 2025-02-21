@@ -1,25 +1,8 @@
-import { log } from "@repo/logger";
-import express, { Request, Response } from "express";
-import cors from "cors";
-import { json, urlencoded } from "body-parser";
-
+const express = require("express");
 const app = express();
 
-app.use(cors());
+app.get("/", (req, res) => res.send("Express on Vercel"));
 
-app.use(urlencoded({ extended: true }));
-app.use(json());
-
-const port = process.env.PORT || 5001;
-
-app.get("/status", (req: Request, res: Response) => {
-  res.json({
-    message: "Hello World",
-  });
-});
-
-app.listen(port, () => {
-  log(`Server started on port: ${port}`);
-});
+app.listen(3000, () => console.log("Server ready on port 3000."));
 
 module.exports = app;

@@ -2,7 +2,6 @@
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
     "target": "es6",
-    "module": "ES2015",
     "outDir": "./dist",
     "strict": true,
     "strictPropertyInitialization": false,

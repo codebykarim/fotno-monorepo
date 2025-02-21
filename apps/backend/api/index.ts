@@ -7,7 +7,10 @@ const app = express();
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-app.get("/status", (req, res) => res.json({ message: "Express on Vercel" }));
+app.get("/status", (req, res) => {
+  log("status");
+  res.json({ message: "Express on Vercel" });
+});
 
 app.listen(3000, () => log("Server ready on port 3000."));
 

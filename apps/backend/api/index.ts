@@ -1,3 +1,4 @@
+import { log } from "@repo/logger";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { json, urlencoded } from "body-parser";
@@ -18,5 +19,7 @@ app.get("/status", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
+  log(`Server started on port: ${port}`);
 });
+
+module.exports = app;

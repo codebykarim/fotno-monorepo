@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
 const app = express();
 
-app.get("/", (req: Request, res: Response) =>
+app.get("/", (req, res) =>
   res.send({
     message: "Hello World",
   })

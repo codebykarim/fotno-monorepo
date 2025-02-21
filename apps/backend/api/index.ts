@@ -1,8 +1,14 @@
-const express = require("express");
+import express from "express";
+import { log } from "@repo/logger";
+import { json, urlencoded } from "body-parser";
+
 const app = express();
 
-app.get("/status", (req, res) => res.send("Express on Vercel"));
+app.use(urlencoded({ extended: true }));
+app.use(json());
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.get("/status", (req, res) => res.json({ message: "Express on Vercel" }));
+
+app.listen(3000, () => log("Server ready on port 3000."));
 
 module.exports = app;

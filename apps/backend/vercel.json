@@ -10,10 +10,7 @@
     {
       "src": "src/server.ts",
       "use": "@vercel/node"
-    },
-    {
-      "src": "../../packages/logger/dist/index.js",
-      "use": "@vercel/node"
     }
-  ]
+  ],
+  "installCommand": "pnpm install jest --save-dev --recursive --filter=backend --filter=@repo/logger"
 }

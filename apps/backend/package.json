@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
-  "main": "server.ts",
+  "type": "module",
   "scripts": {
     "start": "tsc && node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --inspect --ignore node_modules src/server.ts",

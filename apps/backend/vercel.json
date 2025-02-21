@@ -9,7 +9,10 @@
   "builds": [
     {
       "src": "src/server.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "installCommand": "pnpm install jest --save-dev --recursive --filter=backend --filter=@repo/logger"
+      }
     }
   ],
   "installCommand": "pnpm install jest --save-dev --recursive --filter=backend --filter=@repo/logger"

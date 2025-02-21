@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --inspect --ignore node_modules src/server.ts",
-    "build": "tsc && pnpm install jest --save-dev --recursive --filter=backend --filter=@repo/logger",
+    "build": "tsc",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
     "test": "jest --detectOpenHandles"

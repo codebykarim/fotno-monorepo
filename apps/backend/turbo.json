@@ -2,9 +2,15 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "env": ["PORT"],
-      "outputs": ["dist/**"],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local"]
+      "env": [
+        "PORT",
+        "MONGODB_URI",
+        "NODE_ENV",
+        "BETTER_AUTH_SECRET",
+        "BETTER_AUTH_URL",
+        "RESEND_API_KEY"
+      ],
+      "outputs": ["dist/**"]
     }
   }
 }

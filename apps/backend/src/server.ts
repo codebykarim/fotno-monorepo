@@ -1,4 +1,3 @@
-import { log } from "@repo/logger";
 import { json, urlencoded } from "body-parser";
 import "./bootstrap";
 import "express-async-errors";
@@ -56,7 +55,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   errorMeta.code = 500;
   errorMeta.message = err.message;
 
-  log(errorMeta);
+  console.log(errorMeta);
 
   return res.status(500).json({ error: errorMeta.key });
 });
@@ -65,7 +64,7 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "ok" });
 });
 
-const port = process.env.PORT ?? 8000;
+const port = process.env.PORT ?? 8001;
 
 // Connect to DB before starting server
 const startServer = async () => {

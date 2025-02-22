@@ -4,10 +4,10 @@
   "builds": [
     {
       "src": "api/index.ts",
-      "use": "@vercel/node",
       "config": {
         "buildCommand": "turbo run build",
         "installCommand": "pnpm install",
+        "outputDirectory": ".",
         "framework": "express"
       }
     }

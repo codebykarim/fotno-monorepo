@@ -7,9 +7,11 @@ import { redirect } from "next/navigation";
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: { token?: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const token = searchParams.token;
+  const token = Array.isArray(searchParams.token)
+    ? searchParams.token[0]
+    : searchParams.token;
 
   if (!token) {
     redirect("/login");

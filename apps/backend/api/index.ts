@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-app.all("/api/auth/*", toNodeHandler(auth));
+// app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(urlencoded({ extended: true }));
 app.use(json());
@@ -32,7 +32,7 @@ app.set("trust proxy", true);
 
 app.use(routes);
 
-app.use(async (err: Error, req: Request, res: Response, _: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const errorMeta: ErrorMeta = {
     url: req.url,
     body: req.body,

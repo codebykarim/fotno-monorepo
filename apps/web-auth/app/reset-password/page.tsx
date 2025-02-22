@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: { token: string; error: string };
+  searchParams: { token?: string };
 }) {
   const token = searchParams.token;
 

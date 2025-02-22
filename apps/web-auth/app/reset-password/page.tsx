@@ -4,16 +4,12 @@ import { Icons } from "@workspace/ui/lib/icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function ResetPasswordPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const token = Array.isArray(searchParams.token)
-    ? searchParams.token[0]
-    : searchParams.token;
+type tParams = Promise<{ token: string[] }>;
 
-  if (!token) {
+export default async function ResetPasswordPage(props: { params: tParams }) {
+  const { token } = await props.params;
+
+  if (!token[0]) {
     redirect("/login");
   }
 
@@ -26,7 +22,7 @@ export default async function ResetPasswordPage({
         </div>
       </Link>
       <div className="w-full max-w-sm md:max-w-4xl p-6 md:p-10">
-        <ResetPasswordForm token={token} />
+        <ResetPasswordForm token={token[0]} />
       </div>
     </Section>
   );

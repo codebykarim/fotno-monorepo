@@ -23,7 +23,7 @@ import {
 } from "@workspace/ui/components/form";
 import { useRouter } from "next/navigation";
 type Props = {
-  token: string;
+  token: string | string[];
 };
 
 const formSchema = z.object({
@@ -50,7 +50,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
       authClient.resetPassword(
         {
           newPassword: values.password,
-          token,
+          token: token as string,
         },
         {
           onSuccess: (data) => {

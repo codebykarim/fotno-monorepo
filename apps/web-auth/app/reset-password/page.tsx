@@ -7,9 +7,13 @@ import { redirect } from "next/navigation";
 type tParams = Promise<{ token: string[] }>;
 
 export default async function ResetPasswordPage(props: { params: tParams }) {
-  const { token } = await props.params;
+  // const { token } = await props.params;
 
-  if (!token[0]) {
+  const token = Array.isArray((await props.params).token)
+    ? (await props.params).token[0]
+    : (await props.params).token;
+
+  if (!token) {
     redirect("/login");
   }
 
@@ -22,7 +26,7 @@ export default async function ResetPasswordPage(props: { params: tParams }) {
         </div>
       </Link>
       <div className="w-full max-w-sm md:max-w-4xl p-6 md:p-10">
-        <ResetPasswordForm token={token[0]} />
+        <ResetPasswordForm token={token} />
       </div>
     </Section>
   );

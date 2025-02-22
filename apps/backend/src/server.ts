@@ -14,7 +14,12 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://www.fotno.com"], // Remove any undefined values
+    origin: [
+      "http://localhost:3000",
+      "https://www.fotno.com",
+      "https://auth.fotno.com",
+      "https://dashboard.fotno.com",
+    ], // Remove any undefined values
     optionsSuccessStatus: 200,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,

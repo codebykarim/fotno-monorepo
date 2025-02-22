@@ -60,8 +60,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   return res.status(500).json({ error: errorMeta.key });
 });
 
-app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({ status: "ok" });
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ message: "Welcome To Fotno API" });
 });
 
 const port = process.env.PORT ?? 8001;

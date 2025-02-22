@@ -2,13 +2,20 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { database } from "./mongodb/db";
 import { sendMail } from "./utils/sendMail";
-import { admin, jwt, bearer, openAPI } from "better-auth/plugins";
+import { admin, openAPI } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: mongodbAdapter(database),
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      await sendMail({
+        to: user.email,
+        subject: "Reset your password",
+        text: `Click the link to reset your password: ${url}`,
+      });
+    },
   },
   plugins: [admin(), openAPI()],
   user: {

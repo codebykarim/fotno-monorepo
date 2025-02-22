@@ -64,6 +64,17 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Welcome To Fotno API" });
 });
 
+app.get("/reset-password", (req: Request, res: Response) => {
+  const token = req.query.token;
+
+  if (!token) {
+    return res.status(400).json({ error: "Missing reset token" });
+  }
+
+  const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+  res.redirect(redirectUrl);
+});
+
 const port = process.env.PORT ?? 8001;
 
 // Connect to DB before starting server

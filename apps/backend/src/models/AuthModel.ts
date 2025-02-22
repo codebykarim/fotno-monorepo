@@ -107,4 +107,28 @@ const VerificationSchema = new mongoose.Schema(
 
 const Verification = mongoose.model("verification", VerificationSchema);
 
-export { Session, Account, Verification };
+const SSOProviderSchema = new mongoose.Schema({
+  issuer: {
+    type: String,
+  },
+  domain: {
+    type: String,
+  },
+  oidcConfig: {
+    type: String,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+  providerId: {
+    type: String,
+  },
+  organizationId: {
+    type: String,
+  },
+});
+
+const SSOProvider = mongoose.model("ssoProvider", SSOProviderSchema);
+
+export { Session, Account, Verification, SSOProvider };

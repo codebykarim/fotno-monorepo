@@ -1,13 +1,18 @@
 "use client";
-
-import { cn } from "@workspace/ui/lib/utils";
-import { Button } from "@workspace/ui/components/button";
-import { Card, CardContent } from "@workspace/ui/components/card";
-import { Input } from "@workspace/ui/components/input";
-import { Label } from "@workspace/ui/components/label";
-import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { cn } from "@workspace/ui/lib/utils";
+
+import { Button } from "@workspace/ui/components/button";
+
+import { Card, CardContent } from "@workspace/ui/components/card";
+
+import { Input } from "@workspace/ui/components/input";
 import {
   Form,
   FormControl,
@@ -16,40 +21,40 @@ import {
   FormLabel,
   FormMessage,
 } from "@workspace/ui/components/form";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+type Props = {
+  token: string;
+};
 
 const formSchema = z.object({
-  email: z.string().email(),
   password: z.string().min(2).max(50),
+  confirmPassword: z.string().min(2).max(50),
 });
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export const ResetPasswordForm = ({ token }: Props) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    const res = new Promise<{ email?: string }>((resolve, reject) => {
-      authClient.signIn.email(
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    const res = new Promise<{ success?: string }>((resolve, reject) => {
+      authClient.resetPassword(
         {
-          ...values,
-          callbackURL: "/",
-          rememberMe: true,
+          newPassword: values.password,
+          token,
         },
         {
           onSuccess: (data) => {
-            resolve({ email: data.data?.user.email });
+            resolve({ success: data.data });
           },
           onError: (error) => {
             console.log(error);
@@ -60,74 +65,42 @@ export function LoginForm({
     });
 
     toast.promise(res, {
-      loading: "Logging in...",
-      success: (data: { email?: string }) => {
-        // form.reset();
-        // window.location.reload();
-        return `Login successful with the email: ${data.email}`;
+      loading: "Resetting password...",
+      success: () => {
+        router.push("/login");
+        return `Password reset successful`;
       },
       error: (error: { message: string }) => {
-        // form.reset();
-        // setDialogOpen(false);
-        // window.location.reload();
-        return `Failed to login: ${error.message}`;
+        return `Failed to reset password: ${error.message}`;
       },
     });
-  }
+  };
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")}>
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Welcome back</h1>
+                  <h1 className="text-2xl font-bold">Reset your password</h1>
                   <p className="text-balance text-muted-foreground">
-                    Login to your FOTNO account
+                    Please enter your new password below.
                   </p>
                 </div>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="m@example.com"
-                            required
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-2 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
-                  <FormField
-                    control={form.control}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        {/* <FormLabel>Password</FormLabel> */}
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
                           <Input
                             id="password"
                             type="password"
+                            placeholder="********"
                             required
                             {...field}
                           />
@@ -137,9 +110,33 @@ export function LoginForm({
                     )}
                   />
                 </div>
+
+                <div className="grid gap-2">
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="********"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <Button type="submit" className="w-full">
-                  Login
+                  Reset Password
                 </Button>
+
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                   <span className="relative z-10 bg-background px-2 text-muted-foreground">
                     Or continue with
@@ -200,4 +197,4 @@ export function LoginForm({
       </div>
     </div>
   );
-}
+};

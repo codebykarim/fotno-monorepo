@@ -1,15 +1,5 @@
 {
   "version": 2,
   "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
-  "builds": [
-    {
-      "src": "api/index.ts",
-      "config": {
-        "buildCommand": "turbo run build",
-        "installCommand": "pnpm install",
-        "outputDirectory": ".",
-        "framework": "express"
-      }
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }

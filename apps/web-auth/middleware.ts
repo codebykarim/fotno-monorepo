@@ -30,8 +30,6 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  console.log(session);
-
   // If user is authenticated and trying to access auth pages, redirect to dashboard
   if (session?.user && publicPaths.includes(pathname)) {
     return NextResponse.redirect(DASHBOARD_URL);

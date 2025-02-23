@@ -11,11 +11,5 @@
       "src": "/(.*)",
       "dest": "src/server.ts"
     }
-  ],
-  "functions": {
-    "src/public/favicon.ico": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  }
+  ]
 }

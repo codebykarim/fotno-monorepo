@@ -64,14 +64,10 @@ export function LoginForm({
     toast.promise(res, {
       loading: "Logging in...",
       success: (data: { email?: string }) => {
-        // form.reset();
-        // window.location.reload();
+        window.location.href = "https://www.fotno.com";
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {
-        // form.reset();
-        // setDialogOpen(false);
-        // window.location.reload();
         return `Failed to login: ${error.message}`;
       },
     });

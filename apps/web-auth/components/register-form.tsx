@@ -18,6 +18,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -37,7 +38,7 @@ export function RegisterForm({
       password: "",
     },
   });
-
+  const router = useRouter();
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -64,6 +65,8 @@ export function RegisterForm({
       success: (data: { email?: string }) => {
         // form.reset();
         // window.location.reload();
+        router.push("https://www.fotno.com");
+
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {

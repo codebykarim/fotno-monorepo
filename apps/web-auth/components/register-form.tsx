@@ -50,7 +50,6 @@ export function RegisterForm({
         },
         {
           onSuccess: (data) => {
-            router.prefetch("https://www.fotno.com");
             resolve({ email: data.data?.user.email });
           },
           onError: (error) => {
@@ -66,7 +65,7 @@ export function RegisterForm({
       success: (data: { email?: string }) => {
         // form.reset();
         // window.location.reload();
-
+        router.push("https://www.fotno.com");
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {

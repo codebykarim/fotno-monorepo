@@ -82,7 +82,7 @@ app.get("/reset-password", (req: Request, res: Response) => {
 });
 
 app.get("/favicon.ico", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "favicon.ico"));
+  res.sendFile(path.join(__dirname, "../favicon.ico"));
 });
 
 const port = process.env.PORT ?? 8001;

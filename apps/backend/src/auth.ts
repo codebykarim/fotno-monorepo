@@ -23,6 +23,22 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
+      domain: ".fotno.com", // Domain with a leading period
+    },
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none", // Allows CORS-based cookie sharing across subdomains
+    },
+  },
+  trustedOrigins: [
+    "https://www.fotno.com",
+    "https://auth.fotno.com",
+    "https://dashboard.fotno.com",
+  ],
   // emailVerification: {
   //   sendVerificationEmail: async ({ user, url, token }, request) => {
   //     await sendMail({

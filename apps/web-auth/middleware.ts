@@ -6,20 +6,16 @@ const DASHBOARD_URL = "https://www.fotno.com"; // https://dashboard.fotno.com
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = getSessionCookie(request);
-  const authRoutes = ["/login", "/register", "/reset-password"];
-
-  // Allow access to auth routes when not authenticated
-  if (authRoutes.includes(pathname)) {
-    // If user is authenticated, redirect to dashboard
-    if (sessionCookie) {
-      return NextResponse.redirect(DASHBOARD_URL);
-    }
-    return NextResponse.next();
-  }
 
   // Redirect root to login
   if (pathname === "/") {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // If user is authenticated and trying to access auth pages (login, register, etc.)
+  // redirect them to dashboard
+  if (sessionCookie && (pathname === "/login" || pathname === "/register")) {
+    return NextResponse.redirect(DASHBOARD_URL);
   }
 
   // Block access to all other routes if not authenticated

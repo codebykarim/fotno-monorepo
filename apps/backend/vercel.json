@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "public/favicon.ico",
+      "src": "/favicon.ico",
       "use": "@vercel/node"
     }
   ],

@@ -4,6 +4,10 @@
     {
       "src": "src/server.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/favicon.ico",
+      "use": "@vercel/node"
     }
   ],
   "routes": [

@@ -9,6 +9,7 @@ import { ErrorMeta } from "./utils/logger";
 import { client } from "./mongodb/db";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
+import path from "path";
 
 const app = express();
 
@@ -78,6 +79,10 @@ app.get("/reset-password", (req: Request, res: Response) => {
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
   res.redirect(redirectUrl);
+});
+
+app.get("/favicon.ico", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "favicon.ico"));
 });
 
 const port = process.env.PORT ?? 8001;

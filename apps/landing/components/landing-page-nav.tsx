@@ -61,14 +61,14 @@ const LandingPageNav = () => {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {session ? (
             <Link
-              href="/dashboard"
+              href="https://dashboard.fotno.com"
               className="text-sm/6 font-semibold text-gray-900"
             >
               <Button variant="outline">Dashboard</Button>
             </Link>
           ) : (
             <Link
-              href="/login"
+              href="https://auth.fotno.com/login"
               className="text-sm/6 font-semibold text-gray-900"
             >
               <Button variant="outline">Login</Button>
@@ -107,14 +107,14 @@ const LandingPageNav = () => {
               <div className="py-6">
                 {session ? (
                   <Link
-                    href="/dashboard"
+                    href="https://dashboard.fotno.com"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Dashboard
                   </Link>
                 ) : (
                   <Link
-                    href="/login"
+                    href="https://auth.fotno.com/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Log in

@@ -66,7 +66,6 @@ export function RegisterForm({
         // form.reset();
         // window.location.reload();
         router.push("https://www.fotno.com");
-
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {

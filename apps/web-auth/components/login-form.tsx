@@ -20,6 +20,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -39,6 +40,7 @@ export function LoginForm({
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
+  const router = useRouter();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
@@ -64,10 +66,15 @@ export function LoginForm({
     toast.promise(res, {
       loading: "Logging in...",
       success: (data: { email?: string }) => {
-        window.location.href = "https://www.fotno.com";
+        // form.reset();
+        // window.location.reload();
+        router.push("https://www.fotno.com");
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {
+        // form.reset();
+        // setDialogOpen(false);
+        // window.location.reload();
         return `Failed to login: ${error.message}`;
       },
     });

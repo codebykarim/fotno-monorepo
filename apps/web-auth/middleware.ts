@@ -8,9 +8,13 @@ export async function middleware(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
   const authRoutes = ["/login", "/register", "/reset-password"];
 
-  // If user is authenticated, redirect to dashboard
-  if (sessionCookie) {
-    return NextResponse.redirect(DASHBOARD_URL);
+  // Allow access to auth routes when not authenticated
+  if (authRoutes.includes(pathname)) {
+    // If user is authenticated, redirect to dashboard
+    if (sessionCookie) {
+      return NextResponse.redirect(DASHBOARD_URL);
+    }
+    return NextResponse.next();
   }
 
   // Redirect root to login
@@ -18,13 +22,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Allow access to auth routes when not authenticated
-  if (authRoutes.includes(pathname)) {
-    return NextResponse.next();
+  // Block access to all other routes if not authenticated
+  if (!sessionCookie) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Block access to all other routes
-  return NextResponse.redirect(new URL("/login", request.url));
+  // Allow access to protected routes for authenticated users
+  return NextResponse.next();
 }
 
 export const config = {

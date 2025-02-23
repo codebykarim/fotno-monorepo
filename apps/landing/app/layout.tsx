@@ -7,7 +7,7 @@ import { cn } from "@workspace/ui/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FOTNO - Coming Soon",
+  title: "FOTNO",
   description:
     "Prepare to experience photography like never before. Our new website is on its way, bringing you breathtaking visuals and unforgettable moments.",
 };

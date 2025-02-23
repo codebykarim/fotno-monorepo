@@ -8,7 +8,7 @@ import { Toaster } from "@workspace/ui/components/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FOTNO - Coming Soon",
+  title: "FOTNO - Authentication",
   description:
     "Prepare to experience photography like never before. Our new website is on its way, bringing you breathtaking visuals and unforgettable moments.",
 };

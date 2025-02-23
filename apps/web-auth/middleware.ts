@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth";
 
-const DASHBOARD_URL = "https://www.fotno.com"; // https://dashboard.fotno.com
+// const DASHBOARD_URL = "https://www.fotno.com"; // https://dashboard.fotno.com
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -10,11 +10,12 @@ export async function middleware(request: NextRequest) {
 
   // If user is authenticated, redirect to dashboard
   if (sessionCookie) {
-    const response = NextResponse.redirect(DASHBOARD_URL);
-    response.cookies.set("better-auth.session_token", sessionCookie, {
-      domain: "fotno.com",
-    });
-    return response;
+    // const response = NextResponse.redirect(DASHBOARD_URL);
+    // response.cookies.set("better-auth.session_token", sessionCookie, {
+    //   domain: "fotno.com",
+    // });
+    // return response;
+    return NextResponse.next();
   }
 
   // Redirect root to login

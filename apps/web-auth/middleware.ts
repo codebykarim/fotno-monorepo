@@ -1,13 +1,17 @@
+import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth";
 
 const DASHBOARD_URL = "https://www.fotno.com"; // https://dashboard.fotno.com
 
+type Session = {
+  user?: {
+    id: string;
+    // ... other user fields
+  };
+};
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const sessionCookie = getSessionCookie(request);
-
-  // Define public paths that don't require authentication
   const publicPaths = ["/login", "/register"];
 
   // Redirect root to login
@@ -15,8 +19,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  // Check session
+  const { data: session } = await betterFetch<Session>(
+    "/api/auth/get-session",
+    {
+      baseURL: request.nextUrl.origin,
+      headers: {
+        cookie: request.headers.get("cookie") || "",
+      },
+    }
+  );
+
+  console.log(session);
+
   // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (sessionCookie && publicPaths.includes(pathname)) {
+  if (session?.user && publicPaths.includes(pathname)) {
     return NextResponse.redirect(DASHBOARD_URL);
   }
 
@@ -26,7 +43,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Block access to all other routes if not authenticated
-  if (!sessionCookie) {
+  if (!session?.user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

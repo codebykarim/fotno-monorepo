@@ -1,8 +1,9 @@
-import "@workspace/ui/globals.css";
+// import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@workspace/ui/lib/utils";
+import "@/styles/tailwind.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

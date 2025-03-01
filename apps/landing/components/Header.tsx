@@ -122,19 +122,23 @@ export function Header() {
                   My Dashboard
                 </Button>
               ) : (
-                <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
-                  Login
-                </NavLink>
+                <>
+                  <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
+                    Login
+                  </NavLink>
+                  <Button
+                    href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
+                    color="main"
+                  >
+                    <span>
+                      Get started{" "}
+                      <span className="hidden lg:inline">today</span>
+                    </span>
+                  </Button>
+                </>
               )}
             </div>
-            <Button
-              href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
-              color="main"
-            >
-              <span>
-                Get started <span className="hidden lg:inline">today</span>
-              </span>
-            </Button>
+
             <div className="-mr-1 md:hidden">
               <MobileNavigation isUserLoggedIn={session?.user !== undefined} />
             </div>

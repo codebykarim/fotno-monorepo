@@ -79,7 +79,7 @@ app.get("/reset-password", (req: Request, res: Response) => {
     return res.status(400).json({ error: "Missing reset token" });
   }
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_AUTH_URL}/reset-password?token=${token}`;
   res.redirect(redirectUrl);
 });
 

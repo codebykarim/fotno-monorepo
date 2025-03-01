@@ -27,7 +27,11 @@ export function CallToAction() {
             It’s time to take control of your photos and videos. Subscribe to
             Fotno today and get 1 month <span className="font-bold">Free</span>.
           </p>
-          <Button href="/register" color="secondary" className="mt-10">
+          <Button
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
+            color="secondary"
+            className="mt-10"
+          >
             Get 1 month free
           </Button>
         </div>

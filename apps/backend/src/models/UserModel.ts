@@ -14,6 +14,16 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    plan: {
+      type: String,
+      enum: ["BEGGINER", "PRO", "STUDIO"],
+    },
+    planExpiresAt: {
+      type: Date,
+    },
+    planStartedAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

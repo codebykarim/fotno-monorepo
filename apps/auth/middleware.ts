@@ -1,7 +1,7 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
 
-const DASHBOARD_URL = "https://www.fotno.com"; // https://dashboard.fotno.com
+const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboard.fotno.com
 
 type Session = {
   user?: {
@@ -12,7 +12,7 @@ type Session = {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const publicPaths = ["/login", "/register"];
+  const publicPaths = ["/login", "/register", "/onboarding", "/reset-password"];
 
   // Redirect root to login
   if (pathname === "/") {
@@ -32,7 +32,9 @@ export async function middleware(request: NextRequest) {
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
   if (session?.user && publicPaths.includes(pathname)) {
-    return NextResponse.redirect(DASHBOARD_URL);
+    return NextResponse.redirect(
+      DASHBOARD_URL || "https://dashboard.fotno.com"
+    );
   }
 
   // Allow access to public paths even without authentication

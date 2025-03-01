@@ -74,7 +74,9 @@ function MobileNavigation() {
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#pricing">Pricing</MobileNavLink>
         <hr className="m-2 border-background/40" />
-        <MobileNavLink href="https://auth.fotno.com/login">Login</MobileNavLink>
+        <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
+          Login
+        </MobileNavLink>
       </PopoverPanel>
     </Popover>
   );
@@ -102,9 +104,14 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <div className="hidden md:block">
-              <NavLink href="https://auth.fotno.com/login">Login</NavLink>
+              <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
+                Login
+              </NavLink>
             </div>
-            <Button href="/onboarding" color="main">
+            <Button
+              href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
+              color="main"
+            >
               <span>
                 Get started <span className="hidden lg:inline">today</span>
               </span>

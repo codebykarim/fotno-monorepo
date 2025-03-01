@@ -26,7 +26,7 @@ export const auth = betterAuth({
   advanced: {
     crossSubDomainCookies: {
       enabled: true,
-      domain: ".fotno.com", // Domain with a leading period
+      domain: process.env.NODE_ENV === "production" ? ".fotno.com" : undefined, // Domain with a leading period
     },
     defaultCookieAttributes: {
       secure: true,
@@ -35,6 +35,9 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
     "https://www.fotno.com",
     "https://auth.fotno.com",
     "https://dashboard.fotno.com",

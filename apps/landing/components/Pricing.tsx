@@ -54,6 +54,7 @@ function Plan({
   href,
   features,
   featured = false,
+  className,
 }: {
   name: string;
   price: string;
@@ -61,11 +62,13 @@ function Plan({
   href: string;
   features: Array<string>;
   featured?: boolean;
+  className?: string;
 }) {
   return (
     <section
       className={cn(
         "flex flex-col rounded-3xl px-6 sm:px-8",
+        className,
         featured ? "order-first bg-secondary py-8 lg:order-none" : "lg:py-8"
       )}
     >
@@ -131,10 +134,10 @@ export function Pricing() {
         </div>
         <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
           <Plan
-            name="Starter"
-            price="EGP 100"
+            name="Beginner"
+            price="EGP 500"
             description="Good for anyone who is self-employed and just getting started."
-            href="/onboarding"
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=beginner`}
             features={[
               "Send 10 quotes and invoices",
               "Connect up to 2 bank accounts",
@@ -145,10 +148,10 @@ export function Pricing() {
           />
           <Plan
             featured
-            name="Small business"
-            price="EGP 300"
+            name="Professional"
+            price="EGP 1100"
             description="Perfect for small / medium sized businesses."
-            href="/onboarding"
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=pro`}
             features={[
               "Send 25 quotes and invoices",
               "Connect up to 5 bank accounts",
@@ -160,16 +163,18 @@ export function Pricing() {
             ]}
           />
           <Plan
-            name="Enterprise"
-            price="EGP 500"
-            description="For even the biggest enterprise companies."
-            href="/onboarding"
+            name="Studio"
+            price="EGP 1500"
+            description="Perfect for small / medium sized businesses."
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=studio`}
             features={[
-              "Send unlimited quotes and invoices",
-              "Connect up to 15 bank accounts",
-              "Track up to 200 expenses per month",
+              "Send 25 quotes and invoices",
+              "Connect up to 5 bank accounts",
+              "Track up to 50 expenses per month",
               "Automated payroll support",
-              "Export up to 25 reports, including TPS",
+              "Export up to 12 reports",
+              "Bulk reconcile transactions",
+              "Track in multiple currencies",
             ]}
           />
         </div>

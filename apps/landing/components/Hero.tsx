@@ -32,7 +32,9 @@ export function Hero() {
         platform that makes it easy to manage your photos and videos.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Get 1 month free</Button>
+        <Button href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}>
+          Get 1 month free
+        </Button>
         <Button
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           variant="outline"

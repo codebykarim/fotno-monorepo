@@ -33,7 +33,7 @@ export function RegisterForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: "test",
       email: "",
       password: "",
     },
@@ -46,6 +46,7 @@ export function RegisterForm({
       authClient.signUp.email(
         {
           ...values,
+          name: values.email.split("@")[0] ?? values.name,
           callbackURL: "/",
         },
         {
@@ -65,7 +66,7 @@ export function RegisterForm({
       success: (data: { email?: string }) => {
         // form.reset();
         // window.location.reload();
-        router.push("https://www.fotno.com");
+        router.push(process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "");
         return `Login successful with the email: ${data.email}`;
       },
       error: (error: { message: string }) => {
@@ -78,39 +79,18 @@ export function RegisterForm({
   }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden  bg-foreground">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 text-muted-foreground">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Welcome To FOTNO</h1>
-                  <p className="text-balance text-muted-foreground">
+                  <p className="text-balance">
                     Create an account to get started
                   </p>
                 </div>
 
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input
-                            id="name"
-                            type="name"
-                            placeholder="Karim"
-                            required
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
                 <div className="grid gap-2">
                   <FormField
                     control={form.control}
@@ -152,11 +132,12 @@ export function RegisterForm({
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Login
+
+                <Button variant={"secondary"} type="submit" className="w-full">
+                  Register
                 </Button>
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                  <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                  <span className="relative z-10 bg-foreground px-2 text-muted-foreground">
                     Or continue with
                   </span>
                 </div>
@@ -198,7 +179,7 @@ export function RegisterForm({
               </div>
             </form>
           </Form>
-          <div className="relative hidden bg-muted md:block">
+          <div className="relative hidden bg-background md:block">
             <Image
               src="/placeholder.svg"
               alt="Image"

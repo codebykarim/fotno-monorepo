@@ -14,6 +14,7 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/lib/icons";
+import { authClient } from "@/lib/auth-client";
 
 function MobileNavLink({
   href,
@@ -53,7 +54,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
   );
 }
 
-function MobileNavigation() {
+function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
   return (
     <Popover>
       <PopoverButton
@@ -74,15 +75,24 @@ function MobileNavigation() {
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#pricing">Pricing</MobileNavLink>
         <hr className="m-2 border-background/40" />
-        <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
-          Login
-        </MobileNavLink>
+        {isUserLoggedIn ? (
+          <MobileNavLink
+            href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
+          >
+            My Dashboard
+          </MobileNavLink>
+        ) : (
+          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
+            Login
+          </MobileNavLink>
+        )}
       </PopoverPanel>
     </Popover>
   );
 }
 
 export function Header() {
+  const { data: session } = authClient.useSession();
   return (
     <header className="py-10 bg-foreground">
       <Container>
@@ -104,9 +114,18 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <div className="hidden md:block">
-              <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
-                Login
-              </NavLink>
+              {session?.user ? (
+                <Button
+                  href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
+                  color="main"
+                >
+                  My Dashboard
+                </Button>
+              ) : (
+                <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
+                  Login
+                </NavLink>
+              )}
             </div>
             <Button
               href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
@@ -117,7 +136,7 @@ export function Header() {
               </span>
             </Button>
             <div className="-mr-1 md:hidden">
-              <MobileNavigation />
+              <MobileNavigation isUserLoggedIn={session?.user !== undefined} />
             </div>
           </div>
         </nav>

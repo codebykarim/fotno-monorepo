@@ -54,7 +54,13 @@ function MobileNavIcon({ open }: { open: boolean }) {
   );
 }
 
-function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
+function MobileNavigation({
+  isUserLoggedIn,
+  isLoading,
+}: {
+  isUserLoggedIn: boolean;
+  isLoading: boolean;
+}) {
   return (
     <Popover>
       <PopoverButton
@@ -75,7 +81,9 @@ function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#pricing">Pricing</MobileNavLink>
         <hr className="m-2 border-background/40" />
-        {isUserLoggedIn ? (
+        {isLoading ? (
+          <div className="h-10 bg-background/10 animate-pulse rounded-full" />
+        ) : isUserLoggedIn ? (
           <MobileNavLink
             href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
           >
@@ -92,7 +100,8 @@ function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
 }
 
 export function Header() {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
+
   return (
     <header className="py-10 bg-foreground">
       <Container>
@@ -114,7 +123,9 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <div className="hidden md:block">
-              {session?.user ? (
+              {isPending ? (
+                <div className="w-[200px] h-10 bg-background/10 animate-pulse rounded-full" />
+              ) : session?.user ? (
                 <Button
                   href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
                   color="main"
@@ -122,7 +133,7 @@ export function Header() {
                   My Dashboard
                 </Button>
               ) : (
-                <>
+                <div className="flex gap-2">
                   <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
                     Login
                   </NavLink>
@@ -135,12 +146,15 @@ export function Header() {
                       <span className="hidden lg:inline">today</span>
                     </span>
                   </Button>
-                </>
+                </div>
               )}
             </div>
 
             <div className="-mr-1 md:hidden">
-              <MobileNavigation isUserLoggedIn={session?.user !== undefined} />
+              <MobileNavigation
+                isUserLoggedIn={session?.user !== undefined}
+                isLoading={isPending}
+              />
             </div>
           </div>
         </nav>

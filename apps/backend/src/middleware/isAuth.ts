@@ -17,6 +17,10 @@ const isAuth = async (
   if (!session) {
     throw new AppError("Unauthorized");
   }
+
+  req.user = {
+    id: session.user.id,
+  };
 };
 
 export default isAuth;

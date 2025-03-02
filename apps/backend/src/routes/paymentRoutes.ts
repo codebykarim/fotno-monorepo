@@ -12,6 +12,11 @@ const paymentMethods: { [key: string]: MethodInfo } = {
     controllerFunction: PaymentController.listSubscriptionPlans,
     authFunction: isAuth,
   },
+  "create-subscription": {
+    httpMethod: "POST",
+    controllerFunction: PaymentController.createSubscriptionController,
+    authFunction: isAuth,
+  },
 };
 
 const mapedMethods = init(paymentMethods);

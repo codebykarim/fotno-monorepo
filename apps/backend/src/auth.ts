@@ -1,11 +1,13 @@
 import { betterAuth } from "better-auth";
-import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { database } from "./mongodb/db";
 import { sendMail } from "./utils/sendMail";
 import { admin, openAPI } from "better-auth/plugins";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import prisma from "./prisma";
 
 export const auth = betterAuth({
-  database: mongodbAdapter(database),
+  database: prismaAdapter(prisma, {
+    provider: "postgresql", // or "mysql", "postgresql", ...etc
+  }),
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,

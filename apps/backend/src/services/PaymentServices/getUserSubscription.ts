@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getToken } from "./getToken";
 import AppError from "../../errors/AppError";
-import { User } from "../../models/UserModel";
-import { PaymentShemaType } from "../../models/PaymentModel";
+import prisma from "../../prisma";
 
 export const getUserSubscription = async (userId: string) => {
   const authToken = await getToken();
@@ -11,19 +10,29 @@ export const getUserSubscription = async (userId: string) => {
     throw new AppError("Failed to get auth token");
   }
 
-  const user = await User.findById(userId)
-    .populate<{ payment: PaymentShemaType }>("payment")
-    .exec();
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      payment: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      },
+    },
+  });
 
   if (!user) {
     throw new AppError("User not found");
   }
 
-  if (!user.payment) {
+  if (!user.payment || user.payment.length === 0) {
     throw new AppError("User has no payment information");
   }
 
-  const planId = user.payment.planId;
+  const planId = user.payment[0].planId;
 
   if (!planId) {
     throw new AppError("User has no plan assigned");

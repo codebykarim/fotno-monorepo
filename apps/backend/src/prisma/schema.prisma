@@ -1,0 +1,139 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @unique @default(uuid())
+  name           String
+  email          String
+  emailVerified  Boolean
+  image          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now()) @updatedAt
+  role           String?
+  banned         Boolean?
+  banReason      String?
+  banExpires     DateTime?
+  sessions       Session[]
+  accounts       Account[]
+  payment        Payment[]
+  userOnboarding UserOnboarding?
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id             String   @id @unique @default(uuid())
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @unique @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @unique @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
+enum PlanType {
+  BEGGINER
+  PRO
+  STUDIO
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+model Payment {
+  id             Int                @id @unique @default(autoincrement())
+  name           String
+  description    String
+  planId         Int
+  plan           PlanType
+  planExpiresAt  DateTime?
+  planStartedAt  DateTime?
+  subscriptionId Int                @unique
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @default(now()) @updatedAt
+  status         SubscriptionStatus
+  userId         String
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payment")
+}
+
+enum UserType {
+  SOLO
+  COMPANY
+}
+
+enum PhotographyLevel {
+  BEGINNER
+  INTERMEDIATE
+  PROFESSIONAL
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  BOTH
+}
+
+model UserOnboarding {
+  id               Int               @id @unique @default(autoincrement())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userType         UserType
+  companyName      String?
+  companySize      String?
+  photographyType  String[]
+  photographyLevel PhotographyLevel?
+  contactMethod    ContactMethod?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+
+  @@map("userOnboarding")
+}

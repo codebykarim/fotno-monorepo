@@ -35,12 +35,12 @@ export const init = (methods: { [key: string]: MethodInfo }) => {
         throw new AppError("ERR_AUTH_PERMISSION", 401);
       }
 
-      if (methodInfo.permissions && methodInfo.permissions.length > 0) {
-        const identitynumber = req.user.identitynumber;
-        if (!methodInfo.permissions.includes(identitynumber)) {
-          throw new AppError("ERR_PERMISSION", 401);
-        }
-      }
+      // if (methodInfo.permissions && methodInfo.permissions.length > 0) {
+      //   const identitynumber = req.user.identitynumber;
+      //   if (!methodInfo.permissions.includes(identitynumber)) {
+      //     throw new AppError("ERR_PERMISSION", 401);
+      //   }
+      // }
 
       if (methodInfo.bodyValidation) {
         const schema = joi.object(methodInfo.bodyValidation);

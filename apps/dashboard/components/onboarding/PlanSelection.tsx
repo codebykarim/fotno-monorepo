@@ -8,7 +8,6 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
-import AnimatedList from "@workspace/ui/components/animated-list";
 import { CheckIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";

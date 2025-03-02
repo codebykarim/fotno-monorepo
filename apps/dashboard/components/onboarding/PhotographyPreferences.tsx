@@ -104,7 +104,7 @@ const PhotographyPreferences = ({ form }: Props) => {
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="beginner"
+                        value="BEGINNER"
                         className="border-gray-700"
                       />
                     </FormControl>
@@ -115,7 +115,7 @@ const PhotographyPreferences = ({ form }: Props) => {
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="intermediate"
+                        value="INTERMEDIATE"
                         className="border-gray-700"
                       />
                     </FormControl>
@@ -126,7 +126,7 @@ const PhotographyPreferences = ({ form }: Props) => {
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="professional"
+                        value="PROFESSIONAL"
                         className="border-gray-700"
                       />
                     </FormControl>

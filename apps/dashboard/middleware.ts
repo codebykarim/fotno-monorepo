@@ -6,39 +6,52 @@ const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboar
 type Session = {
   user?: {
     id: string;
-    plan?: string;
+    subscribed?: boolean;
     // ... other user fields
   };
 };
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  try {
+    const { pathname } = request.nextUrl;
 
-  // Check session
-  const { data: session } = await betterFetch<Session>(
-    "/api/auth/get-session",
-    {
-      baseURL: process.env.NEXT_PUBLIC_API_URL,
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
+    // Check session using better-fetch
+    const { data: session } = await betterFetch<Session>(
+      "/api/auth/get-session",
+      {
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        headers: {
+          cookie: request.headers.get("cookie") || "",
+        },
+      }
+    );
+
+    // If no user is authenticated, redirect to auth app
+    if (!session?.user) {
+      return NextResponse.redirect(
+        process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
+      );
     }
-  );
 
-  // If no user is authenticated, redirect to auth app
-  if (!session?.user) {
+    // If user has no plan and not on onboarding, redirect to onboarding
+    if (!session.user.subscribed && pathname !== "/onboarding") {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+
+    // If user is already subscribed and tries to access onboarding, redirect to dashboard
+    if (session.user.subscribed && pathname === "/onboarding") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    // Allow access to protected routes for authenticated users
+    return NextResponse.next();
+  } catch (error) {
+    // In case of any unexpected errors, redirect to auth
+    console.error("Middleware error:", error);
     return NextResponse.redirect(
       process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
     );
   }
-
-  // If user has no plan and not on onboarding, redirect to onboarding
-  if (!session.user.plan && pathname !== "/onboarding") {
-    return NextResponse.redirect(new URL("/onboarding", request.url));
-  }
-
-  // Allow access to protected routes for authenticated users
-  return NextResponse.next();
 }
 
 export const config = {

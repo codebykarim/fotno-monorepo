@@ -1,23 +1,21 @@
 import axios from "axios";
 import { getSubscriptionsPlans } from "./getSubscriptionsPlans";
 import AppError from "../../errors/AppError";
+import { Session, User } from "better-auth/types";
 
 interface BillingData {
-  apartment: string;
-  first_name: string;
-  last_name: string;
-  street: string;
-  building: string;
-  phone_number: string;
-  country: string;
-  email: string;
-  floor: string;
-  state: string;
+  first_name?: string;
+  last_name?: string;
+  street?: string;
+  phone_number?: string;
+  country?: string;
+  state?: string;
 }
 
 export interface CreateSubscriptionRequest {
   planName: string;
   billing_data: BillingData;
+  user?: User;
 }
 
 export interface CreateSubscriptionResponse {
@@ -54,7 +52,15 @@ export const createSubscription = async (
       currency: "EGP",
       payment_methods: [matchingPlan.integration],
       subscription_plan_id: matchingPlan.id,
-      billing_data: subscriptionData.billing_data,
+      billing_data: {
+        first_name: data.billing_data?.first_name,
+        last_name: data.billing_data?.last_name,
+        phone_number: data.billing_data.phone_number,
+        email: data.user?.email,
+        country: data.billing_data.country,
+        state: data.billing_data.state,
+        street: data.billing_data.street,
+      },
     };
 
     const response = await axios.post(

@@ -37,6 +37,18 @@ const CreateSuccessSubscription = async ({
     throw new AppError("User not found");
   }
 
+  // check if payment already exists
+  const paymentExist = await prisma.payment.findUnique({
+    where: {
+      subscriptionId,
+      userId: user.id,
+    },
+  });
+
+  if (paymentExist) {
+    return paymentExist;
+  }
+
   const payment: Payment = await prisma.payment
     .create({
       data: {

@@ -14,12 +14,16 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  FormFieldType,
+  OnboardingSchemaType,
   OnboardingFormSchema,
+  FormFieldType,
 } from "@/lib/form-schemas/onboarding";
 import { Form } from "@workspace/ui/components/form";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import BillingInformation from "@/components/onboarding/BillingInformation";
+import { submitOnboarding } from "@/server/submitOnboarding";
+import { toast } from "sonner";
 
 type StepContent = {
   badge: string;
@@ -94,6 +98,19 @@ const stepContent: Record<string, StepContent> = {
       "Choose a plan that matches your business needs and growth aspirations.",
     image: "/placeholder.svg",
   },
+  "Billing Information": {
+    badge: "Almost Done",
+    title: (
+      <>
+        Complete Your
+        <br />
+        Billing Details
+      </>
+    ),
+    description:
+      "Provide your billing information to finalize your account setup.",
+    image: "/placeholder.svg",
+  },
 };
 
 export default function Onboarding() {
@@ -103,11 +120,19 @@ export default function Onboarding() {
   const form = useForm<z.infer<typeof OnboardingFormSchema>>({
     resolver: zodResolver(OnboardingFormSchema),
     defaultValues: {
-      userType: "solo",
+      userType: "SOLO",
       photographyTypes: [],
       plan: "PRO",
-      companyName: "",
+      companyName: undefined,
       companySize: undefined,
+      equipmentLevel: undefined,
+      preferredContactMethod: undefined,
+      first_name: undefined,
+      last_name: undefined,
+      phoneNumber: undefined,
+      country: undefined,
+      state: undefined,
+      street: undefined,
     },
   });
 
@@ -121,7 +146,7 @@ export default function Onboarding() {
       title: "Company Details",
       component: <CompanyDetails form={form} />,
       fields: ["companyName", "companySize"] as FormFieldType[],
-      condition: () => form.getValues("userType") === "team",
+      condition: () => form.getValues("userType") === "TEAM",
     },
     {
       title: "Photography Preferences",
@@ -137,6 +162,17 @@ export default function Onboarding() {
       title: "Plan Selection",
       component: <PlanSelection form={form} />,
       fields: ["plan"] as FormFieldType[],
+    },
+    {
+      title: "Billing Information",
+      component: <BillingInformation form={form} />,
+      fields: [
+        "first_name",
+        "last_name",
+        "street",
+        "state",
+        "country",
+      ] as FormFieldType[],
     },
   ];
 
@@ -187,16 +223,26 @@ export default function Onboarding() {
   };
 
   const onSubmit = async (data: z.infer<typeof OnboardingFormSchema>) => {
-    try {
-      // Validate the entire form before final submission
-      await OnboardingFormSchema.parseAsync(data);
-      console.log("Final submission:", data);
-      // TODO: Send data to your API
-      router.push("/");
-    } catch (error) {
-      console.error("Final validation failed:", error);
-      // The form will display validation errors
-    }
+    const res = new Promise<{ checkoutUrl: string }>((resolve, reject) => {
+      submitOnboarding(data)
+        .then((data) => resolve({ checkoutUrl: data.checkoutUrl }))
+        .catch((error) => reject({ message: error }));
+    });
+
+    toast.promise(res, {
+      loading: "Redirecting to Payment Page...",
+      success: (data: { checkoutUrl: string }) => {
+        form.reset();
+        window.location.href = data.checkoutUrl;
+        return `Redirected to Payment Page`;
+      },
+      error: (error: { message: string }) => {
+        // form.reset();
+        // setDialogOpen(false);
+        // window.location.reload();
+        return `Failed to redirect to Payment Page: ${error.message}`;
+      },
+    });
   };
 
   const renderFormContent = () => {

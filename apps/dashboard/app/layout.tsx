@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
+import Header from "@/components/home/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-foreground")}>
+        <Header />
         {children} <Toaster />
       </body>
     </html>

@@ -1,8 +1,8 @@
 import React from "react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import {
-  FormFieldType,
   OnboardingFormSchema,
+  OnboardingSchemaType,
 } from "@/lib/form-schemas/onboarding";
 import { z } from "zod";
 import {
@@ -27,25 +27,7 @@ const CustomRadioItem = React.forwardRef<
     value: string;
     children: React.ReactNode;
     isSelected?: boolean;
-    field: ControllerRenderProps<
-      {
-        userType: "solo" | "team";
-        photographyTypes: string[];
-        equipmentLevel: "beginner" | "intermediate" | "professional";
-        preferredContactMethod: "email" | "phone" | "both";
-        plan: "BEGGINER" | "PRO" | "STUDIO";
-        companyName?: string | undefined;
-        companySize?:
-          | "1-10"
-          | "11-50"
-          | "51-200"
-          | "201-500"
-          | "500+"
-          | undefined;
-        phoneNumber?: string | undefined;
-      },
-      "userType"
-    >;
+    field: ControllerRenderProps<OnboardingSchemaType, "userType">;
   }
 >((props, ref) => {
   const { value, children, isSelected, field } = props;
@@ -110,15 +92,15 @@ const SoloCompany = ({ form }: Props) => {
                 className="flex flex-col space-y-1"
               >
                 <CustomRadioItem
-                  value="solo"
-                  isSelected={watchUserType === "solo"}
+                  value="SOLO"
+                  isSelected={watchUserType === "SOLO"}
                   field={field}
                 >
                   I&apos;m a solo Photographer
                 </CustomRadioItem>
                 <CustomRadioItem
-                  value="team"
-                  isSelected={watchUserType === "team"}
+                  value="TEAM"
+                  isSelected={watchUserType === "TEAM"}
                   field={field}
                 >
                   I&apos;m part of a team / company

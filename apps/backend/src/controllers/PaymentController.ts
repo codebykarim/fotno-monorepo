@@ -13,6 +13,8 @@ import type {
 import AddUserOnboardingService from "../services/UserServices/addUserOnboarding";
 import prisma from "../prisma";
 import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
+import { auth } from "../auth";
+import { fromNodeHeaders } from "better-auth/node";
 
 export const listSubscriptionPlans = async (req: Request, res: Response) => {
   const plans = await getSubscriptionsPlans();
@@ -25,6 +27,10 @@ export const createSubscriptionController = async (
   res: Response
 ): Promise<Response> => {
   try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
     const {
       userType,
       companyName,
@@ -52,6 +58,7 @@ export const createSubscriptionController = async (
       await createSubscriptionService({
         planName,
         billing_data,
+        user: session?.user,
       });
 
     // Generate checkout URL if needed

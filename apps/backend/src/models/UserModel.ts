@@ -1,4 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { PopulatedDoc, Schema, Document } from "mongoose";
+import { PaymentShemaType } from "./PaymentModel";
+
+interface UserSchemaType extends Document {
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string;
+  payment?: PopulatedDoc<PaymentShemaType>;
+}
 
 const UserSchema = new mongoose.Schema(
   {
@@ -14,15 +23,13 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    plan: {
-      type: String,
-      enum: ["BEGGINER", "PRO", "STUDIO"],
+    userOnboarding: {
+      type: "ObjectId",
+      ref: "userOnboarding", // reference to the userOnboarding model
     },
-    planExpiresAt: {
-      type: Date,
-    },
-    planStartedAt: {
-      type: Date,
+    payment: {
+      type: "ObjectId",
+      ref: "payment", // reference to the payment model
     },
   },
   {
@@ -37,4 +44,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export const User = mongoose.model("user", UserSchema);
+export const User = mongoose.model<UserSchemaType>("user", UserSchema);

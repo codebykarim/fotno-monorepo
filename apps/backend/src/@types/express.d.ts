@@ -1,10 +1,8 @@
+import { User } from "better-auth/types";
+
 declare namespace Express {
   export interface Request {
-    user: {
-      authId: string;
-      identitynumber: string;
-      id: string;
-    };
+    user: User;
     toCache: boolean;
     privateCache: boolean;
   }

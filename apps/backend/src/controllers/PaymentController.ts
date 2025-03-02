@@ -12,6 +12,7 @@ import type {
 } from "../services/PaymentServices/createSubscription";
 import AddUserOnboardingService from "../services/UserServices/addUserOnboarding";
 import prisma from "../prisma";
+import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
 
 export const listSubscriptionPlans = async (req: Request, res: Response) => {
   const plans = await getSubscriptionsPlans();
@@ -73,6 +74,20 @@ export const createSubscriptionController = async (
 // webhook handler for Paymob subscription events
 export const webhookHandler = async (req: Request, res: Response) => {
   const data = req.body;
+
+  if (data.subscription_data) {
+    await CreateSuccessSubscription({
+      email: data.subscription_data.client_info.email,
+      subscriptionId: data.subscription_data.id,
+      planId: data.subscription_data.plan_id,
+      planExpiresAt: new Date(data.subscription_data.next_billing),
+      planStartedAt: new Date(data.subscription_data.starts_at),
+      plan: data.subscription_data.name,
+      amount_cents: data.subscription_data.amount_cents,
+      transactionId: data.transaction_id,
+      initial_transaction: data.subscription_data.initial_transaction,
+    });
+  }
 
   console.log(data);
 

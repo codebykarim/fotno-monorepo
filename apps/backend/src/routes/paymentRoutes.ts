@@ -20,7 +20,6 @@ const paymentMethods: { [key: string]: MethodInfo } = {
   webhook: {
     httpMethod: "POST",
     controllerFunction: PaymentController.webhookHandler,
-    // authFunction: isAuth,
   },
 };
 

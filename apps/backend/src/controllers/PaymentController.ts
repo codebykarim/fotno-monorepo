@@ -12,6 +12,7 @@ import type {
 } from "../services/PaymentServices/createSubscription";
 import AddUserOnboardingService from "../services/UserServices/addUserOnboarding";
 import prisma from "../prisma";
+import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
 
 export const listSubscriptionPlans = async (req: Request, res: Response) => {
   const plans = await getSubscriptionsPlans();
@@ -72,45 +73,23 @@ export const createSubscriptionController = async (
 
 // webhook handler for Paymob subscription events
 export const webhookHandler = async (req: Request, res: Response) => {
-  const signature = req.headers["x-paymob-signature"];
-  const timestamp = req.headers["x-paymob-timestamp"];
-  const event = req.headers["x-paymob-event"];
   const data = req.body;
 
-  if (!signature || !timestamp || !event) {
-    throw new AppError("Missing required headers");
-  }
-
-  const hmac = crypto.createHmac("sha256", process.env.PAYMOB_SECRET_KEY);
-  hmac.update(JSON.stringify(data));
-  const calculatedSignature = hmac.digest("hex");
-
-  if (calculatedSignature !== signature) {
-    throw new AppError("Invalid signature");
-  }
-
-  if (event === "subscription.created") {
-    const subscriptionId = data.subscription.id;
-    const subscription = await prisma.payment.findFirst({
-      where: {
-        subscriptionId: subscriptionId,
-      },
-    });
-
-    if (!subscription) {
-      throw new AppError("Subscription not found");
-    }
-
-    // Update the subscription status
-    await prisma.payment.update({
-      where: {
-        subscriptionId: subscriptionId,
-      },
-      data: {
-        status: "ACTIVE",
-      },
+  if (data.subscription_data) {
+    await CreateSuccessSubscription({
+      email: data.subscription_data.client_info.email,
+      subscriptionId: data.subscription_data.id,
+      planId: data.subscription_data.plan_id,
+      planExpiresAt: new Date(data.subscription_data.next_billing),
+      planStartedAt: new Date(data.subscription_data.starts_at),
+      plan: data.subscription_data.name,
+      amount_cents: data.subscription_data.amount_cents,
+      transactionId: data.transaction_id,
+      initial_transaction: data.subscription_data.initial_transaction,
     });
   }
+
+  console.log(data);
 
   res.sendStatus(200);
 };

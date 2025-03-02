@@ -24,6 +24,12 @@ export const auth = betterAuth({
     deleteUser: {
       enabled: true,
     },
+    additionalFields: {
+      subscribed: {
+        type: "boolean",
+        default: false,
+      },
+    },
   },
   advanced: {
     crossSubDomainCookies: {

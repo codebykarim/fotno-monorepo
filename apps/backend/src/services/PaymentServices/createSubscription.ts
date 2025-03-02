@@ -50,20 +50,11 @@ export const createSubscription = async (
     // Prepare the request data
     const { planName, ...subscriptionData } = data;
     const finalData = {
-      ...subscriptionData,
-      subscription_plan_id: matchingPlan.id,
       amount: matchingPlan.amount_cents,
       currency: "EGP",
       payment_methods: [matchingPlan.integration],
-      subscription_start_date: new Date().toISOString().slice(0, 10),
-      items: [
-        {
-          name: `Subscription to ${planName}`,
-          amount: matchingPlan.amount_cents,
-          description: `Subscription to ${planName}`,
-          quantity: 1,
-        },
-      ],
+      subscription_plan_id: matchingPlan.id,
+      billing_data: subscriptionData.billing_data,
     };
 
     const response = await axios.post(
@@ -76,12 +67,16 @@ export const createSubscription = async (
         },
       }
     );
-    console.log(response.data);
+    console.log("Response data:", JSON.stringify(response.data, null, 2));
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      console.error(
+        "Full error response:",
+        JSON.stringify(error.response?.data, null, 2)
+      );
       throw new AppError(
-        `Failed to create subscription: ${error.response?.data?.message || error.message}`
+        `Failed to create subscription: ${error.response?.data?.detail || error.response?.data?.message || error.message}`
       );
     }
     throw error;

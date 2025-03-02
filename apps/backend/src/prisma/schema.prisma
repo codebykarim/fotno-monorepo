@@ -20,6 +20,7 @@ model User {
   banned         Boolean?
   banReason      String?
   banExpires     DateTime?
+  subscribed     Boolean?
   sessions       Session[]
   accounts       Account[]
   payment        Payment[]
@@ -88,19 +89,20 @@ enum SubscriptionStatus {
 }
 
 model Payment {
-  id             Int                @id @unique @default(autoincrement())
-  name           String
-  description    String
-  planId         Int
-  plan           PlanType
-  planExpiresAt  DateTime?
-  planStartedAt  DateTime?
-  subscriptionId Int                @unique
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @default(now()) @updatedAt
-  status         SubscriptionStatus
-  userId         String
-  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  Int                @id @unique @default(autoincrement())
+  planId              Int
+  plan                PlanType
+  planExpiresAt       DateTime?
+  planStartedAt       DateTime?
+  amount_cents        Int
+  transactionId       Int                @unique
+  initial_transaction Int
+  subscriptionId      Int                @unique
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @default(now()) @updatedAt
+  status              SubscriptionStatus
+  userId              String
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("payment")
 }

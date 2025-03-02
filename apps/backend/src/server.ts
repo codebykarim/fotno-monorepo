@@ -92,7 +92,7 @@ const port = process.env.PORT ?? 8001;
 // Connect to DB before starting server
 const startServer = async () => {
   try {
-    await client.connect();
+    // await client.connect();
     console.log("Connected to MongoDB");
 
     app.listen(port, () => {

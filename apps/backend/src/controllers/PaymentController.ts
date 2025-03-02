@@ -72,45 +72,9 @@ export const createSubscriptionController = async (
 
 // webhook handler for Paymob subscription events
 export const webhookHandler = async (req: Request, res: Response) => {
-  const signature = req.headers["x-paymob-signature"];
-  const timestamp = req.headers["x-paymob-timestamp"];
-  const event = req.headers["x-paymob-event"];
   const data = req.body;
 
-  if (!signature || !timestamp || !event) {
-    throw new AppError("Missing required headers");
-  }
-
-  const hmac = crypto.createHmac("sha256", process.env.PAYMOB_SECRET_KEY);
-  hmac.update(JSON.stringify(data));
-  const calculatedSignature = hmac.digest("hex");
-
-  if (calculatedSignature !== signature) {
-    throw new AppError("Invalid signature");
-  }
-
-  if (event === "subscription.created") {
-    const subscriptionId = data.subscription.id;
-    const subscription = await prisma.payment.findFirst({
-      where: {
-        subscriptionId: subscriptionId,
-      },
-    });
-
-    if (!subscription) {
-      throw new AppError("Subscription not found");
-    }
-
-    // Update the subscription status
-    await prisma.payment.update({
-      where: {
-        subscriptionId: subscriptionId,
-      },
-      data: {
-        status: "ACTIVE",
-      },
-    });
-  }
+  console.log(data);
 
   res.sendStatus(200);
 };

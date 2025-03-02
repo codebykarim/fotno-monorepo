@@ -17,6 +17,11 @@ const paymentMethods: { [key: string]: MethodInfo } = {
     controllerFunction: PaymentController.createSubscriptionController,
     authFunction: isAuth,
   },
+  webhook: {
+    httpMethod: "POST",
+    controllerFunction: PaymentController.webhookHandler,
+    authFunction: isAuth,
+  },
 };
 
 const mapedMethods = init(paymentMethods);

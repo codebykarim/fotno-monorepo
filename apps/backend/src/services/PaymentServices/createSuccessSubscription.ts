@@ -41,6 +41,7 @@ const CreateSuccessSubscription = async ({
   const paymentExist = await prisma.payment.findUnique({
     where: {
       subscriptionId,
+      userId: user.id,
     },
   });
 

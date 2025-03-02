@@ -14,6 +14,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@workspace/ui/components/radio-group";
+import { PhoneInputComponent } from "@workspace/ui/components/phone";
 
 type Props = {
   form: UseFormReturn<z.infer<typeof OnboardingFormSchema>>;
@@ -49,18 +50,7 @@ const ContactPreferences = ({ form }: Props) => {
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="email"
-                        className="border-gray-700"
-                      />
-                    </FormControl>
-                    <FormLabel className="text-white font-normal">
-                      Email Only
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem
-                        value="phone"
+                        value="PHONE"
                         className="border-gray-700"
                       />
                     </FormControl>
@@ -71,7 +61,7 @@ const ContactPreferences = ({ form }: Props) => {
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="both"
+                        value="BOTH"
                         className="border-gray-700"
                       />
                     </FormControl>
@@ -86,19 +76,18 @@ const ContactPreferences = ({ form }: Props) => {
           )}
         />
 
-        {(watchPreferredContactMethod === "phone" ||
-          watchPreferredContactMethod === "both") && (
+        {(watchPreferredContactMethod === "PHONE" ||
+          watchPreferredContactMethod === "BOTH") && (
           <FormField
             control={form.control}
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Phone Number</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter your phone number"
-                    className="bg-gray-900 border-gray-700 text-white"
-                    {...field}
+                  <PhoneInputComponent
+                    value={field.value}
+                    onChange={field.onChange}
+                    className="text-white"
                   />
                 </FormControl>
                 <FormMessage />

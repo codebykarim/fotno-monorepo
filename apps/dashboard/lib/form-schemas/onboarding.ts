@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const OnboardingFormSchema = z.object({
   // Step 1: User Type (Required)
-  userType: z.enum(["solo", "team"], {
+  userType: z.enum(["SOLO", "TEAM"], {
     required_error: "You need to select a user type.",
   }),
 
@@ -17,15 +17,20 @@ export const OnboardingFormSchema = z.object({
   // Step 3: Photography Preferences (Required)
   photographyTypes: z
     .array(z.string())
-    .min(1, "Select at least one type of photography"),
-  equipmentLevel: z.enum(["beginner", "intermediate", "professional"], {
-    required_error: "Please select your equipment level",
-  }),
+    .min(1, "Select at least one type of photography")
+    .optional(),
+  equipmentLevel: z
+    .enum(["BEGINNER", "INTERMEDIATE", "PROFESSIONAL"], {
+      required_error: "Please select your equipment level",
+    })
+    .optional(),
 
   // Step 4: Contact Preferences (Required)
-  preferredContactMethod: z.enum(["email", "phone", "both"], {
-    required_error: "Please select your preferred contact method",
-  }),
+  preferredContactMethod: z
+    .enum(["EMAIL", "PHONE", "BOTH"], {
+      required_error: "Please select your preferred contact method",
+    })
+    .optional(),
   phoneNumber: z
     .string()
     .optional()
@@ -33,8 +38,15 @@ export const OnboardingFormSchema = z.object({
     .refine((val) => {
       if (!val) return true;
       return val.length >= 10;
-    }, "Phone number must be at least 10 digits"),
-  plan: z.enum(["BEGGINER", "PRO", "STUDIO"]),
+    }, "Phone number must be at least 10 digits")
+    .optional(),
+  plan: z.enum(["BEGGINER", "PRO", "STUDIO"]).optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  street: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
 });
 
 export type FormFieldType = keyof z.infer<typeof OnboardingFormSchema>;
+export type OnboardingSchemaType = z.infer<typeof OnboardingFormSchema>;

@@ -41,7 +41,7 @@ export default function PaymentCallback() {
     const verifyPayment = async () => {
       const isVerified = await verifyPaymentWithRetry();
       if (isVerified) {
-        router.replace("/dashboard");
+        router.replace("/");
       } else {
         router.replace("/onboarding");
       }

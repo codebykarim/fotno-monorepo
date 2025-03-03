@@ -133,6 +133,8 @@ export default function Onboarding() {
     },
   });
 
+  const formValues = form.watch();
+
   const steps = [
     {
       title: "User Type",
@@ -266,6 +268,14 @@ export default function Onboarding() {
             </Button>
             <Button
               type="submit"
+              disabled={(() => {
+                const fields = activeSteps[currentStep]?.fields || [];
+                // Check if all billing information fields are filled
+                return !fields.every((field) => {
+                  const value = formValues[field as keyof typeof formValues];
+                  return !!value && !form.formState.errors[field];
+                });
+              })()}
               className="rounded-full px-8 bg-secondary hover:bg-yellow-600 text-white"
             >
               Complete
@@ -293,15 +303,41 @@ export default function Onboarding() {
           <Button
             type="button"
             onClick={handleNext}
-            disabled={
-              !activeSteps[currentStep]?.fields?.some((field) => {
-                const value = form.getValues(field);
-                if (field === "photographyTypes") {
-                  return Array.isArray(value) && value.length > 0;
-                }
+            disabled={(() => {
+              const fields = activeSteps[currentStep]?.fields || [];
+
+              // Special handling for Photography Preferences step
+              if (
+                fields.includes("photographyTypes") &&
+                fields.includes("equipmentLevel")
+              ) {
+                const photoTypes = formValues.photographyTypes;
+                const equipment = formValues.equipmentLevel;
+                const hasPhotoTypes =
+                  Array.isArray(photoTypes) && photoTypes.length > 0;
+                const hasEquipment = !!equipment;
+                return !(hasPhotoTypes && hasEquipment);
+              }
+
+              // Special handling for Contact Preferences step
+              if (
+                fields.includes("phoneNumber") &&
+                fields.includes("preferredContactMethod")
+              ) {
+                const phone = formValues.phoneNumber;
+                const contactMethod = formValues.preferredContactMethod;
+                const phoneRegex = /^\+\d{1,4}\d{11,14}$/;
+                const hasValidPhone = phone && phoneRegex.test(phone);
+                const hasContactMethod = !!contactMethod;
+                return !(hasValidPhone && hasContactMethod);
+              }
+
+              // Default validation for other steps
+              return !fields.some((field) => {
+                const value = formValues[field as keyof typeof formValues];
                 return !!value && !form.formState.errors[field];
-              })
-            }
+              });
+            })()}
             className="rounded-full px-8 bg-secondary hover:bg-yellow-600 text-white"
           >
             Next

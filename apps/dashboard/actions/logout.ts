@@ -5,7 +5,7 @@ export const logout = async () => {
   await authClient.signOut({
     fetchOptions: {
       onSuccess: () => {
-        redirect("/");
+        redirect(process.env.NEXT_PUBLIC_LANDING_URL as string);
       },
     },
   });

@@ -65,7 +65,7 @@ export const createSubscription = async (
         {
           name: planName,
           quantity: 1,
-          amount: matchingPlan.amount_cents / 100,
+          amount: matchingPlan.amount_cents,
           description:
             planName == "BEGGINER"
               ? "Good for anyone who is self-employed and just getting started."

@@ -87,7 +87,7 @@ export const webhookHandler = async (req: Request, res: Response) => {
     return res.json(data).status(200);
   }
 
-  if (data.trigger_type === "Success Transaction") {
+  if (data.trigger_type === "Subscription Created") {
     await CreateSuccessSubscription({
       email: data.subscription_data.client_info.email,
       subscriptionId: data.subscription_data.id,

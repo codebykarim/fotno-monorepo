@@ -81,8 +81,13 @@ export const createSubscriptionController = async (
 // webhook handler for Paymob subscription events
 export const webhookHandler = async (req: Request, res: Response) => {
   const data = req.body;
+  console.log(data);
 
-  if (data.subscription_data) {
+  if (data.trigger_type === "Failed Transaction") {
+    return res.json(data).status(200);
+  }
+
+  if (data.trigger_type === "Success Transaction") {
     await CreateSuccessSubscription({
       email: data.subscription_data.client_info.email,
       subscriptionId: data.subscription_data.id,
@@ -94,9 +99,9 @@ export const webhookHandler = async (req: Request, res: Response) => {
       transactionId: data.transaction_id,
       initial_transaction: data.subscription_data.initial_transaction,
     });
+
+    return res.json(data).status(200);
   }
 
-  console.log(data);
-
-  res.sendStatus(200);
+  return res.json(data).status(200);
 };

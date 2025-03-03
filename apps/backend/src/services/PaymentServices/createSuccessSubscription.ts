@@ -25,7 +25,7 @@ const CreateSuccessSubscription = async ({
   amount_cents,
   transactionId,
   initial_transaction,
-}: Request): Promise<Payment> => {
+}: Request): Promise<Payment | null> => {
   // get userId from user email
   const user = await prisma.user.findUnique({
     where: {
@@ -46,7 +46,7 @@ const CreateSuccessSubscription = async ({
   });
 
   if (paymentExist) {
-    return paymentExist;
+    return null;
   }
 
   const payment: Payment = await prisma.payment

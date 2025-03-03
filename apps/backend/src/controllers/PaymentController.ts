@@ -15,8 +15,13 @@ import prisma from "../prisma";
 import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
 import { auth } from "../auth";
 import { fromNodeHeaders } from "better-auth/node";
+import { getUserSubscription } from "../services/PaymentServices/getUserSubscription";
+import { cancelSubscription } from "../services/PaymentServices/cancelSubscription";
 
-export const listSubscriptionPlans = async (req: Request, res: Response) => {
+export const listSubscriptionPlansController = async (
+  req: Request,
+  res: Response
+) => {
   const plans = await getSubscriptionsPlans();
 
   return controllerReturn(plans, req, res);
@@ -78,8 +83,26 @@ export const createSubscriptionController = async (
   }
 };
 
+export const getSubscriptionController = async (
+  req: Request,
+  res: Response
+) => {
+  const subscription = await getUserSubscription(req.user.id);
+
+  controllerReturn(subscription, req, res);
+};
+
+export const cancelSubscriptionController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const subscription = await cancelSubscription(req.user.id);
+
+  return controllerReturn(subscription, req, res);
+};
+
 // webhook handler for Paymob subscription events
-export const webhookHandler = async (req: Request, res: Response) => {
+export const webhookController = async (req: Request, res: Response) => {
   const data = req.body;
   console.log(data);
 

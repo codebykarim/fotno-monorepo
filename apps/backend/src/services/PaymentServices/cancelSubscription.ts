@@ -3,7 +3,7 @@ import { getToken } from "./getToken";
 import AppError from "../../errors/AppError";
 import prisma from "../../prisma";
 
-export const getUserSubscription = async (userId: string) => {
+export const cancelSubscription = async (userId: string) => {
   const authToken = await getToken();
 
   if (!authToken) {
@@ -27,8 +27,8 @@ export const getUserSubscription = async (userId: string) => {
   }
 
   const options: AxiosRequestConfig = {
-    method: "GET",
-    url: `https://accept.paymob.com/api/acceptance/subscriptions/${subscriptionId}`,
+    method: "POST",
+    url: `https://accept.paymob.com/api/acceptance/subscriptions/${subscriptionId}/cancel`,
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

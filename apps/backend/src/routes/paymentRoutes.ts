@@ -9,7 +9,7 @@ const paymentRouter = Router();
 const paymentMethods: { [key: string]: MethodInfo } = {
   "list-subscription-plans": {
     httpMethod: "GET",
-    controllerFunction: PaymentController.listSubscriptionPlans,
+    controllerFunction: PaymentController.listSubscriptionPlansController,
     authFunction: isAuth,
   },
   "create-subscription": {
@@ -17,9 +17,19 @@ const paymentMethods: { [key: string]: MethodInfo } = {
     controllerFunction: PaymentController.createSubscriptionController,
     authFunction: isAuth,
   },
+  "get-subscription": {
+    httpMethod: "GET",
+    controllerFunction: PaymentController.getSubscriptionController,
+    authFunction: isAuth,
+  },
+  "cancel-subscription": {
+    httpMethod: "POST",
+    controllerFunction: PaymentController.cancelSubscriptionController,
+    authFunction: isAuth,
+  },
   webhook: {
     httpMethod: "POST",
-    controllerFunction: PaymentController.webhookHandler,
+    controllerFunction: PaymentController.webhookController,
   },
 };
 

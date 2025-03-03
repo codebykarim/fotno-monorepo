@@ -29,6 +29,10 @@ export const auth = betterAuth({
         type: "boolean",
         default: false,
       },
+      finishOnboarding: {
+        type: "boolean",
+        default: false,
+      },
     },
   },
   advanced: {

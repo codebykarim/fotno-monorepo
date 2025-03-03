@@ -1,12 +1,11 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
 
-const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboard.fotno.com
-
 type Session = {
   user?: {
     id: string;
     subscribed?: boolean;
+    finishOnboarding?: boolean;
     // ... other user fields
   };
 };
@@ -39,13 +38,13 @@ export async function middleware(request: NextRequest) {
     }
 
     // If user has no plan and not on onboarding, redirect to onboarding
-    if (!session.user.subscribed && pathname !== "/onboarding") {
+    if (!session.user.finishOnboarding && pathname !== "/onboarding") {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
 
-    // If user is already subscribed and tries to access onboarding, redirect to dashboard
-    if (session.user.subscribed && pathname === "/onboarding") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+    // If user is already finishOnboarding and tries to access onboarding, redirect to dashboard
+    if (session.user.finishOnboarding && pathname === "/onboarding") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     // Allow access to protected routes for authenticated users

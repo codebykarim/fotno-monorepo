@@ -61,6 +61,19 @@ export const createSubscription = async (
         state: data.billing_data.state,
         street: data.billing_data.street,
       },
+      items: [
+        {
+          name: planName,
+          quantity: 1,
+          amount: matchingPlan.amount_cents / 100,
+          description:
+            planName == "BEGGINER"
+              ? "Good for anyone who is self-employed and just getting started."
+              : planName == "PRO"
+                ? "Perfect for small / medium sized businesses."
+                : "Perfect for small / medium sized businesses.",
+        },
+      ],
     };
 
     const response = await axios.post(

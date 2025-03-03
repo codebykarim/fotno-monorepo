@@ -33,6 +33,11 @@ export async function middleware(request: NextRequest) {
       );
     }
 
+    // Allow access to payment-callback route without subscription check
+    if (pathname === "/payment-callback") {
+      return NextResponse.next();
+    }
+
     // If user has no plan and not on onboarding, redirect to onboarding
     if (!session.user.subscribed && pathname !== "/onboarding") {
       return NextResponse.redirect(new URL("/onboarding", request.url));

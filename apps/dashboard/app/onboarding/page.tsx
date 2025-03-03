@@ -14,13 +14,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  OnboardingSchemaType,
   OnboardingFormSchema,
   FormFieldType,
 } from "@/lib/form-schemas/onboarding";
 import { Form } from "@workspace/ui/components/form";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import BillingInformation from "@/components/onboarding/BillingInformation";
 import { submitOnboarding } from "@/server/submitOnboarding";
 import { toast } from "sonner";
@@ -115,7 +113,6 @@ const stepContent: Record<string, StepContent> = {
 
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof OnboardingFormSchema>>({
     resolver: zodResolver(OnboardingFormSchema),

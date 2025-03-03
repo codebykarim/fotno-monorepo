@@ -133,7 +133,7 @@ export function Header() {
                   My Dashboard
                 </Button>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                   <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
                     Login
                   </NavLink>

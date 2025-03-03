@@ -107,7 +107,5 @@ export const generateCheckoutUrl = (
   publicKey: string,
   clientSecret: string
 ): string => {
-  const returnUrl = `${process.env.NEXT_PUBLIC_DASHBOARD_URL}/payment-callback`;
-  const encodedReturnUrl = encodeURIComponent(returnUrl);
-  return `https://accept.paymob.com/unifiedcheckout/?publicKey=${publicKey}&clientSecret=${clientSecret}&return_url=${encodedReturnUrl}`;
+  return `https://accept.paymob.com/unifiedcheckout/?publicKey=${publicKey}&clientSecret=${clientSecret}`;
 };

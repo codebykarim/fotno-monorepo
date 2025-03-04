@@ -19,9 +19,11 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
+      "http://localhost:3003",
       "https://www.fotno.com",
       "https://auth.fotno.com",
       "https://dashboard.fotno.com",
+      "https://gallery.fotno.com",
     ], // Remove any undefined values
     optionsSuccessStatus: 200,
     methods: ["GET", "POST", "PUT", "DELETE"],

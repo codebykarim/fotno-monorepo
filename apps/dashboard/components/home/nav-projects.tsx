@@ -26,9 +26,9 @@ import {
 } from "@workspace/ui/components/sidebar";
 
 export function NavProjects({
-  projects,
+  recents,
 }: {
-  projects: {
+  recents: {
     name: string;
     url: string;
     icon: LucideIcon;
@@ -38,9 +38,9 @@ export function NavProjects({
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Recents</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {recents.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>

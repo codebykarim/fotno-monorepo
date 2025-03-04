@@ -23,21 +23,6 @@ export async function middleware(request: NextRequest) {
       );
     }
 
-    // Allow access to payment-callback route without subscription check
-    if (pathname === "/payment-callback") {
-      return NextResponse.next();
-    }
-
-    // If user has no plan and not on onboarding, redirect to onboarding
-    if (!session.user.finishOnboarding && pathname !== "/onboarding") {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
-
-    // If user is already finishOnboarding and tries to access onboarding, redirect to dashboard
-    if (session.user.finishOnboarding && pathname === "/onboarding") {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
     // Allow access to protected routes for authenticated users
     return NextResponse.next();
   } catch (error) {

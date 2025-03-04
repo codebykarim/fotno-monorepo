@@ -9,22 +9,23 @@ datasource db {
 }
 
 model User {
-  id             String          @id @unique @default(uuid())
-  name           String
-  email          String
-  emailVerified  Boolean
-  image          String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now()) @updatedAt
-  role           String?
-  banned         Boolean?
-  banReason      String?
-  banExpires     DateTime?
-  subscribed     Boolean?
-  sessions       Session[]
-  accounts       Account[]
-  payment        Payment[]
-  userOnboarding UserOnboarding?
+  id               String          @id @unique @default(uuid())
+  name             String
+  email            String
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @default(now()) @updatedAt
+  role             String?
+  banned           Boolean?
+  banReason        String?
+  banExpires       DateTime?
+  subscribed       Boolean?
+  finishOnboarding Boolean?
+  sessions         Session[]
+  accounts         Account[]
+  payment          Payment[]
+  userOnboarding   UserOnboarding?
 
   @@unique([email])
   @@map("user")

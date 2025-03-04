@@ -79,7 +79,7 @@ const BillingInformation = ({ form }: Props) => {
                 <FormControl>
                   <Input
                     placeholder="Enter your first name"
-                    className="bg-gray-900 border-gray-700 text-white"
+                    className="bg-secondary"
                     {...field}
                   />
                 </FormControl>
@@ -97,7 +97,7 @@ const BillingInformation = ({ form }: Props) => {
                 <FormControl>
                   <Input
                     placeholder="Enter your last name"
-                    className="bg-gray-900 border-gray-700 text-white"
+                    className="bg-secondary"
                     {...field}
                   />
                 </FormControl>
@@ -116,7 +116,7 @@ const BillingInformation = ({ form }: Props) => {
               <FormControl>
                 <Input
                   placeholder="Enter your street address"
-                  className="bg-gray-900 border-gray-700 text-white"
+                  className="bg-secondary"
                   {...field}
                 />
               </FormControl>
@@ -134,7 +134,7 @@ const BillingInformation = ({ form }: Props) => {
                 <FormLabel className="text-white">Country</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
+                    <SelectTrigger className="bg-secondary">
                       <SelectValue placeholder="Select your country" />
                     </SelectTrigger>
                   </FormControl>
@@ -170,7 +170,7 @@ const BillingInformation = ({ form }: Props) => {
                   }
                 >
                   <FormControl>
-                    <SelectTrigger className="bg-gray-900 border-gray-700 text-white">
+                    <SelectTrigger className="bg-secondary">
                       <SelectValue placeholder="Select your state/province" />
                     </SelectTrigger>
                   </FormControl>

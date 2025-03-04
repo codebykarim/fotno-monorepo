@@ -39,7 +39,9 @@ const CustomRadioItem = React.forwardRef<
           ref={ref}
           className={cn(
             "rounded-xl p-4 relative transition-colors cursor-pointer",
-            isSelected ? "bg-secondary" : "bg-gray-900 hover:bg-gray-800"
+            isSelected
+              ? "bg-primary"
+              : "bg-foreground hover:bg-muted-foreground"
           )}
         >
           <RadioGroupItem value={value} className="sr-only" />
@@ -55,7 +57,7 @@ const CustomRadioItem = React.forwardRef<
             )}
           >
             {isSelected && (
-              <div className="w-2.5 h-2.5 bg-secondary rounded-full" />
+              <div className="w-2.5 h-2.5 bg-primary rounded-full" />
             )}
           </div>
         </div>

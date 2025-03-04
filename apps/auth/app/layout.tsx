@@ -24,7 +24,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-foreground")}>
+      <body className={cn(inter.className, "bg-background")}>
         {children} <Toaster />
       </body>
     </html>

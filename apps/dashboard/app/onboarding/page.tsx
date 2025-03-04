@@ -22,6 +22,7 @@ import { useMemo, useState } from "react";
 import BillingInformation from "@/components/onboarding/BillingInformation";
 import { submitOnboarding } from "@/server/submitOnboarding";
 import { toast } from "sonner";
+import { logout } from "@/actions/logout";
 
 type StepContent = {
   badge: string;
@@ -259,8 +260,8 @@ export default function Onboarding() {
           <div className="mt-auto pt-12 flex gap-4">
             <Button
               type="button"
-              variant="default"
-              className="rounded-full px-8 text-white border-gray-700 hover:bg-gray-800 hover:text-white"
+              variant="secondary"
+              className="rounded-full px-8"
               onClick={handleBack}
               disabled={currentStep === 0}
             >
@@ -276,7 +277,7 @@ export default function Onboarding() {
                   return !!value && !form.formState.errors[field];
                 });
               })()}
-              className="rounded-full px-8 bg-secondary hover:bg-yellow-600 text-white"
+              className="rounded-full px-8"
             >
               Complete
             </Button>
@@ -293,8 +294,8 @@ export default function Onboarding() {
         <div className="mt-auto pt-12 flex gap-4">
           <Button
             type="button"
-            variant="default"
-            className="rounded-full px-8 text-white border-gray-700 hover:bg-gray-800 hover:text-white"
+            variant="secondary"
+            className="rounded-full px-8"
             onClick={handleBack}
             disabled={currentStep === 0}
           >
@@ -338,7 +339,7 @@ export default function Onboarding() {
                 return !!value && !form.formState.errors[field];
               });
             })()}
-            className="rounded-full px-8 bg-secondary hover:bg-yellow-600 text-white"
+            className="rounded-full px-8"
           >
             Next
           </Button>
@@ -357,7 +358,7 @@ export default function Onboarding() {
     }
 
     return (
-      <div className="hidden md:w-1/2 bg-gradient-to-b from-gray-900 to-black md:block relative overflow-hidden">
+      <div className="hidden md:w-1/2 bg-gradient-to-b from-secondary to-accent md:block relative overflow-hidden">
         <div className="absolute inset-0 p-8 md:p-12 flex items-center justify-center">
           <div
             key={currentStepTitle}
@@ -368,11 +369,11 @@ export default function Onboarding() {
               {currentStepContent.badge}
             </div>
 
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               {currentStepContent.title}
             </h2>
 
-            <p className="text-gray-400 text-lg mb-8">
+            <p className="text-accent-foreground text-lg mb-8">
               {currentStepContent.description}
             </p>
 
@@ -395,8 +396,11 @@ export default function Onboarding() {
   }, [currentStep, activeSteps]);
 
   return (
-    <main className="min-h-screen bg-foreground flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl bg-background rounded-3xl overflow-hidden shadow-2xl">
+    <main className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Button onClick={logout} className="fixed bottom-4 right-4">
+        Logout
+      </Button>
+      <div className="w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl">
         <div
           className={cn(
             "flex flex-col md:flex-row h-[748px] max-h-[900px] ",
@@ -408,7 +412,7 @@ export default function Onboarding() {
           {/* Left Section */}
           <div
             className={cn(
-              "w-full p-8 flex flex-col h-full overflow-y-auto",
+              "w-full p-8 flex flex-col h-full overflow-y-auto bg-foreground",
               activeSteps[currentStep]?.title === "Plan Selection"
                 ? "md:w-full"
                 : "md:w-1/2"
@@ -421,8 +425,8 @@ export default function Onboarding() {
                 aria-label="Home"
               >
                 <div className="flex items-center justify-start gap-2">
-                  <Icons.logo className="h-8 w-auto text-secondary" />
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-secondary to-foreground bg-clip-text text-transparent">
+                  <Icons.logo className="h-8 w-auto text-primary" />
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-background bg-clip-text text-transparent">
                     FOTNO
                   </h1>
                 </div>
@@ -436,7 +440,7 @@ export default function Onboarding() {
                   <div
                     key={index}
                     className={`h-2 rounded-full flex-1 ${
-                      index <= currentStep ? "bg-secondary" : "bg-gray-700"
+                      index <= currentStep ? "bg-primary" : "bg-gray-700"
                     }`}
                   />
                 ))}

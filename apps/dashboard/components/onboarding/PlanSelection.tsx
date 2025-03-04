@@ -94,18 +94,18 @@ export default function PlanSelection({ form }: PlanProps) {
                     className={cn(
                       "relative flex cursor-pointer rounded-xl border p-6 transition-all duration-200 focus:outline-none w-full",
                       field.value === item.id
-                        ? "border-secondary bg-secondary/10 border-2"
+                        ? "border-primary bg-primary/10 border-2"
                         : "border-gray-700 hover:border-gray-600 hover:bg-gray-800/50 opacity-75",
                       item.highlight &&
-                        "scale-105 bg-gradient-to-br from-secondary/90 to-accent/90 shadow-lg",
+                        "scale-105 bg-gradient-to-br from-primary/90 to-accent/90 shadow-lg",
                       field.value === item.id && !item.highlight
-                        ? "border-accent bg-accent/10 border-2"
+                        ? "border-secondary bg-secondary/10 border-2"
                         : ""
                     )}
                   >
                     {item.highlight && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 transform">
-                        <span className="inline-flex items-center rounded-full bg-secondary px-4 py-1 text-xs font-medium text-white shadow-lg">
+                        <span className="inline-flex items-center rounded-full bg-primary px-4 py-1 text-xs font-medium text-white shadow-lg">
                           Recommended
                         </span>
                       </div>
@@ -149,7 +149,7 @@ export default function PlanSelection({ form }: PlanProps) {
                               <CheckIcon
                                 className={cn(
                                   item.highlight
-                                    ? "text-secondary"
+                                    ? "text-primary"
                                     : "text-accent",
                                   "size-4"
                                 )}

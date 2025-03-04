@@ -78,11 +78,11 @@ export const ResetPasswordForm = ({ token }: Props) => {
 
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card className="overflow-hidden bg-foreground">
+      <Card className="overflow-hidden bg-background">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-              <div className="flex flex-col gap-6 text-muted-foreground">
+              <div className="flex flex-col gap-6 text-foreground">
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Reset your password</h1>
                   <p className="text-balance ">
@@ -133,7 +133,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
                   />
                 </div>
 
-                <Button type="submit" className="w-full">
+                <Button variant={"secondary"} type="submit" className="w-full">
                   Reset Password
                 </Button>
               </div>

@@ -4,7 +4,18 @@ import { Inter } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
-import Header from "@/components/home/header";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@workspace/ui/components/sidebar";
+import { AppSidebar } from "@/components/home/app-sidebar";
+import { authClient } from "@/lib/auth-client";
+import { headers } from "next/headers";
+import type { User } from "better-auth/types";
+
+type Session = {
+  user: User;
+};
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,11 +25,17 @@ export const metadata: Metadata = {
     "Prepare to experience photography like never before. Our new website is on its way, bringing you breathtaking visuals and unforgettable moments.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { data: session } = (await authClient.getSession({
+    fetchOptions: {
+      headers: await headers(),
+    },
+  })) as { data: Session };
+
   return (
     <html
       lang="en"
@@ -26,8 +43,12 @@ export default function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-foreground")}>
-        <Header />
-        {children} <Toaster />
+        <SidebarProvider>
+          {session?.user?.finishOnboarding && <AppSidebar />}
+          <SidebarInset>
+            {children} <Toaster />
+          </SidebarInset>
+        </SidebarProvider>
       </body>
     </html>
   );

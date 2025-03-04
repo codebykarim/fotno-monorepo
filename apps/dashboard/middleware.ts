@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         },
       }
     );
-
+    console.log(session);
     // If no user is authenticated, redirect to auth app
     if (!session?.user) {
       return NextResponse.redirect(

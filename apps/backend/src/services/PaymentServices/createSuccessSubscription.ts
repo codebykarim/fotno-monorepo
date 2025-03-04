@@ -75,12 +75,6 @@ const CreateSuccessSubscription = async ({
     },
     data: {
       subscribed: true,
-    },
-  });
-
-  await auth.api.updateUser({
-    body: {
-      subscribed: true,
       finishOnboarding: true,
     },
   });

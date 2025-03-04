@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="bg-foreground">
+      <main className="bg-background">
         <Hero />
         <PrimaryFeatures />
         {/* <SecondaryFeatures /> */}

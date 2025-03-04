@@ -57,7 +57,7 @@ export function PrimaryFeatures() {
     <section
       id="features"
       aria-label="Features for running your books"
-      className="relative overflow-hidden bg-background pt-20 pb-28 sm:py-32"
+      className="relative overflow-hidden bg-foreground pt-20 pb-28 sm:py-32"
     >
       {/* <Image
         className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
@@ -72,7 +72,7 @@ export function PrimaryFeatures() {
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
             Everything you need to manage your photos and videos.
           </h2>
-          <p className="mt-6 text-lg tracking-tight text-blue-100">
+          <p className="mt-6 text-lg tracking-tight text-secondary/70">
             Well everything you need if you're a photographer or a videographer.
           </p>
         </div>

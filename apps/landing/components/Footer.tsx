@@ -11,8 +11,8 @@ export function Footer() {
       <Container>
         <div className="py-16">
           <div className="flex items-center justify-center gap-2">
-            <Icons.logo className="h-8 w-auto text-secondary" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-secondary to-background bg-clip-text text-transparent">
+            <Icons.logo className="h-8 w-auto text-primary" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
               FOTNO
             </h1>
           </div>

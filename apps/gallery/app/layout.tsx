@@ -4,11 +4,7 @@ import { Inter } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@workspace/ui/components/sidebar";
-import { AppSidebar } from "@/components/home/app-sidebar";
+
 import { ExtendedSession, getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 
@@ -40,12 +36,7 @@ export default async function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-foreground")}>
-        <SidebarProvider>
-          {session?.user?.finishOnboarding && <AppSidebar />}
-          <SidebarInset>
-            {children} <Toaster />
-          </SidebarInset>
-        </SidebarProvider>
+        {children} <Toaster />
       </body>
     </html>
   );

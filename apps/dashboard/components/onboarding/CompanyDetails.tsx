@@ -1,6 +1,6 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import { OnboardingFormSchema } from "@/lib/form-schemas/onboarding";
+import { OnboardingFormSchema } from "@/lib/onboarding-schema";
 import { z } from "zod";
 import {
   FormControl,

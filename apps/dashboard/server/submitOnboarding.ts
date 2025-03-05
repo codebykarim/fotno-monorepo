@@ -1,8 +1,8 @@
-import { authClient } from "@/lib/auth-client";
+import { ExtendedSession, getSession } from "@workspace/lib/auth/auth-client";
 import {
   OnboardingFormSchema,
   OnboardingSchemaType,
-} from "@/lib/form-schemas/onboarding";
+} from "@/lib/onboarding-schema";
 import { betterFetch } from "@better-fetch/fetch";
 
 export const submitOnboarding = async (
@@ -11,7 +11,7 @@ export const submitOnboarding = async (
   checkoutUrl: string;
 }> => {
   try {
-    const session = await authClient.getSession();
+    const session = (await getSession()).data as ExtendedSession;
 
     const validatedFields = OnboardingFormSchema.safeParse(values);
 

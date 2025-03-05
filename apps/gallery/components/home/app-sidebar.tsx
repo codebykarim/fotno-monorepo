@@ -27,10 +27,10 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 import { Icons } from "@workspace/ui/lib/icons";
-import { authClient } from "@/lib/auth-client";
+import { ExtendedSession, useSession } from "@workspace/lib/auth/auth-client";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = authClient.useSession();
+  const session = useSession().data as ExtendedSession;
   // This is sample data.
   const data = {
     user: {

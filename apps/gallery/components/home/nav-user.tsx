@@ -32,7 +32,7 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 import { logout } from "@/actions/logout";
-import { authClient } from "@/lib/auth-client";
+import { useSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
 
 export function NavUser({
   user,
@@ -45,7 +45,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
 
-  const { data: session } = authClient.useSession();
+  const session = useSession().data as ExtendedSession;
 
   return (
     <SidebarMenu>

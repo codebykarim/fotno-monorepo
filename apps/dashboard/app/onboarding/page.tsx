@@ -13,10 +13,7 @@ import PlanSelection from "@/components/onboarding/PlanSelection";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  OnboardingFormSchema,
-  FormFieldType,
-} from "@/lib/form-schemas/onboarding";
+import { OnboardingFormSchema, FormFieldType } from "@/lib/onboarding-schema";
 import { Form } from "@workspace/ui/components/form";
 import { useMemo, useState } from "react";
 import BillingInformation from "@/components/onboarding/BillingInformation";

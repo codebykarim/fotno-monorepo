@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@workspace/ui/components/form";
-import { authClient } from "@/lib/auth-client";
+import { signUp } from "@workspace/lib/auth/auth-client";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ export function RegisterForm({
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     const res = new Promise<{ email?: string }>((resolve, reject) => {
-      authClient.signUp.email(
+      signUp.email(
         {
           ...values,
           name: values.email.split("@")[0] ?? values.name,

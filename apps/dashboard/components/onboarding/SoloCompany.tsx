@@ -3,7 +3,7 @@ import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import {
   OnboardingFormSchema,
   OnboardingSchemaType,
-} from "@/lib/form-schemas/onboarding";
+} from "@/lib/onboarding-schema";
 import { z } from "zod";
 import {
   FormControl,

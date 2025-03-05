@@ -11,7 +11,7 @@ import {
 import { CheckIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { OnboardingFormSchema } from "@/lib/form-schemas/onboarding";
+import { OnboardingFormSchema } from "@/lib/onboarding-schema";
 
 interface PlanProps {
   form: UseFormReturn<z.infer<typeof OnboardingFormSchema>>;

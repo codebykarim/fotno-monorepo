@@ -14,7 +14,7 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/lib/icons";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@workspace/lib/auth/auth-client";
 
 function MobileNavLink({
   href,
@@ -109,7 +109,7 @@ function MobileNavigation({
 }
 
 export function Header() {
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending } = useSession();
 
   return (
     <header className="py-10 bg-background">

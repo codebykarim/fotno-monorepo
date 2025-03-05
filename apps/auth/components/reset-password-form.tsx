@@ -1,5 +1,5 @@
 "use client";
-import { authClient } from "@/lib/auth-client";
+import { resetPassword } from "@workspace/lib/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import React from "react";
@@ -47,7 +47,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
       return;
     }
     const res = new Promise<{ success?: string }>((resolve, reject) => {
-      authClient.resetPassword(
+      resetPassword(
         {
           newPassword: values.password,
           token: token as string,

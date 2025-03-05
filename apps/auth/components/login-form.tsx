@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@workspace/ui/components/form";
-import { authClient } from "@/lib/auth-client";
+import { signIn, forgetPassword } from "@workspace/lib/auth/auth-client";
 import { toast } from "sonner";
 import Image from "next/image";
 import React from "react";
@@ -45,7 +45,7 @@ export function LoginForm({
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
     const res = new Promise<{ email?: string }>((resolve, reject) => {
-      authClient.signIn.email(
+      signIn.email(
         {
           ...values,
           callbackURL: "/",
@@ -85,7 +85,7 @@ export function LoginForm({
       return;
     }
 
-    const { data, error } = await authClient.forgetPassword({
+    const { data, error } = await forgetPassword({
       email: form.getValues("email"),
       redirectTo: "/reset-password",
     });

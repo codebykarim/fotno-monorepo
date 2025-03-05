@@ -1,14 +1,8 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
+import { ExtendedSession } from "@workspace/lib/auth/auth-client";
 
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboard.fotno.com
-
-type Session = {
-  user?: {
-    id: string;
-    // ... other user fields
-  };
-};
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,7 +14,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check session
-  const { data: session } = await betterFetch<Session>(
+  const { data: session } = await betterFetch<ExtendedSession>(
     "/api/auth/get-session",
     {
       baseURL: process.env.NEXT_PUBLIC_API_URL,

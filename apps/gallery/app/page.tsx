@@ -1,16 +1,4 @@
 "use client";
-import { NavUser } from "@/components/home/nav-user";
-import { SidebarTrigger } from "@workspace/ui/components/sidebar";
-import { Icons } from "@workspace/ui/lib/icons";
-import { cn } from "@workspace/ui/lib/utils";
-import {
-  CalendarIcon,
-  ChartPieIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-} from "lucide-react";
-import { useState } from "react";
 
 export default function Dashboard() {
   return (

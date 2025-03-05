@@ -9,11 +9,7 @@ import {
   SidebarProvider,
 } from "@workspace/ui/components/sidebar";
 import { AppSidebar } from "@/components/home/app-sidebar";
-import {
-  authClient,
-  ExtendedSession,
-  Session,
-} from "@workspace/lib/auth/auth-client";
+import { ExtendedSession, getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = (
-    await authClient.getSession({
+    await getSession({
       fetchOptions: {
         headers: await headers(),
       },

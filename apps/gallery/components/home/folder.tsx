@@ -1,0 +1,100 @@
+import Image from "next/image";
+import React from "react";
+
+export interface GlassIconsItem {
+  icon: React.ReactElement;
+  color: string;
+  label: string;
+  customClass?: string;
+  frontImage: string;
+  backImages: string[];
+}
+
+export interface GlassIconsProps {
+  items: GlassIconsItem[];
+  className?: string;
+}
+
+const gradientMapping: Record<string, string> = {
+  blue: "linear-gradient(hsl(223, 90%, 50%), hsl(208, 90%, 50%))",
+  purple: "linear-gradient(hsl(283, 90%, 50%), hsl(268, 90%, 50%))",
+  red: "linear-gradient(hsl(3, 90%, 50%), hsl(348, 90%, 50%))",
+  indigo: "linear-gradient(hsl(253, 90%, 50%), hsl(238, 90%, 50%))",
+  orange: "linear-gradient(hsl(43, 90%, 50%), hsl(28, 90%, 50%))",
+  green: "linear-gradient(hsl(123, 90%, 40%), hsl(108, 90%, 40%))",
+};
+
+const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
+  const getBackgroundStyle = (color: string): React.CSSProperties => {
+    if (gradientMapping[color]) {
+      return { background: gradientMapping[color] };
+    }
+    return { background: color };
+  };
+
+  return (
+    <div className={`mx-auto overflow-visible ${className || ""}`}>
+      {items.map((item, index) => (
+        <button
+          key={index}
+          type="button"
+          aria-label={item.label}
+          className={`relative bg-transparent outline-none h-[200px] w-[250px] [perspective:24em] [transform-style:preserve-3d] [-webkit-tap-highlight-color:transparent] group ${
+            item.customClass || ""
+          }`}
+        >
+          {/* Back layer 1 */}
+          <Image
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[0%_100%] rotate-[-5deg] group-hover:[transform:rotate(-15deg)_translate3d(0.5em,-0.5em,0.5em)]"
+            style={{
+              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
+            }}
+            src={item.backImages[0]!}
+            alt="test"
+            fill
+          />
+
+          {/* Back layer 2 */}
+          <Image
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[100%_100%] rotate-[5deg] group-hover:[transform:rotate(15deg)_translate3d(-0.5em,-0.5em,0.5em)]"
+            style={{
+              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
+            }}
+            src={item.backImages[1]!}
+            alt="test"
+            fill
+          />
+
+          {/* Back layer 3 */}
+          {/* <Image
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[70%_100%] group-hover:[transform:scale(1.3)_translate3d(0.5em,-0.5em,0.5em)]"
+            style={{
+              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
+            }}
+            src={item.backImages[0]!}
+            alt="test"
+            fill
+          /> */}
+
+          {/* Front layer */}
+          <Image
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] bg-[hsla(0,0%,100%,0.15)] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[80%_50%] flex backdrop-blur-[0.75em] [-webkit-backdrop-filter:blur(0.75em)] transform group-hover:[transform:translateZ(2em)] object-cover"
+            style={{
+              boxShadow: "0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset",
+            }}
+            src={item.frontImage}
+            alt="test"
+            fill
+          />
+
+          {/* Label */}
+          <span className="absolute top-full left-0 right-0 text-center whitespace-nowrap leading-[2] text-base opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] translate-y-0 group-hover:opacity-100 group-hover:[transform:translateY(20%)]">
+            {item.label}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+export default GlassIcons;

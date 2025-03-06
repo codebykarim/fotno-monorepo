@@ -4,6 +4,13 @@ import { ExtendedSession } from "@workspace/lib/auth/auth-client";
 
 export async function middleware(request: NextRequest) {
   try {
+    const { pathname } = request.nextUrl;
+
+    // Redirect root to login
+    if (pathname === "/") {
+      return NextResponse.redirect(new URL("/collections", request.url));
+    }
+
     // Check session using better-fetch
     const { data: session } = await betterFetch<ExtendedSession>(
       "/api/auth/get-session",

@@ -7,6 +7,7 @@ import { Toaster } from "@workspace/ui/components/sonner";
 
 import { getSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
+import { DockComponent } from "@/components/home/dock";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,7 +36,8 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-foreground")}>
+      <body className={cn(inter.className, "bg-background")}>
+        <DockComponent />
         {children} <Toaster />
       </body>
     </html>

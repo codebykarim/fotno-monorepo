@@ -2,7 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalDependencies": [".env"],
-  "globalEnv": ["NEXT_PUBLIC_API_URL"],
+  "globalEnv": [
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_GALLERY_URL",
+    "NEXT_PUBLIC_WEBSITE_URL",
+    "NEXT_PUBLIC_STUDIO_URL",
+    "NEXT_PUBLIC_DASHBOARD_URL"
+  ],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],

@@ -17,7 +17,8 @@
     "next.config.mjs",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../packages/ui/src/components/sidebar.tsx"
   ],
   "exclude": ["node_modules"]
 }

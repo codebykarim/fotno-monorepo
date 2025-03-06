@@ -2,7 +2,7 @@
 import * as Icons from "lucide-react";
 import { ChevronLeftIcon, ChevronRightIcon, LucideIcon } from "lucide-react";
 import React, { useState } from "react";
-import { cn } from "../lib/utils.js";
+import { cn } from "@workspace/ui/lib/utils";
 
 type Props = {
   items: {

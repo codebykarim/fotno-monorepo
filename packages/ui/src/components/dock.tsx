@@ -66,7 +66,11 @@ export type DockProviderProps = {
 const DockContext = createContext<DocContextType | undefined>(undefined);
 
 function DockProvider({ children, value }: DockProviderProps) {
-  return <DockContext.Provider value={value}>{children}</DockContext.Provider>;
+  return (
+    <DockContext.Provider value={value}>
+      <>{children}</>
+    </DockContext.Provider>
+  );
 }
 
 function useDock() {

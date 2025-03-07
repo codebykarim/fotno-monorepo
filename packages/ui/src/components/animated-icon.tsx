@@ -2,7 +2,7 @@
 
 import type { Variants } from "motion/react";
 import { useAnimation } from "motion/react";
-import { Icons } from "./icons.js";
+import { Icons } from "@workspace/ui/components/icons";
 
 const facebookVariants: Variants = {
   normal: {

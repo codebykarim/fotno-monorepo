@@ -10,6 +10,7 @@ import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
 import SideBar from "@workspace/ui/components/sidebar";
 import { logout } from "@workspace/lib/actions/logout";
+import { collections } from "@workspace/lib/data/dummy_collections";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,7 +49,7 @@ export default async function RootLayout({
                 title: "Collections",
                 icon: "Folders",
                 href: "/collections",
-                number: 5,
+                number: collections.length,
               },
               {
                 title: "Starred",

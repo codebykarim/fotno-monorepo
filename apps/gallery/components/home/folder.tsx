@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { AspectRatio } from "@workspace/ui/components/aspect-ratio";
 
 export interface GlassIconsItem {
   icon: React.ReactElement;
@@ -39,53 +40,50 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
           key={index}
           type="button"
           aria-label={item.label}
-          className={`relative bg-transparent outline-none h-[200px] w-[250px] [perspective:24em] [transform-style:preserve-3d] [-webkit-tap-highlight-color:transparent] group ${
+          className={`relative bg-transparent outline-none w-full [perspective:24em] [transform-style:preserve-3d] [-webkit-tap-highlight-color:transparent] group ${
             item.customClass || ""
           }`}
         >
-          {/* Back layer 1 */}
-          <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[0%_100%] rotate-[-5deg] group-hover:[transform:rotate(-10deg)_translate3d(0.5em,-0.5em,0.5em)]"
-            style={{
-              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
-            }}
-            src={item.backImages[0]!}
-            alt="test"
-            fill
-          />
+          <AspectRatio ratio={3 / 2} className="relative">
+            {/* Back layer 1 */}
+            <div className="absolute inset-0">
+              <Image
+                className="absolute top-0 left-0 w-full h-full rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[0%_100%] rotate-[-5deg] group-hover:[transform:rotate(-10deg)_translate3d(0.5em,-0.5em,0.5em)]"
+                style={{
+                  boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
+                }}
+                src={item.backImages[0]!}
+                alt="test"
+                fill
+              />
+            </div>
 
-          {/* Back layer 2 */}
-          <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[100%_100%] rotate-[5deg] group-hover:[transform:rotate(8deg)_translate3d(-0.5em,-0.5em,0.5em)]"
-            style={{
-              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
-            }}
-            src={item.backImages[1]!}
-            alt="test"
-            fill
-          />
+            {/* Back layer 2 */}
+            <div className="absolute inset-0">
+              <Image
+                className="absolute top-0 left-0 w-full h-full rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[100%_100%] rotate-[5deg] group-hover:[transform:rotate(8deg)_translate3d(-0.5em,-0.5em,0.5em)]"
+                style={{
+                  boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
+                }}
+                src={item.backImages[1]!}
+                alt="test"
+                fill
+              />
+            </div>
 
-          {/* Back layer 3 */}
-          {/* <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[70%_100%] group-hover:[transform:scale(1.3)_translate3d(0.5em,-0.5em,0.5em)]"
-            style={{
-              boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
-            }}
-            src={item.backImages[0]!}
-            alt="test"
-            fill
-          /> */}
-
-          {/* Front layer */}
-          <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] bg-[hsla(0,0%,100%,0.15)] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[80%_50%] flex backdrop-blur-[0.75em] [-webkit-backdrop-filter:blur(0.75em)] transform group-hover:[transform:translateZ(2em)] object-cover"
-            style={{
-              boxShadow: "0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset",
-            }}
-            src={item.frontImage}
-            alt="test"
-            fill
-          />
+            {/* Front layer */}
+            <div className="absolute inset-0">
+              <Image
+                className="absolute top-0 left-0 w-full h-full rounded-[1.25em] bg-[hsla(0,0%,100%,0.15)] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[80%_50%] flex backdrop-blur-[0.75em] [-webkit-backdrop-filter:blur(0.75em)] transform group-hover:[transform:translateZ(2em)] object-cover"
+                style={{
+                  boxShadow: "0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset",
+                }}
+                src={item.frontImage}
+                alt="test"
+                fill
+              />
+            </div>
+          </AspectRatio>
 
           {/* Label */}
           <span className="absolute top-full left-0 right-0 text-center whitespace-nowrap leading-[2] text-base opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] translate-y-0 group-hover:opacity-100 group-hover:[transform:translateY(20%)]">

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
+import { useClickOutside } from "react-haiku";
 
 export type Notification = {
   id: string;
@@ -113,6 +114,9 @@ export const NotificationPopover = ({
   const [notifications, setNotifications] =
     useState<Notification[]>(initialNotifications);
 
+  const ref = useRef(null);
+  useClickOutside(ref, () => setIsOpen(false));
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -135,7 +139,7 @@ export const NotificationPopover = ({
   };
 
   return (
-    <div className={`relative ${textColor}`}>
+    <div className={`relative ${textColor}`} ref={ref}>
       <Button
         onClick={toggleOpen}
         size="icon"

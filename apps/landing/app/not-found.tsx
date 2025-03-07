@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/Button";
 import { SlimLayout } from "@/components/SlimLayout";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Icons } from "@workspace/ui/components/icons";
 
 export default function NotFound() {
   return (

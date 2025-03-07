@@ -1,6 +1,6 @@
 import { ResetPasswordForm } from "@/components/reset-password-form";
-import { Section } from "@workspace/ui/lib/craft";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Section } from "@workspace/ui/components/craft";
+import { Icons } from "@workspace/ui/components/icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

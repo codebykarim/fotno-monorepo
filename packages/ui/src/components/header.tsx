@@ -4,7 +4,7 @@ import { AppsDropdown } from "@workspace/ui/components/apps_dropdown";
 
 import { NavUser } from "@workspace/ui/components/nav-user";
 import Notifications from "@workspace/ui/components/notification";
-import { Icons } from "@workspace/ui/lib/icons.js";
+import { Icons } from "@workspace/ui/components/icons";
 
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
 

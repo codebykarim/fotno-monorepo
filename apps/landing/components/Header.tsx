@@ -13,7 +13,7 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Icons } from "@workspace/ui/components/icons";
 import { useSession } from "@workspace/lib/auth/auth-client";
 
 function MobileNavLink({

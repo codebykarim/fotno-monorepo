@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Icons } from "@workspace/ui/components/icons";
 
 export function Footer() {
   return (

@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/login-form";
-import { Section } from "@workspace/ui/lib/craft";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Section } from "@workspace/ui/components/craft";
+import { Icons } from "@workspace/ui/components/icons";
 import Link from "next/link";
 
 export default function LoginPage() {

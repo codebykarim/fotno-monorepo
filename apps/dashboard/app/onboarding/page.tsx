@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
-import { Icons } from "@workspace/ui/lib/icons";
+import { Icons } from "@workspace/ui/components/icons";
 import { cn } from "@workspace/ui/lib/utils";
 import SoloCompany from "@/components/onboarding/SoloCompany";
 import CompanyDetails from "@/components/onboarding/CompanyDetails";

@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 type Props = {
   token: string | string[];
 };
@@ -151,8 +152,8 @@ export const ResetPasswordForm = ({ token }: Props) => {
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
         By continue, you agree to our{" "}
-        <a href="/terms-of-service">Terms of Service</a> and{" "}
-        <a href="/privacy-policy">Privacy Policy</a>.
+        <Link href="/terms-of-service">Terms of Service</Link> and{" "}
+        <Link href="/privacy-policy">Privacy Policy</Link>.
       </div>
     </div>
   );

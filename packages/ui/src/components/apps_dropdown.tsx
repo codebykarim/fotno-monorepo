@@ -14,6 +14,7 @@ import {
   ChartNoAxesGanttIcon,
 } from "lucide-react";
 import { Separator } from "@workspace/ui/components/separator";
+import Link from "next/link";
 
 type Props = {
   main: "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
@@ -63,7 +64,7 @@ export const AppsDropdown = ({ main }: Props) => {
       <DropdownMenuContent className="w-68">
         {sub.map((item, index) => (
           <div key={item.title}>
-            <a href={item.href}>
+            <Link href={item.href}>
               <DropdownMenuItem className="my-2">
                 <div
                   className="bg-background flex size-8 items-center justify-center rounded-md border"
@@ -78,7 +79,7 @@ export const AppsDropdown = ({ main }: Props) => {
                   </div>
                 </div>
               </DropdownMenuItem>
-            </a>
+            </Link>
             {index !== sub.length - 1 && <Separator />}
           </div>
         ))}

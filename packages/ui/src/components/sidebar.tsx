@@ -1,16 +1,28 @@
 "use client";
-import * as Icons from "lucide-react";
-import { ChevronLeftIcon, ChevronRightIcon, LucideIcon } from "lucide-react";
-import React, { useState } from "react";
+import {
+  FoldersIcon,
+  FolderHeartIcon,
+  BookOpenIcon,
+  SettingsIcon,
+} from "lucide-react";
+import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { usePathname } from "next/navigation";
+
 type Props = {
   items: {
     title: string;
-    icon: keyof typeof Icons;
+    icon: "Folders" | "FolderHeart" | "BookOpen" | "Settings";
     href: string;
     number?: number;
   }[];
+};
+
+const iconMap = {
+  Folders: FoldersIcon,
+  FolderHeart: FolderHeartIcon,
+  BookOpen: BookOpenIcon,
+  Settings: SettingsIcon,
 };
 
 const SideBar = ({ items }: Props) => {
@@ -28,7 +40,7 @@ const SideBar = ({ items }: Props) => {
         }`}
       >
         {items.map((item) => {
-          const Icon = Icons[item.icon] as LucideIcon;
+          const Icon = iconMap[item.icon];
           return (
             <a href={item.href} key={item.href}>
               <div

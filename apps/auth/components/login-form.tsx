@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -273,9 +274,12 @@ export function LoginForm({
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="/register" className="underline underline-offset-4">
+                  <Link
+                    href="/register"
+                    className="underline underline-offset-4"
+                  >
                     Sign up
-                  </a>
+                  </Link>
                 </div>
               </div>
             </form>
@@ -292,8 +296,8 @@ export function LoginForm({
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
         By continue, you agree to our{" "}
-        <a href="/terms-of-service">Terms of Service</a> and{" "}
-        <a href="/privacy-policy">Privacy Policy</a>.
+        <Link href="/terms-of-service">Terms of Service</Link> and{" "}
+        <Link href="/privacy-policy">Privacy Policy</Link>.
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { signOut } from "@workspace/lib/auth/auth-client";
 import { redirect } from "next/navigation";
 
 export const logout = async () => {
+  "use server";
   await signOut({
     fetchOptions: {
       onSuccess: () => {

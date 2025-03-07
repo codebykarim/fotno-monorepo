@@ -7,6 +7,8 @@ import { Toaster } from "@workspace/ui/components/sonner";
 
 import { getSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
+import Header from "@workspace/ui/components/header";
+import { logout } from "@workspace/lib/actions/logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +38,7 @@ export default async function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-background")}>
+        <Header main="DASHBOARD" logout={logout} />
         {children} <Toaster />
       </body>
     </html>

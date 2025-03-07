@@ -7,8 +7,9 @@ import { Toaster } from "@workspace/ui/components/sonner";
 
 import { ExtendedSession, getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
-import Header from "@/components/home/header";
+import Header from "@workspace/ui/components/header";
 import SideBar from "@workspace/ui/components/sidebar";
+import { logout } from "@workspace/lib/actions/logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,9 +38,10 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-background mx-8")}>
-        <Header />
-        <div className="flex space-x-5">
+      <body className={cn(inter.className, "bg-background mx-20")}>
+        <Toaster />
+        <Header main="GALLERY" logout={logout} />
+        <div className="flex space-x-10">
           <SideBar
             items={[
               {
@@ -68,7 +70,7 @@ export default async function RootLayout({
               },
             ]}
           />
-          {children} <Toaster />
+          <div className="flex-1">{children}</div>
         </div>
       </body>
     </html>

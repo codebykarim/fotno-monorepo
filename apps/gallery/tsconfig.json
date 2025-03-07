@@ -18,7 +18,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/ui/src/components/sidebar.tsx"
+    "../../packages/ui/src/components/sidebar.tsx",
+    "../../packages/ui/src/components/notification.tsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   DropdownMenu,
@@ -60,23 +61,25 @@ export const AppsDropdown = ({ main }: Props) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-68">
-        {sub.map((item) => (
+        {sub.map((item, index) => (
           <div key={item.title}>
-            <DropdownMenuItem className="my-2">
-              <div
-                className="bg-background flex size-8 items-center justify-center rounded-md border"
-                aria-hidden="true"
-              >
-                <item.icon size={16} className="" />
-              </div>
-              <div>
-                <div className="text-sm font-medium">{item.title}</div>
-                <div className="text-muted-foreground text-xs">
-                  {item.description}
+            <a href={item.href}>
+              <DropdownMenuItem className="my-2">
+                <div
+                  className="bg-background flex size-8 items-center justify-center rounded-md border"
+                  aria-hidden="true"
+                >
+                  <item.icon size={16} className="" />
                 </div>
-              </div>
-            </DropdownMenuItem>
-            {item.title !== "DASHBOARD" && <Separator />}
+                <div>
+                  <div className="text-sm font-medium">{item.title}</div>
+                  <div className="text-muted-foreground text-xs">
+                    {item.description}
+                  </div>
+                </div>
+              </DropdownMenuItem>
+            </a>
+            {index !== sub.length - 1 && <Separator />}
           </div>
         ))}
       </DropdownMenuContent>

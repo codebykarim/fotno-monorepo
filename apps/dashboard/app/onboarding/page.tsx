@@ -19,7 +19,7 @@ import { useMemo, useState } from "react";
 import BillingInformation from "@/components/onboarding/BillingInformation";
 import { submitOnboarding } from "@/server/submitOnboarding";
 import { toast } from "sonner";
-import { logout } from "@/actions/logout";
+import { logout } from "@workspace/lib/actions/logout";
 
 type StepContent = {
   badge: string;

@@ -1,39 +1,20 @@
 "use client";
 import Collection from "@/components/home/collection";
-import { Button } from "@workspace/ui/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
 import { Badge } from "@workspace/ui/components/badge";
 import { FolderIcon, FoldersIcon, PlusIcon } from "lucide-react";
 import React from "react";
 import GlassIcons from "@/components/home/folder";
-
+import { InteractiveHoverButton } from "@workspace/ui/components/interactive-hover-button";
 type Props = {};
 
 const CollectionsPage = (props: Props) => {
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold mb-8">Collections</h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div>
-              <Button variant="secondary">
-                New <PlusIcon />
-              </Button>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-68">
-            <DropdownMenuItem>New Collection</DropdownMenuItem>
-            <DropdownMenuItem>New Folder</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex flex-col md:flex-row md:items-center space-y-5 md:space-y-0 justify-between">
+        <h1 className="text-3xl font-bold">Collections</h1>
+        <InteractiveHoverButton text="New Collection" />
       </div>
-      <div className="flex flex-wrap p-5 gap-10">
+      <div className="flex flex-wrap p-5 gap-10 mt-10">
         <div className="space-y-3 hover:opacity-90 cursor-pointer">
           <Collection coverImage="https://images.unsplash.com/photo-1655736394091-b1c3efc76a08?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
           <p className="text-base  text-foreground font-semibold">
@@ -65,7 +46,18 @@ const CollectionsPage = (props: Props) => {
             <span className="text-xs text-gray-500">Feb 5, 2025</span>
           </div>
         </div>
-        <div className="relative space-y-3 hover:opacity-90">
+        <div className="space-y-3 hover:opacity-90 cursor-pointer">
+          <Collection coverImage="https://images.unsplash.com/photo-1550784718-990c6de52adf?q=80&w=1884&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+          <p className="text-base  text-foreground font-semibold">
+            Franklin & Sara
+          </p>
+          <div className="flex items-center space-x-2">
+            <Badge className="bg-primary">Draft</Badge>
+            <span className="text-xs text-gray-500">•</span>
+            <span className="text-xs text-gray-500">Feb 5, 2025</span>
+          </div>
+        </div>
+        <div className="relative space-y-3">
           <GlassIcons
             items={[
               {
@@ -87,17 +79,6 @@ const CollectionsPage = (props: Props) => {
               Grands Day
             </p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Badge className="bg-primary">Draft</Badge>
-            <span className="text-xs text-gray-500">•</span>
-            <span className="text-xs text-gray-500">Feb 5, 2025</span>
-          </div>
-        </div>
-        <div className="space-y-3 hover:opacity-90 cursor-pointer">
-          <Collection coverImage="https://images.unsplash.com/photo-1550784718-990c6de52adf?q=80&w=1884&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-          <p className="text-base  text-foreground font-semibold">
-            Franklin & Sara
-          </p>
           <div className="flex items-center space-x-2">
             <Badge className="bg-primary">Draft</Badge>
             <span className="text-xs text-gray-500">•</span>

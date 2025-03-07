@@ -19,8 +19,8 @@ const SideBar = ({ items }: Props) => {
 
   return (
     <div
-      className={`relative flex h-fit transition-all duration-300 ease-in-out mx-8 ${
-        isCollapsed ? "w-16" : "w-60"
+      className={`relative flex h-fit transition-all duration-300 ease-in-out ${
+        isCollapsed ? "w-16" : "w-[247.5px]"
       } flex-col rounded-xl bg-foreground bg-clip-border py-4 text-white shadow-xl shadow-blue-gray-900/5`}
     >
       <nav
@@ -31,29 +31,30 @@ const SideBar = ({ items }: Props) => {
         {items.map((item) => {
           const Icon = Icons[item.icon] as LucideIcon;
           return (
-            <div
-              onClick={() => (window.location.href = item.href)}
-              key={item.href}
-              role="button"
-              className={cn(
-                "flex items-center w-full p-3",
-                pathName === item.href && "text-primary"
-              )}
-            >
-              <div className="grid mr-4 place-items-center">
-                <Icon />
-              </div>
-              {!isCollapsed && (
-                <>
-                  {item.title}
-                  <div className="grid ml-auto place-items-center justify-self-end">
-                    <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900">
-                      <span className="">{item.number}</span>
+            <a href={item.href} key={item.href}>
+              <div
+                key={item.href}
+                role="button"
+                className={cn(
+                  "flex items-center w-full p-3",
+                  pathName === item.href && "text-primary"
+                )}
+              >
+                <div className="grid mr-4 place-items-center">
+                  <Icon />
+                </div>
+                {!isCollapsed && (
+                  <>
+                    {item.title}
+                    <div className="grid ml-auto place-items-center justify-self-end">
+                      <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-full select-none whitespace-nowrap bg-blue-gray-500/20 text-blue-gray-900">
+                        <span className="">{item.number}</span>
+                      </div>
                     </div>
-                  </div>
-                </>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
+            </a>
           );
         })}
       </nav>

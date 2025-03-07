@@ -45,7 +45,7 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
         >
           {/* Back layer 1 */}
           <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[0%_100%] rotate-[-5deg] group-hover:[transform:rotate(-15deg)_translate3d(0.5em,-0.5em,0.5em)]"
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[0%_100%] rotate-[-5deg] group-hover:[transform:rotate(-10deg)_translate3d(0.5em,-0.5em,0.5em)]"
             style={{
               boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
             }}
@@ -56,7 +56,7 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
 
           {/* Back layer 2 */}
           <Image
-            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[100%_100%] rotate-[5deg] group-hover:[transform:rotate(15deg)_translate3d(-0.5em,-0.5em,0.5em)]"
+            className="absolute top-0 left-0 w-full h-[200px] rounded-[1.25em] block transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] origin-[100%_100%] rotate-[5deg] group-hover:[transform:rotate(8deg)_translate3d(-0.5em,-0.5em,0.5em)]"
             style={{
               boxShadow: "0.5em -0.5em 0.75em hsla(223, 10%, 10%, 0.15)",
             }}

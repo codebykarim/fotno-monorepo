@@ -26,47 +26,34 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 
-import { logout } from "@/actions/logout";
 import { useSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
 import { Button } from "@workspace/ui/components/button";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name?: string;
-    email?: string;
-    avatar?: string | null;
-  };
-}) {
+type Props = {
+  logout: () => Promise<void>;
+};
+
+export function NavUser({ logout }: Props) {
   const session = useSession().data as ExtendedSession;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <Avatar className="h-8 w-8 rounded-lg">
+        <Button size="icon" variant={"ghost"} className="rounded-full">
+          <Avatar className="rounded-full">
             <AvatarImage
-              src={user.avatar ?? "/avatars/shadcn.jpg"}
-              alt={user.name ?? "User"}
+              src={session?.user?.image ?? "/avatars/shadcn.jpg"}
+              alt={session?.user.name ?? "User"}
             />
             <AvatarFallback className="rounded-lg">
-              {user.name?.substring(0, 2).toUpperCase() ?? "U"}
+              {session?.user.name?.substring(0, 2).toUpperCase() ?? "U"}
             </AvatarFallback>
           </Avatar>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">{user.name}</span>
-            <span className="truncate text-xs">{user.email}</span>
-          </div>
-          <ChevronsUpDown className="ml-auto size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-        side={"right"}
+        side={"bottom"}
         align="end"
         sideOffset={4}
       >
@@ -74,17 +61,19 @@ export function NavUser({
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={user.avatar ?? "/avatars/shadcn.jpg"}
-                alt={user.name}
+                src={session?.user?.image ?? "/avatars/shadcn.jpg"}
+                alt={session?.user.name}
               />
               <AvatarFallback className="rounded-lg">
                 {" "}
-                {user.name?.substring(0, 2).toUpperCase() ?? "U"}
+                {session?.user.name?.substring(0, 2).toUpperCase() ?? "U"}
               </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
+              <span className="truncate font-semibold">
+                {session?.user.name}
+              </span>
+              <span className="truncate text-xs">{session?.user.email}</span>
             </div>
           </div>
         </DropdownMenuLabel>
@@ -93,18 +82,17 @@ export function NavUser({
           <DropdownMenuItem className="focus:bg-transparent bg-background">
             {session?.user.subscribed ? (
               <div className="flex items-center justify-between w-full">
-                <div className="rounded-full border-[3px] border-secondary p-1.5">
-                  <DatabaseIcon className="h-4 w-4 text-secondary" />
-                </div>
                 <div>
-                  <p className="text-xs font-medium">Storage</p>
-                  <p className="text-xs text-secondary">0 GB of 30 GB used</p>
+                  <p className="text-xs font-semibold text-primary">Storage</p>
+                  <p className="text-sm font-medium text-foreground">
+                    0 GB of 30 GB used
+                  </p>
                 </div>
                 <div
                   onClick={() => {}}
-                  className="rounded-full border border-secondary p-0.5 cursor-pointer"
+                  className="rounded-full border-2 border-secondary p-0.5 cursor-pointer"
                 >
-                  <PlusIcon className="h-4 w-4 text-secondary" />
+                  <PlusIcon className="h-4 w-4 text-foreground" />
                 </div>
               </div>
             ) : (

@@ -3,7 +3,7 @@ import * as Icons from "lucide-react";
 import { ChevronLeftIcon, ChevronRightIcon, LucideIcon } from "lucide-react";
 import React, { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
-
+import { usePathname } from "next/navigation";
 type Props = {
   items: {
     title: string;
@@ -15,8 +15,7 @@ type Props = {
 
 const SideBar = ({ items }: Props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const pathName = window && window.location.pathname;
-
+  const pathname = usePathname();
   return (
     <div
       className={`relative flex h-fit transition-all duration-300 ease-in-out ${
@@ -37,7 +36,7 @@ const SideBar = ({ items }: Props) => {
                 role="button"
                 className={cn(
                   "flex items-center w-full p-3",
-                  pathName === item.href && "text-primary"
+                  pathname === item.href && "text-primary"
                 )}
               >
                 <div className="grid mr-4 place-items-center">

@@ -3,8 +3,8 @@ import { Separator } from "@workspace/ui/components/separator";
 import { AppsDropdown } from "@workspace/ui/components/apps_dropdown";
 
 import { NavUser } from "@workspace/ui/components/nav-user";
-import Notifications from "@workspace/ui/components/notification";
 import { Icons } from "@workspace/ui/components/icons";
+import { NotificationPopover } from "@workspace/ui/components/notification-popover";
 
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
 
@@ -29,7 +29,7 @@ const Header = async ({ logout, main }: Props) => {
         <AppsDropdown main={main} />
       </div>
       <div className="flex items-center space-x-5">
-        <Notifications />
+        <NotificationPopover />
         <NavUser logout={logout} />
       </div>
     </header>

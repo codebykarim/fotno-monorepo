@@ -13,6 +13,7 @@ import { UseFormReturn } from "react-hook-form";
 import { AuthFormData, AuthMode } from "./unified-auth-form";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
+import PasswordRequirements from "./password-req";
 
 interface AuthStepProps {
   form: UseFormReturn<AuthFormData>;
@@ -95,11 +96,14 @@ export function AuthStep({
                       disabled={isLoading}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500 text-sm" />
                 </FormItem>
               )}
             />
           )}
+
+          {/* Password Requirements (only for registration) - Displayed prominently above password field */}
+          {isRegister && <PasswordRequirements form={form} />}
 
           {/* Password Input */}
           <FormField
@@ -120,84 +124,7 @@ export function AuthStep({
                     disabled={isLoading}
                   />
                 </FormControl>
-                <FormMessage />
-                {/* Password Strength Indicator (only for registration) */}
-                {isRegister && (
-                  <div className="mt-2 space-y-2">
-                    <div className="flex items-center space-x-2 text-sm">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          field.value?.length >= 8
-                            ? "bg-green-500"
-                            : "bg-gray-300"
-                        }`}
-                      ></div>
-                      <span
-                        className={
-                          field.value?.length >= 8
-                            ? "text-green-600"
-                            : "text-gray-500"
-                        }
-                      >
-                        At least 8 characters
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          /[A-Z]/.test(field.value || "")
-                            ? "bg-green-500"
-                            : "bg-gray-300"
-                        }`}
-                      ></div>
-                      <span
-                        className={
-                          /[A-Z]/.test(field.value || "")
-                            ? "text-green-600"
-                            : "text-gray-500"
-                        }
-                      >
-                        One uppercase letter
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          /[0-9]/.test(field.value || "")
-                            ? "bg-green-500"
-                            : "bg-gray-300"
-                        }`}
-                      ></div>
-                      <span
-                        className={
-                          /[0-9]/.test(field.value || "")
-                            ? "text-green-600"
-                            : "text-gray-500"
-                        }
-                      >
-                        One number
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          /[^A-Za-z0-9]/.test(field.value || "")
-                            ? "bg-green-500"
-                            : "bg-gray-300"
-                        }`}
-                      ></div>
-                      <span
-                        className={
-                          /[^A-Za-z0-9]/.test(field.value || "")
-                            ? "text-green-600"
-                            : "text-gray-500"
-                        }
-                      >
-                        One special character
-                      </span>
-                    </div>
-                  </div>
-                )}
+                <FormMessage className="text-red-500 text-sm" />
               </FormItem>
             )}
           />

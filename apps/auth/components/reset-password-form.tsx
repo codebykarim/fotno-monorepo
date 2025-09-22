@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@workspace/ui/components/logo";
+import PasswordRequirements from "./password-req";
 type Props = {
   token: string | string[];
 };
@@ -40,9 +41,14 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
+export interface ResetPasswordFormData {
+  password: string;
+  confirmPassword: string;
+}
+
 export const ResetPasswordForm = ({ token }: Props) => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       password: "",
@@ -50,7 +56,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: ResetPasswordFormData) => {
     console.log(values);
     const res = new Promise<{ success?: string }>((resolve, reject) => {
       resetPassword(
@@ -77,7 +83,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
         return `Password reset successful`;
       },
       error: (error: { message: string }) => {
-        return `Failed to reset password: ${error.message}`;
+        return `Failed to reset password: ${error.message} Please try again.`;
       },
     });
   };
@@ -109,6 +115,8 @@ export const ResetPasswordForm = ({ token }: Props) => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
+                    {/* Password Strength Indicator */}
+                    <PasswordRequirements form={form} />
                     <FormControl>
                       <Input
                         {...field}
@@ -117,82 +125,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </FormControl>
-                    <FormMessage />
-                    {/* Password Strength Indicator */}
-                    <div className="mt-2 space-y-2">
-                      <div className="flex items-center space-x-2 text-sm">
-                        <div
-                          className={`w-2 h-2 rounded-full ${
-                            field.value?.length >= 8
-                              ? "bg-green-500"
-                              : "bg-gray-300"
-                          }`}
-                        ></div>
-                        <span
-                          className={
-                            field.value?.length >= 8
-                              ? "text-green-600"
-                              : "text-gray-500"
-                          }
-                        >
-                          At least 8 characters
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm">
-                        <div
-                          className={`w-2 h-2 rounded-full ${
-                            /[A-Z]/.test(field.value || "")
-                              ? "bg-green-500"
-                              : "bg-gray-300"
-                          }`}
-                        ></div>
-                        <span
-                          className={
-                            /[A-Z]/.test(field.value || "")
-                              ? "text-green-600"
-                              : "text-gray-500"
-                          }
-                        >
-                          One uppercase letter
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm">
-                        <div
-                          className={`w-2 h-2 rounded-full ${
-                            /[0-9]/.test(field.value || "")
-                              ? "bg-green-500"
-                              : "bg-gray-300"
-                          }`}
-                        ></div>
-                        <span
-                          className={
-                            /[0-9]/.test(field.value || "")
-                              ? "text-green-600"
-                              : "text-gray-500"
-                          }
-                        >
-                          One number
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm">
-                        <div
-                          className={`w-2 h-2 rounded-full ${
-                            /[^A-Za-z0-9]/.test(field.value || "")
-                              ? "bg-green-500"
-                              : "bg-gray-300"
-                          }`}
-                        ></div>
-                        <span
-                          className={
-                            /[^A-Za-z0-9]/.test(field.value || "")
-                              ? "text-green-600"
-                              : "text-gray-500"
-                          }
-                        >
-                          One special character
-                        </span>
-                      </div>
-                    </div>
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -211,7 +144,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -219,7 +152,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
               {/* Reset Password Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-4 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Reset Password
               </Button>
@@ -229,7 +162,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
                 <span className="text-gray-600">Remember your password? </span>
                 <Link
                   href="/account"
-                  className="text-gray-900 font-medium hover:underline"
+                  className="text-gray-900 font-medium hover:underline cursor-pointer"
                 >
                   Back to login
                 </Link>

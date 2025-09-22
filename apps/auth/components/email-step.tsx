@@ -97,7 +97,7 @@ export function EmailStep({ form, isLoading, onSubmit, plan }: EmailStepProps) {
                     disabled={isLoading}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500 text-sm" />
               </FormItem>
             )}
           />

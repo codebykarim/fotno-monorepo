@@ -6,7 +6,6 @@ import cors from "cors";
 import AppError from "./errors/AppError";
 import routes from "./routes";
 import { ErrorMeta } from "./utils/logger";
-import { client } from "./mongodb/db";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import path from "path";

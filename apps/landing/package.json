@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.1.0",
-    "@tailwindcss/forms": "^0.5.3",
-    "@tailwindcss/postcss": "^4.0.6",
     "@types/node": "^20.10.8",
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",
@@ -23,8 +21,7 @@
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.47",
@@ -36,7 +33,6 @@
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sharp": "0.33.1",
-    "tailwindcss": "^4.0.8",
     "typescript": "^5.3.3"
   }
 }

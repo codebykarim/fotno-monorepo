@@ -137,7 +137,7 @@ export function Pricing() {
             name="Beginner"
             price="EGP 500"
             description="Good for anyone who is self-employed and just getting started."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=beginner`}
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=beginner`}
             features={[
               "Send 10 quotes and invoices",
               "Connect up to 2 bank accounts",
@@ -151,7 +151,7 @@ export function Pricing() {
             name="Professional"
             price="EGP 1100"
             description="Perfect for small / medium sized businesses."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=pro`}
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=pro`}
             features={[
               "Send 25 quotes and invoices",
               "Connect up to 5 bank accounts",
@@ -166,7 +166,7 @@ export function Pricing() {
             name="Studio"
             price="EGP 1500"
             description="Perfect for small / medium sized businesses."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register?plan=studio`}
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=studio`}
             features={[
               "Send 25 quotes and invoices",
               "Connect up to 5 bank accounts",

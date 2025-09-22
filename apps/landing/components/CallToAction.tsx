@@ -28,7 +28,7 @@ export function CallToAction() {
             Fotno today and get 1 month <span className="font-bold">Free</span>.
           </p>
           <Button
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
             color="secondary"
             className="mt-10"
           >

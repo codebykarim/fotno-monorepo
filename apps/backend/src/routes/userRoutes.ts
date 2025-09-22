@@ -13,4 +13,7 @@ const mapedMethods = init(userMethods);
 // Map the route with method query
 userRoutes.route("/auth/:method").all(mapedMethods);
 
+// Email check route
+userRoutes.post("/check-email", UserController.checkEmailExists);
+
 export default userRoutes;

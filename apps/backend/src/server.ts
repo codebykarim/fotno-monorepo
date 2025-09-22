@@ -90,17 +90,14 @@ app.get("/favicon.ico", (req: Request, res: Response) => {
 
 const port = process.env.PORT ?? 8001;
 
-// Connect to DB before starting server
+// Start Server
 const startServer = async () => {
   try {
-    // await client.connect();
-    console.log("Connected to MongoDB");
-
     app.listen(port, () => {
       console.log(`Server started on port: ${port}`);
     });
   } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
+    console.error("Failed to Start Server", error);
     process.exit(1); // Stop the process if DB connection fails
   }
 };

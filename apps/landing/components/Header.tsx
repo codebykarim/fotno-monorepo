@@ -91,15 +91,10 @@ function MobileNavigation({
           </MobileNavLink>
         ) : (
           <div className="flex flex-col w-fit">
-            <MobileNavLink
-              href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
-            >
+            <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
               <span>
                 Get started <span className="hidden lg:inline">today</span>
               </span>
-            </MobileNavLink>
-            <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
-              Login
             </MobileNavLink>
           </div>
         )}
@@ -143,11 +138,8 @@ export function Header() {
                 </Button>
               ) : (
                 <div className="flex gap-2 items-center">
-                  <NavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/login`}>
-                    Login
-                  </NavLink>
                   <Button
-                    href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}
+                    href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
                     color="main"
                   >
                     <span>

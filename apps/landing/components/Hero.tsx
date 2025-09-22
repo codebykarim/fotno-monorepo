@@ -60,7 +60,7 @@ export function Hero() {
         platform that makes it easy to manage your photos and videos.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href={`${process.env.NEXT_PUBLIC_AUTH_URL}/register`}>
+        <Button href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
           Get 1 month free
         </Button>
         <Button

@@ -6,11 +6,11 @@ const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboar
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const publicPaths = ["/login", "/register", "/onboarding", "/reset-password"];
+  const publicPaths = ["/account", "/onboarding", "/reset-password"];
 
   // Redirect root to login
   if (pathname === "/") {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/account", request.url));
   }
 
   // Check session
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
 
   // Block access to all other routes if not authenticated
   if (!session?.user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/account", request.url));
   }
 
   // Allow access to protected routes for authenticated users

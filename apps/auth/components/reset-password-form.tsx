@@ -17,7 +17,6 @@ import { resetPassword } from "@workspace/lib/auth/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Logo } from "@workspace/ui/components/logo";
 import PasswordRequirements from "./password-req";
 type Props = {
   token: string | string[];
@@ -95,7 +94,13 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
       <div className="flex-1 flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-20 xl:px-24 bg-white min-h-screen lg:min-h-0">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           {/* FOTNO Logo */}
-          <Logo />
+          <div className={"relative w-40 h-10 left-1/2 -translate-x-1/2 mb-8"}>
+            <img
+              src="/logo.png"
+              alt="FOTNO Logo"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
           {/* Welcome Text */}
           <div className="mb-8">

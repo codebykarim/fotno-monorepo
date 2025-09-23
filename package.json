@@ -3,17 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "build": "nx run-many -t build",
+    "dev": "nx run-many -t dev --parallel=5",
+    "lint": "nx run-many -t lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "kill": "lsof -t -i:3000,3001,3002,3003,8000 | xargs -r kill"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "prettier": "^3.2.5",
-    "turbo": "^2.3.0",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "nx": "21.5.3"
   },
   "packageManager": "pnpm@9.12.3",
   "engines": {

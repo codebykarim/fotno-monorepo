@@ -21,6 +21,7 @@ import { Logo } from "@workspace/ui/components/logo";
 import PasswordRequirements from "./password-req";
 type Props = {
   token: string | string[];
+  email: string | string[] | undefined;
 };
 
 const formSchema = z
@@ -46,7 +47,7 @@ export interface ResetPasswordFormData {
   confirmPassword: string;
 }
 
-export const ResetPasswordForm = ({ token }: Props) => {
+export const ResetPasswordForm = ({ token, email }: Props) => {
   const router = useRouter();
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(formSchema),
@@ -79,7 +80,7 @@ export const ResetPasswordForm = ({ token }: Props) => {
     toast.promise(res, {
       loading: "Resetting password...",
       success: () => {
-        router.push("/login");
+        router.push(`/account?email=${email}`);
         return `Password reset successful`;
       },
       error: (error: { message: string }) => {

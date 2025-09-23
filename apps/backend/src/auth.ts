@@ -12,10 +12,15 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 8,
     sendResetPassword: async ({ user, url, token }, request) => {
+      // Properly construct the URL with email parameter
+      const urlObj = new URL(url);
+      urlObj.searchParams.set("email", user.email);
+      const resetUrl = urlObj.toString();
+
       await sendMail({
         to: user.email,
         subject: "Reset your password",
-        text: `Click the link to reset your password: ${url}`,
+        text: `Click the link to reset your password: ${resetUrl}`,
       });
     },
   },

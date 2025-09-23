@@ -1,0 +1,75 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "sharedGlobals": [
+      "{workspaceRoot}/.env",
+      {
+        "env": "NEXT_PUBLIC_API_URL"
+      },
+      {
+        "env": "NEXT_PUBLIC_GALLERY_URL"
+      },
+      {
+        "env": "NEXT_PUBLIC_WEBSITE_URL"
+      },
+      {
+        "env": "NEXT_PUBLIC_STUDIO_URL"
+      },
+      {
+        "env": "NEXT_PUBLIC_DASHBOARD_URL"
+      },
+      {
+        "env": "NEXT_PUBLIC_LANDING_URL"
+      }
+    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"]
+  },
+  "taskRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "parallel": 500,
+        "maxParallel": 500,
+        "cacheableOperations": ["build", "lint", "check-types"],
+        "useDaemonProcess": false
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        {
+          "dependencies": false,
+          "target": "build"
+        }
+      ],
+      "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
+      "outputs": [
+        "{projectRoot}/build/**",
+        "{projectRoot}/.vercel/**",
+        "{projectRoot}/dist/**",
+        "{projectRoot}/.next/**",
+        "!{projectRoot}/.next/cache/**"
+      ],
+      "cache": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "cache": true
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "cache": true
+    },
+    "dev": {
+      "dependsOn": [
+        {
+          "dependencies": false,
+          "target": "dev"
+        }
+      ],
+      "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
+      "cache": false
+    }
+  }
+}

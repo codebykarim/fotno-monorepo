@@ -4,8 +4,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "tsc --noEmit",
+    "check-types": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0"
   },
+  "nx": {},
   "dependencies": {
     "@hookform/resolvers": "^4.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
@@ -45,12 +48,12 @@
     "@tailwindcss/postcss": "^4.0.8",
     "@turbo/gen": "^2.2.3",
     "@types/node": "^22.9.0",
-    "@types/react": "18.3.1",
-    "@types/react-dom": "18.3.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "autoprefixer": "^10.4.20",
-    "next": "^14.0.0",
+    "next": "15.1.7",
     "postcss": "^8.4.47",
     "tailwindcss": "^4.0.8",
     "typescript": "^5.6.3"

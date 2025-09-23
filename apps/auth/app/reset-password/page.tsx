@@ -7,10 +7,11 @@ export default async function ResetPasswordPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const token = await searchParams.then((params) => params.token);
+  const email = await searchParams.then((params) => params.email);
 
   if (!token) {
-    redirect("/login");
+    redirect("/account");
   }
 
-  return <ResetPasswordForm token={token} />;
+  return <ResetPasswordForm token={token} email={email} />;
 }

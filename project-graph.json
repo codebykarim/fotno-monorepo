@@ -1,0 +1,858 @@
+{
+  "graph": {
+    "nodes": {
+      "@workspace/typescript-config": {
+        "name": "@workspace/typescript-config",
+        "type": "app",
+        "data": {
+          "root": "packages/typescript-config",
+          "name": "@workspace/typescript-config",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@workspace/typescript-config",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {},
+          "implicitDependencies": []
+        }
+      },
+      "@workspace/eslint-config": {
+        "name": "@workspace/eslint-config",
+        "type": "lib",
+        "data": {
+          "root": "packages/eslint-config",
+          "name": "@workspace/eslint-config",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@workspace/eslint-config",
+              "packageExports": {
+                "./base": "./base.js",
+                "./next-js": "./next.js",
+                "./react-internal": "./react-internal.js"
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {},
+          "implicitDependencies": []
+        }
+      },
+      "dashboard": {
+        "name": "dashboard",
+        "type": "app",
+        "data": {
+          "root": "apps/dashboard",
+          "name": "dashboard",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "dev",
+                "build",
+                "start",
+                "lint"
+              ]
+            },
+            "js": {
+              "packageName": "dashboard",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "dev": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev"
+              },
+              "metadata": {
+                "scriptContent": "next dev --turbopack -p 3001",
+                "runCommand": "pnpm run dev"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "dev"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "cache": false
+            },
+            "build": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "build"
+              },
+              "metadata": {
+                "scriptContent": "next build",
+                "runCommand": "pnpm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "build"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "outputs": [
+                "{projectRoot}/build/**",
+                "{projectRoot}/.vercel/**",
+                "{projectRoot}/dist/**",
+                "{projectRoot}/.next/**",
+                "!{projectRoot}/.next/cache/**"
+              ],
+              "cache": true
+            },
+            "start": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "start"
+              },
+              "metadata": {
+                "scriptContent": "next start",
+                "runCommand": "pnpm run start"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "next lint",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@workspace/lib": {
+        "name": "@workspace/lib",
+        "type": "lib",
+        "data": {
+          "root": "packages/lib",
+          "name": "@workspace/lib",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "lint"
+              ]
+            },
+            "js": {
+              "packageName": "@workspace/lib",
+              "packageExports": {
+                "./auth/*": "./src/auth/*.ts",
+                "./actions/*": "./src/actions/*.ts",
+                "./data/*": "./src/data/*.ts"
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "eslint . --max-warnings 0",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "backend": {
+        "name": "backend",
+        "type": "lib",
+        "data": {
+          "root": "apps/backend",
+          "name": "backend",
+          "tags": [
+            "npm:public"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "start",
+                "build",
+                "dev",
+                "lint",
+                "test",
+                "postinstall"
+              ]
+            },
+            "description": "",
+            "js": {
+              "packageName": "backend",
+              "packageMain": "index.ts",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "start": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "start"
+              },
+              "metadata": {
+                "scriptContent": "tsc && node dist/server.js",
+                "runCommand": "pnpm run start"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "build": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "build"
+              },
+              "metadata": {
+                "scriptContent": "tsc",
+                "runCommand": "pnpm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "build"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "outputs": [
+                "{projectRoot}/build/**",
+                "{projectRoot}/.vercel/**",
+                "{projectRoot}/dist/**",
+                "{projectRoot}/.next/**",
+                "!{projectRoot}/.next/cache/**"
+              ],
+              "cache": true
+            },
+            "dev": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev"
+              },
+              "metadata": {
+                "scriptContent": "ts-node-dev --respawn --transpile-only --inspect=9230 --ignore node_modules src/server.ts",
+                "runCommand": "pnpm run dev"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "dev"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "cache": false
+            },
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "eslint . --ext .ts",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "test"
+              },
+              "metadata": {
+                "scriptContent": "echo \"Error: no test specified\" && exit 1",
+                "runCommand": "pnpm run test"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "postinstall": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "postinstall"
+              },
+              "metadata": {
+                "scriptContent": "prisma generate",
+                "runCommand": "pnpm run postinstall"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "gallery": {
+        "name": "gallery",
+        "type": "app",
+        "data": {
+          "root": "apps/gallery",
+          "name": "gallery",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "dev",
+                "build",
+                "start",
+                "lint"
+              ]
+            },
+            "js": {
+              "packageName": "gallery",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "dev": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev"
+              },
+              "metadata": {
+                "scriptContent": "next dev --turbopack -p 3003",
+                "runCommand": "pnpm run dev"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "dev"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "cache": false
+            },
+            "build": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "build"
+              },
+              "metadata": {
+                "scriptContent": "next build",
+                "runCommand": "pnpm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "build"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "outputs": [
+                "{projectRoot}/build/**",
+                "{projectRoot}/.vercel/**",
+                "{projectRoot}/dist/**",
+                "{projectRoot}/.next/**",
+                "!{projectRoot}/.next/cache/**"
+              ],
+              "cache": true
+            },
+            "start": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "start"
+              },
+              "metadata": {
+                "scriptContent": "next start",
+                "runCommand": "pnpm run start"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "next lint",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "landing": {
+        "name": "landing",
+        "type": "app",
+        "data": {
+          "root": "apps/landing",
+          "name": "landing",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "dev",
+                "build",
+                "start",
+                "lint"
+              ]
+            },
+            "js": {
+              "packageName": "landing",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "dev": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev"
+              },
+              "metadata": {
+                "scriptContent": "next dev --turbopack -p 3000",
+                "runCommand": "pnpm run dev"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "dev"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "cache": false
+            },
+            "build": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "build"
+              },
+              "metadata": {
+                "scriptContent": "next build",
+                "runCommand": "pnpm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "build"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "outputs": [
+                "{projectRoot}/build/**",
+                "{projectRoot}/.vercel/**",
+                "{projectRoot}/dist/**",
+                "{projectRoot}/.next/**",
+                "!{projectRoot}/.next/cache/**"
+              ],
+              "cache": true
+            },
+            "start": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "start"
+              },
+              "metadata": {
+                "scriptContent": "next start",
+                "runCommand": "pnpm run start"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "next lint",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@workspace/ui": {
+        "name": "@workspace/ui",
+        "type": "lib",
+        "data": {
+          "root": "packages/ui",
+          "name": "@workspace/ui",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "lint",
+                "check-types"
+              ]
+            },
+            "js": {
+              "packageName": "@workspace/ui",
+              "packageExports": {
+                "./globals.css": "./src/styles/globals.css",
+                "./postcss.config": "./postcss.config.mjs",
+                "./tailwind.config": "./tailwind.config.ts",
+                "./lib/*": "./src/lib/*.ts",
+                "./components/*": "./src/components/*.tsx",
+                "./hooks/*": "./src/hooks/*.ts"
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "eslint . --max-warnings 0",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            },
+            "check-types": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "check-types"
+              },
+              "metadata": {
+                "scriptContent": "tsc --noEmit",
+                "runCommand": "pnpm run check-types"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^check-types"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "auth": {
+        "name": "auth",
+        "type": "app",
+        "data": {
+          "root": "apps/auth",
+          "name": "auth",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "dev",
+                "build",
+                "start",
+                "lint"
+              ]
+            },
+            "js": {
+              "packageName": "auth",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "dev": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev"
+              },
+              "metadata": {
+                "scriptContent": "next dev --turbopack -p 3002",
+                "runCommand": "pnpm run dev"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "dev"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "cache": false
+            },
+            "build": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "build"
+              },
+              "metadata": {
+                "scriptContent": "next build",
+                "runCommand": "pnpm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                {
+                  "dependencies": false,
+                  "target": "build"
+                }
+              ],
+              "inputs": [
+                "{projectRoot}/**/*",
+                "{projectRoot}/.env*"
+              ],
+              "outputs": [
+                "{projectRoot}/build/**",
+                "{projectRoot}/.vercel/**",
+                "{projectRoot}/dist/**",
+                "{projectRoot}/.next/**",
+                "!{projectRoot}/.next/cache/**"
+              ],
+              "cache": true
+            },
+            "start": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "start"
+              },
+              "metadata": {
+                "scriptContent": "next start",
+                "runCommand": "pnpm run start"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "lint"
+              },
+              "metadata": {
+                "scriptContent": "next lint",
+                "runCommand": "pnpm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": [
+                "^lint"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      }
+    },
+    "dependencies": {
+      "@workspace/typescript-config": [],
+      "@workspace/eslint-config": [],
+      "dashboard": [
+        {
+          "source": "dashboard",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "dashboard",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        },
+        {
+          "source": "dashboard",
+          "target": "@workspace/ui",
+          "type": "static"
+        },
+        {
+          "source": "dashboard",
+          "target": "@workspace/lib",
+          "type": "static"
+        }
+      ],
+      "@workspace/lib": [
+        {
+          "source": "@workspace/lib",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "@workspace/lib",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        }
+      ],
+      "backend": [],
+      "gallery": [
+        {
+          "source": "gallery",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "gallery",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        },
+        {
+          "source": "gallery",
+          "target": "@workspace/ui",
+          "type": "static"
+        },
+        {
+          "source": "gallery",
+          "target": "@workspace/lib",
+          "type": "static"
+        }
+      ],
+      "landing": [
+        {
+          "source": "landing",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "landing",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        },
+        {
+          "source": "landing",
+          "target": "@workspace/lib",
+          "type": "static"
+        },
+        {
+          "source": "landing",
+          "target": "@workspace/ui",
+          "type": "static"
+        }
+      ],
+      "@workspace/ui": [
+        {
+          "source": "@workspace/ui",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "@workspace/ui",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        },
+        {
+          "source": "@workspace/ui",
+          "target": "@workspace/lib",
+          "type": "static"
+        }
+      ],
+      "auth": [
+        {
+          "source": "auth",
+          "target": "@workspace/eslint-config",
+          "type": "static"
+        },
+        {
+          "source": "auth",
+          "target": "@workspace/typescript-config",
+          "type": "static"
+        },
+        {
+          "source": "auth",
+          "target": "@workspace/lib",
+          "type": "static"
+        },
+        {
+          "source": "auth",
+          "target": "@workspace/ui",
+          "type": "static"
+        }
+      ]
+    }
+  }
+}

@@ -31,6 +31,19 @@ app.use(
   })
 );
 
+// Custom reset password handler - must come BEFORE the better-auth handler
+app.get("/api/auth/reset-password/:token", (req: Request, res: Response) => {
+  const token = req.params.token;
+  const email = req.query.email;
+
+  if (!token) {
+    return res.status(400).json({ error: "Missing reset token" });
+  }
+  console.log("Token:", token, "Email:", email);
+  const redirectUrl = `${process.env.NEXT_PUBLIC_AUTH_URL}/reset-password?token=${token}&email=${email}`;
+  res.redirect(redirectUrl);
+});
+
 app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(urlencoded({ extended: true }));
@@ -71,17 +84,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Welcome To Fotno API" });
-});
-
-app.get("/reset-password", (req: Request, res: Response) => {
-  const token = req.query.token;
-
-  if (!token) {
-    return res.status(400).json({ error: "Missing reset token" });
-  }
-
-  const redirectUrl = `${process.env.NEXT_PUBLIC_AUTH_URL}/reset-password?token=${token}`;
-  res.redirect(redirectUrl);
 });
 
 app.get("/favicon.ico", (req: Request, res: Response) => {

@@ -1,0 +1,5 @@
+
+
+> @workspace/lib@0.0.0 lint /Users/karim/KARINITY/CODE/fotno/monorepo/packages/lib
+> eslint . --max-warnings 0
+

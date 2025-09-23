@@ -25,7 +25,7 @@ export default function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-background")}>
-        {children} <Toaster />
+        {children} <Toaster position="top-center" />
       </body>
     </html>
   );

@@ -53,8 +53,11 @@ const registerSchema = z.object({
 
 export function UnifiedAuthForm({
   className,
+  resetEmail,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & {
+  resetEmail?: string | string[] | undefined;
+}) {
   const [authMode, setAuthMode] = useState<AuthMode>("email");
   const [isLoading, setIsLoading] = useState(false);
   const [, setEmailExists] = useState<boolean | null>(null);
@@ -72,7 +75,11 @@ export function UnifiedAuthForm({
 
       return () => clearTimeout(timeout);
     }
-  }, [isResetPassword]);
+
+    if (resetEmail) {
+      setAuthMode("login");
+    }
+  }, [isResetPassword, resetEmail]);
 
   // Dynamic form schema based on auth mode
   const getFormSchema = () => {
@@ -91,7 +98,7 @@ export function UnifiedAuthForm({
   const form = useForm<AuthFormData>({
     resolver: zodResolver(getFormSchema()) as unknown as Resolver<AuthFormData>,
     defaultValues: {
-      email: "",
+      email: (resetEmail as string | undefined) ?? "",
       password: "",
       name: "",
     },

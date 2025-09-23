@@ -90,7 +90,7 @@ app.get("/favicon.ico", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../favicon.ico"));
 });
 
-const port = process.env.PORT ?? 8001;
+const port = process.env.PORT ?? 8000;
 
 // Start Server
 const startServer = async () => {

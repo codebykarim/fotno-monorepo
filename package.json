@@ -10,11 +10,14 @@
     "kill": "lsof -t -i:3000,3001,3002,3003,8000 | xargs -r kill"
   },
   "devDependencies": {
+    "@nx/docker": "^21.5.3",
+    "@nx/next": "^21.5.3",
+    "@nx/node": "^21.5.3",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "nx": "21.5.3",
     "prettier": "^3.2.5",
-    "typescript": "5.5.4",
-    "nx": "21.5.3"
+    "typescript": "5.5.4"
   },
   "packageManager": "pnpm@9.12.3",
   "engines": {

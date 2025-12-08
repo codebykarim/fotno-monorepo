@@ -14,6 +14,7 @@
     "@tailwindcss/postcss": "^4.0.8",
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",
+    "autoprefixer": "^10.4.20",
     "better-auth": "^1.2.3",
     "lucide-react": "^0.475.0",
     "next": "15.1.7",

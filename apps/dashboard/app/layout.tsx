@@ -9,6 +9,7 @@ import { getSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
 import { logout } from "@workspace/lib/actions/logout";
+import DashboardSidebar from "../components/dashboard-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,8 +39,18 @@ export default async function RootLayout({
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
       <body className={cn(inter.className, "bg-background")}>
-        <Header main="DASHBOARD" logout={logout} />
-        {children} <Toaster />
+        <div className="flex h-screen">
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block">
+            <DashboardSidebar onLogout={logout} />
+          </div>
+
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Header main="DASHBOARD" logout={logout} />
+            <main className="flex-1 overflow-auto p-4 lg:p-6">{children}</main>
+          </div>
+        </div>
+        <Toaster />
       </body>
     </html>
   );

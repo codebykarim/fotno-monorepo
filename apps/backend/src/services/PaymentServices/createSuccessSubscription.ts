@@ -1,6 +1,6 @@
 import { auth } from "../../auth";
 import AppError from "../../errors/AppError";
-import prisma from "../../prisma";
+import prisma from "../../../prisma";
 import { Payment, PlanType } from "@prisma/client";
 
 interface Request {

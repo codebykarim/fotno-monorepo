@@ -11,7 +11,7 @@ import type {
   CreateSubscriptionResponse,
 } from "../services/PaymentServices/createSubscription";
 import AddUserOnboardingService from "../services/UserServices/addUserOnboarding";
-import prisma from "../prisma";
+import prisma from "../../prisma";
 import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
 import { auth } from "../auth";
 import { fromNodeHeaders } from "better-auth/node";
@@ -20,7 +20,7 @@ import { cancelSubscription } from "../services/PaymentServices/cancelSubscripti
 
 export const listSubscriptionPlansController = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const plans = await getSubscriptionsPlans();
 
@@ -29,7 +29,7 @@ export const listSubscriptionPlansController = async (
 
 export const createSubscriptionController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const session = await auth.api.getSession({
@@ -47,6 +47,11 @@ export const createSubscriptionController = async (
       billing_data,
     } = req.body;
 
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
     // Add other fields to userOnboarding
     await AddUserOnboardingService({
       userType,
@@ -55,7 +60,7 @@ export const createSubscriptionController = async (
       photographyType,
       photographyLevel,
       contactMethod,
-      userId: req.user.id,
+      userId,
     });
 
     // Create the subscription
@@ -69,7 +74,7 @@ export const createSubscriptionController = async (
     // Generate checkout URL if needed
     const checkoutUrl = generateCheckoutUrl(
       process.env.PAYMOB_PUBLIC_KEY as string,
-      subscription.client_secret
+      subscription.client_secret,
     );
 
     return controllerReturn({ ...subscription, checkoutUrl }, req, res);
@@ -78,25 +83,35 @@ export const createSubscriptionController = async (
       throw error;
     }
     throw new AppError(
-      (error as Error).message || "Failed to create subscription"
+      (error as Error).message || "Failed to create subscription",
     );
   }
 };
 
 export const getSubscriptionController = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
-  const subscription = await getUserSubscription(req.user.id);
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const subscription = await getUserSubscription(userId);
 
   controllerReturn(subscription, req, res);
 };
 
 export const cancelSubscriptionController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
-  const subscription = await cancelSubscription(req.user.id);
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const subscription = await cancelSubscription(userId);
 
   return controllerReturn(subscription, req, res);
 };

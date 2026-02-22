@@ -1,365 +1,789 @@
 "use client";
 
-import { cn } from "@workspace/ui/lib/utils";
-
+import { type ComponentProps, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Resolver } from "react-hook-form";
+import { toast } from "sonner";
 import {
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Github,
+  KeyRound,
+  Loader2,
+  Mail,
+  ShieldCheck,
+} from "lucide-react";
+
+import { cn } from "@workspace/ui/lib/utils";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@workspace/ui/components/form";
+import {
+  forgetPassword,
+  sendVerificationOTP,
   signIn,
   signUp,
-  forgetPassword,
 } from "@workspace/lib/auth/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { checkEmailExists } from "@/lib/email-check";
-import { EmailStep } from "./email-step";
-import { AuthStep } from "./auth-step";
 
-export type AuthMode = "email" | "login" | "register";
+import PasswordRequirements from "./password-req";
+import { checkEmailExists } from "@/lib/email-check";
+
+export type AuthMode = "email" | "login" | "register" | "otp";
 
 export interface AuthFormData {
   email: string;
   password: string;
-  name?: string;
+  name: string;
+  otp: string;
 }
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().trim().email("Please enter a valid email address"),
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
 const registerSchema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().email("Please enter a valid email address"),
   name: z
     .string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
     .max(50, "Name must be less than 50 characters"),
   password: z
     .string()
-    .min(8, "")
-    .regex(/[A-Z]/, "")
-    .regex(/[0-9]/, "")
-    .regex(/[^A-Za-z0-9]/, ""),
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain an uppercase letter")
+    .regex(/[0-9]/, "Password must contain a number")
+    .regex(/[^A-Za-z0-9]/, "Password must contain a special character"),
 });
+
+const otpSchema = z.object({
+  email: z.string().trim().email("Please enter a valid email address"),
+  otp: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Enter the 6-digit code"),
+});
+
+const OTP_RESEND_SECONDS = 60;
 
 export function UnifiedAuthForm({
   className,
   resetEmail,
   ...props
-}: React.ComponentProps<"div"> & {
+}: ComponentProps<"div"> & {
   resetEmail?: string | string[] | undefined;
 }) {
   const [authMode, setAuthMode] = useState<AuthMode>("email");
   const [isLoading, setIsLoading] = useState(false);
-  const [, setEmailExists] = useState<boolean | null>(null);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [otpCountdown, setOtpCountdown] = useState(0);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan");
 
-  // Auto-hide reset password message after 2 seconds
+  const form = useForm<AuthFormData>({
+    defaultValues: {
+      email: typeof resetEmail === "string" ? resetEmail : "",
+      password: "",
+      name: "",
+      otp: "",
+    },
+    mode: "onChange",
+  });
+
   useEffect(() => {
-    if (isResetPassword) {
-      const timeout = setTimeout(() => {
-        setIsResetPassword(false);
-      }, 5000);
-
-      return () => clearTimeout(timeout);
-    }
-
-    if (resetEmail) {
+    if (typeof resetEmail === "string" && resetEmail.length > 0) {
+      form.setValue("email", resetEmail);
       setAuthMode("login");
     }
-  }, [isResetPassword, resetEmail]);
+  }, [form, resetEmail]);
 
-  // Dynamic form schema based on auth mode
-  const getFormSchema = () => {
-    switch (authMode) {
-      case "email":
-        return emailSchema;
-      case "login":
-        return loginSchema;
-      case "register":
-        return registerSchema;
-      default:
-        return emailSchema;
+  useEffect(() => {
+    if (!isResetPassword) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setIsResetPassword(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [isResetPassword]);
+
+  useEffect(() => {
+    if (otpCountdown <= 0) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setOtpCountdown((current) => (current <= 1 ? 0 : current - 1));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [otpCountdown]);
+
+  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "/";
+  const getErrorMessage = (error: unknown, fallback: string): string => {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "error" in error &&
+      typeof (error as { error?: { message?: string } }).error?.message ===
+        "string"
+    ) {
+      return (error as { error: { message: string } }).error.message;
+    }
+
+    return fallback;
+  };
+
+  const redirectToDashboard = () => {
+    if (dashboardUrl.startsWith("http")) {
+      window.location.href = dashboardUrl;
+      return;
+    }
+
+    router.push(dashboardUrl);
+  };
+
+  const setFieldErrors = (
+    result: z.SafeParseError<unknown>,
+    fields: Array<keyof AuthFormData>,
+  ) => {
+    for (const field of fields) {
+      form.clearErrors(field);
+    }
+
+    for (const issue of result.error.issues) {
+      const path = issue.path[0];
+      if (typeof path === "string") {
+        form.setError(path as keyof AuthFormData, {
+          type: "manual",
+          message: issue.message,
+        });
+      }
     }
   };
 
-  const form = useForm<AuthFormData>({
-    resolver: zodResolver(getFormSchema()) as unknown as Resolver<AuthFormData>,
-    defaultValues: {
-      email: (resetEmail as string | undefined) ?? "",
-      password: "",
-      name: "",
-    },
-  });
+  const handleEmailSubmit = async (emailInput: string) => {
+    const parsed = emailSchema.safeParse({ email: emailInput.toLowerCase() });
+    if (!parsed.success) {
+      setFieldErrors(parsed, ["email"]);
+      return;
+    }
 
-  const handleEmailSubmit = async (email: string) => {
     setIsLoading(true);
+
     try {
-      const result = await checkEmailExists(email);
-      setEmailExists(result.exists);
+      const result = await checkEmailExists(parsed.data.email);
+      form.setValue("email", parsed.data.email);
 
       if (result.exists) {
         setAuthMode("login");
-        toast.success("Welcome back! Please enter your password.");
       } else {
         setAuthMode("register");
-        toast.success("Let's create your account!");
       }
-    } catch (error) {
-      toast.error("Unable to verify email. Please try again.");
+    } catch {
+      toast.error("Unable to verify this email right now.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const requestOtp = async () => {
+    const email = form.getValues("email").toLowerCase();
+    const parsed = emailSchema.safeParse({ email });
+    if (!parsed.success) {
+      setFieldErrors(parsed, ["email"]);
+      return;
+    }
+
+    setIsSendingOtp(true);
+
+    try {
+      const { error } = await sendVerificationOTP({
+        email: parsed.data.email,
+        type: "sign-in",
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to send verification code");
+        return;
+      }
+
+      setAuthMode("otp");
+      form.setValue("otp", "");
+      setOtpCountdown(OTP_RESEND_SECONDS);
+      toast.success("Verification code sent to your email");
+    } catch {
+      toast.error("Unable to send verification code");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
   const handleAuthSubmit = async (values: AuthFormData) => {
-    setIsLoading(true);
+    const payload = {
+      email: values.email.toLowerCase(),
+      password: values.password,
+      name: values.name,
+      otp: values.otp,
+    };
 
     if (authMode === "login") {
-      // Handle login
-      const res = new Promise<{ email?: string }>((resolve, reject) => {
+      const parsed = loginSchema.safeParse(payload);
+      if (!parsed.success) {
+        setFieldErrors(parsed, ["email", "password"]);
+        return;
+      }
+
+      setIsLoading(true);
+      const result = new Promise<{ email?: string }>((resolve, reject) => {
         signIn.email(
           {
-            email: values.email,
-            password: values.password,
+            email: parsed.data.email,
+            password: parsed.data.password,
             callbackURL: "/",
             rememberMe: true,
           },
           {
-            onSuccess: (data) => {
-              resolve({ email: data.data?.user.email });
-            },
-            onError: (error) => {
-              console.log(error);
-              reject({ message: error.error.message ?? "Unknown error" });
-            },
-          }
+            onSuccess: (data: any) => resolve({ email: data.data?.user.email }),
+            onError: (error: unknown) =>
+              reject({ message: getErrorMessage(error, "Failed to log in") }),
+          },
         );
       });
 
-      toast.promise(res, {
-        loading: "Logging in...",
-        success: (data: { email?: string }) => {
-          router.push(process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "");
-          return `Welcome back, ${data.email}!`;
+      toast.promise(result, {
+        loading: "Logging you in...",
+        success: () => {
+          redirectToDashboard();
+          return "Welcome back";
         },
         error: (error: { message: string }) => {
           setIsLoading(false);
-          return `Failed to login: ${error.message}`;
+          return error.message;
         },
       });
-    } else if (authMode === "register") {
-      // Handle registration
-      const res = new Promise<{ email?: string }>((resolve, reject) => {
+
+      return;
+    }
+
+    if (authMode === "register") {
+      const parsed = registerSchema.safeParse(payload);
+      if (!parsed.success) {
+        setFieldErrors(parsed, ["email", "name", "password"]);
+        return;
+      }
+
+      setIsLoading(true);
+      const result = new Promise<{ email?: string }>((resolve, reject) => {
         signUp.email(
           {
-            email: values.email,
-            password: values.password,
-            name: values.name || values.email.split("@")[0] || "",
+            email: parsed.data.email,
+            password: parsed.data.password,
+            name: parsed.data.name,
+            subscribed: false,
+            finishOnboarding: false,
             callbackURL: "/",
           },
           {
-            onSuccess: (data) => {
-              resolve({ email: data.data?.user.email });
-            },
-            onError: (error) => {
-              console.log(error);
-              reject({ message: error.error.message ?? "Unknown error" });
-            },
-          }
+            onSuccess: (data: any) => resolve({ email: data.data?.user.email }),
+            onError: (error: unknown) =>
+              reject({
+                message: getErrorMessage(error, "Failed to create account"),
+              }),
+          },
         );
       });
 
-      toast.promise(res, {
-        loading: "Creating account...",
-        success: (data: { email?: string }) => {
-          router.push(process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "");
-          return `Welcome to FOTNO, ${data.email}!`;
+      toast.promise(result, {
+        loading: "Creating your account...",
+        success: () => {
+          redirectToDashboard();
+          return "Your account is ready";
         },
         error: (error: { message: string }) => {
           setIsLoading(false);
-          return `Failed to create account: ${error.message}`;
+          return error.message;
+        },
+      });
+
+      return;
+    }
+
+    if (authMode === "otp") {
+      const parsed = otpSchema.safeParse(payload);
+      if (!parsed.success) {
+        setFieldErrors(parsed, ["email", "otp"]);
+        return;
+      }
+
+      setIsLoading(true);
+      const result = new Promise<void>((resolve, reject) => {
+        signIn.emailOtp(
+          {
+            email: parsed.data.email,
+            otp: parsed.data.otp,
+          },
+          {
+            onSuccess: () => resolve(),
+            onError: (error: unknown) =>
+              reject({
+                message: getErrorMessage(error, "Invalid verification code"),
+              }),
+          },
+        );
+      });
+
+      toast.promise(result, {
+        loading: "Verifying your code...",
+        success: () => {
+          redirectToDashboard();
+          return "Signed in successfully";
+        },
+        error: (error: { message: string }) => {
+          setIsLoading(false);
+          return error.message;
         },
       });
     }
   };
 
   const handleForgotPassword = async () => {
-    const email = form.getValues("email");
-    if (!email) {
-      toast.error("Please enter your email address first");
+    const email = form.getValues("email").toLowerCase();
+    const parsed = emailSchema.safeParse({ email });
+
+    if (!parsed.success) {
+      setFieldErrors(parsed, ["email"]);
       return;
     }
 
+    const { error } = await forgetPassword({
+      email: parsed.data.email,
+      redirectTo: "/reset-password",
+    });
+
+    if (error) {
+      toast.error(error.message || "Failed to send reset email");
+      return;
+    }
+
+    setIsResetPassword(true);
+    toast.success("Password reset email sent");
+  };
+
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    setIsLoading(true);
+
     try {
-      const { data, error } = await forgetPassword({
-        email,
-        redirectTo: "/reset-password",
+      const { error } = await signIn.social({
+        provider,
+        callbackURL: dashboardUrl,
       });
 
       if (error) {
-        toast.error(error.message ?? "Unknown error");
-      } else if (data) {
-        setIsResetPassword(true);
-        toast.success("Password reset email sent! Check your inbox.");
+        toast.error(error.message || `Failed to sign in with ${provider}`);
+        setIsLoading(false);
       }
-    } catch (error) {
-      toast.error("Failed to send reset email. Please try again.");
+    } catch {
+      toast.error(`Failed to sign in with ${provider}`);
+      setIsLoading(false);
     }
   };
 
-  const handleBackToEmail = () => {
+  const backToEmailStep = () => {
     setAuthMode("email");
-    setEmailExists(null);
-    form.reset({ email: form.getValues("email"), password: "", name: "" });
+    form.setValue("password", "");
+    form.setValue("name", "");
+    form.setValue("otp", "");
+    form.clearErrors();
+    setIsResetPassword(false);
+  };
+
+  const titleByMode: Record<AuthMode, string> = {
+    email: "Photographer Sign In",
+    login: "Welcome back",
+    register: "Create your photographer account",
+    otp: "Enter verification code",
+  };
+
+  const subtitleByMode: Record<AuthMode, string> = {
+    email: plan
+      ? `Plan selected: ${plan}. Continue to set up your workspace.`
+      : "Use email, social login, or one-time code.",
+    login: `Sign in to continue with ${form.getValues("email")}.`,
+    register: `Finish setup for ${form.getValues("email")}.`,
+    otp: `We sent a 6-digit code to ${form.getValues("email")}.`,
   };
 
   return (
-    <div className={cn("min-h-screen flex", className)} {...props}>
-      {/* Left side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-20 xl:px-24 bg-white min-h-screen lg:min-h-0">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
-          {/* FOTNO Logo */}
-          <div className={"relative w-40 h-10 left-1/2 -translate-x-1/2 mb-8"}>
-            <img
-              src="/logo.png"
-              alt="FOTNO Logo"
-              className="w-full h-full object-cover"
-            />
-          </div>
+    <div
+      className={cn("min-h-screen bg-[#f3f4ef] text-slate-900", className)}
+      {...props}
+    >
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl items-stretch px-4 py-6 sm:px-8 lg:px-10">
+        <section className="relative flex w-full flex-1 flex-col justify-center overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.45)] sm:p-10 lg:max-w-[540px]">
+          <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.25),transparent_70%)]" />
 
-          {authMode === "email" ? (
-            <EmailStep
-              form={form}
-              isLoading={isLoading}
-              onSubmit={handleEmailSubmit}
-              plan={plan}
-            />
-          ) : (
-            <AuthStep
-              form={form}
-              authMode={authMode}
-              isLoading={isLoading}
-              onSubmit={handleAuthSubmit}
-              onForgotPassword={handleForgotPassword}
-              onBackToEmail={handleBackToEmail}
-              isResetPassword={isResetPassword}
-            />
-          )}
-
-          {/* Terms */}
-          <div className="mt-8 text-center text-sm text-gray-500">
-            By continuing, you agree to our{" "}
-            <Link href="/terms" className="underline hover:text-gray-700">
-              Terms
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy" className="underline hover:text-gray-700">
-              Privacy Policy
-            </Link>
-            .
-          </div>
-        </div>
-      </div>
-
-      {/* Right side - Photography Illustration */}
-      <div className="hidden lg:block relative w-0 flex-1">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-700">
-          {/* Photography Illustration Container */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Background decorative elements - Camera-themed */}
-            <div className="absolute top-20 left-20 w-8 h-8 bg-white rounded-lg opacity-20 transform rotate-12">
-              <div className="w-2 h-2 bg-blue-300 rounded-full absolute top-1 left-1"></div>
-            </div>
-            <div className="absolute top-40 right-32 w-6 h-6 bg-yellow-300 rounded-full opacity-60"></div>
-            <div className="absolute bottom-32 left-16 w-4 h-4 bg-white rounded-sm opacity-30 transform rotate-45"></div>
-            <div className="absolute bottom-20 right-20 w-3 h-3 bg-purple-300 rounded-full opacity-80"></div>
-
-            {/* Floating camera elements */}
-            <div className="absolute top-32 right-16 w-12 h-8 bg-white rounded-lg opacity-25 transform -rotate-12">
-              <div className="w-3 h-3 bg-blue-400 rounded-full absolute top-1 right-1"></div>
-            </div>
-            <div className="absolute bottom-40 left-24 w-10 h-6 bg-white rounded-md opacity-20 transform rotate-6">
-              <div className="w-2 h-2 bg-purple-400 rounded-full absolute top-1 left-1"></div>
+          <div className="relative">
+            <div className="mb-6 flex items-center justify-between">
+              <img
+                src="/logo.png"
+                alt="FOTNO"
+                className="h-10 w-36 object-contain"
+              />
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+                For Photographers
+              </span>
             </div>
 
-            {/* Main Photography Scene */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                {/* Large Camera Body */}
-                <div className="w-80 h-56 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl relative shadow-2xl">
-                  {/* Camera Top */}
-                  <div className="absolute -top-4 left-8 right-8 h-8 bg-gradient-to-r from-gray-700 to-gray-800 rounded-t-lg"></div>
+            {authMode !== "email" && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="mb-4 h-auto p-0 text-sm text-slate-600 hover:bg-transparent hover:text-slate-900"
+                onClick={backToEmailStep}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+            )}
 
-                  {/* Lens */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-br from-gray-600 to-black rounded-full shadow-inner">
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-br from-blue-900 to-purple-900 rounded-full">
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-blue-800 to-purple-800 rounded-full">
-                        <div className="absolute top-2 left-2 w-3 h-3 bg-white rounded-full opacity-60"></div>
-                      </div>
-                    </div>
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
+              {titleByMode[authMode]}
+            </h1>
+            <p className="mt-2 text-sm text-slate-600">
+              {subtitleByMode[authMode]}
+            </p>
+
+            <Form {...form}>
+              <form
+                className="mt-8 space-y-4"
+                onSubmit={form.handleSubmit((values) => {
+                  if (authMode === "email") {
+                    handleEmailSubmit(values.email);
+                    return;
+                  }
+                  handleAuthSubmit(values);
+                })}
+              >
+                {(authMode === "email" ||
+                  authMode === "login" ||
+                  authMode === "register" ||
+                  authMode === "otp") && (
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                            <Input
+                              {...field}
+                              type="email"
+                              placeholder="Email address"
+                              autoComplete="email"
+                              disabled={
+                                isLoading ||
+                                authMode === "login" ||
+                                authMode === "register" ||
+                                authMode === "otp"
+                              }
+                              className="h-12 border-slate-300 pl-10 focus-visible:ring-amber-500"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {authMode === "register" && (
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Full name"
+                            autoComplete="name"
+                            disabled={isLoading}
+                            className="h-12 border-slate-300 focus-visible:ring-amber-500"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {(authMode === "login" || authMode === "register") && (
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        {authMode === "register" && (
+                          <PasswordRequirements form={form} />
+                        )}
+                        <FormControl>
+                          <div className="relative">
+                            <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                            <Input
+                              {...field}
+                              type={showPassword ? "text" : "password"}
+                              placeholder={
+                                authMode === "login"
+                                  ? "Password"
+                                  : "Create password"
+                              }
+                              autoComplete={
+                                authMode === "login"
+                                  ? "current-password"
+                                  : "new-password"
+                              }
+                              disabled={isLoading}
+                              className="h-12 border-slate-300 pl-10 pr-10 focus-visible:ring-amber-500"
+                            />
+                            <button
+                              type="button"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                              onClick={() => setShowPassword((prev) => !prev)}
+                              aria-label={
+                                showPassword ? "Hide password" : "Show password"
+                              }
+                            >
+                              {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                              ) : (
+                                <Eye className="h-4 w-4" />
+                              )}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {authMode === "otp" && (
+                  <FormField
+                    control={form.control}
+                    name="otp"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            maxLength={6}
+                            placeholder="6-digit code"
+                            disabled={isLoading}
+                            className="h-12 border-slate-300 text-center text-lg tracking-[0.35em] focus-visible:ring-amber-500"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                {authMode === "login" && (
+                  <div className="space-y-2 text-right">
+                    <p
+                      className={cn(
+                        "text-xs text-emerald-700 transition-opacity",
+                        isResetPassword ? "opacity-100" : "opacity-0",
+                      )}
+                    >
+                      Reset email sent to {form.getValues("email")}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleForgotPassword}
+                      className="text-xs font-medium text-slate-700 underline-offset-2 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
                   </div>
+                )}
 
-                  {/* Camera Details */}
-                  <div className="absolute top-4 left-4 w-6 h-6 bg-red-500 rounded-full shadow-lg"></div>
-                  <div className="absolute top-4 right-4 w-4 h-4 bg-green-400 rounded-sm"></div>
-                  <div className="absolute bottom-4 left-4 w-8 h-2 bg-gray-600 rounded-full"></div>
-                  <div className="absolute bottom-4 right-4 w-12 h-3 bg-gray-600 rounded-lg"></div>
-
-                  {/* Flash */}
-                  <div className="absolute -top-2 left-1/4 w-8 h-4 bg-white rounded-md shadow-lg">
-                    <div className="absolute inset-1 bg-gradient-to-r from-yellow-200 to-yellow-100 rounded-sm"></div>
+                {authMode === "otp" && (
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <span>Didn&apos;t get the code?</span>
+                    <button
+                      type="button"
+                      disabled={isSendingOtp || otpCountdown > 0}
+                      className="font-semibold text-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={requestOtp}
+                    >
+                      {otpCountdown > 0
+                        ? `Resend in ${otpCountdown}s`
+                        : "Resend"}
+                    </button>
                   </div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={isLoading || isSendingOtp}
+                  className="h-12 w-full bg-slate-900 text-white hover:bg-slate-800"
+                >
+                  {(isLoading || isSendingOtp) && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {authMode === "email" && "Continue with email"}
+                  {authMode === "login" && "Sign in"}
+                  {authMode === "register" && "Create account"}
+                  {authMode === "otp" && "Verify and sign in"}
+                </Button>
+
+                {authMode === "email" && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isSendingOtp || isLoading}
+                    className="h-12 w-full border-slate-300"
+                    onClick={requestOtp}
+                  >
+                    <ShieldCheck className="mr-2 h-4 w-4" />
+                    Continue with one-time code
+                  </Button>
+                )}
+              </form>
+            </Form>
+
+            {authMode === "email" && (
+              <>
+                <div className="my-6 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-slate-200" />
+                  <span className="text-xs uppercase tracking-wide text-slate-500">
+                    or continue with
+                  </span>
+                  <div className="h-px flex-1 bg-slate-200" />
                 </div>
 
-                {/* Floating Photos */}
-                <div className="absolute -top-20 -left-16 w-16 h-12 bg-white rounded-lg shadow-lg transform rotate-12 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-blue-200 to-purple-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isLoading}
+                    className="h-11 border-slate-300"
+                    onClick={() => handleSocialSignIn("google")}
+                  >
+                    <svg
+                      className="mr-2 h-4 w-4"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      />
+                    </svg>
+                    Google
+                  </Button>
 
-                <div className="absolute -top-16 -right-20 w-14 h-10 bg-white rounded-lg shadow-lg transform -rotate-6 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-green-200 to-blue-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={isLoading}
+                    className="h-11 border-slate-300"
+                    onClick={() => handleSocialSignIn("github")}
+                  >
+                    <Github className="mr-2 h-4 w-4" /> GitHub
+                  </Button>
                 </div>
+              </>
+            )}
 
-                <div className="absolute -bottom-20 -left-20 w-18 h-14 bg-white rounded-lg shadow-lg transform rotate-6 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-purple-200 to-pink-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
+            <p className="mt-8 text-center text-xs text-slate-500">
+              By continuing, you agree to our{" "}
+              <Link href="/terms" className="underline">
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline">
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </div>
+        </section>
 
-                <div className="absolute -bottom-16 -right-16 w-16 h-12 bg-white rounded-lg shadow-lg transform -rotate-12 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-orange-200 to-red-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
+        <aside className="relative hidden flex-1 overflow-hidden rounded-3xl border border-slate-200 bg-[linear-gradient(145deg,#0f172a_0%,#1e293b_40%,#334155_100%)] p-10 lg:block">
+          <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-amber-300/30 blur-3xl" />
+          <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl" />
 
-                {/* Light Rays */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-1 h-32 bg-gradient-to-t from-transparent via-yellow-300 to-transparent opacity-40"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-1 h-32 bg-gradient-to-t from-transparent via-yellow-300 to-transparent opacity-40"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-yellow-300 to-transparent opacity-40"></div>
+          <div className="relative flex h-full flex-col justify-between text-white">
+            <div>
+              <p className="inline-flex rounded-full border border-white/30 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/90">
+                FOTNO Platform
+              </p>
+              <h2 className="mt-6 max-w-md text-4xl font-semibold leading-tight">
+                Studio-grade account security for working photographers.
+              </h2>
+              <p className="mt-4 max-w-md text-sm text-slate-200">
+                Password login, social OAuth, and email OTP in one place,
+                optimized for fast access to your collections, deliveries, and
+                billing tools.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 text-sm text-slate-100">
+              <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
+                <p className="font-medium">Only photographers need accounts</p>
+                <p className="mt-1 text-xs text-slate-200">
+                  Clients continue to access galleries through secure share
+                  links.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
+                <p className="font-medium">Session and device hardening</p>
+                <p className="mt-1 text-xs text-slate-200">
+                  Better Auth sessions are shared across FOTNO subdomains with
+                  secure cookie policy.
+                </p>
               </div>
             </div>
-
-            {/* Additional photography elements */}
-            <div className="absolute top-1/4 left-1/6 w-16 h-16 bg-gradient-to-br from-white to-gray-200 rounded-full opacity-30 flex items-center justify-center">
-              <div className="w-8 h-8 bg-blue-400 rounded-full"></div>
-            </div>
-            <div className="absolute bottom-1/4 right-1/6 w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full opacity-40 flex items-center justify-center">
-              <div className="w-4 h-4 bg-white rounded-sm transform rotate-45"></div>
-            </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );

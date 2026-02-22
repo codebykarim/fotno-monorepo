@@ -6,19 +6,14 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/api/:path*",
-  //       destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`, // Your Express server URL
-  //     },
-  //   ];
-  // },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         hostname: "images.unsplash.com",
+      },
+      {
+        hostname: "picsum.photos",
       },
     ],
   },

@@ -17,6 +17,7 @@ import { resetPassword } from "@workspace/lib/auth/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import PasswordRequirements from "./password-req";
 type Props = {
   token: string | string[];
@@ -48,6 +49,16 @@ export interface ResetPasswordFormData {
 
 export const ResetPasswordForm = ({ token, email }: Props) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const safeToken = useMemo(
+    () => (Array.isArray(token) ? token[0] : token),
+    [token]
+  );
+  const safeEmail = useMemo(
+    () => (Array.isArray(email) ? email[0] : email),
+    [email]
+  );
+
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,19 +68,23 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
   });
 
   const onSubmit = (values: ResetPasswordFormData) => {
-    console.log(values);
+    if (!safeToken) {
+      toast.error("Reset token is missing");
+      return;
+    }
+
+    setIsLoading(true);
     const res = new Promise<{ success?: string }>((resolve, reject) => {
       resetPassword(
         {
           newPassword: values.password,
-          token: token as string,
+          token: safeToken,
         },
         {
           onSuccess: (data) => {
             resolve({ success: data.data });
           },
           onError: (error) => {
-            console.log(error);
             reject({ message: error.error.message ?? "Unknown error" });
           },
         }
@@ -79,10 +94,11 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
     toast.promise(res, {
       loading: "Resetting password...",
       success: () => {
-        router.push(`/account?email=${email}`);
+        router.push(`/account?email=${safeEmail ?? ""}`);
         return `Password reset successful`;
       },
       error: (error: { message: string }) => {
+        setIsLoading(false);
         return `Failed to reset password: ${error.message} Please try again.`;
       },
     });
@@ -158,9 +174,10 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
               {/* Reset Password Button */}
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Reset Password
+                {isLoading ? "Resetting..." : "Reset Password"}
               </Button>
 
               {/* Back to account link */}

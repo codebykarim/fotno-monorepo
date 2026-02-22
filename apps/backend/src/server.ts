@@ -9,6 +9,7 @@ import { ErrorMeta } from "./utils/logger";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import path from "path";
+import { ZodError } from "zod";
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // Custom reset password handler - must come BEFORE the better-auth handler
@@ -53,7 +54,7 @@ app.set("trust proxy", true);
 
 app.use(routes);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   const errorMeta: ErrorMeta = {
     url: req.url,
     body: req.body,
@@ -74,8 +75,16 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     return res.status(err.statusCode).json({ error: err.message });
   }
 
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      error: "Invalid request body",
+      issues: err.issues,
+    });
+  }
+
+  const error = err instanceof Error ? err : new Error("Unknown error");
   errorMeta.code = 500;
-  errorMeta.message = err.message;
+  errorMeta.message = error.message;
 
   console.log(errorMeta);
 

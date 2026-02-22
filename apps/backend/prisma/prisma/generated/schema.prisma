@@ -1,0 +1,201 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  output        = "./prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String           @id @unique @default(uuid())
+  name             String
+  email            String
+  plan             PhotographerPlan @default(FREE)
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now()) @updatedAt
+  role             String?
+  banned           Boolean?
+  banReason        String?
+  banExpires       DateTime?
+  subscribed       Boolean?
+  finishOnboarding Boolean?
+  sessions         Session[]
+  accounts         Account[]
+  payment          Payment[]
+  userOnboarding   UserOnboarding?
+  galleries        Gallery[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+enum PhotographerPlan {
+  FREE
+  PRO
+  STUDIO
+}
+
+model Session {
+  id             String   @id @unique @default(uuid())
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @unique @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @unique @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
+enum PlanType {
+  BEGGINER
+  PRO
+  STUDIO
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+model Payment {
+  id                  Int                @id @unique @default(autoincrement())
+  planId              Int
+  plan                PlanType
+  planExpiresAt       DateTime?
+  planStartedAt       DateTime?
+  amount_cents        Int
+  transactionId       Int                @unique
+  initial_transaction Int
+  subscriptionId      Int                @unique
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @default(now()) @updatedAt
+  status              SubscriptionStatus
+  userId              String
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payment")
+}
+
+enum UserType {
+  SOLO
+  COMPANY
+}
+
+enum PhotographyLevel {
+  BEGINNER
+  INTERMEDIATE
+  PROFESSIONAL
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  BOTH
+}
+
+model UserOnboarding {
+  id               Int               @id @unique @default(autoincrement())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userType         UserType
+  companyName      String?
+  companySize      String?
+  photographyType  String[]
+  photographyLevel PhotographyLevel?
+  contactMethod    ContactMethod?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+
+  @@map("userOnboarding")
+}
+
+enum PhotoStatus {
+  PENDING
+  UPLOADED
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+model Gallery {
+  id           String   @id @unique @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  slug         String
+  coverPhotoId String?
+  coverPhoto   Photo?   @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  passwordHash String?
+  shareToken   String   @unique @default(uuid())
+  isPublished  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  photos       Photo[]  @relation("GalleryPhotos")
+
+  @@unique([userId, slug])
+  @@map("gallery")
+}
+
+model Photo {
+  id               String      @id @unique @default(uuid())
+  galleryId        String
+  gallery          Gallery     @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
+  usedAsCoverIn    Gallery[]   @relation("GalleryCoverPhoto")
+  s3Key            String
+  s3Bucket         String
+  originalFilename String
+  size             Int
+  width            Int?
+  height           Int?
+  mimeType         String
+  order            Int         @default(0)
+  isCulled         Boolean     @default(false)
+  aiCaption        String?
+  faceCount        Int         @default(0)
+  thumbnailKey     String?
+  previewKey       String?
+  status           PhotoStatus @default(PENDING)
+  createdAt        DateTime    @default(now())
+
+  @@index([galleryId, order])
+  @@map("photo")
+}

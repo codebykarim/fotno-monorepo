@@ -1,11 +1,11 @@
 import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FOTNO - Authentication",
@@ -24,7 +24,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-background")}>
+      <body className={cn(spaceGrotesk.className, "bg-background")}>
         {children} <Toaster position="top-center" />
       </body>
     </html>

@@ -1,17 +1,21 @@
 import { betterFetch } from "@better-fetch/fetch";
-import { NextRequest, NextResponse } from "next/server";
-import { ExtendedSession } from "@workspace/lib/auth/auth-client";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { ExtendedSession } from "@workspace/lib/auth/auth-client";
+
+const protectedPrefixes = ["/collections", "/starred", "/mypage", "/settings"];
+
+const shouldProtectPath = (pathname: string): boolean =>
+  protectedPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (!shouldProtectPath(pathname)) {
+    return NextResponse.next();
+  }
+
   try {
-    const { pathname } = request.nextUrl;
-
-    // Redirect root to login
-    if (pathname === "/") {
-      return NextResponse.redirect(new URL("/collections", request.url));
-    }
-
-    // Check session using better-fetch
     const { data: session } = await betterFetch<ExtendedSession>(
       "/api/auth/get-session",
       {
@@ -21,18 +25,15 @@ export async function middleware(request: NextRequest) {
         },
       }
     );
-    // If no user is authenticated, redirect to auth app
+
     if (!session?.user) {
       return NextResponse.redirect(
         process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
       );
     }
 
-    // Allow access to protected routes for authenticated users
     return NextResponse.next();
-  } catch (error) {
-    // In case of any unexpected errors, redirect to auth
-    console.error("Middleware error:", error);
+  } catch {
     return NextResponse.redirect(
       process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
     );

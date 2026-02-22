@@ -1,15 +1,13 @@
 import { inferAdditionalFields } from "better-auth/client/plugins";
+import { emailOTPClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import type { ClientOptions } from "better-auth";
-
-type AuthClient = ReturnType<typeof createAuthClient<ClientOptions>>;
 
 interface AdditionalUserFields {
   subscribed: boolean;
   finishOnboarding: boolean;
 }
 
-const authClient: AuthClient = createAuthClient<ClientOptions>({
+const authClient: any = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // the base url of your auth server
   disableDefaultFetchPlugins: true,
   plugins: [
@@ -25,6 +23,7 @@ const authClient: AuthClient = createAuthClient<ClientOptions>({
         },
       },
     }),
+    emailOTPClient(),
   ],
 });
 
@@ -38,7 +37,17 @@ export const {
   resetPassword,
 } = authClient;
 
-type Session = typeof authClient.$Infer.Session;
-export type ExtendedSession = Omit<Session, "user"> & {
-  user: Session["user"] & AdditionalUserFields;
+export const sendVerificationOTP = authClient.emailOtp.sendVerificationOtp;
+
+type BaseSessionUser = {
+  id: string;
+  email: string;
+  name?: string | null;
+  image?: string | null;
+};
+
+export type ExtendedSession = {
+  user: BaseSessionUser & AdditionalUserFields;
+  session?: Record<string, unknown>;
+  [key: string]: unknown;
 };

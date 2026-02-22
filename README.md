@@ -2,14 +2,14 @@
 
 ```bash
 # Generate Prisma client
-pnpm dlx prisma generate
+pnpm --filter backend exec prisma generate
 
 # Format Prisma schema
-pnpm dlx prisma format
+pnpm --filter backend exec prisma format
 
 # Create and run database migration
-pnpm dlx prisma migrate --name init
+pnpm --filter backend exec prisma migrate dev --name init
 
 # Push schema changes to database
-pnpm dlx prisma db push
+pnpm --filter backend exec prisma db push
 ```

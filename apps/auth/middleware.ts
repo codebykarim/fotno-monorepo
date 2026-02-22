@@ -6,7 +6,7 @@ const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboar
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const publicPaths = ["/account", "/onboarding", "/reset-password"];
+  const publicPaths = new Set(["/account", "/onboarding", "/reset-password"]);
 
   // Redirect root to login
   if (pathname === "/") {
@@ -14,25 +14,30 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check session
-  const { data: session } = await betterFetch<ExtendedSession>(
-    "/api/auth/get-session",
-    {
+  let session: ExtendedSession | null = null;
+
+  try {
+    const response = await betterFetch<ExtendedSession>("/api/auth/get-session", {
       baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
-        cookie: request.headers.get("cookie") || "",
+        cookie: request.headers.get("cookie") ?? "",
       },
-    }
-  );
+    });
+
+    session = response.data ?? null;
+  } catch {
+    session = null;
+  }
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (session?.user && publicPaths.includes(pathname)) {
+  if (session?.user && publicPaths.has(pathname)) {
     return NextResponse.redirect(
       DASHBOARD_URL || "https://dashboard.fotno.com"
     );
   }
 
   // Allow access to public paths even without authentication
-  if (publicPaths.includes(pathname)) {
+  if (publicPaths.has(pathname)) {
     return NextResponse.next();
   }
 

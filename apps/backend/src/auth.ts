@@ -1,8 +1,16 @@
 import { betterAuth } from "better-auth";
 import { sendMail } from "./utils/sendMail";
-import { admin, openAPI } from "better-auth/plugins";
+import { admin, emailOTP, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "./prisma";
+import prisma from "../prisma";
+
+const hasGoogleOAuth =
+  Boolean(process.env.GOOGLE_CLIENT_ID) &&
+  Boolean(process.env.GOOGLE_CLIENT_SECRET);
+
+const hasGithubOAuth =
+  Boolean(process.env.GITHUB_CLIENT_ID) &&
+  Boolean(process.env.GITHUB_CLIENT_SECRET);
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -24,7 +32,37 @@ export const auth = betterAuth({
       });
     },
   },
-  plugins: [admin(), openAPI()],
+  socialProviders: {
+    ...(hasGoogleOAuth
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+          },
+        }
+      : {}),
+    ...(hasGithubOAuth
+      ? {
+          github: {
+            clientId: process.env.GITHUB_CLIENT_ID as string,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+          },
+        }
+      : {}),
+  },
+  plugins: [
+    admin(),
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        await sendMail({
+          to: email,
+          subject: "Your FOTNO verification code",
+          text: `<p>Your one-time code is: <strong>${otp}</strong></p><p>This code expires in 5 minutes.</p><p>Request type: ${type}</p>`,
+        });
+      },
+    }),
+    openAPI(),
+  ],
   user: {
     deleteUser: {
       enabled: true,

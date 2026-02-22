@@ -1,8 +1,9 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
+import { AuthFormData } from "./unified-auth-form";
 
 type Props = {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<AuthFormData>;
 };
 
 const PasswordRequirements = ({ form }: Props) => {

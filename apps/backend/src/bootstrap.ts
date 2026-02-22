@@ -1,3 +1,4 @@
+import "./polyfills/slowBuffer";
 import dotenv from "dotenv";
 
 dotenv.config({

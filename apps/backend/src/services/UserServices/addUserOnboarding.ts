@@ -1,5 +1,5 @@
 import AppError from "../../errors/AppError";
-import prisma from "../../prisma";
+import prisma from "../../../prisma";
 import {
   ContactMethod,
   PhotographyLevel,

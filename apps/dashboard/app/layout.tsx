@@ -1,11 +1,11 @@
 import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type React from "react"; // Import React
+import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
 
-import { getSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
+import { getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
 import { logout } from "@workspace/lib/actions/logout";
@@ -14,9 +14,8 @@ import DashboardSidebar from "../components/dashboard-sidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FOTNO - Dashboard",
-  description:
-    "Prepare to experience photography like never before. Our new website is on its way, bringing you breathtaking visuals and unforgettable moments.",
+  title: "FOTNO Photographer Dashboard",
+  description: "Photographer command center for galleries, clients, and sharing workflows.",
 };
 
 export default async function RootLayout({
@@ -24,13 +23,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = (
-    await getSession({
-      fetchOptions: {
-        headers: await headers(),
-      },
-    })
-  ).data as ExtendedSession;
+  await getSession({
+    fetchOptions: {
+      headers: await headers(),
+    },
+  });
 
   return (
     <html
@@ -40,7 +37,6 @@ export default async function RootLayout({
     >
       <body className={cn(inter.className, "bg-background")}>
         <div className="flex h-screen">
-          {/* Desktop Sidebar */}
           <div className="hidden lg:block">
             <DashboardSidebar onLogout={logout} />
           </div>

@@ -1,0 +1,175 @@
+import { randomUUID } from "crypto";
+import { Request, Response, Router } from "express";
+import path from "path";
+import { z } from "zod";
+import AppError from "../errors/AppError";
+import requireJwtPhotographer from "../middleware/requireJwtPhotographer";
+import prisma from "../../prisma";
+import { enqueueProcessPhoto } from "../queues/photoQueue";
+import { getPresignedUploadUrl, s3Config } from "../utils/s3";
+
+type MediaPrismaClient = typeof prisma & {
+  gallery: {
+    findFirst: (args: unknown) => Promise<{ id: string } | null>;
+  };
+  photo: {
+    findFirst: (
+      args: unknown,
+    ) => Promise<{ order?: number; id: string } | null>;
+    create: (args: unknown) => Promise<{ id: string; s3Key: string }>;
+    update: (args: unknown) => Promise<unknown>;
+  };
+};
+
+const mediaPrisma = prisma as MediaPrismaClient;
+
+type PresignRequestBody = {
+  galleryId: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+};
+
+type PresignResponseBody = {
+  presignedUrl: string;
+  s3Key: string;
+  photoId: string;
+};
+
+type ConfirmRequestBody = {
+  photoId: string;
+};
+
+type ConfirmResponseBody = {
+  photoId: string;
+  status: "UPLOADED";
+  queuedJob: "process-photo";
+};
+
+const presignSchema = z.object({
+  galleryId: z.string().uuid(),
+  filename: z.string().min(1).max(255),
+  mimeType: z.string().min(1).max(128),
+  size: z.number().int().positive(),
+});
+
+const confirmSchema = z.object({
+  photoId: z.string().uuid(),
+});
+
+const uploadRouter = Router();
+
+/**
+ * Creates a pending Photo record and returns a presigned S3 upload URL.
+ */
+uploadRouter.post(
+  "/upload/presign",
+  requireJwtPhotographer,
+  async (
+    req: Request<unknown, PresignResponseBody, PresignRequestBody>,
+    res: Response<PresignResponseBody>,
+  ) => {
+    const body = presignSchema.parse(req.body);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const gallery = await mediaPrisma.gallery.findFirst({
+      where: {
+        id: body.galleryId,
+        userId,
+      },
+      select: { id: true },
+    });
+
+    if (!gallery) {
+      throw new AppError("Gallery not found", 404);
+    }
+
+    const extFromFilename = path.extname(body.filename).replace(".", "");
+    const extension = extFromFilename.length > 0 ? extFromFilename : "bin";
+    const fileId = randomUUID();
+    const s3Key = `uploads/${body.galleryId}/${fileId}.${extension}`;
+
+    const latestPhoto = await mediaPrisma.photo.findFirst({
+      where: { galleryId: body.galleryId },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+
+    const photo = await mediaPrisma.photo.create({
+      data: {
+        galleryId: body.galleryId,
+        s3Key,
+        s3Bucket: s3Config.bucket,
+        originalFilename: body.filename,
+        size: body.size,
+        mimeType: body.mimeType,
+        order: (latestPhoto?.order ?? -1) + 1,
+        status: "PENDING",
+      },
+      select: {
+        id: true,
+        s3Key: true,
+      },
+    });
+
+    const presignedUrl = await getPresignedUploadUrl(s3Key, body.mimeType, 300);
+
+    return res.status(200).json({
+      presignedUrl,
+      s3Key: photo.s3Key,
+      photoId: photo.id,
+    });
+  },
+);
+
+/**
+ * Marks a photo as uploaded and enqueues processing.
+ */
+uploadRouter.post(
+  "/upload/confirm",
+  requireJwtPhotographer,
+  async (
+    req: Request<unknown, ConfirmResponseBody, ConfirmRequestBody>,
+    res: Response<ConfirmResponseBody>,
+  ) => {
+    const body = confirmSchema.parse(req.body);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const photo = await mediaPrisma.photo.findFirst({
+      where: {
+        id: body.photoId,
+        gallery: {
+          userId,
+        },
+      },
+      select: { id: true },
+    });
+
+    if (!photo) {
+      throw new AppError("Photo not found", 404);
+    }
+
+    await mediaPrisma.photo.update({
+      where: { id: body.photoId },
+      data: { status: "UPLOADED" },
+    });
+
+    await enqueueProcessPhoto(body.photoId);
+
+    return res.status(200).json({
+      photoId: body.photoId,
+      status: "UPLOADED",
+      queuedJob: "process-photo",
+    });
+  },
+);
+
+export default uploadRouter;

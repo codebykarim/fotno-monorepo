@@ -4,7 +4,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@workspace/ui/*": ["../../packages/ui/src/*"]
+      "@workspace/ui/*": ["../../packages/ui/src/*"],
+      "swr": ["./lib/vendor/swr"],
+      "zustand": ["./lib/vendor/zustand"],
+      "react-dropzone": ["./lib/vendor/react-dropzone"],
+      "qrcode.react": ["./lib/vendor/qrcode-react"]
     },
     "plugins": [
       {

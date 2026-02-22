@@ -1,8 +1,9 @@
-import { Activity, Client, Gallery, Photo, UploadTicket } from "@/lib/types/gallery";
+import { Activity, Album, Client, Gallery, Photo, UploadTicket } from "@/lib/types/gallery";
 
 type Store = {
   galleries: Gallery[];
   photos: Photo[];
+  albums: Album[];
   clients: Client[];
   activity: Activity[];
   uploadTickets: UploadTicket[];
@@ -23,6 +24,7 @@ const seedPhotos: Photo[] = [
     order: 1,
     width: 900,
     height: 1200,
+    loved: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString(),
   },
   {
@@ -32,6 +34,7 @@ const seedPhotos: Photo[] = [
     order: 2,
     width: 900,
     height: 1350,
+    loved: true,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 5).toISOString(),
   },
   {
@@ -41,6 +44,7 @@ const seedPhotos: Photo[] = [
     order: 1,
     width: 900,
     height: 1100,
+    loved: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 2).toISOString(),
   },
 ];
@@ -50,6 +54,8 @@ const seedGalleries: Gallery[] = [
     id: "g1",
     title: "Sarah + Tom Wedding",
     slug: "sarah-tom-wedding",
+    eventDate: new Date(now - 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10),
+    deadline: new Date(now + 1000 * 60 * 60 * 24 * 10).toISOString().slice(0, 10),
     passwordEnabled: false,
     password: null,
     isPublished: true,
@@ -61,12 +67,24 @@ const seedGalleries: Gallery[] = [
     id: "g2",
     title: "Chen Family Session",
     slug: "chen-family-session",
+    eventDate: new Date(now - 1000 * 60 * 60 * 24 * 4).toISOString().slice(0, 10),
+    deadline: new Date(now + 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10),
     passwordEnabled: true,
     password: "1234",
     isPublished: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
     updatedAt: new Date(now - 1000 * 60 * 60 * 3).toISOString(),
     coverPhotoId: "p3",
+  },
+];
+
+const seedAlbums: Album[] = [
+  {
+    id: "al1",
+    galleryId: "g1",
+    title: "Ceremony Highlights",
+    photoIds: ["p1", "p2"],
+    createdAt: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
   },
 ];
 
@@ -107,6 +125,7 @@ function createStore(): Store {
   return {
     galleries: seedGalleries,
     photos: seedPhotos,
+    albums: seedAlbums,
     clients: seedClients,
     activity: seedActivity,
     uploadTickets: [],

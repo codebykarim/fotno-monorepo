@@ -22,17 +22,17 @@ export default function PasswordGate({
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#f2f6ff_0,#eef2ff_35%,#f8fafc_100%)] px-6 py-10">
+    <div className="min-h-screen px-6 py-10">
       <div className="mx-auto flex min-h-[85vh] max-w-xl items-center justify-center">
-        <div className="w-full rounded-3xl border border-black/10 bg-white/85 p-8 shadow-2xl shadow-slate-900/10 backdrop-blur">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white">
+        <div className="gallery-panel w-full rounded-3xl p-8">
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
             <LockKeyhole className="h-6 w-6" />
           </div>
-          <p className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Private Gallery
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-900">{title}</h1>
-          <p className="mt-3 text-sm text-slate-600">
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{title}</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
             Enter the password shared by your photographer.
           </p>
 
@@ -42,13 +42,13 @@ export default function PasswordGate({
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Gallery password"
-              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-400"
+              className="h-12 w-full rounded-2xl border border-border bg-background/88 px-4 text-sm text-foreground outline-none ring-0 transition focus:border-primary"
               required
             />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 w-full rounded-2xl bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="h-12 w-full rounded-2xl bg-primary text-sm font-semibold text-primary-foreground shadow-sm transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {isSubmitting ? "Unlocking..." : "Unlock Gallery"}
             </button>

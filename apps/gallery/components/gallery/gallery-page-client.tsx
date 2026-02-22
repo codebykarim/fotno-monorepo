@@ -60,6 +60,15 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gallery.shareToken, gallery.hasPassword]);
 
+  useEffect(() => {
+    const preventContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("contextmenu", preventContextMenu);
+    return () => window.removeEventListener("contextmenu", preventContextMenu);
+  }, []);
+
   const isUnlocked = !gallery.hasPassword || Boolean(galleryJwt);
 
   const photoCountLabel = useMemo(() => {
@@ -194,12 +203,12 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#f3f4f6_0,#e5e7eb_18%,#f8fafc_65%)]">
-      <header className="sticky top-0 z-30 border-b border-black/10 bg-white/85 px-4 py-4 backdrop-blur md:px-8">
+    <div className="min-h-screen select-none">
+      <header className="sticky top-0 z-30 border-b border-border/70 bg-white/72 px-4 py-4 backdrop-blur md:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             {gallery.photographer.logoUrl ? (
-              <div className="relative h-12 w-12 overflow-hidden rounded-full border border-black/10">
+              <div className="relative h-12 w-12 overflow-hidden rounded-full border border-border/80 shadow-sm">
                 <Image
                   src={gallery.photographer.logoUrl}
                   alt={`${gallery.photographer.name} logo`}
@@ -211,8 +220,8 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
               </div>
             ) : null}
             <div>
-              <h1 className="text-xl font-semibold text-slate-900 md:text-2xl">{gallery.title}</h1>
-              <p className="text-sm text-slate-600">
+              <h1 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">{gallery.title}</h1>
+              <p className="text-sm text-muted-foreground">
                 {gallery.photographer.name} • {photoCountLabel}
               </p>
             </div>
@@ -222,7 +231,7 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
             type="button"
             onClick={handleDownloadAll}
             disabled={isDownloadingAll}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
           >
             <DownloadCloud className="h-4 w-4" />
             {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
@@ -240,7 +249,7 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
             return (
               <div
                 key={photo.id}
-                className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-slate-200 md:mb-4"
+                className="gallery-panel group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl md:mb-4"
               >
                 <Link href={`/${gallery.shareToken}/photo/${photo.id}`} className="block">
                   <Image
@@ -251,7 +260,9 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                     placeholder="blur"
                     blurDataURL={photo.blurDataUrl}
-                    className="h-auto w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                    draggable={false}
+                    onContextMenu={(event) => event.preventDefault()}
+                    className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                   />
                 </Link>
 
@@ -271,7 +282,7 @@ export default function GalleryPageClient({ initialGallery }: GalleryPageClientP
         </div>
       </main>
 
-      <footer className="border-t border-black/10 px-4 py-6 text-center text-sm text-slate-500 md:px-8">
+      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
         Powered by FOTNO
       </footer>
     </div>

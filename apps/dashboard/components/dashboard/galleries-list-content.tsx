@@ -48,12 +48,12 @@ export function GalleriesListContent() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Galleries</h1>
-          <p className="text-muted-foreground">Search, filter, and manage all delivered galleries.</p>
+          <h1 className="dashboard-title text-3xl font-semibold tracking-tight">Galleries</h1>
+          <p className="mt-1 text-muted-foreground">Search, filter, and manage all delivered galleries.</p>
         </div>
-        <Button asChild>
+        <Button asChild className="shadow-sm">
           <Link href="/galleries/new">
             <Plus className="mr-2 h-4 w-4" />
             New Gallery
@@ -61,15 +61,16 @@ export function GalleriesListContent() {
         </Button>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-3 rounded-2xl border border-border/70 bg-white/75 p-3 shadow-[0_16px_40px_-35px_rgba(2,6,23,0.7)] md:grid-cols-3">
         <Input
           placeholder="Search by title or slug"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
+          className="bg-background/85"
         />
 
         <Select value={status} onValueChange={(value) => setStatus(value as "all" | "draft" | "published")}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-background/85">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -85,7 +86,7 @@ export function GalleriesListContent() {
             setSort(value as "newest" | "oldest" | "title_asc" | "title_desc")
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-background/85">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -101,7 +102,7 @@ export function GalleriesListContent() {
         {isLoading && Array.from({ length: 6 }).map((_, index) => <GalleryCardSkeleton key={index} />)}
 
         {!isLoading && data?.galleries.length === 0 && (
-          <div className="col-span-full rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">
+          <div className="col-span-full rounded-2xl border border-dashed border-border/80 bg-white/65 p-10 text-center text-sm text-muted-foreground">
             No galleries match your filters.
           </div>
         )}

@@ -35,6 +35,31 @@ type BackendGallery = {
   photos?: BackendPhoto[];
 };
 
+type DashboardListResponse = {
+  galleries?: Array<{
+    id: string;
+    slug: string;
+  }>;
+};
+
+type DashboardGalleryResponse = {
+  gallery?: {
+    id: string;
+    slug: string;
+    title: string;
+    isPublished?: boolean;
+    passwordEnabled?: boolean;
+    coverPhotoId?: string | null;
+    photos?: Array<{
+      id: string;
+      url: string;
+      order?: number;
+      width?: number;
+      height?: number;
+    }>;
+  };
+};
+
 const normalizePhoto = (photo: BackendPhoto, shareToken: string): PublicPhoto => ({
   id: photo.id,
   originalFilename: photo.originalFilename || `${photo.id}.jpg`,
@@ -68,6 +93,81 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
   };
 };
 
+const getDashboardBaseUrl = (): string => {
+  const dashboardUrl =
+    process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "http://localhost:3001";
+  return dashboardUrl.replace(/\/$/, "");
+};
+
+const loadGalleryFromDashboardMock = async (
+  shareToken: string,
+): Promise<GalleryApiResponse | null> => {
+  const dashboardBaseUrl = getDashboardBaseUrl();
+  const listResponse = await fetch(
+    `${dashboardBaseUrl}/api/galleries?q=${encodeURIComponent(shareToken)}&status=all&sort=newest`,
+    { cache: "no-store" },
+  );
+
+  if (!listResponse.ok) {
+    return null;
+  }
+
+  const listPayload = (await listResponse.json()) as DashboardListResponse;
+  const listItem = listPayload.galleries?.find(
+    (gallery) => gallery.slug === shareToken,
+  );
+  if (!listItem) {
+    return null;
+  }
+
+  const detailResponse = await fetch(
+    `${dashboardBaseUrl}/api/galleries/${listItem.id}`,
+    { cache: "no-store" },
+  );
+  if (!detailResponse.ok) {
+    return null;
+  }
+
+  const detailPayload = (await detailResponse.json()) as DashboardGalleryResponse;
+  const gallery = detailPayload.gallery;
+  if (!gallery) {
+    return null;
+  }
+
+  if (!gallery.isPublished) {
+    return null;
+  }
+
+  const photos = (gallery.photos ?? [])
+    .map((photo) => ({
+      id: photo.id,
+      originalFilename: `${photo.id}.jpg`,
+      aiCaption: null,
+      width: photo.width ?? null,
+      height: photo.height ?? null,
+      order: photo.order ?? 0,
+      blurDataUrl: TRANSPARENT_BLUR,
+      thumbnailSrc: photo.url,
+      previewSrc: photo.url,
+    }))
+    .sort((a, b) => a.order - b.order);
+
+  return {
+    gallery: {
+      id: gallery.id,
+      shareToken: gallery.slug,
+      title: gallery.title,
+      hasPassword: Boolean(gallery.passwordEnabled),
+      photographer: {
+        name: "FOTNO Photographer",
+        logoUrl: null,
+      },
+      coverPhotoId: gallery.coverPhotoId ?? null,
+      photos,
+    },
+  };
+};
+
 export const getGalleryByShareToken = async (
   shareToken: string,
   opts?: {
@@ -82,31 +182,40 @@ export const getGalleryByShareToken = async (
     headers.set("Authorization", `Bearer ${opts.galleryJwt}`);
   }
 
-  const response = await backendFetch(`/api/public/gallery/${shareToken}`, {
-    headers,
-    cache: opts?.cache,
-    next:
-      typeof opts?.revalidate === "number"
-        ? { revalidate: opts.revalidate }
-        : undefined,
-  });
+  try {
+    const response = await backendFetch(`/api/public/gallery/${shareToken}`, {
+      headers,
+      cache: opts?.cache,
+      next:
+        typeof opts?.revalidate === "number"
+          ? { revalidate: opts.revalidate }
+          : undefined,
+    });
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(body || "Failed to fetch gallery");
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(body || "Failed to fetch gallery");
+    }
+
+    const payload = (await response.json()) as
+      | BackendGallery
+      | {
+          gallery: BackendGallery;
+        };
+
+    const gallery = "gallery" in payload ? payload.gallery : payload;
+
+    return {
+      gallery: normalizeGallery(gallery),
+    };
+  } catch (error) {
+    const fallback = await loadGalleryFromDashboardMock(shareToken);
+    if (fallback) {
+      return fallback;
+    }
+
+    throw error;
   }
-
-  const payload = (await response.json()) as
-    | BackendGallery
-    | {
-        gallery: BackendGallery;
-      };
-
-  const gallery = "gallery" in payload ? payload.gallery : payload;
-
-  return {
-    gallery: normalizeGallery(gallery),
-  };
 };
 
 export const getPhotoPresignedUrl = async (
@@ -121,24 +230,43 @@ export const getPhotoPresignedUrl = async (
     headers.set("Authorization", `Bearer ${galleryJwt}`);
   }
 
-  const response = await backendFetch(
-    `/api/public/photos/${photoId}/url?shareToken=${encodeURIComponent(shareToken)}&variant=${variant}`,
-    {
-      headers,
-      cache: "no-store",
+  try {
+    const response = await backendFetch(
+      `/api/public/photos/${photoId}/url?shareToken=${encodeURIComponent(shareToken)}&variant=${variant}`,
+      {
+        headers,
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(body || "Failed to fetch photo URL");
     }
-  );
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(body || "Failed to fetch photo URL");
+    const payload = (await response.json()) as { url: string };
+
+    if (!payload.url) {
+      throw new Error("Backend did not return a presigned URL");
+    }
+
+    return payload.url;
+  } catch (error) {
+    const fallbackGallery = await loadGalleryFromDashboardMock(shareToken);
+    const fallbackPhoto = fallbackGallery?.gallery.photos.find(
+      (photo) => photo.id === photoId,
+    );
+
+    if (fallbackPhoto) {
+      if (variant === "thumbnail") {
+        return fallbackPhoto.thumbnailSrc;
+      }
+      if (variant === "preview") {
+        return fallbackPhoto.previewSrc;
+      }
+      return fallbackPhoto.previewSrc;
+    }
+
+    throw error;
   }
-
-  const payload = (await response.json()) as { url: string };
-
-  if (!payload.url) {
-    throw new Error("Backend did not return a presigned URL");
-  }
-
-  return payload.url;
 };

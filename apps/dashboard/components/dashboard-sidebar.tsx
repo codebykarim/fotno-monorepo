@@ -40,11 +40,6 @@ const DashboardSidebar = ({ onLogout }: Props) => {
       href: "/galleries",
     },
     {
-      title: "New Gallery",
-      icon: PlusSquare,
-      href: "/galleries/new",
-    },
-    {
       title: "Clients",
       icon: Users,
       href: "/clients",
@@ -62,18 +57,18 @@ const DashboardSidebar = ({ onLogout }: Props) => {
   return (
     <div
       className={cn(
-        "relative flex h-full transition-all duration-300 ease-in-out flex-col bg-card border-r",
-        isCollapsed ? "w-16" : "w-64"
+        "relative flex h-full flex-col border-r border-border/80 bg-card/90 shadow-[8px_0_30px_-26px_rgba(15,23,42,0.7)] backdrop-blur transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-16" : "w-64",
       )}
     >
-      <div className="p-4">
+      <div className="border-b border-border/70 p-4">
         <h2
           className={cn(
-            "font-semibold text-lg transition-opacity duration-300",
-            isCollapsed ? "opacity-0" : "opacity-100"
+            "text-lg font-semibold tracking-tight transition-opacity duration-300 text-center",
+            isCollapsed ? "text-2xl font-bold" : "text-lg",
           )}
         >
-          Photographer
+          {isCollapsed ? "F" : "FOTNO"}
         </h2>
       </div>
 
@@ -84,16 +79,18 @@ const DashboardSidebar = ({ onLogout }: Props) => {
               const Icon = item.icon;
               const isActive =
                 pathname === item.href ||
-                (item.href === "/galleries" && pathname.startsWith("/galleries/") && pathname !== "/galleries/new");
+                (item.href === "/galleries" &&
+                  pathname.startsWith("/galleries/") &&
+                  pathname !== "/galleries/new");
 
               return (
                 <Link key={item.href} href={item.href}>
                   <div
                     className={cn(
-                      "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+                      "flex items-center rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
                       isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-accent/70 hover:text-accent-foreground",
                     )}
                   >
                     <Icon className="h-5 w-5 flex-shrink-0" />
@@ -104,9 +101,9 @@ const DashboardSidebar = ({ onLogout }: Props) => {
             })}
           </div>
 
-          {!isCollapsed && (
+          {/* {!isCollapsed && (
             <div>
-              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <h3 className="px-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                 Other Apps
               </h3>
               <div className="mt-2 space-y-1">
@@ -114,8 +111,13 @@ const DashboardSidebar = ({ onLogout }: Props) => {
                   const Icon = app.icon;
 
                   return (
-                    <a key={app.title} href={app.href} target="_blank" rel="noopener noreferrer">
-                      <div className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors duration-200">
+                    <a
+                      key={app.title}
+                      href={app.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <div className="flex items-center rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-accent/70 hover:text-accent-foreground">
                         <Icon className="h-5 w-5 flex-shrink-0" />
                         <span className="ml-3">{app.title}</span>
                       </div>
@@ -124,14 +126,14 @@ const DashboardSidebar = ({ onLogout }: Props) => {
                 })}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </nav>
 
       <div className="p-2">
         <Button
           variant="ghost"
-          className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 px-3"
+          className="w-full justify-start rounded-xl px-3 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
           onClick={onLogout}
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
@@ -141,12 +143,12 @@ const DashboardSidebar = ({ onLogout }: Props) => {
 
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-20 flex items-center justify-center w-6 h-6 rounded-full bg-border hover:bg-accent transition-colors duration-200"
+        className="absolute -right-3 top-20 flex h-6 w-6 items-center justify-center rounded-full border border-border/70 bg-card hover:bg-accent transition-colors duration-200"
       >
         <div
           className={cn(
             "w-2 h-2 border-r-2 border-b-2 border-foreground transform transition-transform duration-200",
-            isCollapsed ? "rotate-45" : "-rotate-135"
+            isCollapsed ? "-rotate-45" : "rotate-135",
           )}
         />
       </button>

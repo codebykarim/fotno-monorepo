@@ -1,4 +1,5 @@
 import "@workspace/ui/globals.css";
+import "./theme.css";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import type React from "react"; // Import React
@@ -24,7 +25,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(spaceGrotesk.className, "bg-background")}>
+      <body className={cn(spaceGrotesk.className, "auth-theme auth-shell bg-background text-foreground")}>
         {children} <Toaster position="top-center" />
       </body>
     </html>

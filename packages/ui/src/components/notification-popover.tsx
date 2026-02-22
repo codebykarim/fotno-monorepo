@@ -103,7 +103,7 @@ interface NotificationPopoverProps {
 export const NotificationPopover = ({
   notifications: initialNotifications = dummyNotifications,
   onNotificationsChange,
-  buttonClassName = "w-10 h-10 rounded-xl bg-secondary hover:bg-primary shadow-[0_0_20px_rgba(0,0,0,0.2)]",
+  buttonClassName = "w-10 h-10 rounded-xl bg-primary hover:bg-primary shadow-[0_0_20px_rgba(0,0,0,0.2)]",
   popoverClassName = "bg-secondary backdrop-blur-sm",
   textColor = "text-foreground",
   hoverBgColor = "hover:bg-primary",
@@ -132,7 +132,7 @@ export const NotificationPopover = ({
 
   const markAsRead = (id: string) => {
     const updatedNotifications = notifications.map((n) =>
-      n.id === id ? { ...n, read: true } : n
+      n.id === id ? { ...n, read: true } : n,
     );
     setNotifications(updatedNotifications);
     onNotificationsChange?.(updatedNotifications);
@@ -162,7 +162,7 @@ export const NotificationPopover = ({
             transition={{ duration: 0.2 }}
             className={cn(
               "absolute z-50 right-0 mt-2 w-80 max-h-[400px] overflow-y-auto rounded-xl shadow-lg scrollbar-hide",
-              popoverClassName
+              popoverClassName,
             )}
           >
             <div

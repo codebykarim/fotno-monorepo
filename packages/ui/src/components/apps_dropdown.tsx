@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@workspace/ui/components/separator";
 import Link from "next/link";
+import { cn } from "../lib/utils";
 
 type Props = {
   main: "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
@@ -22,22 +23,18 @@ type Props = {
 
 const allApps = [
   {
-    title: "GALLERY",
-    icon: ImageIcon,
-    description: "Start creating your collections",
-    href: `${process.env.NEXT_PUBLIC_GALLERY_URL}/`,
-  },
-  {
     title: "WEBSITE",
     icon: LayoutDashboardIcon,
     description: "Create your own specialty website",
     href: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/`,
+    disabled: true,
   },
   {
     title: "MANAGER",
     icon: UsersIcon,
     description: "Manage your clients and projects",
     href: `${process.env.NEXT_PUBLIC_STUDIO_URL}/`,
+    disabled: true,
   },
   {
     title: "DASHBOARD",
@@ -64,10 +61,17 @@ export const AppsDropdown = ({ main }: Props) => {
       <DropdownMenuContent className="w-68">
         {sub.map((item, index) => (
           <div key={item.title}>
-            <Link href={item.href}>
-              <DropdownMenuItem className="my-2">
+            <Link href={item.disabled ? "#" : item.href}>
+              <DropdownMenuItem
+                className={cn(
+                  "my-2",
+                  item.disabled && "opacity-50 cursor-not-allowed",
+                )}
+              >
                 <div
-                  className="bg-background flex size-8 items-center justify-center rounded-md border"
+                  className={cn(
+                    "bg-background flex size-8 items-center justify-center rounded-md border",
+                  )}
                   aria-hidden="true"
                 >
                   <item.icon size={16} className="" />
@@ -78,6 +82,11 @@ export const AppsDropdown = ({ main }: Props) => {
                     {item.description}
                   </div>
                 </div>
+                {item.disabled && (
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    soon
+                  </span>
+                )}
               </DropdownMenuItem>
             </Link>
             {index !== sub.length - 1 && <Separator />}

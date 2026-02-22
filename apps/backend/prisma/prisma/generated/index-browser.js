@@ -208,11 +208,14 @@ exports.Prisma.GalleryScalarFieldEnum = {
   userId: 'userId',
   title: 'title',
   slug: 'slug',
+  eventDate: 'eventDate',
+  deadline: 'deadline',
   coverPhotoId: 'coverPhotoId',
   passwordHash: 'passwordHash',
   shareToken: 'shareToken',
   isPublished: 'isPublished',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PhotoScalarFieldEnum = {
@@ -227,11 +230,41 @@ exports.Prisma.PhotoScalarFieldEnum = {
   mimeType: 'mimeType',
   order: 'order',
   isCulled: 'isCulled',
+  loved: 'loved',
   aiCaption: 'aiCaption',
   faceCount: 'faceCount',
   thumbnailKey: 'thumbnailKey',
   previewKey: 'previewKey',
   status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ClientScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GalleryClientScalarFieldEnum = {
+  galleryId: 'galleryId',
+  clientId: 'clientId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AlbumScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AlbumPhotoScalarFieldEnum = {
+  albumId: 'albumId',
+  photoId: 'photoId',
   createdAt: 'createdAt'
 };
 
@@ -300,7 +333,11 @@ exports.Prisma.ModelName = {
   Payment: 'Payment',
   UserOnboarding: 'UserOnboarding',
   Gallery: 'Gallery',
-  Photo: 'Photo'
+  Photo: 'Photo',
+  Client: 'Client',
+  GalleryClient: 'GalleryClient',
+  Album: 'Album',
+  AlbumPhoto: 'AlbumPhoto'
 };
 
 /**

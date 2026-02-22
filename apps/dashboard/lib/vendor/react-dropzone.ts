@@ -1,6 +1,14 @@
 "use client";
 
-import { useCallback, useMemo, useState, type ChangeEvent, type DragEvent, type HTMLAttributes, type InputHTMLAttributes } from "react";
+import {
+  useCallback,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type DragEvent,
+  type HTMLAttributes,
+  type InputHTMLAttributes,
+} from "react";
 
 type DropzoneOptions = {
   onDrop?: (acceptedFiles: File[]) => void;
@@ -17,10 +25,11 @@ export function useDropzone(options: DropzoneOptions) {
         return;
       }
       const asArray = Array.from(files);
-      const accepted = options.multiple === false ? asArray.slice(0, 1) : asArray;
+      const accepted =
+        options.multiple === false ? asArray.slice(0, 1) : asArray;
       options.onDrop?.(accepted);
     },
-    [options]
+    [options],
   );
 
   const getRootProps = useCallback(
@@ -43,7 +52,7 @@ export function useDropzone(options: DropzoneOptions) {
         props.onDrop?.(event);
       },
     }),
-    [onFiles]
+    [onFiles],
   );
 
   const getInputProps = useCallback(
@@ -51,13 +60,15 @@ export function useDropzone(options: DropzoneOptions) {
       ...props,
       type: "file" as const,
       multiple: options.multiple !== false,
-      accept: options.accept ? Object.keys(options.accept).join(",") : undefined,
+      accept: options.accept
+        ? Object.keys(options.accept).join(",")
+        : undefined,
       onChange: (event: ChangeEvent<HTMLInputElement>) => {
         onFiles(event.target.files);
         props.onChange?.(event);
       },
     }),
-    [onFiles, options.accept, options.multiple]
+    [onFiles, options.accept, options.multiple],
   );
 
   return useMemo(
@@ -66,6 +77,6 @@ export function useDropzone(options: DropzoneOptions) {
       getInputProps,
       isDragActive,
     }),
-    [getInputProps, getRootProps, isDragActive]
+    [getInputProps, getRootProps, isDragActive],
   );
 }

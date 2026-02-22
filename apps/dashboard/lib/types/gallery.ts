@@ -7,6 +7,7 @@ export type Photo = {
   order: number;
   width: number;
   height: number;
+  loved: boolean;
   createdAt: string;
 };
 
@@ -14,6 +15,8 @@ export type Gallery = {
   id: string;
   title: string;
   slug: string;
+  eventDate: string | null;
+  deadline: string | null;
   passwordEnabled: boolean;
   password: string | null;
   isPublished: boolean;
@@ -22,8 +25,17 @@ export type Gallery = {
   coverPhotoId: string | null;
 };
 
+export type Album = {
+  id: string;
+  galleryId: string;
+  title: string;
+  photoIds: string[];
+  createdAt: string;
+};
+
 export type GalleryWithPhotos = Gallery & {
   photos: Photo[];
+  albums: Album[];
 };
 
 export type Client = {

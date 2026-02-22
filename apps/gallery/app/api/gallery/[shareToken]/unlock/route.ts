@@ -48,6 +48,103 @@ const clearAttempts = (ip: string) => {
   unlockAttemptStore.delete(ip);
 };
 
+type DashboardListResponse = {
+  galleries?: Array<{
+    id: string;
+    slug: string;
+  }>;
+};
+
+type DashboardGalleryResponse = {
+  gallery?: {
+    id: string;
+    slug: string;
+    isPublished?: boolean;
+    passwordEnabled?: boolean;
+    password?: string | null;
+  };
+};
+
+const getDashboardBaseUrl = (): string => {
+  const dashboardUrl =
+    process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "http://localhost:3001";
+  return dashboardUrl.replace(/\/$/, "");
+};
+
+const encodeBase64Url = (value: string): string =>
+  Buffer.from(value).toString("base64url");
+
+const createLocalUnlockToken = (shareToken: string): string => {
+  const header = encodeBase64Url(JSON.stringify({ alg: "none", typ: "JWT" }));
+  const payload = encodeBase64Url(
+    JSON.stringify({
+      sub: shareToken,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      source: "gallery-local-fallback",
+    }),
+  );
+  return `${header}.${payload}.local`;
+};
+
+const unlockAgainstDashboardMock = async (
+  shareToken: string,
+  password: string,
+): Promise<{ token: string; expiresAt: string } | null> => {
+  const dashboardBaseUrl = getDashboardBaseUrl();
+  const listResponse = await fetch(
+    `${dashboardBaseUrl}/api/galleries?q=${encodeURIComponent(shareToken)}&status=all&sort=newest`,
+    { cache: "no-store" },
+  );
+
+  if (!listResponse.ok) {
+    return null;
+  }
+
+  const listPayload = (await listResponse.json()) as DashboardListResponse;
+  const galleryListItem = listPayload.galleries?.find(
+    (gallery) => gallery.slug === shareToken,
+  );
+  if (!galleryListItem) {
+    return null;
+  }
+
+  const detailResponse = await fetch(
+    `${dashboardBaseUrl}/api/galleries/${galleryListItem.id}`,
+    { cache: "no-store" },
+  );
+  if (!detailResponse.ok) {
+    return null;
+  }
+
+  const detailPayload = (await detailResponse.json()) as DashboardGalleryResponse;
+  const gallery = detailPayload.gallery;
+  if (!gallery) {
+    return null;
+  }
+
+  if (!gallery.isPublished) {
+    return null;
+  }
+
+  if (!gallery.passwordEnabled) {
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    return {
+      token: createLocalUnlockToken(shareToken),
+      expiresAt,
+    };
+  }
+
+  if (!gallery.password || gallery.password !== password) {
+    throw new Error("Invalid password");
+  }
+
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+  return {
+    token: createLocalUnlockToken(shareToken),
+    expiresAt,
+  };
+};
+
 export async function POST(
   request: NextRequest,
   context: { params: Promise<{ shareToken: string }> }
@@ -93,6 +190,33 @@ export async function POST(
 
     if (!response.ok) {
       const body = await response.text();
+      const backendRouteMissing =
+        response.status === 404 ||
+        body.includes("Cannot POST /api/public/gallery/");
+
+      if (backendRouteMissing) {
+        try {
+          const fallbackResult = await unlockAgainstDashboardMock(
+            shareToken,
+            payload.password,
+          );
+
+          if (fallbackResult) {
+            clearAttempts(ip);
+            return NextResponse.json({
+              token: fallbackResult.token,
+              expiresAt: fallbackResult.expiresAt,
+            });
+          }
+        } catch (fallbackError) {
+          const fallbackMessage =
+            fallbackError instanceof Error
+              ? fallbackError.message
+              : "Invalid password";
+          return NextResponse.json({ error: fallbackMessage }, { status: 401 });
+        }
+      }
+
       return NextResponse.json(
         {
           error: body || "Invalid password",

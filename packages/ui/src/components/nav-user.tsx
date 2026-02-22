@@ -45,7 +45,7 @@ export function NavUser({ logout }: Props) {
               src={session?.user?.image ?? "/avatars/shadcn.jpg"}
               alt={session?.user.name ?? "User"}
             />
-            <AvatarFallback className="rounded-lg">
+            <AvatarFallback className="rounded-lg text-white">
               {session?.user.name?.substring(0, 2).toUpperCase() ?? "U"}
             </AvatarFallback>
           </Avatar>
@@ -62,9 +62,8 @@ export function NavUser({ logout }: Props) {
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
                 src={session?.user?.image ?? "/avatars/shadcn.jpg"}
-                alt={session?.user.name}
               />
-              <AvatarFallback className="rounded-lg">
+              <AvatarFallback className="rounded-lg text-white">
                 {" "}
                 {session?.user.name?.substring(0, 2).toUpperCase() ?? "U"}
               </AvatarFallback>
@@ -104,7 +103,7 @@ export function NavUser({ logout }: Props) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        {/* <DropdownMenuGroup>
           <DropdownMenuItem>
             <BadgeCheck />
             Account
@@ -117,7 +116,7 @@ export function NavUser({ logout }: Props) {
             <Bell />
             Notifications
           </DropdownMenuItem>
-        </DropdownMenuGroup>
+        </DropdownMenuGroup> */}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout}>
           <LogOut />

@@ -15,7 +15,7 @@ type Props = {
 
 const Header = async ({ logout, main }: Props) => {
   return (
-    <header className="flex items-center justify-between py-4 h-20">
+    <header className="flex items-center justify-between py-4 h-20 px-5">
       <div className="flex h-full items-center space-x-2 text-sm">
         <Link href={`${process.env.NEXT_PUBLIC_LANDING_URL}`} aria-label="Home">
           <div className="flex items-center justify-center gap-2">
@@ -29,7 +29,7 @@ const Header = async ({ logout, main }: Props) => {
         <AppsDropdown main={main} />
       </div>
       <div className="flex items-center space-x-5">
-        <NotificationPopover />
+        {/* <NotificationPopover /> */}
         <NavUser logout={logout} />
       </div>
     </header>

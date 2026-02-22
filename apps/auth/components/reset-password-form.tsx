@@ -105,9 +105,9 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
   };
 
   return (
-    <div className={cn("min-h-screen flex")}>
+    <div className={cn("min-h-screen flex text-foreground")}>
       {/* Left side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-20 xl:px-24 bg-white min-h-screen lg:min-h-0">
+      <div className="min-h-screen flex-1 bg-card/90 px-4 py-8 sm:px-6 lg:min-h-0 lg:px-20 xl:px-24 flex flex-col justify-center">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           {/* FOTNO Logo */}
           <div className={"relative w-40 h-10 left-1/2 -translate-x-1/2 mb-8"}>
@@ -120,10 +120,10 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
 
           {/* Welcome Text */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="mb-2 text-3xl font-bold text-foreground">
               Reset your password
             </h1>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Please enter your new password below to complete the reset
               process.
             </p>
@@ -144,10 +144,10 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
                         {...field}
                         type="password"
                         placeholder="Enter new password"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full rounded-lg border-border px-4 py-3 focus-visible:ring-ring"
                       />
                     </FormControl>
-                    <FormMessage className="text-red-500 text-sm" />
+                    <FormMessage className="text-sm text-destructive" />
                   </FormItem>
                 )}
               />
@@ -163,10 +163,10 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
                         {...field}
                         type="password"
                         placeholder="Confirm new password"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full rounded-lg border-border px-4 py-3 focus-visible:ring-ring"
                       />
                     </FormControl>
-                    <FormMessage className="text-red-500 text-sm" />
+                    <FormMessage className="text-sm text-destructive" />
                   </FormItem>
                 )}
               />
@@ -175,17 +175,17 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="auth-cta w-full text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? "Resetting..." : "Reset Password"}
               </Button>
 
               {/* Back to account link */}
               <div className="text-center">
-                <span className="text-gray-600">Remember your password? </span>
+                <span className="text-muted-foreground">Remember your password? </span>
                 <Link
                   href="/account"
-                  className="text-gray-900 font-medium hover:underline cursor-pointer"
+                  className="cursor-pointer font-medium text-foreground hover:underline"
                 >
                   Back to login
                 </Link>
@@ -194,13 +194,13 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
           </Form>
 
           {/* Terms */}
-          <div className="mt-8 text-center text-sm text-gray-500">
+          <div className="mt-8 text-center text-sm text-muted-foreground">
             By continuing, you agree to our{" "}
-            <Link href="/terms" className="underline hover:text-gray-700">
+            <Link href="/terms" className="underline hover:text-foreground">
               Terms
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="underline hover:text-gray-700">
+            <Link href="/privacy" className="underline hover:text-foreground">
               Privacy Policy
             </Link>
             .
@@ -210,7 +210,7 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
 
       {/* Right side - Photography Illustration */}
       <div className="hidden lg:block relative w-0 flex-1">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-700">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600">
           {/* Photography Illustration Container */}
           <div className="absolute inset-0 overflow-hidden">
             {/* Background decorative elements - Camera-themed */}

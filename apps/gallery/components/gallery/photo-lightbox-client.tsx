@@ -92,6 +92,24 @@ export default function PhotoLightboxClient({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [gallery.shareToken, nextPhoto, previousPhoto, router]);
 
+  useEffect(() => {
+    const preventContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+
+    const preventDragStart = (event: DragEvent) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("contextmenu", preventContextMenu);
+    window.addEventListener("dragstart", preventDragStart);
+
+    return () => {
+      window.removeEventListener("contextmenu", preventContextMenu);
+      window.removeEventListener("dragstart", preventDragStart);
+    };
+  }, []);
+
   const refreshGallery = async (token?: string) => {
     const response = await fetch(`/api/gallery/${gallery.shareToken}`, {
       headers: token
@@ -198,7 +216,7 @@ export default function PhotoLightboxClient({
     : currentPhoto.previewSrc;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen select-none bg-slate-950 text-slate-100">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         <Link
           href={`/${gallery.shareToken}`}
@@ -239,6 +257,8 @@ export default function PhotoLightboxClient({
             priority
             placeholder="blur"
             blurDataURL={currentPhoto.blurDataUrl}
+            draggable={false}
+            onContextMenu={(event) => event.preventDefault()}
             className="h-auto max-h-[76vh] w-full object-contain"
             sizes="100vw"
           />

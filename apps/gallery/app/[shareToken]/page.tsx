@@ -22,7 +22,11 @@ export async function generateMetadata({
       cache: "force-cache",
     });
 
-    const cover = gallery.photos.find((photo) => photo.id === gallery.coverPhotoId);
+    console.log("gallery", gallery);
+
+    const cover = gallery.photos.find(
+      (photo) => photo.id === gallery.coverPhotoId,
+    );
     const imagePath = cover?.previewSrc ?? gallery.photos[0]?.previewSrc;
     const imageUrl = imagePath
       ? `${galleryBaseUrl}${imagePath.startsWith("/") ? imagePath : `/${imagePath}`}`

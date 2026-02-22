@@ -4,6 +4,8 @@ export type GalleryListItem = {
   id: string;
   title: string;
   slug: string;
+  eventDate: string | null;
+  deadline: string | null;
   isPublished: boolean;
   createdAt: string;
   updatedAt: string;
@@ -29,5 +31,15 @@ export type OverviewResponse = {
 };
 
 export type ListClientsResponse = {
-  clients: Array<Client & { galleries: Array<{ id: string; title: string }> }>;
+  clients: Array<
+    Client & {
+      galleries: Array<{
+        id: string;
+        title: string;
+        eventDate: string | null;
+        deadline: string | null;
+      }>;
+    }
+  >;
+  galleries: Array<{ id: string; title: string; eventDate: string | null; deadline: string | null }>;
 };

@@ -22,18 +22,20 @@ type Props = {
 
 export function GalleryCard({ gallery, onDelete }: Props) {
   const createdDate = new Date(gallery.createdAt).toLocaleDateString();
+  const galleryBaseUrl = process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="group overflow-hidden border-border/70 bg-white/80 shadow-[0_16px_40px_-34px_rgba(2,6,23,0.8)] transition-transform duration-300 hover:-translate-y-0.5">
       <Link href={`/galleries/${gallery.id}`}>
         <div className="relative aspect-[4/3] bg-muted">
           {gallery.coverPhotoUrl ? (
-            <Image src={gallery.coverPhotoUrl} alt={gallery.title} fill className="object-cover" />
+            <Image src={gallery.coverPhotoUrl} alt={gallery.title} fill className="object-cover transition duration-500 group-hover:scale-[1.03]" />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
               No cover photo
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
         </div>
       </Link>
 
@@ -56,7 +58,12 @@ export function GalleryCard({ gallery, onDelete }: Props) {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  const link = `${window.location.origin}/gallery/${gallery.slug}`;
+                  if (!gallery.isPublished) {
+                    toast.error("Publish this gallery before sharing");
+                    return;
+                  }
+
+                  const link = `${galleryBaseUrl.replace(/\/$/, "")}/gallery/${gallery.slug}`;
                   navigator.clipboard.writeText(link);
                   toast.success("Share link copied");
                 }}
@@ -75,7 +82,12 @@ export function GalleryCard({ gallery, onDelete }: Props) {
       </CardHeader>
 
       <CardContent className="flex items-center justify-between pt-0">
-        <p className="text-sm text-muted-foreground">{gallery.photoCount} photos</p>
+        <div className="space-y-1">
+          <p className="text-sm text-muted-foreground">{gallery.photoCount} photos</p>
+          <p className="text-xs text-muted-foreground">
+            Date: {gallery.eventDate ?? "-"} • Deadline: {gallery.deadline ?? "-"}
+          </p>
+        </div>
         <GalleryStatusBadge status={gallery.status} />
       </CardContent>
     </Card>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore } from "react";
 
 type SetState<T> = (partial: Partial<T> | ((state: T) => Partial<T>)) => void;
 type GetState<T> = () => T;
@@ -15,9 +15,11 @@ type StoreApi<T> = {
 };
 
 type Selector<T, U> = (state: T) => U;
+const identity = <T,>(state: T) => state;
 
 export function create<T>(createState: StateCreator<T>) {
   let state: T;
+  let version = 0;
   const listeners = new Set<() => void>();
 
   const getState: GetState<T> = () => state;
@@ -28,7 +30,12 @@ export function create<T>(createState: StateCreator<T>) {
         ? { ...state, ...(partial as (state: T) => Partial<T>)(state) }
         : { ...state, ...partial };
 
+    if (Object.is(nextState, state)) {
+      return;
+    }
+
     state = nextState;
+    version += 1;
     listeners.forEach((listener) => listener());
   };
 
@@ -41,8 +48,30 @@ export function create<T>(createState: StateCreator<T>) {
 
   const api: StoreApi<T> = { getState, setState, subscribe };
 
-  function useStore<U>(selector: Selector<T, U> = ((s: T) => s as unknown as U)) {
-    return useSyncExternalStore(api.subscribe, () => selector(api.getState()), () => selector(api.getState()));
+  function useStore<U>(selector: Selector<T, U> = identity as Selector<T, U>) {
+    const cacheRef = useRef<{
+      version: number;
+      selector: Selector<T, U>;
+      value: U;
+    } | null>(null);
+
+    const getSnapshot = () => {
+      const cached = cacheRef.current;
+      if (cached && cached.version === version && cached.selector === selector) {
+        return cached.value;
+      }
+
+      const nextValue = selector(api.getState());
+      if (cached && cached.version === version && Object.is(cached.value, nextValue)) {
+        cacheRef.current = { version, selector, value: cached.value };
+        return cached.value;
+      }
+
+      cacheRef.current = { version, selector, value: nextValue };
+      return nextValue;
+    };
+
+    return useSyncExternalStore(api.subscribe, getSnapshot, getSnapshot);
   }
 
   (useStore as typeof useStore & StoreApi<T>).getState = api.getState;

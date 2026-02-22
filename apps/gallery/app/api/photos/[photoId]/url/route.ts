@@ -28,6 +28,13 @@ export async function GET(
       return NextResponse.json({ error: "Invalid variant" }, { status: 400 });
     }
 
+    if (variant !== "original") {
+      return NextResponse.json(
+        { error: "Preview access must go through protected proxy route" },
+        { status: 403 }
+      );
+    }
+
     const url = await getPhotoPresignedUrl(photoId, shareToken, variant, galleryJwt);
 
     return NextResponse.json({ url });

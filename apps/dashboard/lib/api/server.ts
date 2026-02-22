@@ -60,10 +60,14 @@ export function getGalleryWithPhotos(id: string): GalleryWithPhotos | null {
   const photos = store.photos
     .filter((photo) => photo.galleryId === id)
     .sort((a, b) => a.order - b.order);
+  const albums = store.albums
+    .filter((album) => album.galleryId === id)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
   return {
     ...gallery,
     photos,
+    albums,
   };
 }
 

@@ -1,4 +1,5 @@
 import "@workspace/ui/globals.css";
+import "./theme.css";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import type React from "react";
@@ -23,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(manrope.variable, "font-sans antialiased")}>
+      <body className={cn(manrope.variable, "gallery-theme gallery-shell font-sans antialiased")}>
         {children}
         <Toaster richColors />
       </body>

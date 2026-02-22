@@ -53,6 +53,26 @@ export type Gallery = $Result.DefaultSelection<Prisma.$GalleryPayload>
  * 
  */
 export type Photo = $Result.DefaultSelection<Prisma.$PhotoPayload>
+/**
+ * Model Client
+ * 
+ */
+export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
+/**
+ * Model GalleryClient
+ * 
+ */
+export type GalleryClient = $Result.DefaultSelection<Prisma.$GalleryClientPayload>
+/**
+ * Model Album
+ * 
+ */
+export type Album = $Result.DefaultSelection<Prisma.$AlbumPayload>
+/**
+ * Model AlbumPhoto
+ * 
+ */
+export type AlbumPhoto = $Result.DefaultSelection<Prisma.$AlbumPhotoPayload>
 
 /**
  * Enums
@@ -347,6 +367,46 @@ export class PrismaClient<
     * ```
     */
   get photo(): Prisma.PhotoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.client`: Exposes CRUD operations for the **Client** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Clients
+    * const clients = await prisma.client.findMany()
+    * ```
+    */
+  get client(): Prisma.ClientDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.galleryClient`: Exposes CRUD operations for the **GalleryClient** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GalleryClients
+    * const galleryClients = await prisma.galleryClient.findMany()
+    * ```
+    */
+  get galleryClient(): Prisma.GalleryClientDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.album`: Exposes CRUD operations for the **Album** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Albums
+    * const albums = await prisma.album.findMany()
+    * ```
+    */
+  get album(): Prisma.AlbumDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.albumPhoto`: Exposes CRUD operations for the **AlbumPhoto** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AlbumPhotos
+    * const albumPhotos = await prisma.albumPhoto.findMany()
+    * ```
+    */
+  get albumPhoto(): Prisma.AlbumPhotoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -788,7 +848,11 @@ export namespace Prisma {
     Payment: 'Payment',
     UserOnboarding: 'UserOnboarding',
     Gallery: 'Gallery',
-    Photo: 'Photo'
+    Photo: 'Photo',
+    Client: 'Client',
+    GalleryClient: 'GalleryClient',
+    Album: 'Album',
+    AlbumPhoto: 'AlbumPhoto'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -804,7 +868,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "client" | "galleryClient" | "album" | "albumPhoto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1400,6 +1464,302 @@ export namespace Prisma {
           }
         }
       }
+      Client: {
+        payload: Prisma.$ClientPayload<ExtArgs>
+        fields: Prisma.ClientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findFirst: {
+            args: Prisma.ClientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          findMany: {
+            args: Prisma.ClientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          create: {
+            args: Prisma.ClientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          createMany: {
+            args: Prisma.ClientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          delete: {
+            args: Prisma.ClientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          update: {
+            args: Prisma.ClientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ClientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
+          }
+          upsert: {
+            args: Prisma.ClientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
+          }
+          aggregate: {
+            args: Prisma.ClientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClient>
+          }
+          groupBy: {
+            args: Prisma.ClientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClientCountArgs<ExtArgs>
+            result: $Utils.Optional<ClientCountAggregateOutputType> | number
+          }
+        }
+      }
+      GalleryClient: {
+        payload: Prisma.$GalleryClientPayload<ExtArgs>
+        fields: Prisma.GalleryClientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GalleryClientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GalleryClientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          findFirst: {
+            args: Prisma.GalleryClientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GalleryClientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          findMany: {
+            args: Prisma.GalleryClientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
+          }
+          create: {
+            args: Prisma.GalleryClientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          createMany: {
+            args: Prisma.GalleryClientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GalleryClientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
+          }
+          delete: {
+            args: Prisma.GalleryClientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          update: {
+            args: Prisma.GalleryClientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          deleteMany: {
+            args: Prisma.GalleryClientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GalleryClientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GalleryClientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
+          }
+          upsert: {
+            args: Prisma.GalleryClientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
+          }
+          aggregate: {
+            args: Prisma.GalleryClientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGalleryClient>
+          }
+          groupBy: {
+            args: Prisma.GalleryClientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GalleryClientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GalleryClientCountArgs<ExtArgs>
+            result: $Utils.Optional<GalleryClientCountAggregateOutputType> | number
+          }
+        }
+      }
+      Album: {
+        payload: Prisma.$AlbumPayload<ExtArgs>
+        fields: Prisma.AlbumFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AlbumFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AlbumFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          findFirst: {
+            args: Prisma.AlbumFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AlbumFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          findMany: {
+            args: Prisma.AlbumFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>[]
+          }
+          create: {
+            args: Prisma.AlbumCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          createMany: {
+            args: Prisma.AlbumCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AlbumCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>[]
+          }
+          delete: {
+            args: Prisma.AlbumDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          update: {
+            args: Prisma.AlbumUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          deleteMany: {
+            args: Prisma.AlbumDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AlbumUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AlbumUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>[]
+          }
+          upsert: {
+            args: Prisma.AlbumUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPayload>
+          }
+          aggregate: {
+            args: Prisma.AlbumAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlbum>
+          }
+          groupBy: {
+            args: Prisma.AlbumGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlbumGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AlbumCountArgs<ExtArgs>
+            result: $Utils.Optional<AlbumCountAggregateOutputType> | number
+          }
+        }
+      }
+      AlbumPhoto: {
+        payload: Prisma.$AlbumPhotoPayload<ExtArgs>
+        fields: Prisma.AlbumPhotoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AlbumPhotoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AlbumPhotoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          findFirst: {
+            args: Prisma.AlbumPhotoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AlbumPhotoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          findMany: {
+            args: Prisma.AlbumPhotoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>[]
+          }
+          create: {
+            args: Prisma.AlbumPhotoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          createMany: {
+            args: Prisma.AlbumPhotoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AlbumPhotoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>[]
+          }
+          delete: {
+            args: Prisma.AlbumPhotoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          update: {
+            args: Prisma.AlbumPhotoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AlbumPhotoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AlbumPhotoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AlbumPhotoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AlbumPhotoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlbumPhotoPayload>
+          }
+          aggregate: {
+            args: Prisma.AlbumPhotoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlbumPhoto>
+          }
+          groupBy: {
+            args: Prisma.AlbumPhotoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlbumPhotoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AlbumPhotoCountArgs<ExtArgs>
+            result: $Utils.Optional<AlbumPhotoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1516,6 +1876,10 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingOmit
     gallery?: GalleryOmit
     photo?: PhotoOmit
+    client?: ClientOmit
+    galleryClient?: GalleryClientOmit
+    album?: AlbumOmit
+    albumPhoto?: AlbumPhotoOmit
   }
 
   /* Types for Logging */
@@ -1600,6 +1964,7 @@ export namespace Prisma {
     accounts: number
     payment: number
     galleries: number
+    clients: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1607,6 +1972,7 @@ export namespace Prisma {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     payment?: boolean | UserCountOutputTypeCountPaymentArgs
     galleries?: boolean | UserCountOutputTypeCountGalleriesArgs
+    clients?: boolean | UserCountOutputTypeCountClientsArgs
   }
 
   // Custom InputTypes
@@ -1648,6 +2014,13 @@ export namespace Prisma {
     where?: GalleryWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClientWhereInput
+  }
+
 
   /**
    * Count Type GalleryCountOutputType
@@ -1655,10 +2028,14 @@ export namespace Prisma {
 
   export type GalleryCountOutputType = {
     photos: number
+    albums: number
+    clients: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos?: boolean | GalleryCountOutputTypeCountPhotosArgs
+    albums?: boolean | GalleryCountOutputTypeCountAlbumsArgs
+    clients?: boolean | GalleryCountOutputTypeCountClientsArgs
   }
 
   // Custom InputTypes
@@ -1679,6 +2056,20 @@ export namespace Prisma {
     where?: PhotoWhereInput
   }
 
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountAlbumsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlbumWhereInput
+  }
+
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryClientWhereInput
+  }
+
 
   /**
    * Count Type PhotoCountOutputType
@@ -1686,10 +2077,12 @@ export namespace Prisma {
 
   export type PhotoCountOutputType = {
     usedAsCoverIn: number
+    albumPhotos: number
   }
 
   export type PhotoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     usedAsCoverIn?: boolean | PhotoCountOutputTypeCountUsedAsCoverInArgs
+    albumPhotos?: boolean | PhotoCountOutputTypeCountAlbumPhotosArgs
   }
 
   // Custom InputTypes
@@ -1708,6 +2101,75 @@ export namespace Prisma {
    */
   export type PhotoCountOutputTypeCountUsedAsCoverInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GalleryWhereInput
+  }
+
+  /**
+   * PhotoCountOutputType without action
+   */
+  export type PhotoCountOutputTypeCountAlbumPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlbumPhotoWhereInput
+  }
+
+
+  /**
+   * Count Type ClientCountOutputType
+   */
+
+  export type ClientCountOutputType = {
+    galleries: number
+  }
+
+  export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    galleries?: boolean | ClientCountOutputTypeCountGalleriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClientCountOutputType
+     */
+    select?: ClientCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountGalleriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryClientWhereInput
+  }
+
+
+  /**
+   * Count Type AlbumCountOutputType
+   */
+
+  export type AlbumCountOutputType = {
+    photos: number
+  }
+
+  export type AlbumCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    photos?: boolean | AlbumCountOutputTypeCountPhotosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AlbumCountOutputType without action
+   */
+  export type AlbumCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumCountOutputType
+     */
+    select?: AlbumCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AlbumCountOutputType without action
+   */
+  export type AlbumCountOutputTypeCountPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlbumPhotoWhereInput
   }
 
 
@@ -1956,6 +2418,7 @@ export namespace Prisma {
     payment?: boolean | User$paymentArgs<ExtArgs>
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
+    clients?: boolean | User$clientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2017,6 +2480,7 @@ export namespace Prisma {
     payment?: boolean | User$paymentArgs<ExtArgs>
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
+    clients?: boolean | User$clientsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2030,6 +2494,7 @@ export namespace Prisma {
       payment: Prisma.$PaymentPayload<ExtArgs>[]
       userOnboarding: Prisma.$UserOnboardingPayload<ExtArgs> | null
       galleries: Prisma.$GalleryPayload<ExtArgs>[]
+      clients: Prisma.$ClientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2445,6 +2910,7 @@ export namespace Prisma {
     payment<T extends User$paymentArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userOnboarding<T extends User$userOnboardingArgs<ExtArgs> = {}>(args?: Subset<T, User$userOnboardingArgs<ExtArgs>>): Prisma__UserOnboardingClient<$Result.GetResult<Prisma.$UserOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     galleries<T extends User$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, User$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2988,6 +3454,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GalleryScalarFieldEnum | GalleryScalarFieldEnum[]
+  }
+
+  /**
+   * User.clients
+   */
+  export type User$clientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    cursor?: ClientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
   }
 
   /**
@@ -8673,11 +9163,14 @@ export namespace Prisma {
     userId: string | null
     title: string | null
     slug: string | null
+    eventDate: Date | null
+    deadline: Date | null
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
     isPublished: boolean | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type GalleryMaxAggregateOutputType = {
@@ -8685,11 +9178,14 @@ export namespace Prisma {
     userId: string | null
     title: string | null
     slug: string | null
+    eventDate: Date | null
+    deadline: Date | null
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
     isPublished: boolean | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type GalleryCountAggregateOutputType = {
@@ -8697,11 +9193,14 @@ export namespace Prisma {
     userId: number
     title: number
     slug: number
+    eventDate: number
+    deadline: number
     coverPhotoId: number
     passwordHash: number
     shareToken: number
     isPublished: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -8711,11 +9210,14 @@ export namespace Prisma {
     userId?: true
     title?: true
     slug?: true
+    eventDate?: true
+    deadline?: true
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
     isPublished?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type GalleryMaxAggregateInputType = {
@@ -8723,11 +9225,14 @@ export namespace Prisma {
     userId?: true
     title?: true
     slug?: true
+    eventDate?: true
+    deadline?: true
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
     isPublished?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type GalleryCountAggregateInputType = {
@@ -8735,11 +9240,14 @@ export namespace Prisma {
     userId?: true
     title?: true
     slug?: true
+    eventDate?: true
+    deadline?: true
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
     isPublished?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -8820,11 +9328,14 @@ export namespace Prisma {
     userId: string
     title: string
     slug: string
+    eventDate: Date | null
+    deadline: Date | null
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string
     isPublished: boolean
     createdAt: Date
+    updatedAt: Date
     _count: GalleryCountAggregateOutputType | null
     _min: GalleryMinAggregateOutputType | null
     _max: GalleryMaxAggregateOutputType | null
@@ -8849,14 +9360,19 @@ export namespace Prisma {
     userId?: boolean
     title?: boolean
     slug?: boolean
+    eventDate?: boolean
+    deadline?: boolean
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
     isPublished?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
     photos?: boolean | Gallery$photosArgs<ExtArgs>
+    albums?: boolean | Gallery$albumsArgs<ExtArgs>
+    clients?: boolean | Gallery$clientsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -8865,11 +9381,14 @@ export namespace Prisma {
     userId?: boolean
     title?: boolean
     slug?: boolean
+    eventDate?: boolean
+    deadline?: boolean
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
     isPublished?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
@@ -8879,11 +9398,14 @@ export namespace Prisma {
     userId?: boolean
     title?: boolean
     slug?: boolean
+    eventDate?: boolean
+    deadline?: boolean
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
     isPublished?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
@@ -8893,18 +9415,23 @@ export namespace Prisma {
     userId?: boolean
     title?: boolean
     slug?: boolean
+    eventDate?: boolean
+    deadline?: boolean
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
     isPublished?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "createdAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
     photos?: boolean | Gallery$photosArgs<ExtArgs>
+    albums?: boolean | Gallery$albumsArgs<ExtArgs>
+    clients?: boolean | Gallery$clientsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8922,17 +9449,22 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       coverPhoto: Prisma.$PhotoPayload<ExtArgs> | null
       photos: Prisma.$PhotoPayload<ExtArgs>[]
+      albums: Prisma.$AlbumPayload<ExtArgs>[]
+      clients: Prisma.$GalleryClientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       title: string
       slug: string
+      eventDate: Date | null
+      deadline: Date | null
       coverPhotoId: string | null
       passwordHash: string | null
       shareToken: string
       isPublished: boolean
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["gallery"]>
     composites: {}
   }
@@ -9330,6 +9862,8 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     coverPhoto<T extends Gallery$coverPhotoArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$coverPhotoArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     photos<T extends Gallery$photosArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$photosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    albums<T extends Gallery$albumsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$albumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    clients<T extends Gallery$clientsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9363,11 +9897,14 @@ export namespace Prisma {
     readonly userId: FieldRef<"Gallery", 'String'>
     readonly title: FieldRef<"Gallery", 'String'>
     readonly slug: FieldRef<"Gallery", 'String'>
+    readonly eventDate: FieldRef<"Gallery", 'DateTime'>
+    readonly deadline: FieldRef<"Gallery", 'DateTime'>
     readonly coverPhotoId: FieldRef<"Gallery", 'String'>
     readonly passwordHash: FieldRef<"Gallery", 'String'>
     readonly shareToken: FieldRef<"Gallery", 'String'>
     readonly isPublished: FieldRef<"Gallery", 'Boolean'>
     readonly createdAt: FieldRef<"Gallery", 'DateTime'>
+    readonly updatedAt: FieldRef<"Gallery", 'DateTime'>
   }
     
 
@@ -9807,6 +10344,54 @@ export namespace Prisma {
   }
 
   /**
+   * Gallery.albums
+   */
+  export type Gallery$albumsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    where?: AlbumWhereInput
+    orderBy?: AlbumOrderByWithRelationInput | AlbumOrderByWithRelationInput[]
+    cursor?: AlbumWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.clients
+   */
+  export type Gallery$clientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    where?: GalleryClientWhereInput
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    cursor?: GalleryClientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
+  }
+
+  /**
    * Gallery without action
    */
   export type GalleryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9865,6 +10450,7 @@ export namespace Prisma {
     mimeType: string | null
     order: number | null
     isCulled: boolean | null
+    loved: boolean | null
     aiCaption: string | null
     faceCount: number | null
     thumbnailKey: string | null
@@ -9885,6 +10471,7 @@ export namespace Prisma {
     mimeType: string | null
     order: number | null
     isCulled: boolean | null
+    loved: boolean | null
     aiCaption: string | null
     faceCount: number | null
     thumbnailKey: string | null
@@ -9905,6 +10492,7 @@ export namespace Prisma {
     mimeType: number
     order: number
     isCulled: number
+    loved: number
     aiCaption: number
     faceCount: number
     thumbnailKey: number
@@ -9943,6 +10531,7 @@ export namespace Prisma {
     mimeType?: true
     order?: true
     isCulled?: true
+    loved?: true
     aiCaption?: true
     faceCount?: true
     thumbnailKey?: true
@@ -9963,6 +10552,7 @@ export namespace Prisma {
     mimeType?: true
     order?: true
     isCulled?: true
+    loved?: true
     aiCaption?: true
     faceCount?: true
     thumbnailKey?: true
@@ -9983,6 +10573,7 @@ export namespace Prisma {
     mimeType?: true
     order?: true
     isCulled?: true
+    loved?: true
     aiCaption?: true
     faceCount?: true
     thumbnailKey?: true
@@ -10090,6 +10681,7 @@ export namespace Prisma {
     mimeType: string
     order: number
     isCulled: boolean
+    loved: boolean
     aiCaption: string | null
     faceCount: number
     thumbnailKey: string | null
@@ -10129,6 +10721,7 @@ export namespace Prisma {
     mimeType?: boolean
     order?: boolean
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
@@ -10137,6 +10730,7 @@ export namespace Prisma {
     createdAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
+    albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
 
@@ -10152,6 +10746,7 @@ export namespace Prisma {
     mimeType?: boolean
     order?: boolean
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
@@ -10173,6 +10768,7 @@ export namespace Prisma {
     mimeType?: boolean
     order?: boolean
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
@@ -10194,6 +10790,7 @@ export namespace Prisma {
     mimeType?: boolean
     order?: boolean
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
@@ -10202,10 +10799,11 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "s3Key" | "s3Bucket" | "originalFilename" | "size" | "width" | "height" | "mimeType" | "order" | "isCulled" | "aiCaption" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "createdAt", ExtArgs["result"]["photo"]>
+  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "s3Key" | "s3Bucket" | "originalFilename" | "size" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "createdAt", ExtArgs["result"]["photo"]>
   export type PhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
+    albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PhotoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10220,6 +10818,7 @@ export namespace Prisma {
     objects: {
       gallery: Prisma.$GalleryPayload<ExtArgs>
       usedAsCoverIn: Prisma.$GalleryPayload<ExtArgs>[]
+      albumPhotos: Prisma.$AlbumPhotoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10233,6 +10832,7 @@ export namespace Prisma {
       mimeType: string
       order: number
       isCulled: boolean
+      loved: boolean
       aiCaption: string | null
       faceCount: number
       thumbnailKey: string | null
@@ -10635,6 +11235,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     usedAsCoverIn<T extends Photo$usedAsCoverInArgs<ExtArgs> = {}>(args?: Subset<T, Photo$usedAsCoverInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    albumPhotos<T extends Photo$albumPhotosArgs<ExtArgs> = {}>(args?: Subset<T, Photo$albumPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10675,6 +11276,7 @@ export namespace Prisma {
     readonly mimeType: FieldRef<"Photo", 'String'>
     readonly order: FieldRef<"Photo", 'Int'>
     readonly isCulled: FieldRef<"Photo", 'Boolean'>
+    readonly loved: FieldRef<"Photo", 'Boolean'>
     readonly aiCaption: FieldRef<"Photo", 'String'>
     readonly faceCount: FieldRef<"Photo", 'Int'>
     readonly thumbnailKey: FieldRef<"Photo", 'String'>
@@ -11101,6 +11703,30 @@ export namespace Prisma {
   }
 
   /**
+   * Photo.albumPhotos
+   */
+  export type Photo$albumPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    where?: AlbumPhotoWhereInput
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    cursor?: AlbumPhotoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
    * Photo without action
    */
   export type PhotoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11116,6 +11742,4275 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PhotoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Client
+   */
+
+  export type AggregateClient = {
+    _count: ClientCountAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  export type ClientMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    email: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ClientMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    email: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ClientCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    email: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ClientMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ClientMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ClientCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    email?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Client to aggregate.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Clients
+    **/
+    _count?: true | ClientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type GetClientAggregateType<T extends ClientAggregateArgs> = {
+        [P in keyof T & keyof AggregateClient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClient[P]>
+      : GetScalarType<T[P], AggregateClient[P]>
+  }
+
+
+
+
+  export type ClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClientWhereInput
+    orderBy?: ClientOrderByWithAggregationInput | ClientOrderByWithAggregationInput[]
+    by: ClientScalarFieldEnum[] | ClientScalarFieldEnum
+    having?: ClientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClientCountAggregateInputType | true
+    _min?: ClientMinAggregateInputType
+    _max?: ClientMaxAggregateInputType
+  }
+
+  export type ClientGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    email: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ClientCountAggregateOutputType | null
+    _min: ClientMinAggregateOutputType | null
+    _max: ClientMaxAggregateOutputType | null
+  }
+
+  type GetClientGroupByPayload<T extends ClientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClientGroupByOutputType[P]>
+            : GetScalarType<T[P], ClientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    galleries?: boolean | Client$galleriesArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["client"]>
+
+  export type ClientSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    email?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
+  export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    galleries?: boolean | Client$galleriesArgs<ExtArgs>
+    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Client"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      galleries: Prisma.$GalleryClientPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      email: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["client"]>
+    composites: {}
+  }
+
+  type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
+
+  type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ClientCountAggregateInputType | true
+    }
+
+  export interface ClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Client'], meta: { name: 'Client' } }
+    /**
+     * Find zero or one Client that matches the filter.
+     * @param {ClientFindUniqueArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClientFindUniqueArgs>(args: SelectSubset<T, ClientFindUniqueArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Client that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClientFindUniqueOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClientFindUniqueOrThrowArgs>(args: SelectSubset<T, ClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClientFindFirstArgs>(args?: SelectSubset<T, ClientFindFirstArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Client that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindFirstOrThrowArgs} args - Arguments to find a Client
+     * @example
+     * // Get one Client
+     * const client = await prisma.client.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClientFindFirstOrThrowArgs>(args?: SelectSubset<T, ClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Clients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Clients
+     * const clients = await prisma.client.findMany()
+     * 
+     * // Get first 10 Clients
+     * const clients = await prisma.client.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const clientWithIdOnly = await prisma.client.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ClientFindManyArgs>(args?: SelectSubset<T, ClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Client.
+     * @param {ClientCreateArgs} args - Arguments to create a Client.
+     * @example
+     * // Create one Client
+     * const Client = await prisma.client.create({
+     *   data: {
+     *     // ... data to create a Client
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClientCreateArgs>(args: SelectSubset<T, ClientCreateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Clients.
+     * @param {ClientCreateManyArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClientCreateManyArgs>(args?: SelectSubset<T, ClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Clients and returns the data saved in the database.
+     * @param {ClientCreateManyAndReturnArgs} args - Arguments to create many Clients.
+     * @example
+     * // Create many Clients
+     * const client = await prisma.client.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClientCreateManyAndReturnArgs>(args?: SelectSubset<T, ClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Client.
+     * @param {ClientDeleteArgs} args - Arguments to delete one Client.
+     * @example
+     * // Delete one Client
+     * const Client = await prisma.client.delete({
+     *   where: {
+     *     // ... filter to delete one Client
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClientDeleteArgs>(args: SelectSubset<T, ClientDeleteArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Client.
+     * @param {ClientUpdateArgs} args - Arguments to update one Client.
+     * @example
+     * // Update one Client
+     * const client = await prisma.client.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClientUpdateArgs>(args: SelectSubset<T, ClientUpdateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Clients.
+     * @param {ClientDeleteManyArgs} args - Arguments to filter Clients to delete.
+     * @example
+     * // Delete a few Clients
+     * const { count } = await prisma.client.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClientDeleteManyArgs>(args?: SelectSubset<T, ClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClientUpdateManyArgs>(args: SelectSubset<T, ClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients and returns the data updated in the database.
+     * @param {ClientUpdateManyAndReturnArgs} args - Arguments to update many Clients.
+     * @example
+     * // Update many Clients
+     * const client = await prisma.client.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Clients and only return the `id`
+     * const clientWithIdOnly = await prisma.client.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ClientUpdateManyAndReturnArgs>(args: SelectSubset<T, ClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Client.
+     * @param {ClientUpsertArgs} args - Arguments to update or create a Client.
+     * @example
+     * // Update or create a Client
+     * const client = await prisma.client.upsert({
+     *   create: {
+     *     // ... data to create a Client
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Client we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClientUpsertArgs>(args: SelectSubset<T, ClientUpsertArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientCountArgs} args - Arguments to filter Clients to count.
+     * @example
+     * // Count the number of Clients
+     * const count = await prisma.client.count({
+     *   where: {
+     *     // ... the filter for the Clients we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClientCountArgs>(
+      args?: Subset<T, ClientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClientAggregateArgs>(args: Subset<T, ClientAggregateArgs>): Prisma.PrismaPromise<GetClientAggregateType<T>>
+
+    /**
+     * Group by Client.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClientGroupByArgs['orderBy'] }
+        : { orderBy?: ClientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Client model
+   */
+  readonly fields: ClientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Client.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    galleries<T extends Client$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, Client$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Client model
+   */
+  interface ClientFieldRefs {
+    readonly id: FieldRef<"Client", 'String'>
+    readonly userId: FieldRef<"Client", 'String'>
+    readonly name: FieldRef<"Client", 'String'>
+    readonly email: FieldRef<"Client", 'String'>
+    readonly createdAt: FieldRef<"Client", 'DateTime'>
+    readonly updatedAt: FieldRef<"Client", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Client findUnique
+   */
+  export type ClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findUniqueOrThrow
+   */
+  export type ClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client findFirst
+   */
+  export type ClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findFirstOrThrow
+   */
+  export type ClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Client to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client findMany
+   */
+  export type ClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter, which Clients to fetch.
+     */
+    where?: ClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     */
+    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Clients.
+     */
+    cursor?: ClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     */
+    skip?: number
+    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client create
+   */
+  export type ClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Client.
+     */
+    data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+  }
+
+  /**
+   * Client createMany
+   */
+  export type ClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Client createManyAndReturn
+   */
+  export type ClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to create many Clients.
+     */
+    data: ClientCreateManyInput | ClientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Client update
+   */
+  export type ClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Client.
+     */
+    data: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+    /**
+     * Choose, which Client to update.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client updateMany
+   */
+  export type ClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client updateManyAndReturn
+   */
+  export type ClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * The data used to update Clients.
+     */
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Client upsert
+   */
+  export type ClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Client to update in case it exists.
+     */
+    where: ClientWhereUniqueInput
+    /**
+     * In case the Client found by the `where` argument doesn't exist, create a new Client with this data.
+     */
+    create: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+    /**
+     * In case the Client was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+  }
+
+  /**
+   * Client delete
+   */
+  export type ClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    /**
+     * Filter which Client to delete.
+     */
+    where: ClientWhereUniqueInput
+  }
+
+  /**
+   * Client deleteMany
+   */
+  export type ClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Clients to delete
+     */
+    where?: ClientWhereInput
+    /**
+     * Limit how many Clients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Client.galleries
+   */
+  export type Client$galleriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    where?: GalleryClientWhereInput
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    cursor?: GalleryClientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
+  }
+
+  /**
+   * Client without action
+   */
+  export type ClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GalleryClient
+   */
+
+  export type AggregateGalleryClient = {
+    _count: GalleryClientCountAggregateOutputType | null
+    _min: GalleryClientMinAggregateOutputType | null
+    _max: GalleryClientMaxAggregateOutputType | null
+  }
+
+  export type GalleryClientMinAggregateOutputType = {
+    galleryId: string | null
+    clientId: string | null
+    createdAt: Date | null
+  }
+
+  export type GalleryClientMaxAggregateOutputType = {
+    galleryId: string | null
+    clientId: string | null
+    createdAt: Date | null
+  }
+
+  export type GalleryClientCountAggregateOutputType = {
+    galleryId: number
+    clientId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type GalleryClientMinAggregateInputType = {
+    galleryId?: true
+    clientId?: true
+    createdAt?: true
+  }
+
+  export type GalleryClientMaxAggregateInputType = {
+    galleryId?: true
+    clientId?: true
+    createdAt?: true
+  }
+
+  export type GalleryClientCountAggregateInputType = {
+    galleryId?: true
+    clientId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type GalleryClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GalleryClient to aggregate.
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryClients to fetch.
+     */
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GalleryClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryClients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryClients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GalleryClients
+    **/
+    _count?: true | GalleryClientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GalleryClientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GalleryClientMaxAggregateInputType
+  }
+
+  export type GetGalleryClientAggregateType<T extends GalleryClientAggregateArgs> = {
+        [P in keyof T & keyof AggregateGalleryClient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGalleryClient[P]>
+      : GetScalarType<T[P], AggregateGalleryClient[P]>
+  }
+
+
+
+
+  export type GalleryClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryClientWhereInput
+    orderBy?: GalleryClientOrderByWithAggregationInput | GalleryClientOrderByWithAggregationInput[]
+    by: GalleryClientScalarFieldEnum[] | GalleryClientScalarFieldEnum
+    having?: GalleryClientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GalleryClientCountAggregateInputType | true
+    _min?: GalleryClientMinAggregateInputType
+    _max?: GalleryClientMaxAggregateInputType
+  }
+
+  export type GalleryClientGroupByOutputType = {
+    galleryId: string
+    clientId: string
+    createdAt: Date
+    _count: GalleryClientCountAggregateOutputType | null
+    _min: GalleryClientMinAggregateOutputType | null
+    _max: GalleryClientMaxAggregateOutputType | null
+  }
+
+  type GetGalleryClientGroupByPayload<T extends GalleryClientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GalleryClientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GalleryClientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GalleryClientGroupByOutputType[P]>
+            : GetScalarType<T[P], GalleryClientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GalleryClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    galleryId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryClient"]>
+
+  export type GalleryClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    galleryId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryClient"]>
+
+  export type GalleryClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    galleryId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryClient"]>
+
+  export type GalleryClientSelectScalar = {
+    galleryId?: boolean
+    clientId?: boolean
+    createdAt?: boolean
+  }
+
+  export type GalleryClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"galleryId" | "clientId" | "createdAt", ExtArgs["result"]["galleryClient"]>
+  export type GalleryClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type GalleryClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+  export type GalleryClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    client?: boolean | ClientDefaultArgs<ExtArgs>
+  }
+
+  export type $GalleryClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GalleryClient"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+      client: Prisma.$ClientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      galleryId: string
+      clientId: string
+      createdAt: Date
+    }, ExtArgs["result"]["galleryClient"]>
+    composites: {}
+  }
+
+  type GalleryClientGetPayload<S extends boolean | null | undefined | GalleryClientDefaultArgs> = $Result.GetResult<Prisma.$GalleryClientPayload, S>
+
+  type GalleryClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GalleryClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GalleryClientCountAggregateInputType | true
+    }
+
+  export interface GalleryClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GalleryClient'], meta: { name: 'GalleryClient' } }
+    /**
+     * Find zero or one GalleryClient that matches the filter.
+     * @param {GalleryClientFindUniqueArgs} args - Arguments to find a GalleryClient
+     * @example
+     * // Get one GalleryClient
+     * const galleryClient = await prisma.galleryClient.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GalleryClientFindUniqueArgs>(args: SelectSubset<T, GalleryClientFindUniqueArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GalleryClient that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GalleryClientFindUniqueOrThrowArgs} args - Arguments to find a GalleryClient
+     * @example
+     * // Get one GalleryClient
+     * const galleryClient = await prisma.galleryClient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GalleryClientFindUniqueOrThrowArgs>(args: SelectSubset<T, GalleryClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GalleryClient that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientFindFirstArgs} args - Arguments to find a GalleryClient
+     * @example
+     * // Get one GalleryClient
+     * const galleryClient = await prisma.galleryClient.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GalleryClientFindFirstArgs>(args?: SelectSubset<T, GalleryClientFindFirstArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GalleryClient that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientFindFirstOrThrowArgs} args - Arguments to find a GalleryClient
+     * @example
+     * // Get one GalleryClient
+     * const galleryClient = await prisma.galleryClient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GalleryClientFindFirstOrThrowArgs>(args?: SelectSubset<T, GalleryClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GalleryClients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GalleryClients
+     * const galleryClients = await prisma.galleryClient.findMany()
+     * 
+     * // Get first 10 GalleryClients
+     * const galleryClients = await prisma.galleryClient.findMany({ take: 10 })
+     * 
+     * // Only select the `galleryId`
+     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.findMany({ select: { galleryId: true } })
+     * 
+     */
+    findMany<T extends GalleryClientFindManyArgs>(args?: SelectSubset<T, GalleryClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GalleryClient.
+     * @param {GalleryClientCreateArgs} args - Arguments to create a GalleryClient.
+     * @example
+     * // Create one GalleryClient
+     * const GalleryClient = await prisma.galleryClient.create({
+     *   data: {
+     *     // ... data to create a GalleryClient
+     *   }
+     * })
+     * 
+     */
+    create<T extends GalleryClientCreateArgs>(args: SelectSubset<T, GalleryClientCreateArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GalleryClients.
+     * @param {GalleryClientCreateManyArgs} args - Arguments to create many GalleryClients.
+     * @example
+     * // Create many GalleryClients
+     * const galleryClient = await prisma.galleryClient.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GalleryClientCreateManyArgs>(args?: SelectSubset<T, GalleryClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GalleryClients and returns the data saved in the database.
+     * @param {GalleryClientCreateManyAndReturnArgs} args - Arguments to create many GalleryClients.
+     * @example
+     * // Create many GalleryClients
+     * const galleryClient = await prisma.galleryClient.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GalleryClients and only return the `galleryId`
+     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.createManyAndReturn({
+     *   select: { galleryId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GalleryClientCreateManyAndReturnArgs>(args?: SelectSubset<T, GalleryClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GalleryClient.
+     * @param {GalleryClientDeleteArgs} args - Arguments to delete one GalleryClient.
+     * @example
+     * // Delete one GalleryClient
+     * const GalleryClient = await prisma.galleryClient.delete({
+     *   where: {
+     *     // ... filter to delete one GalleryClient
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GalleryClientDeleteArgs>(args: SelectSubset<T, GalleryClientDeleteArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GalleryClient.
+     * @param {GalleryClientUpdateArgs} args - Arguments to update one GalleryClient.
+     * @example
+     * // Update one GalleryClient
+     * const galleryClient = await prisma.galleryClient.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GalleryClientUpdateArgs>(args: SelectSubset<T, GalleryClientUpdateArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GalleryClients.
+     * @param {GalleryClientDeleteManyArgs} args - Arguments to filter GalleryClients to delete.
+     * @example
+     * // Delete a few GalleryClients
+     * const { count } = await prisma.galleryClient.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GalleryClientDeleteManyArgs>(args?: SelectSubset<T, GalleryClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GalleryClients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GalleryClients
+     * const galleryClient = await prisma.galleryClient.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GalleryClientUpdateManyArgs>(args: SelectSubset<T, GalleryClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GalleryClients and returns the data updated in the database.
+     * @param {GalleryClientUpdateManyAndReturnArgs} args - Arguments to update many GalleryClients.
+     * @example
+     * // Update many GalleryClients
+     * const galleryClient = await prisma.galleryClient.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GalleryClients and only return the `galleryId`
+     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.updateManyAndReturn({
+     *   select: { galleryId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GalleryClientUpdateManyAndReturnArgs>(args: SelectSubset<T, GalleryClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GalleryClient.
+     * @param {GalleryClientUpsertArgs} args - Arguments to update or create a GalleryClient.
+     * @example
+     * // Update or create a GalleryClient
+     * const galleryClient = await prisma.galleryClient.upsert({
+     *   create: {
+     *     // ... data to create a GalleryClient
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GalleryClient we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GalleryClientUpsertArgs>(args: SelectSubset<T, GalleryClientUpsertArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GalleryClients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientCountArgs} args - Arguments to filter GalleryClients to count.
+     * @example
+     * // Count the number of GalleryClients
+     * const count = await prisma.galleryClient.count({
+     *   where: {
+     *     // ... the filter for the GalleryClients we want to count
+     *   }
+     * })
+    **/
+    count<T extends GalleryClientCountArgs>(
+      args?: Subset<T, GalleryClientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GalleryClientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GalleryClient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GalleryClientAggregateArgs>(args: Subset<T, GalleryClientAggregateArgs>): Prisma.PrismaPromise<GetGalleryClientAggregateType<T>>
+
+    /**
+     * Group by GalleryClient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryClientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GalleryClientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GalleryClientGroupByArgs['orderBy'] }
+        : { orderBy?: GalleryClientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GalleryClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGalleryClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GalleryClient model
+   */
+  readonly fields: GalleryClientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GalleryClient.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GalleryClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GalleryClient model
+   */
+  interface GalleryClientFieldRefs {
+    readonly galleryId: FieldRef<"GalleryClient", 'String'>
+    readonly clientId: FieldRef<"GalleryClient", 'String'>
+    readonly createdAt: FieldRef<"GalleryClient", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GalleryClient findUnique
+   */
+  export type GalleryClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryClient to fetch.
+     */
+    where: GalleryClientWhereUniqueInput
+  }
+
+  /**
+   * GalleryClient findUniqueOrThrow
+   */
+  export type GalleryClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryClient to fetch.
+     */
+    where: GalleryClientWhereUniqueInput
+  }
+
+  /**
+   * GalleryClient findFirst
+   */
+  export type GalleryClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryClient to fetch.
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryClients to fetch.
+     */
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GalleryClients.
+     */
+    cursor?: GalleryClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryClients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryClients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryClients.
+     */
+    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryClient findFirstOrThrow
+   */
+  export type GalleryClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryClient to fetch.
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryClients to fetch.
+     */
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GalleryClients.
+     */
+    cursor?: GalleryClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryClients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryClients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryClients.
+     */
+    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryClient findMany
+   */
+  export type GalleryClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryClients to fetch.
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryClients to fetch.
+     */
+    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GalleryClients.
+     */
+    cursor?: GalleryClientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryClients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryClients.
+     */
+    skip?: number
+    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryClient create
+   */
+  export type GalleryClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GalleryClient.
+     */
+    data: XOR<GalleryClientCreateInput, GalleryClientUncheckedCreateInput>
+  }
+
+  /**
+   * GalleryClient createMany
+   */
+  export type GalleryClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GalleryClients.
+     */
+    data: GalleryClientCreateManyInput | GalleryClientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GalleryClient createManyAndReturn
+   */
+  export type GalleryClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * The data used to create many GalleryClients.
+     */
+    data: GalleryClientCreateManyInput | GalleryClientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GalleryClient update
+   */
+  export type GalleryClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GalleryClient.
+     */
+    data: XOR<GalleryClientUpdateInput, GalleryClientUncheckedUpdateInput>
+    /**
+     * Choose, which GalleryClient to update.
+     */
+    where: GalleryClientWhereUniqueInput
+  }
+
+  /**
+   * GalleryClient updateMany
+   */
+  export type GalleryClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GalleryClients.
+     */
+    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyInput>
+    /**
+     * Filter which GalleryClients to update
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * Limit how many GalleryClients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GalleryClient updateManyAndReturn
+   */
+  export type GalleryClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * The data used to update GalleryClients.
+     */
+    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyInput>
+    /**
+     * Filter which GalleryClients to update
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * Limit how many GalleryClients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GalleryClient upsert
+   */
+  export type GalleryClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GalleryClient to update in case it exists.
+     */
+    where: GalleryClientWhereUniqueInput
+    /**
+     * In case the GalleryClient found by the `where` argument doesn't exist, create a new GalleryClient with this data.
+     */
+    create: XOR<GalleryClientCreateInput, GalleryClientUncheckedCreateInput>
+    /**
+     * In case the GalleryClient was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GalleryClientUpdateInput, GalleryClientUncheckedUpdateInput>
+  }
+
+  /**
+   * GalleryClient delete
+   */
+  export type GalleryClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+    /**
+     * Filter which GalleryClient to delete.
+     */
+    where: GalleryClientWhereUniqueInput
+  }
+
+  /**
+   * GalleryClient deleteMany
+   */
+  export type GalleryClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GalleryClients to delete
+     */
+    where?: GalleryClientWhereInput
+    /**
+     * Limit how many GalleryClients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GalleryClient without action
+   */
+  export type GalleryClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryClient
+     */
+    select?: GalleryClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryClient
+     */
+    omit?: GalleryClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryClientInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Album
+   */
+
+  export type AggregateAlbum = {
+    _count: AlbumCountAggregateOutputType | null
+    _min: AlbumMinAggregateOutputType | null
+    _max: AlbumMaxAggregateOutputType | null
+  }
+
+  export type AlbumMinAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    title: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AlbumMaxAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    title: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AlbumCountAggregateOutputType = {
+    id: number
+    galleryId: number
+    title: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AlbumMinAggregateInputType = {
+    id?: true
+    galleryId?: true
+    title?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AlbumMaxAggregateInputType = {
+    id?: true
+    galleryId?: true
+    title?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AlbumCountAggregateInputType = {
+    id?: true
+    galleryId?: true
+    title?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AlbumAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Album to aggregate.
+     */
+    where?: AlbumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Albums to fetch.
+     */
+    orderBy?: AlbumOrderByWithRelationInput | AlbumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AlbumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Albums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Albums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Albums
+    **/
+    _count?: true | AlbumCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AlbumMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AlbumMaxAggregateInputType
+  }
+
+  export type GetAlbumAggregateType<T extends AlbumAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlbum]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAlbum[P]>
+      : GetScalarType<T[P], AggregateAlbum[P]>
+  }
+
+
+
+
+  export type AlbumGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlbumWhereInput
+    orderBy?: AlbumOrderByWithAggregationInput | AlbumOrderByWithAggregationInput[]
+    by: AlbumScalarFieldEnum[] | AlbumScalarFieldEnum
+    having?: AlbumScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AlbumCountAggregateInputType | true
+    _min?: AlbumMinAggregateInputType
+    _max?: AlbumMaxAggregateInputType
+  }
+
+  export type AlbumGroupByOutputType = {
+    id: string
+    galleryId: string
+    title: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AlbumCountAggregateOutputType | null
+    _min: AlbumMinAggregateOutputType | null
+    _max: AlbumMaxAggregateOutputType | null
+  }
+
+  type GetAlbumGroupByPayload<T extends AlbumGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AlbumGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AlbumGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AlbumGroupByOutputType[P]>
+            : GetScalarType<T[P], AlbumGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AlbumSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    title?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photos?: boolean | Album$photosArgs<ExtArgs>
+    _count?: boolean | AlbumCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["album"]>
+
+  export type AlbumSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    title?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["album"]>
+
+  export type AlbumSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    title?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["album"]>
+
+  export type AlbumSelectScalar = {
+    id?: boolean
+    galleryId?: boolean
+    title?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AlbumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "title" | "createdAt" | "updatedAt", ExtArgs["result"]["album"]>
+  export type AlbumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photos?: boolean | Album$photosArgs<ExtArgs>
+    _count?: boolean | AlbumCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AlbumIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type AlbumIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+
+  export type $AlbumPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Album"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+      photos: Prisma.$AlbumPhotoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      galleryId: string
+      title: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["album"]>
+    composites: {}
+  }
+
+  type AlbumGetPayload<S extends boolean | null | undefined | AlbumDefaultArgs> = $Result.GetResult<Prisma.$AlbumPayload, S>
+
+  type AlbumCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlbumFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlbumCountAggregateInputType | true
+    }
+
+  export interface AlbumDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Album'], meta: { name: 'Album' } }
+    /**
+     * Find zero or one Album that matches the filter.
+     * @param {AlbumFindUniqueArgs} args - Arguments to find a Album
+     * @example
+     * // Get one Album
+     * const album = await prisma.album.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AlbumFindUniqueArgs>(args: SelectSubset<T, AlbumFindUniqueArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Album that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AlbumFindUniqueOrThrowArgs} args - Arguments to find a Album
+     * @example
+     * // Get one Album
+     * const album = await prisma.album.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AlbumFindUniqueOrThrowArgs>(args: SelectSubset<T, AlbumFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Album that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumFindFirstArgs} args - Arguments to find a Album
+     * @example
+     * // Get one Album
+     * const album = await prisma.album.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AlbumFindFirstArgs>(args?: SelectSubset<T, AlbumFindFirstArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Album that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumFindFirstOrThrowArgs} args - Arguments to find a Album
+     * @example
+     * // Get one Album
+     * const album = await prisma.album.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AlbumFindFirstOrThrowArgs>(args?: SelectSubset<T, AlbumFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Albums that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Albums
+     * const albums = await prisma.album.findMany()
+     * 
+     * // Get first 10 Albums
+     * const albums = await prisma.album.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const albumWithIdOnly = await prisma.album.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AlbumFindManyArgs>(args?: SelectSubset<T, AlbumFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Album.
+     * @param {AlbumCreateArgs} args - Arguments to create a Album.
+     * @example
+     * // Create one Album
+     * const Album = await prisma.album.create({
+     *   data: {
+     *     // ... data to create a Album
+     *   }
+     * })
+     * 
+     */
+    create<T extends AlbumCreateArgs>(args: SelectSubset<T, AlbumCreateArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Albums.
+     * @param {AlbumCreateManyArgs} args - Arguments to create many Albums.
+     * @example
+     * // Create many Albums
+     * const album = await prisma.album.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AlbumCreateManyArgs>(args?: SelectSubset<T, AlbumCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Albums and returns the data saved in the database.
+     * @param {AlbumCreateManyAndReturnArgs} args - Arguments to create many Albums.
+     * @example
+     * // Create many Albums
+     * const album = await prisma.album.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Albums and only return the `id`
+     * const albumWithIdOnly = await prisma.album.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AlbumCreateManyAndReturnArgs>(args?: SelectSubset<T, AlbumCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Album.
+     * @param {AlbumDeleteArgs} args - Arguments to delete one Album.
+     * @example
+     * // Delete one Album
+     * const Album = await prisma.album.delete({
+     *   where: {
+     *     // ... filter to delete one Album
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AlbumDeleteArgs>(args: SelectSubset<T, AlbumDeleteArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Album.
+     * @param {AlbumUpdateArgs} args - Arguments to update one Album.
+     * @example
+     * // Update one Album
+     * const album = await prisma.album.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AlbumUpdateArgs>(args: SelectSubset<T, AlbumUpdateArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Albums.
+     * @param {AlbumDeleteManyArgs} args - Arguments to filter Albums to delete.
+     * @example
+     * // Delete a few Albums
+     * const { count } = await prisma.album.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AlbumDeleteManyArgs>(args?: SelectSubset<T, AlbumDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Albums.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Albums
+     * const album = await prisma.album.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AlbumUpdateManyArgs>(args: SelectSubset<T, AlbumUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Albums and returns the data updated in the database.
+     * @param {AlbumUpdateManyAndReturnArgs} args - Arguments to update many Albums.
+     * @example
+     * // Update many Albums
+     * const album = await prisma.album.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Albums and only return the `id`
+     * const albumWithIdOnly = await prisma.album.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AlbumUpdateManyAndReturnArgs>(args: SelectSubset<T, AlbumUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Album.
+     * @param {AlbumUpsertArgs} args - Arguments to update or create a Album.
+     * @example
+     * // Update or create a Album
+     * const album = await prisma.album.upsert({
+     *   create: {
+     *     // ... data to create a Album
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Album we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AlbumUpsertArgs>(args: SelectSubset<T, AlbumUpsertArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Albums.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumCountArgs} args - Arguments to filter Albums to count.
+     * @example
+     * // Count the number of Albums
+     * const count = await prisma.album.count({
+     *   where: {
+     *     // ... the filter for the Albums we want to count
+     *   }
+     * })
+    **/
+    count<T extends AlbumCountArgs>(
+      args?: Subset<T, AlbumCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AlbumCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Album.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AlbumAggregateArgs>(args: Subset<T, AlbumAggregateArgs>): Prisma.PrismaPromise<GetAlbumAggregateType<T>>
+
+    /**
+     * Group by Album.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AlbumGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AlbumGroupByArgs['orderBy'] }
+        : { orderBy?: AlbumGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AlbumGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlbumGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Album model
+   */
+  readonly fields: AlbumFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Album.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AlbumClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    photos<T extends Album$photosArgs<ExtArgs> = {}>(args?: Subset<T, Album$photosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Album model
+   */
+  interface AlbumFieldRefs {
+    readonly id: FieldRef<"Album", 'String'>
+    readonly galleryId: FieldRef<"Album", 'String'>
+    readonly title: FieldRef<"Album", 'String'>
+    readonly createdAt: FieldRef<"Album", 'DateTime'>
+    readonly updatedAt: FieldRef<"Album", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Album findUnique
+   */
+  export type AlbumFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter, which Album to fetch.
+     */
+    where: AlbumWhereUniqueInput
+  }
+
+  /**
+   * Album findUniqueOrThrow
+   */
+  export type AlbumFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter, which Album to fetch.
+     */
+    where: AlbumWhereUniqueInput
+  }
+
+  /**
+   * Album findFirst
+   */
+  export type AlbumFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter, which Album to fetch.
+     */
+    where?: AlbumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Albums to fetch.
+     */
+    orderBy?: AlbumOrderByWithRelationInput | AlbumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Albums.
+     */
+    cursor?: AlbumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Albums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Albums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Albums.
+     */
+    distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
+  }
+
+  /**
+   * Album findFirstOrThrow
+   */
+  export type AlbumFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter, which Album to fetch.
+     */
+    where?: AlbumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Albums to fetch.
+     */
+    orderBy?: AlbumOrderByWithRelationInput | AlbumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Albums.
+     */
+    cursor?: AlbumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Albums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Albums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Albums.
+     */
+    distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
+  }
+
+  /**
+   * Album findMany
+   */
+  export type AlbumFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter, which Albums to fetch.
+     */
+    where?: AlbumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Albums to fetch.
+     */
+    orderBy?: AlbumOrderByWithRelationInput | AlbumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Albums.
+     */
+    cursor?: AlbumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Albums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Albums.
+     */
+    skip?: number
+    distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
+  }
+
+  /**
+   * Album create
+   */
+  export type AlbumCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Album.
+     */
+    data: XOR<AlbumCreateInput, AlbumUncheckedCreateInput>
+  }
+
+  /**
+   * Album createMany
+   */
+  export type AlbumCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Albums.
+     */
+    data: AlbumCreateManyInput | AlbumCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Album createManyAndReturn
+   */
+  export type AlbumCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * The data used to create many Albums.
+     */
+    data: AlbumCreateManyInput | AlbumCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Album update
+   */
+  export type AlbumUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Album.
+     */
+    data: XOR<AlbumUpdateInput, AlbumUncheckedUpdateInput>
+    /**
+     * Choose, which Album to update.
+     */
+    where: AlbumWhereUniqueInput
+  }
+
+  /**
+   * Album updateMany
+   */
+  export type AlbumUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Albums.
+     */
+    data: XOR<AlbumUpdateManyMutationInput, AlbumUncheckedUpdateManyInput>
+    /**
+     * Filter which Albums to update
+     */
+    where?: AlbumWhereInput
+    /**
+     * Limit how many Albums to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Album updateManyAndReturn
+   */
+  export type AlbumUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * The data used to update Albums.
+     */
+    data: XOR<AlbumUpdateManyMutationInput, AlbumUncheckedUpdateManyInput>
+    /**
+     * Filter which Albums to update
+     */
+    where?: AlbumWhereInput
+    /**
+     * Limit how many Albums to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Album upsert
+   */
+  export type AlbumUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Album to update in case it exists.
+     */
+    where: AlbumWhereUniqueInput
+    /**
+     * In case the Album found by the `where` argument doesn't exist, create a new Album with this data.
+     */
+    create: XOR<AlbumCreateInput, AlbumUncheckedCreateInput>
+    /**
+     * In case the Album was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AlbumUpdateInput, AlbumUncheckedUpdateInput>
+  }
+
+  /**
+   * Album delete
+   */
+  export type AlbumDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+    /**
+     * Filter which Album to delete.
+     */
+    where: AlbumWhereUniqueInput
+  }
+
+  /**
+   * Album deleteMany
+   */
+  export type AlbumDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Albums to delete
+     */
+    where?: AlbumWhereInput
+    /**
+     * Limit how many Albums to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Album.photos
+   */
+  export type Album$photosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    where?: AlbumPhotoWhereInput
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    cursor?: AlbumPhotoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * Album without action
+   */
+  export type AlbumDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Album
+     */
+    select?: AlbumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Album
+     */
+    omit?: AlbumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AlbumPhoto
+   */
+
+  export type AggregateAlbumPhoto = {
+    _count: AlbumPhotoCountAggregateOutputType | null
+    _min: AlbumPhotoMinAggregateOutputType | null
+    _max: AlbumPhotoMaxAggregateOutputType | null
+  }
+
+  export type AlbumPhotoMinAggregateOutputType = {
+    albumId: string | null
+    photoId: string | null
+    createdAt: Date | null
+  }
+
+  export type AlbumPhotoMaxAggregateOutputType = {
+    albumId: string | null
+    photoId: string | null
+    createdAt: Date | null
+  }
+
+  export type AlbumPhotoCountAggregateOutputType = {
+    albumId: number
+    photoId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AlbumPhotoMinAggregateInputType = {
+    albumId?: true
+    photoId?: true
+    createdAt?: true
+  }
+
+  export type AlbumPhotoMaxAggregateInputType = {
+    albumId?: true
+    photoId?: true
+    createdAt?: true
+  }
+
+  export type AlbumPhotoCountAggregateInputType = {
+    albumId?: true
+    photoId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AlbumPhotoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlbumPhoto to aggregate.
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlbumPhotos to fetch.
+     */
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AlbumPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlbumPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlbumPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AlbumPhotos
+    **/
+    _count?: true | AlbumPhotoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AlbumPhotoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AlbumPhotoMaxAggregateInputType
+  }
+
+  export type GetAlbumPhotoAggregateType<T extends AlbumPhotoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlbumPhoto]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAlbumPhoto[P]>
+      : GetScalarType<T[P], AggregateAlbumPhoto[P]>
+  }
+
+
+
+
+  export type AlbumPhotoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlbumPhotoWhereInput
+    orderBy?: AlbumPhotoOrderByWithAggregationInput | AlbumPhotoOrderByWithAggregationInput[]
+    by: AlbumPhotoScalarFieldEnum[] | AlbumPhotoScalarFieldEnum
+    having?: AlbumPhotoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AlbumPhotoCountAggregateInputType | true
+    _min?: AlbumPhotoMinAggregateInputType
+    _max?: AlbumPhotoMaxAggregateInputType
+  }
+
+  export type AlbumPhotoGroupByOutputType = {
+    albumId: string
+    photoId: string
+    createdAt: Date
+    _count: AlbumPhotoCountAggregateOutputType | null
+    _min: AlbumPhotoMinAggregateOutputType | null
+    _max: AlbumPhotoMaxAggregateOutputType | null
+  }
+
+  type GetAlbumPhotoGroupByPayload<T extends AlbumPhotoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AlbumPhotoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AlbumPhotoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AlbumPhotoGroupByOutputType[P]>
+            : GetScalarType<T[P], AlbumPhotoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AlbumPhotoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    albumId?: boolean
+    photoId?: boolean
+    createdAt?: boolean
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["albumPhoto"]>
+
+  export type AlbumPhotoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    albumId?: boolean
+    photoId?: boolean
+    createdAt?: boolean
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["albumPhoto"]>
+
+  export type AlbumPhotoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    albumId?: boolean
+    photoId?: boolean
+    createdAt?: boolean
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["albumPhoto"]>
+
+  export type AlbumPhotoSelectScalar = {
+    albumId?: boolean
+    photoId?: boolean
+    createdAt?: boolean
+  }
+
+  export type AlbumPhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"albumId" | "photoId" | "createdAt", ExtArgs["result"]["albumPhoto"]>
+  export type AlbumPhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type AlbumPhotoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type AlbumPhotoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    album?: boolean | AlbumDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+
+  export type $AlbumPhotoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AlbumPhoto"
+    objects: {
+      album: Prisma.$AlbumPayload<ExtArgs>
+      photo: Prisma.$PhotoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      albumId: string
+      photoId: string
+      createdAt: Date
+    }, ExtArgs["result"]["albumPhoto"]>
+    composites: {}
+  }
+
+  type AlbumPhotoGetPayload<S extends boolean | null | undefined | AlbumPhotoDefaultArgs> = $Result.GetResult<Prisma.$AlbumPhotoPayload, S>
+
+  type AlbumPhotoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlbumPhotoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlbumPhotoCountAggregateInputType | true
+    }
+
+  export interface AlbumPhotoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AlbumPhoto'], meta: { name: 'AlbumPhoto' } }
+    /**
+     * Find zero or one AlbumPhoto that matches the filter.
+     * @param {AlbumPhotoFindUniqueArgs} args - Arguments to find a AlbumPhoto
+     * @example
+     * // Get one AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AlbumPhotoFindUniqueArgs>(args: SelectSubset<T, AlbumPhotoFindUniqueArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AlbumPhoto that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AlbumPhotoFindUniqueOrThrowArgs} args - Arguments to find a AlbumPhoto
+     * @example
+     * // Get one AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AlbumPhotoFindUniqueOrThrowArgs>(args: SelectSubset<T, AlbumPhotoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlbumPhoto that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoFindFirstArgs} args - Arguments to find a AlbumPhoto
+     * @example
+     * // Get one AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AlbumPhotoFindFirstArgs>(args?: SelectSubset<T, AlbumPhotoFindFirstArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlbumPhoto that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoFindFirstOrThrowArgs} args - Arguments to find a AlbumPhoto
+     * @example
+     * // Get one AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AlbumPhotoFindFirstOrThrowArgs>(args?: SelectSubset<T, AlbumPhotoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AlbumPhotos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AlbumPhotos
+     * const albumPhotos = await prisma.albumPhoto.findMany()
+     * 
+     * // Get first 10 AlbumPhotos
+     * const albumPhotos = await prisma.albumPhoto.findMany({ take: 10 })
+     * 
+     * // Only select the `albumId`
+     * const albumPhotoWithAlbumIdOnly = await prisma.albumPhoto.findMany({ select: { albumId: true } })
+     * 
+     */
+    findMany<T extends AlbumPhotoFindManyArgs>(args?: SelectSubset<T, AlbumPhotoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AlbumPhoto.
+     * @param {AlbumPhotoCreateArgs} args - Arguments to create a AlbumPhoto.
+     * @example
+     * // Create one AlbumPhoto
+     * const AlbumPhoto = await prisma.albumPhoto.create({
+     *   data: {
+     *     // ... data to create a AlbumPhoto
+     *   }
+     * })
+     * 
+     */
+    create<T extends AlbumPhotoCreateArgs>(args: SelectSubset<T, AlbumPhotoCreateArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AlbumPhotos.
+     * @param {AlbumPhotoCreateManyArgs} args - Arguments to create many AlbumPhotos.
+     * @example
+     * // Create many AlbumPhotos
+     * const albumPhoto = await prisma.albumPhoto.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AlbumPhotoCreateManyArgs>(args?: SelectSubset<T, AlbumPhotoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AlbumPhotos and returns the data saved in the database.
+     * @param {AlbumPhotoCreateManyAndReturnArgs} args - Arguments to create many AlbumPhotos.
+     * @example
+     * // Create many AlbumPhotos
+     * const albumPhoto = await prisma.albumPhoto.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AlbumPhotos and only return the `albumId`
+     * const albumPhotoWithAlbumIdOnly = await prisma.albumPhoto.createManyAndReturn({
+     *   select: { albumId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AlbumPhotoCreateManyAndReturnArgs>(args?: SelectSubset<T, AlbumPhotoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AlbumPhoto.
+     * @param {AlbumPhotoDeleteArgs} args - Arguments to delete one AlbumPhoto.
+     * @example
+     * // Delete one AlbumPhoto
+     * const AlbumPhoto = await prisma.albumPhoto.delete({
+     *   where: {
+     *     // ... filter to delete one AlbumPhoto
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AlbumPhotoDeleteArgs>(args: SelectSubset<T, AlbumPhotoDeleteArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AlbumPhoto.
+     * @param {AlbumPhotoUpdateArgs} args - Arguments to update one AlbumPhoto.
+     * @example
+     * // Update one AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AlbumPhotoUpdateArgs>(args: SelectSubset<T, AlbumPhotoUpdateArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AlbumPhotos.
+     * @param {AlbumPhotoDeleteManyArgs} args - Arguments to filter AlbumPhotos to delete.
+     * @example
+     * // Delete a few AlbumPhotos
+     * const { count } = await prisma.albumPhoto.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AlbumPhotoDeleteManyArgs>(args?: SelectSubset<T, AlbumPhotoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AlbumPhotos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AlbumPhotos
+     * const albumPhoto = await prisma.albumPhoto.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AlbumPhotoUpdateManyArgs>(args: SelectSubset<T, AlbumPhotoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AlbumPhotos and returns the data updated in the database.
+     * @param {AlbumPhotoUpdateManyAndReturnArgs} args - Arguments to update many AlbumPhotos.
+     * @example
+     * // Update many AlbumPhotos
+     * const albumPhoto = await prisma.albumPhoto.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AlbumPhotos and only return the `albumId`
+     * const albumPhotoWithAlbumIdOnly = await prisma.albumPhoto.updateManyAndReturn({
+     *   select: { albumId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AlbumPhotoUpdateManyAndReturnArgs>(args: SelectSubset<T, AlbumPhotoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AlbumPhoto.
+     * @param {AlbumPhotoUpsertArgs} args - Arguments to update or create a AlbumPhoto.
+     * @example
+     * // Update or create a AlbumPhoto
+     * const albumPhoto = await prisma.albumPhoto.upsert({
+     *   create: {
+     *     // ... data to create a AlbumPhoto
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AlbumPhoto we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AlbumPhotoUpsertArgs>(args: SelectSubset<T, AlbumPhotoUpsertArgs<ExtArgs>>): Prisma__AlbumPhotoClient<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AlbumPhotos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoCountArgs} args - Arguments to filter AlbumPhotos to count.
+     * @example
+     * // Count the number of AlbumPhotos
+     * const count = await prisma.albumPhoto.count({
+     *   where: {
+     *     // ... the filter for the AlbumPhotos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AlbumPhotoCountArgs>(
+      args?: Subset<T, AlbumPhotoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AlbumPhotoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AlbumPhoto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AlbumPhotoAggregateArgs>(args: Subset<T, AlbumPhotoAggregateArgs>): Prisma.PrismaPromise<GetAlbumPhotoAggregateType<T>>
+
+    /**
+     * Group by AlbumPhoto.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlbumPhotoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AlbumPhotoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AlbumPhotoGroupByArgs['orderBy'] }
+        : { orderBy?: AlbumPhotoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AlbumPhotoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlbumPhotoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AlbumPhoto model
+   */
+  readonly fields: AlbumPhotoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AlbumPhoto.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AlbumPhotoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    album<T extends AlbumDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AlbumDefaultArgs<ExtArgs>>): Prisma__AlbumClient<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    photo<T extends PhotoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhotoDefaultArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AlbumPhoto model
+   */
+  interface AlbumPhotoFieldRefs {
+    readonly albumId: FieldRef<"AlbumPhoto", 'String'>
+    readonly photoId: FieldRef<"AlbumPhoto", 'String'>
+    readonly createdAt: FieldRef<"AlbumPhoto", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AlbumPhoto findUnique
+   */
+  export type AlbumPhotoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlbumPhoto to fetch.
+     */
+    where: AlbumPhotoWhereUniqueInput
+  }
+
+  /**
+   * AlbumPhoto findUniqueOrThrow
+   */
+  export type AlbumPhotoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlbumPhoto to fetch.
+     */
+    where: AlbumPhotoWhereUniqueInput
+  }
+
+  /**
+   * AlbumPhoto findFirst
+   */
+  export type AlbumPhotoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlbumPhoto to fetch.
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlbumPhotos to fetch.
+     */
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlbumPhotos.
+     */
+    cursor?: AlbumPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlbumPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlbumPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlbumPhotos.
+     */
+    distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * AlbumPhoto findFirstOrThrow
+   */
+  export type AlbumPhotoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlbumPhoto to fetch.
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlbumPhotos to fetch.
+     */
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlbumPhotos.
+     */
+    cursor?: AlbumPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlbumPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlbumPhotos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlbumPhotos.
+     */
+    distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * AlbumPhoto findMany
+   */
+  export type AlbumPhotoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlbumPhotos to fetch.
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlbumPhotos to fetch.
+     */
+    orderBy?: AlbumPhotoOrderByWithRelationInput | AlbumPhotoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AlbumPhotos.
+     */
+    cursor?: AlbumPhotoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlbumPhotos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlbumPhotos.
+     */
+    skip?: number
+    distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * AlbumPhoto create
+   */
+  export type AlbumPhotoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AlbumPhoto.
+     */
+    data: XOR<AlbumPhotoCreateInput, AlbumPhotoUncheckedCreateInput>
+  }
+
+  /**
+   * AlbumPhoto createMany
+   */
+  export type AlbumPhotoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AlbumPhotos.
+     */
+    data: AlbumPhotoCreateManyInput | AlbumPhotoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AlbumPhoto createManyAndReturn
+   */
+  export type AlbumPhotoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AlbumPhotos.
+     */
+    data: AlbumPhotoCreateManyInput | AlbumPhotoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AlbumPhoto update
+   */
+  export type AlbumPhotoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AlbumPhoto.
+     */
+    data: XOR<AlbumPhotoUpdateInput, AlbumPhotoUncheckedUpdateInput>
+    /**
+     * Choose, which AlbumPhoto to update.
+     */
+    where: AlbumPhotoWhereUniqueInput
+  }
+
+  /**
+   * AlbumPhoto updateMany
+   */
+  export type AlbumPhotoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AlbumPhotos.
+     */
+    data: XOR<AlbumPhotoUpdateManyMutationInput, AlbumPhotoUncheckedUpdateManyInput>
+    /**
+     * Filter which AlbumPhotos to update
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * Limit how many AlbumPhotos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlbumPhoto updateManyAndReturn
+   */
+  export type AlbumPhotoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * The data used to update AlbumPhotos.
+     */
+    data: XOR<AlbumPhotoUpdateManyMutationInput, AlbumPhotoUncheckedUpdateManyInput>
+    /**
+     * Filter which AlbumPhotos to update
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * Limit how many AlbumPhotos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AlbumPhoto upsert
+   */
+  export type AlbumPhotoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AlbumPhoto to update in case it exists.
+     */
+    where: AlbumPhotoWhereUniqueInput
+    /**
+     * In case the AlbumPhoto found by the `where` argument doesn't exist, create a new AlbumPhoto with this data.
+     */
+    create: XOR<AlbumPhotoCreateInput, AlbumPhotoUncheckedCreateInput>
+    /**
+     * In case the AlbumPhoto was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AlbumPhotoUpdateInput, AlbumPhotoUncheckedUpdateInput>
+  }
+
+  /**
+   * AlbumPhoto delete
+   */
+  export type AlbumPhotoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
+    /**
+     * Filter which AlbumPhoto to delete.
+     */
+    where: AlbumPhotoWhereUniqueInput
+  }
+
+  /**
+   * AlbumPhoto deleteMany
+   */
+  export type AlbumPhotoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlbumPhotos to delete
+     */
+    where?: AlbumPhotoWhereInput
+    /**
+     * Limit how many AlbumPhotos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlbumPhoto without action
+   */
+  export type AlbumPhotoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlbumPhoto
+     */
+    select?: AlbumPhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlbumPhoto
+     */
+    omit?: AlbumPhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlbumPhotoInclude<ExtArgs> | null
   }
 
 
@@ -11239,11 +16134,14 @@ export namespace Prisma {
     userId: 'userId',
     title: 'title',
     slug: 'slug',
+    eventDate: 'eventDate',
+    deadline: 'deadline',
     coverPhotoId: 'coverPhotoId',
     passwordHash: 'passwordHash',
     shareToken: 'shareToken',
     isPublished: 'isPublished',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type GalleryScalarFieldEnum = (typeof GalleryScalarFieldEnum)[keyof typeof GalleryScalarFieldEnum]
@@ -11261,6 +16159,7 @@ export namespace Prisma {
     mimeType: 'mimeType',
     order: 'order',
     isCulled: 'isCulled',
+    loved: 'loved',
     aiCaption: 'aiCaption',
     faceCount: 'faceCount',
     thumbnailKey: 'thumbnailKey',
@@ -11270,6 +16169,47 @@ export namespace Prisma {
   };
 
   export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
+
+
+  export const ClientScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    email: 'email',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+  export const GalleryClientScalarFieldEnum: {
+    galleryId: 'galleryId',
+    clientId: 'clientId',
+    createdAt: 'createdAt'
+  };
+
+  export type GalleryClientScalarFieldEnum = (typeof GalleryClientScalarFieldEnum)[keyof typeof GalleryClientScalarFieldEnum]
+
+
+  export const AlbumScalarFieldEnum: {
+    id: 'id',
+    galleryId: 'galleryId',
+    title: 'title',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AlbumScalarFieldEnum = (typeof AlbumScalarFieldEnum)[keyof typeof AlbumScalarFieldEnum]
+
+
+  export const AlbumPhotoScalarFieldEnum: {
+    albumId: 'albumId',
+    photoId: 'photoId',
+    createdAt: 'createdAt'
+  };
+
+  export type AlbumPhotoScalarFieldEnum = (typeof AlbumPhotoScalarFieldEnum)[keyof typeof AlbumPhotoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11488,6 +16428,7 @@ export namespace Prisma {
     payment?: PaymentListRelationFilter
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
+    clients?: ClientListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11510,6 +16451,7 @@ export namespace Prisma {
     payment?: PaymentOrderByRelationAggregateInput
     userOnboarding?: UserOnboardingOrderByWithRelationInput
     galleries?: GalleryOrderByRelationAggregateInput
+    clients?: ClientOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11535,6 +16477,7 @@ export namespace Prisma {
     payment?: PaymentListRelationFilter
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
+    clients?: ClientListRelationFilter
   }, "id" | "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11991,14 +16934,19 @@ export namespace Prisma {
     userId?: StringFilter<"Gallery"> | string
     title?: StringFilter<"Gallery"> | string
     slug?: StringFilter<"Gallery"> | string
+    eventDate?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    deadline?: DateTimeNullableFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
+    updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     coverPhoto?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
     photos?: PhotoListRelationFilter
+    albums?: AlbumListRelationFilter
+    clients?: GalleryClientListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -12006,14 +16954,19 @@ export namespace Prisma {
     userId?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    eventDate?: SortOrderInput | SortOrder
+    deadline?: SortOrderInput | SortOrder
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     coverPhoto?: PhotoOrderByWithRelationInput
     photos?: PhotoOrderByRelationAggregateInput
+    albums?: AlbumOrderByRelationAggregateInput
+    clients?: GalleryClientOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -12026,13 +16979,18 @@ export namespace Prisma {
     userId?: StringFilter<"Gallery"> | string
     title?: StringFilter<"Gallery"> | string
     slug?: StringFilter<"Gallery"> | string
+    eventDate?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    deadline?: DateTimeNullableFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
+    updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     coverPhoto?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
     photos?: PhotoListRelationFilter
+    albums?: AlbumListRelationFilter
+    clients?: GalleryClientListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -12040,11 +16998,14 @@ export namespace Prisma {
     userId?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    eventDate?: SortOrderInput | SortOrder
+    deadline?: SortOrderInput | SortOrder
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: GalleryCountOrderByAggregateInput
     _max?: GalleryMaxOrderByAggregateInput
     _min?: GalleryMinOrderByAggregateInput
@@ -12058,11 +17019,14 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Gallery"> | string
     title?: StringWithAggregatesFilter<"Gallery"> | string
     slug?: StringWithAggregatesFilter<"Gallery"> | string
+    eventDate?: DateTimeNullableWithAggregatesFilter<"Gallery"> | Date | string | null
+    deadline?: DateTimeNullableWithAggregatesFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     shareToken?: StringWithAggregatesFilter<"Gallery"> | string
     isPublished?: BoolWithAggregatesFilter<"Gallery"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
   }
 
   export type PhotoWhereInput = {
@@ -12080,6 +17044,7 @@ export namespace Prisma {
     mimeType?: StringFilter<"Photo"> | string
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
+    loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
@@ -12088,6 +17053,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
+    albumPhotos?: AlbumPhotoListRelationFilter
   }
 
   export type PhotoOrderByWithRelationInput = {
@@ -12102,6 +17068,7 @@ export namespace Prisma {
     mimeType?: SortOrder
     order?: SortOrder
     isCulled?: SortOrder
+    loved?: SortOrder
     aiCaption?: SortOrderInput | SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
@@ -12110,6 +17077,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     gallery?: GalleryOrderByWithRelationInput
     usedAsCoverIn?: GalleryOrderByRelationAggregateInput
+    albumPhotos?: AlbumPhotoOrderByRelationAggregateInput
   }
 
   export type PhotoWhereUniqueInput = Prisma.AtLeast<{
@@ -12127,6 +17095,7 @@ export namespace Prisma {
     mimeType?: StringFilter<"Photo"> | string
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
+    loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
@@ -12135,6 +17104,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
+    albumPhotos?: AlbumPhotoListRelationFilter
   }, "id" | "id">
 
   export type PhotoOrderByWithAggregationInput = {
@@ -12149,6 +17119,7 @@ export namespace Prisma {
     mimeType?: SortOrder
     order?: SortOrder
     isCulled?: SortOrder
+    loved?: SortOrder
     aiCaption?: SortOrderInput | SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
@@ -12177,12 +17148,233 @@ export namespace Prisma {
     mimeType?: StringWithAggregatesFilter<"Photo"> | string
     order?: IntWithAggregatesFilter<"Photo"> | number
     isCulled?: BoolWithAggregatesFilter<"Photo"> | boolean
+    loved?: BoolWithAggregatesFilter<"Photo"> | boolean
     aiCaption?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     faceCount?: IntWithAggregatesFilter<"Photo"> | number
     thumbnailKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     previewKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     status?: EnumPhotoStatusWithAggregatesFilter<"Photo"> | $Enums.PhotoStatus
     createdAt?: DateTimeWithAggregatesFilter<"Photo"> | Date | string
+  }
+
+  export type ClientWhereInput = {
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    id?: StringFilter<"Client"> | string
+    userId?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    galleries?: GalleryClientListRelationFilter
+  }
+
+  export type ClientOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    galleries?: GalleryClientOrderByRelationAggregateInput
+  }
+
+  export type ClientWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_email?: ClientUserIdEmailCompoundUniqueInput
+    AND?: ClientWhereInput | ClientWhereInput[]
+    OR?: ClientWhereInput[]
+    NOT?: ClientWhereInput | ClientWhereInput[]
+    userId?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    galleries?: GalleryClientListRelationFilter
+  }, "id" | "id" | "userId_email">
+
+  export type ClientOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ClientCountOrderByAggregateInput
+    _max?: ClientMaxOrderByAggregateInput
+    _min?: ClientMinOrderByAggregateInput
+  }
+
+  export type ClientScalarWhereWithAggregatesInput = {
+    AND?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    OR?: ClientScalarWhereWithAggregatesInput[]
+    NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Client"> | string
+    userId?: StringWithAggregatesFilter<"Client"> | string
+    name?: StringWithAggregatesFilter<"Client"> | string
+    email?: StringWithAggregatesFilter<"Client"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
+  }
+
+  export type GalleryClientWhereInput = {
+    AND?: GalleryClientWhereInput | GalleryClientWhereInput[]
+    OR?: GalleryClientWhereInput[]
+    NOT?: GalleryClientWhereInput | GalleryClientWhereInput[]
+    galleryId?: StringFilter<"GalleryClient"> | string
+    clientId?: StringFilter<"GalleryClient"> | string
+    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }
+
+  export type GalleryClientOrderByWithRelationInput = {
+    galleryId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+    client?: ClientOrderByWithRelationInput
+  }
+
+  export type GalleryClientWhereUniqueInput = Prisma.AtLeast<{
+    galleryId_clientId?: GalleryClientGalleryIdClientIdCompoundUniqueInput
+    AND?: GalleryClientWhereInput | GalleryClientWhereInput[]
+    OR?: GalleryClientWhereInput[]
+    NOT?: GalleryClientWhereInput | GalleryClientWhereInput[]
+    galleryId?: StringFilter<"GalleryClient"> | string
+    clientId?: StringFilter<"GalleryClient"> | string
+    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
+  }, "galleryId_clientId">
+
+  export type GalleryClientOrderByWithAggregationInput = {
+    galleryId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+    _count?: GalleryClientCountOrderByAggregateInput
+    _max?: GalleryClientMaxOrderByAggregateInput
+    _min?: GalleryClientMinOrderByAggregateInput
+  }
+
+  export type GalleryClientScalarWhereWithAggregatesInput = {
+    AND?: GalleryClientScalarWhereWithAggregatesInput | GalleryClientScalarWhereWithAggregatesInput[]
+    OR?: GalleryClientScalarWhereWithAggregatesInput[]
+    NOT?: GalleryClientScalarWhereWithAggregatesInput | GalleryClientScalarWhereWithAggregatesInput[]
+    galleryId?: StringWithAggregatesFilter<"GalleryClient"> | string
+    clientId?: StringWithAggregatesFilter<"GalleryClient"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"GalleryClient"> | Date | string
+  }
+
+  export type AlbumWhereInput = {
+    AND?: AlbumWhereInput | AlbumWhereInput[]
+    OR?: AlbumWhereInput[]
+    NOT?: AlbumWhereInput | AlbumWhereInput[]
+    id?: StringFilter<"Album"> | string
+    galleryId?: StringFilter<"Album"> | string
+    title?: StringFilter<"Album"> | string
+    createdAt?: DateTimeFilter<"Album"> | Date | string
+    updatedAt?: DateTimeFilter<"Album"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photos?: AlbumPhotoListRelationFilter
+  }
+
+  export type AlbumOrderByWithRelationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    title?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+    photos?: AlbumPhotoOrderByRelationAggregateInput
+  }
+
+  export type AlbumWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AlbumWhereInput | AlbumWhereInput[]
+    OR?: AlbumWhereInput[]
+    NOT?: AlbumWhereInput | AlbumWhereInput[]
+    galleryId?: StringFilter<"Album"> | string
+    title?: StringFilter<"Album"> | string
+    createdAt?: DateTimeFilter<"Album"> | Date | string
+    updatedAt?: DateTimeFilter<"Album"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photos?: AlbumPhotoListRelationFilter
+  }, "id" | "id">
+
+  export type AlbumOrderByWithAggregationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    title?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AlbumCountOrderByAggregateInput
+    _max?: AlbumMaxOrderByAggregateInput
+    _min?: AlbumMinOrderByAggregateInput
+  }
+
+  export type AlbumScalarWhereWithAggregatesInput = {
+    AND?: AlbumScalarWhereWithAggregatesInput | AlbumScalarWhereWithAggregatesInput[]
+    OR?: AlbumScalarWhereWithAggregatesInput[]
+    NOT?: AlbumScalarWhereWithAggregatesInput | AlbumScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Album"> | string
+    galleryId?: StringWithAggregatesFilter<"Album"> | string
+    title?: StringWithAggregatesFilter<"Album"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Album"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Album"> | Date | string
+  }
+
+  export type AlbumPhotoWhereInput = {
+    AND?: AlbumPhotoWhereInput | AlbumPhotoWhereInput[]
+    OR?: AlbumPhotoWhereInput[]
+    NOT?: AlbumPhotoWhereInput | AlbumPhotoWhereInput[]
+    albumId?: StringFilter<"AlbumPhoto"> | string
+    photoId?: StringFilter<"AlbumPhoto"> | string
+    createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
+    album?: XOR<AlbumScalarRelationFilter, AlbumWhereInput>
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
+  }
+
+  export type AlbumPhotoOrderByWithRelationInput = {
+    albumId?: SortOrder
+    photoId?: SortOrder
+    createdAt?: SortOrder
+    album?: AlbumOrderByWithRelationInput
+    photo?: PhotoOrderByWithRelationInput
+  }
+
+  export type AlbumPhotoWhereUniqueInput = Prisma.AtLeast<{
+    albumId_photoId?: AlbumPhotoAlbumIdPhotoIdCompoundUniqueInput
+    AND?: AlbumPhotoWhereInput | AlbumPhotoWhereInput[]
+    OR?: AlbumPhotoWhereInput[]
+    NOT?: AlbumPhotoWhereInput | AlbumPhotoWhereInput[]
+    albumId?: StringFilter<"AlbumPhoto"> | string
+    photoId?: StringFilter<"AlbumPhoto"> | string
+    createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
+    album?: XOR<AlbumScalarRelationFilter, AlbumWhereInput>
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
+  }, "albumId_photoId">
+
+  export type AlbumPhotoOrderByWithAggregationInput = {
+    albumId?: SortOrder
+    photoId?: SortOrder
+    createdAt?: SortOrder
+    _count?: AlbumPhotoCountOrderByAggregateInput
+    _max?: AlbumPhotoMaxOrderByAggregateInput
+    _min?: AlbumPhotoMinOrderByAggregateInput
+  }
+
+  export type AlbumPhotoScalarWhereWithAggregatesInput = {
+    AND?: AlbumPhotoScalarWhereWithAggregatesInput | AlbumPhotoScalarWhereWithAggregatesInput[]
+    OR?: AlbumPhotoScalarWhereWithAggregatesInput[]
+    NOT?: AlbumPhotoScalarWhereWithAggregatesInput | AlbumPhotoScalarWhereWithAggregatesInput[]
+    albumId?: StringWithAggregatesFilter<"AlbumPhoto"> | string
+    photoId?: StringWithAggregatesFilter<"AlbumPhoto"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AlbumPhoto"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -12205,6 +17397,7 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12227,6 +17420,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12249,6 +17443,7 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12271,6 +17466,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12780,13 +17976,18 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -12794,25 +17995,35 @@ export namespace Prisma {
     userId: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -12820,12 +18031,17 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -12833,21 +18049,27 @@ export namespace Prisma {
     userId: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type GalleryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GalleryUncheckedUpdateManyInput = {
@@ -12855,11 +18077,14 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PhotoCreateInput = {
@@ -12873,6 +18098,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -12881,6 +18107,7 @@ export namespace Prisma {
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateInput = {
@@ -12895,6 +18122,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -12902,6 +18130,7 @@ export namespace Prisma {
     status?: $Enums.PhotoStatus
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUpdateInput = {
@@ -12915,6 +18144,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12923,6 +18153,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateInput = {
@@ -12937,6 +18168,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12944,6 +18176,7 @@ export namespace Prisma {
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoCreateManyInput = {
@@ -12958,6 +18191,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -12977,6 +18211,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12997,11 +18232,217 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientCreateInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutClientsInput
+    galleries?: GalleryClientCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutClientsNestedInput
+    galleries?: GalleryClientUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClientUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientCreateInput = {
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutClientsInput
+    client: ClientCreateNestedOneWithoutGalleriesInput
+  }
+
+  export type GalleryClientUncheckedCreateInput = {
+    galleryId: string
+    clientId: string
+    createdAt?: Date | string
+  }
+
+  export type GalleryClientUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutClientsNestedInput
+    client?: ClientUpdateOneRequiredWithoutGalleriesNestedInput
+  }
+
+  export type GalleryClientUncheckedUpdateInput = {
+    galleryId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientCreateManyInput = {
+    galleryId: string
+    clientId: string
+    createdAt?: Date | string
+  }
+
+  export type GalleryClientUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientUncheckedUpdateManyInput = {
+    galleryId?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumCreateInput = {
+    id?: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutAlbumsInput
+    photos?: AlbumPhotoCreateNestedManyWithoutAlbumInput
+  }
+
+  export type AlbumUncheckedCreateInput = {
+    id?: string
+    galleryId: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: AlbumPhotoUncheckedCreateNestedManyWithoutAlbumInput
+  }
+
+  export type AlbumUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutAlbumsNestedInput
+    photos?: AlbumPhotoUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type AlbumUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: AlbumPhotoUncheckedUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type AlbumCreateManyInput = {
+    id?: string
+    galleryId: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AlbumUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoCreateInput = {
+    createdAt?: Date | string
+    album: AlbumCreateNestedOneWithoutPhotosInput
+    photo: PhotoCreateNestedOneWithoutAlbumPhotosInput
+  }
+
+  export type AlbumPhotoUncheckedCreateInput = {
+    albumId: string
+    photoId: string
+    createdAt?: Date | string
+  }
+
+  export type AlbumPhotoUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    album?: AlbumUpdateOneRequiredWithoutPhotosNestedInput
+    photo?: PhotoUpdateOneRequiredWithoutAlbumPhotosNestedInput
+  }
+
+  export type AlbumPhotoUncheckedUpdateInput = {
+    albumId?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoCreateManyInput = {
+    albumId: string
+    photoId: string
+    createdAt?: Date | string
+  }
+
+  export type AlbumPhotoUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoUncheckedUpdateManyInput = {
+    albumId?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13103,6 +18544,12 @@ export namespace Prisma {
     none?: GalleryWhereInput
   }
 
+  export type ClientListRelationFilter = {
+    every?: ClientWhereInput
+    some?: ClientWhereInput
+    none?: ClientWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -13121,6 +18568,10 @@ export namespace Prisma {
   }
 
   export type GalleryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ClientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13623,7 +19074,27 @@ export namespace Prisma {
     none?: PhotoWhereInput
   }
 
+  export type AlbumListRelationFilter = {
+    every?: AlbumWhereInput
+    some?: AlbumWhereInput
+    none?: AlbumWhereInput
+  }
+
+  export type GalleryClientListRelationFilter = {
+    every?: GalleryClientWhereInput
+    some?: GalleryClientWhereInput
+    none?: GalleryClientWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AlbumOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GalleryClientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13637,11 +19108,14 @@ export namespace Prisma {
     userId?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    eventDate?: SortOrder
+    deadline?: SortOrder
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type GalleryMaxOrderByAggregateInput = {
@@ -13649,11 +19123,14 @@ export namespace Prisma {
     userId?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    eventDate?: SortOrder
+    deadline?: SortOrder
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type GalleryMinOrderByAggregateInput = {
@@ -13661,11 +19138,14 @@ export namespace Prisma {
     userId?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    eventDate?: SortOrder
+    deadline?: SortOrder
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -13691,6 +19171,16 @@ export namespace Prisma {
     isNot?: GalleryWhereInput
   }
 
+  export type AlbumPhotoListRelationFilter = {
+    every?: AlbumPhotoWhereInput
+    some?: AlbumPhotoWhereInput
+    none?: AlbumPhotoWhereInput
+  }
+
+  export type AlbumPhotoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PhotoCountOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
@@ -13703,6 +19193,7 @@ export namespace Prisma {
     mimeType?: SortOrder
     order?: SortOrder
     isCulled?: SortOrder
+    loved?: SortOrder
     aiCaption?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
@@ -13731,6 +19222,7 @@ export namespace Prisma {
     mimeType?: SortOrder
     order?: SortOrder
     isCulled?: SortOrder
+    loved?: SortOrder
     aiCaption?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
@@ -13751,6 +19243,7 @@ export namespace Prisma {
     mimeType?: SortOrder
     order?: SortOrder
     isCulled?: SortOrder
+    loved?: SortOrder
     aiCaption?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
@@ -13793,6 +19286,123 @@ export namespace Prisma {
     _max?: NestedEnumPhotoStatusFilter<$PrismaModel>
   }
 
+  export type ClientUserIdEmailCompoundUniqueInput = {
+    userId: string
+    email: string
+  }
+
+  export type ClientCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClientMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClientScalarRelationFilter = {
+    is?: ClientWhereInput
+    isNot?: ClientWhereInput
+  }
+
+  export type GalleryClientGalleryIdClientIdCompoundUniqueInput = {
+    galleryId: string
+    clientId: string
+  }
+
+  export type GalleryClientCountOrderByAggregateInput = {
+    galleryId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GalleryClientMaxOrderByAggregateInput = {
+    galleryId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GalleryClientMinOrderByAggregateInput = {
+    galleryId?: SortOrder
+    clientId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AlbumCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    title?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AlbumMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    title?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AlbumMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    title?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AlbumScalarRelationFilter = {
+    is?: AlbumWhereInput
+    isNot?: AlbumWhereInput
+  }
+
+  export type PhotoScalarRelationFilter = {
+    is?: PhotoWhereInput
+    isNot?: PhotoWhereInput
+  }
+
+  export type AlbumPhotoAlbumIdPhotoIdCompoundUniqueInput = {
+    albumId: string
+    photoId: string
+  }
+
+  export type AlbumPhotoCountOrderByAggregateInput = {
+    albumId?: SortOrder
+    photoId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AlbumPhotoMaxOrderByAggregateInput = {
+    albumId?: SortOrder
+    photoId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AlbumPhotoMinOrderByAggregateInput = {
+    albumId?: SortOrder
+    photoId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -13827,6 +19437,13 @@ export namespace Prisma {
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
   }
 
+  export type ClientCreateNestedManyWithoutUserInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -13859,6 +19476,13 @@ export namespace Prisma {
     connectOrCreate?: GalleryCreateOrConnectWithoutUserInput | GalleryCreateOrConnectWithoutUserInput[]
     createMany?: GalleryCreateManyUserInputEnvelope
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
+  }
+
+  export type ClientUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -13955,6 +19579,20 @@ export namespace Prisma {
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
   }
 
+  export type ClientUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -14019,6 +19657,20 @@ export namespace Prisma {
     update?: GalleryUpdateWithWhereUniqueWithoutUserInput | GalleryUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: GalleryUpdateManyWithWhereWithoutUserInput | GalleryUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
+  }
+
+  export type ClientUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
+    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ClientCreateManyUserInputEnvelope
+    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
+    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -14133,11 +19785,39 @@ export namespace Prisma {
     connect?: PhotoWhereUniqueInput | PhotoWhereUniqueInput[]
   }
 
+  export type AlbumCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput> | AlbumCreateWithoutGalleryInput[] | AlbumUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: AlbumCreateOrConnectWithoutGalleryInput | AlbumCreateOrConnectWithoutGalleryInput[]
+    createMany?: AlbumCreateManyGalleryInputEnvelope
+    connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+  }
+
+  export type GalleryClientCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryClientCreateManyGalleryInputEnvelope
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
     createMany?: PhotoCreateManyGalleryInputEnvelope
     connect?: PhotoWhereUniqueInput | PhotoWhereUniqueInput[]
+  }
+
+  export type AlbumUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput> | AlbumCreateWithoutGalleryInput[] | AlbumUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: AlbumCreateOrConnectWithoutGalleryInput | AlbumCreateOrConnectWithoutGalleryInput[]
+    createMany?: AlbumCreateManyGalleryInputEnvelope
+    connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+  }
+
+  export type GalleryClientUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryClientCreateManyGalleryInputEnvelope
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutGalleriesNestedInput = {
@@ -14172,6 +19852,34 @@ export namespace Prisma {
     deleteMany?: PhotoScalarWhereInput | PhotoScalarWhereInput[]
   }
 
+  export type AlbumUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput> | AlbumCreateWithoutGalleryInput[] | AlbumUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: AlbumCreateOrConnectWithoutGalleryInput | AlbumCreateOrConnectWithoutGalleryInput[]
+    upsert?: AlbumUpsertWithWhereUniqueWithoutGalleryInput | AlbumUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: AlbumCreateManyGalleryInputEnvelope
+    set?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    disconnect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    delete?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    update?: AlbumUpdateWithWhereUniqueWithoutGalleryInput | AlbumUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: AlbumUpdateManyWithWhereWithoutGalleryInput | AlbumUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
+  }
+
+  export type GalleryClientUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryClientUpsertWithWhereUniqueWithoutGalleryInput | GalleryClientUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryClientCreateManyGalleryInputEnvelope
+    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    update?: GalleryClientUpdateWithWhereUniqueWithoutGalleryInput | GalleryClientUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryClientUpdateManyWithWhereWithoutGalleryInput | GalleryClientUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -14184,6 +19892,34 @@ export namespace Prisma {
     update?: PhotoUpdateWithWhereUniqueWithoutGalleryInput | PhotoUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: PhotoUpdateManyWithWhereWithoutGalleryInput | PhotoUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: PhotoScalarWhereInput | PhotoScalarWhereInput[]
+  }
+
+  export type AlbumUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput> | AlbumCreateWithoutGalleryInput[] | AlbumUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: AlbumCreateOrConnectWithoutGalleryInput | AlbumCreateOrConnectWithoutGalleryInput[]
+    upsert?: AlbumUpsertWithWhereUniqueWithoutGalleryInput | AlbumUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: AlbumCreateManyGalleryInputEnvelope
+    set?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    disconnect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    delete?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
+    update?: AlbumUpdateWithWhereUniqueWithoutGalleryInput | AlbumUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: AlbumUpdateManyWithWhereWithoutGalleryInput | AlbumUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
+  }
+
+  export type GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryClientUpsertWithWhereUniqueWithoutGalleryInput | GalleryClientUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryClientCreateManyGalleryInputEnvelope
+    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    update?: GalleryClientUpdateWithWhereUniqueWithoutGalleryInput | GalleryClientUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryClientUpdateManyWithWhereWithoutGalleryInput | GalleryClientUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
   export type GalleryCreateNestedOneWithoutPhotosInput = {
@@ -14199,11 +19935,25 @@ export namespace Prisma {
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
   }
 
+  export type AlbumPhotoCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
+    createMany?: AlbumPhotoCreateManyPhotoInputEnvelope
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+  }
+
   export type GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
     createMany?: GalleryCreateManyCoverPhotoInputEnvelope
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
+  }
+
+  export type AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
+    createMany?: AlbumPhotoCreateManyPhotoInputEnvelope
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -14240,6 +19990,20 @@ export namespace Prisma {
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
   }
 
+  export type AlbumPhotoUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
+    upsert?: AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: AlbumPhotoCreateManyPhotoInputEnvelope
+    set?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    disconnect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    delete?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    update?: AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: AlbumPhotoUpdateManyWithWhereWithoutPhotoInput | AlbumPhotoUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
@@ -14252,6 +20016,188 @@ export namespace Prisma {
     update?: GalleryUpdateWithWhereUniqueWithoutCoverPhotoInput | GalleryUpdateWithWhereUniqueWithoutCoverPhotoInput[]
     updateMany?: GalleryUpdateManyWithWhereWithoutCoverPhotoInput | GalleryUpdateManyWithWhereWithoutCoverPhotoInput[]
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
+  }
+
+  export type AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
+    upsert?: AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: AlbumPhotoCreateManyPhotoInputEnvelope
+    set?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    disconnect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    delete?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    update?: AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: AlbumPhotoUpdateManyWithWhereWithoutPhotoInput | AlbumPhotoUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutClientsInput = {
+    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type GalleryClientCreateNestedManyWithoutClientInput = {
+    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
+    createMany?: GalleryClientCreateManyClientInputEnvelope
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+  }
+
+  export type GalleryClientUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
+    createMany?: GalleryClientCreateManyClientInputEnvelope
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutClientsNestedInput = {
+    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
+    upsert?: UserUpsertWithoutClientsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClientsInput, UserUpdateWithoutClientsInput>, UserUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type GalleryClientUpdateManyWithoutClientNestedInput = {
+    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
+    upsert?: GalleryClientUpsertWithWhereUniqueWithoutClientInput | GalleryClientUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: GalleryClientCreateManyClientInputEnvelope
+    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    update?: GalleryClientUpdateWithWhereUniqueWithoutClientInput | GalleryClientUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: GalleryClientUpdateManyWithWhereWithoutClientInput | GalleryClientUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
+  }
+
+  export type GalleryClientUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
+    upsert?: GalleryClientUpsertWithWhereUniqueWithoutClientInput | GalleryClientUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: GalleryClientCreateManyClientInputEnvelope
+    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+    update?: GalleryClientUpdateWithWhereUniqueWithoutClientInput | GalleryClientUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: GalleryClientUpdateManyWithWhereWithoutClientInput | GalleryClientUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
+  }
+
+  export type GalleryCreateNestedOneWithoutClientsInput = {
+    create?: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutClientsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type ClientCreateNestedOneWithoutGalleriesInput = {
+    create?: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutGalleriesInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type GalleryUpdateOneRequiredWithoutClientsNestedInput = {
+    create?: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutClientsInput
+    upsert?: GalleryUpsertWithoutClientsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutClientsInput, GalleryUpdateWithoutClientsInput>, GalleryUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type ClientUpdateOneRequiredWithoutGalleriesNestedInput = {
+    create?: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutGalleriesInput
+    upsert?: ClientUpsertWithoutGalleriesInput
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutGalleriesInput, ClientUpdateWithoutGalleriesInput>, ClientUncheckedUpdateWithoutGalleriesInput>
+  }
+
+  export type GalleryCreateNestedOneWithoutAlbumsInput = {
+    create?: XOR<GalleryCreateWithoutAlbumsInput, GalleryUncheckedCreateWithoutAlbumsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutAlbumsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type AlbumPhotoCreateNestedManyWithoutAlbumInput = {
+    create?: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput> | AlbumPhotoCreateWithoutAlbumInput[] | AlbumPhotoUncheckedCreateWithoutAlbumInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutAlbumInput | AlbumPhotoCreateOrConnectWithoutAlbumInput[]
+    createMany?: AlbumPhotoCreateManyAlbumInputEnvelope
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+  }
+
+  export type AlbumPhotoUncheckedCreateNestedManyWithoutAlbumInput = {
+    create?: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput> | AlbumPhotoCreateWithoutAlbumInput[] | AlbumPhotoUncheckedCreateWithoutAlbumInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutAlbumInput | AlbumPhotoCreateOrConnectWithoutAlbumInput[]
+    createMany?: AlbumPhotoCreateManyAlbumInputEnvelope
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+  }
+
+  export type GalleryUpdateOneRequiredWithoutAlbumsNestedInput = {
+    create?: XOR<GalleryCreateWithoutAlbumsInput, GalleryUncheckedCreateWithoutAlbumsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutAlbumsInput
+    upsert?: GalleryUpsertWithoutAlbumsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutAlbumsInput, GalleryUpdateWithoutAlbumsInput>, GalleryUncheckedUpdateWithoutAlbumsInput>
+  }
+
+  export type AlbumPhotoUpdateManyWithoutAlbumNestedInput = {
+    create?: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput> | AlbumPhotoCreateWithoutAlbumInput[] | AlbumPhotoUncheckedCreateWithoutAlbumInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutAlbumInput | AlbumPhotoCreateOrConnectWithoutAlbumInput[]
+    upsert?: AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput | AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput[]
+    createMany?: AlbumPhotoCreateManyAlbumInputEnvelope
+    set?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    disconnect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    delete?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    update?: AlbumPhotoUpdateWithWhereUniqueWithoutAlbumInput | AlbumPhotoUpdateWithWhereUniqueWithoutAlbumInput[]
+    updateMany?: AlbumPhotoUpdateManyWithWhereWithoutAlbumInput | AlbumPhotoUpdateManyWithWhereWithoutAlbumInput[]
+    deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type AlbumPhotoUncheckedUpdateManyWithoutAlbumNestedInput = {
+    create?: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput> | AlbumPhotoCreateWithoutAlbumInput[] | AlbumPhotoUncheckedCreateWithoutAlbumInput[]
+    connectOrCreate?: AlbumPhotoCreateOrConnectWithoutAlbumInput | AlbumPhotoCreateOrConnectWithoutAlbumInput[]
+    upsert?: AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput | AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput[]
+    createMany?: AlbumPhotoCreateManyAlbumInputEnvelope
+    set?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    disconnect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    delete?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+    update?: AlbumPhotoUpdateWithWhereUniqueWithoutAlbumInput | AlbumPhotoUpdateWithWhereUniqueWithoutAlbumInput[]
+    updateMany?: AlbumPhotoUpdateManyWithWhereWithoutAlbumInput | AlbumPhotoUpdateManyWithWhereWithoutAlbumInput[]
+    deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type AlbumCreateNestedOneWithoutPhotosInput = {
+    create?: XOR<AlbumCreateWithoutPhotosInput, AlbumUncheckedCreateWithoutPhotosInput>
+    connectOrCreate?: AlbumCreateOrConnectWithoutPhotosInput
+    connect?: AlbumWhereUniqueInput
+  }
+
+  export type PhotoCreateNestedOneWithoutAlbumPhotosInput = {
+    create?: XOR<PhotoCreateWithoutAlbumPhotosInput, PhotoUncheckedCreateWithoutAlbumPhotosInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutAlbumPhotosInput
+    connect?: PhotoWhereUniqueInput
+  }
+
+  export type AlbumUpdateOneRequiredWithoutPhotosNestedInput = {
+    create?: XOR<AlbumCreateWithoutPhotosInput, AlbumUncheckedCreateWithoutPhotosInput>
+    connectOrCreate?: AlbumCreateOrConnectWithoutPhotosInput
+    upsert?: AlbumUpsertWithoutPhotosInput
+    connect?: AlbumWhereUniqueInput
+    update?: XOR<XOR<AlbumUpdateToOneWithWhereWithoutPhotosInput, AlbumUpdateWithoutPhotosInput>, AlbumUncheckedUpdateWithoutPhotosInput>
+  }
+
+  export type PhotoUpdateOneRequiredWithoutAlbumPhotosNestedInput = {
+    create?: XOR<PhotoCreateWithoutAlbumPhotosInput, PhotoUncheckedCreateWithoutAlbumPhotosInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutAlbumPhotosInput
+    upsert?: PhotoUpsertWithoutAlbumPhotosInput
+    connect?: PhotoWhereUniqueInput
+    update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutAlbumPhotosInput, PhotoUpdateWithoutAlbumPhotosInput>, PhotoUncheckedUpdateWithoutAlbumPhotosInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14730,24 +20676,34 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -14757,6 +20713,34 @@ export namespace Prisma {
 
   export type GalleryCreateManyUserInputEnvelope = {
     data: GalleryCreateManyUserInput | GalleryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClientCreateWithoutUserInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    galleries?: GalleryClientCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
+  }
+
+  export type ClientCreateManyUserInputEnvelope = {
+    data: ClientCreateManyUserInput | ClientCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -14919,11 +20903,42 @@ export namespace Prisma {
     userId?: StringFilter<"Gallery"> | string
     title?: StringFilter<"Gallery"> | string
     slug?: StringFilter<"Gallery"> | string
+    eventDate?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    deadline?: DateTimeNullableFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
+    updatedAt?: DateTimeFilter<"Gallery"> | Date | string
+  }
+
+  export type ClientUpsertWithWhereUniqueWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    update: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
+    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
+  }
+
+  export type ClientUpdateWithWhereUniqueWithoutUserInput = {
+    where: ClientWhereUniqueInput
+    data: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ClientUpdateManyWithWhereWithoutUserInput = {
+    where: ClientScalarWhereInput
+    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ClientScalarWhereInput = {
+    AND?: ClientScalarWhereInput | ClientScalarWhereInput[]
+    OR?: ClientScalarWhereInput[]
+    NOT?: ClientScalarWhereInput | ClientScalarWhereInput[]
+    id?: StringFilter<"Client"> | string
+    userId?: StringFilter<"Client"> | string
+    name?: StringFilter<"Client"> | string
+    email?: StringFilter<"Client"> | string
+    createdAt?: DateTimeFilter<"Client"> | Date | string
+    updatedAt?: DateTimeFilter<"Client"> | Date | string
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -14945,6 +20960,7 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -14966,6 +20982,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -15003,6 +21020,7 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -15024,6 +21042,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -15045,6 +21064,7 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -15066,6 +21086,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -15103,6 +21124,7 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -15124,6 +21146,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPaymentInput = {
@@ -15145,6 +21168,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
@@ -15166,6 +21190,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -15203,6 +21228,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
@@ -15224,6 +21250,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
@@ -15245,6 +21272,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     payment?: PaymentCreateNestedManyWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
@@ -15266,6 +21294,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -15303,6 +21332,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     payment?: PaymentUpdateManyWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
@@ -15324,6 +21354,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
@@ -15345,6 +21376,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
@@ -15366,6 +21398,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -15384,6 +21417,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -15391,6 +21425,7 @@ export namespace Prisma {
     status?: $Enums.PhotoStatus
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUsedAsCoverInInput = {
@@ -15405,12 +21440,14 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: $Enums.PhotoStatus
     createdAt?: Date | string
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutUsedAsCoverInInput = {
@@ -15429,6 +21466,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -15436,6 +21474,7 @@ export namespace Prisma {
     status?: $Enums.PhotoStatus
     createdAt?: Date | string
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutGalleryInput = {
@@ -15449,6 +21488,7 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
@@ -15456,6 +21496,7 @@ export namespace Prisma {
     status?: $Enums.PhotoStatus
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutGalleryInput = {
@@ -15465,6 +21506,52 @@ export namespace Prisma {
 
   export type PhotoCreateManyGalleryInputEnvelope = {
     data: PhotoCreateManyGalleryInput | PhotoCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AlbumCreateWithoutGalleryInput = {
+    id?: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: AlbumPhotoCreateNestedManyWithoutAlbumInput
+  }
+
+  export type AlbumUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: AlbumPhotoUncheckedCreateNestedManyWithoutAlbumInput
+  }
+
+  export type AlbumCreateOrConnectWithoutGalleryInput = {
+    where: AlbumWhereUniqueInput
+    create: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type AlbumCreateManyGalleryInputEnvelope = {
+    data: AlbumCreateManyGalleryInput | AlbumCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryClientCreateWithoutGalleryInput = {
+    createdAt?: Date | string
+    client: ClientCreateNestedOneWithoutGalleriesInput
+  }
+
+  export type GalleryClientUncheckedCreateWithoutGalleryInput = {
+    clientId: string
+    createdAt?: Date | string
+  }
+
+  export type GalleryClientCreateOrConnectWithoutGalleryInput = {
+    where: GalleryClientWhereUniqueInput
+    create: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryClientCreateManyGalleryInputEnvelope = {
+    data: GalleryClientCreateManyGalleryInput | GalleryClientCreateManyGalleryInput[]
     skipDuplicates?: boolean
   }
 
@@ -15498,6 +21585,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
@@ -15519,6 +21607,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -15543,6 +21632,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15550,6 +21640,7 @@ export namespace Prisma {
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUsedAsCoverInInput = {
@@ -15564,12 +21655,14 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUpsertWithWhereUniqueWithoutGalleryInput = {
@@ -15603,6 +21696,7 @@ export namespace Prisma {
     mimeType?: StringFilter<"Photo"> | string
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
+    loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
@@ -15611,16 +21705,73 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Photo"> | Date | string
   }
 
+  export type AlbumUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: AlbumWhereUniqueInput
+    update: XOR<AlbumUpdateWithoutGalleryInput, AlbumUncheckedUpdateWithoutGalleryInput>
+    create: XOR<AlbumCreateWithoutGalleryInput, AlbumUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type AlbumUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: AlbumWhereUniqueInput
+    data: XOR<AlbumUpdateWithoutGalleryInput, AlbumUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type AlbumUpdateManyWithWhereWithoutGalleryInput = {
+    where: AlbumScalarWhereInput
+    data: XOR<AlbumUpdateManyMutationInput, AlbumUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type AlbumScalarWhereInput = {
+    AND?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
+    OR?: AlbumScalarWhereInput[]
+    NOT?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
+    id?: StringFilter<"Album"> | string
+    galleryId?: StringFilter<"Album"> | string
+    title?: StringFilter<"Album"> | string
+    createdAt?: DateTimeFilter<"Album"> | Date | string
+    updatedAt?: DateTimeFilter<"Album"> | Date | string
+  }
+
+  export type GalleryClientUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryClientWhereUniqueInput
+    update: XOR<GalleryClientUpdateWithoutGalleryInput, GalleryClientUncheckedUpdateWithoutGalleryInput>
+    create: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryClientUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryClientWhereUniqueInput
+    data: XOR<GalleryClientUpdateWithoutGalleryInput, GalleryClientUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type GalleryClientUpdateManyWithWhereWithoutGalleryInput = {
+    where: GalleryClientScalarWhereInput
+    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type GalleryClientScalarWhereInput = {
+    AND?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
+    OR?: GalleryClientScalarWhereInput[]
+    NOT?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
+    galleryId?: StringFilter<"GalleryClient"> | string
+    clientId?: StringFilter<"GalleryClient"> | string
+    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -15628,11 +21779,16 @@ export namespace Prisma {
     userId: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -15644,12 +21800,17 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -15657,11 +21818,16 @@ export namespace Prisma {
     userId: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -15671,6 +21837,26 @@ export namespace Prisma {
 
   export type GalleryCreateManyCoverPhotoInputEnvelope = {
     data: GalleryCreateManyCoverPhotoInput | GalleryCreateManyCoverPhotoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AlbumPhotoCreateWithoutPhotoInput = {
+    createdAt?: Date | string
+    album: AlbumCreateNestedOneWithoutPhotosInput
+  }
+
+  export type AlbumPhotoUncheckedCreateWithoutPhotoInput = {
+    albumId: string
+    createdAt?: Date | string
+  }
+
+  export type AlbumPhotoCreateOrConnectWithoutPhotoInput = {
+    where: AlbumPhotoWhereUniqueInput
+    create: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type AlbumPhotoCreateManyPhotoInputEnvelope = {
+    data: AlbumPhotoCreateManyPhotoInput | AlbumPhotoCreateManyPhotoInput[]
     skipDuplicates?: boolean
   }
 
@@ -15689,12 +21875,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -15702,11 +21893,16 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -15723,6 +21919,579 @@ export namespace Prisma {
   export type GalleryUpdateManyWithWhereWithoutCoverPhotoInput = {
     where: GalleryScalarWhereInput
     data: XOR<GalleryUpdateManyMutationInput, GalleryUncheckedUpdateManyWithoutCoverPhotoInput>
+  }
+
+  export type AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput = {
+    where: AlbumPhotoWhereUniqueInput
+    update: XOR<AlbumPhotoUpdateWithoutPhotoInput, AlbumPhotoUncheckedUpdateWithoutPhotoInput>
+    create: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput = {
+    where: AlbumPhotoWhereUniqueInput
+    data: XOR<AlbumPhotoUpdateWithoutPhotoInput, AlbumPhotoUncheckedUpdateWithoutPhotoInput>
+  }
+
+  export type AlbumPhotoUpdateManyWithWhereWithoutPhotoInput = {
+    where: AlbumPhotoScalarWhereInput
+    data: XOR<AlbumPhotoUpdateManyMutationInput, AlbumPhotoUncheckedUpdateManyWithoutPhotoInput>
+  }
+
+  export type AlbumPhotoScalarWhereInput = {
+    AND?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+    OR?: AlbumPhotoScalarWhereInput[]
+    NOT?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+    albumId?: StringFilter<"AlbumPhoto"> | string
+    photoId?: StringFilter<"AlbumPhoto"> | string
+    createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
+  }
+
+  export type UserCreateWithoutClientsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.PhotographerPlan
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    payment?: PaymentCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutClientsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.PhotographerPlan
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutClientsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+  }
+
+  export type GalleryClientCreateWithoutClientInput = {
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutClientsInput
+  }
+
+  export type GalleryClientUncheckedCreateWithoutClientInput = {
+    galleryId: string
+    createdAt?: Date | string
+  }
+
+  export type GalleryClientCreateOrConnectWithoutClientInput = {
+    where: GalleryClientWhereUniqueInput
+    create: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput>
+  }
+
+  export type GalleryClientCreateManyClientInputEnvelope = {
+    data: GalleryClientCreateManyClientInput | GalleryClientCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutClientsInput = {
+    update: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
+    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutClientsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type UserUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    payment?: PaymentUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type GalleryClientUpsertWithWhereUniqueWithoutClientInput = {
+    where: GalleryClientWhereUniqueInput
+    update: XOR<GalleryClientUpdateWithoutClientInput, GalleryClientUncheckedUpdateWithoutClientInput>
+    create: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput>
+  }
+
+  export type GalleryClientUpdateWithWhereUniqueWithoutClientInput = {
+    where: GalleryClientWhereUniqueInput
+    data: XOR<GalleryClientUpdateWithoutClientInput, GalleryClientUncheckedUpdateWithoutClientInput>
+  }
+
+  export type GalleryClientUpdateManyWithWhereWithoutClientInput = {
+    where: GalleryClientScalarWhereInput
+    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type GalleryCreateWithoutClientsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutClientsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutClientsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
+  }
+
+  export type ClientCreateWithoutGalleriesInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutClientsInput
+  }
+
+  export type ClientUncheckedCreateWithoutGalleriesInput = {
+    id?: string
+    userId: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClientCreateOrConnectWithoutGalleriesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
+  }
+
+  export type GalleryUpsertWithoutClientsInput = {
+    update: XOR<GalleryUpdateWithoutClientsInput, GalleryUncheckedUpdateWithoutClientsInput>
+    create: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutClientsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutClientsInput, GalleryUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type GalleryUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutClientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type ClientUpsertWithoutGalleriesInput = {
+    update: XOR<ClientUpdateWithoutGalleriesInput, ClientUncheckedUpdateWithoutGalleriesInput>
+    create: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutGalleriesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutGalleriesInput, ClientUncheckedUpdateWithoutGalleriesInput>
+  }
+
+  export type ClientUpdateWithoutGalleriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutClientsNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutGalleriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCreateWithoutAlbumsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutAlbumsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutAlbumsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutAlbumsInput, GalleryUncheckedCreateWithoutAlbumsInput>
+  }
+
+  export type AlbumPhotoCreateWithoutAlbumInput = {
+    createdAt?: Date | string
+    photo: PhotoCreateNestedOneWithoutAlbumPhotosInput
+  }
+
+  export type AlbumPhotoUncheckedCreateWithoutAlbumInput = {
+    photoId: string
+    createdAt?: Date | string
+  }
+
+  export type AlbumPhotoCreateOrConnectWithoutAlbumInput = {
+    where: AlbumPhotoWhereUniqueInput
+    create: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput>
+  }
+
+  export type AlbumPhotoCreateManyAlbumInputEnvelope = {
+    data: AlbumPhotoCreateManyAlbumInput | AlbumPhotoCreateManyAlbumInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryUpsertWithoutAlbumsInput = {
+    update: XOR<GalleryUpdateWithoutAlbumsInput, GalleryUncheckedUpdateWithoutAlbumsInput>
+    create: XOR<GalleryCreateWithoutAlbumsInput, GalleryUncheckedCreateWithoutAlbumsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutAlbumsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutAlbumsInput, GalleryUncheckedUpdateWithoutAlbumsInput>
+  }
+
+  export type GalleryUpdateWithoutAlbumsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutAlbumsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
+    where: AlbumPhotoWhereUniqueInput
+    update: XOR<AlbumPhotoUpdateWithoutAlbumInput, AlbumPhotoUncheckedUpdateWithoutAlbumInput>
+    create: XOR<AlbumPhotoCreateWithoutAlbumInput, AlbumPhotoUncheckedCreateWithoutAlbumInput>
+  }
+
+  export type AlbumPhotoUpdateWithWhereUniqueWithoutAlbumInput = {
+    where: AlbumPhotoWhereUniqueInput
+    data: XOR<AlbumPhotoUpdateWithoutAlbumInput, AlbumPhotoUncheckedUpdateWithoutAlbumInput>
+  }
+
+  export type AlbumPhotoUpdateManyWithWhereWithoutAlbumInput = {
+    where: AlbumPhotoScalarWhereInput
+    data: XOR<AlbumPhotoUpdateManyMutationInput, AlbumPhotoUncheckedUpdateManyWithoutAlbumInput>
+  }
+
+  export type AlbumCreateWithoutPhotosInput = {
+    id?: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutAlbumsInput
+  }
+
+  export type AlbumUncheckedCreateWithoutPhotosInput = {
+    id?: string
+    galleryId: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AlbumCreateOrConnectWithoutPhotosInput = {
+    where: AlbumWhereUniqueInput
+    create: XOR<AlbumCreateWithoutPhotosInput, AlbumUncheckedCreateWithoutPhotosInput>
+  }
+
+  export type PhotoCreateWithoutAlbumPhotosInput = {
+    id?: string
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    size: number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: $Enums.PhotoStatus
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutPhotosInput
+    usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+  }
+
+  export type PhotoUncheckedCreateWithoutAlbumPhotosInput = {
+    id?: string
+    galleryId: string
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    size: number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: $Enums.PhotoStatus
+    createdAt?: Date | string
+    usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+  }
+
+  export type PhotoCreateOrConnectWithoutAlbumPhotosInput = {
+    where: PhotoWhereUniqueInput
+    create: XOR<PhotoCreateWithoutAlbumPhotosInput, PhotoUncheckedCreateWithoutAlbumPhotosInput>
+  }
+
+  export type AlbumUpsertWithoutPhotosInput = {
+    update: XOR<AlbumUpdateWithoutPhotosInput, AlbumUncheckedUpdateWithoutPhotosInput>
+    create: XOR<AlbumCreateWithoutPhotosInput, AlbumUncheckedCreateWithoutPhotosInput>
+    where?: AlbumWhereInput
+  }
+
+  export type AlbumUpdateToOneWithWhereWithoutPhotosInput = {
+    where?: AlbumWhereInput
+    data: XOR<AlbumUpdateWithoutPhotosInput, AlbumUncheckedUpdateWithoutPhotosInput>
+  }
+
+  export type AlbumUpdateWithoutPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutAlbumsNestedInput
+  }
+
+  export type AlbumUncheckedUpdateWithoutPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhotoUpsertWithoutAlbumPhotosInput = {
+    update: XOR<PhotoUpdateWithoutAlbumPhotosInput, PhotoUncheckedUpdateWithoutAlbumPhotosInput>
+    create: XOR<PhotoCreateWithoutAlbumPhotosInput, PhotoUncheckedCreateWithoutAlbumPhotosInput>
+    where?: PhotoWhereInput
+  }
+
+  export type PhotoUpdateToOneWithWhereWithoutAlbumPhotosInput = {
+    where?: PhotoWhereInput
+    data: XOR<PhotoUpdateWithoutAlbumPhotosInput, PhotoUncheckedUpdateWithoutAlbumPhotosInput>
+  }
+
+  export type PhotoUpdateWithoutAlbumPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+  }
+
+  export type PhotoUncheckedUpdateWithoutAlbumPhotosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -15770,11 +22539,22 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClientCreateManyUserInput = {
+    id?: string
+    name: string
+    email: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -15903,35 +22683,74 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClientUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    galleries?: GalleryClientUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PhotoCreateManyGalleryInput = {
@@ -15945,11 +22764,24 @@ export namespace Prisma {
     mimeType: string
     order?: number
     isCulled?: boolean
+    loved?: boolean
     aiCaption?: string | null
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: $Enums.PhotoStatus
+    createdAt?: Date | string
+  }
+
+  export type AlbumCreateManyGalleryInput = {
+    id?: string
+    title: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryClientCreateManyGalleryInput = {
+    clientId: string
     createdAt?: Date | string
   }
 
@@ -15964,6 +22796,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15971,6 +22804,7 @@ export namespace Prisma {
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutGalleryInput = {
@@ -15984,6 +22818,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15991,6 +22826,7 @@ export namespace Prisma {
     status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateManyWithoutGalleryInput = {
@@ -16004,6 +22840,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16012,14 +22849,60 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AlbumUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: AlbumPhotoUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type AlbumUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: AlbumPhotoUncheckedUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type AlbumUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientUpdateWithoutGalleryInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneRequiredWithoutGalleriesNestedInput
+  }
+
+  export type GalleryClientUncheckedUpdateWithoutGalleryInput = {
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientUncheckedUpdateManyWithoutGalleryInput = {
+    clientId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
     title: string
     slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
     isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AlbumPhotoCreateManyPhotoInput = {
+    albumId: string
     createdAt?: Date | string
   }
 
@@ -16027,12 +22910,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -16040,11 +22928,16 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {
@@ -16052,9 +22945,67 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoUpdateWithoutPhotoInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    album?: AlbumUpdateOneRequiredWithoutPhotosNestedInput
+  }
+
+  export type AlbumPhotoUncheckedUpdateWithoutPhotoInput = {
+    albumId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoUncheckedUpdateManyWithoutPhotoInput = {
+    albumId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientCreateManyClientInput = {
+    galleryId: string
+    createdAt?: Date | string
+  }
+
+  export type GalleryClientUpdateWithoutClientInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutClientsNestedInput
+  }
+
+  export type GalleryClientUncheckedUpdateWithoutClientInput = {
+    galleryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryClientUncheckedUpdateManyWithoutClientInput = {
+    galleryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoCreateManyAlbumInput = {
+    photoId: string
+    createdAt?: Date | string
+  }
+
+  export type AlbumPhotoUpdateWithoutAlbumInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photo?: PhotoUpdateOneRequiredWithoutAlbumPhotosNestedInput
+  }
+
+  export type AlbumPhotoUncheckedUpdateWithoutAlbumInput = {
+    photoId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlbumPhotoUncheckedUpdateManyWithoutAlbumInput = {
+    photoId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

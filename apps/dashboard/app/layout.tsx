@@ -1,4 +1,5 @@
 import "@workspace/ui/globals.css";
+import "./theme.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
@@ -35,7 +36,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-background")}>
+      <body className={cn(inter.className, "dashboard-theme dashboard-shell bg-background text-foreground")}>
         <div className="flex h-screen">
           <div className="hidden lg:block">
             <DashboardSidebar onLogout={logout} />
@@ -43,7 +44,11 @@ export default async function RootLayout({
 
           <div className="flex-1 flex flex-col overflow-hidden">
             <Header main="DASHBOARD" logout={logout} />
-            <main className="flex-1 overflow-auto p-4 lg:p-6">{children}</main>
+            <main className="dashboard-main flex-1 overflow-auto p-4 lg:p-6">
+              <div className="dashboard-glass dashboard-enter min-h-full rounded-2xl p-4 lg:p-6">
+                {children}
+              </div>
+            </main>
           </div>
         </div>
         <Toaster />

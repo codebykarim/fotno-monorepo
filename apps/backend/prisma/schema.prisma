@@ -28,6 +28,7 @@ model User {
   payment          Payment[]
   userOnboarding   UserOnboarding?
   galleries        Gallery[]
+  clients          Client[]
 
   @@unique([email])
   @@map("user")
@@ -158,28 +159,33 @@ enum PhotoStatus {
 }
 
 model Gallery {
-  id           String   @id @unique @default(uuid())
+  id           String          @id @unique @default(uuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   title        String
   slug         String
+  eventDate    DateTime?
+  deadline     DateTime?
   coverPhotoId String?
-  coverPhoto   Photo?   @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  coverPhoto   Photo?          @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
   passwordHash String?
-  shareToken   String   @unique @default(uuid())
-  isPublished  Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  photos       Photo[]  @relation("GalleryPhotos")
+  shareToken   String          @unique @default(uuid())
+  isPublished  Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @default(now()) @updatedAt
+  photos       Photo[]         @relation("GalleryPhotos")
+  albums       Album[]
+  clients      GalleryClient[]
 
   @@unique([userId, slug])
   @@map("gallery")
 }
 
 model Photo {
-  id               String      @id @unique @default(uuid())
+  id               String       @id @unique @default(uuid())
   galleryId        String
-  gallery          Gallery     @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
-  usedAsCoverIn    Gallery[]   @relation("GalleryCoverPhoto")
+  gallery          Gallery      @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
+  usedAsCoverIn    Gallery[]    @relation("GalleryCoverPhoto")
   s3Key            String
   s3Bucket         String
   originalFilename String
@@ -187,15 +193,65 @@ model Photo {
   width            Int?
   height           Int?
   mimeType         String
-  order            Int         @default(0)
-  isCulled         Boolean     @default(false)
+  order            Int          @default(0)
+  isCulled         Boolean      @default(false)
+  loved            Boolean      @default(false)
   aiCaption        String?
-  faceCount        Int         @default(0)
+  faceCount        Int          @default(0)
   thumbnailKey     String?
   previewKey       String?
-  status           PhotoStatus @default(PENDING)
-  createdAt        DateTime    @default(now())
+  status           PhotoStatus  @default(PENDING)
+  createdAt        DateTime     @default(now())
+  albumPhotos      AlbumPhoto[]
 
   @@index([galleryId, order])
   @@map("photo")
+}
+
+model Client {
+  id        String          @id @unique @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now()) @updatedAt
+  galleries GalleryClient[]
+
+  @@unique([userId, email])
+  @@map("client")
+}
+
+model GalleryClient {
+  galleryId String
+  clientId  String
+  createdAt DateTime @default(now())
+  gallery   Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@id([galleryId, clientId])
+  @@map("gallery_client")
+}
+
+model Album {
+  id        String       @id @unique @default(uuid())
+  galleryId String
+  gallery   Gallery      @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  title     String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(now()) @updatedAt
+  photos    AlbumPhoto[]
+
+  @@map("album")
+}
+
+model AlbumPhoto {
+  albumId   String
+  photoId   String
+  createdAt DateTime @default(now())
+  album     Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@id([albumId, photoId])
+  @@map("album_photo")
 }

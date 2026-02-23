@@ -58,6 +58,9 @@ type DashboardGalleryResponse = {
     photos?: Array<{
       id: string;
       url: string;
+      thumbnailUrl?: string | null;
+      previewUrl?: string | null;
+      originalUrl?: string | null;
       order?: number;
       width?: number;
       height?: number;
@@ -83,6 +86,7 @@ const normalizePhoto = (
   blurDataUrl: TRANSPARENT_BLUR,
   thumbnailSrc: `/api/photos/${photo.id}/proxy?variant=thumbnail&shareToken=${encodeURIComponent(shareToken)}`,
   previewSrc: `/api/photos/${photo.id}/proxy?variant=preview&shareToken=${encodeURIComponent(shareToken)}`,
+  originalSrc: null,
 });
 
 const normalizeGallery = (input: BackendGallery): PublicGallery => {
@@ -164,8 +168,9 @@ const loadGalleryFromDashboardMock = async (
       height: photo.height ?? null,
       order: photo.order ?? 0,
       blurDataUrl: TRANSPARENT_BLUR,
-      thumbnailSrc: photo.url,
-      previewSrc: photo.url,
+      thumbnailSrc: photo.thumbnailUrl ?? photo.previewUrl ?? photo.url,
+      previewSrc: photo.previewUrl ?? photo.thumbnailUrl ?? photo.url,
+      originalSrc: photo.originalUrl ?? null,
     }))
     .sort((a, b) => a.order - b.order);
 
@@ -282,7 +287,10 @@ export const getPhotoPresignedUrl = async (
       if (variant === "preview") {
         return fallbackPhoto.previewSrc;
       }
-      return fallbackPhoto.previewSrc;
+      if (fallbackPhoto.originalSrc) {
+        return fallbackPhoto.originalSrc;
+      }
+      throw new Error("Original image URL unavailable in fallback response");
     }
 
     throw error;

@@ -56,6 +56,7 @@ export default function PhotoLightboxClient({
   const [gallery, setGallery] = useState(initialGallery);
   const [galleryJwt, setGalleryJwt] = useState<string | null>(null);
   const [isUnlocking, setIsUnlocking] = useState(false);
+  const [isDownloadingCurrent, setIsDownloadingCurrent] = useState(false);
   const [zoom, setZoom] = useState(1);
   const pinchStateRef = useRef<{ startDistance: number; startZoom: number } | null>(
     null,
@@ -182,9 +183,10 @@ export default function PhotoLightboxClient({
   };
 
   const downloadCurrent = async (photo: PublicPhoto) => {
+    setIsDownloadingCurrent(true);
     try {
       const response = await fetch(
-        `/api/photos/${photo.id}/url?shareToken=${encodeURIComponent(gallery.shareToken)}&variant=original`,
+        `/api/photos/${photo.id}/download?shareToken=${encodeURIComponent(gallery.shareToken)}&fileName=${encodeURIComponent(photo.originalFilename)}`,
         {
           headers: galleryJwt
             ? {
@@ -198,16 +200,18 @@ export default function PhotoLightboxClient({
         throw new Error(await readErrorText(response));
       }
 
-      const payload = (await response.json()) as { url: string };
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = payload.url;
+      link.href = objectUrl;
       link.download = photo.originalFilename;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
       link.click();
+      URL.revokeObjectURL(objectUrl);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Download failed";
       toast.error(message);
+    } finally {
+      setIsDownloadingCurrent(false);
     }
   };
 
@@ -329,10 +333,11 @@ export default function PhotoLightboxClient({
           <button
             type="button"
             onClick={() => downloadCurrent(currentPhoto)}
+            disabled={isDownloadingCurrent}
             className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/20 px-4 text-sm text-white transition hover:bg-white/10"
           >
             <Download className="h-4 w-4" />
-            Download original
+            {isDownloadingCurrent ? "Downloading..." : "Download original"}
           </button>
         </div>
       </div>

@@ -127,6 +127,9 @@ export default function GalleryPageClient({
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isDownloadingAll, setIsDownloadingAll] = useState(false);
+  const [downloadingPhotoId, setDownloadingPhotoId] = useState<string | null>(
+    null,
+  );
   const [filterMode, setFilterMode] = useState<string>("all");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
@@ -466,9 +469,10 @@ export default function GalleryPageClient({
   };
 
   const handleSingleDownload = async (photo: PublicPhoto) => {
+    setDownloadingPhotoId(photo.id);
     try {
       const response = await fetch(
-        `/api/photos/${photo.id}/url?shareToken=${encodeURIComponent(gallery.shareToken)}&variant=original${sessionToken ? `&sessionToken=${encodeURIComponent(sessionToken)}` : ""}`,
+        `/api/photos/${photo.id}/download?shareToken=${encodeURIComponent(gallery.shareToken)}&fileName=${encodeURIComponent(photo.originalFilename)}${sessionToken ? `&sessionToken=${encodeURIComponent(sessionToken)}` : ""}`,
         {
           headers: {
             ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
@@ -481,17 +485,19 @@ export default function GalleryPageClient({
         throw new Error(await readErrorText(response));
       }
 
-      const payload = (await response.json()) as { url: string };
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = payload.url;
+      link.href = objectUrl;
       link.download = photo.originalFilename;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
       link.click();
+      URL.revokeObjectURL(objectUrl);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Download failed";
       toast.error(message);
+    } finally {
+      setDownloadingPhotoId(null);
     }
   };
 
@@ -785,10 +791,13 @@ export default function GalleryPageClient({
                   <button
                     type="button"
                     onClick={() => handleSingleDownload(photo)}
+                    disabled={downloadingPhotoId === photo.id}
                     className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-900 opacity-0 shadow-sm transition group-hover:opacity-100"
                     aria-label="Download photo"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download
+                      className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
+                    />
                   </button>
                 </article>
               );
@@ -826,10 +835,11 @@ export default function GalleryPageClient({
             <button
               type="button"
               onClick={() => void handleSingleDownload(activePhoto)}
+              disabled={downloadingPhotoId === activePhoto.id}
               className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/45 px-4 text-sm text-white"
             >
               <Download className="h-4 w-4" />
-              Download
+              {downloadingPhotoId === activePhoto.id ? "Downloading..." : "Download"}
             </button>
             <button
               type="button"

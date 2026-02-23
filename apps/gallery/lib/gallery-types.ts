@@ -15,6 +15,7 @@ export interface PublicPhoto {
   blurDataUrl: string;
   thumbnailSrc: string;
   previewSrc: string;
+  originalSrc?: string | null;
 }
 
 export interface PublicAlbum {

@@ -31,11 +31,13 @@ export const deletePhoto = async (photoId: string) => {
 
   await db.photo.delete({ where: { id: photoId } });
 
-  await enqueuePhotoCleanup([
+  void enqueuePhotoCleanup([
     photo.s3Key,
     photo.thumbnailKey ?? "",
     photo.previewKey ?? "",
-  ]);
+  ]).catch((error) => {
+    console.error(`Failed to enqueue photo cleanup for ${photoId}`, error);
+  });
 
   return true;
 };

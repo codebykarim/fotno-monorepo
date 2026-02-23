@@ -7,16 +7,28 @@ export const updatePhotoLoved = async (photoId: string, loved: boolean) => {
     data: { loved },
   });
 
-  const url = await getPresignedDownloadUrl(
-    updated.previewKey ?? updated.s3Key,
-    3600,
-  );
+  const thumbnailObjectKey = updated.thumbnailKey ?? updated.previewKey ?? null;
+  const previewObjectKey = updated.previewKey ?? updated.thumbnailKey ?? null;
+  const [thumbnailUrl, previewUrl, originalUrl] = await Promise.all([
+    thumbnailObjectKey
+      ? getPresignedDownloadUrl(thumbnailObjectKey, 3600)
+      : Promise.resolve(null),
+    previewObjectKey
+      ? getPresignedDownloadUrl(previewObjectKey, 3600)
+      : Promise.resolve(null),
+    getPresignedDownloadUrl(updated.s3Key, 3600),
+  ]);
+  const resolvedPreviewUrl = previewUrl ?? originalUrl;
+  const resolvedThumbnailUrl = thumbnailUrl ?? resolvedPreviewUrl;
 
   return {
     photo: {
       id: updated.id,
       galleryId: updated.galleryId,
-      url,
+      url: resolvedPreviewUrl,
+      thumbnailUrl: resolvedThumbnailUrl,
+      previewUrl: resolvedPreviewUrl,
+      originalUrl,
       order: updated.order,
       width: updated.width ?? 1200,
       height: updated.height ?? 1600,

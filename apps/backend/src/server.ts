@@ -10,6 +10,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import path from "path";
 import { ZodError } from "zod";
+import { startProcessPhotoWorker } from "./workers/processPhotoWorker";
 
 const app = express();
 
@@ -104,6 +105,10 @@ const port = process.env.PORT ?? 8000;
 // Start Server
 const startServer = async () => {
   try {
+    if (process.env.PHOTO_WORKER_IN_API !== "false") {
+      await startProcessPhotoWorker();
+    }
+
     app.listen(port, () => {
       console.log(`Server started on port: ${port}`);
     });

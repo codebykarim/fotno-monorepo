@@ -23,7 +23,14 @@ export const confirmPhotoUpload = async (
 
   const photo = await db.photo.findFirst({
     where: { id: uploadId, galleryId },
-    select: { id: true, order: true, originalSize: true, s3Key: true, previewKey: true },
+    select: {
+      id: true,
+      order: true,
+      originalSize: true,
+      s3Key: true,
+      thumbnailKey: true,
+      previewKey: true,
+    },
   });
   if (!photo) {
     return { error: "Upload not found", status: 404 as const };
@@ -45,13 +52,28 @@ export const confirmPhotoUpload = async (
     console.error("Failed to enqueue process-photo job", error);
   });
 
-  const downloadUrl = await getPresignedDownloadUrl(photo.previewKey ?? photo.s3Key, 3600);
+  const thumbnailObjectKey = photo.thumbnailKey ?? photo.previewKey ?? null;
+  const previewObjectKey = photo.previewKey ?? photo.thumbnailKey ?? null;
+  const [thumbnailUrl, previewUrl, originalUrl] = await Promise.all([
+    thumbnailObjectKey
+      ? getPresignedDownloadUrl(thumbnailObjectKey, 3600)
+      : Promise.resolve(null),
+    previewObjectKey
+      ? getPresignedDownloadUrl(previewObjectKey, 3600)
+      : Promise.resolve(null),
+    getPresignedDownloadUrl(photo.s3Key, 3600),
+  ]);
+  const resolvedPreviewUrl = previewUrl ?? originalUrl;
+  const resolvedThumbnailUrl = thumbnailUrl ?? resolvedPreviewUrl;
 
   return {
     photo: {
       id: photo.id,
       galleryId,
-      url: downloadUrl,
+      url: resolvedPreviewUrl,
+      thumbnailUrl: resolvedThumbnailUrl,
+      previewUrl: resolvedPreviewUrl,
+      originalUrl,
       order: photo.order,
       width: 1200,
       height: 1600,

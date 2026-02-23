@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Download,
   DownloadCloud,
@@ -116,6 +116,9 @@ const formatRelative = (isoString: string): string => {
   return `${Math.floor(deltaHours / 24)}d ago`;
 };
 
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
+
 export default function GalleryPageClient({
   initialGallery,
 }: GalleryPageClientProps) {
@@ -128,6 +131,10 @@ export default function GalleryPageClient({
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
+  const pinchStateRef = useRef<{
+    startDistance: number;
+    startZoom: number;
+  } | null>(null);
   const [viewerCount, setViewerCount] = useState(0);
   const [viewers, setViewers] = useState<Viewer[]>([]);
   const [comments, setComments] = useState<GalleryComment[]>([]);
@@ -554,6 +561,56 @@ export default function GalleryPageClient({
     setZoom(1);
   };
 
+  const setZoomClamped = useCallback((value: number) => {
+    const clamped = Math.max(
+      MIN_ZOOM,
+      Math.min(MAX_ZOOM, Number(value.toFixed(2))),
+    );
+    setZoom(clamped);
+  }, []);
+
+  const handleModalWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const delta = event.deltaY < 0 ? 0.15 : -0.15;
+    setZoomClamped(zoom + delta);
+  };
+
+  const distanceBetweenTouches = (touches: React.TouchList): number => {
+    if (touches.length < 2) {
+      return 0;
+    }
+    const dx = touches[0]!.clientX - touches[1]!.clientX;
+    const dy = touches[0]!.clientY - touches[1]!.clientY;
+    return Math.hypot(dx, dy);
+  };
+
+  const handleModalTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 2) {
+      return;
+    }
+    pinchStateRef.current = {
+      startDistance: distanceBetweenTouches(event.touches),
+      startZoom: zoom,
+    };
+  };
+
+  const handleModalTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 2 || !pinchStateRef.current) {
+      return;
+    }
+    event.preventDefault();
+    const nextDistance = distanceBetweenTouches(event.touches);
+    const { startDistance, startZoom } = pinchStateRef.current;
+    if (startDistance <= 0 || nextDistance <= 0) {
+      return;
+    }
+    setZoomClamped(startZoom * (nextDistance / startDistance));
+  };
+
+  const handleModalTouchEnd = () => {
+    pinchStateRef.current = null;
+  };
+
   const postComment = async () => {
     const message = commentText.trim();
     if (!message) {
@@ -690,6 +747,7 @@ export default function GalleryPageClient({
                     type="button"
                     onClick={() => {
                       setActivePhotoId(photo.id);
+                      setZoom(1);
                       setCommentPhotoId(photo.id);
                     }}
                     className="block w-full"
@@ -744,11 +802,7 @@ export default function GalleryPageClient({
           <div className="absolute right-4 top-4 z-10 flex items-center gap-2 md:right-8 md:top-8">
             <button
               type="button"
-              onClick={() =>
-                setZoom((value) =>
-                  Math.max(1, Number((value - 0.2).toFixed(2))),
-                )
-              }
+              onClick={() => setZoomClamped(zoom - 0.2)}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white"
               aria-label="Zoom out"
             >
@@ -756,11 +810,7 @@ export default function GalleryPageClient({
             </button>
             <button
               type="button"
-              onClick={() =>
-                setZoom((value) =>
-                  Math.min(4, Number((value + 0.2).toFixed(2))),
-                )
-              }
+              onClick={() => setZoomClamped(zoom + 0.2)}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white"
               aria-label="Zoom in"
             >
@@ -768,7 +818,7 @@ export default function GalleryPageClient({
             </button>
             <button
               type="button"
-              onClick={() => setZoom(1)}
+              onClick={() => setZoomClamped(1)}
               className="rounded-full border border-white/25 bg-black/45 px-3 py-2 text-xs text-white"
             >
               {Math.round(zoom * 100)}%
@@ -785,7 +835,7 @@ export default function GalleryPageClient({
               type="button"
               onClick={() => {
                 setActivePhotoId(null);
-                setZoom(1);
+                setZoomClamped(1);
               }}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white"
               aria-label="Close"
@@ -804,7 +854,15 @@ export default function GalleryPageClient({
               ←
             </button>
 
-            <div className="relative flex h-full max-h-[85vh] w-full max-w-6xl items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/60">
+            <div
+              className="relative flex h-full max-h-[85vh] w-full max-w-6xl items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/60"
+              onWheel={handleModalWheel}
+              onTouchStart={handleModalTouchStart}
+              onTouchMove={handleModalTouchMove}
+              onTouchEnd={handleModalTouchEnd}
+              onTouchCancel={handleModalTouchEnd}
+              style={{ touchAction: "none" }}
+            >
               <Image
                 src={withOptionalToken(activePhoto.previewSrc)}
                 alt={activePhoto.aiCaption ?? activePhoto.originalFilename}
@@ -838,8 +896,8 @@ export default function GalleryPageClient({
       </footer>
 
       <Sheet>
-        <SheetTrigger className="absolute right-5 bottom-20">
-          <Button>
+        <SheetTrigger asChild>
+          <Button className="absolute right-5 bottom-20">
             <MessageSquare className="h-4 w-4" />
             Comments
           </Button>

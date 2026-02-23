@@ -143,7 +143,7 @@ export function GalleryDetailContent({
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
                 Status
               </p>
-              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+              <div className="mt-1 flex items-center gap-1.5 text-lg font-light">
                 <Badge
                   variant="outline"
                   className={`rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -154,7 +154,7 @@ export function GalleryDetailContent({
                 >
                   {data.gallery.isPublished ? "Published" : "Draft"}
                 </Badge>
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -328,6 +328,10 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   });
 
   async function deletePhoto(id: string) {
+    if (!window.confirm("Are you sure you want to delete this photo?")) {
+      return;
+    }
+
     try {
       await apiRequest(`/api/photos/${id}`, { method: "DELETE" });
       toast.success("Photo deleted");
@@ -526,7 +530,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
               >
                 <div className="relative aspect-[3/4] bg-slate-100">
                   <Image
-                    src={photo.url}
+                    src={photo.thumbnailUrl ?? photo.previewUrl ?? photo.url}
                     alt="Gallery photo"
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
@@ -761,13 +765,15 @@ function AlbumsTab({
             <div className="flex flex-wrap gap-2">
               {album.photoIds.map((photoId) => {
                 const photo = photoMap.get(photoId);
-                if (!photo?.url) {
+                const albumThumb =
+                  photo?.thumbnailUrl ?? photo?.previewUrl ?? photo?.url;
+                if (!albumThumb) {
                   return null;
                 }
                 return (
                   <Image
                     key={photoId}
-                    src={photo.url}
+                    src={albumThumb}
                     alt={album.title}
                     width={64}
                     height={64}

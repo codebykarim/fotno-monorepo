@@ -3,7 +3,7 @@ import { backendJsonFetch } from "@/lib/backend";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
   const body = await request.json();
@@ -17,12 +17,21 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
   const response = await backendJsonFetch(`/api/dashboard/photos/${id}`, {
     method: "DELETE",
   });
-  const payload = await response.json();
+
+  const text = await response.text();
+  let payload = {};
+  if (text) {
+    try {
+      payload = JSON.parse(text);
+    } catch (e) {
+      // not JSON
+    }
+  }
   return NextResponse.json(payload, { status: response.status });
 }

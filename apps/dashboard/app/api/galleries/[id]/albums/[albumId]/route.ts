@@ -3,7 +3,7 @@ import { backendJsonFetch } from "@/lib/backend";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string; albumId: string }> }
+  { params }: { params: Promise<{ id: string; albumId: string }> },
 ) {
   const { id, albumId } = await params;
   const body = await request.json();
@@ -20,7 +20,7 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string; albumId: string }> }
+  { params }: { params: Promise<{ id: string; albumId: string }> },
 ) {
   const { id, albumId } = await params;
   const response = await backendJsonFetch(
@@ -29,6 +29,15 @@ export async function DELETE(
       method: "DELETE",
     },
   );
-  const payload = await response.json();
+
+  const text = await response.text();
+  let payload = {};
+  if (text) {
+    try {
+      payload = JSON.parse(text);
+    } catch (e) {
+      // not JSON
+    }
+  }
   return NextResponse.json(payload, { status: response.status });
 }

@@ -3,8 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Minus,
+  Plus,
+} from "lucide-react";
 import { toast } from "sonner";
 import type { PublicGallery, PublicPhoto } from "@/lib/gallery-types";
 import { getSessionTokenKey, isJwtLikelyValid } from "@/lib/jwt";
@@ -14,6 +21,9 @@ type PhotoLightboxClientProps = {
   initialGallery: PublicGallery;
   currentPhotoId: string;
 };
+
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
 
 const readErrorText = async (response: Response): Promise<string> => {
   try {
@@ -46,6 +56,10 @@ export default function PhotoLightboxClient({
   const [gallery, setGallery] = useState(initialGallery);
   const [galleryJwt, setGalleryJwt] = useState<string | null>(null);
   const [isUnlocking, setIsUnlocking] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const pinchStateRef = useRef<{ startDistance: number; startZoom: number } | null>(
+    null,
+  );
 
   const currentIndex = useMemo(
     () => gallery.photos.findIndex((photo) => photo.id === currentPhotoId),
@@ -91,6 +105,10 @@ export default function PhotoLightboxClient({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [gallery.shareToken, nextPhoto, previousPhoto, router]);
+
+  useEffect(() => {
+    setZoom(1);
+  }, [currentPhotoId]);
 
   useEffect(() => {
     const preventContextMenu = (event: MouseEvent) => {
@@ -226,6 +244,52 @@ export default function PhotoLightboxClient({
   }
 
   const previewSrc = withOptionalToken(currentPhoto.previewSrc);
+  const setZoomClamped = useCallback((value: number) => {
+    const clamped = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number(value.toFixed(2))));
+    setZoom(clamped);
+  }, []);
+
+  const handleWheelZoom = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const delta = event.deltaY < 0 ? 0.15 : -0.15;
+    setZoomClamped(zoom + delta);
+  };
+
+  const distanceBetweenTouches = (touches: React.TouchList): number => {
+    if (touches.length < 2) {
+      return 0;
+    }
+    const dx = touches[0]!.clientX - touches[1]!.clientX;
+    const dy = touches[0]!.clientY - touches[1]!.clientY;
+    return Math.hypot(dx, dy);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 2) {
+      return;
+    }
+    pinchStateRef.current = {
+      startDistance: distanceBetweenTouches(event.touches),
+      startZoom: zoom,
+    };
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 2 || !pinchStateRef.current) {
+      return;
+    }
+    event.preventDefault();
+    const nextDistance = distanceBetweenTouches(event.touches);
+    const { startDistance, startZoom } = pinchStateRef.current;
+    if (startDistance <= 0 || nextDistance <= 0) {
+      return;
+    }
+    setZoomClamped(startZoom * (nextDistance / startDistance));
+  };
+
+  const handleTouchEnd = () => {
+    pinchStateRef.current = null;
+  };
 
   return (
     <div className="min-h-screen select-none bg-slate-950 text-slate-100">
@@ -238,14 +302,39 @@ export default function PhotoLightboxClient({
           Back to gallery
         </Link>
 
-        <button
-          type="button"
-          onClick={() => downloadCurrent(currentPhoto)}
-          className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/20 px-4 text-sm text-white transition hover:bg-white/10"
-        >
-          <Download className="h-4 w-4" />
-          Download original
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setZoomClamped(zoom - 0.2)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white/10"
+            aria-label="Zoom out"
+          >
+            <Minus className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoomClamped(zoom + 0.2)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white/10"
+            aria-label="Zoom in"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoomClamped(1)}
+            className="rounded-full border border-white/20 px-3 py-2 text-xs text-white transition hover:bg-white/10"
+          >
+            {Math.round(zoom * 100)}%
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadCurrent(currentPhoto)}
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/20 px-4 text-sm text-white transition hover:bg-white/10"
+          >
+            <Download className="h-4 w-4" />
+            Download original
+          </button>
+        </div>
       </div>
 
       <div className="relative mx-auto flex max-w-7xl items-center justify-center px-4 pb-6 md:px-8">
@@ -260,7 +349,15 @@ export default function PhotoLightboxClient({
           </button>
         ) : null}
 
-        <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+        <div
+          className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/30"
+          onWheel={handleWheelZoom}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+          style={{ touchAction: "none" }}
+        >
           <Image
             src={previewSrc}
             alt={currentPhoto.aiCaption ?? currentPhoto.originalFilename}
@@ -271,7 +368,8 @@ export default function PhotoLightboxClient({
             blurDataURL={currentPhoto.blurDataUrl}
             draggable={false}
             onContextMenu={(event) => event.preventDefault()}
-            className="h-auto max-h-[76vh] w-full object-contain"
+            className="h-auto max-h-[76vh] w-full object-contain transition duration-200"
+            style={{ transform: `scale(${zoom})` }}
             sizes="100vw"
           />
         </div>

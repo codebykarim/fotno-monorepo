@@ -86,9 +86,11 @@ const compressWebpUnderBudget = async (
 /**
  * Registers and starts the process-photo worker.
  */
-const startProcessPhotoWorker = async (): Promise<void> => {
+export const startProcessPhotoWorker = async (): Promise<void> => {
   photoQueue.process("process-photo", async (job: Job<{ photoId: string }>) => {
     const { photoId } = job.data;
+    const startedAt = Date.now();
+    console.log(`[process-photo] started photoId=${photoId}`);
 
     const photo = await mediaPrisma.photo.findUnique({
       where: { id: photoId },
@@ -166,11 +168,17 @@ const startProcessPhotoWorker = async (): Promise<void> => {
       );
 
       await enqueueAiAnalyzePhoto(photoId);
+      console.log(
+        `[process-photo] completed photoId=${photoId} previewBytes=${previewBuffer.length} thumbnailBytes=${thumbnailBuffer.length} durationMs=${Date.now() - startedAt}`,
+      );
     } catch (error) {
       await mediaPrisma.photo.update({
         where: { id: photoId },
         data: { status: "failed" },
       });
+      console.error(
+        `[process-photo] failed photoId=${photoId} durationMs=${Date.now() - startedAt}`,
+      );
       throw error;
     }
   });
@@ -183,7 +191,9 @@ const startProcessPhotoWorker = async (): Promise<void> => {
   console.log("process-photo worker started");
 };
 
-startProcessPhotoWorker().catch((error) => {
-  console.error("Failed to start process-photo worker", error);
-  process.exit(1);
-});
+if (require.main === module) {
+  startProcessPhotoWorker().catch((error) => {
+    console.error("Failed to start process-photo worker", error);
+    process.exit(1);
+  });
+}

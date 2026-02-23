@@ -14,8 +14,8 @@ const adapter = new PrismaPg({ connectionString });
 
 const prisma = new PrismaClient({
   adapter,
-  log: ["query", "info", "warn", "error"],
-  errorFormat: "pretty",
+  // log: ["query", "info", "warn", "error"],
+  // errorFormat: "pretty",
 });
 
 export default prisma;

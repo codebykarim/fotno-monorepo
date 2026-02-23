@@ -18,19 +18,38 @@ export const getGallery = async (userId: string, galleryId: string) => {
   }
 
   const photos = await Promise.all(
-    gallery.photos.map(async (photo: any) => ({
-      id: photo.id,
-      galleryId: photo.galleryId,
-      url: await getPresignedDownloadUrl(photo.previewKey ?? photo.s3Key, 3600),
-      order: photo.order,
-      width: photo.width ?? 1200,
-      height: photo.height ?? 1600,
-      loved: Boolean(photo.loved),
-      createdAt:
-        photo.createdAt instanceof Date
-          ? photo.createdAt.toISOString()
-          : String(photo.createdAt),
-    })),
+    gallery.photos.map(async (photo: any) => {
+      const thumbnailObjectKey = photo.thumbnailKey ?? photo.previewKey ?? null;
+      const previewObjectKey = photo.previewKey ?? photo.thumbnailKey ?? null;
+      const [thumbnailUrl, previewUrl, originalUrl] = await Promise.all([
+        thumbnailObjectKey
+          ? getPresignedDownloadUrl(thumbnailObjectKey, 3600)
+          : Promise.resolve(null),
+        previewObjectKey
+          ? getPresignedDownloadUrl(previewObjectKey, 3600)
+          : Promise.resolve(null),
+        getPresignedDownloadUrl(photo.s3Key, 3600),
+      ]);
+      const resolvedPreviewUrl = previewUrl ?? originalUrl;
+      const resolvedThumbnailUrl = thumbnailUrl ?? resolvedPreviewUrl;
+
+      return {
+        id: photo.id,
+        galleryId: photo.galleryId,
+        url: resolvedPreviewUrl,
+        thumbnailUrl: resolvedThumbnailUrl,
+        previewUrl: resolvedPreviewUrl,
+        originalUrl,
+        order: photo.order,
+        width: photo.width ?? 1200,
+        height: photo.height ?? 1600,
+        loved: Boolean(photo.loved),
+        createdAt:
+          photo.createdAt instanceof Date
+            ? photo.createdAt.toISOString()
+            : String(photo.createdAt),
+      };
+    }),
   );
 
   return {

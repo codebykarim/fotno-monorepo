@@ -4,6 +4,9 @@ export type Photo = {
   id: string;
   galleryId: string;
   url: string;
+  thumbnailUrl: string | null;
+  previewUrl: string | null;
+  originalUrl: string | null;
   order: number;
   width: number;
   height: number;

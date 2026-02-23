@@ -45,7 +45,7 @@ export function listGalleries(options?: {
       ...gallery,
       status: gallery.isPublished ? "published" : "draft",
       photoCount: photos.length,
-      coverPhotoUrl: cover?.url ?? null,
+      coverPhotoUrl: cover?.thumbnailUrl ?? cover?.previewUrl ?? cover?.url ?? null,
     };
   });
 }

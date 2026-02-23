@@ -5,7 +5,9 @@
   "scripts": {
     "start": "tsc && node dist/server.js",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only --inspect=9230 --ignore node_modules src/server.ts",
+    "dev:server": "ts-node-dev --respawn --transpile-only --inspect=9230 --ignore node_modules src/server.ts",
+    "dev:worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
+    "dev": "sh -c 'pnpm run dev:server & pnpm run dev:worker:photo; wait'",
     "worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
     "worker:reconcile-storage": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/reconcileStorageWorker.ts",
     "lint": "eslint . --ext .ts",

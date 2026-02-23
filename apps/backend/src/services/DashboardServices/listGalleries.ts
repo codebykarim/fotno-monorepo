@@ -26,6 +26,7 @@ export const listGalleries = async (
           id: true,
           order: true,
           s3Key: true,
+          thumbnailKey: true,
           previewKey: true,
         },
       },
@@ -63,6 +64,9 @@ export const listGalleries = async (
         ? orderedPhotos.find((photo: any) => photo.id === gallery.coverPhotoId) ?? firstPhoto
         : firstPhoto;
       const coverPhotoId = coverPhoto?.id ?? null;
+      const coverPhotoObjectKey = coverPhoto
+        ? coverPhoto.thumbnailKey ?? coverPhoto.previewKey ?? coverPhoto.s3Key
+        : null;
 
       return {
         id: gallery.id,
@@ -80,8 +84,8 @@ export const listGalleries = async (
         coverPhotoId,
         status: gallery.isPublished ? "published" : "draft",
         photoCount: orderedPhotos.length,
-        coverPhotoUrl: coverPhoto
-          ? await getPresignedDownloadUrl(coverPhoto.previewKey ?? coverPhoto.s3Key, 3600)
+        coverPhotoUrl: coverPhotoObjectKey
+          ? await getPresignedDownloadUrl(coverPhotoObjectKey, 3600)
           : null,
       };
     }),

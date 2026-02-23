@@ -248,11 +248,13 @@ uploadRouter.delete(
       where: { id: photo.id },
     });
 
-    await enqueuePhotoCleanup([
+    void enqueuePhotoCleanup([
       photo.s3Key,
       photo.thumbnailKey ?? "",
       photo.previewKey ?? "",
-    ]);
+    ]).catch((error) => {
+      console.error(`Failed to enqueue photo cleanup for ${photo.id}`, error);
+    });
 
     return res.status(200).json({ success: true, cleanupEnqueued: true });
   },

@@ -246,10 +246,18 @@ export default function PhotoLightboxClient({
     return `${src}&token=${encodeURIComponent(galleryJwt)}`;
   };
 
+  const passwordGateCoverImage =
+    gallery.photos.find((photo) => photo.id === gallery.coverPhotoId)
+      ?.previewSrc ??
+    gallery.photos[0]?.previewSrc ??
+    null;
+
   if (gallery.hasPassword && !galleryJwt) {
     return (
       <PasswordGate
         title={gallery.title}
+        coverImageSrc={passwordGateCoverImage}
+        photographerName={gallery.photographer.name}
         onUnlock={unlockGallery}
         isSubmitting={isUnlocking}
       />

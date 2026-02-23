@@ -136,7 +136,7 @@ const DashboardSidebar = ({ onLogout }: Props) => {
         </div>
       </nav>
 
-      <div className="p-2">
+      <div className="p-2 space-y-5">
         <StorageWidget compact={isCollapsed} />
         <Button
           variant="ghost"

@@ -213,6 +213,11 @@ export default function GalleryPageClient({
 
   const isUnlocked =
     !gallery.hasPassword || (Boolean(galleryJwt) && Boolean(sessionToken));
+  const passwordGateCoverImage =
+    gallery.photos.find((photo) => photo.id === gallery.coverPhotoId)
+      ?.previewSrc ??
+    gallery.photos[0]?.previewSrc ??
+    null;
 
   useEffect(() => {
     if (!isUnlocked) {
@@ -866,6 +871,8 @@ export default function GalleryPageClient({
     return (
       <PasswordGate
         title={gallery.title}
+        coverImageSrc={passwordGateCoverImage}
+        photographerName={gallery.photographer.name}
         onUnlock={unlockGallery}
         isSubmitting={isUnlocking}
       />

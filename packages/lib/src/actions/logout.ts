@@ -9,6 +9,9 @@ export const logout = async () => {
       onSuccess: () => {
         redirect(process.env.NEXT_PUBLIC_LANDING_URL as string);
       },
+      onError: (error: any) => {
+        console.error("Logout error:", error);
+      },
     },
   });
 };

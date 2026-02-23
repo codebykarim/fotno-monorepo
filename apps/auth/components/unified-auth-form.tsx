@@ -448,7 +448,7 @@ export function UnifiedAuthForm({
               <img
                 src="/logo.png"
                 alt="FOTNO"
-                className="h-10 w-36 object-contain"
+                className="h-20 w-40 object-contain"
               />
               <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
                 For Photographers

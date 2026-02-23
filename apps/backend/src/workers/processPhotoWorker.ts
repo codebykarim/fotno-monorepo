@@ -2,9 +2,13 @@ import "../bootstrap";
 import sharp from "sharp";
 import type { Job } from "bull";
 import prisma from "../../prisma";
-import { enqueueAiAnalyzePhoto, photoQueue } from "../queues/photoQueue";
+import {
+  cleanupQueue,
+  enqueueAiAnalyzePhoto,
+  photoQueue,
+} from "../queues/photoQueue";
 import { addStorage } from "../services/StorageServices";
-import { getS3ObjectBuffer, putS3Object } from "../utils/s3";
+import { deleteS3Object, getS3ObjectBuffer, putS3Object } from "../utils/s3";
 
 type MediaPrismaClient = typeof prisma & {
   photo: {
@@ -186,6 +190,54 @@ export const startProcessPhotoWorker = async (): Promise<void> => {
   photoQueue.on("failed", (job: Job | undefined, error: Error) => {
     const id = job?.data?.photoId ?? "unknown";
     console.error(`process-photo failed for ${id}:`, error.message);
+  });
+
+  cleanupQueue.process(
+    "cleanup-photo-assets",
+    async (job: Job<{ keys: string[] }>) => {
+      const keys = Array.from(
+        new Set((job.data.keys ?? []).filter((key) => key.trim().length > 0)),
+      );
+
+      if (keys.length === 0) {
+        return;
+      }
+
+      const deletionResults = await Promise.allSettled(
+        keys.map(async (key) => {
+          await deleteS3Object(key);
+          return key;
+        }),
+      );
+
+      const failedKeys = deletionResults
+        .map((result, index) => ({ result, key: keys[index] }))
+        .filter(
+          (
+            item,
+          ): item is {
+            result: PromiseRejectedResult;
+            key: string;
+          } => item.result.status === "rejected",
+        )
+        .map((item) => item.key);
+
+      if (failedKeys.length > 0) {
+        throw new Error(
+          `Failed to delete ${failedKeys.length} S3/R2 object(s): ${failedKeys.join(", ")}`,
+        );
+      }
+
+      console.log(`[cleanup-photo-assets] deleted ${keys.length} object(s)`);
+    },
+  );
+
+  cleanupQueue.on("failed", (job: Job | undefined, error: Error) => {
+    const keyCount = Array.isArray(job?.data?.keys) ? job.data.keys.length : 0;
+    console.error(
+      `cleanup-photo-assets failed for ${keyCount} key(s):`,
+      error.message,
+    );
   });
 
   console.log("process-photo worker started");

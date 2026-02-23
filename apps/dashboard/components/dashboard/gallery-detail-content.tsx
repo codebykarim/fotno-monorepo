@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate as mutateCache } from "swr";
 import { useDropzone } from "react-dropzone";
 import { QRCodeSVG } from "qrcode.react";
 import {
@@ -20,6 +20,9 @@ import {
   Trash2,
   GripVertical,
   UploadCloud,
+  MoreVertical,
+  Star,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@workspace/ui/components/badge";
@@ -27,6 +30,7 @@ import { Button } from "@workspace/ui/components/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@workspace/ui/components/card";
@@ -34,8 +38,10 @@ import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Progress } from "@workspace/ui/components/progress";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -43,9 +49,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@workspace/ui/components/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
 import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
 import { useGalleryUiStore } from "@/lib/stores/gallery-ui-store";
+import { cn } from "@workspace/ui/lib/utils";
 
 const tabs = ["photos", "albums", "settings"] as const;
 type Tab = (typeof tabs)[number];
@@ -93,8 +107,56 @@ export function GalleryDetailContent({
 
   if (isLoading || !data) {
     return (
-      <div className="py-10 text-sm text-muted-foreground">
-        Loading gallery...
+      <div className="space-y-6">
+        <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-3">
+              <Skeleton className="h-3 w-24" />
+              <Skeleton className="h-10 w-48 sm:w-64" />
+              <Skeleton className="h-5 w-72 sm:w-96 max-w-full" />
+            </div>
+
+            <div className="flex flex-wrap gap-2 lg:gap-3">
+              <div className="grid grid-cols-2 gap-2">
+                <Skeleton className="h-[72px] w-[100px] rounded-xl" />
+                <Skeleton className="h-[72px] w-[100px] rounded-xl" />
+                <Skeleton className="h-[72px] w-[120px] rounded-xl" />
+                <Skeleton className="h-[72px] w-[220px] rounded-xl" />
+              </div>
+              <Skeleton className="h-[158px] w-[158px] rounded-md hidden lg:block" />
+            </div>
+          </div>
+        </section>
+
+        <div className="grid gap-1 rounded-xl bg-slate-100/60 p-1 sm:grid-cols-3">
+          <Skeleton className="h-10 w-full rounded-lg" />
+          <Skeleton className="h-10 w-full rounded-lg" />
+          <Skeleton className="h-10 w-full rounded-lg" />
+        </div>
+
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_300px]">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-white p-3 shadow-sm flex-wrap">
+              <Skeleton className="h-9 w-32 sm:w-48" />
+              <div className="flex gap-2 flex-wrap">
+                <Skeleton className="h-9 w-24" />
+                <Skeleton className="h-9 w-24" />
+                <Skeleton className="h-9 w-32" />
+              </div>
+            </div>
+            <div className="columns-2 gap-4 md:columns-3 xl:columns-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className={`mb-4 w-full rounded-xl ${i % 2 === 0 ? "h-[300px]" : "h-[200px]"}`}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-48 w-full rounded-xl hidden lg:block" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -118,70 +180,75 @@ export function GalleryDetailContent({
           </div>
 
           <div className="flex flex-wrap gap-2 lg:gap-3">
-            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Photos
-              </p>
-              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
-                <Images className="h-4 w-4 text-foreground/40" />
-                {data.gallery.photos.length}
-              </p>
-            </div>
-            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Albums
-              </p>
-              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
-                <FolderKanban className="h-4 w-4 text-foreground/40" />
-                {data.gallery.albums.length}
-              </p>
-            </div>
-            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[120px]">
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                Status
-              </p>
-              <div className="mt-1 flex items-center gap-1.5 text-lg font-light">
-                <Badge
-                  variant="outline"
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                    data.gallery.isPublished
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                      : "border-amber-200 bg-amber-50 text-amber-700"
-                  }`}
-                >
-                  {data.gallery.isPublished ? "Published" : "Draft"}
-                </Badge>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Photos
+                </p>
+                <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                  <Images className="h-4 w-4 text-foreground/40" />
+                  {data.gallery.photos.length}
+                </p>
               </div>
-            </div>
-            {data.gallery.isPublished && (
-              <div className="flex items-center gap-3 rounded-xl border border-border/60 bg-slate-50/50 px-3 py-3 min-w-[220px]">
-                <div className="rounded-md border bg-white p-1">
-                  <QRCodeSVG
-                    value={shareLink}
-                    size={42}
-                    level="H"
-                    includeMargin={false}
-                    bgColor="#ffffff"
-                    fgColor="#0f172a"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    Share
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(shareLink);
-                      toast.success("Share link copied");
-                    }}
-                    className="mt-1 flex w-full items-center gap-1 text-left text-xs text-foreground hover:text-foreground/80"
-                    title={shareLink}
+              <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Albums
+                </p>
+                <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                  <FolderKanban className="h-4 w-4 text-foreground/40" />
+                  {data.gallery.albums.length}
+                </p>
+              </div>
+              <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[120px]">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Status
+                </p>
+                <div className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                  <Badge
+                    variant="outline"
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                      data.gallery.isPublished
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                        : "border-amber-200 bg-amber-50 text-amber-700"
+                    }`}
                   >
-                    <span className="truncate">{shareLink}</span>
-                    <Copy className="h-3.5 w-3.5 shrink-0" />
-                  </button>
+                    {data.gallery.isPublished ? "Published" : "Draft"}
+                  </Badge>
                 </div>
+              </div>
+              {data.gallery.isPublished && (
+                <div className="flex items-center gap-3 rounded-xl border border-border/60 bg-slate-50/50 px-3 py-3 min-w-[220px]">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Share
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(shareLink);
+                        toast.success("Share link copied");
+                      }}
+                      className="mt-1 flex w-full items-center gap-1 text-left font-bold text-xs text-blue-500 hover:text-blue-500/80"
+                      title={shareLink}
+                    >
+                      <span className="truncate">Copy Link</span>
+                      <Copy className="h-3.5 w-3.5 shrink-0" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {data.gallery.isPublished && (
+              <div className="rounded-md border bg-white p-1">
+                <QRCodeSVG
+                  value={shareLink}
+                  size={150}
+                  level="H"
+                  includeMargin={false}
+                  bgColor="#ffffff"
+                  fgColor="#0f172a"
+                />
               </div>
             )}
           </div>
@@ -400,6 +467,10 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   async function deletePhoto(id: string) {
     try {
       await apiRequest(`/api/photos/${id}`, { method: "DELETE" });
+      await Promise.all([
+        mutateCache("/api/storage/summary"),
+        mutateCache("/api/storage/events?limit=10&offset=0"),
+      ]);
       toast.success("Photo deleted");
       await mutate();
       setSelected(
@@ -425,6 +496,10 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           apiRequest(`/api/photos/${id}`, { method: "DELETE" }),
         ),
       );
+      await Promise.all([
+        mutateCache("/api/storage/summary"),
+        mutateCache("/api/storage/events?limit=10&offset=0"),
+      ]);
       clearSelected(galleryId);
       await mutate();
       toast.success("Selected photos deleted");
@@ -476,6 +551,21 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       });
 
       clearSelected(galleryId);
+      await mutate();
+      toast.success("Cover photo updated");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update cover photo",
+      );
+    }
+  }
+
+  async function setPhotoAsCover(photoId: string) {
+    try {
+      await apiRequest(`/api/galleries/${galleryId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ coverPhotoId: photoId }),
+      });
       await mutate();
       toast.success("Cover photo updated");
     } catch (error) {
@@ -624,6 +714,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                     sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     className={`object-cover transition-all duration-300 ${isSelected ? "scale-[1.02]" : "group-hover:scale-[1.02]"}`}
                     unoptimized
+                    onClick={() => {
+                      toggleSelected(galleryId, photo.id);
+                    }}
                   />
 
                   <div
@@ -631,7 +724,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                   />
 
                   <div
-                    className={`absolute left-3 top-3 transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                    className={`absolute left-3 top-3 flex items-center gap-2 transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                   >
                     <Checkbox
                       checked={isSelected}
@@ -640,6 +733,26 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                       }
                       className="border-white/50 data-[state=checked]:border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
                     />
+                  </div>
+
+                  <div
+                    className={cn(
+                      "absolute right-3 bottom-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+                      photo.isCover && "opacity-100",
+                    )}
+                  >
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className={cn(
+                        "h-8 w-8 rounded-full shadow-md hover:bg-white/80",
+                        photo.isCover &&
+                          "bg-yellow-500 hover:bg-yellow-400 text-white",
+                      )}
+                      onClick={() => setPhotoAsCover(photo.id)}
+                    >
+                      <Star className="h-4 w-4" />
+                    </Button>
                   </div>
 
                   <div className="absolute right-3 top-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -951,6 +1064,9 @@ function SettingsTab({
   const [password, setPassword] = useState(data.gallery.password ?? "");
   const [isPublished, setIsPublished] = useState(data.gallery.isPublished);
   const [saving, setSaving] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
+  const [disableDeleteButton, setDisableDeleteButton] = useState(true);
 
   async function onSave() {
     setSaving(true);
@@ -980,6 +1096,10 @@ function SettingsTab({
 
   async function deleteGallery() {
     await apiRequest(`/api/galleries/${galleryId}`, { method: "DELETE" });
+    await Promise.all([
+      mutateCache("/api/storage/summary"),
+      mutateCache("/api/storage/events?limit=10&offset=0"),
+    ]);
     toast.success("Gallery deleted");
     window.location.href = "/galleries";
   }
@@ -1085,7 +1205,7 @@ function SettingsTab({
         </CardContent>
       </Card>
 
-      <Card className="border-red-100 bg-red-50/30 shadow-none">
+      <Card className="border-red-100 bg-red-50/30 shadow-none h-fit">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-base font-medium text-red-600">
             <AlertTriangle className="h-4 w-4" />
@@ -1097,15 +1217,20 @@ function SettingsTab({
             Deleting a gallery permanently removes all photos and queues S3
             cleanup. This action cannot be undone.
           </p>
+        </CardContent>
 
+        <CardFooter>
           <Dialog>
             <DialogTrigger asChild>
-              <Button
-                variant="destructive"
-                className="w-full bg-red-600 hover:bg-red-700 sm:w-auto"
-              >
-                Delete gallery
-              </Button>
+              <div className="w-full sm:w-auto">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  className="w-full bg-red-600 hover:bg-red-700 sm:w-auto"
+                >
+                  Delete gallery
+                </Button>
+              </div>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -1115,20 +1240,44 @@ function SettingsTab({
                   working.
                 </DialogDescription>
               </DialogHeader>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Type gallery title to delete "{title}"
+                </p>
+                <Input
+                  placeholder={title}
+                  value={deleteGalleryTitle}
+                  onChange={(e) => {
+                    setDeleteGalleryTitle(e.target.value);
+                    if (e.target.value === title) {
+                      setDisableDeleteButton(false);
+                    } else {
+                      setDisableDeleteButton(true);
+                    }
+                  }}
+                />
+              </div>
               <DialogFooter>
-                <Button variant="outline" onClick={(e) => e.stopPropagation()}>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDeleteDialog(false)}
+                >
                   Cancel
                 </Button>
                 <Button
                   variant="destructive"
-                  onClick={() => void deleteGallery()}
+                  disabled={disableDeleteButton}
+                  onClick={() => {
+                    setShowDeleteDialog(false);
+                    deleteGallery();
+                  }}
                 >
                   Confirm delete
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   );

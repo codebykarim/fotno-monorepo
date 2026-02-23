@@ -45,11 +45,16 @@ const startWorker = async () => {
             },
           },
           _sum: {
-            totalSize: true,
+            originalSize: true,
+            thumbnailSize: true,
+            previewSize: true,
           },
         });
 
-        const actualUsed = toBigInt(aggregate?._sum?.totalSize);
+        const actualUsed =
+          toBigInt(aggregate?._sum?.originalSize) +
+          toBigInt(aggregate?._sum?.thumbnailSize) +
+          toBigInt(aggregate?._sum?.previewSize);
         const currentUsed = toBigInt(user.storageUsed);
         const delta = actualUsed - currentUsed;
 

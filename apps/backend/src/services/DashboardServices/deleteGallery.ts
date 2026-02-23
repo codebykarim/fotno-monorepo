@@ -13,6 +13,9 @@ export const deleteGallery = async (userId: string, galleryId: string) => {
           s3Key: true,
           thumbnailKey: true,
           previewKey: true,
+          originalSize: true,
+          thumbnailSize: true,
+          previewSize: true,
           totalSize: true,
         },
       },
@@ -23,8 +26,22 @@ export const deleteGallery = async (userId: string, galleryId: string) => {
   }
 
   const totalBytes = existing.photos.reduce(
-    (sum: bigint, photo: { totalSize?: bigint | number | string | null }) =>
-      sum + BigInt(photo.totalSize ?? 0),
+    (
+      sum: bigint,
+      photo: {
+        originalSize?: bigint | number | string | null;
+        thumbnailSize?: bigint | number | string | null;
+        previewSize?: bigint | number | string | null;
+        totalSize?: bigint | number | string | null;
+      },
+    ) => {
+      const fallbackTotal = BigInt(photo.totalSize ?? 0);
+      const computedTotal =
+        BigInt(photo.originalSize ?? 0) +
+        BigInt(photo.thumbnailSize ?? 0) +
+        BigInt(photo.previewSize ?? 0);
+      return sum + (computedTotal > 0n ? computedTotal : fallbackTotal);
+    },
     0n,
   );
 

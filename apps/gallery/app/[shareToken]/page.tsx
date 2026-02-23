@@ -63,6 +63,8 @@ export default async function ShareTokenPage({ params }: ShareTokenPageProps) {
       cache: "force-cache",
     });
 
+    console.log("gallery", gallery);
+
     return <GalleryPageClient initialGallery={gallery} />;
   } catch {
     notFound();

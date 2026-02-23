@@ -157,7 +157,9 @@ export const startProcessPhotoWorker = async (): Promise<void> => {
           previewKey,
           thumbnailSize: BigInt(thumbnailBuffer.length),
           previewSize: BigInt(previewBuffer.length),
-          totalSize: BigInt(thumbnailBuffer.length + previewBuffer.length),
+          totalSize: BigInt(
+            originalBuffer.length + thumbnailBuffer.length + previewBuffer.length,
+          ),
           width: metadata.width ?? null,
           height: metadata.height ?? null,
           status: "processed",

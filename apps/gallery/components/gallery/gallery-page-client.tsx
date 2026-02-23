@@ -636,8 +636,14 @@ export default function GalleryPageClient({
   const setPanClamped = useCallback(
     (nextX: number, nextY: number, zoomLevel = zoom) => {
       const { maxX, maxY } = getPanLimits(zoomLevel);
-      const clampedX = Math.max(-maxX, Math.min(maxX, Number(nextX.toFixed(2))));
-      const clampedY = Math.max(-maxY, Math.min(maxY, Number(nextY.toFixed(2))));
+      const clampedX = Math.max(
+        -maxX,
+        Math.min(maxX, Number(nextX.toFixed(2))),
+      );
+      const clampedY = Math.max(
+        -maxY,
+        Math.min(maxY, Number(nextY.toFixed(2))),
+      );
       setPan({ x: clampedX, y: clampedY });
     },
     [getPanLimits, zoom],
@@ -1060,7 +1066,9 @@ export default function GalleryPageClient({
               className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/45 px-4 text-sm text-white"
             >
               <Download className="h-4 w-4" />
-              {downloadingPhotoId === activePhoto.id ? "Downloading..." : "Download"}
+              {downloadingPhotoId === activePhoto.id
+                ? "Downloading..."
+                : "Download"}
             </button>
             <button
               type="button"

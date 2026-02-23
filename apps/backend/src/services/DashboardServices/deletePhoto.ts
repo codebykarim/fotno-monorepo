@@ -15,6 +15,9 @@ export const deletePhoto = async (userId: string, photoId: string) => {
       s3Key: true,
       thumbnailKey: true,
       previewKey: true,
+      originalSize: true,
+      thumbnailSize: true,
+      previewSize: true,
       totalSize: true,
       gallery: {
         select: {
@@ -27,12 +30,14 @@ export const deletePhoto = async (userId: string, photoId: string) => {
     return false;
   }
 
-  await removeStorage(
-    userId,
-    BigInt(photo.totalSize ?? 0),
-    "delete",
-    photo.id,
-  );
+  const fallbackTotal = BigInt(photo.totalSize ?? 0);
+  const computedTotal =
+    BigInt(photo.originalSize ?? 0) +
+    BigInt(photo.thumbnailSize ?? 0) +
+    BigInt(photo.previewSize ?? 0);
+  const bytesToRemove = computedTotal > 0n ? computedTotal : fallbackTotal;
+
+  await removeStorage(userId, bytesToRemove, "delete", photo.id);
 
   await db.photo.delete({ where: { id: photoId } });
 

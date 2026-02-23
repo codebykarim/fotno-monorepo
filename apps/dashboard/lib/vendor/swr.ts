@@ -16,6 +16,18 @@ type SWRResult<T> = {
 };
 
 const cache = new Map<string, unknown>();
+const listeners = new Map<string, Set<(value: unknown) => void>>();
+
+const notifyListeners = (key: string, value: unknown) => {
+  const keyListeners = listeners.get(key);
+  if (!keyListeners) {
+    return;
+  }
+
+  for (const listener of keyListeners) {
+    listener(value);
+  }
+};
 
 async function defaultFetcher<T>(key: string) {
   const response = await fetch(key);
@@ -23,6 +35,28 @@ async function defaultFetcher<T>(key: string) {
     throw new Error(`Failed to fetch ${key}`);
   }
   return (await response.json()) as T;
+}
+
+export async function mutate<T>(
+  key: string,
+  updater?: T | Promise<T> | ((current?: T) => T | Promise<T>)
+) {
+  if (updater === undefined) {
+    const next = await defaultFetcher<T>(key);
+    cache.set(key, next);
+    notifyListeners(key, next);
+    return next;
+  }
+
+  const current = cache.get(key) as T | undefined;
+  const next =
+    typeof updater === "function"
+      ? await (updater as (value?: T) => T | Promise<T>)(current)
+      : await updater;
+
+  cache.set(key, next);
+  notifyListeners(key, next);
+  return next;
 }
 
 export default function useSWR<T>(
@@ -50,7 +84,7 @@ export default function useSWR<T>(
       const resolvedFetcher = fetcher ?? ((k: string) => defaultFetcher<T>(k));
       const next = await resolvedFetcher(key);
       cache.set(key, next);
-      setData(next);
+      notifyListeners(key, next);
       return next;
     } catch (err) {
       setError(err);
@@ -63,6 +97,32 @@ export default function useSWR<T>(
   useEffect(() => {
     void doFetch();
   }, [doFetch]);
+
+  useEffect(() => {
+    if (!key) {
+      return;
+    }
+
+    const listener = (value: unknown) => {
+      setData(value as T);
+    };
+
+    const keyListeners = listeners.get(key) ?? new Set<(value: unknown) => void>();
+    keyListeners.add(listener);
+    listeners.set(key, keyListeners);
+
+    return () => {
+      const currentListeners = listeners.get(key);
+      if (!currentListeners) {
+        return;
+      }
+
+      currentListeners.delete(listener);
+      if (currentListeners.size === 0) {
+        listeners.delete(key);
+      }
+    };
+  }, [key]);
 
   useEffect(() => {
     if (!key || options?.revalidateOnFocus === false) {
@@ -93,7 +153,7 @@ export default function useSWR<T>(
           : await updater;
 
       cache.set(key, next);
-      setData(next);
+      notifyListeners(key, next);
       return next;
     },
     [data, doFetch, key]

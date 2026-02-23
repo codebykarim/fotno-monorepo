@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { GalleryListItem } from "@/lib/types/api";
 import { GalleryStatusBadge } from "@/components/dashboard/gallery-status-badge";
 import { useState } from "react";
+import { Input } from "@workspace/ui/components/input";
 
 type Props = {
   gallery: GalleryListItem;
@@ -36,6 +37,8 @@ type Props = {
 
 export function GalleryCard({ gallery, onDelete }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
+  const [disableDeleteButton, setDisableDeleteButton] = useState(true);
   const createdDate = new Date(gallery.createdAt).toLocaleDateString();
   const galleryBaseUrl =
     process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
@@ -126,6 +129,23 @@ export function GalleryCard({ gallery, onDelete }: Props) {
               working.
             </DialogDescription>
           </DialogHeader>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Type gallery title to delete "{gallery.title}"
+            </p>
+            <Input
+              placeholder={gallery.title}
+              value={deleteGalleryTitle}
+              onChange={(e) => {
+                setDeleteGalleryTitle(e.target.value);
+                if (e.target.value === gallery.title) {
+                  setDisableDeleteButton(false);
+                } else {
+                  setDisableDeleteButton(true);
+                }
+              }}
+            />
+          </div>
           <DialogFooter>
             <Button
               variant="outline"
@@ -135,6 +155,7 @@ export function GalleryCard({ gallery, onDelete }: Props) {
             </Button>
             <Button
               variant="destructive"
+              disabled={disableDeleteButton}
               onClick={() => {
                 setShowDeleteDialog(false);
                 onDelete(gallery.id);

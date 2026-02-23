@@ -44,6 +44,7 @@ export const getGallery = async (userId: string, galleryId: string) => {
         width: photo.width ?? 1200,
         height: photo.height ?? 1600,
         loved: Boolean(photo.loved),
+        isCover: Boolean(gallery.coverPhotoId === photo.id),
         createdAt:
           photo.createdAt instanceof Date
             ? photo.createdAt.toISOString()

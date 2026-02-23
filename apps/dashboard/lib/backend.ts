@@ -1,3 +1,5 @@
+import { headers as nextHeaders } from "next/headers";
+
 const resolveBackendBaseUrl = (): string => {
   const baseUrl = process.env.BACKEND_API_URL ?? process.env.NEXT_PUBLIC_API_URL;
   if (!baseUrl) {
@@ -17,6 +19,22 @@ export const backendJsonFetch = async (
   init: RequestInit = {},
 ) => {
   const headers = new Headers(init.headers);
+  const incomingHeaders = await nextHeaders();
+
+  if (!headers.has("cookie")) {
+    const cookie = incomingHeaders.get("cookie");
+    if (cookie) {
+      headers.set("cookie", cookie);
+    }
+  }
+
+  if (!headers.has("authorization")) {
+    const authorization = incomingHeaders.get("authorization");
+    if (authorization) {
+      headers.set("authorization", authorization);
+    }
+  }
+
   if (!headers.has("Accept")) {
     headers.set("Accept", "application/json");
   }

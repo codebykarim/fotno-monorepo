@@ -11,6 +11,7 @@ export type Photo = {
   width: number;
   height: number;
   loved: boolean;
+  isCover: boolean;
   createdAt: string;
 };
 

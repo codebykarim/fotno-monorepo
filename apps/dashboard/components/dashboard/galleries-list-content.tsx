@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate as mutateCache } from "swr";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -39,6 +39,10 @@ export function GalleriesListContent() {
   async function handleDelete(id: string) {
     try {
       await apiRequest<{ success: boolean }>(`/api/galleries/${id}`, { method: "DELETE" });
+      await Promise.all([
+        mutateCache("/api/storage/summary"),
+        mutateCache("/api/storage/events?limit=10&offset=0"),
+      ]);
       toast.success("Gallery deleted");
       await mutate();
     } catch (error) {

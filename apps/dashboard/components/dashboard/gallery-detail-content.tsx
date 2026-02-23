@@ -22,6 +22,7 @@ import {
   UploadCloud,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -143,29 +144,19 @@ export function GalleryDetailContent({
                 Status
               </p>
               <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
-                <div
-                  className={`h-2 w-2 rounded-full ${data.gallery.isPublished ? "bg-emerald-500" : "bg-amber-400"}`}
-                />
-                {data.gallery.isPublished ? "Published" : "Draft"}
+                <Badge
+                  variant="outline"
+                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                    data.gallery.isPublished
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                      : "border-amber-200 bg-amber-50 text-amber-700"
+                  }`}
+                >
+                  {data.gallery.isPublished ? "Published" : "Draft"}
+                </Badge>
               </p>
             </div>
           </div>
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
-          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-            <CalendarDays className="h-4 w-4" />
-            <span className="font-medium text-foreground">
-              {data.gallery.eventDate ?? "No date"}
-            </span>
-          </span>
-          <span className="text-border">•</span>
-          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-            <Clock3 className="h-4 w-4" />
-            <span className="font-medium text-foreground">
-              {data.gallery.deadline ?? "No deadline"}
-            </span>
-          </span>
         </div>
       </section>
 
@@ -232,11 +223,11 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   const clearCompletedUploads = useGalleryUiStore(
     (state) => state.clearCompletedUploads,
   );
-  const [draggingPhotoId, setDraggingPhotoId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [createAlbumOpen, setCreateAlbumOpen] = useState(false);
+  const [newAlbumTitle, setNewAlbumTitle] = useState("");
 
   useEffect(() => {
-    // Prevent browser navigation when files are dropped outside the dropzone.
     const preventBrowserFileOpen = (event: DragEvent) => {
       event.preventDefault();
     };
@@ -382,27 +373,8 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     }
   }
 
-  async function toggleLoved(photoId: string, loved: boolean) {
-    try {
-      await apiRequest(`/api/photos/${photoId}`, {
-        method: "PATCH",
-        body: JSON.stringify({ loved: !loved }),
-      });
-      await mutate();
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to update loved photo",
-      );
-    }
-  }
-
   async function createAlbumFromSelected() {
-    if (selected.length === 0) {
-      return;
-    }
-
-    const title = window.prompt("Album name");
-    if (!title || title.trim().length === 0) {
+    if (selected.length === 0 || !newAlbumTitle.trim()) {
       return;
     }
 
@@ -410,11 +382,13 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       await apiRequest(`/api/galleries/${galleryId}/albums`, {
         method: "POST",
         body: JSON.stringify({
-          title: title.trim(),
+          title: newAlbumTitle.trim(),
           photoIds: selected,
         }),
       });
       clearSelected(galleryId);
+      setCreateAlbumOpen(false);
+      setNewAlbumTitle("");
       await mutate();
       toast.success("Album created");
     } catch (error) {
@@ -446,212 +420,228 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     }
   }
 
-  async function movePhoto(dropOnPhotoId: string) {
-    if (!draggingPhotoId || draggingPhotoId === dropOnPhotoId) {
-      return;
-    }
-
-    const orderedIds = photos.map((photo) => photo.id);
-    const draggingIndex = orderedIds.indexOf(draggingPhotoId);
-    const dropIndex = orderedIds.indexOf(dropOnPhotoId);
-    if (draggingIndex < 0 || dropIndex < 0) {
-      return;
-    }
-
-    orderedIds.splice(draggingIndex, 1);
-    orderedIds.splice(dropIndex, 0, draggingPhotoId);
-
-    await apiRequest(`/api/galleries/${galleryId}/photos/reorder`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        items: orderedIds.map((photoId, index) => ({
-          photoId,
-          order: index + 1,
-        })),
-      }),
-    });
-
-    setDraggingPhotoId(null);
-    await mutate();
-    toast.success("Photos reordered");
-  }
-
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardContent className="pt-6">
-          <div
-            {...getRootProps()}
-            className={`rounded-xl border-2 border-dashed p-8 text-center transition ${
-              isDragActive ? "border-primary bg-primary/5" : "border-border"
-            }`}
-          >
-            <input {...getInputProps()} className="hidden" ref={fileInputRef} />
-            <UploadCloud className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-            <p className="text-sm font-medium">Drag and drop files here</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Supports multiple image files per upload.
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_300px]">
+      <div className="space-y-4">
+        <div className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-white/95 p-3 backdrop-blur shadow-sm transition-all">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium">
+              {selected.length > 0
+                ? `${selected.length} selected`
+                : "No selection"}
             </p>
             <Button
-              type="button"
-              variant="outline"
-              className="mt-4"
-              onClick={() => fileInputRef.current?.click()}
+              size="sm"
+              variant="ghost"
+              onClick={() =>
+                setSelected(
+                  galleryId,
+                  photos.map((photo) => photo.id),
+                )
+              }
+              disabled={photos.length === 0}
             >
-              Choose images
+              Select all
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => clearSelected(galleryId)}
+              disabled={selected.length === 0}
+            >
+              Clear
             </Button>
           </div>
-
-          {uploadQueue.length > 0 && (
-            <div className="mt-4 space-y-2 rounded-lg border p-3">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">Upload Queue</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Dialog open={createAlbumOpen} onOpenChange={setCreateAlbumOpen}>
+              <DialogTrigger asChild>
                 <Button
-                  variant="ghost"
                   size="sm"
-                  onClick={clearCompletedUploads}
+                  variant="outline"
+                  disabled={selected.length === 0}
                 >
-                  Clear done
+                  Add to Album
                 </Button>
-              </div>
-
-              {uploadQueue.map((item) => (
-                <div key={item.id} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <p>{item.fileName}</p>
-                    <p className="capitalize text-muted-foreground">
-                      {item.status}
-                    </p>
-                  </div>
-                  <Progress value={item.progress} />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create Album</DialogTitle>
+                  <DialogDescription>
+                    Create a new album with the {selected.length} selected
+                    photo(s).
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="py-4">
+                  <Label htmlFor="album-title" className="mb-2 block">
+                    Album Title
+                  </Label>
+                  <Input
+                    id="album-title"
+                    value={newAlbumTitle}
+                    onChange={(e) => setNewAlbumTitle(e.target.value)}
+                    placeholder="E.g., Getting Ready, Ceremony..."
+                    autoFocus
+                  />
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => setCreateAlbumOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button onClick={createAlbumFromSelected}>
+                    Create Album
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
 
-      <div className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-background/95 p-3 backdrop-blur">
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-medium">
-            {selected.length > 0
-              ? `${selected.length} selected`
-              : "No selection"}
-          </p>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() =>
-              setSelected(
-                galleryId,
-                photos.map((photo) => photo.id),
-              )
-            }
-            disabled={photos.length === 0}
-          >
-            Select all
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => clearSelected(galleryId)}
-            disabled={selected.length === 0}
-          >
-            Clear
-          </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={setAsCover}
+              disabled={selected.length !== 1}
+            >
+              Set as Cover
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={deleteSelected}
+              disabled={selected.length === 0}
+            >
+              Delete Selected
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={createAlbumFromSelected}
-            disabled={selected.length === 0}
-          >
-            Add to Album
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={setAsCover}
-            disabled={selected.length !== 1}
-          >
-            Set as Cover
-          </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={deleteSelected}
-            disabled={selected.length === 0}
-          >
-            Delete Selected
-          </Button>
+
+        <div className="columns-2 gap-4 md:columns-3 xl:columns-4">
+          {photos.map((photo) => {
+            const isSelected = selected.includes(photo.id);
+            return (
+              <div
+                key={photo.id}
+                className="group relative mb-4 break-inside-avoid overflow-hidden rounded-xl border border-border/50 bg-white shadow-sm transition-all"
+              >
+                <div className="relative aspect-[3/4] bg-slate-100">
+                  <Image
+                    src={photo.url}
+                    alt="Gallery photo"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    className={`object-cover transition-all duration-300 ${isSelected ? "scale-[1.02]" : "group-hover:scale-[1.02]"}`}
+                    unoptimized
+                  />
+
+                  <div
+                    className={`pointer-events-none absolute inset-0 bg-black/40 transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                  />
+
+                  <div
+                    className={`absolute left-3 top-3 transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                  >
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() =>
+                        toggleSelected(galleryId, photo.id)
+                      }
+                      className="border-white/50 data-[state=checked]:border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
+                    />
+                  </div>
+
+                  <div className="absolute right-3 top-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="h-8 w-8 rounded-full shadow-md hover:bg-red-600"
+                      onClick={() => void deletePhoto(photo.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="columns-2 gap-4 md:columns-3 xl:columns-4">
-        {photos.map((photo) => {
-          const isSelected = selected.includes(photo.id);
-          return (
+      <div className="space-y-4 lg:sticky lg:top-4">
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3 pt-5">
+            <CardTitle className="text-sm font-medium">Upload Photos</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div
-              key={photo.id}
-              draggable
-              onDragStart={() => setDraggingPhotoId(photo.id)}
-              onDragOver={(event) => event.preventDefault()}
-              onDrop={() => void movePhoto(photo.id)}
-              className="mb-4 break-inside-avoid overflow-hidden rounded-lg border bg-card"
+              {...getRootProps()}
+              className={`rounded-xl border border-dashed p-6 text-center transition-all ${
+                isDragActive
+                  ? "border-foreground bg-slate-50"
+                  : "border-border hover:bg-slate-50"
+              }`}
             >
-              <div className="relative aspect-[3/4] bg-muted/20">
-                <Image
-                  src={photo.url}
-                  alt="Gallery photo"
-                  fill
-                  sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  className="object-cover"
-                  unoptimized
-                />
-                <div className="absolute left-2 top-2">
-                  <Checkbox
-                    checked={isSelected}
-                    onCheckedChange={() => toggleSelected(galleryId, photo.id)}
-                  />
+              <input
+                {...getInputProps()}
+                className="hidden"
+                ref={fileInputRef}
+              />
+              <UploadCloud className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
+              <p className="text-[13px] font-medium text-foreground">
+                Drag and drop files
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Or click to choose
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-4 w-full"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Select files
+              </Button>
+            </div>
+
+            {uploadQueue.length > 0 && (
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Upload Queue
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 px-2 text-[11px]"
+                    onClick={clearCompletedUploads}
+                  >
+                    Clear done
+                  </Button>
+                </div>
+
+                <div className="space-y-2.5">
+                  {uploadQueue.map((item) => (
+                    <div
+                      key={item.id}
+                      className="space-y-1.5 rounded-lg border border-border/40 bg-slate-50/50 p-2.5"
+                    >
+                      <div className="flex items-center justify-between text-xs">
+                        <p className="truncate pr-2 font-medium">
+                          {item.fileName}
+                        </p>
+                        <p className="flex-shrink-0 capitalize text-muted-foreground">
+                          {item.status}
+                        </p>
+                      </div>
+                      <Progress value={item.progress} className="h-1.5" />
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              <div className="flex items-center justify-between border-t p-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 text-xs text-muted-foreground"
-                  onMouseDown={(event) => event.preventDefault()}
-                >
-                  <GripVertical className="h-3 w-3" />
-                  Drag
-                </button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void toggleLoved(photo.id, photo.loved)}
-                >
-                  <Heart
-                    className={`h-4 w-4 ${
-                      photo.loved
-                        ? "fill-rose-500 text-rose-500"
-                        : "text-muted-foreground"
-                    }`}
-                  />
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => void deletePhoto(photo.id)}
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </div>
-            </div>
-          );
-        })}
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
@@ -673,19 +663,40 @@ function AlbumsTab({
     [photos],
   );
 
-  const renameAlbum = async (albumId: string, currentTitle: string) => {
-    const title = window.prompt("Album name", currentTitle);
-    if (!title || title.trim().length === 0 || title === currentTitle) {
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [albumToRename, setAlbumToRename] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
+  const [newTitle, setNewTitle] = useState("");
+
+  const handleRenameClick = (album: { id: string; title: string }) => {
+    setAlbumToRename(album);
+    setNewTitle(album.title);
+    setRenameDialogOpen(true);
+  };
+
+  const confirmRename = async () => {
+    if (
+      !albumToRename ||
+      !newTitle.trim() ||
+      newTitle === albumToRename.title
+    ) {
+      setRenameDialogOpen(false);
       return;
     }
 
     try {
-      await apiRequest(`/api/galleries/${galleryId}/albums/${albumId}`, {
-        method: "PATCH",
-        body: JSON.stringify({ title: title.trim() }),
-      });
+      await apiRequest(
+        `/api/galleries/${galleryId}/albums/${albumToRename.id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ title: newTitle.trim() }),
+        },
+      );
       await mutate();
       toast.success("Album updated");
+      setRenameDialogOpen(false);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to update album",
@@ -729,7 +740,7 @@ function AlbumsTab({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => void renameAlbum(album.id, album.title)}
+                  onClick={() => handleRenameClick(album)}
                 >
                   Rename
                 </Button>
@@ -769,6 +780,34 @@ function AlbumsTab({
           </CardContent>
         </Card>
       ))}
+
+      <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rename Album</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Label htmlFor="rename-album" className="mb-2 block">
+              Album Title
+            </Label>
+            <Input
+              id="rename-album"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setRenameDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={confirmRename}>Save changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
@@ -872,12 +911,12 @@ function SettingsTab({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div>
-                <p className="text-sm font-medium">
+          <div className="flex flex-col gap-3 rounded-xl border border-border/60 bg-slate-50/50 p-4">
+            <div className="flex items-start justify-between">
+              <div className="space-y-0.5">
+                <Label className="text-sm font-medium">
                   Enable password protection
-                </p>
+                </Label>
                 <p className="text-xs text-muted-foreground">
                   Require clients to enter a password.
                 </p>
@@ -885,22 +924,26 @@ function SettingsTab({
               <Checkbox
                 checked={passwordEnabled}
                 onCheckedChange={(value) => setPasswordEnabled(Boolean(value))}
+                className="mt-1"
               />
             </div>
 
             {passwordEnabled && (
-              <Input
-                type="text"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter gallery password"
-              />
+              <div className="pt-2">
+                <Input
+                  type="text"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Enter gallery password"
+                  className="max-w-sm bg-white"
+                />
+              </div>
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border p-3">
-            <div>
-              <p className="text-sm font-medium">Published</p>
+          <div className="flex items-start justify-between rounded-xl border border-border/60 bg-slate-50/50 p-4">
+            <div className="space-y-0.5">
+              <Label className="text-sm font-medium">Published</Label>
               <p className="text-xs text-muted-foreground">
                 Make this gallery visible through the share link.
               </p>
@@ -908,31 +951,39 @@ function SettingsTab({
             <Checkbox
               checked={isPublished}
               onCheckedChange={(value) => setIsPublished(Boolean(value))}
+              className="mt-1"
             />
           </div>
 
-          <Button onClick={onSave} disabled={saving}>
+          <Button
+            onClick={onSave}
+            disabled={saving}
+            className="mt-2 w-full sm:w-auto"
+          >
             {saving ? "Saving..." : "Save settings"}
           </Button>
         </CardContent>
       </Card>
 
-      <Card className="border-destructive/40">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-destructive">
+      <Card className="border-red-100 bg-red-50/30 shadow-none">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base font-medium text-red-600">
             <AlertTriangle className="h-4 w-4" />
             Danger Zone
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-4 text-sm text-muted-foreground">
+          <p className="mb-5 text-sm text-red-900/70">
             Deleting a gallery permanently removes all photos and queues S3
-            cleanup.
+            cleanup. This action cannot be undone.
           </p>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="destructive" className="w-full">
+              <Button
+                variant="destructive"
+                className="w-full bg-red-600 hover:bg-red-700 sm:w-auto"
+              >
                 Delete gallery
               </Button>
             </DialogTrigger>
@@ -945,7 +996,9 @@ function SettingsTab({
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" onClick={(e) => e.stopPropagation()}>
+                  Cancel
+                </Button>
                 <Button
                   variant="destructive"
                   onClick={() => void deleteGallery()}

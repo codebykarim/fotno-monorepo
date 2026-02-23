@@ -124,7 +124,7 @@ export default function GalleryPageClient({
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isDownloadingAll, setIsDownloadingAll] = useState(false);
-  const [filterMode, setFilterMode] = useState<"all" | "loved">("all");
+  const [filterMode, setFilterMode] = useState<string>("all");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
@@ -316,9 +316,20 @@ export default function GalleryPageClient({
     if (filterMode === "all") {
       return gallery.photos;
     }
-    const favoriteSet = new Set(favorites);
-    return gallery.photos.filter((photo) => favoriteSet.has(photo.id));
-  }, [favorites, filterMode, gallery.photos]);
+    if (filterMode === "loved") {
+      const favoriteSet = new Set(favorites);
+      return gallery.photos.filter((photo) => favoriteSet.has(photo.id));
+    }
+
+    // Assume filterMode is an albumId
+    const album = gallery.albums?.find((a) => a.id === filterMode);
+    if (album) {
+      const albumPhotoSet = new Set(album.photoIds);
+      return gallery.photos.filter((photo) => albumPhotoSet.has(photo.id));
+    }
+
+    return gallery.photos;
+  }, [favorites, filterMode, gallery.photos, gallery.albums]);
 
   const activePhoto = useMemo(
     () => gallery.photos.find((photo) => photo.id === activePhotoId) ?? null,
@@ -624,6 +635,21 @@ export default function GalleryPageClient({
               />
               {favorites.length} loved
             </button>
+
+            {gallery.albums?.map((album) => (
+              <button
+                key={album.id}
+                type="button"
+                onClick={() => setFilterMode(album.id)}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  filterMode === album.id
+                    ? "bg-foreground text-background"
+                    : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
+                }`}
+              >
+                {album.title}
+              </button>
+            ))}
           </div>
 
           <div className="flex flex-wrap items-center gap-3">

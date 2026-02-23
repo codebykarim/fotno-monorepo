@@ -33,6 +33,11 @@ type BackendGallery = {
     image?: string | null;
   } | null;
   photos?: BackendPhoto[];
+  albums?: Array<{
+    id: string;
+    title: string;
+    photoIds: string[];
+  }>;
 };
 
 type DashboardListResponse = {
@@ -57,10 +62,18 @@ type DashboardGalleryResponse = {
       width?: number;
       height?: number;
     }>;
+    albums?: Array<{
+      id: string;
+      title: string;
+      photoIds: string[];
+    }>;
   };
 };
 
-const normalizePhoto = (photo: BackendPhoto, shareToken: string): PublicPhoto => ({
+const normalizePhoto = (
+  photo: BackendPhoto,
+  shareToken: string,
+): PublicPhoto => ({
   id: photo.id,
   originalFilename: photo.originalFilename || `${photo.id}.jpg`,
   aiCaption: photo.aiCaption ?? null,
@@ -73,8 +86,10 @@ const normalizePhoto = (photo: BackendPhoto, shareToken: string): PublicPhoto =>
 });
 
 const normalizeGallery = (input: BackendGallery): PublicGallery => {
-  const photographerName = input.photographer?.name ?? input.user?.name ?? "FOTNO";
-  const photographerLogo = input.photographer?.logoUrl ?? input.user?.image ?? null;
+  const photographerName =
+    input.photographer?.name ?? input.user?.name ?? "FOTNO";
+  const photographerLogo =
+    input.photographer?.logoUrl ?? input.user?.image ?? null;
   const photos = (input.photos ?? [])
     .map((photo) => normalizePhoto(photo, input.shareToken))
     .sort((a, b) => a.order - b.order);
@@ -90,6 +105,7 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
     },
     coverPhotoId: input.coverPhotoId ?? null,
     photos,
+    albums: input.albums ?? [],
   };
 };
 
@@ -128,7 +144,8 @@ const loadGalleryFromDashboardMock = async (
     return null;
   }
 
-  const detailPayload = (await detailResponse.json()) as DashboardGalleryResponse;
+  const detailPayload =
+    (await detailResponse.json()) as DashboardGalleryResponse;
   const gallery = detailPayload.gallery;
   if (!gallery) {
     return null;
@@ -164,6 +181,7 @@ const loadGalleryFromDashboardMock = async (
       },
       coverPhotoId: gallery.coverPhotoId ?? null,
       photos,
+      albums: gallery.albums ?? [],
     },
   };
 };
@@ -174,7 +192,7 @@ export const getGalleryByShareToken = async (
     galleryJwt?: string;
     cache?: RequestCache;
     revalidate?: number;
-  }
+  },
 ): Promise<GalleryApiResponse> => {
   const headers = new Headers();
 
@@ -222,7 +240,7 @@ export const getPhotoPresignedUrl = async (
   photoId: string,
   shareToken: string,
   variant: PhotoVariant,
-  galleryJwt?: string
+  galleryJwt?: string,
 ): Promise<string> => {
   const headers = new Headers();
 
@@ -236,7 +254,7 @@ export const getPhotoPresignedUrl = async (
       {
         headers,
         cache: "no-store",
-      }
+      },
     );
 
     if (!response.ok) {

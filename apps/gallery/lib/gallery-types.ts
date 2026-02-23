@@ -17,6 +17,12 @@ export interface PublicPhoto {
   previewSrc: string;
 }
 
+export interface PublicAlbum {
+  id: string;
+  title: string;
+  photoIds: string[];
+}
+
 export interface PublicGallery {
   id: string;
   shareToken: string;
@@ -25,6 +31,7 @@ export interface PublicGallery {
   photographer: PhotographerProfile;
   coverPhotoId: string | null;
   photos: PublicPhoto[];
+  albums?: PublicAlbum[];
 }
 
 export interface GalleryApiResponse {

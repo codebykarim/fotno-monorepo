@@ -9,7 +9,6 @@ import { Toaster } from "@workspace/ui/components/sonner";
 import { getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
-import { logout } from "@workspace/lib/actions/logout";
 import DashboardSidebar from "../components/dashboard-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -45,11 +44,11 @@ export default async function RootLayout({
       >
         <div className="flex h-screen">
           <div className="hidden lg:block">
-            <DashboardSidebar onLogout={logout} />
+            <DashboardSidebar />
           </div>
 
           <div className="flex-1 flex flex-col overflow-hidden bg-background">
-            <Header main="DASHBOARD" logout={logout} />
+            <Header main="DASHBOARD" />
             <main className="dashboard-main flex-1 overflow-auto p-4 lg:p-8">
               <div className="dashboard-glass dashboard-enter min-h-full rounded-2xl p-6 lg:p-8 bg-white border border-border shadow-sm">
                 {children}

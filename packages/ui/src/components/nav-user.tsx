@@ -26,15 +26,29 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 
-import { useSession, ExtendedSession } from "@workspace/lib/auth/auth-client";
+import {
+  useSession,
+  ExtendedSession,
+  signOut,
+} from "@workspace/lib/auth/auth-client";
 import { Button } from "@workspace/ui/components/button";
 
-type Props = {
-  logout: () => Promise<void>;
-};
-
-export function NavUser({ logout }: Props) {
+export function NavUser() {
   const session = useSession().data as ExtendedSession;
+
+  const logout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.href =
+            process.env.NEXT_PUBLIC_LANDING_URL || "http://localhost:3000";
+        },
+        onError: (error: unknown) => {
+          console.error("Logout error:", error);
+        },
+      },
+    });
+  };
 
   return (
     <DropdownMenu>
@@ -118,7 +132,7 @@ export function NavUser({ logout }: Props) {
           </DropdownMenuItem>
         </DropdownMenuGroup> */}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem onClick={() => void logout()}>
           <LogOut />
           Log out
         </DropdownMenuItem>

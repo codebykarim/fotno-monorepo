@@ -1,12 +1,20 @@
 import type { Request, Response } from "express";
+import AppError from "../errors/AppError";
 import {
   getStorageSummary,
   listStorageEvents,
 } from "../services/StorageServices";
-import { resolveOwnerUserId } from "../services/DashboardServices";
+
+const getUserId = (req: Request): string => {
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+  return userId;
+};
 
 export const getStorageSummaryController = async (req: Request, res: Response) => {
-  const userId = req.user?.id ?? (await resolveOwnerUserId());
+  const userId = getUserId(req);
 
   const summary = await getStorageSummary(userId);
 
@@ -22,7 +30,7 @@ export const getStorageSummaryController = async (req: Request, res: Response) =
 };
 
 export const getStorageEventsController = async (req: Request, res: Response) => {
-  const userId = req.user?.id ?? (await resolveOwnerUserId());
+  const userId = getUserId(req);
 
   const parsedLimit = Number(req.query.limit ?? 20);
   const parsedOffset = Number(req.query.offset ?? 0);

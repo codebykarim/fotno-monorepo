@@ -1,43 +1,146 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import * as DashboardController from "../controllers/DashboardController";
+import isAuth from "../middleware/isAuth";
+import { MethodInfo } from "../interfaces";
+import { init } from "../utils/methods";
 
 const dashboardRoutes = Router();
 
-dashboardRoutes.get("/dashboard/overview", DashboardController.getOverviewController);
+const dashboardMethods: { [key: string]: MethodInfo } = {
+  overview: {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getOverviewController,
+    authFunction: isAuth,
+  },
+  "list-galleries": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.listGalleriesController,
+    authFunction: isAuth,
+  },
+  "create-gallery": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.createGalleryController,
+    authFunction: isAuth,
+  },
+  "get-gallery": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getGalleryController,
+    authFunction: isAuth,
+  },
+  "update-gallery": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.updateGalleryController,
+    authFunction: isAuth,
+  },
+  "delete-gallery": {
+    httpMethod: "DELETE",
+    controllerFunction: DashboardController.deleteGalleryController,
+    authFunction: isAuth,
+  },
+  "reorder-gallery-photos": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.reorderGalleryPhotosController,
+    authFunction: isAuth,
+  },
+  "presign-photo-upload": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.presignPhotoUploadController,
+    authFunction: isAuth,
+  },
+  "confirm-photo-upload": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.confirmPhotoUploadController,
+    authFunction: isAuth,
+  },
+  "create-album": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.createAlbumController,
+    authFunction: isAuth,
+  },
+  "update-album": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.updateAlbumController,
+    authFunction: isAuth,
+  },
+  "delete-album": {
+    httpMethod: "DELETE",
+    controllerFunction: DashboardController.deleteAlbumController,
+    authFunction: isAuth,
+  },
+  "list-clients": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.listClientsController,
+    authFunction: isAuth,
+  },
+  "update-client": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.updateClientController,
+    authFunction: isAuth,
+  },
+  "update-photo": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.updatePhotoController,
+    authFunction: isAuth,
+  },
+  "delete-photo": {
+    httpMethod: "DELETE",
+    controllerFunction: DashboardController.deletePhotoController,
+    authFunction: isAuth,
+  },
+};
 
-dashboardRoutes.get("/dashboard/galleries", DashboardController.listGalleriesController);
-dashboardRoutes.post("/dashboard/galleries", DashboardController.createGalleryController);
-dashboardRoutes.get("/dashboard/galleries/:id", DashboardController.getGalleryController);
-dashboardRoutes.patch("/dashboard/galleries/:id", DashboardController.updateGalleryController);
-dashboardRoutes.delete("/dashboard/galleries/:id", DashboardController.deleteGalleryController);
+const mappedMethods = init(dashboardMethods);
+
+const handleMethod =
+  (method: string) => (req: Request, res: Response, next: NextFunction) => {
+    req.params.method = method;
+    return mappedMethods(req, res, next);
+  };
+
+dashboardRoutes.get("/dashboard/overview", handleMethod("overview"));
+
+dashboardRoutes.get("/dashboard/galleries", handleMethod("list-galleries"));
+dashboardRoutes.post("/dashboard/galleries", handleMethod("create-gallery"));
+dashboardRoutes.get("/dashboard/galleries/:id", handleMethod("get-gallery"));
+dashboardRoutes.patch(
+  "/dashboard/galleries/:id",
+  handleMethod("update-gallery"),
+);
+dashboardRoutes.delete(
+  "/dashboard/galleries/:id",
+  handleMethod("delete-gallery"),
+);
 
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/photos/reorder",
-  DashboardController.reorderGalleryPhotosController,
+  handleMethod("reorder-gallery-photos"),
 );
 dashboardRoutes.post(
   "/dashboard/galleries/:id/photos/presign",
-  DashboardController.presignPhotoUploadController,
+  handleMethod("presign-photo-upload"),
 );
 dashboardRoutes.post(
   "/dashboard/galleries/:id/photos/confirm",
-  DashboardController.confirmPhotoUploadController,
+  handleMethod("confirm-photo-upload"),
 );
 
-dashboardRoutes.post("/dashboard/galleries/:id/albums", DashboardController.createAlbumController);
+dashboardRoutes.post(
+  "/dashboard/galleries/:id/albums",
+  handleMethod("create-album"),
+);
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/albums/:albumId",
-  DashboardController.updateAlbumController,
+  handleMethod("update-album"),
 );
 dashboardRoutes.delete(
   "/dashboard/galleries/:id/albums/:albumId",
-  DashboardController.deleteAlbumController,
+  handleMethod("delete-album"),
 );
 
-dashboardRoutes.get("/dashboard/clients", DashboardController.listClientsController);
-dashboardRoutes.patch("/dashboard/clients/:id", DashboardController.updateClientController);
+dashboardRoutes.get("/dashboard/clients", handleMethod("list-clients"));
+dashboardRoutes.patch("/dashboard/clients/:id", handleMethod("update-client"));
 
-dashboardRoutes.patch("/dashboard/photos/:id", DashboardController.updatePhotoController);
-dashboardRoutes.delete("/dashboard/photos/:id", DashboardController.deletePhotoController);
+dashboardRoutes.patch("/dashboard/photos/:id", handleMethod("update-photo"));
+dashboardRoutes.delete("/dashboard/photos/:id", handleMethod("delete-photo"));
 
 export default dashboardRoutes;

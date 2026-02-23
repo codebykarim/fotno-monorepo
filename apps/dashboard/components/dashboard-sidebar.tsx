@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { usePathname } from "next/navigation";
+import { signOut } from "@workspace/lib/auth/auth-client";
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import { StorageWidget } from "./storage-widget";
@@ -21,13 +22,23 @@ type SidebarItem = {
   href: string;
 };
 
-type Props = {
-  onLogout: () => Promise<void>;
-};
-
-const DashboardSidebar = ({ onLogout }: Props) => {
+const DashboardSidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
+
+  const onLogout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.href =
+            process.env.NEXT_PUBLIC_LANDING_URL || "http://localhost:3000";
+        },
+        onError: (error: unknown) => {
+          console.error("Logout error:", error);
+        },
+      },
+    });
+  };
 
   const sidebarItems: SidebarItem[] = [
     {
@@ -141,7 +152,7 @@ const DashboardSidebar = ({ onLogout }: Props) => {
         <Button
           variant="ghost"
           className="w-full justify-start rounded-xl px-3 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-          onClick={onLogout}
+          onClick={() => void onLogout()}
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
           {!isCollapsed && <span className="ml-3">Logout</span>}

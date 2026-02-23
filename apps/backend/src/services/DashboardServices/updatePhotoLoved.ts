@@ -1,7 +1,25 @@
 import { db } from "./_shared";
 import { getPresignedDownloadUrl } from "../../utils/s3";
 
-export const updatePhotoLoved = async (photoId: string, loved: boolean) => {
+export const updatePhotoLoved = async (
+  userId: string,
+  photoId: string,
+  loved: boolean,
+) => {
+  const photo = await db.photo.findFirst({
+    where: {
+      id: photoId,
+      gallery: {
+        userId,
+      },
+    },
+    select: { id: true },
+  });
+
+  if (!photo) {
+    return null;
+  }
+
   const updated = await db.photo.update({
     where: { id: photoId },
     data: { loved },

@@ -9,11 +9,10 @@ import Link from "next/link";
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
 
 type Props = {
-  logout: () => Promise<void>;
   main: Main;
 };
 
-const Header = async ({ logout, main }: Props) => {
+const Header = async ({ main }: Props) => {
   return (
     <header className="flex items-center justify-between py-4 h-20 px-5">
       <div className="flex h-full items-center space-x-2 text-sm">
@@ -30,7 +29,7 @@ const Header = async ({ logout, main }: Props) => {
       </div>
       <div className="flex items-center space-x-5">
         {/* <NotificationPopover /> */}
-        <NavUser logout={logout} />
+        <NavUser />
       </div>
     </header>
   );

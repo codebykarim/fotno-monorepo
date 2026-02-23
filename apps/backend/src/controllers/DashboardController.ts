@@ -1,17 +1,26 @@
 import { type Request, type Response } from "express";
+import AppError from "../errors/AppError";
 import * as DashboardService from "../services/DashboardServices";
 
 const asStatusCode = (value: unknown, fallback: number): number =>
   typeof value === "number" && Number.isFinite(value) ? value : fallback;
 
-export const getOverviewController = async (_req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+const getUserId = (req: Request): string => {
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+  return userId;
+};
+
+export const getOverviewController = async (req: Request, res: Response) => {
+  const userId = getUserId(req);
   const overview = await DashboardService.getOverview(userId);
   return res.status(200).json(overview);
 };
 
 export const listGalleriesController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const galleries = await DashboardService.listGalleries(
     userId,
     String(req.query.q ?? ""),
@@ -23,7 +32,7 @@ export const listGalleriesController = async (req: Request, res: Response) => {
 };
 
 export const createGalleryController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.createGallery(userId, req.body);
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -33,7 +42,7 @@ export const createGalleryController = async (req: Request, res: Response) => {
 };
 
 export const getGalleryController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.getGallery(userId, req.params.id);
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
@@ -43,7 +52,7 @@ export const getGalleryController = async (req: Request, res: Response) => {
 };
 
 export const updateGalleryController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.updateGallery(userId, req.params.id, req.body);
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
@@ -53,7 +62,7 @@ export const updateGalleryController = async (req: Request, res: Response) => {
 };
 
 export const deleteGalleryController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const deleted = await DashboardService.deleteGallery(userId, req.params.id);
   if (!deleted) {
     return res.status(404).json({ error: "Gallery not found" });
@@ -66,7 +75,7 @@ export const reorderGalleryPhotosController = async (
   req: Request,
   res: Response,
 ) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const items = Array.isArray(req.body?.items) ? req.body.items : [];
   const reordered = await DashboardService.reorderGalleryPhotos(
     userId,
@@ -81,7 +90,7 @@ export const reorderGalleryPhotosController = async (
 };
 
 export const presignPhotoUploadController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.presignPhotoUpload(userId, req.params.id, req.body);
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -91,7 +100,7 @@ export const presignPhotoUploadController = async (req: Request, res: Response) 
 };
 
 export const confirmPhotoUploadController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.confirmPhotoUpload(
     userId,
     req.params.id,
@@ -105,7 +114,7 @@ export const confirmPhotoUploadController = async (req: Request, res: Response) 
 };
 
 export const createAlbumController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.createAlbum(userId, req.params.id, req.body);
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -115,7 +124,7 @@ export const createAlbumController = async (req: Request, res: Response) => {
 };
 
 export const updateAlbumController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.updateAlbum(
     userId,
     req.params.id,
@@ -130,7 +139,7 @@ export const updateAlbumController = async (req: Request, res: Response) => {
 };
 
 export const deleteAlbumController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const deleted = await DashboardService.deleteAlbum(
     userId,
     req.params.id,
@@ -143,14 +152,14 @@ export const deleteAlbumController = async (req: Request, res: Response) => {
   return res.status(200).json({ success: true });
 };
 
-export const listClientsController = async (_req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+export const listClientsController = async (req: Request, res: Response) => {
+  const userId = getUserId(req);
   const result = await DashboardService.listClients(userId);
   return res.status(200).json(result);
 };
 
 export const updateClientController = async (req: Request, res: Response) => {
-  const userId = await DashboardService.resolveOwnerUserId();
+  const userId = getUserId(req);
   const result = await DashboardService.updateClient(userId, req.params.id, req.body);
   if (!result) {
     return res.status(404).json({ error: "Client not found" });
@@ -160,15 +169,22 @@ export const updateClientController = async (req: Request, res: Response) => {
 };
 
 export const updatePhotoController = async (req: Request, res: Response) => {
+  const userId = getUserId(req);
   const result = await DashboardService.updatePhotoLoved(
+    userId,
     req.params.id,
     Boolean(req.body?.loved),
   );
+  if (!result) {
+    return res.status(404).json({ error: "Photo not found" });
+  }
+
   return res.status(200).json(result);
 };
 
 export const deletePhotoController = async (req: Request, res: Response) => {
-  const deleted = await DashboardService.deletePhoto(req.params.id);
+  const userId = getUserId(req);
+  const deleted = await DashboardService.deletePhoto(userId, req.params.id);
   if (!deleted) {
     return res.status(404).json({ error: "Photo not found" });
   }

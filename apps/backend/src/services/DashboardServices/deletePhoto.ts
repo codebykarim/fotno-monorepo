@@ -2,9 +2,14 @@ import { db } from "./_shared";
 import { enqueuePhotoCleanup } from "../../queues/photoQueue";
 import { removeStorage } from "../StorageServices";
 
-export const deletePhoto = async (photoId: string) => {
-  const photo = await db.photo.findUnique({
-    where: { id: photoId },
+export const deletePhoto = async (userId: string, photoId: string) => {
+  const photo = await db.photo.findFirst({
+    where: {
+      id: photoId,
+      gallery: {
+        userId,
+      },
+    },
     select: {
       id: true,
       s3Key: true,
@@ -23,7 +28,7 @@ export const deletePhoto = async (photoId: string) => {
   }
 
   await removeStorage(
-    photo.gallery.userId,
+    userId,
     BigInt(photo.totalSize ?? 0),
     "delete",
     photo.id,

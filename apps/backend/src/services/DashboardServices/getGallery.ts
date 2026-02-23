@@ -1,4 +1,5 @@
-import { db, mapPhoto, toDateOnly } from "./_shared";
+import { db, toDateOnly } from "./_shared";
+import { getPresignedDownloadUrl } from "../../utils/s3";
 
 export const getGallery = async (userId: string, galleryId: string) => {
   const gallery = await db.gallery.findFirst({
@@ -15,6 +16,22 @@ export const getGallery = async (userId: string, galleryId: string) => {
   if (!gallery) {
     return null;
   }
+
+  const photos = await Promise.all(
+    gallery.photos.map(async (photo: any) => ({
+      id: photo.id,
+      galleryId: photo.galleryId,
+      url: await getPresignedDownloadUrl(photo.previewKey ?? photo.s3Key, 3600),
+      order: photo.order,
+      width: photo.width ?? 1200,
+      height: photo.height ?? 1600,
+      loved: Boolean(photo.loved),
+      createdAt:
+        photo.createdAt instanceof Date
+          ? photo.createdAt.toISOString()
+          : String(photo.createdAt),
+    })),
+  );
 
   return {
     gallery: {
@@ -33,7 +50,7 @@ export const getGallery = async (userId: string, galleryId: string) => {
       createdAt: gallery.createdAt.toISOString(),
       updatedAt: gallery.updatedAt.toISOString(),
       coverPhotoId: gallery.coverPhotoId ?? null,
-      photos: gallery.photos.map(mapPhoto),
+      photos,
       albums: gallery.albums.map((album: any) => ({
         id: album.id,
         galleryId: album.galleryId,

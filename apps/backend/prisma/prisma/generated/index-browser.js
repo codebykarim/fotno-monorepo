@@ -125,6 +125,14 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   plan: 'plan',
+  storageUsed: 'storageUsed',
+  storageLimit: 'storageLimit',
+  overageBytes: 'overageBytes',
+  overageResetAt: 'overageResetAt',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubId: 'stripeSubId',
+  warningEmailSent80: 'warningEmailSent80',
+  warningEmailSent95: 'warningEmailSent95',
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
@@ -224,7 +232,10 @@ exports.Prisma.PhotoScalarFieldEnum = {
   s3Key: 's3Key',
   s3Bucket: 's3Bucket',
   originalFilename: 'originalFilename',
-  size: 'size',
+  originalSize: 'originalSize',
+  thumbnailSize: 'thumbnailSize',
+  previewSize: 'previewSize',
+  totalSize: 'totalSize',
   width: 'width',
   height: 'height',
   mimeType: 'mimeType',
@@ -232,10 +243,20 @@ exports.Prisma.PhotoScalarFieldEnum = {
   isCulled: 'isCulled',
   loved: 'loved',
   aiCaption: 'aiCaption',
+  aiTags: 'aiTags',
   faceCount: 'faceCount',
   thumbnailKey: 'thumbnailKey',
   previewKey: 'previewKey',
   status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.StorageEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  photoId: 'photoId',
+  delta: 'delta',
+  reason: 'reason',
   createdAt: 'createdAt'
 };
 
@@ -282,10 +303,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.PhotographerPlan = exports.$Enums.PhotographerPlan = {
+exports.Plan = exports.$Enums.Plan = {
   FREE: 'FREE',
-  PRO: 'PRO',
-  STUDIO: 'STUDIO'
+  STARTER: 'STARTER',
+  PROFESSIONAL: 'PROFESSIONAL',
+  STUDIO: 'STUDIO',
+  ENTERPRISE: 'ENTERPRISE'
 };
 
 exports.PlanType = exports.$Enums.PlanType = {
@@ -317,14 +340,6 @@ exports.ContactMethod = exports.$Enums.ContactMethod = {
   BOTH: 'BOTH'
 };
 
-exports.PhotoStatus = exports.$Enums.PhotoStatus = {
-  PENDING: 'PENDING',
-  UPLOADED: 'UPLOADED',
-  PROCESSING: 'PROCESSING',
-  PROCESSED: 'PROCESSED',
-  FAILED: 'FAILED'
-};
-
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -334,6 +349,7 @@ exports.Prisma.ModelName = {
   UserOnboarding: 'UserOnboarding',
   Gallery: 'Gallery',
   Photo: 'Photo',
+  StorageEvent: 'StorageEvent',
   Client: 'Client',
   GalleryClient: 'GalleryClient',
   Album: 'Album',

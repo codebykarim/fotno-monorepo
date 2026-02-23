@@ -7,6 +7,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only --inspect=9230 --ignore node_modules src/server.ts",
     "worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
+    "worker:reconcile-storage": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/reconcileStorageWorker.ts",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "prisma generate"

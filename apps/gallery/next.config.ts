@@ -17,11 +17,10 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        hostname: "images.unsplash.com",
       },
       {
-        hostname: "images.unsplash.com",
+        hostname: "f219b79935cbb2d4a385b4134443cbe1.r2.cloudflarestorage.com",
       },
     ],
   },

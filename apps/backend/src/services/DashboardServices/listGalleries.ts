@@ -1,4 +1,5 @@
 import { db, toDateOnly } from "./_shared";
+import { getPresignedDownloadUrl } from "../../utils/s3";
 
 export const listGalleries = async (
   userId: string,
@@ -24,6 +25,8 @@ export const listGalleries = async (
         select: {
           id: true,
           order: true,
+          s3Key: true,
+          previewKey: true,
         },
       },
     },
@@ -52,29 +55,35 @@ export const listGalleries = async (
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
-  return filtered.map((gallery: any) => {
-    const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order);
-    const firstPhotoId = orderedPhotos[0]?.id;
-    const coverPhotoId = gallery.coverPhotoId ?? firstPhotoId ?? null;
-    return {
-      id: gallery.id,
-      title: gallery.title,
-      slug: gallery.slug,
-      eventDate: toDateOnly(
-        gallery.eventDate ? gallery.eventDate.toISOString() : null,
-      ),
-      deadline: toDateOnly(
-        gallery.deadline ? gallery.deadline.toISOString() : null,
-      ),
-      isPublished: Boolean(gallery.isPublished),
-      createdAt: gallery.createdAt.toISOString(),
-      updatedAt: gallery.updatedAt.toISOString(),
-      coverPhotoId,
-      status: gallery.isPublished ? "published" : "draft",
-      photoCount: orderedPhotos.length,
-      coverPhotoUrl: coverPhotoId
-        ? `https://picsum.photos/seed/${coverPhotoId}/1200/1600`
-        : null,
-    };
-  });
+  return Promise.all(
+    filtered.map(async (gallery: any) => {
+      const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order);
+      const firstPhoto = orderedPhotos[0] ?? null;
+      const coverPhoto = gallery.coverPhotoId
+        ? orderedPhotos.find((photo: any) => photo.id === gallery.coverPhotoId) ?? firstPhoto
+        : firstPhoto;
+      const coverPhotoId = coverPhoto?.id ?? null;
+
+      return {
+        id: gallery.id,
+        title: gallery.title,
+        slug: gallery.slug,
+        eventDate: toDateOnly(
+          gallery.eventDate ? gallery.eventDate.toISOString() : null,
+        ),
+        deadline: toDateOnly(
+          gallery.deadline ? gallery.deadline.toISOString() : null,
+        ),
+        isPublished: Boolean(gallery.isPublished),
+        createdAt: gallery.createdAt.toISOString(),
+        updatedAt: gallery.updatedAt.toISOString(),
+        coverPhotoId,
+        status: gallery.isPublished ? "published" : "draft",
+        photoCount: orderedPhotos.length,
+        coverPhotoUrl: coverPhoto
+          ? await getPresignedDownloadUrl(coverPhoto.previewKey ?? coverPhoto.s3Key, 3600)
+          : null,
+      };
+    }),
+  );
 };

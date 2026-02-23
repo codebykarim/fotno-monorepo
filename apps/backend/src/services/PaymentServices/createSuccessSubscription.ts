@@ -2,6 +2,7 @@ import { auth } from "../../auth";
 import AppError from "../../errors/AppError";
 import prisma from "../../../prisma";
 import { Payment, PlanType } from "@prisma/client";
+import { PLAN_STORAGE_LIMITS } from "../../constants/storage";
 
 interface Request {
   email: string;
@@ -26,6 +27,18 @@ const CreateSuccessSubscription = async ({
   transactionId,
   initial_transaction,
 }: Request): Promise<Payment | null> => {
+  const toUserPlan = (value: PlanType): string => {
+    switch (value) {
+      case "BEGGINER":
+        return "STARTER";
+      case "PRO":
+        return "PROFESSIONAL";
+      case "STUDIO":
+      default:
+        return "STUDIO";
+    }
+  };
+
   // get userId from user email
   const user = await prisma.user.findUnique({
     where: {
@@ -69,13 +82,15 @@ const CreateSuccessSubscription = async ({
       throw new AppError("Error adding user payment");
     });
 
-  await prisma.user.update({
+  await (prisma as any).user.update({
     where: {
       id: user.id,
     },
     data: {
       subscribed: true,
       finishOnboarding: true,
+      plan: toUserPlan(plan) as any,
+      storageLimit: PLAN_STORAGE_LIMITS[toUserPlan(plan)],
     },
   });
 

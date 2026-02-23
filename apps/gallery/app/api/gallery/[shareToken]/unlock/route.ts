@@ -1,4 +1,6 @@
 import { backendFetch } from "@/lib/backend";
+import { getDashboardGalleryAccessBySlug } from "@/lib/dashboard-gallery";
+import { createGallerySessionToken } from "@/lib/gallery-session";
 import { NextRequest, NextResponse } from "next/server";
 
 type AttemptEntry = {
@@ -48,76 +50,11 @@ const clearAttempts = (ip: string) => {
   unlockAttemptStore.delete(ip);
 };
 
-type DashboardListResponse = {
-  galleries?: Array<{
-    id: string;
-    slug: string;
-  }>;
-};
-
-type DashboardGalleryResponse = {
-  gallery?: {
-    id: string;
-    slug: string;
-    isPublished?: boolean;
-    passwordEnabled?: boolean;
-    password?: string | null;
-  };
-};
-
-const getDashboardBaseUrl = (): string => {
-  const dashboardUrl =
-    process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "http://localhost:3001";
-  return dashboardUrl.replace(/\/$/, "");
-};
-
-const encodeBase64Url = (value: string): string =>
-  Buffer.from(value).toString("base64url");
-
-const createLocalUnlockToken = (shareToken: string): string => {
-  const header = encodeBase64Url(JSON.stringify({ alg: "none", typ: "JWT" }));
-  const payload = encodeBase64Url(
-    JSON.stringify({
-      sub: shareToken,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-      source: "gallery-local-fallback",
-    }),
-  );
-  return `${header}.${payload}.local`;
-};
-
 const unlockAgainstDashboardMock = async (
   shareToken: string,
   password: string,
 ): Promise<{ token: string; expiresAt: string } | null> => {
-  const dashboardBaseUrl = getDashboardBaseUrl();
-  const listResponse = await fetch(
-    `${dashboardBaseUrl}/api/galleries?q=${encodeURIComponent(shareToken)}&status=all&sort=newest`,
-    { cache: "no-store" },
-  );
-
-  if (!listResponse.ok) {
-    return null;
-  }
-
-  const listPayload = (await listResponse.json()) as DashboardListResponse;
-  const galleryListItem = listPayload.galleries?.find(
-    (gallery) => gallery.slug === shareToken,
-  );
-  if (!galleryListItem) {
-    return null;
-  }
-
-  const detailResponse = await fetch(
-    `${dashboardBaseUrl}/api/galleries/${galleryListItem.id}`,
-    { cache: "no-store" },
-  );
-  if (!detailResponse.ok) {
-    return null;
-  }
-
-  const detailPayload = (await detailResponse.json()) as DashboardGalleryResponse;
-  const gallery = detailPayload.gallery;
+  const gallery = await getDashboardGalleryAccessBySlug(shareToken);
   if (!gallery) {
     return null;
   }
@@ -129,7 +66,10 @@ const unlockAgainstDashboardMock = async (
   if (!gallery.passwordEnabled) {
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
     return {
-      token: createLocalUnlockToken(shareToken),
+      token: createGallerySessionToken({
+        shareToken,
+        password: null,
+      }),
       expiresAt,
     };
   }
@@ -140,7 +80,10 @@ const unlockAgainstDashboardMock = async (
 
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
   return {
-    token: createLocalUnlockToken(shareToken),
+    token: createGallerySessionToken({
+      shareToken,
+      password,
+    }),
     expiresAt,
   };
 };
@@ -205,6 +148,7 @@ export async function POST(
             clearAttempts(ip);
             return NextResponse.json({
               token: fallbackResult.token,
+              sessionToken: fallbackResult.token,
               expiresAt: fallbackResult.expiresAt,
             });
           }
@@ -227,6 +171,11 @@ export async function POST(
 
     clearAttempts(ip);
 
+    const sessionToken = createGallerySessionToken({
+      shareToken,
+      password: payload.password,
+    });
+
     const data = (await response.json()) as {
       token?: string;
       jwt?: string;
@@ -235,6 +184,7 @@ export async function POST(
 
     return NextResponse.json({
       token: data.token ?? data.jwt,
+      sessionToken,
       expiresAt: data.expiresAt ?? null,
     });
   } catch (error) {

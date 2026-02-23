@@ -54,6 +54,11 @@ export type Gallery = $Result.DefaultSelection<Prisma.$GalleryPayload>
  */
 export type Photo = $Result.DefaultSelection<Prisma.$PhotoPayload>
 /**
+ * Model StorageEvent
+ * 
+ */
+export type StorageEvent = $Result.DefaultSelection<Prisma.$StorageEventPayload>
+/**
  * Model Client
  * 
  */
@@ -78,13 +83,15 @@ export type AlbumPhoto = $Result.DefaultSelection<Prisma.$AlbumPhotoPayload>
  * Enums
  */
 export namespace $Enums {
-  export const PhotographerPlan: {
+  export const Plan: {
   FREE: 'FREE',
-  PRO: 'PRO',
-  STUDIO: 'STUDIO'
+  STARTER: 'STARTER',
+  PROFESSIONAL: 'PROFESSIONAL',
+  STUDIO: 'STUDIO',
+  ENTERPRISE: 'ENTERPRISE'
 };
 
-export type PhotographerPlan = (typeof PhotographerPlan)[keyof typeof PhotographerPlan]
+export type Plan = (typeof Plan)[keyof typeof Plan]
 
 
 export const PlanType: {
@@ -130,22 +137,11 @@ export const ContactMethod: {
 
 export type ContactMethod = (typeof ContactMethod)[keyof typeof ContactMethod]
 
-
-export const PhotoStatus: {
-  PENDING: 'PENDING',
-  UPLOADED: 'UPLOADED',
-  PROCESSING: 'PROCESSING',
-  PROCESSED: 'PROCESSED',
-  FAILED: 'FAILED'
-};
-
-export type PhotoStatus = (typeof PhotoStatus)[keyof typeof PhotoStatus]
-
 }
 
-export type PhotographerPlan = $Enums.PhotographerPlan
+export type Plan = $Enums.Plan
 
-export const PhotographerPlan: typeof $Enums.PhotographerPlan
+export const Plan: typeof $Enums.Plan
 
 export type PlanType = $Enums.PlanType
 
@@ -166,10 +162,6 @@ export const PhotographyLevel: typeof $Enums.PhotographyLevel
 export type ContactMethod = $Enums.ContactMethod
 
 export const ContactMethod: typeof $Enums.ContactMethod
-
-export type PhotoStatus = $Enums.PhotoStatus
-
-export const PhotoStatus: typeof $Enums.PhotoStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -367,6 +359,16 @@ export class PrismaClient<
     * ```
     */
   get photo(): Prisma.PhotoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.storageEvent`: Exposes CRUD operations for the **StorageEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StorageEvents
+    * const storageEvents = await prisma.storageEvent.findMany()
+    * ```
+    */
+  get storageEvent(): Prisma.StorageEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.client`: Exposes CRUD operations for the **Client** model.
@@ -849,6 +851,7 @@ export namespace Prisma {
     UserOnboarding: 'UserOnboarding',
     Gallery: 'Gallery',
     Photo: 'Photo',
+    StorageEvent: 'StorageEvent',
     Client: 'Client',
     GalleryClient: 'GalleryClient',
     Album: 'Album',
@@ -868,7 +871,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "client" | "galleryClient" | "album" | "albumPhoto"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1464,6 +1467,80 @@ export namespace Prisma {
           }
         }
       }
+      StorageEvent: {
+        payload: Prisma.$StorageEventPayload<ExtArgs>
+        fields: Prisma.StorageEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StorageEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StorageEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          findFirst: {
+            args: Prisma.StorageEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StorageEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          findMany: {
+            args: Prisma.StorageEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>[]
+          }
+          create: {
+            args: Prisma.StorageEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          createMany: {
+            args: Prisma.StorageEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StorageEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>[]
+          }
+          delete: {
+            args: Prisma.StorageEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          update: {
+            args: Prisma.StorageEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.StorageEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StorageEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StorageEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.StorageEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StorageEventPayload>
+          }
+          aggregate: {
+            args: Prisma.StorageEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStorageEvent>
+          }
+          groupBy: {
+            args: Prisma.StorageEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StorageEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StorageEventCountArgs<ExtArgs>
+            result: $Utils.Optional<StorageEventCountAggregateOutputType> | number
+          }
+        }
+      }
       Client: {
         payload: Prisma.$ClientPayload<ExtArgs>
         fields: Prisma.ClientFieldRefs
@@ -1876,6 +1953,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingOmit
     gallery?: GalleryOmit
     photo?: PhotoOmit
+    storageEvent?: StorageEventOmit
     client?: ClientOmit
     galleryClient?: GalleryClientOmit
     album?: AlbumOmit
@@ -1965,6 +2043,7 @@ export namespace Prisma {
     payment: number
     galleries: number
     clients: number
+    storageEvents: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1973,6 +2052,7 @@ export namespace Prisma {
     payment?: boolean | UserCountOutputTypeCountPaymentArgs
     galleries?: boolean | UserCountOutputTypeCountGalleriesArgs
     clients?: boolean | UserCountOutputTypeCountClientsArgs
+    storageEvents?: boolean | UserCountOutputTypeCountStorageEventsArgs
   }
 
   // Custom InputTypes
@@ -2019,6 +2099,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ClientWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStorageEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StorageEventWhereInput
   }
 
 
@@ -2183,15 +2270,37 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    storageUsed: number | null
+    storageLimit: number | null
+    overageBytes: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    storageUsed: bigint | null
+    storageLimit: bigint | null
+    overageBytes: bigint | null
   }
 
   export type UserMinAggregateOutputType = {
     id: string | null
     name: string | null
     email: string | null
-    plan: $Enums.PhotographerPlan | null
+    plan: $Enums.Plan | null
+    storageUsed: bigint | null
+    storageLimit: bigint | null
+    overageBytes: bigint | null
+    overageResetAt: Date | null
+    stripeCustomerId: string | null
+    stripeSubId: string | null
+    warningEmailSent80: boolean | null
+    warningEmailSent95: boolean | null
     emailVerified: boolean | null
     image: string | null
     createdAt: Date | null
@@ -2208,7 +2317,15 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
-    plan: $Enums.PhotographerPlan | null
+    plan: $Enums.Plan | null
+    storageUsed: bigint | null
+    storageLimit: bigint | null
+    overageBytes: bigint | null
+    overageResetAt: Date | null
+    stripeCustomerId: string | null
+    stripeSubId: string | null
+    warningEmailSent80: boolean | null
+    warningEmailSent95: boolean | null
     emailVerified: boolean | null
     image: string | null
     createdAt: Date | null
@@ -2226,6 +2343,14 @@ export namespace Prisma {
     name: number
     email: number
     plan: number
+    storageUsed: number
+    storageLimit: number
+    overageBytes: number
+    overageResetAt: number
+    stripeCustomerId: number
+    stripeSubId: number
+    warningEmailSent80: number
+    warningEmailSent95: number
     emailVerified: number
     image: number
     createdAt: number
@@ -2240,11 +2365,31 @@ export namespace Prisma {
   }
 
 
+  export type UserAvgAggregateInputType = {
+    storageUsed?: true
+    storageLimit?: true
+    overageBytes?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    storageUsed?: true
+    storageLimit?: true
+    overageBytes?: true
+  }
+
   export type UserMinAggregateInputType = {
     id?: true
     name?: true
     email?: true
     plan?: true
+    storageUsed?: true
+    storageLimit?: true
+    overageBytes?: true
+    overageResetAt?: true
+    stripeCustomerId?: true
+    stripeSubId?: true
+    warningEmailSent80?: true
+    warningEmailSent95?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -2262,6 +2407,14 @@ export namespace Prisma {
     name?: true
     email?: true
     plan?: true
+    storageUsed?: true
+    storageLimit?: true
+    overageBytes?: true
+    overageResetAt?: true
+    stripeCustomerId?: true
+    stripeSubId?: true
+    warningEmailSent80?: true
+    warningEmailSent95?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -2279,6 +2432,14 @@ export namespace Prisma {
     name?: true
     email?: true
     plan?: true
+    storageUsed?: true
+    storageLimit?: true
+    overageBytes?: true
+    overageResetAt?: true
+    stripeCustomerId?: true
+    stripeSubId?: true
+    warningEmailSent80?: true
+    warningEmailSent95?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -2330,6 +2491,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -2360,6 +2533,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -2368,7 +2543,15 @@ export namespace Prisma {
     id: string
     name: string
     email: string
-    plan: $Enums.PhotographerPlan
+    plan: $Enums.Plan
+    storageUsed: bigint
+    storageLimit: bigint
+    overageBytes: bigint
+    overageResetAt: Date | null
+    stripeCustomerId: string | null
+    stripeSubId: string | null
+    warningEmailSent80: boolean
+    warningEmailSent95: boolean
     emailVerified: boolean
     image: string | null
     createdAt: Date
@@ -2380,6 +2563,8 @@ export namespace Prisma {
     subscribed: boolean | null
     finishOnboarding: boolean | null
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -2403,6 +2588,14 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
+    storageUsed?: boolean
+    storageLimit?: boolean
+    overageBytes?: boolean
+    overageResetAt?: boolean
+    stripeCustomerId?: boolean
+    stripeSubId?: boolean
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -2419,6 +2612,7 @@ export namespace Prisma {
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
     clients?: boolean | User$clientsArgs<ExtArgs>
+    storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2427,6 +2621,14 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
+    storageUsed?: boolean
+    storageLimit?: boolean
+    overageBytes?: boolean
+    overageResetAt?: boolean
+    stripeCustomerId?: boolean
+    stripeSubId?: boolean
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -2444,6 +2646,14 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
+    storageUsed?: boolean
+    storageLimit?: boolean
+    overageBytes?: boolean
+    overageResetAt?: boolean
+    stripeCustomerId?: boolean
+    stripeSubId?: boolean
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -2461,6 +2671,14 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
+    storageUsed?: boolean
+    storageLimit?: boolean
+    overageBytes?: boolean
+    overageResetAt?: boolean
+    stripeCustomerId?: boolean
+    stripeSubId?: boolean
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -2473,7 +2691,7 @@ export namespace Prisma {
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "stripeSubId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -2481,6 +2699,7 @@ export namespace Prisma {
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
     clients?: boolean | User$clientsArgs<ExtArgs>
+    storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2495,12 +2714,21 @@ export namespace Prisma {
       userOnboarding: Prisma.$UserOnboardingPayload<ExtArgs> | null
       galleries: Prisma.$GalleryPayload<ExtArgs>[]
       clients: Prisma.$ClientPayload<ExtArgs>[]
+      storageEvents: Prisma.$StorageEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       email: string
-      plan: $Enums.PhotographerPlan
+      plan: $Enums.Plan
+      storageUsed: bigint
+      storageLimit: bigint
+      overageBytes: bigint
+      overageResetAt: Date | null
+      stripeCustomerId: string | null
+      stripeSubId: string | null
+      warningEmailSent80: boolean
+      warningEmailSent95: boolean
       emailVerified: boolean
       image: string | null
       createdAt: Date
@@ -2911,6 +3139,7 @@ export namespace Prisma {
     userOnboarding<T extends User$userOnboardingArgs<ExtArgs> = {}>(args?: Subset<T, User$userOnboardingArgs<ExtArgs>>): Prisma__UserOnboardingClient<$Result.GetResult<Prisma.$UserOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     galleries<T extends User$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, User$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    storageEvents<T extends User$storageEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$storageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2943,7 +3172,15 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly plan: FieldRef<"User", 'PhotographerPlan'>
+    readonly plan: FieldRef<"User", 'Plan'>
+    readonly storageUsed: FieldRef<"User", 'BigInt'>
+    readonly storageLimit: FieldRef<"User", 'BigInt'>
+    readonly overageBytes: FieldRef<"User", 'BigInt'>
+    readonly overageResetAt: FieldRef<"User", 'DateTime'>
+    readonly stripeCustomerId: FieldRef<"User", 'String'>
+    readonly stripeSubId: FieldRef<"User", 'String'>
+    readonly warningEmailSent80: FieldRef<"User", 'Boolean'>
+    readonly warningEmailSent95: FieldRef<"User", 'Boolean'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -3478,6 +3715,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+  }
+
+  /**
+   * User.storageEvents
+   */
+  export type User$storageEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    where?: StorageEventWhereInput
+    orderBy?: StorageEventOrderByWithRelationInput | StorageEventOrderByWithRelationInput[]
+    cursor?: StorageEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
   }
 
   /**
@@ -10423,7 +10684,10 @@ export namespace Prisma {
   }
 
   export type PhotoAvgAggregateOutputType = {
-    size: number | null
+    originalSize: number | null
+    thumbnailSize: number | null
+    previewSize: number | null
+    totalSize: number | null
     width: number | null
     height: number | null
     order: number | null
@@ -10431,7 +10695,10 @@ export namespace Prisma {
   }
 
   export type PhotoSumAggregateOutputType = {
-    size: number | null
+    originalSize: bigint | null
+    thumbnailSize: bigint | null
+    previewSize: bigint | null
+    totalSize: bigint | null
     width: number | null
     height: number | null
     order: number | null
@@ -10444,7 +10711,10 @@ export namespace Prisma {
     s3Key: string | null
     s3Bucket: string | null
     originalFilename: string | null
-    size: number | null
+    originalSize: bigint | null
+    thumbnailSize: bigint | null
+    previewSize: bigint | null
+    totalSize: bigint | null
     width: number | null
     height: number | null
     mimeType: string | null
@@ -10455,7 +10725,7 @@ export namespace Prisma {
     faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
-    status: $Enums.PhotoStatus | null
+    status: string | null
     createdAt: Date | null
   }
 
@@ -10465,7 +10735,10 @@ export namespace Prisma {
     s3Key: string | null
     s3Bucket: string | null
     originalFilename: string | null
-    size: number | null
+    originalSize: bigint | null
+    thumbnailSize: bigint | null
+    previewSize: bigint | null
+    totalSize: bigint | null
     width: number | null
     height: number | null
     mimeType: string | null
@@ -10476,7 +10749,7 @@ export namespace Prisma {
     faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
-    status: $Enums.PhotoStatus | null
+    status: string | null
     createdAt: Date | null
   }
 
@@ -10486,7 +10759,10 @@ export namespace Prisma {
     s3Key: number
     s3Bucket: number
     originalFilename: number
-    size: number
+    originalSize: number
+    thumbnailSize: number
+    previewSize: number
+    totalSize: number
     width: number
     height: number
     mimeType: number
@@ -10494,6 +10770,7 @@ export namespace Prisma {
     isCulled: number
     loved: number
     aiCaption: number
+    aiTags: number
     faceCount: number
     thumbnailKey: number
     previewKey: number
@@ -10504,7 +10781,10 @@ export namespace Prisma {
 
 
   export type PhotoAvgAggregateInputType = {
-    size?: true
+    originalSize?: true
+    thumbnailSize?: true
+    previewSize?: true
+    totalSize?: true
     width?: true
     height?: true
     order?: true
@@ -10512,7 +10792,10 @@ export namespace Prisma {
   }
 
   export type PhotoSumAggregateInputType = {
-    size?: true
+    originalSize?: true
+    thumbnailSize?: true
+    previewSize?: true
+    totalSize?: true
     width?: true
     height?: true
     order?: true
@@ -10525,7 +10808,10 @@ export namespace Prisma {
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
-    size?: true
+    originalSize?: true
+    thumbnailSize?: true
+    previewSize?: true
+    totalSize?: true
     width?: true
     height?: true
     mimeType?: true
@@ -10546,7 +10832,10 @@ export namespace Prisma {
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
-    size?: true
+    originalSize?: true
+    thumbnailSize?: true
+    previewSize?: true
+    totalSize?: true
     width?: true
     height?: true
     mimeType?: true
@@ -10567,7 +10856,10 @@ export namespace Prisma {
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
-    size?: true
+    originalSize?: true
+    thumbnailSize?: true
+    previewSize?: true
+    totalSize?: true
     width?: true
     height?: true
     mimeType?: true
@@ -10575,6 +10867,7 @@ export namespace Prisma {
     isCulled?: true
     loved?: true
     aiCaption?: true
+    aiTags?: true
     faceCount?: true
     thumbnailKey?: true
     previewKey?: true
@@ -10675,7 +10968,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize: bigint
+    thumbnailSize: bigint
+    previewSize: bigint
+    totalSize: bigint
     width: number | null
     height: number | null
     mimeType: string
@@ -10683,10 +10979,11 @@ export namespace Prisma {
     isCulled: boolean
     loved: boolean
     aiCaption: string | null
+    aiTags: string[]
     faceCount: number
     thumbnailKey: string | null
     previewKey: string | null
-    status: $Enums.PhotoStatus
+    status: string
     createdAt: Date
     _count: PhotoCountAggregateOutputType | null
     _avg: PhotoAvgAggregateOutputType | null
@@ -10715,7 +11012,10 @@ export namespace Prisma {
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
-    size?: boolean
+    originalSize?: boolean
+    thumbnailSize?: boolean
+    previewSize?: boolean
+    totalSize?: boolean
     width?: boolean
     height?: boolean
     mimeType?: boolean
@@ -10723,6 +11023,7 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: boolean
+    aiTags?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
@@ -10740,7 +11041,10 @@ export namespace Prisma {
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
-    size?: boolean
+    originalSize?: boolean
+    thumbnailSize?: boolean
+    previewSize?: boolean
+    totalSize?: boolean
     width?: boolean
     height?: boolean
     mimeType?: boolean
@@ -10748,6 +11052,7 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: boolean
+    aiTags?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
@@ -10762,7 +11067,10 @@ export namespace Prisma {
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
-    size?: boolean
+    originalSize?: boolean
+    thumbnailSize?: boolean
+    previewSize?: boolean
+    totalSize?: boolean
     width?: boolean
     height?: boolean
     mimeType?: boolean
@@ -10770,6 +11078,7 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: boolean
+    aiTags?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
@@ -10784,7 +11093,10 @@ export namespace Prisma {
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
-    size?: boolean
+    originalSize?: boolean
+    thumbnailSize?: boolean
+    previewSize?: boolean
+    totalSize?: boolean
     width?: boolean
     height?: boolean
     mimeType?: boolean
@@ -10792,6 +11104,7 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: boolean
+    aiTags?: boolean
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
@@ -10799,7 +11112,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "s3Key" | "s3Bucket" | "originalFilename" | "size" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "createdAt", ExtArgs["result"]["photo"]>
+  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "createdAt", ExtArgs["result"]["photo"]>
   export type PhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
@@ -10826,7 +11139,10 @@ export namespace Prisma {
       s3Key: string
       s3Bucket: string
       originalFilename: string
-      size: number
+      originalSize: bigint
+      thumbnailSize: bigint
+      previewSize: bigint
+      totalSize: bigint
       width: number | null
       height: number | null
       mimeType: string
@@ -10834,10 +11150,11 @@ export namespace Prisma {
       isCulled: boolean
       loved: boolean
       aiCaption: string | null
+      aiTags: string[]
       faceCount: number
       thumbnailKey: string | null
       previewKey: string | null
-      status: $Enums.PhotoStatus
+      status: string
       createdAt: Date
     }, ExtArgs["result"]["photo"]>
     composites: {}
@@ -11270,7 +11587,10 @@ export namespace Prisma {
     readonly s3Key: FieldRef<"Photo", 'String'>
     readonly s3Bucket: FieldRef<"Photo", 'String'>
     readonly originalFilename: FieldRef<"Photo", 'String'>
-    readonly size: FieldRef<"Photo", 'Int'>
+    readonly originalSize: FieldRef<"Photo", 'BigInt'>
+    readonly thumbnailSize: FieldRef<"Photo", 'BigInt'>
+    readonly previewSize: FieldRef<"Photo", 'BigInt'>
+    readonly totalSize: FieldRef<"Photo", 'BigInt'>
     readonly width: FieldRef<"Photo", 'Int'>
     readonly height: FieldRef<"Photo", 'Int'>
     readonly mimeType: FieldRef<"Photo", 'String'>
@@ -11278,10 +11598,11 @@ export namespace Prisma {
     readonly isCulled: FieldRef<"Photo", 'Boolean'>
     readonly loved: FieldRef<"Photo", 'Boolean'>
     readonly aiCaption: FieldRef<"Photo", 'String'>
+    readonly aiTags: FieldRef<"Photo", 'String[]'>
     readonly faceCount: FieldRef<"Photo", 'Int'>
     readonly thumbnailKey: FieldRef<"Photo", 'String'>
     readonly previewKey: FieldRef<"Photo", 'String'>
-    readonly status: FieldRef<"Photo", 'PhotoStatus'>
+    readonly status: FieldRef<"Photo", 'String'>
     readonly createdAt: FieldRef<"Photo", 'DateTime'>
   }
     
@@ -11742,6 +12063,1111 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PhotoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StorageEvent
+   */
+
+  export type AggregateStorageEvent = {
+    _count: StorageEventCountAggregateOutputType | null
+    _avg: StorageEventAvgAggregateOutputType | null
+    _sum: StorageEventSumAggregateOutputType | null
+    _min: StorageEventMinAggregateOutputType | null
+    _max: StorageEventMaxAggregateOutputType | null
+  }
+
+  export type StorageEventAvgAggregateOutputType = {
+    delta: number | null
+  }
+
+  export type StorageEventSumAggregateOutputType = {
+    delta: bigint | null
+  }
+
+  export type StorageEventMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    photoId: string | null
+    delta: bigint | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type StorageEventMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    photoId: string | null
+    delta: bigint | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type StorageEventCountAggregateOutputType = {
+    id: number
+    userId: number
+    photoId: number
+    delta: number
+    reason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type StorageEventAvgAggregateInputType = {
+    delta?: true
+  }
+
+  export type StorageEventSumAggregateInputType = {
+    delta?: true
+  }
+
+  export type StorageEventMinAggregateInputType = {
+    id?: true
+    userId?: true
+    photoId?: true
+    delta?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type StorageEventMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    photoId?: true
+    delta?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type StorageEventCountAggregateInputType = {
+    id?: true
+    userId?: true
+    photoId?: true
+    delta?: true
+    reason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type StorageEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StorageEvent to aggregate.
+     */
+    where?: StorageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StorageEvents to fetch.
+     */
+    orderBy?: StorageEventOrderByWithRelationInput | StorageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StorageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StorageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StorageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StorageEvents
+    **/
+    _count?: true | StorageEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StorageEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StorageEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StorageEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StorageEventMaxAggregateInputType
+  }
+
+  export type GetStorageEventAggregateType<T extends StorageEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateStorageEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStorageEvent[P]>
+      : GetScalarType<T[P], AggregateStorageEvent[P]>
+  }
+
+
+
+
+  export type StorageEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StorageEventWhereInput
+    orderBy?: StorageEventOrderByWithAggregationInput | StorageEventOrderByWithAggregationInput[]
+    by: StorageEventScalarFieldEnum[] | StorageEventScalarFieldEnum
+    having?: StorageEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StorageEventCountAggregateInputType | true
+    _avg?: StorageEventAvgAggregateInputType
+    _sum?: StorageEventSumAggregateInputType
+    _min?: StorageEventMinAggregateInputType
+    _max?: StorageEventMaxAggregateInputType
+  }
+
+  export type StorageEventGroupByOutputType = {
+    id: string
+    userId: string
+    photoId: string | null
+    delta: bigint
+    reason: string
+    createdAt: Date
+    _count: StorageEventCountAggregateOutputType | null
+    _avg: StorageEventAvgAggregateOutputType | null
+    _sum: StorageEventSumAggregateOutputType | null
+    _min: StorageEventMinAggregateOutputType | null
+    _max: StorageEventMaxAggregateOutputType | null
+  }
+
+  type GetStorageEventGroupByPayload<T extends StorageEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StorageEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StorageEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StorageEventGroupByOutputType[P]>
+            : GetScalarType<T[P], StorageEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StorageEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    photoId?: boolean
+    delta?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["storageEvent"]>
+
+  export type StorageEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    photoId?: boolean
+    delta?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["storageEvent"]>
+
+  export type StorageEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    photoId?: boolean
+    delta?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["storageEvent"]>
+
+  export type StorageEventSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    photoId?: boolean
+    delta?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }
+
+  export type StorageEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "photoId" | "delta" | "reason" | "createdAt", ExtArgs["result"]["storageEvent"]>
+  export type StorageEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StorageEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StorageEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $StorageEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StorageEvent"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      photoId: string | null
+      delta: bigint
+      reason: string
+      createdAt: Date
+    }, ExtArgs["result"]["storageEvent"]>
+    composites: {}
+  }
+
+  type StorageEventGetPayload<S extends boolean | null | undefined | StorageEventDefaultArgs> = $Result.GetResult<Prisma.$StorageEventPayload, S>
+
+  type StorageEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StorageEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StorageEventCountAggregateInputType | true
+    }
+
+  export interface StorageEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StorageEvent'], meta: { name: 'StorageEvent' } }
+    /**
+     * Find zero or one StorageEvent that matches the filter.
+     * @param {StorageEventFindUniqueArgs} args - Arguments to find a StorageEvent
+     * @example
+     * // Get one StorageEvent
+     * const storageEvent = await prisma.storageEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StorageEventFindUniqueArgs>(args: SelectSubset<T, StorageEventFindUniqueArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StorageEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StorageEventFindUniqueOrThrowArgs} args - Arguments to find a StorageEvent
+     * @example
+     * // Get one StorageEvent
+     * const storageEvent = await prisma.storageEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StorageEventFindUniqueOrThrowArgs>(args: SelectSubset<T, StorageEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StorageEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventFindFirstArgs} args - Arguments to find a StorageEvent
+     * @example
+     * // Get one StorageEvent
+     * const storageEvent = await prisma.storageEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StorageEventFindFirstArgs>(args?: SelectSubset<T, StorageEventFindFirstArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StorageEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventFindFirstOrThrowArgs} args - Arguments to find a StorageEvent
+     * @example
+     * // Get one StorageEvent
+     * const storageEvent = await prisma.storageEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StorageEventFindFirstOrThrowArgs>(args?: SelectSubset<T, StorageEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StorageEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StorageEvents
+     * const storageEvents = await prisma.storageEvent.findMany()
+     * 
+     * // Get first 10 StorageEvents
+     * const storageEvents = await prisma.storageEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const storageEventWithIdOnly = await prisma.storageEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StorageEventFindManyArgs>(args?: SelectSubset<T, StorageEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StorageEvent.
+     * @param {StorageEventCreateArgs} args - Arguments to create a StorageEvent.
+     * @example
+     * // Create one StorageEvent
+     * const StorageEvent = await prisma.storageEvent.create({
+     *   data: {
+     *     // ... data to create a StorageEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends StorageEventCreateArgs>(args: SelectSubset<T, StorageEventCreateArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StorageEvents.
+     * @param {StorageEventCreateManyArgs} args - Arguments to create many StorageEvents.
+     * @example
+     * // Create many StorageEvents
+     * const storageEvent = await prisma.storageEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StorageEventCreateManyArgs>(args?: SelectSubset<T, StorageEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StorageEvents and returns the data saved in the database.
+     * @param {StorageEventCreateManyAndReturnArgs} args - Arguments to create many StorageEvents.
+     * @example
+     * // Create many StorageEvents
+     * const storageEvent = await prisma.storageEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StorageEvents and only return the `id`
+     * const storageEventWithIdOnly = await prisma.storageEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StorageEventCreateManyAndReturnArgs>(args?: SelectSubset<T, StorageEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StorageEvent.
+     * @param {StorageEventDeleteArgs} args - Arguments to delete one StorageEvent.
+     * @example
+     * // Delete one StorageEvent
+     * const StorageEvent = await prisma.storageEvent.delete({
+     *   where: {
+     *     // ... filter to delete one StorageEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StorageEventDeleteArgs>(args: SelectSubset<T, StorageEventDeleteArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StorageEvent.
+     * @param {StorageEventUpdateArgs} args - Arguments to update one StorageEvent.
+     * @example
+     * // Update one StorageEvent
+     * const storageEvent = await prisma.storageEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StorageEventUpdateArgs>(args: SelectSubset<T, StorageEventUpdateArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StorageEvents.
+     * @param {StorageEventDeleteManyArgs} args - Arguments to filter StorageEvents to delete.
+     * @example
+     * // Delete a few StorageEvents
+     * const { count } = await prisma.storageEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StorageEventDeleteManyArgs>(args?: SelectSubset<T, StorageEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StorageEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StorageEvents
+     * const storageEvent = await prisma.storageEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StorageEventUpdateManyArgs>(args: SelectSubset<T, StorageEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StorageEvents and returns the data updated in the database.
+     * @param {StorageEventUpdateManyAndReturnArgs} args - Arguments to update many StorageEvents.
+     * @example
+     * // Update many StorageEvents
+     * const storageEvent = await prisma.storageEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StorageEvents and only return the `id`
+     * const storageEventWithIdOnly = await prisma.storageEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StorageEventUpdateManyAndReturnArgs>(args: SelectSubset<T, StorageEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StorageEvent.
+     * @param {StorageEventUpsertArgs} args - Arguments to update or create a StorageEvent.
+     * @example
+     * // Update or create a StorageEvent
+     * const storageEvent = await prisma.storageEvent.upsert({
+     *   create: {
+     *     // ... data to create a StorageEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StorageEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StorageEventUpsertArgs>(args: SelectSubset<T, StorageEventUpsertArgs<ExtArgs>>): Prisma__StorageEventClient<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StorageEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventCountArgs} args - Arguments to filter StorageEvents to count.
+     * @example
+     * // Count the number of StorageEvents
+     * const count = await prisma.storageEvent.count({
+     *   where: {
+     *     // ... the filter for the StorageEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends StorageEventCountArgs>(
+      args?: Subset<T, StorageEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StorageEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StorageEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StorageEventAggregateArgs>(args: Subset<T, StorageEventAggregateArgs>): Prisma.PrismaPromise<GetStorageEventAggregateType<T>>
+
+    /**
+     * Group by StorageEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StorageEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StorageEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StorageEventGroupByArgs['orderBy'] }
+        : { orderBy?: StorageEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StorageEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStorageEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StorageEvent model
+   */
+  readonly fields: StorageEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StorageEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StorageEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StorageEvent model
+   */
+  interface StorageEventFieldRefs {
+    readonly id: FieldRef<"StorageEvent", 'String'>
+    readonly userId: FieldRef<"StorageEvent", 'String'>
+    readonly photoId: FieldRef<"StorageEvent", 'String'>
+    readonly delta: FieldRef<"StorageEvent", 'BigInt'>
+    readonly reason: FieldRef<"StorageEvent", 'String'>
+    readonly createdAt: FieldRef<"StorageEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StorageEvent findUnique
+   */
+  export type StorageEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which StorageEvent to fetch.
+     */
+    where: StorageEventWhereUniqueInput
+  }
+
+  /**
+   * StorageEvent findUniqueOrThrow
+   */
+  export type StorageEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which StorageEvent to fetch.
+     */
+    where: StorageEventWhereUniqueInput
+  }
+
+  /**
+   * StorageEvent findFirst
+   */
+  export type StorageEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which StorageEvent to fetch.
+     */
+    where?: StorageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StorageEvents to fetch.
+     */
+    orderBy?: StorageEventOrderByWithRelationInput | StorageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StorageEvents.
+     */
+    cursor?: StorageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StorageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StorageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StorageEvents.
+     */
+    distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
+  }
+
+  /**
+   * StorageEvent findFirstOrThrow
+   */
+  export type StorageEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which StorageEvent to fetch.
+     */
+    where?: StorageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StorageEvents to fetch.
+     */
+    orderBy?: StorageEventOrderByWithRelationInput | StorageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StorageEvents.
+     */
+    cursor?: StorageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StorageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StorageEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StorageEvents.
+     */
+    distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
+  }
+
+  /**
+   * StorageEvent findMany
+   */
+  export type StorageEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter, which StorageEvents to fetch.
+     */
+    where?: StorageEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StorageEvents to fetch.
+     */
+    orderBy?: StorageEventOrderByWithRelationInput | StorageEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StorageEvents.
+     */
+    cursor?: StorageEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StorageEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StorageEvents.
+     */
+    skip?: number
+    distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
+  }
+
+  /**
+   * StorageEvent create
+   */
+  export type StorageEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StorageEvent.
+     */
+    data: XOR<StorageEventCreateInput, StorageEventUncheckedCreateInput>
+  }
+
+  /**
+   * StorageEvent createMany
+   */
+  export type StorageEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StorageEvents.
+     */
+    data: StorageEventCreateManyInput | StorageEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StorageEvent createManyAndReturn
+   */
+  export type StorageEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many StorageEvents.
+     */
+    data: StorageEventCreateManyInput | StorageEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StorageEvent update
+   */
+  export type StorageEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StorageEvent.
+     */
+    data: XOR<StorageEventUpdateInput, StorageEventUncheckedUpdateInput>
+    /**
+     * Choose, which StorageEvent to update.
+     */
+    where: StorageEventWhereUniqueInput
+  }
+
+  /**
+   * StorageEvent updateMany
+   */
+  export type StorageEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StorageEvents.
+     */
+    data: XOR<StorageEventUpdateManyMutationInput, StorageEventUncheckedUpdateManyInput>
+    /**
+     * Filter which StorageEvents to update
+     */
+    where?: StorageEventWhereInput
+    /**
+     * Limit how many StorageEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StorageEvent updateManyAndReturn
+   */
+  export type StorageEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * The data used to update StorageEvents.
+     */
+    data: XOR<StorageEventUpdateManyMutationInput, StorageEventUncheckedUpdateManyInput>
+    /**
+     * Filter which StorageEvents to update
+     */
+    where?: StorageEventWhereInput
+    /**
+     * Limit how many StorageEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StorageEvent upsert
+   */
+  export type StorageEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StorageEvent to update in case it exists.
+     */
+    where: StorageEventWhereUniqueInput
+    /**
+     * In case the StorageEvent found by the `where` argument doesn't exist, create a new StorageEvent with this data.
+     */
+    create: XOR<StorageEventCreateInput, StorageEventUncheckedCreateInput>
+    /**
+     * In case the StorageEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StorageEventUpdateInput, StorageEventUncheckedUpdateInput>
+  }
+
+  /**
+   * StorageEvent delete
+   */
+  export type StorageEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
+    /**
+     * Filter which StorageEvent to delete.
+     */
+    where: StorageEventWhereUniqueInput
+  }
+
+  /**
+   * StorageEvent deleteMany
+   */
+  export type StorageEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StorageEvents to delete
+     */
+    where?: StorageEventWhereInput
+    /**
+     * Limit how many StorageEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StorageEvent without action
+   */
+  export type StorageEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StorageEvent
+     */
+    select?: StorageEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StorageEvent
+     */
+    omit?: StorageEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StorageEventInclude<ExtArgs> | null
   }
 
 
@@ -16033,6 +17459,14 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     plan: 'plan',
+    storageUsed: 'storageUsed',
+    storageLimit: 'storageLimit',
+    overageBytes: 'overageBytes',
+    overageResetAt: 'overageResetAt',
+    stripeCustomerId: 'stripeCustomerId',
+    stripeSubId: 'stripeSubId',
+    warningEmailSent80: 'warningEmailSent80',
+    warningEmailSent95: 'warningEmailSent95',
     emailVerified: 'emailVerified',
     image: 'image',
     createdAt: 'createdAt',
@@ -16153,7 +17587,10 @@ export namespace Prisma {
     s3Key: 's3Key',
     s3Bucket: 's3Bucket',
     originalFilename: 'originalFilename',
-    size: 'size',
+    originalSize: 'originalSize',
+    thumbnailSize: 'thumbnailSize',
+    previewSize: 'previewSize',
+    totalSize: 'totalSize',
     width: 'width',
     height: 'height',
     mimeType: 'mimeType',
@@ -16161,6 +17598,7 @@ export namespace Prisma {
     isCulled: 'isCulled',
     loved: 'loved',
     aiCaption: 'aiCaption',
+    aiTags: 'aiTags',
     faceCount: 'faceCount',
     thumbnailKey: 'thumbnailKey',
     previewKey: 'previewKey',
@@ -16169,6 +17607,18 @@ export namespace Prisma {
   };
 
   export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
+
+
+  export const StorageEventScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    photoId: 'photoId',
+    delta: 'delta',
+    reason: 'reason',
+    createdAt: 'createdAt'
+  };
+
+  export type StorageEventScalarFieldEnum = (typeof StorageEventScalarFieldEnum)[keyof typeof StorageEventScalarFieldEnum]
 
 
   export const ClientScalarFieldEnum: {
@@ -16256,23 +17706,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'PhotographerPlan'
+   * Reference to a field of type 'Plan'
    */
-  export type EnumPhotographerPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhotographerPlan'>
+  export type EnumPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plan'>
     
 
 
   /**
-   * Reference to a field of type 'PhotographerPlan[]'
+   * Reference to a field of type 'Plan[]'
    */
-  export type ListEnumPhotographerPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhotographerPlan[]'>
+  export type ListEnumPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plan[]'>
     
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'BigInt'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -16287,6 +17744,13 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -16375,20 +17839,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'PhotoStatus'
-   */
-  export type EnumPhotoStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhotoStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'PhotoStatus[]'
-   */
-  export type ListEnumPhotoStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhotoStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -16412,7 +17862,15 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    plan?: EnumPhotographerPlanFilter<"User"> | $Enums.PhotographerPlan
+    plan?: EnumPlanFilter<"User"> | $Enums.Plan
+    storageUsed?: BigIntFilter<"User"> | bigint | number
+    storageLimit?: BigIntFilter<"User"> | bigint | number
+    overageBytes?: BigIntFilter<"User"> | bigint | number
+    overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    stripeCustomerId?: StringNullableFilter<"User"> | string | null
+    stripeSubId?: StringNullableFilter<"User"> | string | null
+    warningEmailSent80?: BoolFilter<"User"> | boolean
+    warningEmailSent95?: BoolFilter<"User"> | boolean
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -16429,6 +17887,7 @@ export namespace Prisma {
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
     clients?: ClientListRelationFilter
+    storageEvents?: StorageEventListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -16436,6 +17895,14 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+    overageResetAt?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
+    stripeSubId?: SortOrderInput | SortOrder
+    warningEmailSent80?: SortOrder
+    warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -16452,16 +17919,25 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingOrderByWithRelationInput
     galleries?: GalleryOrderByRelationAggregateInput
     clients?: ClientOrderByRelationAggregateInput
+    storageEvents?: StorageEventOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    stripeCustomerId?: string
+    stripeSubId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
-    plan?: EnumPhotographerPlanFilter<"User"> | $Enums.PhotographerPlan
+    plan?: EnumPlanFilter<"User"> | $Enums.Plan
+    storageUsed?: BigIntFilter<"User"> | bigint | number
+    storageLimit?: BigIntFilter<"User"> | bigint | number
+    overageBytes?: BigIntFilter<"User"> | bigint | number
+    overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    warningEmailSent80?: BoolFilter<"User"> | boolean
+    warningEmailSent95?: BoolFilter<"User"> | boolean
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -16478,13 +17954,22 @@ export namespace Prisma {
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
     clients?: ClientListRelationFilter
-  }, "id" | "id" | "email">
+    storageEvents?: StorageEventListRelationFilter
+  }, "id" | "id" | "stripeCustomerId" | "stripeSubId" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+    overageResetAt?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
+    stripeSubId?: SortOrderInput | SortOrder
+    warningEmailSent80?: SortOrder
+    warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -16496,8 +17981,10 @@ export namespace Prisma {
     subscribed?: SortOrderInput | SortOrder
     finishOnboarding?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -16507,7 +17994,15 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    plan?: EnumPhotographerPlanWithAggregatesFilter<"User"> | $Enums.PhotographerPlan
+    plan?: EnumPlanWithAggregatesFilter<"User"> | $Enums.Plan
+    storageUsed?: BigIntWithAggregatesFilter<"User"> | bigint | number
+    storageLimit?: BigIntWithAggregatesFilter<"User"> | bigint | number
+    overageBytes?: BigIntWithAggregatesFilter<"User"> | bigint | number
+    overageResetAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    stripeCustomerId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    stripeSubId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    warningEmailSent80?: BoolWithAggregatesFilter<"User"> | boolean
+    warningEmailSent95?: BoolWithAggregatesFilter<"User"> | boolean
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -17038,7 +18533,10 @@ export namespace Prisma {
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
-    size?: IntFilter<"Photo"> | number
+    originalSize?: BigIntFilter<"Photo"> | bigint | number
+    thumbnailSize?: BigIntFilter<"Photo"> | bigint | number
+    previewSize?: BigIntFilter<"Photo"> | bigint | number
+    totalSize?: BigIntFilter<"Photo"> | bigint | number
     width?: IntNullableFilter<"Photo"> | number | null
     height?: IntNullableFilter<"Photo"> | number | null
     mimeType?: StringFilter<"Photo"> | string
@@ -17046,10 +18544,11 @@ export namespace Prisma {
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
+    aiTags?: StringNullableListFilter<"Photo">
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
-    status?: EnumPhotoStatusFilter<"Photo"> | $Enums.PhotoStatus
+    status?: StringFilter<"Photo"> | string
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
@@ -17062,7 +18561,10 @@ export namespace Prisma {
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
     mimeType?: SortOrder
@@ -17070,6 +18572,7 @@ export namespace Prisma {
     isCulled?: SortOrder
     loved?: SortOrder
     aiCaption?: SortOrderInput | SortOrder
+    aiTags?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
@@ -17089,7 +18592,10 @@ export namespace Prisma {
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
-    size?: IntFilter<"Photo"> | number
+    originalSize?: BigIntFilter<"Photo"> | bigint | number
+    thumbnailSize?: BigIntFilter<"Photo"> | bigint | number
+    previewSize?: BigIntFilter<"Photo"> | bigint | number
+    totalSize?: BigIntFilter<"Photo"> | bigint | number
     width?: IntNullableFilter<"Photo"> | number | null
     height?: IntNullableFilter<"Photo"> | number | null
     mimeType?: StringFilter<"Photo"> | string
@@ -17097,10 +18603,11 @@ export namespace Prisma {
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
+    aiTags?: StringNullableListFilter<"Photo">
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
-    status?: EnumPhotoStatusFilter<"Photo"> | $Enums.PhotoStatus
+    status?: StringFilter<"Photo"> | string
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
@@ -17113,7 +18620,10 @@ export namespace Prisma {
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
     mimeType?: SortOrder
@@ -17121,6 +18631,7 @@ export namespace Prisma {
     isCulled?: SortOrder
     loved?: SortOrder
     aiCaption?: SortOrderInput | SortOrder
+    aiTags?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
@@ -17142,7 +18653,10 @@ export namespace Prisma {
     s3Key?: StringWithAggregatesFilter<"Photo"> | string
     s3Bucket?: StringWithAggregatesFilter<"Photo"> | string
     originalFilename?: StringWithAggregatesFilter<"Photo"> | string
-    size?: IntWithAggregatesFilter<"Photo"> | number
+    originalSize?: BigIntWithAggregatesFilter<"Photo"> | bigint | number
+    thumbnailSize?: BigIntWithAggregatesFilter<"Photo"> | bigint | number
+    previewSize?: BigIntWithAggregatesFilter<"Photo"> | bigint | number
+    totalSize?: BigIntWithAggregatesFilter<"Photo"> | bigint | number
     width?: IntNullableWithAggregatesFilter<"Photo"> | number | null
     height?: IntNullableWithAggregatesFilter<"Photo"> | number | null
     mimeType?: StringWithAggregatesFilter<"Photo"> | string
@@ -17150,11 +18664,74 @@ export namespace Prisma {
     isCulled?: BoolWithAggregatesFilter<"Photo"> | boolean
     loved?: BoolWithAggregatesFilter<"Photo"> | boolean
     aiCaption?: StringNullableWithAggregatesFilter<"Photo"> | string | null
+    aiTags?: StringNullableListFilter<"Photo">
     faceCount?: IntWithAggregatesFilter<"Photo"> | number
     thumbnailKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     previewKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
-    status?: EnumPhotoStatusWithAggregatesFilter<"Photo"> | $Enums.PhotoStatus
+    status?: StringWithAggregatesFilter<"Photo"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Photo"> | Date | string
+  }
+
+  export type StorageEventWhereInput = {
+    AND?: StorageEventWhereInput | StorageEventWhereInput[]
+    OR?: StorageEventWhereInput[]
+    NOT?: StorageEventWhereInput | StorageEventWhereInput[]
+    id?: StringFilter<"StorageEvent"> | string
+    userId?: StringFilter<"StorageEvent"> | string
+    photoId?: StringNullableFilter<"StorageEvent"> | string | null
+    delta?: BigIntFilter<"StorageEvent"> | bigint | number
+    reason?: StringFilter<"StorageEvent"> | string
+    createdAt?: DateTimeFilter<"StorageEvent"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type StorageEventOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type StorageEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StorageEventWhereInput | StorageEventWhereInput[]
+    OR?: StorageEventWhereInput[]
+    NOT?: StorageEventWhereInput | StorageEventWhereInput[]
+    userId?: StringFilter<"StorageEvent"> | string
+    photoId?: StringNullableFilter<"StorageEvent"> | string | null
+    delta?: BigIntFilter<"StorageEvent"> | bigint | number
+    reason?: StringFilter<"StorageEvent"> | string
+    createdAt?: DateTimeFilter<"StorageEvent"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type StorageEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    _count?: StorageEventCountOrderByAggregateInput
+    _avg?: StorageEventAvgOrderByAggregateInput
+    _max?: StorageEventMaxOrderByAggregateInput
+    _min?: StorageEventMinOrderByAggregateInput
+    _sum?: StorageEventSumOrderByAggregateInput
+  }
+
+  export type StorageEventScalarWhereWithAggregatesInput = {
+    AND?: StorageEventScalarWhereWithAggregatesInput | StorageEventScalarWhereWithAggregatesInput[]
+    OR?: StorageEventScalarWhereWithAggregatesInput[]
+    NOT?: StorageEventScalarWhereWithAggregatesInput | StorageEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StorageEvent"> | string
+    userId?: StringWithAggregatesFilter<"StorageEvent"> | string
+    photoId?: StringNullableWithAggregatesFilter<"StorageEvent"> | string | null
+    delta?: BigIntWithAggregatesFilter<"StorageEvent"> | bigint | number
+    reason?: StringWithAggregatesFilter<"StorageEvent"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"StorageEvent"> | Date | string
   }
 
   export type ClientWhereInput = {
@@ -17381,7 +18958,15 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -17398,13 +18983,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -17421,13 +19015,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17444,13 +19047,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17467,13 +19079,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -17490,7 +19111,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17507,7 +19136,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18092,7 +19729,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -18100,10 +19740,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
@@ -18116,7 +19757,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -18124,10 +19768,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
@@ -18138,7 +19783,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -18146,10 +19794,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
@@ -18162,7 +19811,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -18170,10 +19822,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
@@ -18185,7 +19838,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -18193,10 +19849,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
   }
 
@@ -18205,7 +19862,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -18213,10 +19873,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18226,7 +19887,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -18234,10 +19898,73 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StorageEventCreateInput = {
+    id?: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutStorageEventsInput
+  }
+
+  export type StorageEventUncheckedCreateInput = {
+    id?: string
+    userId: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type StorageEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStorageEventsNestedInput
+  }
+
+  export type StorageEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StorageEventCreateManyInput = {
+    id?: string
+    userId: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type StorageEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StorageEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18461,16 +20188,33 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumPhotographerPlanFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotographerPlan | EnumPhotographerPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotographerPlanFilter<$PrismaModel> | $Enums.PhotographerPlan
+  export type EnumPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -18488,6 +20232,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -18502,17 +20251,6 @@ export namespace Prisma {
   export type BoolNullableFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type SessionListRelationFilter = {
@@ -18550,6 +20288,12 @@ export namespace Prisma {
     none?: ClientWhereInput
   }
 
+  export type StorageEventListRelationFilter = {
+    every?: StorageEventWhereInput
+    some?: StorageEventWhereInput
+    none?: StorageEventWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -18575,11 +20319,23 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type StorageEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+    overageResetAt?: SortOrder
+    stripeCustomerId?: SortOrder
+    stripeSubId?: SortOrder
+    warningEmailSent80?: SortOrder
+    warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -18592,11 +20348,25 @@ export namespace Prisma {
     finishOnboarding?: SortOrder
   }
 
+  export type UserAvgOrderByAggregateInput = {
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+  }
+
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+    overageResetAt?: SortOrder
+    stripeCustomerId?: SortOrder
+    stripeSubId?: SortOrder
+    warningEmailSent80?: SortOrder
+    warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -18614,6 +20384,14 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
+    overageResetAt?: SortOrder
+    stripeCustomerId?: SortOrder
+    stripeSubId?: SortOrder
+    warningEmailSent80?: SortOrder
+    warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -18624,6 +20402,12 @@ export namespace Prisma {
     banExpires?: SortOrder
     subscribed?: SortOrder
     finishOnboarding?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    storageUsed?: SortOrder
+    storageLimit?: SortOrder
+    overageBytes?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -18644,22 +20428,44 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type EnumPhotographerPlanWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotographerPlan | EnumPhotographerPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotographerPlanWithAggregatesFilter<$PrismaModel> | $Enums.PhotographerPlan
+  export type EnumPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanWithAggregatesFilter<$PrismaModel> | $Enums.Plan
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPhotographerPlanFilter<$PrismaModel>
-    _max?: NestedEnumPhotographerPlanFilter<$PrismaModel>
+    _min?: NestedEnumPlanFilter<$PrismaModel>
+    _max?: NestedEnumPlanFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18678,6 +20484,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -18700,20 +20514,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -19159,13 +20959,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EnumPhotoStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotoStatus | EnumPhotoStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotoStatusFilter<$PrismaModel> | $Enums.PhotoStatus
-  }
-
   export type GalleryScalarRelationFilter = {
     is?: GalleryWhereInput
     isNot?: GalleryWhereInput
@@ -19187,7 +20980,10 @@ export namespace Prisma {
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrder
     height?: SortOrder
     mimeType?: SortOrder
@@ -19195,6 +20991,7 @@ export namespace Prisma {
     isCulled?: SortOrder
     loved?: SortOrder
     aiCaption?: SortOrder
+    aiTags?: SortOrder
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
@@ -19203,7 +21000,10 @@ export namespace Prisma {
   }
 
   export type PhotoAvgOrderByAggregateInput = {
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrder
     height?: SortOrder
     order?: SortOrder
@@ -19216,7 +21016,10 @@ export namespace Prisma {
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrder
     height?: SortOrder
     mimeType?: SortOrder
@@ -19237,7 +21040,10 @@ export namespace Prisma {
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrder
     height?: SortOrder
     mimeType?: SortOrder
@@ -19253,7 +21059,10 @@ export namespace Prisma {
   }
 
   export type PhotoSumOrderByAggregateInput = {
-    size?: SortOrder
+    originalSize?: SortOrder
+    thumbnailSize?: SortOrder
+    previewSize?: SortOrder
+    totalSize?: SortOrder
     width?: SortOrder
     height?: SortOrder
     order?: SortOrder
@@ -19276,14 +21085,39 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type EnumPhotoStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotoStatus | EnumPhotoStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotoStatusWithAggregatesFilter<$PrismaModel> | $Enums.PhotoStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPhotoStatusFilter<$PrismaModel>
-    _max?: NestedEnumPhotoStatusFilter<$PrismaModel>
+  export type StorageEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    photoId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StorageEventAvgOrderByAggregateInput = {
+    delta?: SortOrder
+  }
+
+  export type StorageEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    photoId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StorageEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    photoId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StorageEventSumOrderByAggregateInput = {
+    delta?: SortOrder
   }
 
   export type ClientUserIdEmailCompoundUniqueInput = {
@@ -19444,6 +21278,13 @@ export namespace Prisma {
     connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
   }
 
+  export type StorageEventCreateNestedManyWithoutUserInput = {
+    create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
+    createMany?: StorageEventCreateManyUserInputEnvelope
+    connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -19485,20 +21326,39 @@ export namespace Prisma {
     connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
   }
 
+  export type StorageEventUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
+    createMany?: StorageEventCreateManyUserInputEnvelope
+    connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
-  export type EnumPhotographerPlanFieldUpdateOperationsInput = {
-    set?: $Enums.PhotographerPlan
+  export type EnumPlanFieldUpdateOperationsInput = {
+    set?: $Enums.Plan
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -19507,10 +21367,6 @@ export namespace Prisma {
 
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -19593,6 +21449,20 @@ export namespace Prisma {
     deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
   }
 
+  export type StorageEventUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
+    upsert?: StorageEventUpsertWithWhereUniqueWithoutUserInput | StorageEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StorageEventCreateManyUserInputEnvelope
+    set?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    disconnect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    delete?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    update?: StorageEventUpdateWithWhereUniqueWithoutUserInput | StorageEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StorageEventUpdateManyWithWhereWithoutUserInput | StorageEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -19671,6 +21541,20 @@ export namespace Prisma {
     update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
+  }
+
+  export type StorageEventUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
+    upsert?: StorageEventUpsertWithWhereUniqueWithoutUserInput | StorageEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StorageEventCreateManyUserInputEnvelope
+    set?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    disconnect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    delete?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+    update?: StorageEventUpdateWithWhereUniqueWithoutUserInput | StorageEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StorageEventUpdateManyWithWhereWithoutUserInput | StorageEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -19922,6 +21806,10 @@ export namespace Prisma {
     deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
+  export type PhotoCreateaiTagsInput = {
+    set: string[]
+  }
+
   export type GalleryCreateNestedOneWithoutPhotosInput = {
     create?: XOR<GalleryCreateWithoutPhotosInput, GalleryUncheckedCreateWithoutPhotosInput>
     connectOrCreate?: GalleryCreateOrConnectWithoutPhotosInput
@@ -19964,8 +21852,9 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type EnumPhotoStatusFieldUpdateOperationsInput = {
-    set?: $Enums.PhotoStatus
+  export type PhotoUpdateaiTagsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type GalleryUpdateOneRequiredWithoutPhotosNestedInput = {
@@ -20030,6 +21919,20 @@ export namespace Prisma {
     update?: AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput[]
     updateMany?: AlbumPhotoUpdateManyWithWhereWithoutPhotoInput | AlbumPhotoUpdateManyWithWhereWithoutPhotoInput[]
     deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutStorageEventsInput = {
+    create?: XOR<UserCreateWithoutStorageEventsInput, UserUncheckedCreateWithoutStorageEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStorageEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutStorageEventsNestedInput = {
+    create?: XOR<UserCreateWithoutStorageEventsInput, UserUncheckedCreateWithoutStorageEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStorageEventsInput
+    upsert?: UserUpsertWithoutStorageEventsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStorageEventsInput, UserUpdateWithoutStorageEventsInput>, UserUncheckedUpdateWithoutStorageEventsInput>
   }
 
   export type UserCreateNestedOneWithoutClientsInput = {
@@ -20214,16 +22117,33 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumPhotographerPlanFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotographerPlan | EnumPhotographerPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotographerPlanFilter<$PrismaModel> | $Enums.PhotographerPlan
+  export type NestedEnumPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -20240,6 +22160,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -20254,17 +22179,6 @@ export namespace Prisma {
   export type NestedBoolNullableFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -20295,22 +22209,66 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumPhotographerPlanWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotographerPlan | EnumPhotographerPlanFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotographerPlan[] | ListEnumPhotographerPlanFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotographerPlanWithAggregatesFilter<$PrismaModel> | $Enums.PhotographerPlan
+  export type NestedEnumPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanWithAggregatesFilter<$PrismaModel> | $Enums.Plan
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPhotographerPlanFilter<$PrismaModel>
-    _max?: NestedEnumPhotographerPlanFilter<$PrismaModel>
+    _min?: NestedEnumPlanFilter<$PrismaModel>
+    _max?: NestedEnumPlanFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -20330,15 +22288,12 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -20361,20 +22316,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumPlanTypeFilter<$PrismaModel = never> = {
@@ -20405,17 +22346,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumPlanTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -20489,13 +22419,6 @@ export namespace Prisma {
     _max?: NestedEnumContactMethodNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumPhotoStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotoStatus | EnumPhotoStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotoStatusFilter<$PrismaModel> | $Enums.PhotoStatus
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -20521,16 +22444,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumPhotoStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PhotoStatus | EnumPhotoStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PhotoStatus[] | ListEnumPhotoStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPhotoStatusWithAggregatesFilter<$PrismaModel> | $Enums.PhotoStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPhotoStatusFilter<$PrismaModel>
-    _max?: NestedEnumPhotoStatusFilter<$PrismaModel>
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -20744,6 +22657,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StorageEventCreateWithoutUserInput = {
+    id?: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type StorageEventUncheckedCreateWithoutUserInput = {
+    id?: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type StorageEventCreateOrConnectWithoutUserInput = {
+    where: StorageEventWhereUniqueInput
+    create: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type StorageEventCreateManyUserInputEnvelope = {
+    data: StorageEventCreateManyUserInput | StorageEventCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -20941,11 +22880,47 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Client"> | Date | string
   }
 
+  export type StorageEventUpsertWithWhereUniqueWithoutUserInput = {
+    where: StorageEventWhereUniqueInput
+    update: XOR<StorageEventUpdateWithoutUserInput, StorageEventUncheckedUpdateWithoutUserInput>
+    create: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type StorageEventUpdateWithWhereUniqueWithoutUserInput = {
+    where: StorageEventWhereUniqueInput
+    data: XOR<StorageEventUpdateWithoutUserInput, StorageEventUncheckedUpdateWithoutUserInput>
+  }
+
+  export type StorageEventUpdateManyWithWhereWithoutUserInput = {
+    where: StorageEventScalarWhereInput
+    data: XOR<StorageEventUpdateManyMutationInput, StorageEventUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type StorageEventScalarWhereInput = {
+    AND?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
+    OR?: StorageEventScalarWhereInput[]
+    NOT?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
+    id?: StringFilter<"StorageEvent"> | string
+    userId?: StringFilter<"StorageEvent"> | string
+    photoId?: StringNullableFilter<"StorageEvent"> | string | null
+    delta?: BigIntFilter<"StorageEvent"> | bigint | number
+    reason?: StringFilter<"StorageEvent"> | string
+    createdAt?: DateTimeFilter<"StorageEvent"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -20961,13 +22936,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -20983,6 +22967,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -21005,7 +22990,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21021,13 +23014,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21043,13 +23045,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21065,13 +23076,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21087,6 +23107,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -21109,7 +23130,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21125,13 +23154,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21147,13 +23185,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPaymentInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21169,13 +23216,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21191,6 +23247,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -21213,7 +23270,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21229,13 +23294,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21251,13 +23325,22 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21273,13 +23356,22 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21295,6 +23387,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -21317,7 +23410,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21333,13 +23434,22 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21355,13 +23465,22 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21377,13 +23496,22 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21399,6 +23527,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -21411,7 +23540,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -21419,10 +23551,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
@@ -21434,7 +23567,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -21442,10 +23578,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
@@ -21460,7 +23597,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -21468,10 +23608,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
@@ -21482,7 +23623,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -21490,10 +23634,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
@@ -21570,7 +23715,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21586,13 +23739,22 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21608,6 +23770,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -21626,7 +23789,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -21634,10 +23800,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
@@ -21649,7 +23816,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -21657,10 +23827,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
@@ -21690,7 +23861,10 @@ export namespace Prisma {
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
-    size?: IntFilter<"Photo"> | number
+    originalSize?: BigIntFilter<"Photo"> | bigint | number
+    thumbnailSize?: BigIntFilter<"Photo"> | bigint | number
+    previewSize?: BigIntFilter<"Photo"> | bigint | number
+    totalSize?: BigIntFilter<"Photo"> | bigint | number
     width?: IntNullableFilter<"Photo"> | number | null
     height?: IntNullableFilter<"Photo"> | number | null
     mimeType?: StringFilter<"Photo"> | string
@@ -21698,10 +23872,11 @@ export namespace Prisma {
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
     aiCaption?: StringNullableFilter<"Photo"> | string | null
+    aiTags?: StringNullableListFilter<"Photo">
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
-    status?: EnumPhotoStatusFilter<"Photo"> | $Enums.PhotoStatus
+    status?: StringFilter<"Photo"> | string
     createdAt?: DateTimeFilter<"Photo"> | Date | string
   }
 
@@ -21946,11 +24121,19 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
   }
 
-  export type UserCreateWithoutClientsInput = {
+  export type UserCreateWithoutStorageEventsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21966,13 +24149,22 @@ export namespace Prisma {
     payment?: PaymentCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutClientsInput = {
+  export type UserUncheckedCreateWithoutStorageEventsInput = {
     id?: string
     name: string
     email: string
-    plan?: $Enums.PhotographerPlan
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
     emailVerified: boolean
     image?: string | null
     createdAt?: Date | string
@@ -21988,6 +24180,147 @@ export namespace Prisma {
     payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutStorageEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStorageEventsInput, UserUncheckedCreateWithoutStorageEventsInput>
+  }
+
+  export type UserUpsertWithoutStorageEventsInput = {
+    update: XOR<UserUpdateWithoutStorageEventsInput, UserUncheckedUpdateWithoutStorageEventsInput>
+    create: XOR<UserCreateWithoutStorageEventsInput, UserUncheckedCreateWithoutStorageEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStorageEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStorageEventsInput, UserUncheckedUpdateWithoutStorageEventsInput>
+  }
+
+  export type UserUpdateWithoutStorageEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    payment?: PaymentUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStorageEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutClientsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    payment?: PaymentCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutClientsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientsInput = {
@@ -22030,7 +24363,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22046,13 +24387,22 @@ export namespace Prisma {
     payment?: PaymentUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPhotographerPlanFieldUpdateOperationsInput | $Enums.PhotographerPlan
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22068,6 +24418,7 @@ export namespace Prisma {
     payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GalleryClientUpsertWithWhereUniqueWithoutClientInput = {
@@ -22368,7 +24719,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -22376,10 +24730,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
@@ -22391,7 +24746,10 @@ export namespace Prisma {
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -22399,10 +24757,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
   }
@@ -22455,7 +24814,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -22463,10 +24825,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
@@ -22478,7 +24841,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -22486,10 +24852,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
   }
@@ -22555,6 +24922,14 @@ export namespace Prisma {
     email: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type StorageEventCreateManyUserInput = {
+    id?: string
+    photoId?: string | null
+    delta: bigint | number
+    reason: string
+    createdAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -22753,12 +25128,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StorageEventUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StorageEventUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StorageEventUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    delta?: BigIntFieldUpdateOperationsInput | bigint | number
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PhotoCreateManyGalleryInput = {
     id?: string
     s3Key: string
     s3Bucket: string
     originalFilename: string
-    size: number
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
     width?: number | null
     height?: number | null
     mimeType: string
@@ -22766,10 +25168,11 @@ export namespace Prisma {
     isCulled?: boolean
     loved?: boolean
     aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
-    status?: $Enums.PhotoStatus
+    status?: string
     createdAt?: Date | string
   }
 
@@ -22790,7 +25193,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -22798,10 +25204,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
@@ -22812,7 +25219,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -22820,10 +25230,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
@@ -22834,7 +25245,10 @@ export namespace Prisma {
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -22842,10 +25256,11 @@ export namespace Prisma {
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
     aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPhotoStatusFieldUpdateOperationsInput | $Enums.PhotoStatus
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

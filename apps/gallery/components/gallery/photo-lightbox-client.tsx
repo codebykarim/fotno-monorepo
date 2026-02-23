@@ -193,6 +193,20 @@ export default function PhotoLightboxClient({
     }
   };
 
+  const withOptionalToken = (src: string): string => {
+    if (!galleryJwt) {
+      return src;
+    }
+    // Never mutate presigned URLs; adding query params breaks the signature.
+    if (src.includes("X-Amz-Signature=") || src.includes("x-amz-signature=")) {
+      return src;
+    }
+    if (!src.startsWith("/api/photos/")) {
+      return src;
+    }
+    return `${src}&token=${encodeURIComponent(galleryJwt)}`;
+  };
+
   if (gallery.hasPassword && !galleryJwt) {
     return (
       <PasswordGate
@@ -211,9 +225,7 @@ export default function PhotoLightboxClient({
     );
   }
 
-  const previewSrc = galleryJwt
-    ? `${currentPhoto.previewSrc}&token=${encodeURIComponent(galleryJwt)}`
-    : currentPhoto.previewSrc;
+  const previewSrc = withOptionalToken(currentPhoto.previewSrc);
 
   return (
     <div className="min-h-screen select-none bg-slate-950 text-slate-100">

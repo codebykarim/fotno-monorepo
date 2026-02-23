@@ -31,14 +31,15 @@ export default function PasswordGate({
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Private Gallery
           </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{title}</h1>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
+            {title}
+          </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             Enter the password shared by your photographer.
           </p>
 
           <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
             <input
-              type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Gallery password"

@@ -4,15 +4,16 @@ import {
   BarChart3,
   Images,
   Users,
-  PlusSquare,
   LogOut,
   Camera,
+  Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
+import { StorageWidget } from "./storage-widget";
 
 type SidebarItem = {
   title: string;
@@ -43,6 +44,11 @@ const DashboardSidebar = ({ onLogout }: Props) => {
       title: "Clients",
       icon: Users,
       href: "/clients",
+    },
+    {
+      title: "Settings",
+      icon: Settings,
+      href: "/settings",
     },
   ];
 
@@ -131,6 +137,7 @@ const DashboardSidebar = ({ onLogout }: Props) => {
       </nav>
 
       <div className="p-2">
+        <StorageWidget compact={isCollapsed} />
         <Button
           variant="ghost"
           className="w-full justify-start rounded-xl px-3 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"

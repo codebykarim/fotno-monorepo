@@ -1,4 +1,5 @@
 import { db } from "./_shared";
+import { PLAN_STORAGE_LIMITS } from "../../constants/storage";
 
 export const resolveOwnerUserId = async (): Promise<string> => {
   const firstUser = await db.user.findFirst({
@@ -15,6 +16,8 @@ export const resolveOwnerUserId = async (): Promise<string> => {
     data: {
       name: "Local Photographer",
       email: fallbackEmail,
+      plan: "FREE",
+      storageLimit: PLAN_STORAGE_LIMITS.FREE,
       emailVerified: true,
     },
     select: { id: true },

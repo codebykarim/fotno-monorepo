@@ -49,6 +49,8 @@ export type Activity = {
   id: string;
   message: string;
   at: string;
+  type?: "upload" | "gallery_update" | "delivery" | "system";
+  severity?: "info" | "success" | "warning";
 };
 
 export type UploadTicket = {

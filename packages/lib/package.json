@@ -26,6 +26,7 @@
   },
   "exports": {
     "./s3": "./src/s3.ts",
+    "./constants/*": "./src/constants/*.ts",
     "./auth/*": "./src/auth/*.ts",
     "./actions/*": "./src/actions/*.ts",
     "./data/*": "./src/data/*.ts"

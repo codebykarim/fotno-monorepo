@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "picsum.photos",
       },
+      {
+        hostname: "f219b79935cbb2d4a385b4134443cbe1.r2.cloudflarestorage.com",
+      },
     ],
   },
 };

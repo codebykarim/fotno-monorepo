@@ -1,17 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { useDropzone } from "react-dropzone";
 import { QRCodeSVG } from "qrcode.react";
 import {
   AlertTriangle,
+  Album,
   CalendarDays,
   Clock3,
   Copy,
   FolderKanban,
+  Grid2x2,
   Heart,
   Images,
+  Settings2,
+  Share2,
   Trash2,
   GripVertical,
   UploadCloud,
@@ -43,6 +48,32 @@ import { useGalleryUiStore } from "@/lib/stores/gallery-ui-store";
 
 const tabs = ["photos", "albums", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
+
+const TAB_META: Record<
+  Tab,
+  { label: string; icon: typeof Images; description: string }
+> = {
+  photos: {
+    label: "Photos",
+    icon: Grid2x2,
+    description: "Curation, cover, order",
+  },
+  albums: {
+    label: "Albums",
+    icon: Album,
+    description: "Client groupings",
+  },
+  settings: {
+    label: "Settings",
+    icon: Settings2,
+    description: "Access and publishing",
+  },
+  share: {
+    label: "Share",
+    icon: Share2,
+    description: "Links and QR",
+  },
+};
 
 type Props = {
   galleryId: string;
@@ -84,7 +115,8 @@ export function GalleryDetailContent({
               {data.gallery.title}
             </h1>
             <p className="mt-1 text-muted-foreground">
-              Manage photos, albums, settings, and client sharing from one place.
+              Manage photos, albums, settings, and client sharing from one
+              place.
             </p>
           </div>
 
@@ -124,21 +156,31 @@ export function GalleryDetailContent({
         </div>
       </section>
 
-      <div className="inline-flex rounded-xl border border-border/70 bg-white/80 p-1 shadow-sm">
-        {tabs.map((tab) => (
-          <button
-            type="button"
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition ${
-              activeTab === tab
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+      <div className="grid gap-2 rounded-2xl border border-border/70 bg-white/80 p-2 shadow-sm sm:grid-cols-2 xl:grid-cols-4">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab;
+          const Icon = TAB_META[tab].icon;
+          return (
+            <button
+              type="button"
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`rounded-xl border px-3 py-2.5 text-left transition ${
+                isActive
+                  ? "border-primary/50 bg-primary/10 text-foreground shadow-sm"
+                  : "border-transparent text-muted-foreground hover:border-border hover:bg-background/70 hover:text-foreground"
+              }`}
+            >
+              <span className="flex items-center gap-2 text-sm font-semibold">
+                <Icon className="h-4 w-4" />
+                {TAB_META[tab].label}
+              </span>
+              <span className="mt-1 block text-xs opacity-80">
+                {TAB_META[tab].description}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {activeTab === "photos" && (
@@ -159,7 +201,7 @@ export function GalleryDetailContent({
       {activeTab === "settings" && (
         <SettingsTab galleryId={galleryId} mutate={mutate} data={data} />
       )}
-      {activeTab === "share" && <ShareTab data={data} />}
+      {activeTab === "share" && <ShareTab data={data} galleryId={galleryId} />}
     </div>
   );
 }
@@ -303,6 +345,17 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   }
 
   async function deleteSelected() {
+    if (selected.length === 0) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Delete ${selected.length} selected ${selected.length === 1 ? "photo" : "photos"}?`,
+    );
+    if (!confirmed) {
+      return;
+    }
+
     try {
       await Promise.all(
         selected.map((id) =>
@@ -329,7 +382,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       });
       await mutate();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update loved photo");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update loved photo",
+      );
     }
   }
 
@@ -355,23 +410,32 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       await mutate();
       toast.success("Album created");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to create album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create album",
+      );
     }
   }
 
   async function setAsCover() {
-    if (selected.length === 0) {
+    if (selected.length !== 1) {
+      toast.error("Select exactly one photo to set as cover");
       return;
     }
 
-    await apiRequest(`/api/galleries/${galleryId}`, {
-      method: "PATCH",
-      body: JSON.stringify({ coverPhotoId: selected[0] }),
-    });
+    try {
+      await apiRequest(`/api/galleries/${galleryId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ coverPhotoId: selected[0] }),
+      });
 
-    clearSelected(galleryId);
-    await mutate();
-    toast.success("Cover photo updated");
+      clearSelected(galleryId);
+      await mutate();
+      toast.success("Cover photo updated");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update cover photo",
+      );
+    }
   }
 
   async function movePhoto(dropOnPhotoId: string) {
@@ -414,15 +478,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
               isDragActive ? "border-primary bg-primary/5" : "border-border"
             }`}
           >
-            <input
-              {...getInputProps()}
-              className="hidden"
-              ref={fileInputRef}
-            />
+            <input {...getInputProps()} className="hidden" ref={fileInputRef} />
             <UploadCloud className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-            <p className="text-sm font-medium">
-              Drag and drop files here
-            </p>
+            <p className="text-sm font-medium">Drag and drop files here</p>
             <p className="mt-1 text-xs text-muted-foreground">
               Supports multiple image files per upload.
             </p>
@@ -465,22 +523,62 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
         </CardContent>
       </Card>
 
-      {selected.length > 0 && (
-        <div className="sticky top-0 z-20 flex items-center justify-between rounded-lg border bg-background p-3">
-          <p className="text-sm font-medium">{selected.length} selected</p>
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={createAlbumFromSelected}>
-              Add to Album
-            </Button>
-            <Button size="sm" variant="outline" onClick={setAsCover}>
-              Set as Cover
-            </Button>
-            <Button size="sm" variant="destructive" onClick={deleteSelected}>
-              Delete Selected
-            </Button>
-          </div>
+      <div className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-background/95 p-3 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium">
+            {selected.length > 0
+              ? `${selected.length} selected`
+              : "No selection"}
+          </p>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() =>
+              setSelected(
+                galleryId,
+                photos.map((photo) => photo.id),
+              )
+            }
+            disabled={photos.length === 0}
+          >
+            Select all
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => clearSelected(galleryId)}
+            disabled={selected.length === 0}
+          >
+            Clear
+          </Button>
         </div>
-      )}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={createAlbumFromSelected}
+            disabled={selected.length === 0}
+          >
+            Add to Album
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={setAsCover}
+            disabled={selected.length !== 1}
+          >
+            Set as Cover
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={deleteSelected}
+            disabled={selected.length === 0}
+          >
+            Delete Selected
+          </Button>
+        </div>
+      </div>
 
       <div className="columns-2 gap-4 md:columns-3 xl:columns-4">
         {photos.map((photo) => {
@@ -494,11 +592,14 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
               onDrop={() => void movePhoto(photo.id)}
               className="mb-4 break-inside-avoid overflow-hidden rounded-lg border bg-card"
             >
-              <div className="relative">
-                <img
+              <div className="relative aspect-[3/4] bg-muted/20">
+                <Image
                   src={photo.url}
                   alt="Gallery photo"
-                  className="h-auto w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  className="object-cover"
+                  unoptimized
                 />
                 <div className="absolute left-2 top-2">
                   <Checkbox
@@ -525,7 +626,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                 >
                   <Heart
                     className={`h-4 w-4 ${
-                      photo.loved ? "fill-rose-500 text-rose-500" : "text-muted-foreground"
+                      photo.loved
+                        ? "fill-rose-500 text-rose-500"
+                        : "text-muted-foreground"
                     }`}
                   />
                 </Button>
@@ -576,7 +679,9 @@ function AlbumsTab({
       await mutate();
       toast.success("Album updated");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update album",
+      );
     }
   };
 
@@ -588,7 +693,9 @@ function AlbumsTab({
       await mutate();
       toast.success("Album deleted");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to delete album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to delete album",
+      );
     }
   };
 
@@ -596,7 +703,8 @@ function AlbumsTab({
     return (
       <Card>
         <CardContent className="pt-6 text-sm text-muted-foreground">
-          No albums yet. Select photos in the Photos tab and click "Add to Album".
+          No albums yet. Select photos in the Photos tab and click "Add to
+          Album".
         </CardContent>
       </Card>
     );
@@ -634,12 +742,18 @@ function AlbumsTab({
             <div className="flex flex-wrap gap-2">
               {album.photoIds.map((photoId) => {
                 const photo = photoMap.get(photoId);
+                if (!photo?.url) {
+                  return null;
+                }
                 return (
-                  <img
+                  <Image
                     key={photoId}
-                    src={photo?.url}
+                    src={photo.url}
                     alt={album.title}
+                    width={64}
+                    height={64}
                     className="h-16 w-16 rounded-md border object-cover"
+                    unoptimized
                   />
                 );
               })}
@@ -839,12 +953,40 @@ function SettingsTab({
   );
 }
 
-function ShareTab({ data }: { data: GetGalleryResponse }) {
+function ShareTab({
+  data,
+  galleryId,
+}: {
+  data: GetGalleryResponse;
+  galleryId: string;
+}) {
+  const { data: viewersData, mutate: refreshViewers } = useSWR<{
+    count: number;
+    viewers?: Array<{
+      id: string;
+      name: string;
+      role: "client" | "photographer";
+    }>;
+  }>(`/api/galleries/${galleryId}/viewers`, jsonFetcher, {
+    revalidateOnFocus: true,
+  });
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      void refreshViewers();
+    }, 15000);
+
+    return () => window.clearInterval(intervalId);
+  }, [refreshViewers]);
+
   const shareLink = useMemo(() => {
-    const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(/\/$/, "");
+    const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
+      /\/$/,
+      "",
+    );
 
     const buildShareUrl = (baseUrl: string) =>
-      `${baseUrl.replace(/\/$/, "")}/gallery/${data.gallery.slug}`;
+      `${baseUrl.replace(/\/$/, "")}/${data.gallery.slug}`;
 
     const mapLocalhostToCurrentHost = (urlString: string): string => {
       if (typeof window === "undefined") {
@@ -853,7 +995,10 @@ function ShareTab({ data }: { data: GetGalleryResponse }) {
 
       try {
         const parsed = new URL(urlString);
-        if (parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1") {
+        if (
+          parsed.hostname === "localhost" ||
+          parsed.hostname === "127.0.0.1"
+        ) {
           parsed.hostname = window.location.hostname;
         }
         return parsed.toString().replace(/\/$/, "");
@@ -970,8 +1115,38 @@ function ShareTab({ data }: { data: GetGalleryResponse }) {
               </Button>
             </>
           ) : (
-            <p className="text-sm text-muted-foreground">Publish to enable QR sharing.</p>
+            <p className="text-sm text-muted-foreground">
+              Publish to enable QR sharing.
+            </p>
           )}
+        </CardContent>
+      </Card>
+
+      <Card className="xl:col-span-3">
+        <CardHeader>
+          <CardTitle>Who Is Watching Right Now</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="inline-flex items-center rounded-full border border-border/70 bg-background px-3 py-1 text-sm">
+            {viewersData?.count ?? 0} live viewer
+            {(viewersData?.count ?? 0) === 1 ? "" : "s"}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {viewersData?.viewers?.length ? (
+              viewersData.viewers.map((viewer) => (
+                <span
+                  key={viewer.id}
+                  className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2.5 py-1 text-xs"
+                >
+                  {viewer.name}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                No active viewers yet.
+              </p>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

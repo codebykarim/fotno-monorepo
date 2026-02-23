@@ -1,4 +1,7 @@
 import { db } from "./_shared";
+import { enqueueProcessPhoto } from "../../queues/photoQueue";
+import { addStorage } from "../StorageServices";
+import { getPresignedDownloadUrl } from "../../utils/s3";
 
 export const confirmPhotoUpload = async (
   userId: string,
@@ -20,7 +23,7 @@ export const confirmPhotoUpload = async (
 
   const photo = await db.photo.findFirst({
     where: { id: uploadId, galleryId },
-    select: { id: true, order: true },
+    select: { id: true, order: true, originalSize: true, s3Key: true, previewKey: true },
   });
   if (!photo) {
     return { error: "Upload not found", status: 404 as const };
@@ -28,14 +31,27 @@ export const confirmPhotoUpload = async (
 
   await db.photo.update({
     where: { id: photo.id },
-    data: { status: "UPLOADED" },
+    data: { status: "uploaded" },
   });
+
+  await addStorage(
+    userId,
+    BigInt(photo.originalSize ?? 0),
+    "upload",
+    photo.id,
+  );
+
+  void enqueueProcessPhoto(photo.id).catch((error) => {
+    console.error("Failed to enqueue process-photo job", error);
+  });
+
+  const downloadUrl = await getPresignedDownloadUrl(photo.previewKey ?? photo.s3Key, 3600);
 
   return {
     photo: {
       id: photo.id,
       galleryId,
-      url: `https://picsum.photos/seed/${photo.id}/1200/1600`,
+      url: downloadUrl,
       order: photo.order,
       width: 1200,
       height: 1600,

@@ -9,35 +9,46 @@ datasource db {
 }
 
 model User {
-  id               String           @id @unique @default(uuid())
-  name             String
-  email            String
-  plan             PhotographerPlan @default(FREE)
-  emailVerified    Boolean
-  image            String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now()) @updatedAt
-  role             String?
-  banned           Boolean?
-  banReason        String?
-  banExpires       DateTime?
-  subscribed       Boolean?
-  finishOnboarding Boolean?
-  sessions         Session[]
-  accounts         Account[]
-  payment          Payment[]
-  userOnboarding   UserOnboarding?
-  galleries        Gallery[]
-  clients          Client[]
+  id                 String          @id @unique @default(uuid())
+  name               String
+  email              String
+  plan               Plan            @default(FREE)
+  storageUsed        BigInt          @default(0)
+  storageLimit       BigInt          @default(0)
+  overageBytes       BigInt          @default(0)
+  overageResetAt     DateTime?
+  stripeCustomerId   String?         @unique
+  stripeSubId        String?         @unique
+  warningEmailSent80 Boolean         @default(false)
+  warningEmailSent95 Boolean         @default(false)
+  emailVerified      Boolean
+  image              String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @default(now()) @updatedAt
+  role               String?
+  banned             Boolean?
+  banReason          String?
+  banExpires         DateTime?
+  subscribed         Boolean?
+  finishOnboarding   Boolean?
+  sessions           Session[]
+  accounts           Account[]
+  payment            Payment[]
+  userOnboarding     UserOnboarding?
+  galleries          Gallery[]
+  clients            Client[]
+  storageEvents      StorageEvent[]
 
   @@unique([email])
   @@map("user")
 }
 
-enum PhotographerPlan {
+enum Plan {
   FREE
-  PRO
+  STARTER
+  PROFESSIONAL
   STUDIO
+  ENTERPRISE
 }
 
 model Session {
@@ -150,14 +161,6 @@ model UserOnboarding {
   @@map("userOnboarding")
 }
 
-enum PhotoStatus {
-  PENDING
-  UPLOADED
-  PROCESSING
-  PROCESSED
-  FAILED
-}
-
 model Gallery {
   id           String          @id @unique @default(uuid())
   userId       String
@@ -189,7 +192,10 @@ model Photo {
   s3Key            String
   s3Bucket         String
   originalFilename String
-  size             Int
+  originalSize     BigInt       @default(0)
+  thumbnailSize    BigInt       @default(0)
+  previewSize      BigInt       @default(0)
+  totalSize        BigInt       @default(0)
   width            Int?
   height           Int?
   mimeType         String
@@ -197,15 +203,29 @@ model Photo {
   isCulled         Boolean      @default(false)
   loved            Boolean      @default(false)
   aiCaption        String?
+  aiTags           String[]
   faceCount        Int          @default(0)
   thumbnailKey     String?
   previewKey       String?
-  status           PhotoStatus  @default(PENDING)
+  status           String       @default("pending")
   createdAt        DateTime     @default(now())
   albumPhotos      AlbumPhoto[]
 
   @@index([galleryId, order])
   @@map("photo")
+}
+
+model StorageEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photoId   String?
+  delta     BigInt
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("storage_event")
 }
 
 model Client {

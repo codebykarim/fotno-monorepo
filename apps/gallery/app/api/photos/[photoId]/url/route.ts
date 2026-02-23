@@ -1,5 +1,7 @@
 import { getPhotoPresignedUrl } from "@/lib/gallery-service";
 import type { PhotoVariant } from "@/lib/gallery-types";
+import { getDashboardGalleryAccessBySlug } from "@/lib/dashboard-gallery";
+import { verifyGallerySessionToken } from "@/lib/gallery-session";
 import { NextRequest, NextResponse } from "next/server";
 
 const VALID_VARIANTS: PhotoVariant[] = ["thumbnail", "preview", "original"];
@@ -16,6 +18,9 @@ export async function GET(
       "preview";
     const authHeader = request.headers.get("authorization") ?? undefined;
     const galleryJwt = authHeader?.replace(/^Bearer\s+/i, "") || undefined;
+    const sessionToken =
+      request.nextUrl.searchParams.get("sessionToken") ??
+      request.headers.get("x-gallery-session");
 
     if (!shareToken) {
       return NextResponse.json(
@@ -33,6 +38,23 @@ export async function GET(
         { error: "Preview access must go through protected proxy route" },
         { status: 403 }
       );
+    }
+
+    const dashboardAccess = await getDashboardGalleryAccessBySlug(shareToken);
+    if (dashboardAccess?.passwordEnabled) {
+      if (!sessionToken) {
+        return NextResponse.json({ error: "Gallery lock required" }, { status: 401 });
+      }
+
+      const validSession = verifyGallerySessionToken({
+        token: sessionToken,
+        shareToken,
+        password: dashboardAccess.password,
+      });
+
+      if (!validSession) {
+        return NextResponse.json({ error: "Session expired" }, { status: 401 });
+      }
     }
 
     const url = await getPhotoPresignedUrl(photoId, shareToken, variant, galleryJwt);

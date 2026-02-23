@@ -1,6 +1,8 @@
 import { getPhotoPresignedUrl } from "@/lib/gallery-service";
 import type { PhotoVariant } from "@/lib/gallery-types";
 import { IMAGE_POLICY, PROTECTED_IMAGE_HEADERS } from "@/lib/image-policy";
+import { getDashboardGalleryAccessBySlug } from "@/lib/dashboard-gallery";
+import { verifyGallerySessionToken } from "@/lib/gallery-session";
 import { NextRequest, NextResponse } from "next/server";
 
 const VALID_VARIANTS: PhotoVariant[] = ["thumbnail", "preview", "original"];
@@ -17,6 +19,9 @@ export async function GET(
       (request.nextUrl.searchParams.get("variant") as PhotoVariant | null) ??
       "preview";
     const token = request.nextUrl.searchParams.get("token") || undefined;
+    const sessionToken =
+      request.nextUrl.searchParams.get("sessionToken") ??
+      request.headers.get("x-gallery-session");
 
     if (!shareToken) {
       return NextResponse.json(
@@ -27,6 +32,23 @@ export async function GET(
 
     if (!VALID_VARIANTS.includes(variant)) {
       return NextResponse.json({ error: "Invalid variant" }, { status: 400 });
+    }
+
+    const dashboardAccess = await getDashboardGalleryAccessBySlug(shareToken);
+    if (dashboardAccess?.passwordEnabled) {
+      if (!sessionToken) {
+        return NextResponse.json({ error: "Gallery lock required" }, { status: 401 });
+      }
+
+      const validSession = verifyGallerySessionToken({
+        token: sessionToken,
+        shareToken,
+        password: dashboardAccess.password,
+      });
+
+      if (!validSession) {
+        return NextResponse.json({ error: "Session expired" }, { status: 401 });
+      }
     }
 
     if (!IMAGE_POLICY.ALLOW_PROXY_VARIANTS.has(variant)) {

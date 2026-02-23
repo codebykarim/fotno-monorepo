@@ -1,5 +1,9 @@
 import { getGalleryByShareToken, getPhotoPresignedUrl } from "@/lib/gallery-service";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore archiver does not ship bundled typings in this workspace.
 import archiver from "archiver";
+import { getDashboardGalleryAccessBySlug } from "@/lib/dashboard-gallery";
+import { verifyGallerySessionToken } from "@/lib/gallery-session";
 import { NextRequest, NextResponse } from "next/server";
 import { PassThrough, Readable } from "node:stream";
 
@@ -24,6 +28,22 @@ export async function GET(
     const { shareToken } = await context.params;
     const authHeader = request.headers.get("authorization") ?? undefined;
     const galleryJwt = authHeader?.replace(/^Bearer\s+/i, "") || undefined;
+    const sessionToken = request.headers.get("x-gallery-session");
+
+    const dashboardAccess = await getDashboardGalleryAccessBySlug(shareToken);
+    if (dashboardAccess?.passwordEnabled) {
+      if (!sessionToken) {
+        return NextResponse.json({ error: "Gallery lock required" }, { status: 401 });
+      }
+      const validSession = verifyGallerySessionToken({
+        token: sessionToken,
+        shareToken,
+        password: dashboardAccess.password,
+      });
+      if (!validSession) {
+        return NextResponse.json({ error: "Session expired" }, { status: 401 });
+      }
+    }
 
     const { gallery } = await getGalleryByShareToken(shareToken, {
       galleryJwt,
@@ -46,12 +66,12 @@ export async function GET(
       zlib: { level: 9 },
     });
 
-    archive.on("warning", (warning) => {
+    archive.on("warning", (warning: unknown) => {
       console.warn("download-all warning", warning);
     });
 
-    archive.on("error", (error) => {
-      archiveStream.destroy(error);
+    archive.on("error", (error: unknown) => {
+      archiveStream.destroy(error instanceof Error ? error : undefined);
     });
 
     archive.pipe(archiveStream);
@@ -71,12 +91,9 @@ export async function GET(
             throw new Error(`Unable to read ${photo.originalFilename}`);
           }
 
-          archive.append(
-            Readable.fromWeb(fileResponse.body as unknown as ReadableStream),
-            {
-              name: safeFilename(photo.originalFilename),
-            }
-          );
+          archive.append(Readable.fromWeb(fileResponse.body as any), {
+            name: safeFilename(photo.originalFilename),
+          });
         }
 
         await archive.finalize();

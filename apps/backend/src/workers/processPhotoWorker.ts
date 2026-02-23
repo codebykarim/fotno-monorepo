@@ -3,13 +3,21 @@ import sharp from "sharp";
 import type { Job } from "bull";
 import prisma from "../../prisma";
 import { enqueueAiAnalyzePhoto, photoQueue } from "../queues/photoQueue";
+import { addStorage } from "../services/StorageServices";
 import { getS3ObjectBuffer, putS3Object } from "../utils/s3";
 
 type MediaPrismaClient = typeof prisma & {
   photo: {
     findUnique: (
       args: unknown,
-    ) => Promise<{ id: string; s3Key: string } | null>;
+    ) => Promise<
+      | {
+          id: string;
+          s3Key: string;
+          gallery: { userId: string };
+        }
+      | null
+    >;
     update: (args: unknown) => Promise<unknown>;
   };
 };
@@ -84,6 +92,15 @@ const startProcessPhotoWorker = async (): Promise<void> => {
 
     const photo = await mediaPrisma.photo.findUnique({
       where: { id: photoId },
+      select: {
+        id: true,
+        s3Key: true,
+        gallery: {
+          select: {
+            userId: true,
+          },
+        },
+      },
     });
 
     if (!photo) {
@@ -92,7 +109,7 @@ const startProcessPhotoWorker = async (): Promise<void> => {
 
     await mediaPrisma.photo.update({
       where: { id: photoId },
-      data: { status: "PROCESSING" },
+      data: { status: "processing" },
     });
 
     try {
@@ -132,17 +149,27 @@ const startProcessPhotoWorker = async (): Promise<void> => {
         data: {
           thumbnailKey,
           previewKey,
+          thumbnailSize: BigInt(thumbnailBuffer.length),
+          previewSize: BigInt(previewBuffer.length),
+          totalSize: BigInt(thumbnailBuffer.length + previewBuffer.length),
           width: metadata.width ?? null,
           height: metadata.height ?? null,
-          status: "PROCESSED",
+          status: "processed",
         },
       });
+
+      await addStorage(
+        photo.gallery.userId,
+        BigInt(thumbnailBuffer.length + previewBuffer.length),
+        "processing",
+        photo.id,
+      );
 
       await enqueueAiAnalyzePhoto(photoId);
     } catch (error) {
       await mediaPrisma.photo.update({
         where: { id: photoId },
-        data: { status: "FAILED" },
+        data: { status: "failed" },
       });
       throw error;
     }

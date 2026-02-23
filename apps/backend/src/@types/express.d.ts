@@ -6,5 +6,19 @@ declare namespace Express {
     };
     toCache: boolean;
     privateCache: boolean;
+    storageSummary?: {
+      used: bigint;
+      limit: bigint;
+      overageBytes: bigint;
+      percentage: number;
+      overageGB: number;
+      overageCostCents: number;
+      formatted: {
+        used: string;
+        limit: string;
+        overage: string;
+      };
+      freePlanBlocked?: boolean;
+    };
   }
 }

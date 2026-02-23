@@ -1,0 +1,96 @@
+import "../bootstrap";
+import type { Job } from "bull";
+import prisma from "../../prisma";
+import { ONE_MB_BYTES, PLAN_STORAGE_LIMITS } from "../constants/storage";
+import { scheduleDailyStorageReconciliation, storageQueue } from "../queues/storageQueue";
+
+const toBigInt = (value: unknown): bigint => {
+  if (typeof value === "bigint") {
+    return value;
+  }
+  if (typeof value === "number") {
+    return BigInt(Math.floor(value));
+  }
+  if (typeof value === "string" && value.length > 0) {
+    return BigInt(value);
+  }
+  return 0n;
+};
+
+const abs = (value: bigint): bigint => (value < 0n ? -value : value);
+
+const startWorker = async () => {
+  await scheduleDailyStorageReconciliation();
+
+  storageQueue.process(
+    "reconcile-all-storage",
+    async (_job: Job<Record<string, never>>) => {
+      const users = await (prisma as any).user.findMany({
+        select: {
+          id: true,
+          plan: true,
+          storageUsed: true,
+          storageLimit: true,
+        },
+      });
+
+      for (const user of users) {
+        const aggregate = await (prisma as any).photo.aggregate({
+          where: {
+            gallery: {
+              userId: user.id,
+            },
+            status: {
+              not: "pending",
+            },
+          },
+          _sum: {
+            totalSize: true,
+          },
+        });
+
+        const actualUsed = toBigInt(aggregate?._sum?.totalSize);
+        const currentUsed = toBigInt(user.storageUsed);
+        const delta = actualUsed - currentUsed;
+
+        if (abs(delta) <= ONE_MB_BYTES) {
+          continue;
+        }
+
+        const planLimit = PLAN_STORAGE_LIMITS[String(user.plan)] ?? PLAN_STORAGE_LIMITS.FREE;
+        const storageLimit = toBigInt(user.storageLimit) > 0n ? toBigInt(user.storageLimit) : planLimit;
+        const overageBytes = actualUsed > storageLimit ? actualUsed - storageLimit : 0n;
+
+        await (prisma as any).$transaction(async (tx: any) => {
+          await tx.user.update({
+            where: { id: user.id },
+            data: {
+              storageUsed: actualUsed,
+              storageLimit,
+              overageBytes,
+            },
+          });
+
+          await tx.storageEvent.create({
+            data: {
+              userId: user.id,
+              delta,
+              reason: "reconcile",
+            },
+          });
+        });
+
+        console.log(
+          `[reconcile-all-storage] user=${user.id} driftBytes=${delta.toString()} corrected=${actualUsed.toString()}`,
+        );
+      }
+    },
+  );
+
+  console.log("reconcile-all-storage worker started");
+};
+
+startWorker().catch((error) => {
+  console.error("Failed to start reconcile-all-storage worker", error);
+  process.exit(1);
+});

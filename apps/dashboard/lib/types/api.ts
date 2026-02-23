@@ -25,7 +25,10 @@ export type GetGalleryResponse = {
 
 export type OverviewResponse = {
   totalGalleries: number;
+  publishedGalleries: number;
   totalPhotos: number;
+  lovedPhotos: number;
+  recentUploads7d: number;
   totalStorageUsedMb: number;
   recentActivity: Activity[];
 };
@@ -42,4 +45,34 @@ export type ListClientsResponse = {
     }
   >;
   galleries: Array<{ id: string; title: string; eventDate: string | null; deadline: string | null }>;
+};
+
+export type StorageSummaryResponse = {
+  used: string;
+  limit: string;
+  overageBytes: string;
+  percentage: number;
+  overageGB: number;
+  overageCostCents: number;
+  formatted: {
+    used: string;
+    limit: string;
+    overage: string;
+  };
+};
+
+export type StorageEventItem = {
+  id: string;
+  userId: string;
+  photoId: string | null;
+  delta: string;
+  reason: string;
+  createdAt: string;
+};
+
+export type StorageEventsResponse = {
+  total: number;
+  limit: number;
+  offset: number;
+  events: StorageEventItem[];
 };

@@ -25,6 +25,7 @@ export const listClients = async (userId: string) => {
       id: client.id,
       name: client.name,
       email: client.email,
+      phone: client.phone ?? null,
       galleryIds: client.galleries.map((row: any) => row.galleryId),
       galleries: client.galleries.map((row: any) => ({
         id: row.gallery.id,

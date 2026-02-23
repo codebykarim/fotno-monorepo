@@ -13186,6 +13186,7 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     email: string | null
+    phone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13195,6 +13196,7 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     email: string | null
+    phone: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13204,6 +13206,7 @@ export namespace Prisma {
     userId: number
     name: number
     email: number
+    phone: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13215,6 +13218,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     email?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13224,6 +13228,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     email?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13233,6 +13238,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     email?: true
+    phone?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -13315,6 +13321,7 @@ export namespace Prisma {
     userId: string
     name: string
     email: string
+    phone: string | null
     createdAt: Date
     updatedAt: Date
     _count: ClientCountAggregateOutputType | null
@@ -13341,6 +13348,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     email?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -13353,6 +13361,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     email?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -13363,6 +13372,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     email?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -13373,11 +13383,12 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     email?: boolean
+    phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     galleries?: boolean | Client$galleriesArgs<ExtArgs>
@@ -13401,6 +13412,7 @@ export namespace Prisma {
       userId: string
       name: string
       email: string
+      phone: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["client"]>
@@ -13832,6 +13844,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Client", 'String'>
     readonly name: FieldRef<"Client", 'String'>
     readonly email: FieldRef<"Client", 'String'>
+    readonly phone: FieldRef<"Client", 'String'>
     readonly createdAt: FieldRef<"Client", 'DateTime'>
     readonly updatedAt: FieldRef<"Client", 'DateTime'>
   }
@@ -17626,6 +17639,7 @@ export namespace Prisma {
     userId: 'userId',
     name: 'name',
     email: 'email',
+    phone: 'phone',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -18742,6 +18756,7 @@ export namespace Prisma {
     userId?: StringFilter<"Client"> | string
     name?: StringFilter<"Client"> | string
     email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -18753,6 +18768,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    phone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -18768,6 +18784,7 @@ export namespace Prisma {
     userId?: StringFilter<"Client"> | string
     name?: StringFilter<"Client"> | string
     email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -18779,6 +18796,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    phone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ClientCountOrderByAggregateInput
@@ -18794,6 +18812,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Client"> | string
     name?: StringWithAggregatesFilter<"Client"> | string
     email?: StringWithAggregatesFilter<"Client"> | string
+    phone?: StringNullableWithAggregatesFilter<"Client"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
   }
@@ -19972,6 +19991,7 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutClientsInput
@@ -19983,6 +20003,7 @@ export namespace Prisma {
     userId: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
@@ -19992,6 +20013,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutClientsNestedInput
@@ -20003,6 +20025,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
@@ -20013,6 +20036,7 @@ export namespace Prisma {
     userId: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20021,6 +20045,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20030,6 +20055,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21130,6 +21156,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21139,6 +21166,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21148,6 +21176,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    phone?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22633,6 +22662,7 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     galleries?: GalleryClientCreateNestedManyWithoutClientInput
@@ -22642,6 +22672,7 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
@@ -22876,6 +22907,7 @@ export namespace Prisma {
     userId?: StringFilter<"Client"> | string
     name?: StringFilter<"Client"> | string
     email?: StringFilter<"Client"> | string
+    phone?: StringNullableFilter<"Client"> | string | null
     createdAt?: DateTimeFilter<"Client"> | Date | string
     updatedAt?: DateTimeFilter<"Client"> | Date | string
   }
@@ -24480,6 +24512,7 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutClientsInput
@@ -24490,6 +24523,7 @@ export namespace Prisma {
     userId: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24559,6 +24593,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutClientsNestedInput
@@ -24569,6 +24604,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24920,6 +24956,7 @@ export namespace Prisma {
     id?: string
     name: string
     email: string
+    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -25106,6 +25143,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleries?: GalleryClientUpdateManyWithoutClientNestedInput
@@ -25115,6 +25153,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
@@ -25124,6 +25163,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

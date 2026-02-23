@@ -11,6 +11,13 @@ export const updateClient = async (userId: string, clientId: string, body: any) 
 
   const name = String(body?.name ?? "").trim();
   const email = String(body?.email ?? "").trim().toLowerCase();
+  const phoneRaw = body?.phone;
+  const phone =
+    phoneRaw === undefined
+      ? undefined
+      : phoneRaw === null
+        ? null
+        : String(phoneRaw).trim() || null;
   const galleryIds = Array.isArray(body?.galleryIds)
     ? body.galleryIds.map((id: unknown) => String(id))
     : [];
@@ -20,6 +27,7 @@ export const updateClient = async (userId: string, clientId: string, body: any) 
     data: {
       ...(name ? { name } : {}),
       ...(email ? { email } : {}),
+      ...(phoneRaw !== undefined ? { phone } : {}),
     },
   });
 

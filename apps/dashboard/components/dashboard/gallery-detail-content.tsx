@@ -47,7 +47,7 @@ import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
 import { useGalleryUiStore } from "@/lib/stores/gallery-ui-store";
 
-const tabs = ["photos", "albums", "settings", "share"] as const;
+const tabs = ["photos", "albums", "settings"] as const;
 type Tab = (typeof tabs)[number];
 
 const TAB_META: Record<
@@ -68,11 +68,6 @@ const TAB_META: Record<
     label: "Settings",
     icon: Settings2,
     description: "Access and publishing",
-  },
-  share: {
-    label: "Share",
-    icon: Share2,
-    description: "Links and QR",
   },
 };
 
@@ -103,6 +98,8 @@ export function GalleryDetailContent({
       </div>
     );
   }
+
+  const shareLink = getGalleryShareLink(data.gallery.slug);
 
   return (
     <div className="space-y-6">
@@ -156,11 +153,42 @@ export function GalleryDetailContent({
                 </Badge>
               </div>
             </div>
+            {data.gallery.isPublished && (
+              <div className="flex items-center gap-3 rounded-xl border border-border/60 bg-slate-50/50 px-3 py-3 min-w-[220px]">
+                <div className="rounded-md border bg-white p-1">
+                  <QRCodeSVG
+                    value={shareLink}
+                    size={42}
+                    level="H"
+                    includeMargin={false}
+                    bgColor="#ffffff"
+                    fgColor="#0f172a"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Share
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(shareLink);
+                      toast.success("Share link copied");
+                    }}
+                    className="mt-1 flex w-full items-center gap-1 text-left text-xs text-foreground hover:text-foreground/80"
+                    title={shareLink}
+                  >
+                    <span className="truncate">{shareLink}</span>
+                    <Copy className="h-3.5 w-3.5 shrink-0" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      <div className="grid gap-1 rounded-xl bg-slate-100/60 p-1 sm:grid-cols-4">
+      <div className="grid gap-1 rounded-xl bg-slate-100/60 p-1 sm:grid-cols-3">
         {tabs.map((tab) => {
           const isActive = activeTab === tab;
           const Icon = TAB_META[tab].icon;
@@ -200,9 +228,49 @@ export function GalleryDetailContent({
       {activeTab === "settings" && (
         <SettingsTab galleryId={galleryId} mutate={mutate} data={data} />
       )}
-      {activeTab === "share" && <ShareTab data={data} galleryId={galleryId} />}
     </div>
   );
+}
+
+function getGalleryShareLink(slug: string) {
+  const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
+    /\/$/,
+    "",
+  );
+
+  const buildShareUrl = (baseUrl: string) =>
+    `${baseUrl.replace(/\/$/, "")}/${slug}`;
+
+  const mapLocalhostToCurrentHost = (urlString: string): string => {
+    if (typeof window === "undefined") {
+      return urlString;
+    }
+
+    try {
+      const parsed = new URL(urlString);
+      if (parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1") {
+        parsed.hostname = window.location.hostname;
+      }
+      return parsed.toString().replace(/\/$/, "");
+    } catch {
+      return urlString;
+    }
+  };
+
+  if (configuredGalleryUrl) {
+    return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
+  }
+
+  if (typeof window === "undefined") {
+    return buildShareUrl("http://localhost:3003");
+  }
+
+  const inferredBaseUrl =
+    window.location.port === "3001"
+      ? `${window.location.protocol}//${window.location.hostname}:3003`
+      : window.location.origin;
+
+  return buildShareUrl(inferredBaseUrl);
 }
 
 type PhotosTabProps = {
@@ -226,6 +294,8 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [createAlbumOpen, setCreateAlbumOpen] = useState(false);
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
+  const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
+  const [deleteSelectedOpen, setDeleteSelectedOpen] = useState(false);
 
   useEffect(() => {
     const preventBrowserFileOpen = (event: DragEvent) => {
@@ -328,10 +398,6 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   });
 
   async function deletePhoto(id: string) {
-    if (!window.confirm("Are you sure you want to delete this photo?")) {
-      return;
-    }
-
     try {
       await apiRequest(`/api/photos/${id}`, { method: "DELETE" });
       toast.success("Photo deleted");
@@ -340,6 +406,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
         galleryId,
         selected.filter((photoId) => photoId !== id),
       );
+      setPhotoToDelete(null);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to delete photo",
@@ -352,13 +419,6 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       return;
     }
 
-    const confirmed = window.confirm(
-      `Delete ${selected.length} selected ${selected.length === 1 ? "photo" : "photos"}?`,
-    );
-    if (!confirmed) {
-      return;
-    }
-
     try {
       await Promise.all(
         selected.map((id) =>
@@ -368,6 +428,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       clearSelected(galleryId);
       await mutate();
       toast.success("Selected photos deleted");
+      setDeleteSelectedOpen(false);
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -512,11 +573,38 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             <Button
               size="sm"
               variant="destructive"
-              onClick={deleteSelected}
+              onClick={() => setDeleteSelectedOpen(true)}
               disabled={selected.length === 0}
             >
               Delete Selected
             </Button>
+
+            <Dialog
+              open={deleteSelectedOpen}
+              onOpenChange={setDeleteSelectedOpen}
+            >
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Delete Selected Photos</DialogTitle>
+                  <DialogDescription>
+                    Delete {selected.length} selected{" "}
+                    {selected.length === 1 ? "photo" : "photos"}? This action
+                    cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => setDeleteSelectedOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant="destructive" onClick={deleteSelected}>
+                    Delete
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
@@ -559,7 +647,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                       variant="destructive"
                       size="icon"
                       className="h-8 w-8 rounded-full shadow-md hover:bg-red-600"
-                      onClick={() => void deletePhoto(photo.id)}
+                      onClick={() => setPhotoToDelete(photo.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -570,6 +658,32 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           })}
         </div>
       </div>
+
+      <Dialog
+        open={!!photoToDelete}
+        onOpenChange={(open) => !open && setPhotoToDelete(null)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Photo</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this photo? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPhotoToDelete(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => photoToDelete && deletePhoto(photoToDelete)}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="space-y-4 lg:sticky lg:top-4">
         <Card className="shadow-sm">
@@ -1046,49 +1160,10 @@ function ShareTab({
     return () => window.clearInterval(intervalId);
   }, [refreshViewers]);
 
-  const shareLink = useMemo(() => {
-    const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
-      /\/$/,
-      "",
-    );
-
-    const buildShareUrl = (baseUrl: string) =>
-      `${baseUrl.replace(/\/$/, "")}/${data.gallery.slug}`;
-
-    const mapLocalhostToCurrentHost = (urlString: string): string => {
-      if (typeof window === "undefined") {
-        return urlString;
-      }
-
-      try {
-        const parsed = new URL(urlString);
-        if (
-          parsed.hostname === "localhost" ||
-          parsed.hostname === "127.0.0.1"
-        ) {
-          parsed.hostname = window.location.hostname;
-        }
-        return parsed.toString().replace(/\/$/, "");
-      } catch {
-        return urlString;
-      }
-    };
-
-    if (configuredGalleryUrl) {
-      return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
-    }
-
-    if (typeof window === "undefined") {
-      return buildShareUrl("http://localhost:3003");
-    }
-
-    const inferredBaseUrl =
-      window.location.port === "3001"
-        ? `${window.location.protocol}//${window.location.hostname}:3003`
-        : window.location.origin;
-
-    return buildShareUrl(inferredBaseUrl);
-  }, [data.gallery.slug]);
+  const shareLink = useMemo(
+    () => getGalleryShareLink(data.gallery.slug),
+    [data.gallery.slug],
+  );
 
   return (
     <div className="grid gap-4 xl:grid-cols-3">
@@ -1186,34 +1261,6 @@ function ShareTab({
               Publish to enable QR sharing.
             </p>
           )}
-        </CardContent>
-      </Card>
-
-      <Card className="xl:col-span-3">
-        <CardHeader>
-          <CardTitle>Who Is Watching Right Now</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="inline-flex items-center rounded-full border border-border/70 bg-background px-3 py-1 text-sm">
-            {viewersData?.count ?? 0} live viewer
-            {(viewersData?.count ?? 0) === 1 ? "" : "s"}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {viewersData?.viewers?.length ? (
-              viewersData.viewers.map((viewer) => (
-                <span
-                  key={viewer.id}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2.5 py-1 text-xs"
-                >
-                  {viewer.name}
-                </span>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No active viewers yet.
-              </p>
-            )}
-          </div>
         </CardContent>
       </Card>
     </div>

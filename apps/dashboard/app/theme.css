@@ -1,41 +1,38 @@
 @layer base {
   .dashboard-theme {
-    --background: oklch(0.97 0.01 248);
-    --foreground: oklch(0.21 0.025 255);
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.14 0 0);
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.2 0.02 255);
+    --card-foreground: oklch(0.14 0 0);
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.2 0.02 255);
-    --primary: oklch(0.54 0.15 236);
-    --primary-foreground: oklch(0.99 0.008 240);
-    --secondary: oklch(0.94 0.015 244);
-    --secondary-foreground: oklch(0.3 0.03 251);
-    --muted: oklch(0.95 0.01 242);
-    --muted-foreground: oklch(0.47 0.03 251);
-    --accent: oklch(0.93 0.035 229);
-    --accent-foreground: oklch(0.28 0.04 246);
-    --border: oklch(0.87 0.02 242);
-    --input: oklch(0.87 0.02 242);
-    --ring: oklch(0.63 0.12 236);
+    --popover-foreground: oklch(0.14 0 0);
+    --primary: oklch(0.14 0 0);
+    --primary-foreground: oklch(0.98 0 0);
+    --secondary: oklch(0.96 0 0);
+    --secondary-foreground: oklch(0.14 0 0);
+    --muted: oklch(0.96 0 0);
+    --muted-foreground: oklch(0.45 0 0);
+    --accent: oklch(0.96 0 0);
+    --accent-foreground: oklch(0.14 0 0);
+    --border: oklch(0.92 0 0);
+    --input: oklch(0.92 0 0);
+    --ring: oklch(0.14 0 0);
   }
 }
 
 .dashboard-shell {
-  background-image:
-    radial-gradient(1200px circle at -15% -35%, oklch(0.75 0.1 228 / 0.25), transparent 62%),
-    radial-gradient(900px circle at 120% 20%, oklch(0.86 0.07 192 / 0.26), transparent 56%),
-    linear-gradient(180deg, oklch(0.98 0.008 248), oklch(0.965 0.012 248));
+  background: oklch(0.98 0 0);
+  /* Optional ultra-subtle pattern/noise could go here, but pure color is cleaner for monochrome */
 }
 
 .dashboard-main {
-  background: linear-gradient(180deg, oklch(1 0 0 / 0.78), oklch(1 0 0 / 0.62));
+  background: transparent;
 }
 
 .dashboard-glass {
-  border: 1px solid oklch(1 0 0 / 0.5);
-  background: oklch(1 0 0 / 0.64);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 25px 55px -38px rgba(2, 6, 23, 0.5);
+  border: 1px solid oklch(0.92 0 0);
+  background: oklch(1 0 0);
+  box-shadow: 0 4px 24px -12px rgba(0, 0, 0, 0.05); /* Softer, premium shadow */
 }
 
 .dashboard-title {

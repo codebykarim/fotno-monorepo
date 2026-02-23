@@ -11,11 +11,16 @@ import {
   LayoutGrid,
   UploadCloud,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { Badge } from "@workspace/ui/components/badge";
 import { jsonFetcher } from "@/lib/api/client";
-import { OverviewResponse } from "@/lib/types/api";
+import { OverviewResponse, StorageSummaryResponse } from "@/lib/types/api";
 
 function formatStorage(mb: number) {
   if (mb < 1024) {
@@ -46,14 +51,25 @@ function formatRelativeTime(isoString: string) {
 }
 
 const activityTone: Record<string, string> = {
-  upload: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  gallery_update: "border-blue-200 bg-blue-50 text-blue-700",
-  delivery: "border-violet-200 bg-violet-50 text-violet-700",
-  system: "border-slate-200 bg-slate-50 text-slate-700",
+  upload: "border-slate-200 bg-slate-50 text-slate-900",
+  gallery_update: "border-slate-200 bg-slate-50 text-slate-900",
+  delivery: "border-slate-200 bg-slate-50 text-slate-900",
+  system: "border-slate-200 bg-slate-50 text-slate-900",
 };
 
 export function OverviewContent() {
-  const { data, isLoading } = useSWR<OverviewResponse>("/api/overview", jsonFetcher);
+  const { data, isLoading } = useSWR<OverviewResponse>(
+    "/api/overview",
+    jsonFetcher,
+  );
+
+  const { data: summary } = useSWR<StorageSummaryResponse>(
+    "/api/storage/summary",
+    jsonFetcher,
+    {
+      revalidateOnFocus: true,
+    },
+  );
 
   const stats = [
     {
@@ -61,37 +77,36 @@ export function OverviewContent() {
       value: data?.totalGalleries ?? 0,
       helper: `${data?.publishedGalleries ?? 0} published`,
       icon: LayoutGrid,
-      gradient: "from-blue-500/20 via-blue-400/10 to-transparent",
     },
     {
       label: "Total Photos",
       value: data?.totalPhotos ?? 0,
       helper: `${data?.recentUploads7d ?? 0} uploaded this week`,
       icon: Images,
-      gradient: "from-cyan-500/20 via-cyan-400/10 to-transparent",
     },
     {
       label: "Loved Photos",
       value: data?.lovedPhotos ?? 0,
       helper: "Client favorites",
       icon: Heart,
-      gradient: "from-rose-500/20 via-rose-400/10 to-transparent",
     },
     {
       label: "Storage Used",
-      value: formatStorage(data?.totalStorageUsedMb ?? 0),
+      value: summary?.formatted.used ?? "",
       helper: "Estimated active footprint",
       icon: Database,
-      gradient: "from-indigo-500/20 via-violet-400/10 to-transparent",
     },
   ] as const;
 
   return (
     <div className="space-y-7">
       <div>
-        <h1 className="dashboard-title text-3xl font-semibold tracking-tight">Overview</h1>
+        <h1 className="dashboard-title text-3xl font-semibold tracking-tight">
+          Overview
+        </h1>
         <p className="mt-1 text-muted-foreground">
-          Production metrics and human-readable activity from your live galleries.
+          Production metrics and human-readable activity from your live
+          galleries.
         </p>
       </div>
 
@@ -101,25 +116,28 @@ export function OverviewContent() {
           return (
             <Card
               key={stat.label}
-              className="relative overflow-hidden border-border/70 bg-white/75 shadow-[0_18px_45px_-35px_rgba(2,6,23,0.8)]"
+              className="relative overflow-hidden border-border/70 bg-white shadow-sm transition-all hover:shadow-md"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient}`} />
               <CardHeader className="relative pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-[11px]">
                   {stat.label}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="relative flex items-center justify-between">
+              <CardContent className="relative flex items-end justify-between">
                 {isLoading ? (
                   <Skeleton className="h-8 w-24" />
                 ) : (
                   <div>
-                    <p className="text-3xl font-semibold tracking-tight">{stat.value}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{stat.helper}</p>
+                    <p className="text-4xl font-light tracking-tight">
+                      {stat.value}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {stat.helper}
+                    </p>
                   </div>
                 )}
-                <div className="rounded-xl border border-white/50 bg-white/70 p-2 shadow-sm">
-                  <Icon className="h-4 w-4 text-foreground/75" />
+                <div className="rounded-full bg-slate-50 p-2.5">
+                  <Icon className="h-4 w-4 text-foreground/70" />
                 </div>
               </CardContent>
             </Card>
@@ -127,15 +145,21 @@ export function OverviewContent() {
         })}
       </div>
 
-      <Card className="border-border/70 bg-white/78 shadow-[0_18px_45px_-35px_rgba(2,6,23,0.7)]">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Activity Log</CardTitle>
-          <Badge variant="outline" className="gap-1 rounded-full px-2.5 py-1">
-            <Clock3 className="h-3.5 w-3.5" />
+      <Card className="border-border/70 bg-white shadow-sm">
+        <CardHeader className="flex flex-row items-center justify-between border-b border-border/40 pb-4">
+          <CardTitle className="text-lg font-medium">Activity Log</CardTitle>
+          <Badge
+            variant="outline"
+            className="gap-1.5 rounded-full px-3 py-1 bg-slate-50 text-xs font-normal border-border/70"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-40"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
+            </span>
             Live feed
           </Badge>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-5">
           <div className="space-y-3">
             {isLoading && (
               <>
@@ -150,14 +174,17 @@ export function OverviewContent() {
             )}
 
             {data?.recentActivity.map((item) => {
-              const toneClass = activityTone[item.type ?? "system"] ?? activityTone.system;
+              const toneClass =
+                activityTone[item.type ?? "system"] ?? activityTone.system;
               return (
                 <div
                   key={item.id}
                   className="flex items-center justify-between rounded-xl border border-border/70 bg-background/85 p-3"
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <span className={`rounded-full border px-2 py-1 text-[11px] font-medium ${toneClass}`}>
+                    <span
+                      className={`rounded-full border px-2 py-1 text-[11px] font-medium ${toneClass}`}
+                    >
                       {item.type === "upload" ? (
                         <span className="inline-flex items-center gap-1">
                           <UploadCloud className="h-3 w-3" /> Upload
@@ -172,9 +199,13 @@ export function OverviewContent() {
                         </span>
                       )}
                     </span>
-                    <p className="truncate text-sm font-medium text-foreground">{item.message}</p>
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {item.message}
+                    </p>
                   </div>
-                  <p className="shrink-0 text-xs text-muted-foreground">{formatRelativeTime(item.at)}</p>
+                  <p className="shrink-0 text-xs text-muted-foreground">
+                    {formatRelativeTime(item.at)}
+                  </p>
                 </div>
               );
             })}

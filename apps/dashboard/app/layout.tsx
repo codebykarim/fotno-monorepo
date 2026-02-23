@@ -16,7 +16,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FOTNO Photographer Dashboard",
-  description: "Photographer command center for galleries, clients, and sharing workflows.",
+  description:
+    "Photographer command center for galleries, clients, and sharing workflows.",
 };
 
 export default async function RootLayout({
@@ -36,16 +37,21 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "dashboard-theme dashboard-shell bg-background text-foreground")}>
+      <body
+        className={cn(
+          inter.className,
+          "dashboard-theme dashboard-shell bg-background text-foreground",
+        )}
+      >
         <div className="flex h-screen">
           <div className="hidden lg:block">
             <DashboardSidebar onLogout={logout} />
           </div>
 
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col overflow-hidden bg-background">
             <Header main="DASHBOARD" logout={logout} />
-            <main className="dashboard-main flex-1 overflow-auto p-4 lg:p-6">
-              <div className="dashboard-glass dashboard-enter min-h-full rounded-2xl p-4 lg:p-6">
+            <main className="dashboard-main flex-1 overflow-auto p-4 lg:p-8">
+              <div className="dashboard-glass dashboard-enter min-h-full rounded-2xl p-6 lg:p-8 bg-white border border-border shadow-sm">
                 {children}
               </div>
             </main>

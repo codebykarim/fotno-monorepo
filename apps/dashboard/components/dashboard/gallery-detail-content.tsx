@@ -105,58 +105,71 @@ export function GalleryDetailContent({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-border/70 bg-white/80 p-5 shadow-[0_20px_50px_-38px_rgba(2,6,23,0.65)]">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <section className="rounded-2xl border border-border bg-white p-6 shadow-sm transition-all">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Gallery Workspace
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              Workspace
             </p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight">
+            <h1 className="mt-2 text-4xl font-light tracking-tight text-foreground">
               {data.gallery.title}
             </h1>
-            <p className="mt-1 text-muted-foreground">
-              Manage photos, albums, settings, and client sharing from one
-              place.
+            <p className="mt-2 text-sm text-muted-foreground max-w-lg">
+              Manage photos, albums, settings, and client sharing.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <div className="rounded-xl border border-border/70 bg-background/80 px-3 py-2 text-sm">
-              <p className="text-xs text-muted-foreground">Photos</p>
-              <p className="mt-0.5 flex items-center gap-1.5 font-medium">
-                <Images className="h-3.5 w-3.5 text-primary" />
+          <div className="flex flex-wrap gap-2 lg:gap-3">
+            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                Photos
+              </p>
+              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                <Images className="h-4 w-4 text-foreground/40" />
                 {data.gallery.photos.length}
               </p>
             </div>
-            <div className="rounded-xl border border-border/70 bg-background/80 px-3 py-2 text-sm">
-              <p className="text-xs text-muted-foreground">Albums</p>
-              <p className="mt-0.5 flex items-center gap-1.5 font-medium">
-                <FolderKanban className="h-3.5 w-3.5 text-primary" />
+            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[100px]">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                Albums
+              </p>
+              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                <FolderKanban className="h-4 w-4 text-foreground/40" />
                 {data.gallery.albums.length}
               </p>
             </div>
-            <div className="rounded-xl border border-border/70 bg-background/80 px-3 py-2 text-sm">
-              <p className="text-xs text-muted-foreground">Status</p>
-              <p className="mt-0.5 font-medium">
+            <div className="flex flex-col justify-center rounded-xl border border-border/60 bg-slate-50/50 px-4 py-3 min-w-[120px]">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                Status
+              </p>
+              <p className="mt-1 flex items-center gap-1.5 text-lg font-light">
+                <div
+                  className={`h-2 w-2 rounded-full ${data.gallery.isPublished ? "bg-emerald-500" : "bg-amber-400"}`}
+                />
                 {data.gallery.isPublished ? "Published" : "Draft"}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-muted-foreground">
-            <CalendarDays className="h-3.5 w-3.5" />
-            Date: {data.gallery.eventDate ?? "-"}
+        <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <CalendarDays className="h-4 w-4" />
+            <span className="font-medium text-foreground">
+              {data.gallery.eventDate ?? "No date"}
+            </span>
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-muted-foreground">
-            <Clock3 className="h-3.5 w-3.5" />
-            Deadline: {data.gallery.deadline ?? "-"}
+          <span className="text-border">•</span>
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <Clock3 className="h-4 w-4" />
+            <span className="font-medium text-foreground">
+              {data.gallery.deadline ?? "No deadline"}
+            </span>
           </span>
         </div>
       </section>
 
-      <div className="grid gap-2 rounded-2xl border border-border/70 bg-white/80 p-2 shadow-sm sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-1 rounded-xl bg-slate-100/60 p-1 sm:grid-cols-4">
         {tabs.map((tab) => {
           const isActive = activeTab === tab;
           const Icon = TAB_META[tab].icon;
@@ -165,19 +178,14 @@ export function GalleryDetailContent({
               type="button"
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`rounded-xl border px-3 py-2.5 text-left transition ${
+              className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2 transition-all ${
                 isActive
-                  ? "border-primary/50 bg-primary/10 text-foreground shadow-sm"
-                  : "border-transparent text-muted-foreground hover:border-border hover:bg-background/70 hover:text-foreground"
+                  ? "bg-white text-foreground shadow-sm ring-1 ring-border/50"
+                  : "text-muted-foreground hover:bg-slate-200/50 hover:text-foreground"
               }`}
             >
-              <span className="flex items-center gap-2 text-sm font-semibold">
-                <Icon className="h-4 w-4" />
-                {TAB_META[tab].label}
-              </span>
-              <span className="mt-1 block text-xs opacity-80">
-                {TAB_META[tab].description}
-              </span>
+              <Icon className="h-4 w-4" />
+              <span className="text-sm font-medium">{TAB_META[tab].label}</span>
             </button>
           );
         })}

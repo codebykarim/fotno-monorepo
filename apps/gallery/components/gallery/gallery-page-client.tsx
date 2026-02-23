@@ -586,9 +586,9 @@ export default function GalleryPageClient({
   }
 
   return (
-    <div className="min-h-screen select-none bg-gradient-to-br from-white via-slate-50 to-slate-100">
-      <header className="sticky top-0 z-30 border-b border-border/70 bg-white/80 px-4 py-4 backdrop-blur md:px-8">
-        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className="min-h-screen select-none bg-background">
+      <header className="sticky top-0 z-30 border-b border-border bg-white/95 px-4 py-4 backdrop-blur-md md:px-8 transition-colors">
+        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               {gallery.title}
@@ -602,10 +602,10 @@ export default function GalleryPageClient({
             <button
               type="button"
               onClick={() => setFilterMode("all")}
-              className={`rounded-lg px-3 py-1.5 text-sm transition ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 filterMode === "all"
-                  ? "bg-slate-900 text-white"
-                  : "border border-border bg-background text-foreground"
+                  ? "bg-foreground text-background"
+                  : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
               }`}
             >
               All Photos
@@ -613,27 +613,32 @@ export default function GalleryPageClient({
             <button
               type="button"
               onClick={() => setFilterMode("loved")}
-              className={`border border-rose-200 bg-rose-50 px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 text-sm text-rose-500 transition ${
+              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 filterMode === "loved"
-                  ? "bg-slate-900 text-white"
-                  : "border border-border bg-background text-foreground"
+                  ? "bg-foreground text-background"
+                  : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
               }`}
             >
-              <Heart className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />
+              <Heart
+                className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-background text-background" : "text-muted-foreground"}`}
+              />
               {favorites.length} loved
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground">
-              <Users className="h-3.5 w-3.5" />
-              {viewerCount} watching now
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-slate-50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-20"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-foreground/50"></span>
+              </span>
+              {viewerCount} online
             </span>
             <button
               type="button"
               onClick={handleDownloadAll}
               disabled={isDownloadingAll}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <DownloadCloud className="h-4 w-4" />
               {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
@@ -687,8 +692,8 @@ export default function GalleryPageClient({
                     aria-label={loved ? "Remove from loved" : "Add to loved"}
                   >
                     <Heart
-                      className={`h-4 w-4 ${
-                        loved ? "fill-rose-500 text-rose-500" : "text-white"
+                      className={`h-4 w-4 transition-colors ${
+                        loved ? "fill-white text-white" : "text-white"
                       }`}
                     />
                   </button>

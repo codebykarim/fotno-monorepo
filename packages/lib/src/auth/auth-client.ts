@@ -7,7 +7,7 @@ interface AdditionalUserFields {
   finishOnboarding: boolean;
 }
 
-const authClient: any = createAuthClient({
+const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // the base url of your auth server
   disableDefaultFetchPlugins: true,
   plugins: [

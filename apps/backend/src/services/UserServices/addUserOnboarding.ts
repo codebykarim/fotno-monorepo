@@ -1,11 +1,11 @@
 import AppError from "../../errors/AppError";
-import prisma from "../../../prisma";
+import { prisma } from "@workspace/db";
 import {
   ContactMethod,
   PhotographyLevel,
   UserOnboarding,
   UserType,
-} from "@prisma/client";
+} from "@workspace/db";
 
 interface Request {
   userType: UserType;

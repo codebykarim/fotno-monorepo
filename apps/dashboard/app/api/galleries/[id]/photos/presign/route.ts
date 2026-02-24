@@ -19,10 +19,20 @@ export async function POST(
     return NextResponse.json(payload, { status: response.status });
   }
 
+  const presignedParts = Array.isArray(payload.presignedParts)
+    ? payload.presignedParts
+    : [];
+  const photoId = String(payload.photoId ?? payload.uploadId ?? "");
+
   return NextResponse.json({
-    uploadId: payload.uploadId,
-    uploadUrl: payload.uploadUrl,
+    photoId,
+    uploadId: photoId,
+    totalParts: Number(payload.totalParts ?? presignedParts.length ?? 1),
+    chunkSizeBytes: 10 * 1024 * 1024,
+    presignedParts,
+    duplicate: Boolean(payload.duplicate),
+    storageWarning: payload.storageWarning,
+    partCompleteUrl: `/api/galleries/${id}/photos/part-complete`,
     confirmUrl: `/api/galleries/${id}/photos/confirm`,
-    method: "PUT",
   });
 }

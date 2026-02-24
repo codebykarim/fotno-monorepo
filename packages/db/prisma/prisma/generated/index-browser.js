@@ -127,6 +127,7 @@ exports.Prisma.UserScalarFieldEnum = {
   plan: 'plan',
   storageUsed: 'storageUsed',
   storageLimit: 'storageLimit',
+  storageReserved: 'storageReserved',
   overageBytes: 'overageBytes',
   overageResetAt: 'overageResetAt',
   stripeCustomerId: 'stripeCustomerId',
@@ -229,6 +230,7 @@ exports.Prisma.GalleryScalarFieldEnum = {
 exports.Prisma.PhotoScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
+  checksum: 'checksum',
   s3Key: 's3Key',
   s3Bucket: 's3Bucket',
   originalFilename: 'originalFilename',
@@ -248,7 +250,22 @@ exports.Prisma.PhotoScalarFieldEnum = {
   thumbnailKey: 'thumbnailKey',
   previewKey: 'previewKey',
   status: 'status',
+  processedAt: 'processedAt',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.UploadSessionScalarFieldEnum = {
+  id: 'id',
+  photoId: 'photoId',
+  s3UploadId: 's3UploadId',
+  s3Key: 's3Key',
+  totalParts: 'totalParts',
+  totalSize: 'totalSize',
+  completedParts: 'completedParts',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.StorageEventScalarFieldEnum = {
@@ -295,6 +312,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -303,6 +324,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Plan = exports.$Enums.Plan = {
   FREE: 'FREE',
@@ -341,6 +368,13 @@ exports.ContactMethod = exports.$Enums.ContactMethod = {
   BOTH: 'BOTH'
 };
 
+exports.UploadSessionStatus = exports.$Enums.UploadSessionStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  ABORTED: 'ABORTED',
+  EXPIRED: 'EXPIRED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -350,6 +384,7 @@ exports.Prisma.ModelName = {
   UserOnboarding: 'UserOnboarding',
   Gallery: 'Gallery',
   Photo: 'Photo',
+  UploadSession: 'UploadSession',
   StorageEvent: 'StorageEvent',
   Client: 'Client',
   GalleryClient: 'GalleryClient',

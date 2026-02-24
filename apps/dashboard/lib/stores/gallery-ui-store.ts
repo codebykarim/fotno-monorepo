@@ -4,9 +4,12 @@ import { create } from "zustand";
 
 type UploadQueueItem = {
   id: string;
+  galleryId: string;
   fileName: string;
   progress: number;
-  status: "queued" | "uploading" | "confirming" | "done" | "error";
+  status: "queued" | "uploading" | "confirming" | "paused" | "done" | "error";
+  photoId?: string;
+  errorMessage?: string;
 };
 
 type GalleryUiState = {
@@ -16,6 +19,7 @@ type GalleryUiState = {
   toggleSelected: (galleryId: string, photoId: string) => void;
   clearSelected: (galleryId: string) => void;
   upsertQueueItem: (item: UploadQueueItem) => void;
+  removeQueueItem: (id: string) => void;
   clearCompletedUploads: () => void;
 };
 
@@ -62,6 +66,11 @@ export const useGalleryUiStore = create<GalleryUiState>((set, get) => ({
       next[index] = item;
       return { uploadQueue: next };
     });
+  },
+  removeQueueItem: (id) => {
+    set((state) => ({
+      uploadQueue: state.uploadQueue.filter((item) => item.id !== id),
+    }));
   },
   clearCompletedUploads: () => {
     set((state) => ({

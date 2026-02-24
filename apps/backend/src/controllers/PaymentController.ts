@@ -11,7 +11,7 @@ import type {
   CreateSubscriptionResponse,
 } from "../services/PaymentServices/createSubscription";
 import AddUserOnboardingService from "../services/UserServices/addUserOnboarding";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 import CreateSuccessSubscription from "../services/PaymentServices/createSuccessSubscription";
 import { auth } from "../auth";
 import { fromNodeHeaders } from "better-auth/node";

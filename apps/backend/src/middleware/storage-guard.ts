@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import AppError from "../errors/AppError";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 import { PLAN_STORAGE_LIMITS } from "../constants/storage";
 import { getStorageSummary } from "../services/StorageServices";
 

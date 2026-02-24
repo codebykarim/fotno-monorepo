@@ -47,6 +47,16 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.presignPhotoUploadController,
     authFunction: isAuth,
   },
+  "get-photo-upload-sessions": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getPhotoUploadSessionsController,
+    authFunction: isAuth,
+  },
+  "part-complete-photo-upload": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.partCompletePhotoUploadController,
+    authFunction: isAuth,
+  },
   "confirm-photo-upload": {
     httpMethod: "POST",
     controllerFunction: DashboardController.confirmPhotoUploadController,
@@ -118,6 +128,14 @@ dashboardRoutes.patch(
 dashboardRoutes.post(
   "/dashboard/galleries/:id/photos/presign",
   handleMethod("presign-photo-upload"),
+);
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/photos/session",
+  handleMethod("get-photo-upload-sessions"),
+);
+dashboardRoutes.patch(
+  "/dashboard/galleries/:id/photos/part-complete",
+  handleMethod("part-complete-photo-upload"),
 );
 dashboardRoutes.post(
   "/dashboard/galleries/:id/photos/confirm",

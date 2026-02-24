@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { sendMail } from "./utils/sendMail";
 import { admin, emailOTP, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "../prisma";
+import { prisma } from "@workspace/db";
 
 const hasGoogleOAuth =
   Boolean(process.env.GOOGLE_CLIENT_ID) &&

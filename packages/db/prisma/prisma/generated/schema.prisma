@@ -15,6 +15,7 @@ model User {
   plan               Plan            @default(FREE)
   storageUsed        BigInt          @default(0)
   storageLimit       BigInt          @default(0)
+  storageReserved    BigInt          @default(0)
   overageBytes       BigInt          @default(0)
   overageResetAt     DateTime?
   stripeCustomerId   String?         @unique
@@ -185,34 +186,59 @@ model Gallery {
 }
 
 model Photo {
-  id               String       @id @unique @default(uuid())
+  id               String         @id @unique @default(uuid())
   galleryId        String
-  gallery          Gallery      @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
-  usedAsCoverIn    Gallery[]    @relation("GalleryCoverPhoto")
+  gallery          Gallery        @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
+  usedAsCoverIn    Gallery[]      @relation("GalleryCoverPhoto")
+  checksum         String?
   s3Key            String
   s3Bucket         String
   originalFilename String
-  originalSize     BigInt       @default(0)
-  thumbnailSize    BigInt       @default(0)
-  previewSize      BigInt       @default(0)
-  totalSize        BigInt       @default(0)
+  originalSize     BigInt         @default(0)
+  thumbnailSize    BigInt         @default(0)
+  previewSize      BigInt         @default(0)
+  totalSize        BigInt         @default(0)
   width            Int?
   height           Int?
   mimeType         String
-  order            Int          @default(0)
-  isCulled         Boolean      @default(false)
-  loved            Boolean      @default(false)
+  order            Int            @default(0)
+  isCulled         Boolean        @default(false)
+  loved            Boolean        @default(false)
   aiCaption        String?
   aiTags           String[]
-  faceCount        Int          @default(0)
+  faceCount        Int            @default(0)
   thumbnailKey     String?
   previewKey       String?
-  status           String       @default("pending")
-  createdAt        DateTime     @default(now())
+  status           String         @default("pending")
+  processedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  uploadSession    UploadSession?
   albumPhotos      AlbumPhoto[]
 
   @@index([galleryId, order])
   @@map("photo")
+}
+
+model UploadSession {
+  id             String              @id @default(cuid())
+  photoId        String              @unique
+  photo          Photo               @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  s3UploadId     String
+  s3Key          String
+  totalParts     Int
+  totalSize      BigInt
+  completedParts Json                @default("[]")
+  status         UploadSessionStatus @default(IN_PROGRESS)
+  expiresAt      DateTime
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+}
+
+enum UploadSessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABORTED
+  EXPIRED
 }
 
 model StorageEvent {

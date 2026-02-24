@@ -1,6 +1,6 @@
 import "../../backend/src/bootstrap";
 import sharp from "sharp";
-import prisma from "../../backend/prisma";
+import { prisma } from "@workspace/db";
 import { getS3ObjectBuffer, putS3Object } from "../../backend/src/utils/s3";
 
 type CompressionOptions = {

@@ -1,4 +1,4 @@
-import prisma from "../../../prisma";
+import { prisma } from "@workspace/db";
 
 export const db = prisma as any;
 

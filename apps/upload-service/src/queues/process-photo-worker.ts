@@ -1,0 +1,123 @@
+import { Worker } from 'bullmq'
+import { prisma } from '@workspace/db'
+import { PROCESSOR_CONCURRENCY } from '../constants/upload'
+import type { ProcessPhotoJobData } from '../interfaces/index'
+import { imageService } from '../services/image'
+import { storageService } from '../services/storage'
+import { logger } from '../utils/logger'
+import { bullConnection } from './connection'
+
+const workerLogger = logger.child({ module: 'process-photo.worker' })
+
+export const processPhotoWorker = new Worker<ProcessPhotoJobData>(
+  'process-photo',
+  async (job) => {
+    const { photoId, userId, s3Key, s3Bucket } = job.data
+    const log = workerLogger.child({ jobId: job.id, photoId, userId })
+
+    const existing = await prisma.photo.findUnique({
+      where: { id: photoId },
+      select: {
+        id: true,
+        status: true,
+        galleryId: true,
+        mimeType: true,
+        originalSize: true,
+      },
+    })
+
+    if (!existing) {
+      log.warn('Photo no longer exists, skipping')
+      return
+    }
+
+    if (existing.status === 'processed') {
+      log.info('Photo already processed, skipping duplicate job')
+      return
+    }
+
+    await prisma.photo.update({
+      where: { id: photoId },
+      data: { status: 'processing' },
+    })
+    log.info('Processing started')
+
+    const result = await imageService.processPhoto(
+      photoId,
+      existing.galleryId,
+      s3Key,
+      s3Bucket,
+      existing.mimeType,
+    )
+
+    const totalSize = existing.originalSize + result.thumbnail.size + result.preview.size
+
+    const updateResult = await prisma.photo.updateMany({
+      where: {
+        id: photoId,
+        status: {
+          not: 'processed',
+        },
+      },
+      data: {
+        status: 'processed',
+        thumbnailKey: result.thumbnail.s3Key,
+        previewKey: result.preview.s3Key,
+        thumbnailSize: result.thumbnail.size,
+        previewSize: result.preview.size,
+        totalSize,
+        width: result.preview.width,
+        height: result.preview.height,
+        processedAt: new Date(),
+      },
+    })
+
+    if (updateResult.count === 0) {
+      log.info('Photo already finalized by another worker instance')
+      return
+    }
+
+    await storageService.addProcessedStorage(
+      userId,
+      photoId,
+      result.thumbnail.size,
+      result.preview.size,
+    )
+
+    log.info(
+      {
+        thumbnailSize: result.thumbnail.size.toString(),
+        previewSize: result.preview.size.toString(),
+      },
+      'Processing complete',
+    )
+  },
+  {
+    connection: bullConnection,
+    concurrency: PROCESSOR_CONCURRENCY,
+  },
+)
+
+processPhotoWorker.on('failed', async (job, err) => {
+  if (!job) {
+    return
+  }
+
+  workerLogger.error(
+    {
+      jobId: job.id,
+      photoId: job.data.photoId,
+      err: err.message,
+    },
+    'Processing permanently failed',
+  )
+
+  await prisma.photo
+    .update({
+      where: { id: job.data.photoId },
+      data: { status: 'failed' },
+    })
+    .catch(() => {
+      // Photo may already be removed by user action.
+    })
+})

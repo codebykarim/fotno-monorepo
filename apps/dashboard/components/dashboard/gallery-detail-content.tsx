@@ -58,7 +58,10 @@ import {
 } from "@workspace/ui/components/dropdown-menu";
 import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
-import { useGalleryUiStore } from "@/lib/stores/gallery-ui-store";
+import {
+  useGalleryUiStore,
+  type UploadQueueItem,
+} from "@/lib/stores/gallery-ui-store";
 import { cn } from "@workspace/ui/lib/utils";
 
 const tabs = ["photos", "albums", "settings"] as const;
@@ -91,6 +94,28 @@ type Props = {
 };
 
 const EMPTY_SELECTION: string[] = [];
+const MAX_CONCURRENT_FILES = 4;
+const MAX_CONCURRENT_CHUNKS = 3;
+const DEFAULT_CHUNK_SIZE_BYTES = 10 * 1024 * 1024;
+
+function getUploadQueueStorageKey(galleryId: string): string {
+  return `fotno:upload-queue:${galleryId}`;
+}
+
+function isAbortError(error: unknown): boolean {
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return true;
+  }
+
+  if (error instanceof Error) {
+    if (error.name === "AbortError") {
+      return true;
+    }
+    return error.message.toLowerCase().includes("aborted");
+  }
+
+  return false;
+}
 
 export function GalleryDetailContent({
   galleryId,
@@ -355,14 +380,43 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   const setSelected = useGalleryUiStore((state) => state.setSelected);
   const uploadQueue = useGalleryUiStore((state) => state.uploadQueue);
   const upsertQueueItem = useGalleryUiStore((state) => state.upsertQueueItem);
-  const clearCompletedUploads = useGalleryUiStore(
-    (state) => state.clearCompletedUploads,
-  );
+  const removeQueueItem = useGalleryUiStore((state) => state.removeQueueItem);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const uploadQueueRef = useRef<UploadQueueItem[]>([]);
+  const activeUploadControllersRef = useRef<Set<AbortController>>(new Set());
+  const fileByQueueIdRef = useRef<Map<string, File>>(new Map());
   const [createAlbumOpen, setCreateAlbumOpen] = useState(false);
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
   const [deleteSelectedOpen, setDeleteSelectedOpen] = useState(false);
+
+  const galleryUploadQueue = useMemo(
+    () => uploadQueue.filter((item) => item.galleryId === galleryId),
+    [galleryId, uploadQueue],
+  );
+
+  const hasRunningUploads = useMemo(
+    () =>
+      galleryUploadQueue.some(
+        (item) =>
+          item.status === "queued" ||
+          item.status === "uploading" ||
+          item.status === "confirming",
+      ),
+    [galleryUploadQueue],
+  );
+  const pausedUploads = useMemo(
+    () => galleryUploadQueue.filter((item) => item.status === "paused"),
+    [galleryUploadQueue],
+  );
+  const failedUploads = useMemo(
+    () => galleryUploadQueue.filter((item) => item.status === "error"),
+    [galleryUploadQueue],
+  );
+
+  useEffect(() => {
+    uploadQueueRef.current = galleryUploadQueue;
+  }, [galleryUploadQueue]);
 
   useEffect(() => {
     const preventBrowserFileOpen = (event: DragEvent) => {
@@ -378,83 +432,653 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const persistedRaw = window.localStorage.getItem(
+      getUploadQueueStorageKey(galleryId),
+    );
+
+    if (!persistedRaw) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(persistedRaw);
+      if (!Array.isArray(parsed)) {
+        return;
+      }
+
+      for (const item of parsed) {
+        if (typeof item !== "object" || item === null) {
+          continue;
+        }
+
+        const candidate = item as Partial<UploadQueueItem>;
+        if (
+          typeof candidate.id !== "string" ||
+          typeof candidate.fileName !== "string" ||
+          typeof candidate.progress !== "number" ||
+          typeof candidate.status !== "string"
+        ) {
+          continue;
+        }
+
+        const normalizedStatus =
+          candidate.status === "queued" ||
+          candidate.status === "uploading" ||
+          candidate.status === "confirming" ||
+          candidate.status === "paused" ||
+          candidate.status === "done" ||
+          candidate.status === "error"
+            ? candidate.status
+            : "paused";
+
+        upsertQueueItem({
+          id: candidate.id,
+          galleryId,
+          fileName: candidate.fileName,
+          progress: Math.max(0, Math.min(100, candidate.progress)),
+          status: normalizedStatus,
+          photoId: candidate.photoId,
+          errorMessage: candidate.errorMessage,
+        });
+      }
+    } catch {
+      // Ignore malformed persisted queue data.
+    }
+  }, [galleryId, upsertQueueItem]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const serializableQueue = galleryUploadQueue.filter(
+      (item) => item.status !== "done",
+    );
+
+    window.localStorage.setItem(
+      getUploadQueueStorageKey(galleryId),
+      JSON.stringify(serializableQueue),
+    );
+  }, [galleryId, galleryUploadQueue]);
+
+  const markInFlightUploadsAsPaused = (reason?: string) => {
+    for (const item of uploadQueueRef.current) {
+      if (
+        item.status === "queued" ||
+        item.status === "uploading" ||
+        item.status === "confirming"
+      ) {
+        upsertQueueItem({
+          ...item,
+          status: "paused",
+          errorMessage: reason,
+        });
+      }
+    }
+  };
+
+  const abortAllActiveRequests = () => {
+    for (const controller of activeUploadControllersRef.current) {
+      controller.abort();
+    }
+    activeUploadControllersRef.current.clear();
+  };
+
+  const pauseAllUploads = (reason?: string) => {
+    markInFlightUploadsAsPaused(reason ?? "Paused");
+    abortAllActiveRequests();
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      const hasInFlight = uploadQueueRef.current.some(
+        (item) =>
+          item.status === "queued" ||
+          item.status === "uploading" ||
+          item.status === "confirming",
+      );
+
+      if (!hasInFlight) {
+        return;
+      }
+
+      pauseAllUploads("Paused because you left the page");
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      pauseAllUploads("Paused because you left the page");
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    type ResumeSession = {
+      photoId: string;
+      filename: string;
+      mimeType: string;
+      checksum?: string | null;
+      totalSize?: string;
+      totalParts: number;
+      completedParts: Array<{ partNumber: number; etag: string }>;
+      presignedParts: Array<{ partNumber: number; url: string }>;
+    };
+
+    const syncRemoteSessions = async () => {
+      try {
+        const response = await apiRequest<{ sessions?: ResumeSession[] }>(
+          `/api/galleries/${galleryId}/photos/session`,
+          { method: "GET" },
+        );
+
+        if (cancelled) {
+          return;
+        }
+
+        const sessions = Array.isArray(response.sessions)
+          ? response.sessions
+          : [];
+        for (const session of sessions) {
+          const progress =
+            20 +
+            Math.floor(
+              ((session.completedParts.length || 0) /
+                Math.max(1, session.totalParts || 1)) *
+                65,
+            );
+
+          const existing = uploadQueueRef.current.find(
+            (item) => item.photoId === session.photoId,
+          );
+
+          upsertQueueItem({
+            id: existing?.id ?? `session-${session.photoId}`,
+            galleryId,
+            fileName: session.filename,
+            progress: Math.min(85, Math.max(5, progress)),
+            status: "paused",
+            photoId: session.photoId,
+            errorMessage: "Paused. Select files to resume.",
+          });
+        }
+      } catch {
+        // Optional enhancement; no blocking behavior.
+      }
+    };
+
+    void syncRemoteSessions();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [galleryId, upsertQueueItem]);
+
+  const computeFileChecksum = async (file: File): Promise<string> => {
+    const sample = file.slice(0, 1024 * 1024);
+    const buffer = await sample.arrayBuffer();
+    const digest = await crypto.subtle.digest("SHA-256", buffer);
+
+    return Array.from(new Uint8Array(digest))
+      .map((value) => value.toString(16).padStart(2, "0"))
+      .join("");
+  };
+
   async function uploadFiles(files: File[]) {
-    for (const file of files) {
-      const tempId = `upload-${file.name}-${Date.now()}`;
+    if (files.length === 0) {
+      return;
+    }
+
+    type PresignResponse = {
+      photoId: string;
+      totalParts: number;
+      chunkSizeBytes: number;
+      duplicate: boolean;
+      presignedParts: Array<{ partNumber: number; url: string }>;
+      partCompleteUrl: string;
+      confirmUrl: string;
+    };
+
+    type ResumeSession = {
+      photoId: string;
+      filename: string;
+      mimeType: string;
+      checksum?: string | null;
+      totalSize?: string;
+      totalParts: number;
+      completedParts: Array<{ partNumber: number; etag: string }>;
+      presignedParts: Array<{ partNumber: number; url: string }>;
+    };
+
+    const withAbortSignal = async <T,>(
+      task: (signal: AbortSignal) => Promise<T>,
+    ): Promise<T> => {
+      const controller = new AbortController();
+      activeUploadControllersRef.current.add(controller);
+      try {
+        return await task(controller.signal);
+      } finally {
+        activeUploadControllersRef.current.delete(controller);
+      }
+    };
+
+    const clearStaleQueueForPhotoId = (photoId: string, keepId?: string) => {
+      for (const item of uploadQueueRef.current) {
+        if (item.photoId === photoId && item.id !== keepId) {
+          removeQueueItem(item.id);
+          fileByQueueIdRef.current.delete(item.id);
+        }
+      }
+    };
+
+    const queuedFiles = files.map((file, index) => ({
+      file,
+      tempId: `upload-${Date.now()}-${index}-${file.name}`,
+    }));
+
+    for (const item of queuedFiles) {
+      fileByQueueIdRef.current.set(item.tempId, item.file);
       upsertQueueItem({
-        id: tempId,
-        fileName: file.name,
+        id: item.tempId,
+        galleryId,
+        fileName: item.file.name,
         progress: 5,
         status: "queued",
       });
+    }
 
+    let resumableSessions: ResumeSession[] = [];
+
+    try {
+      const response = await withAbortSignal((signal) =>
+        apiRequest<{ sessions?: ResumeSession[] }>(
+          `/api/galleries/${galleryId}/photos/session`,
+          { method: "GET", signal },
+        ),
+      );
+      resumableSessions = Array.isArray(response.sessions)
+        ? response.sessions
+        : [];
+    } catch (error) {
+      if (isAbortError(error)) {
+        markInFlightUploadsAsPaused("Paused");
+        return;
+      }
+      resumableSessions = [];
+    }
+
+    const claimResumeSession = (
+      file: File,
+      checksum: string,
+    ): ResumeSession | undefined => {
+      const indexByChecksum = resumableSessions.findIndex((session) => {
+        if (!session.checksum) {
+          return false;
+        }
+        const expectedSize = Number(session.totalSize ?? 0);
+        return session.checksum === checksum && expectedSize === file.size;
+      });
+
+      if (indexByChecksum >= 0) {
+        return resumableSessions.splice(indexByChecksum, 1)[0];
+      }
+
+      const indexByNameAndSize = resumableSessions.findIndex((session) => {
+        const expectedSize = Number(session.totalSize ?? 0);
+        return (
+          session.filename === file.name &&
+          session.mimeType === file.type &&
+          expectedSize === file.size
+        );
+      });
+
+      if (indexByNameAndSize >= 0) {
+        return resumableSessions.splice(indexByNameAndSize, 1)[0];
+      }
+
+      return undefined;
+    };
+
+    const uploadSingleFile = async (
+      file: File,
+      tempId: string,
+    ): Promise<void> => {
       try {
-        const presigned = await apiRequest<{
-          uploadId: string;
-          uploadUrl: string;
-          confirmUrl: string;
-        }>(`/api/galleries/${galleryId}/photos/presign`, {
-          method: "POST",
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            size: file.size,
-          }),
-        });
+        const checksum = await computeFileChecksum(file);
+        const resumeSession = claimResumeSession(file, checksum);
 
-        upsertQueueItem({
-          id: tempId,
-          fileName: file.name,
-          progress: 20,
-          status: "uploading",
-        });
+        let presigned: PresignResponse;
+        let alreadyCompletedParts = 0;
 
-        const uploadResponse = await fetch(presigned.uploadUrl, {
-          method: "PUT",
-          body: file,
-          headers: {
-            "Content-Type": file.type || "application/octet-stream",
-          },
-        });
-
-        if (!uploadResponse.ok) {
-          throw new Error(`Upload failed with status ${uploadResponse.status}`);
+        if (resumeSession) {
+          alreadyCompletedParts = resumeSession.completedParts.length;
+          clearStaleQueueForPhotoId(resumeSession.photoId, tempId);
+          presigned = {
+            photoId: resumeSession.photoId,
+            totalParts: resumeSession.totalParts,
+            chunkSizeBytes: DEFAULT_CHUNK_SIZE_BYTES,
+            duplicate: false,
+            presignedParts: resumeSession.presignedParts,
+            partCompleteUrl: `/api/galleries/${galleryId}/photos/part-complete`,
+            confirmUrl: `/api/galleries/${galleryId}/photos/confirm`,
+          };
+        } else {
+          presigned = await withAbortSignal((signal) =>
+            apiRequest<PresignResponse>(
+              `/api/galleries/${galleryId}/photos/presign`,
+              {
+                method: "POST",
+                body: JSON.stringify({
+                  fileName: file.name,
+                  fileType: file.type,
+                  size: file.size,
+                  checksum,
+                }),
+                signal,
+              },
+            ),
+          );
         }
 
+        if (presigned.duplicate) {
+          upsertQueueItem({
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: 100,
+            status: "done",
+            photoId: presigned.photoId,
+          });
+          fileByQueueIdRef.current.delete(tempId);
+          return;
+        }
+
+        clearStaleQueueForPhotoId(presigned.photoId, tempId);
+
+        const chunkSizeBytes =
+          Number(presigned.chunkSizeBytes) > 0
+            ? Number(presigned.chunkSizeBytes)
+            : DEFAULT_CHUNK_SIZE_BYTES;
+        const parts = presigned.presignedParts
+          .slice()
+          .sort((a, b) => a.partNumber - b.partNumber);
+        const totalParts = Math.max(
+          Number(presigned.totalParts ?? 0),
+          parts.length,
+        );
+
+        if (totalParts <= 0) {
+          throw new Error("No upload parts were returned for this file");
+        }
+
+        let completedPartsCount = alreadyCompletedParts;
+        const updateUploadProgress = () => {
+          const progress =
+            20 +
+            Math.floor(
+              (Math.min(completedPartsCount, totalParts) / totalParts) * 65,
+            );
+          upsertQueueItem({
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: Math.min(85, progress),
+            status: "uploading",
+            photoId: presigned.photoId,
+            errorMessage: undefined,
+          });
+        };
+
+        updateUploadProgress();
+
+        const partCompleteUrl =
+          presigned.partCompleteUrl ??
+          `/api/galleries/${galleryId}/photos/part-complete`;
+
+        const uploadPart = async (
+          partNumber: number,
+          url: string,
+        ): Promise<void> => {
+          const start = (partNumber - 1) * chunkSizeBytes;
+          if (start >= file.size) {
+            throw new Error(
+              `Invalid partNumber ${partNumber} for file ${file.name}`,
+            );
+          }
+          const end = Math.min(start + chunkSizeBytes, file.size);
+          const chunk = file.slice(start, end);
+
+          const uploadResponse = await withAbortSignal((signal) =>
+            fetch(url, {
+              method: "PUT",
+              body: chunk,
+              headers: {
+                "Content-Type": file.type || "application/octet-stream",
+              },
+              signal,
+            }),
+          );
+
+          if (!uploadResponse.ok) {
+            throw new Error(
+              `Upload failed with status ${uploadResponse.status}`,
+            );
+          }
+
+          const etag =
+            uploadResponse.headers.get("etag") ??
+            uploadResponse.headers.get("ETag");
+
+          if (!etag) {
+            throw new Error(
+              "Upload succeeded but response did not include an ETag header",
+            );
+          }
+
+          await withAbortSignal((signal) =>
+            apiRequest(partCompleteUrl, {
+              method: "PATCH",
+              body: JSON.stringify({
+                photoId: presigned.photoId,
+                partNumber,
+                etag,
+              }),
+              signal,
+            }),
+          );
+
+          completedPartsCount += 1;
+          updateUploadProgress();
+        };
+
+        const partQueue = [...parts];
+        const partWorkers = Array.from(
+          {
+            length: Math.max(
+              1,
+              Math.min(MAX_CONCURRENT_CHUNKS, partQueue.length || 1),
+            ),
+          },
+          async () => {
+            while (partQueue.length > 0) {
+              const part = partQueue.shift();
+              if (!part) {
+                return;
+              }
+              await uploadPart(part.partNumber, part.url);
+            }
+          },
+        );
+        await Promise.all(partWorkers);
+
         upsertQueueItem({
           id: tempId,
+          galleryId,
           fileName: file.name,
           progress: 85,
           status: "confirming",
+          photoId: presigned.photoId,
+          errorMessage: undefined,
         });
 
-        await apiRequest(presigned.confirmUrl, {
-          method: "POST",
-          body: JSON.stringify({
-            uploadId: presigned.uploadId,
-            fileName: file.name,
+        await withAbortSignal((signal) =>
+          apiRequest(presigned.confirmUrl, {
+            method: "POST",
+            body: JSON.stringify({
+              photoId: presigned.photoId,
+            }),
+            signal,
           }),
-        });
+        );
 
         upsertQueueItem({
           id: tempId,
+          galleryId,
           fileName: file.name,
           progress: 100,
           status: "done",
+          photoId: presigned.photoId,
+          errorMessage: undefined,
         });
+        fileByQueueIdRef.current.delete(tempId);
       } catch (error) {
+        const existingQueueItem = uploadQueueRef.current.find(
+          (item) => item.id === tempId,
+        );
+
+        if (isAbortError(error)) {
+          upsertQueueItem({
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: existingQueueItem?.progress ?? 0,
+            status: "paused",
+            photoId: existingQueueItem?.photoId,
+            errorMessage: "Paused. Select files to resume.",
+          });
+          return;
+        }
+
+        const errorMessage =
+          error instanceof Error ? error.message : "Upload failed";
+
         upsertQueueItem({
           id: tempId,
+          galleryId,
           fileName: file.name,
           progress: 100,
           status: "error",
+          photoId: existingQueueItem?.photoId,
+          errorMessage,
         });
-        toast.error(error instanceof Error ? error.message : "Upload failed");
+        toast.error(errorMessage);
       }
+    };
+
+    const fileQueue = [...queuedFiles];
+    const fileWorkers = Array.from(
+      {
+        length: Math.max(1, Math.min(MAX_CONCURRENT_FILES, fileQueue.length)),
+      },
+      async () => {
+        while (fileQueue.length > 0) {
+          const next = fileQueue.shift();
+          if (!next) {
+            return;
+          }
+          await uploadSingleFile(next.file, next.tempId);
+        }
+      },
+    );
+    await Promise.all(fileWorkers);
+
+    if (resumableSessions.length > 0) {
+      toast.message(
+        `${resumableSessions.length} paused upload(s) still need files selected to resume`,
+      );
     }
 
     await mutate();
   }
+
+  const retryUploadItem = async (item: UploadQueueItem): Promise<void> => {
+    const file = fileByQueueIdRef.current.get(item.id);
+    if (!file) {
+      toast.message("Select files again to resume this upload");
+      fileInputRef.current?.click();
+      return;
+    }
+
+    removeQueueItem(item.id);
+    await uploadFiles([file]);
+  };
+
+  const retryAllFailedUploads = async (): Promise<void> => {
+    const retryFiles: File[] = [];
+    let missingFiles = 0;
+
+    for (const item of failedUploads) {
+      const file = fileByQueueIdRef.current.get(item.id);
+      if (!file) {
+        missingFiles += 1;
+        continue;
+      }
+      retryFiles.push(file);
+      removeQueueItem(item.id);
+    }
+
+    if (retryFiles.length > 0) {
+      await uploadFiles(retryFiles);
+    }
+
+    if (missingFiles > 0) {
+      toast.message(
+        `${missingFiles} failed upload(s) require selecting the original files again`,
+      );
+      fileInputRef.current?.click();
+    }
+  };
+
+  const resumePausedUploads = async (): Promise<void> => {
+    const localFilesToResume: File[] = [];
+    let missingFiles = 0;
+
+    for (const item of pausedUploads) {
+      const file = fileByQueueIdRef.current.get(item.id);
+      if (!file) {
+        missingFiles += 1;
+        continue;
+      }
+
+      localFilesToResume.push(file);
+      removeQueueItem(item.id);
+    }
+
+    if (localFilesToResume.length > 0) {
+      await uploadFiles(localFilesToResume);
+    }
+
+    if (missingFiles > 0) {
+      toast.message(
+        `${missingFiles} paused upload(s) need source files. Select your full batch and resume will auto-match.`,
+      );
+      fileInputRef.current?.click();
+    }
+  };
+
+  const clearCompletedUploadsForGallery = () => {
+    for (const item of galleryUploadQueue) {
+      removeQueueItem(item.id);
+    }
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: true,
@@ -704,7 +1328,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             return (
               <div
                 key={photo.id}
-                className="group relative mb-4 break-inside-avoid overflow-hidden rounded-xl border border-border/50 bg-white shadow-sm transition-all"
+                className="group relative mb-4  overflow-hidden border border-border/50 bg-white shadow-sm transition-all break-inside-avoid rounded-xl"
               >
                 <div className="relative aspect-[3/4] bg-slate-100">
                   <Image
@@ -835,24 +1459,63 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
               </Button>
             </div>
 
-            {uploadQueue.length > 0 && (
+            {galleryUploadQueue.length > 0 && (
               <div className="mt-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     Upload Queue
                   </p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 px-2 text-[11px]"
-                    onClick={clearCompletedUploads}
-                  >
-                    Clear done
-                  </Button>
+                  <div className="flex items-center gap-1.5">
+                    {hasRunningUploads && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-6 px-2 text-[11px]"
+                        onClick={() => {
+                          pauseAllUploads("Paused manually");
+                          toast.message("Uploads paused");
+                        }}
+                      >
+                        Pause all
+                      </Button>
+                    )}
+                    {pausedUploads.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-6 px-2 text-[11px]"
+                        onClick={() => {
+                          void resumePausedUploads();
+                        }}
+                      >
+                        Resume all paused
+                      </Button>
+                    )}
+                    {failedUploads.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-6 px-2 text-[11px]"
+                        onClick={() => {
+                          void retryAllFailedUploads();
+                        }}
+                      >
+                        Retry all failed
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 px-2 text-[11px]"
+                      onClick={clearCompletedUploadsForGallery}
+                    >
+                      Clear
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="space-y-2.5">
-                  {uploadQueue.map((item) => (
+                  {galleryUploadQueue.map((item) => (
                     <div
                       key={item.id}
                       className="space-y-1.5 rounded-lg border border-border/40 bg-slate-50/50 p-2.5"
@@ -865,7 +1528,26 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                           {item.status}
                         </p>
                       </div>
+                      {item.errorMessage && (
+                        <p className="text-[11px] text-muted-foreground">
+                          {item.errorMessage}
+                        </p>
+                      )}
                       <Progress value={item.progress} className="h-1.5" />
+                      {item.status === "error" && (
+                        <div className="flex justify-end">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-6 px-2 text-[11px]"
+                            onClick={() => {
+                              void retryUploadItem(item);
+                            }}
+                          >
+                            Retry
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

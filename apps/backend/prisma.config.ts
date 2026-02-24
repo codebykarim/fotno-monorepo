@@ -16,10 +16,9 @@ for (const envPath of envPaths) {
 }
 
 export default {
-  schema: "prisma/schema.prisma",
+  schema: "../../packages/db/prisma/schema.prisma",
   migrations: {
-    path: "prisma/migrations",
-    seed: "tsx prisma/seed.ts",
+    path: "../../packages/db/prisma/migrations",
   },
   datasource: {
     url: env("DIRECT_URL"),

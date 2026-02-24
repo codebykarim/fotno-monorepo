@@ -7,6 +7,8 @@ export { updateGallery } from "./updateGallery";
 export { deleteGallery } from "./deleteGallery";
 export { reorderGalleryPhotos } from "./reorderGalleryPhotos";
 export { presignPhotoUpload } from "./presignPhotoUpload";
+export { getPhotoUploadSessions } from "./getPhotoUploadSessions";
+export { partCompletePhotoUpload } from "./partCompletePhotoUpload";
 export { confirmPhotoUpload } from "./confirmPhotoUpload";
 export { createAlbum } from "./createAlbum";
 export { updateAlbum } from "./updateAlbum";

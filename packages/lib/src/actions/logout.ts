@@ -1,6 +1,7 @@
 "use server";
 
 import { signOut } from "@workspace/lib/auth/auth-client";
+import { ErrorContext } from "better-auth/react";
 import { redirect } from "next/navigation";
 
 export const logout = async () => {
@@ -9,7 +10,7 @@ export const logout = async () => {
       onSuccess: () => {
         redirect(process.env.NEXT_PUBLIC_LANDING_URL as string);
       },
-      onError: (error: any) => {
+      onError: (error: ErrorContext) => {
         console.error("Logout error:", error);
       },
     },

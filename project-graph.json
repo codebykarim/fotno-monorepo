@@ -7,9 +7,7 @@
         "data": {
           "root": "packages/typescript-config",
           "name": "@workspace/typescript-config",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {},
             "js": {
@@ -27,9 +25,7 @@
         "data": {
           "root": "packages/eslint-config",
           "name": "@workspace/eslint-config",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {},
             "js": {
@@ -52,17 +48,10 @@
         "data": {
           "root": "apps/dashboard",
           "name": "dashboard",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "dev",
-                "build",
-                "start",
-                "lint"
-              ]
+              "NPM Scripts": ["dev", "build", "start", "lint"]
             },
             "js": {
               "packageName": "dashboard",
@@ -87,10 +76,7 @@
                   "target": "dev"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "cache": false
             },
             "build": {
@@ -110,10 +96,7 @@
                   "target": "build"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "outputs": [
                 "{projectRoot}/build/**",
                 "{projectRoot}/.vercel/**",
@@ -146,9 +129,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             }
           },
@@ -161,14 +142,10 @@
         "data": {
           "root": "packages/lib",
           "name": "@workspace/lib",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "lint"
-              ]
+              "NPM Scripts": ["lint"]
             },
             "js": {
               "packageName": "@workspace/lib",
@@ -192,9 +169,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             }
           },
@@ -207,9 +182,7 @@
         "data": {
           "root": "apps/backend",
           "name": "backend",
-          "tags": [
-            "npm:public"
-          ],
+          "tags": ["npm:public"],
           "metadata": {
             "targetGroups": {
               "NPM Scripts": [
@@ -258,10 +231,7 @@
                   "target": "build"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "outputs": [
                 "{projectRoot}/build/**",
                 "{projectRoot}/.vercel/**",
@@ -288,10 +258,7 @@
                   "target": "dev"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "cache": false
             },
             "lint": {
@@ -300,14 +267,12 @@
                 "script": "lint"
               },
               "metadata": {
-                "scriptContent": "eslint . --ext .ts",
+                "scriptContent": "eslint .",
                 "runCommand": "pnpm run lint"
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             },
             "test": {
@@ -344,17 +309,10 @@
         "data": {
           "root": "apps/gallery",
           "name": "gallery",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "dev",
-                "build",
-                "start",
-                "lint"
-              ]
+              "NPM Scripts": ["dev", "build", "start", "lint"]
             },
             "js": {
               "packageName": "gallery",
@@ -379,10 +337,7 @@
                   "target": "dev"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "cache": false
             },
             "build": {
@@ -402,10 +357,7 @@
                   "target": "build"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "outputs": [
                 "{projectRoot}/build/**",
                 "{projectRoot}/.vercel/**",
@@ -438,9 +390,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             }
           },
@@ -453,17 +403,10 @@
         "data": {
           "root": "apps/landing",
           "name": "landing",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "dev",
-                "build",
-                "start",
-                "lint"
-              ]
+              "NPM Scripts": ["dev", "build", "start", "lint"]
             },
             "js": {
               "packageName": "landing",
@@ -488,10 +431,7 @@
                   "target": "dev"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "cache": false
             },
             "build": {
@@ -511,10 +451,7 @@
                   "target": "build"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "outputs": [
                 "{projectRoot}/build/**",
                 "{projectRoot}/.vercel/**",
@@ -547,9 +484,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             }
           },
@@ -562,15 +497,10 @@
         "data": {
           "root": "packages/ui",
           "name": "@workspace/ui",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "lint",
-                "check-types"
-              ]
+              "NPM Scripts": ["lint", "check-types"]
             },
             "js": {
               "packageName": "@workspace/ui",
@@ -597,9 +527,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             },
             "check-types": {
@@ -613,9 +541,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^check-types"
-              ],
+              "dependsOn": ["^check-types"],
               "cache": true
             }
           },
@@ -628,17 +554,10 @@
         "data": {
           "root": "apps/auth",
           "name": "auth",
-          "tags": [
-            "npm:private"
-          ],
+          "tags": ["npm:private"],
           "metadata": {
             "targetGroups": {
-              "NPM Scripts": [
-                "dev",
-                "build",
-                "start",
-                "lint"
-              ]
+              "NPM Scripts": ["dev", "build", "start", "lint"]
             },
             "js": {
               "packageName": "auth",
@@ -663,10 +582,7 @@
                   "target": "dev"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "cache": false
             },
             "build": {
@@ -686,10 +602,7 @@
                   "target": "build"
                 }
               ],
-              "inputs": [
-                "{projectRoot}/**/*",
-                "{projectRoot}/.env*"
-              ],
+              "inputs": ["{projectRoot}/**/*", "{projectRoot}/.env*"],
               "outputs": [
                 "{projectRoot}/build/**",
                 "{projectRoot}/.vercel/**",
@@ -722,9 +635,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^lint"
-              ],
+              "dependsOn": ["^lint"],
               "cache": true
             }
           },

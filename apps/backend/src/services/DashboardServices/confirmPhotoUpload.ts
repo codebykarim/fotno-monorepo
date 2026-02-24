@@ -1,7 +1,15 @@
 import { db } from "./_shared";
-import { enqueueProcessPhoto } from "../../queues/photoQueue";
-import { addStorage } from "../StorageServices";
 import { getPresignedDownloadUrl } from "../../utils/s3";
+import { uploadServiceRequest } from "./uploadServiceClient";
+
+type ConfirmUploadResponse = {
+  success: boolean;
+  photo: {
+    id: string;
+    status: string;
+    originalSize: string;
+  };
+};
 
 export const confirmPhotoUpload = async (
   userId: string,
@@ -16,41 +24,46 @@ export const confirmPhotoUpload = async (
     return { error: "Gallery not found", status: 404 as const };
   }
 
-  const uploadId = String(uploadIdRaw ?? "").trim();
-  if (!uploadId) {
-    return { error: "uploadId is required", status: 400 as const };
+  const photoId = String(uploadIdRaw ?? "").trim();
+  if (!photoId) {
+    return { error: "photoId is required", status: 400 as const };
   }
 
-  const photo = await db.photo.findFirst({
-    where: { id: uploadId, galleryId },
+  const confirmResult = await uploadServiceRequest<ConfirmUploadResponse>(
+    userId,
+    "/api/upload/confirm",
+    {
+      method: "POST",
+      body: JSON.stringify({ photoId }),
+    },
+  );
+
+  if (!confirmResult.ok) {
+    return {
+      error: confirmResult.error,
+      status: confirmResult.status,
+    };
+  }
+
+  const photo = await db.photo.findUnique({
+    where: { id: confirmResult.data.photo.id },
     select: {
       id: true,
+      galleryId: true,
       order: true,
-      originalSize: true,
       s3Key: true,
       thumbnailKey: true,
       previewKey: true,
+      width: true,
+      height: true,
+      loved: true,
+      createdAt: true,
     },
   });
-  if (!photo) {
+
+  if (!photo || photo.galleryId !== galleryId) {
     return { error: "Upload not found", status: 404 as const };
   }
-
-  await db.photo.update({
-    where: { id: photo.id },
-    data: { status: "uploaded" },
-  });
-
-  await addStorage(
-    userId,
-    BigInt(photo.originalSize ?? 0),
-    "upload",
-    photo.id,
-  );
-
-  void enqueueProcessPhoto(photo.id).catch((error) => {
-    console.error("Failed to enqueue process-photo job", error);
-  });
 
   const thumbnailObjectKey = photo.thumbnailKey ?? photo.previewKey ?? null;
   const previewObjectKey = photo.previewKey ?? photo.thumbnailKey ?? null;
@@ -75,11 +88,14 @@ export const confirmPhotoUpload = async (
       previewUrl: resolvedPreviewUrl,
       originalUrl,
       order: photo.order,
-      width: 1200,
-      height: 1600,
-      loved: false,
-      createdAt: new Date().toISOString(),
+      width: photo.width ?? 1200,
+      height: photo.height ?? 1600,
+      loved: Boolean(photo.loved),
+      createdAt:
+        photo.createdAt instanceof Date
+          ? photo.createdAt.toISOString()
+          : String(photo.createdAt),
     },
-    status: 201 as const,
+    status: 200 as const,
   };
 };

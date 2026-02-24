@@ -1,7 +1,7 @@
 import { auth } from "../../auth";
 import AppError from "../../errors/AppError";
-import prisma from "../../../prisma";
-import { Payment, PlanType } from "@prisma/client";
+import { prisma } from "@workspace/db";
+import { Payment, PlanType } from "@workspace/db";
 import { PLAN_STORAGE_LIMITS } from "../../constants/storage";
 
 interface Request {

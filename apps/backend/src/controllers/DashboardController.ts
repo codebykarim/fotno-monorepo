@@ -99,12 +99,43 @@ export const presignPhotoUploadController = async (req: Request, res: Response) 
   return res.status(200).json(result);
 };
 
+export const getPhotoUploadSessionsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.getPhotoUploadSessions(userId, req.params.id);
+  if ("error" in result) {
+    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+  }
+
+  return res.status(asStatusCode(result.status, 200)).json({ sessions: result.sessions });
+};
+
+export const partCompletePhotoUploadController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.partCompletePhotoUpload(
+    userId,
+    req.params.id,
+    req.body,
+  );
+
+  if ("error" in result) {
+    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+  }
+
+  return res.status(200).json(result);
+};
+
 export const confirmPhotoUploadController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
   const result = await DashboardService.confirmPhotoUpload(
     userId,
     req.params.id,
-    req.body?.uploadId,
+    req.body?.photoId ?? req.body?.uploadId,
   );
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });

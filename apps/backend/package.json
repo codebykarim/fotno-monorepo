@@ -10,9 +10,8 @@
     "dev": "sh -c 'pnpm run dev:server & pnpm run dev:worker:photo; wait'",
     "worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
     "worker:reconcile-storage": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/reconcileStorageWorker.ts",
-    "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma generate"
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +39,7 @@
     "@aws-sdk/client-s3": "^3.888.0",
     "@aws-sdk/s3-request-presigner": "^3.888.0",
     "@prisma/adapter-pg": "^7.4.1",
+    "@workspace/db": "workspace:*",
     "@hapi/boom": "^10.0.1",
     "@supabase/supabase-js": "^2.39.3",
     "@types/body-parser": "^1.19.5",
@@ -76,6 +76,6 @@
     "zod": "^3.24.2"
   },
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "schema": "../../packages/db/prisma/schema.prisma"
   }
 }

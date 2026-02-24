@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AppError from "../errors/AppError";
 import controllerReturn from "../utils/successReturn";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 
 export const checkEmailExists = async (req: Request, res: Response) => {
   try {

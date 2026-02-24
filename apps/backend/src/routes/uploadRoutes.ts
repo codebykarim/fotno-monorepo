@@ -5,7 +5,7 @@ import { z } from "zod";
 import AppError from "../errors/AppError";
 import requireJwtPhotographer from "../middleware/requireJwtPhotographer";
 import storageGuard from "../middleware/storage-guard";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 import { enqueuePhotoCleanup, enqueueProcessPhoto } from "../queues/photoQueue";
 import { addStorage, removeStorage } from "../services/StorageServices";
 import { getPresignedUploadUrl, s3Config } from "../utils/s3";

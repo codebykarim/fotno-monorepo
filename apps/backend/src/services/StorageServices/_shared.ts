@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import prisma from "../../../prisma";
+import { prisma } from "@workspace/db";
 import { PLAN_STORAGE_LIMITS } from "../../constants/storage";
 
 export const resend = process.env.RESEND_API_KEY

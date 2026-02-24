@@ -1,7 +1,7 @@
 import "../bootstrap";
 import sharp from "sharp";
 import type { Job } from "bull";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 import {
   cleanupQueue,
   enqueueAiAnalyzePhoto,

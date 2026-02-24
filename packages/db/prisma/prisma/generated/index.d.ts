@@ -54,6 +54,11 @@ export type Gallery = $Result.DefaultSelection<Prisma.$GalleryPayload>
  */
 export type Photo = $Result.DefaultSelection<Prisma.$PhotoPayload>
 /**
+ * Model UploadSession
+ * 
+ */
+export type UploadSession = $Result.DefaultSelection<Prisma.$UploadSessionPayload>
+/**
  * Model StorageEvent
  * 
  */
@@ -137,6 +142,16 @@ export const ContactMethod: {
 
 export type ContactMethod = (typeof ContactMethod)[keyof typeof ContactMethod]
 
+
+export const UploadSessionStatus: {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  ABORTED: 'ABORTED',
+  EXPIRED: 'EXPIRED'
+};
+
+export type UploadSessionStatus = (typeof UploadSessionStatus)[keyof typeof UploadSessionStatus]
+
 }
 
 export type Plan = $Enums.Plan
@@ -162,6 +177,10 @@ export const PhotographyLevel: typeof $Enums.PhotographyLevel
 export type ContactMethod = $Enums.ContactMethod
 
 export const ContactMethod: typeof $Enums.ContactMethod
+
+export type UploadSessionStatus = $Enums.UploadSessionStatus
+
+export const UploadSessionStatus: typeof $Enums.UploadSessionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -359,6 +378,16 @@ export class PrismaClient<
     * ```
     */
   get photo(): Prisma.PhotoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.uploadSession`: Exposes CRUD operations for the **UploadSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UploadSessions
+    * const uploadSessions = await prisma.uploadSession.findMany()
+    * ```
+    */
+  get uploadSession(): Prisma.UploadSessionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.storageEvent`: Exposes CRUD operations for the **StorageEvent** model.
@@ -851,6 +880,7 @@ export namespace Prisma {
     UserOnboarding: 'UserOnboarding',
     Gallery: 'Gallery',
     Photo: 'Photo',
+    UploadSession: 'UploadSession',
     StorageEvent: 'StorageEvent',
     Client: 'Client',
     GalleryClient: 'GalleryClient',
@@ -871,7 +901,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1467,6 +1497,80 @@ export namespace Prisma {
           }
         }
       }
+      UploadSession: {
+        payload: Prisma.$UploadSessionPayload<ExtArgs>
+        fields: Prisma.UploadSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UploadSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UploadSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.UploadSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UploadSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          findMany: {
+            args: Prisma.UploadSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
+          }
+          create: {
+            args: Prisma.UploadSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          createMany: {
+            args: Prisma.UploadSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UploadSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.UploadSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          update: {
+            args: Prisma.UploadSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.UploadSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UploadSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UploadSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.UploadSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.UploadSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUploadSession>
+          }
+          groupBy: {
+            args: Prisma.UploadSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UploadSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UploadSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<UploadSessionCountAggregateOutputType> | number
+          }
+        }
+      }
       StorageEvent: {
         payload: Prisma.$StorageEventPayload<ExtArgs>
         fields: Prisma.StorageEventFieldRefs
@@ -1953,6 +2057,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingOmit
     gallery?: GalleryOmit
     photo?: PhotoOmit
+    uploadSession?: UploadSessionOmit
     storageEvent?: StorageEventOmit
     client?: ClientOmit
     galleryClient?: GalleryClientOmit
@@ -2279,12 +2384,14 @@ export namespace Prisma {
   export type UserAvgAggregateOutputType = {
     storageUsed: number | null
     storageLimit: number | null
+    storageReserved: number | null
     overageBytes: number | null
   }
 
   export type UserSumAggregateOutputType = {
     storageUsed: bigint | null
     storageLimit: bigint | null
+    storageReserved: bigint | null
     overageBytes: bigint | null
   }
 
@@ -2295,6 +2402,7 @@ export namespace Prisma {
     plan: $Enums.Plan | null
     storageUsed: bigint | null
     storageLimit: bigint | null
+    storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
     stripeCustomerId: string | null
@@ -2320,6 +2428,7 @@ export namespace Prisma {
     plan: $Enums.Plan | null
     storageUsed: bigint | null
     storageLimit: bigint | null
+    storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
     stripeCustomerId: string | null
@@ -2345,6 +2454,7 @@ export namespace Prisma {
     plan: number
     storageUsed: number
     storageLimit: number
+    storageReserved: number
     overageBytes: number
     overageResetAt: number
     stripeCustomerId: number
@@ -2368,12 +2478,14 @@ export namespace Prisma {
   export type UserAvgAggregateInputType = {
     storageUsed?: true
     storageLimit?: true
+    storageReserved?: true
     overageBytes?: true
   }
 
   export type UserSumAggregateInputType = {
     storageUsed?: true
     storageLimit?: true
+    storageReserved?: true
     overageBytes?: true
   }
 
@@ -2384,6 +2496,7 @@ export namespace Prisma {
     plan?: true
     storageUsed?: true
     storageLimit?: true
+    storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
     stripeCustomerId?: true
@@ -2409,6 +2522,7 @@ export namespace Prisma {
     plan?: true
     storageUsed?: true
     storageLimit?: true
+    storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
     stripeCustomerId?: true
@@ -2434,6 +2548,7 @@ export namespace Prisma {
     plan?: true
     storageUsed?: true
     storageLimit?: true
+    storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
     stripeCustomerId?: true
@@ -2546,6 +2661,7 @@ export namespace Prisma {
     plan: $Enums.Plan
     storageUsed: bigint
     storageLimit: bigint
+    storageReserved: bigint
     overageBytes: bigint
     overageResetAt: Date | null
     stripeCustomerId: string | null
@@ -2590,6 +2706,7 @@ export namespace Prisma {
     plan?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
     stripeCustomerId?: boolean
@@ -2623,6 +2740,7 @@ export namespace Prisma {
     plan?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
     stripeCustomerId?: boolean
@@ -2648,6 +2766,7 @@ export namespace Prisma {
     plan?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
     stripeCustomerId?: boolean
@@ -2673,6 +2792,7 @@ export namespace Prisma {
     plan?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
     stripeCustomerId?: boolean
@@ -2691,7 +2811,7 @@ export namespace Prisma {
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "stripeSubId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "stripeSubId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -2723,6 +2843,7 @@ export namespace Prisma {
       plan: $Enums.Plan
       storageUsed: bigint
       storageLimit: bigint
+      storageReserved: bigint
       overageBytes: bigint
       overageResetAt: Date | null
       stripeCustomerId: string | null
@@ -3175,6 +3296,7 @@ export namespace Prisma {
     readonly plan: FieldRef<"User", 'Plan'>
     readonly storageUsed: FieldRef<"User", 'BigInt'>
     readonly storageLimit: FieldRef<"User", 'BigInt'>
+    readonly storageReserved: FieldRef<"User", 'BigInt'>
     readonly overageBytes: FieldRef<"User", 'BigInt'>
     readonly overageResetAt: FieldRef<"User", 'DateTime'>
     readonly stripeCustomerId: FieldRef<"User", 'String'>
@@ -10708,6 +10830,7 @@ export namespace Prisma {
   export type PhotoMinAggregateOutputType = {
     id: string | null
     galleryId: string | null
+    checksum: string | null
     s3Key: string | null
     s3Bucket: string | null
     originalFilename: string | null
@@ -10726,12 +10849,14 @@ export namespace Prisma {
     thumbnailKey: string | null
     previewKey: string | null
     status: string | null
+    processedAt: Date | null
     createdAt: Date | null
   }
 
   export type PhotoMaxAggregateOutputType = {
     id: string | null
     galleryId: string | null
+    checksum: string | null
     s3Key: string | null
     s3Bucket: string | null
     originalFilename: string | null
@@ -10750,12 +10875,14 @@ export namespace Prisma {
     thumbnailKey: string | null
     previewKey: string | null
     status: string | null
+    processedAt: Date | null
     createdAt: Date | null
   }
 
   export type PhotoCountAggregateOutputType = {
     id: number
     galleryId: number
+    checksum: number
     s3Key: number
     s3Bucket: number
     originalFilename: number
@@ -10775,6 +10902,7 @@ export namespace Prisma {
     thumbnailKey: number
     previewKey: number
     status: number
+    processedAt: number
     createdAt: number
     _all: number
   }
@@ -10805,6 +10933,7 @@ export namespace Prisma {
   export type PhotoMinAggregateInputType = {
     id?: true
     galleryId?: true
+    checksum?: true
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
@@ -10823,12 +10952,14 @@ export namespace Prisma {
     thumbnailKey?: true
     previewKey?: true
     status?: true
+    processedAt?: true
     createdAt?: true
   }
 
   export type PhotoMaxAggregateInputType = {
     id?: true
     galleryId?: true
+    checksum?: true
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
@@ -10847,12 +10978,14 @@ export namespace Prisma {
     thumbnailKey?: true
     previewKey?: true
     status?: true
+    processedAt?: true
     createdAt?: true
   }
 
   export type PhotoCountAggregateInputType = {
     id?: true
     galleryId?: true
+    checksum?: true
     s3Key?: true
     s3Bucket?: true
     originalFilename?: true
@@ -10872,6 +11005,7 @@ export namespace Prisma {
     thumbnailKey?: true
     previewKey?: true
     status?: true
+    processedAt?: true
     createdAt?: true
     _all?: true
   }
@@ -10965,6 +11099,7 @@ export namespace Prisma {
   export type PhotoGroupByOutputType = {
     id: string
     galleryId: string
+    checksum: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -10984,6 +11119,7 @@ export namespace Prisma {
     thumbnailKey: string | null
     previewKey: string | null
     status: string
+    processedAt: Date | null
     createdAt: Date
     _count: PhotoCountAggregateOutputType | null
     _avg: PhotoAvgAggregateOutputType | null
@@ -11009,6 +11145,7 @@ export namespace Prisma {
   export type PhotoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
+    checksum?: boolean
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
@@ -11028,9 +11165,11 @@ export namespace Prisma {
     thumbnailKey?: boolean
     previewKey?: boolean
     status?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
+    uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
@@ -11038,6 +11177,7 @@ export namespace Prisma {
   export type PhotoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
+    checksum?: boolean
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
@@ -11057,6 +11197,7 @@ export namespace Prisma {
     thumbnailKey?: boolean
     previewKey?: boolean
     status?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
@@ -11064,6 +11205,7 @@ export namespace Prisma {
   export type PhotoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
+    checksum?: boolean
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
@@ -11083,6 +11225,7 @@ export namespace Prisma {
     thumbnailKey?: boolean
     previewKey?: boolean
     status?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
@@ -11090,6 +11233,7 @@ export namespace Prisma {
   export type PhotoSelectScalar = {
     id?: boolean
     galleryId?: boolean
+    checksum?: boolean
     s3Key?: boolean
     s3Bucket?: boolean
     originalFilename?: boolean
@@ -11109,13 +11253,15 @@ export namespace Prisma {
     thumbnailKey?: boolean
     previewKey?: boolean
     status?: boolean
+    processedAt?: boolean
     createdAt?: boolean
   }
 
-  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "createdAt", ExtArgs["result"]["photo"]>
+  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "checksum" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "processedAt" | "createdAt", ExtArgs["result"]["photo"]>
   export type PhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
+    uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -11131,11 +11277,13 @@ export namespace Prisma {
     objects: {
       gallery: Prisma.$GalleryPayload<ExtArgs>
       usedAsCoverIn: Prisma.$GalleryPayload<ExtArgs>[]
+      uploadSession: Prisma.$UploadSessionPayload<ExtArgs> | null
       albumPhotos: Prisma.$AlbumPhotoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       galleryId: string
+      checksum: string | null
       s3Key: string
       s3Bucket: string
       originalFilename: string
@@ -11155,6 +11303,7 @@ export namespace Prisma {
       thumbnailKey: string | null
       previewKey: string | null
       status: string
+      processedAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["photo"]>
     composites: {}
@@ -11552,6 +11701,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     usedAsCoverIn<T extends Photo$usedAsCoverInArgs<ExtArgs> = {}>(args?: Subset<T, Photo$usedAsCoverInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    uploadSession<T extends Photo$uploadSessionArgs<ExtArgs> = {}>(args?: Subset<T, Photo$uploadSessionArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     albumPhotos<T extends Photo$albumPhotosArgs<ExtArgs> = {}>(args?: Subset<T, Photo$albumPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11584,6 +11734,7 @@ export namespace Prisma {
   interface PhotoFieldRefs {
     readonly id: FieldRef<"Photo", 'String'>
     readonly galleryId: FieldRef<"Photo", 'String'>
+    readonly checksum: FieldRef<"Photo", 'String'>
     readonly s3Key: FieldRef<"Photo", 'String'>
     readonly s3Bucket: FieldRef<"Photo", 'String'>
     readonly originalFilename: FieldRef<"Photo", 'String'>
@@ -11603,6 +11754,7 @@ export namespace Prisma {
     readonly thumbnailKey: FieldRef<"Photo", 'String'>
     readonly previewKey: FieldRef<"Photo", 'String'>
     readonly status: FieldRef<"Photo", 'String'>
+    readonly processedAt: FieldRef<"Photo", 'DateTime'>
     readonly createdAt: FieldRef<"Photo", 'DateTime'>
   }
     
@@ -12024,6 +12176,25 @@ export namespace Prisma {
   }
 
   /**
+   * Photo.uploadSession
+   */
+  export type Photo$uploadSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    where?: UploadSessionWhereInput
+  }
+
+  /**
    * Photo.albumPhotos
    */
   export type Photo$albumPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12063,6 +12234,1176 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PhotoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UploadSession
+   */
+
+  export type AggregateUploadSession = {
+    _count: UploadSessionCountAggregateOutputType | null
+    _avg: UploadSessionAvgAggregateOutputType | null
+    _sum: UploadSessionSumAggregateOutputType | null
+    _min: UploadSessionMinAggregateOutputType | null
+    _max: UploadSessionMaxAggregateOutputType | null
+  }
+
+  export type UploadSessionAvgAggregateOutputType = {
+    totalParts: number | null
+    totalSize: number | null
+  }
+
+  export type UploadSessionSumAggregateOutputType = {
+    totalParts: number | null
+    totalSize: bigint | null
+  }
+
+  export type UploadSessionMinAggregateOutputType = {
+    id: string | null
+    photoId: string | null
+    s3UploadId: string | null
+    s3Key: string | null
+    totalParts: number | null
+    totalSize: bigint | null
+    status: $Enums.UploadSessionStatus | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UploadSessionMaxAggregateOutputType = {
+    id: string | null
+    photoId: string | null
+    s3UploadId: string | null
+    s3Key: string | null
+    totalParts: number | null
+    totalSize: bigint | null
+    status: $Enums.UploadSessionStatus | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UploadSessionCountAggregateOutputType = {
+    id: number
+    photoId: number
+    s3UploadId: number
+    s3Key: number
+    totalParts: number
+    totalSize: number
+    completedParts: number
+    status: number
+    expiresAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UploadSessionAvgAggregateInputType = {
+    totalParts?: true
+    totalSize?: true
+  }
+
+  export type UploadSessionSumAggregateInputType = {
+    totalParts?: true
+    totalSize?: true
+  }
+
+  export type UploadSessionMinAggregateInputType = {
+    id?: true
+    photoId?: true
+    s3UploadId?: true
+    s3Key?: true
+    totalParts?: true
+    totalSize?: true
+    status?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UploadSessionMaxAggregateInputType = {
+    id?: true
+    photoId?: true
+    s3UploadId?: true
+    s3Key?: true
+    totalParts?: true
+    totalSize?: true
+    status?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UploadSessionCountAggregateInputType = {
+    id?: true
+    photoId?: true
+    s3UploadId?: true
+    s3Key?: true
+    totalParts?: true
+    totalSize?: true
+    completedParts?: true
+    status?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UploadSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadSession to aggregate.
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadSessions to fetch.
+     */
+    orderBy?: UploadSessionOrderByWithRelationInput | UploadSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UploadSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UploadSessions
+    **/
+    _count?: true | UploadSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UploadSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UploadSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UploadSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UploadSessionMaxAggregateInputType
+  }
+
+  export type GetUploadSessionAggregateType<T extends UploadSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateUploadSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUploadSession[P]>
+      : GetScalarType<T[P], AggregateUploadSession[P]>
+  }
+
+
+
+
+  export type UploadSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadSessionWhereInput
+    orderBy?: UploadSessionOrderByWithAggregationInput | UploadSessionOrderByWithAggregationInput[]
+    by: UploadSessionScalarFieldEnum[] | UploadSessionScalarFieldEnum
+    having?: UploadSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UploadSessionCountAggregateInputType | true
+    _avg?: UploadSessionAvgAggregateInputType
+    _sum?: UploadSessionSumAggregateInputType
+    _min?: UploadSessionMinAggregateInputType
+    _max?: UploadSessionMaxAggregateInputType
+  }
+
+  export type UploadSessionGroupByOutputType = {
+    id: string
+    photoId: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint
+    completedParts: JsonValue
+    status: $Enums.UploadSessionStatus
+    expiresAt: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: UploadSessionCountAggregateOutputType | null
+    _avg: UploadSessionAvgAggregateOutputType | null
+    _sum: UploadSessionSumAggregateOutputType | null
+    _min: UploadSessionMinAggregateOutputType | null
+    _max: UploadSessionMaxAggregateOutputType | null
+  }
+
+  type GetUploadSessionGroupByPayload<T extends UploadSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UploadSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UploadSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UploadSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], UploadSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UploadSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    s3UploadId?: boolean
+    s3Key?: boolean
+    totalParts?: boolean
+    totalSize?: boolean
+    completedParts?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadSession"]>
+
+  export type UploadSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    s3UploadId?: boolean
+    s3Key?: boolean
+    totalParts?: boolean
+    totalSize?: boolean
+    completedParts?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadSession"]>
+
+  export type UploadSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    s3UploadId?: boolean
+    s3Key?: boolean
+    totalParts?: boolean
+    totalSize?: boolean
+    completedParts?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadSession"]>
+
+  export type UploadSessionSelectScalar = {
+    id?: boolean
+    photoId?: boolean
+    s3UploadId?: boolean
+    s3Key?: boolean
+    totalParts?: boolean
+    totalSize?: boolean
+    completedParts?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UploadSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "photoId" | "s3UploadId" | "s3Key" | "totalParts" | "totalSize" | "completedParts" | "status" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["uploadSession"]>
+  export type UploadSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type UploadSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type UploadSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+
+  export type $UploadSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UploadSession"
+    objects: {
+      photo: Prisma.$PhotoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      photoId: string
+      s3UploadId: string
+      s3Key: string
+      totalParts: number
+      totalSize: bigint
+      completedParts: Prisma.JsonValue
+      status: $Enums.UploadSessionStatus
+      expiresAt: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["uploadSession"]>
+    composites: {}
+  }
+
+  type UploadSessionGetPayload<S extends boolean | null | undefined | UploadSessionDefaultArgs> = $Result.GetResult<Prisma.$UploadSessionPayload, S>
+
+  type UploadSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UploadSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UploadSessionCountAggregateInputType | true
+    }
+
+  export interface UploadSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UploadSession'], meta: { name: 'UploadSession' } }
+    /**
+     * Find zero or one UploadSession that matches the filter.
+     * @param {UploadSessionFindUniqueArgs} args - Arguments to find a UploadSession
+     * @example
+     * // Get one UploadSession
+     * const uploadSession = await prisma.uploadSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UploadSessionFindUniqueArgs>(args: SelectSubset<T, UploadSessionFindUniqueArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UploadSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UploadSessionFindUniqueOrThrowArgs} args - Arguments to find a UploadSession
+     * @example
+     * // Get one UploadSession
+     * const uploadSession = await prisma.uploadSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UploadSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, UploadSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionFindFirstArgs} args - Arguments to find a UploadSession
+     * @example
+     * // Get one UploadSession
+     * const uploadSession = await prisma.uploadSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UploadSessionFindFirstArgs>(args?: SelectSubset<T, UploadSessionFindFirstArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionFindFirstOrThrowArgs} args - Arguments to find a UploadSession
+     * @example
+     * // Get one UploadSession
+     * const uploadSession = await prisma.uploadSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UploadSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, UploadSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UploadSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UploadSessions
+     * const uploadSessions = await prisma.uploadSession.findMany()
+     * 
+     * // Get first 10 UploadSessions
+     * const uploadSessions = await prisma.uploadSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const uploadSessionWithIdOnly = await prisma.uploadSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UploadSessionFindManyArgs>(args?: SelectSubset<T, UploadSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UploadSession.
+     * @param {UploadSessionCreateArgs} args - Arguments to create a UploadSession.
+     * @example
+     * // Create one UploadSession
+     * const UploadSession = await prisma.uploadSession.create({
+     *   data: {
+     *     // ... data to create a UploadSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends UploadSessionCreateArgs>(args: SelectSubset<T, UploadSessionCreateArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UploadSessions.
+     * @param {UploadSessionCreateManyArgs} args - Arguments to create many UploadSessions.
+     * @example
+     * // Create many UploadSessions
+     * const uploadSession = await prisma.uploadSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UploadSessionCreateManyArgs>(args?: SelectSubset<T, UploadSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UploadSessions and returns the data saved in the database.
+     * @param {UploadSessionCreateManyAndReturnArgs} args - Arguments to create many UploadSessions.
+     * @example
+     * // Create many UploadSessions
+     * const uploadSession = await prisma.uploadSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UploadSessions and only return the `id`
+     * const uploadSessionWithIdOnly = await prisma.uploadSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UploadSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, UploadSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UploadSession.
+     * @param {UploadSessionDeleteArgs} args - Arguments to delete one UploadSession.
+     * @example
+     * // Delete one UploadSession
+     * const UploadSession = await prisma.uploadSession.delete({
+     *   where: {
+     *     // ... filter to delete one UploadSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UploadSessionDeleteArgs>(args: SelectSubset<T, UploadSessionDeleteArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UploadSession.
+     * @param {UploadSessionUpdateArgs} args - Arguments to update one UploadSession.
+     * @example
+     * // Update one UploadSession
+     * const uploadSession = await prisma.uploadSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UploadSessionUpdateArgs>(args: SelectSubset<T, UploadSessionUpdateArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UploadSessions.
+     * @param {UploadSessionDeleteManyArgs} args - Arguments to filter UploadSessions to delete.
+     * @example
+     * // Delete a few UploadSessions
+     * const { count } = await prisma.uploadSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UploadSessionDeleteManyArgs>(args?: SelectSubset<T, UploadSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UploadSessions
+     * const uploadSession = await prisma.uploadSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UploadSessionUpdateManyArgs>(args: SelectSubset<T, UploadSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadSessions and returns the data updated in the database.
+     * @param {UploadSessionUpdateManyAndReturnArgs} args - Arguments to update many UploadSessions.
+     * @example
+     * // Update many UploadSessions
+     * const uploadSession = await prisma.uploadSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UploadSessions and only return the `id`
+     * const uploadSessionWithIdOnly = await prisma.uploadSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UploadSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, UploadSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UploadSession.
+     * @param {UploadSessionUpsertArgs} args - Arguments to update or create a UploadSession.
+     * @example
+     * // Update or create a UploadSession
+     * const uploadSession = await prisma.uploadSession.upsert({
+     *   create: {
+     *     // ... data to create a UploadSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UploadSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UploadSessionUpsertArgs>(args: SelectSubset<T, UploadSessionUpsertArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UploadSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionCountArgs} args - Arguments to filter UploadSessions to count.
+     * @example
+     * // Count the number of UploadSessions
+     * const count = await prisma.uploadSession.count({
+     *   where: {
+     *     // ... the filter for the UploadSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends UploadSessionCountArgs>(
+      args?: Subset<T, UploadSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UploadSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UploadSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UploadSessionAggregateArgs>(args: Subset<T, UploadSessionAggregateArgs>): Prisma.PrismaPromise<GetUploadSessionAggregateType<T>>
+
+    /**
+     * Group by UploadSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UploadSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UploadSessionGroupByArgs['orderBy'] }
+        : { orderBy?: UploadSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UploadSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUploadSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UploadSession model
+   */
+  readonly fields: UploadSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UploadSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UploadSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    photo<T extends PhotoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhotoDefaultArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UploadSession model
+   */
+  interface UploadSessionFieldRefs {
+    readonly id: FieldRef<"UploadSession", 'String'>
+    readonly photoId: FieldRef<"UploadSession", 'String'>
+    readonly s3UploadId: FieldRef<"UploadSession", 'String'>
+    readonly s3Key: FieldRef<"UploadSession", 'String'>
+    readonly totalParts: FieldRef<"UploadSession", 'Int'>
+    readonly totalSize: FieldRef<"UploadSession", 'BigInt'>
+    readonly completedParts: FieldRef<"UploadSession", 'Json'>
+    readonly status: FieldRef<"UploadSession", 'UploadSessionStatus'>
+    readonly expiresAt: FieldRef<"UploadSession", 'DateTime'>
+    readonly createdAt: FieldRef<"UploadSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"UploadSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UploadSession findUnique
+   */
+  export type UploadSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadSession to fetch.
+     */
+    where: UploadSessionWhereUniqueInput
+  }
+
+  /**
+   * UploadSession findUniqueOrThrow
+   */
+  export type UploadSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadSession to fetch.
+     */
+    where: UploadSessionWhereUniqueInput
+  }
+
+  /**
+   * UploadSession findFirst
+   */
+  export type UploadSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadSession to fetch.
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadSessions to fetch.
+     */
+    orderBy?: UploadSessionOrderByWithRelationInput | UploadSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadSessions.
+     */
+    cursor?: UploadSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadSessions.
+     */
+    distinct?: UploadSessionScalarFieldEnum | UploadSessionScalarFieldEnum[]
+  }
+
+  /**
+   * UploadSession findFirstOrThrow
+   */
+  export type UploadSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadSession to fetch.
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadSessions to fetch.
+     */
+    orderBy?: UploadSessionOrderByWithRelationInput | UploadSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadSessions.
+     */
+    cursor?: UploadSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadSessions.
+     */
+    distinct?: UploadSessionScalarFieldEnum | UploadSessionScalarFieldEnum[]
+  }
+
+  /**
+   * UploadSession findMany
+   */
+  export type UploadSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadSessions to fetch.
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadSessions to fetch.
+     */
+    orderBy?: UploadSessionOrderByWithRelationInput | UploadSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UploadSessions.
+     */
+    cursor?: UploadSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadSessions.
+     */
+    skip?: number
+    distinct?: UploadSessionScalarFieldEnum | UploadSessionScalarFieldEnum[]
+  }
+
+  /**
+   * UploadSession create
+   */
+  export type UploadSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UploadSession.
+     */
+    data: XOR<UploadSessionCreateInput, UploadSessionUncheckedCreateInput>
+  }
+
+  /**
+   * UploadSession createMany
+   */
+  export type UploadSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UploadSessions.
+     */
+    data: UploadSessionCreateManyInput | UploadSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UploadSession createManyAndReturn
+   */
+  export type UploadSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many UploadSessions.
+     */
+    data: UploadSessionCreateManyInput | UploadSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UploadSession update
+   */
+  export type UploadSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UploadSession.
+     */
+    data: XOR<UploadSessionUpdateInput, UploadSessionUncheckedUpdateInput>
+    /**
+     * Choose, which UploadSession to update.
+     */
+    where: UploadSessionWhereUniqueInput
+  }
+
+  /**
+   * UploadSession updateMany
+   */
+  export type UploadSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UploadSessions.
+     */
+    data: XOR<UploadSessionUpdateManyMutationInput, UploadSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadSessions to update
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * Limit how many UploadSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadSession updateManyAndReturn
+   */
+  export type UploadSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update UploadSessions.
+     */
+    data: XOR<UploadSessionUpdateManyMutationInput, UploadSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadSessions to update
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * Limit how many UploadSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UploadSession upsert
+   */
+  export type UploadSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UploadSession to update in case it exists.
+     */
+    where: UploadSessionWhereUniqueInput
+    /**
+     * In case the UploadSession found by the `where` argument doesn't exist, create a new UploadSession with this data.
+     */
+    create: XOR<UploadSessionCreateInput, UploadSessionUncheckedCreateInput>
+    /**
+     * In case the UploadSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UploadSessionUpdateInput, UploadSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * UploadSession delete
+   */
+  export type UploadSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
+    /**
+     * Filter which UploadSession to delete.
+     */
+    where: UploadSessionWhereUniqueInput
+  }
+
+  /**
+   * UploadSession deleteMany
+   */
+  export type UploadSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadSessions to delete
+     */
+    where?: UploadSessionWhereInput
+    /**
+     * Limit how many UploadSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadSession without action
+   */
+  export type UploadSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadSession
+     */
+    select?: UploadSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadSession
+     */
+    omit?: UploadSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadSessionInclude<ExtArgs> | null
   }
 
 
@@ -17474,6 +18815,7 @@ export namespace Prisma {
     plan: 'plan',
     storageUsed: 'storageUsed',
     storageLimit: 'storageLimit',
+    storageReserved: 'storageReserved',
     overageBytes: 'overageBytes',
     overageResetAt: 'overageResetAt',
     stripeCustomerId: 'stripeCustomerId',
@@ -17597,6 +18939,7 @@ export namespace Prisma {
   export const PhotoScalarFieldEnum: {
     id: 'id',
     galleryId: 'galleryId',
+    checksum: 'checksum',
     s3Key: 's3Key',
     s3Bucket: 's3Bucket',
     originalFilename: 'originalFilename',
@@ -17616,10 +18959,28 @@ export namespace Prisma {
     thumbnailKey: 'thumbnailKey',
     previewKey: 'previewKey',
     status: 'status',
+    processedAt: 'processedAt',
     createdAt: 'createdAt'
   };
 
   export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
+
+
+  export const UploadSessionScalarFieldEnum: {
+    id: 'id',
+    photoId: 'photoId',
+    s3UploadId: 's3UploadId',
+    s3Key: 's3Key',
+    totalParts: 'totalParts',
+    totalSize: 'totalSize',
+    completedParts: 'completedParts',
+    status: 'status',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UploadSessionScalarFieldEnum = (typeof UploadSessionScalarFieldEnum)[keyof typeof UploadSessionScalarFieldEnum]
 
 
   export const StorageEventScalarFieldEnum: {
@@ -17684,6 +19045,13 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -17698,6 +19066,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -17853,6 +19230,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'UploadSessionStatus'
+   */
+  export type EnumUploadSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadSessionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'UploadSessionStatus[]'
+   */
+  export type ListEnumUploadSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadSessionStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -17879,6 +19284,7 @@ export namespace Prisma {
     plan?: EnumPlanFilter<"User"> | $Enums.Plan
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
+    storageReserved?: BigIntFilter<"User"> | bigint | number
     overageBytes?: BigIntFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
     stripeCustomerId?: StringNullableFilter<"User"> | string | null
@@ -17911,6 +19317,7 @@ export namespace Prisma {
     plan?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
     stripeCustomerId?: SortOrderInput | SortOrder
@@ -17948,6 +19355,7 @@ export namespace Prisma {
     plan?: EnumPlanFilter<"User"> | $Enums.Plan
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
+    storageReserved?: BigIntFilter<"User"> | bigint | number
     overageBytes?: BigIntFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
     warningEmailSent80?: BoolFilter<"User"> | boolean
@@ -17978,6 +19386,7 @@ export namespace Prisma {
     plan?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
     stripeCustomerId?: SortOrderInput | SortOrder
@@ -18011,6 +19420,7 @@ export namespace Prisma {
     plan?: EnumPlanWithAggregatesFilter<"User"> | $Enums.Plan
     storageUsed?: BigIntWithAggregatesFilter<"User"> | bigint | number
     storageLimit?: BigIntWithAggregatesFilter<"User"> | bigint | number
+    storageReserved?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageBytes?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     stripeCustomerId?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -18544,6 +19954,7 @@ export namespace Prisma {
     NOT?: PhotoWhereInput | PhotoWhereInput[]
     id?: StringFilter<"Photo"> | string
     galleryId?: StringFilter<"Photo"> | string
+    checksum?: StringNullableFilter<"Photo"> | string | null
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
@@ -18563,15 +19974,18 @@ export namespace Prisma {
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
+    processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
+    uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
   }
 
   export type PhotoOrderByWithRelationInput = {
     id?: SortOrder
     galleryId?: SortOrder
+    checksum?: SortOrderInput | SortOrder
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
@@ -18591,9 +20005,11 @@ export namespace Prisma {
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
     status?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     gallery?: GalleryOrderByWithRelationInput
     usedAsCoverIn?: GalleryOrderByRelationAggregateInput
+    uploadSession?: UploadSessionOrderByWithRelationInput
     albumPhotos?: AlbumPhotoOrderByRelationAggregateInput
   }
 
@@ -18603,6 +20019,7 @@ export namespace Prisma {
     OR?: PhotoWhereInput[]
     NOT?: PhotoWhereInput | PhotoWhereInput[]
     galleryId?: StringFilter<"Photo"> | string
+    checksum?: StringNullableFilter<"Photo"> | string | null
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
@@ -18622,15 +20039,18 @@ export namespace Prisma {
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
+    processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
     usedAsCoverIn?: GalleryListRelationFilter
+    uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
   }, "id" | "id">
 
   export type PhotoOrderByWithAggregationInput = {
     id?: SortOrder
     galleryId?: SortOrder
+    checksum?: SortOrderInput | SortOrder
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
@@ -18650,6 +20070,7 @@ export namespace Prisma {
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
     status?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PhotoCountOrderByAggregateInput
     _avg?: PhotoAvgOrderByAggregateInput
@@ -18664,6 +20085,7 @@ export namespace Prisma {
     NOT?: PhotoScalarWhereWithAggregatesInput | PhotoScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Photo"> | string
     galleryId?: StringWithAggregatesFilter<"Photo"> | string
+    checksum?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     s3Key?: StringWithAggregatesFilter<"Photo"> | string
     s3Bucket?: StringWithAggregatesFilter<"Photo"> | string
     originalFilename?: StringWithAggregatesFilter<"Photo"> | string
@@ -18683,7 +20105,95 @@ export namespace Prisma {
     thumbnailKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     previewKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     status?: StringWithAggregatesFilter<"Photo"> | string
+    processedAt?: DateTimeNullableWithAggregatesFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Photo"> | Date | string
+  }
+
+  export type UploadSessionWhereInput = {
+    AND?: UploadSessionWhereInput | UploadSessionWhereInput[]
+    OR?: UploadSessionWhereInput[]
+    NOT?: UploadSessionWhereInput | UploadSessionWhereInput[]
+    id?: StringFilter<"UploadSession"> | string
+    photoId?: StringFilter<"UploadSession"> | string
+    s3UploadId?: StringFilter<"UploadSession"> | string
+    s3Key?: StringFilter<"UploadSession"> | string
+    totalParts?: IntFilter<"UploadSession"> | number
+    totalSize?: BigIntFilter<"UploadSession"> | bigint | number
+    completedParts?: JsonFilter<"UploadSession">
+    status?: EnumUploadSessionStatusFilter<"UploadSession"> | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFilter<"UploadSession"> | Date | string
+    createdAt?: DateTimeFilter<"UploadSession"> | Date | string
+    updatedAt?: DateTimeFilter<"UploadSession"> | Date | string
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
+  }
+
+  export type UploadSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    s3UploadId?: SortOrder
+    s3Key?: SortOrder
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+    completedParts?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    photo?: PhotoOrderByWithRelationInput
+  }
+
+  export type UploadSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    photoId?: string
+    AND?: UploadSessionWhereInput | UploadSessionWhereInput[]
+    OR?: UploadSessionWhereInput[]
+    NOT?: UploadSessionWhereInput | UploadSessionWhereInput[]
+    s3UploadId?: StringFilter<"UploadSession"> | string
+    s3Key?: StringFilter<"UploadSession"> | string
+    totalParts?: IntFilter<"UploadSession"> | number
+    totalSize?: BigIntFilter<"UploadSession"> | bigint | number
+    completedParts?: JsonFilter<"UploadSession">
+    status?: EnumUploadSessionStatusFilter<"UploadSession"> | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFilter<"UploadSession"> | Date | string
+    createdAt?: DateTimeFilter<"UploadSession"> | Date | string
+    updatedAt?: DateTimeFilter<"UploadSession"> | Date | string
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
+  }, "id" | "photoId">
+
+  export type UploadSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    s3UploadId?: SortOrder
+    s3Key?: SortOrder
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+    completedParts?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UploadSessionCountOrderByAggregateInput
+    _avg?: UploadSessionAvgOrderByAggregateInput
+    _max?: UploadSessionMaxOrderByAggregateInput
+    _min?: UploadSessionMinOrderByAggregateInput
+    _sum?: UploadSessionSumOrderByAggregateInput
+  }
+
+  export type UploadSessionScalarWhereWithAggregatesInput = {
+    AND?: UploadSessionScalarWhereWithAggregatesInput | UploadSessionScalarWhereWithAggregatesInput[]
+    OR?: UploadSessionScalarWhereWithAggregatesInput[]
+    NOT?: UploadSessionScalarWhereWithAggregatesInput | UploadSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UploadSession"> | string
+    photoId?: StringWithAggregatesFilter<"UploadSession"> | string
+    s3UploadId?: StringWithAggregatesFilter<"UploadSession"> | string
+    s3Key?: StringWithAggregatesFilter<"UploadSession"> | string
+    totalParts?: IntWithAggregatesFilter<"UploadSession"> | number
+    totalSize?: BigIntWithAggregatesFilter<"UploadSession"> | bigint | number
+    completedParts?: JsonWithAggregatesFilter<"UploadSession">
+    status?: EnumUploadSessionStatusWithAggregatesFilter<"UploadSession"> | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeWithAggregatesFilter<"UploadSession"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"UploadSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UploadSession"> | Date | string
   }
 
   export type StorageEventWhereInput = {
@@ -18980,6 +20490,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -19012,6 +20523,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -19044,6 +20556,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19076,6 +20589,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19108,6 +20622,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -19133,6 +20648,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19158,6 +20674,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19745,6 +21262,7 @@ export namespace Prisma {
 
   export type PhotoCreateInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -19764,15 +21282,18 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateInput = {
     id?: string
     galleryId: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -19792,13 +21313,16 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -19818,15 +21342,18 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -19846,14 +21373,17 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoCreateManyInput = {
     id?: string
     galleryId: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -19873,11 +21403,13 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
   }
 
   export type PhotoUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -19897,12 +21429,14 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PhotoUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -19922,7 +21456,105 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadSessionCreateInput = {
+    id?: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.UploadSessionStatus
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photo: PhotoCreateNestedOneWithoutUploadSessionInput
+  }
+
+  export type UploadSessionUncheckedCreateInput = {
+    id?: string
+    photoId: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.UploadSessionStatus
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UploadSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photo?: PhotoUpdateOneRequiredWithoutUploadSessionNestedInput
+  }
+
+  export type UploadSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadSessionCreateManyInput = {
+    id?: string
+    photoId: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.UploadSessionStatus
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UploadSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StorageEventCreateInput = {
@@ -20356,6 +21988,7 @@ export namespace Prisma {
     plan?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
     stripeCustomerId?: SortOrder
@@ -20377,6 +22010,7 @@ export namespace Prisma {
   export type UserAvgOrderByAggregateInput = {
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
   }
 
@@ -20387,6 +22021,7 @@ export namespace Prisma {
     plan?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
     stripeCustomerId?: SortOrder
@@ -20412,6 +22047,7 @@ export namespace Prisma {
     plan?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
     stripeCustomerId?: SortOrder
@@ -20433,6 +22069,7 @@ export namespace Prisma {
   export type UserSumOrderByAggregateInput = {
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    storageReserved?: SortOrder
     overageBytes?: SortOrder
   }
 
@@ -20990,6 +22627,11 @@ export namespace Prisma {
     isNot?: GalleryWhereInput
   }
 
+  export type UploadSessionNullableScalarRelationFilter = {
+    is?: UploadSessionWhereInput | null
+    isNot?: UploadSessionWhereInput | null
+  }
+
   export type AlbumPhotoListRelationFilter = {
     every?: AlbumPhotoWhereInput
     some?: AlbumPhotoWhereInput
@@ -21003,6 +22645,7 @@ export namespace Prisma {
   export type PhotoCountOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
+    checksum?: SortOrder
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
@@ -21022,6 +22665,7 @@ export namespace Prisma {
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     status?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -21039,6 +22683,7 @@ export namespace Prisma {
   export type PhotoMaxOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
+    checksum?: SortOrder
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
@@ -21057,12 +22702,14 @@ export namespace Prisma {
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     status?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
   }
 
   export type PhotoMinOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
+    checksum?: SortOrder
     s3Key?: SortOrder
     s3Bucket?: SortOrder
     originalFilename?: SortOrder
@@ -21081,6 +22728,7 @@ export namespace Prisma {
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     status?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -21109,6 +22757,127 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type EnumUploadSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UploadSessionStatus | EnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUploadSessionStatusFilter<$PrismaModel> | $Enums.UploadSessionStatus
+  }
+
+  export type PhotoScalarRelationFilter = {
+    is?: PhotoWhereInput
+    isNot?: PhotoWhereInput
+  }
+
+  export type UploadSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    s3UploadId?: SortOrder
+    s3Key?: SortOrder
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+    completedParts?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UploadSessionAvgOrderByAggregateInput = {
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+  }
+
+  export type UploadSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    s3UploadId?: SortOrder
+    s3Key?: SortOrder
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UploadSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    s3UploadId?: SortOrder
+    s3Key?: SortOrder
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UploadSessionSumOrderByAggregateInput = {
+    totalParts?: SortOrder
+    totalSize?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type EnumUploadSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UploadSessionStatus | EnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUploadSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.UploadSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
   }
 
   export type StorageEventCountOrderByAggregateInput = {
@@ -21236,11 +23005,6 @@ export namespace Prisma {
   export type AlbumScalarRelationFilter = {
     is?: AlbumWhereInput
     isNot?: AlbumWhereInput
-  }
-
-  export type PhotoScalarRelationFilter = {
-    is?: PhotoWhereInput
-    isNot?: PhotoWhereInput
   }
 
   export type AlbumPhotoAlbumIdPhotoIdCompoundUniqueInput = {
@@ -21852,6 +23616,12 @@ export namespace Prisma {
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
   }
 
+  export type UploadSessionCreateNestedOneWithoutPhotoInput = {
+    create?: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+    connectOrCreate?: UploadSessionCreateOrConnectWithoutPhotoInput
+    connect?: UploadSessionWhereUniqueInput
+  }
+
   export type AlbumPhotoCreateNestedManyWithoutPhotoInput = {
     create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
     connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
@@ -21864,6 +23634,12 @@ export namespace Prisma {
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
     createMany?: GalleryCreateManyCoverPhotoInputEnvelope
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
+  }
+
+  export type UploadSessionUncheckedCreateNestedOneWithoutPhotoInput = {
+    create?: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+    connectOrCreate?: UploadSessionCreateOrConnectWithoutPhotoInput
+    connect?: UploadSessionWhereUniqueInput
   }
 
   export type AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput = {
@@ -21908,6 +23684,16 @@ export namespace Prisma {
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
   }
 
+  export type UploadSessionUpdateOneWithoutPhotoNestedInput = {
+    create?: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+    connectOrCreate?: UploadSessionCreateOrConnectWithoutPhotoInput
+    upsert?: UploadSessionUpsertWithoutPhotoInput
+    disconnect?: UploadSessionWhereInput | boolean
+    delete?: UploadSessionWhereInput | boolean
+    connect?: UploadSessionWhereUniqueInput
+    update?: XOR<XOR<UploadSessionUpdateToOneWithWhereWithoutPhotoInput, UploadSessionUpdateWithoutPhotoInput>, UploadSessionUncheckedUpdateWithoutPhotoInput>
+  }
+
   export type AlbumPhotoUpdateManyWithoutPhotoNestedInput = {
     create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
     connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
@@ -21936,6 +23722,16 @@ export namespace Prisma {
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
   }
 
+  export type UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput = {
+    create?: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+    connectOrCreate?: UploadSessionCreateOrConnectWithoutPhotoInput
+    upsert?: UploadSessionUpsertWithoutPhotoInput
+    disconnect?: UploadSessionWhereInput | boolean
+    delete?: UploadSessionWhereInput | boolean
+    connect?: UploadSessionWhereUniqueInput
+    update?: XOR<XOR<UploadSessionUpdateToOneWithWhereWithoutPhotoInput, UploadSessionUpdateWithoutPhotoInput>, UploadSessionUncheckedUpdateWithoutPhotoInput>
+  }
+
   export type AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput = {
     create?: XOR<AlbumPhotoCreateWithoutPhotoInput, AlbumPhotoUncheckedCreateWithoutPhotoInput> | AlbumPhotoCreateWithoutPhotoInput[] | AlbumPhotoUncheckedCreateWithoutPhotoInput[]
     connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
@@ -21948,6 +23744,24 @@ export namespace Prisma {
     update?: AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput[]
     updateMany?: AlbumPhotoUpdateManyWithWhereWithoutPhotoInput | AlbumPhotoUpdateManyWithWhereWithoutPhotoInput[]
     deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type PhotoCreateNestedOneWithoutUploadSessionInput = {
+    create?: XOR<PhotoCreateWithoutUploadSessionInput, PhotoUncheckedCreateWithoutUploadSessionInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutUploadSessionInput
+    connect?: PhotoWhereUniqueInput
+  }
+
+  export type EnumUploadSessionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.UploadSessionStatus
+  }
+
+  export type PhotoUpdateOneRequiredWithoutUploadSessionNestedInput = {
+    create?: XOR<PhotoCreateWithoutUploadSessionInput, PhotoUncheckedCreateWithoutUploadSessionInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutUploadSessionInput
+    upsert?: PhotoUpsertWithoutUploadSessionInput
+    connect?: PhotoWhereUniqueInput
+    update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutUploadSessionInput, PhotoUpdateWithoutUploadSessionInput>, PhotoUncheckedUpdateWithoutUploadSessionInput>
   }
 
   export type UserCreateNestedOneWithoutStorageEventsInput = {
@@ -22475,6 +24289,46 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumUploadSessionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UploadSessionStatus | EnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUploadSessionStatusFilter<$PrismaModel> | $Enums.UploadSessionStatus
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumUploadSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UploadSessionStatus | EnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UploadSessionStatus[] | ListEnumUploadSessionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUploadSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.UploadSessionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
+    _max?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id?: string
     expiresAt: Date | string
@@ -22947,6 +24801,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -22978,6 +24833,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23025,6 +24881,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23056,6 +24913,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23087,6 +24945,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23118,6 +24977,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23165,6 +25025,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23196,6 +25057,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23227,6 +25089,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23258,6 +25121,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23305,6 +25169,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23336,6 +25201,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23367,6 +25233,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23398,6 +25265,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23445,6 +25313,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23476,6 +25345,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23507,6 +25377,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23538,6 +25409,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -23569,6 +25441,7 @@ export namespace Prisma {
 
   export type PhotoCreateWithoutUsedAsCoverInInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -23588,14 +25461,17 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUsedAsCoverInInput = {
     id?: string
     galleryId: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -23615,7 +25491,9 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
@@ -23626,6 +25504,7 @@ export namespace Prisma {
 
   export type PhotoCreateWithoutGalleryInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -23645,13 +25524,16 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutGalleryInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -23671,8 +25553,10 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
   }
 
@@ -23750,6 +25634,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23781,6 +25666,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23818,6 +25704,7 @@ export namespace Prisma {
 
   export type PhotoUpdateWithoutUsedAsCoverInInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -23837,14 +25724,17 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUsedAsCoverInInput = {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -23864,7 +25754,9 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
@@ -23890,6 +25782,7 @@ export namespace Prisma {
     NOT?: PhotoScalarWhereInput | PhotoScalarWhereInput[]
     id?: StringFilter<"Photo"> | string
     galleryId?: StringFilter<"Photo"> | string
+    checksum?: StringNullableFilter<"Photo"> | string | null
     s3Key?: StringFilter<"Photo"> | string
     s3Bucket?: StringFilter<"Photo"> | string
     originalFilename?: StringFilter<"Photo"> | string
@@ -23909,6 +25802,7 @@ export namespace Prisma {
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
+    processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
   }
 
@@ -24047,6 +25941,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UploadSessionCreateWithoutPhotoInput = {
+    id?: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.UploadSessionStatus
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UploadSessionUncheckedCreateWithoutPhotoInput = {
+    id?: string
+    s3UploadId: string
+    s3Key: string
+    totalParts: number
+    totalSize: bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.UploadSessionStatus
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UploadSessionCreateOrConnectWithoutPhotoInput = {
+    where: UploadSessionWhereUniqueInput
+    create: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+  }
+
   export type AlbumPhotoCreateWithoutPhotoInput = {
     createdAt?: Date | string
     album: AlbumCreateNestedOneWithoutPhotosInput
@@ -24128,6 +26053,43 @@ export namespace Prisma {
     data: XOR<GalleryUpdateManyMutationInput, GalleryUncheckedUpdateManyWithoutCoverPhotoInput>
   }
 
+  export type UploadSessionUpsertWithoutPhotoInput = {
+    update: XOR<UploadSessionUpdateWithoutPhotoInput, UploadSessionUncheckedUpdateWithoutPhotoInput>
+    create: XOR<UploadSessionCreateWithoutPhotoInput, UploadSessionUncheckedCreateWithoutPhotoInput>
+    where?: UploadSessionWhereInput
+  }
+
+  export type UploadSessionUpdateToOneWithWhereWithoutPhotoInput = {
+    where?: UploadSessionWhereInput
+    data: XOR<UploadSessionUpdateWithoutPhotoInput, UploadSessionUncheckedUpdateWithoutPhotoInput>
+  }
+
+  export type UploadSessionUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadSessionUncheckedUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    s3UploadId?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
+    totalParts?: IntFieldUpdateOperationsInput | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    completedParts?: JsonNullValueInput | InputJsonValue
+    status?: EnumUploadSessionStatusFieldUpdateOperationsInput | $Enums.UploadSessionStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AlbumPhotoUpsertWithWhereUniqueWithoutPhotoInput = {
     where: AlbumPhotoWhereUniqueInput
     update: XOR<AlbumPhotoUpdateWithoutPhotoInput, AlbumPhotoUncheckedUpdateWithoutPhotoInput>
@@ -24153,6 +26115,138 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
   }
 
+  export type PhotoCreateWithoutUploadSessionInput = {
+    id?: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutPhotosInput
+    usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoUncheckedCreateWithoutUploadSessionInput = {
+    id?: string
+    galleryId: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoCreateOrConnectWithoutUploadSessionInput = {
+    where: PhotoWhereUniqueInput
+    create: XOR<PhotoCreateWithoutUploadSessionInput, PhotoUncheckedCreateWithoutUploadSessionInput>
+  }
+
+  export type PhotoUpsertWithoutUploadSessionInput = {
+    update: XOR<PhotoUpdateWithoutUploadSessionInput, PhotoUncheckedUpdateWithoutUploadSessionInput>
+    create: XOR<PhotoCreateWithoutUploadSessionInput, PhotoUncheckedCreateWithoutUploadSessionInput>
+    where?: PhotoWhereInput
+  }
+
+  export type PhotoUpdateToOneWithWhereWithoutUploadSessionInput = {
+    where?: PhotoWhereInput
+    data: XOR<PhotoUpdateWithoutUploadSessionInput, PhotoUncheckedUpdateWithoutUploadSessionInput>
+  }
+
+  export type PhotoUpdateWithoutUploadSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type PhotoUncheckedUpdateWithoutUploadSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+  }
+
   export type UserCreateWithoutStorageEventsInput = {
     id?: string
     name: string
@@ -24160,6 +26254,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -24191,6 +26286,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -24238,6 +26334,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24269,6 +26366,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24300,6 +26398,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -24331,6 +26430,7 @@ export namespace Prisma {
     plan?: $Enums.Plan
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
     stripeCustomerId?: string | null
@@ -24398,6 +26498,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24429,6 +26530,7 @@ export namespace Prisma {
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24752,6 +26854,7 @@ export namespace Prisma {
 
   export type PhotoCreateWithoutAlbumPhotosInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -24771,14 +26874,17 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutAlbumPhotosInput = {
     id?: string
     galleryId: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -24798,8 +26904,10 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutAlbumPhotosInput = {
@@ -24847,6 +26955,7 @@ export namespace Prisma {
 
   export type PhotoUpdateWithoutAlbumPhotosInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -24866,14 +26975,17 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutAlbumPhotosInput = {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -24893,8 +27005,10 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -25194,6 +27308,7 @@ export namespace Prisma {
 
   export type PhotoCreateManyGalleryInput = {
     id?: string
+    checksum?: string | null
     s3Key: string
     s3Bucket: string
     originalFilename: string
@@ -25213,6 +27328,7 @@ export namespace Prisma {
     thumbnailKey?: string | null
     previewKey?: string | null
     status?: string
+    processedAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -25230,6 +27346,7 @@ export namespace Prisma {
 
   export type PhotoUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -25249,13 +27366,16 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -25275,13 +27395,16 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateManyWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
     s3Key?: StringFieldUpdateOperationsInput | string
     s3Bucket?: StringFieldUpdateOperationsInput | string
     originalFilename?: StringFieldUpdateOperationsInput | string
@@ -25301,6 +27424,7 @@ export namespace Prisma {
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

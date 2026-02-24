@@ -1,6 +1,6 @@
 import "../bootstrap";
 import type { Job } from "bull";
-import prisma from "../../prisma";
+import { prisma } from "@workspace/db";
 import { ONE_MB_BYTES, PLAN_STORAGE_LIMITS } from "../constants/storage";
 import { scheduleDailyStorageReconciliation, storageQueue } from "../queues/storageQueue";
 

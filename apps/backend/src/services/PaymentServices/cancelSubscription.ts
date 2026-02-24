@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getToken } from "./getToken";
 import AppError from "../../errors/AppError";
-import prisma from "../../../prisma";
+import { prisma } from "@workspace/db";
 
 export const cancelSubscription = async (userId: string) => {
   const authToken = await getToken();

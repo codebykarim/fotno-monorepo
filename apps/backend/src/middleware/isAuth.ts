@@ -3,7 +3,7 @@ import AppError from "../errors/AppError";
 import { auth } from "../auth";
 import { fromNodeHeaders } from "better-auth/node";
 // import { getUserSubscription } from "../services/PaymentServices/getUserSubscription";
-// import prisma from "../prisma";
+// import { prisma } from "@workspace/db";
 
 const isAuth = async (
   req: Request,

@@ -29,6 +29,109 @@ export const unlockPublicGalleryController = async (req: Request, res: Response)
   });
 };
 
+export const listGalleryCommentsController = async (req: Request, res: Response) => {
+  const result = await PublicGalleryServices.listGalleryComments(
+    req.params.shareToken,
+  );
+  return res.status(200).json(result);
+};
+
+export const createGalleryCommentController = async (req: Request, res: Response) => {
+  const message =
+    typeof req.body?.message === "string" ? req.body.message.trim() : "";
+
+  if (!message) {
+    return res.status(400).json({ error: "message is required" });
+  }
+
+  const result = await PublicGalleryServices.createGalleryComment({
+    shareToken: req.params.shareToken,
+    authorName: req.body?.authorName,
+    authorRole: req.body?.authorRole,
+    message,
+    photoId: req.body?.photoId ?? null,
+    parentId: req.body?.parentId ?? null,
+    viewerId: req.body?.viewerId ?? null,
+  });
+
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+
+  return res.status(201).json(result);
+};
+
+export const editGalleryCommentController = async (req: Request, res: Response) => {
+  const message =
+    typeof req.body?.message === "string" ? req.body.message.trim() : "";
+  const viewerId =
+    typeof req.body?.viewerId === "string" ? req.body.viewerId : "";
+
+  if (!message) {
+    return res.status(400).json({ error: "message is required" });
+  }
+  if (!viewerId) {
+    return res.status(400).json({ error: "viewerId is required" });
+  }
+
+  const result = await PublicGalleryServices.editGalleryComment({
+    commentId: req.params.commentId,
+    shareToken: req.params.shareToken,
+    viewerId,
+    message,
+  });
+
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+
+  return res.status(200).json(result);
+};
+
+export const deleteGalleryCommentController = async (req: Request, res: Response) => {
+  const viewerId =
+    typeof req.body?.viewerId === "string" ? req.body.viewerId : "";
+  const isGalleryOwner = req.body?.isGalleryOwner === true;
+
+  if (!viewerId) {
+    return res.status(400).json({ error: "viewerId is required" });
+  }
+
+  const result = await PublicGalleryServices.deleteGalleryComment({
+    commentId: req.params.commentId,
+    shareToken: req.params.shareToken,
+    viewerId,
+    isGalleryOwner,
+  });
+
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+
+  return res.status(200).json(result);
+};
+
+export const toggleCommentLikeController = async (req: Request, res: Response) => {
+  const viewerId =
+    typeof req.body?.viewerId === "string" ? req.body.viewerId : "";
+
+  if (!viewerId) {
+    return res.status(400).json({ error: "viewerId is required" });
+  }
+
+  const result = await PublicGalleryServices.toggleCommentLike({
+    commentId: req.params.commentId,
+    shareToken: req.params.shareToken,
+    viewerId,
+  });
+
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+
+  return res.status(200).json(result);
+};
+
 export const getPublicPhotoUrlController = async (req: Request, res: Response) => {
   const shareToken =
     typeof req.query.shareToken === "string" ? req.query.shareToken : "";

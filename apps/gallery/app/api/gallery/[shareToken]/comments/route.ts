@@ -1,6 +1,6 @@
-import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { addComment, listComments } from "@/lib/gallery-runtime-store";
+import { backendFetch } from "@/lib/backend";
+import { broadcastComments } from "@/lib/gallery-runtime-store";
 
 export const runtime = "nodejs";
 
@@ -9,7 +9,14 @@ export async function GET(
   context: { params: Promise<{ shareToken: string }> },
 ) {
   const { shareToken } = await context.params;
-  return NextResponse.json({ comments: listComments(shareToken) });
+
+  const response = await backendFetch(
+    `/api/public/gallery/${encodeURIComponent(shareToken)}/comments`,
+    { cache: "no-store" },
+  );
+
+  const body = await response.json();
+  return NextResponse.json(body, { status: response.status });
 }
 
 export async function POST(
@@ -17,29 +24,23 @@ export async function POST(
   context: { params: Promise<{ shareToken: string }> },
 ) {
   const { shareToken } = await context.params;
-  const body = (await request.json().catch(() => null)) as
-    | {
-        authorName?: string;
-        message?: string;
-        photoId?: string | null;
-      }
-    | null;
+  const payload = await request.json().catch(() => null);
 
-  const message = body?.message?.trim();
-  if (!message) {
-    return NextResponse.json({ error: "message is required" }, { status: 400 });
+  const response = await backendFetch(
+    `/api/public/gallery/${encodeURIComponent(shareToken)}/comments`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    },
+  );
+
+  const body = await response.json();
+
+  if (response.ok) {
+    broadcastComments(shareToken, JSON.stringify(body));
   }
 
-  const authorName = body?.authorName?.trim() || "Client";
-
-  const comments = addComment({
-    id: crypto.randomUUID(),
-    shareToken,
-    authorName,
-    message,
-    photoId: body?.photoId ?? null,
-    createdAt: new Date().toISOString(),
-  });
-
-  return NextResponse.json({ comments });
+  return NextResponse.json(body, { status: response.status });
 }

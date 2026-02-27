@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import { Container } from "@/components/Container";
 import avatarImage1 from "@/images/avatars/avatar-1.png";
 import avatarImage2 from "@/images/avatars/avatar-2.png";
@@ -11,19 +10,19 @@ const testimonials = [
   [
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "Fotno completely changed how I deliver to clients. The password-protected galleries look so professional -- my clients think I built a custom site for them.",
       author: {
-        name: "Sheryl Berge",
-        role: "CEO at Lynch LLC",
+        name: "Sarah Mitchell",
+        role: "Wedding Photographer",
         image: avatarImage1,
       },
     },
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos sit amet consectetur adipisicing elit. Quisquam, quos..",
+        "The bulk upload is a game-changer. I shot 2,000 photos at an event and had the gallery live within the hour. No more wrestling with WeTransfer links.",
       author: {
-        name: "Amy Hahn",
-        role: "Director at Velocity Industries",
+        name: "James Chen",
+        role: "Event Photographer",
         image: avatarImage4,
       },
     },
@@ -31,19 +30,19 @@ const testimonials = [
   [
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "I love the favorites feature. My clients pick their top shots, I see them instantly in my dashboard. Selection rounds that used to take weeks now take days.",
       author: {
-        name: "Leland Kiehn",
-        role: "Founder of Kiehn and Sons",
+        name: "Lina Kareem",
+        role: "Portrait Photographer",
         image: avatarImage5,
       },
     },
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "Clean, fast, beautiful. That's all I needed for client delivery and Fotno nails it. The dark mode galleries are especially stunning for my moody editorial work.",
       author: {
-        name: "Erin Powlowski",
-        role: "COO at Armstrong Inc",
+        name: "Omar Hassan",
+        role: "Fashion Photographer",
         image: avatarImage2,
       },
     },
@@ -51,19 +50,19 @@ const testimonials = [
   [
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "Switched from Google Drive links to Fotno and my client satisfaction went through the roof. The gallery experience just feels premium.",
       author: {
-        name: "Peter Renolds",
-        role: "Founder of West Inc",
+        name: "Nadia Fouad",
+        role: "Product Photographer",
         image: avatarImage3,
       },
     },
     {
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "As a studio owner, I needed something that scales. Fotno handles our 50+ galleries without breaking a sweat and the pricing actually makes sense.",
       author: {
-        name: "Amy Hahn",
-        role: "Director at Velocity Industries",
+        name: "Karim Youssef",
+        role: "Studio Owner",
         image: avatarImage4,
       },
     },
@@ -83,17 +82,16 @@ export function Testimonials() {
     <section
       id="testimonials"
       aria-label="What our customers are saying"
-      className="bg-secondary py-20 sm:py-32"
+      className="bg-muted py-20 sm:py-32"
     >
       <Container>
         <div className="mx-auto max-w-2xl md:text-center">
-          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+          <h2 className="text-3xl tracking-tight text-foreground sm:text-4xl font-semibold">
             Loved by photographers.
           </h2>
-          <p className="mt-4 text-lg tracking-tight text-white">
-            Our platform is so simple that people can’t help but fall in love
-            with it. Simplicity is easy when you just skip tons of
-            mission-critical features.
+          <p className="mt-4 text-lg tracking-tight text-muted-foreground">
+            Hear from real photographers who upgraded their delivery workflow
+            with Fotno.
           </p>
         </div>
         <ul
@@ -105,23 +103,23 @@ export function Testimonials() {
               <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
                 {column.map((testimonial, testimonialIndex) => (
                   <li key={testimonialIndex}>
-                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
-                      <QuoteIcon className="absolute top-6 left-6 fill-slate-100" />
+                    <figure className="relative rounded-2xl bg-card p-6 shadow-sm border border-border/50">
+                      <QuoteIcon className="absolute top-6 left-6 fill-primary/10" />
                       <blockquote className="relative">
-                        <p className="text-lg tracking-tight text-slate-900">
+                        <p className="text-lg tracking-tight text-foreground">
                           {testimonial.content}
                         </p>
                       </blockquote>
-                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
+                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-border/50 pt-6">
                         <div>
-                          <div className="font-display text-base text-slate-900">
+                          <div className="text-base font-semibold text-foreground">
                             {testimonial.author.name}
                           </div>
-                          <div className="mt-1 text-sm text-slate-500">
+                          <div className="mt-1 text-sm text-muted-foreground">
                             {testimonial.author.role}
                           </div>
                         </div>
-                        <div className="overflow-hidden rounded-full bg-slate-50">
+                        <div className="overflow-hidden rounded-full bg-muted">
                           <Image
                             className="h-14 w-14 object-cover"
                             src={testimonial.author.image}

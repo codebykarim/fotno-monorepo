@@ -3,12 +3,19 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Camera,
+  Check,
+  CornerDownRight,
   Download,
   DownloadCloud,
   Heart,
   MessageSquare,
   Minus,
+  Pencil,
   Plus,
+  Reply,
+  ThumbsUp,
+  Trash2,
   Users,
   X,
 } from "lucide-react";
@@ -22,15 +29,14 @@ import type {
 } from "@/lib/gallery-types";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { Button } from "@workspace/ui/components/button";
+import { useSession } from "@workspace/lib/auth/auth-client";
 
 type GalleryPageClientProps = {
   initialGallery: PublicGallery;
@@ -46,9 +52,16 @@ type Viewer = {
 type GalleryComment = {
   id: string;
   authorName: string;
+  authorRole: "client" | "photographer";
   message: string;
   photoId: string | null;
+  parentId: string | null;
+  likes: string[];
   createdAt: string;
+  updatedAt: string;
+  viewerId: string | null;
+  replies: GalleryComment[];
+  photo?: { thumbnailSrc: string } | null;
 };
 
 const getSessionValidationKey = (shareToken: string) =>
@@ -116,6 +129,228 @@ const formatRelative = (isoString: string): string => {
   return `${Math.floor(deltaHours / 24)}d ago`;
 };
 
+const countAllComments = (list: GalleryComment[]): number =>
+  list.reduce(
+    (sum, c) => sum + 1 + countAllComments(c.replies ?? []),
+    0,
+  );
+
+const MAX_REPLY_DEPTH = 6;
+
+type CommentNodeProps = {
+  comment: GalleryComment;
+  depth: number;
+  currentViewerId: string;
+  isPhotographer: boolean;
+  editingComment: GalleryComment | null;
+  editText: string;
+  onSetEditText: (text: string) => void;
+  onStartEdit: (c: GalleryComment) => void;
+  onCancelEdit: () => void;
+  onSaveEdit: (c: GalleryComment) => void;
+  onDelete: (c: GalleryComment) => void;
+  onToggleLike: (c: GalleryComment) => void;
+  onReply: (c: GalleryComment) => void;
+  onViewPhoto: (photoId: string) => void;
+  withOptionalToken: (src: string) => string;
+  formatRelative: (iso: string) => string;
+};
+
+function CommentNode({
+  comment,
+  depth,
+  currentViewerId,
+  isPhotographer,
+  editingComment,
+  editText,
+  onSetEditText,
+  onStartEdit,
+  onCancelEdit,
+  onSaveEdit,
+  onDelete,
+  onToggleLike,
+  onReply,
+  onViewPhoto,
+  withOptionalToken,
+  formatRelative,
+}: CommentNodeProps) {
+  const isEditing = editingComment?.id === comment.id;
+  const isOwn = Boolean(currentViewerId) && comment.viewerId === currentViewerId;
+  const canEdit = isOwn;
+  const canDelete = isOwn || isPhotographer;
+  const liked = comment.likes.includes(currentViewerId);
+  const isNested = depth > 0;
+
+  return (
+    <div className={isNested ? "space-y-2" : "space-y-2"}>
+      <article
+        className={`rounded-xl border p-2.5 ${
+          isNested
+            ? "border-border/50 bg-background/60"
+            : "border-border/70 bg-background/80 p-3"
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-foreground">
+              {comment.authorName}
+            </span>
+            {comment.authorRole === "photographer" ? (
+              <span className="inline-flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                <Camera className="h-2.5 w-2.5" />
+                Photographer
+              </span>
+            ) : (
+              <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                Client
+              </span>
+            )}
+            {comment.updatedAt !== comment.createdAt ? (
+              <span className="text-[10px] text-muted-foreground/60">(edited)</span>
+            ) : null}
+          </div>
+          <span className="shrink-0 text-muted-foreground">
+            {formatRelative(comment.createdAt)}
+          </span>
+        </div>
+
+        {/* Referenced photo */}
+        {comment.photoId && comment.photo?.thumbnailSrc ? (
+          <button
+            type="button"
+            onClick={() => comment.photoId && onViewPhoto(comment.photoId)}
+            className="mt-2 flex items-center gap-2 rounded-lg border border-border/70 bg-muted/40 p-1.5 transition hover:bg-muted/70"
+          >
+            <Image
+              src={withOptionalToken(comment.photo.thumbnailSrc)}
+              alt="Referenced photo"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded object-cover"
+              draggable={false}
+            />
+            <span className="text-[11px] text-muted-foreground">
+              View referenced photo
+            </span>
+          </button>
+        ) : null}
+
+        {/* Message or edit form */}
+        {isEditing ? (
+          <div className="mt-2 space-y-2">
+            <textarea
+              value={editText}
+              onChange={(e) => onSetEditText(e.target.value)}
+              className="min-h-[60px] w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none ring-primary/20 transition focus:ring-2"
+            />
+            <div className="flex gap-1.5">
+              <button
+                type="button"
+                onClick={() => onSaveEdit(comment)}
+                disabled={!editText.trim()}
+                className="inline-flex h-7 items-center gap-1 rounded-md bg-primary px-2.5 text-[11px] font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+              >
+                <Check className="h-3 w-3" />
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={onCancelEdit}
+                className="inline-flex h-7 items-center gap-1 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground transition hover:text-foreground"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+            {comment.message}
+          </p>
+        )}
+
+        {/* Actions */}
+        {!isEditing ? (
+          <div className="mt-2 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => onToggleLike(comment)}
+              className={`inline-flex items-center gap-1 text-xs transition ${
+                liked
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <ThumbsUp className={`h-3 w-3 ${liked ? "fill-primary" : ""}`} />
+              {comment.likes.length > 0 ? comment.likes.length : null}
+            </button>
+
+            {depth < MAX_REPLY_DEPTH ? (
+              <button
+                type="button"
+                onClick={() => onReply(comment)}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground transition hover:text-foreground"
+              >
+                <Reply className="h-3 w-3" />
+                Reply
+              </button>
+            ) : null}
+
+            {canEdit ? (
+              <button
+                type="button"
+                onClick={() => onStartEdit(comment)}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground transition hover:text-foreground"
+              >
+                <Pencil className="h-3 w-3" />
+                Edit
+              </button>
+            ) : null}
+
+            {canDelete ? (
+              <button
+                type="button"
+                onClick={() => onDelete(comment)}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground transition hover:text-destructive"
+              >
+                <Trash2 className="h-3 w-3" />
+                Delete
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+      </article>
+
+      {/* Recursive nested replies */}
+      {comment.replies?.length > 0 ? (
+        <div className="ml-4 space-y-2 border-l-2 border-border/50 pl-3">
+          {comment.replies.map((reply: GalleryComment) => (
+            <CommentNode
+              key={reply.id}
+              comment={reply}
+              depth={depth + 1}
+              currentViewerId={currentViewerId}
+              isPhotographer={isPhotographer}
+              editingComment={editingComment}
+              editText={editText}
+              onSetEditText={onSetEditText}
+              onStartEdit={onStartEdit}
+              onCancelEdit={onCancelEdit}
+              onSaveEdit={onSaveEdit}
+              onDelete={onDelete}
+              onToggleLike={onToggleLike}
+              onReply={onReply}
+              onViewPhoto={onViewPhoto}
+              withOptionalToken={withOptionalToken}
+              formatRelative={formatRelative}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 const DEFAULT_PHOTO_WIDTH = 1600;
@@ -124,6 +359,7 @@ const DEFAULT_PHOTO_HEIGHT = 1200;
 export default function GalleryPageClient({
   initialGallery,
 }: GalleryPageClientProps) {
+  const { data: session } = useSession();
   const [gallery, setGallery] = useState(initialGallery);
   const [galleryJwt, setGalleryJwt] = useState<string | null>(null);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
@@ -155,6 +391,16 @@ export default function GalleryPageClient({
   const [comments, setComments] = useState<GalleryComment[]>([]);
   const [commentText, setCommentText] = useState("");
   const [commentPhotoId, setCommentPhotoId] = useState<string>("");
+  const [replyingTo, setReplyingTo] = useState<GalleryComment | null>(null);
+  const [editingComment, setEditingComment] = useState<GalleryComment | null>(null);
+  const [editText, setEditText] = useState("");
+
+  const isPhotographer =
+    Boolean(session?.user?.id) && session?.user?.id === gallery.userId;
+  const viewerRole: "client" | "photographer" =
+    isPhotographer ? "photographer" : "client";
+  const viewerDisplayName =
+    isPhotographer ? (session?.user?.name ?? gallery.photographer.name) : "Client";
 
   useEffect(() => {
     if (!gallery.hasPassword) {
@@ -224,7 +470,27 @@ export default function GalleryPageClient({
       return;
     }
 
-    void loadComments();
+    // Initial load
+    fetch(`/api/gallery/${gallery.shareToken}/comments`, { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.comments) setComments(data.comments);
+      })
+      .catch(() => {});
+
+    // SSE for real-time updates
+    const es = new EventSource(
+      `/api/gallery/${gallery.shareToken}/comments/stream`,
+    );
+
+    es.addEventListener("comments", (event) => {
+      try {
+        const data = JSON.parse(event.data) as { comments?: GalleryComment[] };
+        if (data.comments) {
+          setComments(data.comments);
+        }
+      } catch { /* ignore malformed events */ }
+    });
 
     const refreshInterval = window.setInterval(() => {
       void refreshGallery(
@@ -239,6 +505,7 @@ export default function GalleryPageClient({
     }, 20_000);
 
     return () => {
+      es.close();
       window.clearInterval(refreshInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -267,8 +534,8 @@ export default function GalleryPageClient({
           },
           body: JSON.stringify({
             viewerId,
-            name: "Client",
-            role: "client",
+            name: viewerDisplayName,
+            role: viewerRole,
           }),
         },
       );
@@ -432,22 +699,6 @@ export default function GalleryPageClient({
 
     const payload = (await response.json()) as GalleryApiResponse;
     setGallery(payload.gallery);
-  };
-
-  const loadComments = async () => {
-    const response = await fetch(
-      `/api/gallery/${gallery.shareToken}/comments`,
-      {
-        cache: "no-store",
-      },
-    );
-
-    if (!response.ok) {
-      return;
-    }
-
-    const payload = (await response.json()) as { comments: GalleryComment[] };
-    setComments(payload.comments);
   };
 
   const unlockGallery = async (password: string) => {
@@ -847,6 +1098,9 @@ export default function GalleryPageClient({
       return;
     }
 
+    const viewerIdKey = getViewerIdKey(gallery.shareToken);
+    const viewerId = sessionStorage.getItem(viewerIdKey);
+
     const response = await fetch(
       `/api/gallery/${gallery.shareToken}/comments`,
       {
@@ -855,9 +1109,12 @@ export default function GalleryPageClient({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          authorName: "Client",
+          authorName: viewerDisplayName,
+          authorRole: viewerRole,
           message,
           photoId: commentPhotoId || null,
+          parentId: replyingTo?.id ?? null,
+          viewerId,
         }),
       },
     );
@@ -870,7 +1127,80 @@ export default function GalleryPageClient({
     const payload = (await response.json()) as { comments: GalleryComment[] };
     setComments(payload.comments);
     setCommentText("");
-    toast.success("Comment sent");
+    setReplyingTo(null);
+    toast.success(replyingTo ? "Reply sent" : "Comment sent");
+  };
+
+  const getViewerId = (): string => {
+    const viewerIdKey = getViewerIdKey(gallery.shareToken);
+    return sessionStorage.getItem(viewerIdKey) ?? "";
+  };
+
+  const editComment = async (comment: GalleryComment, newMessage: string) => {
+    const message = newMessage.trim();
+    if (!message) return;
+
+    const response = await fetch(
+      `/api/gallery/${gallery.shareToken}/comments/${comment.id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ viewerId: getViewerId(), message }),
+      },
+    );
+
+    if (!response.ok) {
+      toast.error(await readErrorText(response));
+      return;
+    }
+
+    const payload = (await response.json()) as { comments: GalleryComment[] };
+    setComments(payload.comments);
+    setEditingComment(null);
+    setEditText("");
+    toast.success("Comment updated");
+  };
+
+  const deleteComment = async (comment: GalleryComment) => {
+    const response = await fetch(
+      `/api/gallery/${gallery.shareToken}/comments/${comment.id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          viewerId: getViewerId(),
+          isGalleryOwner: isPhotographer,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      toast.error(await readErrorText(response));
+      return;
+    }
+
+    const payload = (await response.json()) as { comments: GalleryComment[] };
+    setComments(payload.comments);
+    toast.success("Comment deleted");
+  };
+
+  const toggleLike = async (comment: GalleryComment) => {
+    const response = await fetch(
+      `/api/gallery/${gallery.shareToken}/comments/${comment.id}/like`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ viewerId: getViewerId() }),
+      },
+    );
+
+    if (!response.ok) {
+      toast.error(await readErrorText(response));
+      return;
+    }
+
+    const payload = (await response.json()) as { comments: GalleryComment[] };
+    setComments(payload.comments);
   };
 
   if (!isUnlocked) {
@@ -886,8 +1216,8 @@ export default function GalleryPageClient({
   }
 
   return (
-    <div className="min-h-screen select-none bg-background">
-      <header className="sticky top-0 z-30 border-b border-border bg-white/95 px-4 py-4 backdrop-blur-md md:px-8 transition-colors">
+    <div className="min-h-screen select-none bg-background relative">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/95 px-4 py-4 backdrop-blur-md md:px-8 transition-colors">
         <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
@@ -905,7 +1235,7 @@ export default function GalleryPageClient({
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 filterMode === "all"
                   ? "bg-foreground text-background"
-                  : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
+                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
               All Photos
@@ -915,12 +1245,12 @@ export default function GalleryPageClient({
               onClick={() => setFilterMode("loved")}
               className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 filterMode === "loved"
-                  ? "bg-foreground text-background"
-                  : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
               <Heart
-                className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-background text-background" : "text-muted-foreground"}`}
+                className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-primary-foreground text-primary-foreground" : "text-muted-foreground"}`}
               />
               {favorites.length} loved
             </button>
@@ -932,8 +1262,8 @@ export default function GalleryPageClient({
                 onClick={() => setFilterMode(album.id)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   filterMode === album.id
-                    ? "bg-foreground text-background"
-                    : "bg-transparent text-muted-foreground hover:bg-slate-100 hover:text-foreground"
+                  ? "bg-foreground text-background"
+                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {album.title}
@@ -942,10 +1272,10 @@ export default function GalleryPageClient({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-slate-50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-20"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-foreground/50"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-40"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary/70"></span>
               </span>
               {viewerCount} online
             </span>
@@ -962,9 +1292,9 @@ export default function GalleryPageClient({
         </div>
       </header>
 
-      <main className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-8 md:py-10 xl:grid-cols-[1fr_360px]">
+      <main className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-8 md:py-10">
         <section className="min-w-0">
-          <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-4">
+          <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
             {visiblePhotos.map((photo, index) => {
               const imageSrc = withOptionalToken(photo.thumbnailSrc);
               const loved = favorites.includes(photo.id);
@@ -972,7 +1302,7 @@ export default function GalleryPageClient({
               return (
                 <article
                   key={photo.id}
-                  className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-slate-950 md:mb-4"
+                  className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-foreground md:mb-4"
                   style={{ contentVisibility: "auto" }}
                 >
                   <button
@@ -1010,7 +1340,7 @@ export default function GalleryPageClient({
                   >
                     <Heart
                       className={`h-4 w-4 transition-colors ${
-                        loved ? "fill-white text-white" : "text-white"
+                        loved ? "fill-primary text-primary" : "text-white"
                       }`}
                     />
                   </button>
@@ -1019,7 +1349,7 @@ export default function GalleryPageClient({
                     type="button"
                     onClick={() => handleSingleDownload(photo)}
                     disabled={downloadingPhotoId === photo.id}
-                    className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-900 opacity-0 shadow-sm transition group-hover:opacity-100"
+                    className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
                     aria-label="Download photo"
                   >
                     <Download
@@ -1145,96 +1475,166 @@ export default function GalleryPageClient({
         </div>
       ) : null}
 
-      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8 absolute bottom-0 left-0 right-0">
-        Powered by FOTNO
+      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
+        Powered by <span className="font-semibold text-primary">FOTNO</span>
       </footer>
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button className="absolute right-5 bottom-20">
+          <Button className="fixed right-5 bottom-5 z-40 gap-2 shadow-lg">
             <MessageSquare className="h-4 w-4" />
             Comments
+            {comments.length > 0 ? (
+              <span className="ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] font-semibold">
+                {countAllComments(comments)}
+              </span>
+            ) : null}
           </Button>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent className="flex flex-col overflow-hidden">
           <SheetHeader>
-            <SheetTitle>Client Notes</SheetTitle>
+            <SheetTitle>
+              {viewerRole === "photographer" ? "Gallery Feedback" : "Leave Feedback"}
+            </SheetTitle>
             <SheetDescription>
-              <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2.5 py-1 text-xs text-muted-foreground">
-                <MessageSquare className="h-3.5 w-3.5" />
-                {comments.length}
-              </span>
+              {viewerRole === "photographer"
+                ? "View and reply to client feedback"
+                : "Share your thoughts on the photos"}
             </SheetDescription>
           </SheetHeader>
 
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-muted-foreground">
-              Mention image
-            </label>
-            <select
-              value={commentPhotoId}
-              onChange={(event) => setCommentPhotoId(event.target.value)}
-              className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
-            >
-              <option value="">General comment</option>
-              {gallery.photos.map((photo, index) => (
-                <option key={photo.id} value={photo.id}>
-                  Image #{index + 1}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
+            {/* ── Compose area ── */}
+            <div className="shrink-0 space-y-3 rounded-xl border border-border/70 bg-muted/30 p-3">
+              {/* Thumbnail image picker */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Reference a photo
+                </label>
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  <button
+                    type="button"
+                    onClick={() => setCommentPhotoId("")}
+                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border-2 text-[10px] font-medium transition ${
+                      commentPhotoId === ""
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-background text-muted-foreground hover:border-foreground/30"
+                    }`}
+                  >
+                    General
+                  </button>
+                  {gallery.photos.map((photo: PublicPhoto, index: number) => {
+                    const selected = commentPhotoId === photo.id;
+                    return (
+                      <button
+                        key={photo.id}
+                        type="button"
+                        onClick={() => setCommentPhotoId(photo.id)}
+                        title={photo.aiCaption ?? `Image #${index + 1}`}
+                        className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition ${
+                          selected
+                            ? "border-primary ring-2 ring-primary/30"
+                            : "border-border hover:border-foreground/30"
+                        }`}
+                      >
+                        <Image
+                          src={withOptionalToken(photo.thumbnailSrc)}
+                          alt={photo.aiCaption ?? `Image #${index + 1}`}
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                          draggable={false}
+                        />
+                        <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-px text-center text-[9px] font-medium text-white">
+                          #{index + 1}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-          <textarea
-            value={commentText}
-            onChange={(event) => setCommentText(event.target.value)}
-            placeholder="Write feedback and mention a specific image if needed..."
-            className="min-h-[110px] w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none ring-primary/20 transition focus:ring-2"
-          />
+              {/* Reply indicator */}
+              {replyingTo ? (
+                <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-2.5 py-1.5 text-xs">
+                  <CornerDownRight className="h-3 w-3 shrink-0 text-primary" />
+                  <span className="truncate text-foreground/80">
+                    Replying to <strong>{replyingTo.authorName}</strong>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setReplyingTo(null)}
+                    className="ml-auto shrink-0 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ) : null}
 
-          <button
-            type="button"
-            onClick={() => void postComment()}
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
-          >
-            Send Comment
-          </button>
+              <textarea
+                value={commentText}
+                onChange={(event) => setCommentText(event.target.value)}
+                placeholder={
+                  replyingTo
+                    ? `Reply to ${replyingTo.authorName}...`
+                    : "Write your feedback..."
+                }
+                className="min-h-[80px] w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none ring-primary/20 transition focus:ring-2"
+              />
 
-          <div className="space-y-2 pt-2">
-            {comments.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No comments yet.</p>
-            ) : (
-              comments.map((comment) => (
-                <article
-                  key={comment.id}
-                  className="rounded-xl border border-border/70 bg-background/80 p-3"
-                >
-                  <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                    <p className="font-medium text-foreground">
-                      {comment.authorName}
-                    </p>
-                    <p>{formatRelative(comment.createdAt)}</p>
-                  </div>
-                  {comment.photoId ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (comment.photoId) {
-                          setActivePhotoId(comment.photoId);
-                          setCommentPhotoId(comment.photoId);
-                        }
-                      }}
-                      className="mt-1 rounded-full border border-border/70 bg-background px-2 py-0.5 text-[11px] text-muted-foreground"
-                    >
-                      Mentioned image
-                    </button>
-                  ) : null}
-                  <p className="mt-2 text-sm text-foreground/90">
-                    {comment.message}
+              <button
+                type="button"
+                onClick={() => void postComment()}
+                disabled={!commentText.trim()}
+                className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+              >
+                {replyingTo ? "Send Reply" : "Send Comment"}
+              </button>
+            </div>
+
+            {/* ── Comments list ── */}
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+              {comments.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                  <MessageSquare className="mb-2 h-8 w-8 text-muted-foreground/40" />
+                  <p className="text-sm text-muted-foreground">No comments yet.</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground/60">
+                    Be the first to leave feedback
                   </p>
-                </article>
-              ))
-            )}
+                </div>
+              ) : (
+                comments.map((comment: GalleryComment) => (
+                  <CommentNode
+                    key={comment.id}
+                    comment={comment}
+                    depth={0}
+                    currentViewerId={getViewerId()}
+                    isPhotographer={isPhotographer}
+                    editingComment={editingComment}
+                    editText={editText}
+                    onSetEditText={setEditText}
+                    onStartEdit={(c) => {
+                      setEditingComment(c);
+                      setEditText(c.message);
+                    }}
+                    onCancelEdit={() => {
+                      setEditingComment(null);
+                      setEditText("");
+                    }}
+                    onSaveEdit={(c) => void editComment(c, editText)}
+                    onDelete={(c) => void deleteComment(c)}
+                    onToggleLike={(c) => void toggleLike(c)}
+                    onReply={(c) => {
+                      setReplyingTo(c);
+                      setCommentPhotoId("");
+                    }}
+                    onViewPhoto={(photoId) => setActivePhotoId(photoId)}
+                    withOptionalToken={withOptionalToken}
+                    formatRelative={formatRelative}
+                  />
+                ))
+              )}
+            </div>
           </div>
         </SheetContent>
       </Sheet>

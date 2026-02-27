@@ -30,6 +30,10 @@ type UploadSessionResponse = {
   sessions: UploadSession[];
 };
 
+/**
+ * Fetches all in-progress upload sessions for a gallery. Used to resume uploads after a page refresh
+ * or reconnect. Returns sessions with completed parts, missing parts, and fresh presigned URLs for missing parts.
+ */
 export const getPhotoUploadSessions = async (
   userId: string,
   galleryId: string,

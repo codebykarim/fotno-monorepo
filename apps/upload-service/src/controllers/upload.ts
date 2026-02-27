@@ -28,11 +28,13 @@ import { calculateTotalParts } from '../utils/chunks'
 
 const log = logger.child({ module: 'upload.controller' })
 
+/** Sanitizes filename for safe use in S3 keys: strips path and replaces unsafe chars with underscore. */
 function sanitizeFilename(filename: string): string {
   const base = path.basename(filename)
   return base.replace(/[^a-zA-Z0-9._-]/g, '_')
 }
 
+/** Parses the stored completedParts JSON into PartRecord array. Validates structure. */
 function parseCompletedParts(value: unknown): PartRecord[] {
   if (!Array.isArray(value)) {
     return []
@@ -63,7 +65,13 @@ function parseCompletedParts(value: unknown): PartRecord[] {
     .filter((part): part is PartRecord => part !== null)
 }
 
+/**
+ * Handles multipart upload lifecycle: batch-init (presign), part-complete, confirm, abort.
+ * Called by the backend via uploadServiceRequest. Creates photo + uploadSession records,
+ * reserves storage, deduplicates by checksum, and enqueues process-photo on confirm.
+ */
 export class UploadController {
+  /** Initializes multipart uploads for one or more files. Returns presigned URLs, photo IDs, and dedupe info. */
   async batchInit(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const body = BatchInitBodySchema.parse(req.body)
@@ -156,6 +164,7 @@ export class UploadController {
     }
   }
 
+  /** Records that a multipart chunk was uploaded. Merges etag into session.completedParts. */
   async partComplete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const body = PartCompleteBodySchema.parse(req.body)
@@ -220,6 +229,7 @@ export class UploadController {
     }
   }
 
+  /** Completes the multipart upload on S3, marks photo as uploaded, confirms storage reservation, enqueues processing. */
   async confirm(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const body = ConfirmBodySchema.parse(req.body)
@@ -311,6 +321,7 @@ export class UploadController {
     }
   }
 
+  /** Aborts an in-progress upload, deletes the photo record, and releases storage reservation. */
   async abort(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const body = AbortBodySchema.parse(req.body)
@@ -371,6 +382,7 @@ export class UploadController {
     }
   }
 
+  /** Initializes one file's multipart upload: creates photo + session, presigns parts, reserves storage. */
   private async initializeSingleUpload(params: {
     file: {
       filename: string

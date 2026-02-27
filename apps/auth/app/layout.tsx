@@ -1,12 +1,13 @@
 import "@workspace/ui/globals.css";
-import "./theme.css";
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
-import type React from "react"; // Import React
+import { Inter } from "next/font/google";
+import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { ThemeProvider } from "@workspace/ui/components/theme-provider";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FOTNO - Authentication",
@@ -25,8 +26,14 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(spaceGrotesk.className, "auth-theme auth-shell bg-background text-foreground")}>
-        {children} <Toaster position="top-center" />
+      <body className={cn(inter.className, "auth-shell bg-background text-foreground")}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeToggle />
+          </div>
+          {children}
+          <Toaster richColors position="bottom-center" />
+        </ThemeProvider>
       </body>
     </html>
   );

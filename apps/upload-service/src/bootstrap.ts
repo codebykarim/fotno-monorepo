@@ -3,11 +3,17 @@ import { prisma } from '@workspace/db'
 import { env } from './constants/env'
 import { logger } from './utils/logger'
 
+/**
+ * Bootstrap for the upload-service: connects Redis + DB, starts BullMQ workers
+ * (process-photo, upload-cleanup), and registers recurring cleanup jobs.
+ */
+
 export let redis: Redis
 
 let processPhotoWorkerRef: { close: () => Promise<void> } | null = null
 let cleanupWorkerRef: { close: () => Promise<void> } | null = null
 
+/** Verifies Redis is reachable before startup. Fails fast if Redis is down. */
 async function assertRedisAvailable(redisUrl: string): Promise<void> {
   const probe = new Redis(redisUrl, {
     lazyConnect: true,
@@ -31,6 +37,7 @@ async function assertRedisAvailable(redisUrl: string): Promise<void> {
   }
 }
 
+/** Connects to Redis and DB, starts process-photo and cleanup workers, registers recurring jobs. */
 export async function bootstrap(): Promise<void> {
   logger.info('Bootstrapping upload-service...')
 
@@ -56,6 +63,7 @@ export async function bootstrap(): Promise<void> {
   logger.info('Workers started')
 }
 
+/** Stops workers, disconnects DB and Redis, then exits. Called on SIGTERM/SIGINT. */
 export async function gracefulShutdown(): Promise<void> {
   logger.info('Shutting down gracefully...')
 

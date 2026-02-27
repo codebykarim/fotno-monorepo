@@ -163,57 +163,59 @@ model UserOnboarding {
 }
 
 model Gallery {
-  id           String          @id @unique @default(uuid())
+  id           String           @id @unique @default(uuid())
   userId       String
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   title        String
   slug         String
   eventDate    DateTime?
   deadline     DateTime?
   coverPhotoId String?
-  coverPhoto   Photo?          @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  coverPhoto   Photo?           @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
   passwordHash String?
-  shareToken   String          @unique @default(uuid())
-  isPublished  Boolean         @default(false)
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @default(now()) @updatedAt
-  photos       Photo[]         @relation("GalleryPhotos")
+  shareToken   String           @unique @default(uuid())
+  isPublished  Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @default(now()) @updatedAt
+  photos       Photo[]          @relation("GalleryPhotos")
   albums       Album[]
   clients      GalleryClient[]
+  comments     GalleryComment[]
 
   @@unique([userId, slug])
   @@map("gallery")
 }
 
 model Photo {
-  id               String         @id @unique @default(uuid())
+  id               String           @id @unique @default(uuid())
   galleryId        String
-  gallery          Gallery        @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
-  usedAsCoverIn    Gallery[]      @relation("GalleryCoverPhoto")
+  gallery          Gallery          @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
+  usedAsCoverIn    Gallery[]        @relation("GalleryCoverPhoto")
   checksum         String?
   s3Key            String
   s3Bucket         String
   originalFilename String
-  originalSize     BigInt         @default(0)
-  thumbnailSize    BigInt         @default(0)
-  previewSize      BigInt         @default(0)
-  totalSize        BigInt         @default(0)
+  originalSize     BigInt           @default(0)
+  thumbnailSize    BigInt           @default(0)
+  previewSize      BigInt           @default(0)
+  totalSize        BigInt           @default(0)
   width            Int?
   height           Int?
   mimeType         String
-  order            Int            @default(0)
-  isCulled         Boolean        @default(false)
-  loved            Boolean        @default(false)
+  order            Int              @default(0)
+  isCulled         Boolean          @default(false)
+  loved            Boolean          @default(false)
   aiCaption        String?
   aiTags           String[]
-  faceCount        Int            @default(0)
+  faceCount        Int              @default(0)
   thumbnailKey     String?
   previewKey       String?
-  status           String         @default("pending")
+  status           String           @default("pending")
   processedAt      DateTime?
-  createdAt        DateTime       @default(now())
+  createdAt        DateTime         @default(now())
   uploadSession    UploadSession?
   albumPhotos      AlbumPhoto[]
+  comments         GalleryComment[]
 
   @@index([galleryId, order])
   @@map("photo")
@@ -301,4 +303,25 @@ model AlbumPhoto {
 
   @@id([albumId, photoId])
   @@map("album_photo")
+}
+
+model GalleryComment {
+  id         String           @id @default(uuid())
+  galleryId  String
+  gallery    Gallery          @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  photoId    String?
+  photo      Photo?           @relation(fields: [photoId], references: [id], onDelete: SetNull)
+  parentId   String?
+  parent     GalleryComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    GalleryComment[] @relation("CommentReplies")
+  authorName String
+  authorRole String           @default("client")
+  viewerId   String?
+  message    String
+  likes      String[]         @default([])
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @default(now()) @updatedAt
+
+  @@index([galleryId, createdAt])
+  @@map("gallery_comment")
 }

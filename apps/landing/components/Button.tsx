@@ -3,25 +3,25 @@ import Link from "next/link";
 
 const baseStyles = {
   solid:
-    "group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2",
+    "group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors",
   outline:
-    "group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-hidden",
+    "group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-hidden transition-colors",
 };
 
 const variantStyles = {
   solid: {
-    main: "bg-foreground text-background hover:text-background/80 hover:bg-foreground/80 active:bg-foreground/80 active:text-foreground/80 focus-visible:outline-blue-600",
+    main: "bg-foreground text-background hover:bg-foreground/85 focus-visible:outline-primary",
     secondary:
-      "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/80 active:text-secondary-foreground/80 focus-visible:outline-secondary",
+      "bg-primary text-primary-foreground hover:bg-primary/85 focus-visible:outline-primary",
     white:
-      "bg-white text-slate-900 hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white",
+      "bg-card text-foreground hover:bg-card/90 focus-visible:outline-card",
   },
   outline: {
-    main: "ring-foreground text-foreground hover:text-foreground/80 hover:ring-foreground/80 active:bg-foreground/40 active:text-foreground",
+    main: "ring-foreground/30 text-foreground hover:text-primary hover:ring-primary/50 active:bg-primary/5",
     slate:
-      "ring-slate-200 text-slate-700 hover:text-slate-900 hover:ring-slate-300 active:bg-slate-100 active:text-slate-600 focus-visible:outline-blue-600 focus-visible:ring-slate-300",
+      "ring-border text-muted-foreground hover:text-foreground hover:ring-foreground/30 active:bg-accent",
     white:
-      "ring-slate-700 text-white hover:ring-slate-500 active:ring-slate-700 active:text-slate-400 focus-visible:outline-white",
+      "ring-white/30 text-white hover:ring-white/60 active:ring-white/40 active:text-white/80 focus-visible:outline-white",
   },
 };
 

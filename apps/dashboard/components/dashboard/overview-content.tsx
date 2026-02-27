@@ -51,10 +51,10 @@ function formatRelativeTime(isoString: string) {
 }
 
 const activityTone: Record<string, string> = {
-  upload: "border-slate-200 bg-slate-50 text-slate-900",
-  gallery_update: "border-slate-200 bg-slate-50 text-slate-900",
-  delivery: "border-slate-200 bg-slate-50 text-slate-900",
-  system: "border-slate-200 bg-slate-50 text-slate-900",
+  upload: "border-border bg-primary/8 text-foreground",
+  gallery_update: "border-border bg-primary/8 text-foreground",
+  delivery: "border-border bg-primary/8 text-foreground",
+  system: "border-border bg-muted text-foreground",
 };
 
 export function OverviewContent() {
@@ -116,10 +116,10 @@ export function OverviewContent() {
           return (
             <Card
               key={stat.label}
-              className="relative overflow-hidden border-border/70 bg-white shadow-sm transition-all hover:shadow-md"
+              className="relative overflow-hidden border-border/70 bg-card shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
             >
               <CardHeader className="relative pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-[11px]">
+                <CardTitle className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                   {stat.label}
                 </CardTitle>
               </CardHeader>
@@ -128,7 +128,7 @@ export function OverviewContent() {
                   <Skeleton className="h-8 w-24" />
                 ) : (
                   <div>
-                    <p className="text-4xl font-light tracking-tight">
+                    <p className="text-4xl font-light tracking-tight text-foreground">
                       {stat.value}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -136,8 +136,8 @@ export function OverviewContent() {
                     </p>
                   </div>
                 )}
-                <div className="rounded-full bg-slate-50 p-2.5">
-                  <Icon className="h-4 w-4 text-foreground/70" />
+                <div className="rounded-full bg-primary/10 p-2.5">
+                  <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -145,16 +145,16 @@ export function OverviewContent() {
         })}
       </div>
 
-      <Card className="border-border/70 bg-white shadow-sm">
+      <Card className="border-border/70 bg-card shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between border-b border-border/40 pb-4">
           <CardTitle className="text-lg font-medium">Activity Log</CardTitle>
           <Badge
             variant="outline"
-            className="gap-1.5 rounded-full px-3 py-1 bg-slate-50 text-xs font-normal border-border/70"
+            className="gap-1.5 rounded-full px-3 py-1 bg-primary/8 text-xs font-normal border-primary/30"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-40"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
             Live feed
           </Badge>

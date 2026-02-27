@@ -27,6 +27,7 @@ import {
   FormItem,
   FormMessage,
 } from "@workspace/ui/components/form";
+import { Icons } from "@workspace/ui/components/icons";
 import {
   forgetPassword,
   sendVerificationOTP,
@@ -436,21 +437,22 @@ export function UnifiedAuthForm({
 
   return (
     <div
-      className={cn("min-h-screen bg-[#f3f4ef] text-slate-900", className)}
+      className={cn("min-h-screen bg-background text-foreground", className)}
       {...props}
     >
       <div className="mx-auto flex min-h-screen w-full max-w-7xl items-stretch px-4 py-6 sm:px-8 lg:px-10">
-        <section className="relative flex w-full flex-1 flex-col justify-center overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.45)] sm:p-10 lg:max-w-[540px]">
-          <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.25),transparent_70%)]" />
+        <section className="relative flex w-full flex-1 flex-col justify-center overflow-hidden rounded-tl-3xl border border-border bg-card p-6 shadow-sm sm:p-10 lg:max-w-[540px]">
+          <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,_oklch(0.72_0.14_65_/_0.15),transparent_70%)]" />
 
           <div className="relative">
             <div className="mb-6 flex items-center justify-between">
-              <img
-                src="/logo.png"
-                alt="FOTNO"
-                className="h-20 w-40 object-contain"
-              />
-              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+              <div className="flex items-center gap-2">
+                <Icons.logo className="h-8 w-8 text-primary" />
+                <span className="text-xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
+                  FOTNO
+                </span>
+              </div>
+              <span className="rounded-full border border-primary/30 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
                 For Photographers
               </span>
             </div>
@@ -459,17 +461,17 @@ export function UnifiedAuthForm({
               <Button
                 type="button"
                 variant="ghost"
-                className="mb-4 h-auto p-0 text-sm text-slate-600 hover:bg-transparent hover:text-slate-900"
+                className="mb-4 h-auto p-0 text-sm text-muted-foreground hover:bg-transparent hover:text-foreground"
                 onClick={backToEmailStep}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
               </Button>
             )}
 
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
               {titleByMode[authMode]}
             </h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               {subtitleByMode[authMode]}
             </p>
 
@@ -495,7 +497,7 @@ export function UnifiedAuthForm({
                       <FormItem>
                         <FormControl>
                           <div className="relative">
-                            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                               {...field}
                               type="email"
@@ -507,7 +509,7 @@ export function UnifiedAuthForm({
                                 authMode === "register" ||
                                 authMode === "otp"
                               }
-                              className="h-12 border-slate-300 pl-10 focus-visible:ring-amber-500"
+                              className="h-12 border-border pl-10 focus-visible:ring-primary"
                             />
                           </div>
                         </FormControl>
@@ -530,7 +532,7 @@ export function UnifiedAuthForm({
                             placeholder="Full name"
                             autoComplete="name"
                             disabled={isLoading}
-                            className="h-12 border-slate-300 focus-visible:ring-amber-500"
+                            className="h-12 border-border focus-visible:ring-primary"
                           />
                         </FormControl>
                         <FormMessage />
@@ -550,7 +552,7 @@ export function UnifiedAuthForm({
                         )}
                         <FormControl>
                           <div className="relative">
-                            <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                            <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                               {...field}
                               type={showPassword ? "text" : "password"}
@@ -565,11 +567,11 @@ export function UnifiedAuthForm({
                                   : "new-password"
                               }
                               disabled={isLoading}
-                              className="h-12 border-slate-300 pl-10 pr-10 focus-visible:ring-amber-500"
+                              className="h-12 border-border pl-10 pr-10 focus-visible:ring-primary"
                             />
                             <button
                               type="button"
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                               onClick={() => setShowPassword((prev) => !prev)}
                               aria-label={
                                 showPassword ? "Hide password" : "Show password"
@@ -603,7 +605,7 @@ export function UnifiedAuthForm({
                             maxLength={6}
                             placeholder="6-digit code"
                             disabled={isLoading}
-                            className="h-12 border-slate-300 text-center text-lg tracking-[0.35em] focus-visible:ring-amber-500"
+                            className="h-12 border-border text-center text-lg tracking-[0.35em] focus-visible:ring-primary"
                           />
                         </FormControl>
                         <FormMessage />
@@ -625,7 +627,7 @@ export function UnifiedAuthForm({
                     <button
                       type="button"
                       onClick={handleForgotPassword}
-                      className="text-xs font-medium text-slate-700 underline-offset-2 hover:underline"
+                      className="text-xs font-medium text-foreground underline-offset-2 hover:underline"
                     >
                       Forgot password?
                     </button>
@@ -633,12 +635,12 @@ export function UnifiedAuthForm({
                 )}
 
                 {authMode === "otp" && (
-                  <div className="flex items-center justify-between text-xs text-slate-600">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>Didn&apos;t get the code?</span>
                     <button
                       type="button"
                       disabled={isSendingOtp || otpCountdown > 0}
-                      className="font-semibold text-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="font-semibold text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                       onClick={requestOtp}
                     >
                       {otpCountdown > 0
@@ -651,7 +653,7 @@ export function UnifiedAuthForm({
                 <Button
                   type="submit"
                   disabled={isLoading || isSendingOtp}
-                  className="h-12 w-full bg-slate-900 text-white hover:bg-slate-800"
+                  className="auth-cta h-12 w-full text-primary-foreground"
                 >
                   {(isLoading || isSendingOtp) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -667,7 +669,7 @@ export function UnifiedAuthForm({
                     type="button"
                     variant="outline"
                     disabled={isSendingOtp || isLoading}
-                    className="h-12 w-full border-slate-300"
+                    className="h-12 w-full border-border"
                     onClick={requestOtp}
                   >
                     <ShieldCheck className="mr-2 h-4 w-4" />
@@ -680,11 +682,11 @@ export function UnifiedAuthForm({
             {authMode === "email" && (
               <>
                 <div className="my-6 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-slate-200" />
-                  <span className="text-xs uppercase tracking-wide text-slate-500">
+                  <div className="h-px flex-1 bg-border" />
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">
                     or continue with
                   </span>
-                  <div className="h-px flex-1 bg-slate-200" />
+                  <div className="h-px flex-1 bg-border" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -692,7 +694,7 @@ export function UnifiedAuthForm({
                     type="button"
                     variant="outline"
                     disabled={isLoading}
-                    className="h-11 border-slate-300"
+                    className="h-11 border-border"
                     onClick={() => handleSocialSignIn("google")}
                   >
                     <svg
@@ -724,7 +726,7 @@ export function UnifiedAuthForm({
                     type="button"
                     variant="outline"
                     disabled={isLoading}
-                    className="h-11 border-slate-300"
+                    className="h-11 border-border"
                     onClick={() => handleSocialSignIn("github")}
                   >
                     <Github className="mr-2 h-4 w-4" /> GitHub
@@ -733,7 +735,7 @@ export function UnifiedAuthForm({
               </>
             )}
 
-            <p className="mt-8 text-center text-xs text-slate-500">
+            <p className="mt-8 text-center text-xs text-muted-foreground">
               By continuing, you agree to our{" "}
               <Link href="/terms" className="underline">
                 Terms
@@ -747,36 +749,36 @@ export function UnifiedAuthForm({
           </div>
         </section>
 
-        <aside className="relative hidden flex-1 overflow-hidden rounded-3xl border border-slate-200 bg-[linear-gradient(145deg,#0f172a_0%,#1e293b_40%,#334155_100%)] p-10 lg:block">
-          <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-amber-300/30 blur-3xl" />
-          <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl" />
+        <aside className="relative hidden flex-1 overflow-hidden rounded-tr-3xl border border-border p-10 lg:block" style={{ background: "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)" }}>
+          <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-primary/25 blur-3xl" />
+          <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
           <div className="relative flex h-full flex-col justify-between text-white">
             <div>
-              <p className="inline-flex rounded-full border border-white/30 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/90">
+              <p className="inline-flex rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-primary">
                 FOTNO Platform
               </p>
               <h2 className="mt-6 max-w-md text-4xl font-semibold leading-tight">
                 Studio-grade account security for working photographers.
               </h2>
-              <p className="mt-4 max-w-md text-sm text-slate-200">
-                Password login, social OAuth, and email OTP in one place,
+              <p className="mt-4 max-w-md text-sm text-white/70">
+                Password login, social OAuth, and email OTP in one place --
                 optimized for fast access to your collections, deliveries, and
                 billing tools.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 text-sm text-slate-100">
-              <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
+            <div className="grid grid-cols-1 gap-4 text-sm text-white/90">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                 <p className="font-medium">Only photographers need accounts</p>
-                <p className="mt-1 text-xs text-slate-200">
+                <p className="mt-1 text-xs text-white/60">
                   Clients continue to access galleries through secure share
                   links.
                 </p>
               </div>
-              <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                 <p className="font-medium">Session and device hardening</p>
-                <p className="mt-1 text-xs text-slate-200">
+                <p className="mt-1 text-xs text-white/60">
                   Better Auth sessions are shared across FOTNO subdomains with
                   secure cookie policy.
                 </p>

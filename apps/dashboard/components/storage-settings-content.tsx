@@ -80,7 +80,7 @@ export function StorageSettingsContent() {
             </tbody>
           </table>
 
-          <p className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+          <p className="mt-4 rounded-lg border border-primary/30 bg-primary/8 p-3 text-sm text-foreground">
             Current billing cycle overage:{" "}
             {summary ? bytesToGb(summary.overageBytes) : "0.00 GB"} (
             {summary ? toUsd(summary.overageCostCents) : "$0.00"} est.)

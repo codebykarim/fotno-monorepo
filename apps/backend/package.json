@@ -6,9 +6,9 @@
     "start": "tsc && node dist/server.js",
     "build": "tsc",
     "dev:server": "ts-node-dev --respawn --transpile-only --inspect=9230 --ignore node_modules src/server.ts",
-    "dev:worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
-    "dev": "sh -c 'pnpm run dev:server & pnpm run dev:worker:photo; wait'",
-    "worker:photo": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/processPhotoWorker.ts",
+    "dev:worker:cleanup": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/cleanupPhotoWorker.ts",
+    "dev": "sh -c 'pnpm run dev:server & pnpm run dev:worker:cleanup; wait'",
+    "worker:cleanup": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/cleanupPhotoWorker.ts",
     "worker:reconcile-storage": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/reconcileStorageWorker.ts",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -72,7 +72,6 @@
     "puppeteer-core": "^23.9.0",
     "qrcode-terminal": "^0.12.0",
     "resend": "^4.1.2",
-    "sharp": "^0.34.3",
     "zod": "^3.24.2"
   },
   "prisma": {

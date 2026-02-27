@@ -1,15 +1,14 @@
 import "@workspace/ui/globals.css";
-import "./theme.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 
 import { getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
-import DashboardSidebar from "../components/dashboard-sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,24 +38,20 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "dashboard-theme dashboard-shell bg-background text-foreground",
+          "bg-background text-foreground",
         )}
       >
-        <div className="flex h-screen">
-          <div className="hidden lg:block">
-            <DashboardSidebar />
-          </div>
-
-          <div className="flex-1 flex flex-col overflow-hidden bg-background">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="flex flex-col min-h-screen">
             <Header main="DASHBOARD" />
-            <main className="dashboard-main flex-1 overflow-auto p-4 lg:p-8">
-              <div className="dashboard-glass dashboard-enter min-h-full rounded-2xl p-6 lg:p-8 bg-white border border-border shadow-sm">
+            <main className="flex-1 p-4 lg:p-8">
+              <div className="dashboard-glass dashboard-enter mx-auto max-w-screen-xl min-h-full rounded-2xl p-6 lg:p-8">
                 {children}
               </div>
             </main>
           </div>
-        </div>
-        <Toaster />
+          <Toaster richColors position="bottom-center" />
+        </ThemeProvider>
       </body>
     </html>
   );

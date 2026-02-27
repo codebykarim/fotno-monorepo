@@ -1,35 +1,35 @@
-import Image from "next/image";
-
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
-import backgroundImage from "@/images/background-call-to-action.jpg";
 
 export function CallToAction() {
   return (
     <section
       id="get-started-today"
-      className="relative overflow-hidden bg-foreground py-32"
+      className="relative overflow-hidden py-32"
+      style={{
+        background:
+          "linear-gradient(135deg, oklch(0.72 0.14 65) 0%, oklch(0.65 0.14 50) 50%, oklch(0.60 0.12 40) 100%)",
+      }}
     >
-      {/* <Image
-        className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
-        src={backgroundImage}
-        alt=""
-        width={2347}
-        height={1244}
-        unoptimized
-      /> */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 50%, oklch(1 0 0 / 0.15), transparent 60%), radial-gradient(circle at 80% 50%, oklch(1 0 0 / 0.1), transparent 50%)",
+        }}
+      />
       <Container className="relative">
         <div className="mx-auto max-w-lg text-center">
-          <h2 className="font-display text-3xl tracking-tight text-background sm:text-4xl">
-            Get started today
+          <h2 className="text-3xl tracking-tight font-semibold text-primary-foreground sm:text-4xl">
+            Start delivering like a pro
           </h2>
-          <p className="mt-4 text-lg tracking-tight text-background">
-            It’s time to take control of your photos and videos. Subscribe to
-            Fotno today and get 1 month <span className="font-bold">Free</span>.
+          <p className="mt-4 text-lg tracking-tight text-primary-foreground/80">
+            Join hundreds of photographers who've upgraded their delivery
+            workflow. Your first month is on us.
           </p>
           <Button
             href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
-            color="secondary"
+            color="white"
             className="mt-10"
           >
             Get 1 month free

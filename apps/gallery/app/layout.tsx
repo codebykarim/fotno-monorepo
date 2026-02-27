@@ -1,15 +1,13 @@
 import "@workspace/ui/globals.css";
-import "./theme.css";
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Inter } from "next/font/google";
 import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { ThemeProvider } from "@workspace/ui/components/theme-provider";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FOTNO Gallery",
@@ -24,9 +22,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(manrope.variable, "gallery-theme gallery-shell font-sans antialiased")}>
-        {children}
-        <Toaster richColors />
+      <body className={cn(inter.className, "bg-background text-foreground antialiased")}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeToggle />
+          </div>
+          {children}
+          <Toaster richColors position="bottom-center" />
+        </ThemeProvider>
       </body>
     </html>
   );

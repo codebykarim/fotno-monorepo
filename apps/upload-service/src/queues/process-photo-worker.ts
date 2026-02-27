@@ -9,6 +9,11 @@ import { bullConnection } from './connection'
 
 const workerLogger = logger.child({ module: 'process-photo.worker' })
 
+/**
+ * BullMQ worker that processes upload-confirmed photos: downloads originals from S3, generates
+ * thumbnail and preview via ImageService, uploads them, updates the photo record, and updates storage.
+ * Concurrency is configurable via PROCESSOR_CONCURRENCY env var. Run multiple instances for scale.
+ */
 export const processPhotoWorker = new Worker<ProcessPhotoJobData>(
   'process-photo',
   async (job) => {

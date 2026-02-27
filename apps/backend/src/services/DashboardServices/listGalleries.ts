@@ -56,6 +56,8 @@ export const listGalleries = async (
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
+  const PREVIEW_GRID_LIMIT = 12;
+
   return Promise.all(
     filtered.map(async (gallery: any) => {
       const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order);
@@ -67,6 +69,14 @@ export const listGalleries = async (
       const coverPhotoObjectKey = coverPhoto
         ? coverPhoto.thumbnailKey ?? coverPhoto.previewKey ?? coverPhoto.s3Key
         : null;
+
+      const previewPhotos = orderedPhotos.slice(0, PREVIEW_GRID_LIMIT);
+      const previewPhotoUrls = await Promise.all(
+        previewPhotos.map((photo: any) => {
+          const key = photo.thumbnailKey ?? photo.previewKey ?? photo.s3Key;
+          return key ? getPresignedDownloadUrl(key, 3600) : null;
+        }),
+      ).then((urls) => urls.filter((url): url is string => url !== null));
 
       return {
         id: gallery.id,
@@ -87,6 +97,7 @@ export const listGalleries = async (
         coverPhotoUrl: coverPhotoObjectKey
           ? await getPresignedDownloadUrl(coverPhotoObjectKey, 3600)
           : null,
+        previewPhotoUrls,
       };
     }),
   );

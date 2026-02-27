@@ -266,7 +266,7 @@ export default function PhotoLightboxClient({
 
   if (!currentPhoto) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-200">
+      <div className="flex min-h-screen items-center justify-center bg-foreground text-background/70">
         Photo not found
       </div>
     );
@@ -510,11 +510,11 @@ export default function PhotoLightboxClient({
   };
 
   return (
-    <div className="min-h-screen select-none bg-slate-950 text-slate-100">
+    <div className="min-h-screen select-none text-white" style={{ background: "oklch(0.12 0.01 50)" }}>
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         <Link
           href={`/${gallery.shareToken}`}
-          className="inline-flex items-center gap-2 text-sm text-slate-300 transition hover:text-white"
+          className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to gallery
@@ -618,9 +618,9 @@ export default function PhotoLightboxClient({
 
       <div className="mx-auto max-w-3xl px-4 pb-10 text-center md:px-8">
         {currentPhoto.aiCaption ? (
-          <p className="text-sm leading-relaxed text-slate-300">{currentPhoto.aiCaption}</p>
+          <p className="text-sm leading-relaxed text-white/70">{currentPhoto.aiCaption}</p>
         ) : (
-          <p className="text-sm text-slate-500">No caption available for this photo.</p>
+          <p className="text-sm text-white/40">No caption available for this photo.</p>
         )}
       </div>
     </div>

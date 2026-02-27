@@ -2,6 +2,11 @@ import { db } from "./_shared";
 import { enqueuePhotoCleanup } from "../../queues/photoQueue";
 import { removeStorage } from "../StorageServices";
 
+/**
+ * Deletes a gallery and all its photos: updates storage accounting, removes gallery and photos from DB,
+ * and enqueues S3 cleanup for all original, thumbnail, and preview objects.
+ * Returns false if the gallery was not found or not owned by the user.
+ */
 export const deleteGallery = async (userId: string, galleryId: string) => {
   const existing = await db.gallery.findFirst({
     where: { id: galleryId, userId },

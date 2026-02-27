@@ -8,9 +8,18 @@ import { multipartService } from './multipart'
 const THUMBNAIL_MAX_BYTES = 250_000 // 250KB
 const PREVIEW_MAX_BYTES = 1_000_000 // 1MB
 
+/**
+ * Service that generates thumbnails and previews from uploaded photos.
+ * Handles RAW formats by extracting embedded JPEG previews via Sharp.
+ * Outputs WebP under size budgets; used by the process-photo BullMQ worker.
+ */
 class ImageService {
   private readonly log = logger.child({ module: 'image.service' })
 
+  /**
+   * Downloads the original from S3, generates thumbnail (≤250KB) and preview (≤1MB) in WebP,
+   * uploads both to S3, and returns their keys and sizes. For RAW files, extracts embedded preview first.
+   */
   async processPhoto(
     photoId: string,
     galleryId: string,
@@ -60,6 +69,10 @@ class ImageService {
     }
   }
 
+  /**
+   * Compresses the input image to WebP under the given byte budget. Iteratively reduces quality
+   * and then size until the result fits. Used for both thumbnail and preview generation.
+   */
   private async compressWebpUnderBudget(
     input: Buffer,
     maxBytes: number,
@@ -100,6 +113,7 @@ class ImageService {
     throw Errors.PROCESSING_FAILED('Could not compress image within budget')
   }
 
+  /** Returns true if the MIME type is a RAW camera format that needs embedded-preview extraction. */
   private isRawFormat(mimeType: string): boolean {
     return RAW_MIME_TYPES.has(mimeType)
   }

@@ -3,25 +3,35 @@
 import { useMemo, useState } from "react";
 import useSWR, { mutate as mutateCache } from "swr";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ArrowUpDown, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
 import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { ListGalleriesResponse } from "@/lib/types/api";
 import { GalleryCard } from "@/components/dashboard/gallery-card";
 import { GalleryCardSkeleton } from "@/components/dashboard/gallery-card-skeleton";
+import { cn } from "@workspace/ui/lib/utils";
+
+const STATUS_OPTIONS = ["all", "draft", "published"] as const;
+type StatusFilter = (typeof STATUS_OPTIONS)[number];
+
+const SORT_LABELS: Record<string, string> = {
+  newest: "Newest",
+  oldest: "Oldest",
+  title_asc: "A \u2192 Z",
+  title_desc: "Z \u2192 A",
+};
 
 export function GalleriesListContent() {
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<"all" | "draft" | "published">("all");
+  const [status, setStatus] = useState<StatusFilter>("all");
   const [sort, setSort] = useState<"newest" | "oldest" | "title_asc" | "title_desc">("newest");
 
   const key = useMemo(() => {
@@ -54,59 +64,74 @@ export function GalleriesListContent() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="dashboard-title text-3xl font-semibold tracking-tight">Galleries</h1>
-          <p className="mt-1 text-muted-foreground">Search, filter, and manage all delivered galleries.</p>
+          <h1 className="dashboard-title text-2xl font-semibold tracking-tight">Galleries</h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">Manage and deliver your photo galleries.</p>
         </div>
-        <Button asChild className="shadow-sm">
+        <Button asChild size="sm">
           <Link href="/galleries/new">
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-1.5 h-4 w-4" />
             New Gallery
           </Link>
         </Button>
       </div>
 
-      <div className="grid gap-3 rounded-2xl border border-border/70 bg-white/75 p-3 shadow-[0_16px_40px_-35px_rgba(2,6,23,0.7)] md:grid-cols-3">
-        <Input
-          placeholder="Search by title or slug"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          className="bg-background/85"
-        />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative max-w-xs flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search galleries..."
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            className="pl-9 h-9 text-sm"
+          />
+        </div>
 
-        <Select value={status} onValueChange={(value) => setStatus(value as "all" | "draft" | "published")}>
-          <SelectTrigger className="bg-background/85">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="published">Published</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center rounded-lg border border-border bg-muted/40 p-0.5">
+            {STATUS_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setStatus(option)}
+                className={cn(
+                  "rounded-md px-3 py-1 text-xs font-medium capitalize transition-all",
+                  status === option
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {option === "all" ? "All" : option}
+              </button>
+            ))}
+          </div>
 
-        <Select
-          value={sort}
-          onValueChange={(value) =>
-            setSort(value as "newest" | "oldest" | "title_asc" | "title_desc")
-          }
-        >
-          <SelectTrigger className="bg-background/85">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="newest">Newest first</SelectItem>
-            <SelectItem value="oldest">Oldest first</SelectItem>
-            <SelectItem value="title_asc">Title A-Z</SelectItem>
-            <SelectItem value="title_desc">Title Z-A</SelectItem>
-          </SelectContent>
-        </Select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
+                <ArrowUpDown className="h-3.5 w-3.5" />
+                {SORT_LABELS[sort]}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {Object.entries(SORT_LABELS).map(([value, label]) => (
+                <DropdownMenuItem
+                  key={value}
+                  onClick={() => setSort(value as typeof sort)}
+                  className={cn(sort === value && "font-medium text-primary")}
+                >
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {isLoading && Array.from({ length: 6 }).map((_, index) => <GalleryCardSkeleton key={index} />)}
 
         {!isLoading && data?.galleries.length === 0 && (
-          <div className="col-span-full rounded-2xl border border-dashed border-border/80 bg-white/65 p-10 text-center text-sm text-muted-foreground">
+          <div className="col-span-full rounded-2xl border border-dashed border-primary/25 bg-primary/4 p-10 text-center text-sm text-muted-foreground">
             No galleries match your filters.
           </div>
         )}

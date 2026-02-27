@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "gallery_comment" ADD COLUMN     "likes" TEXT[] DEFAULT ARRAY[]::TEXT[],
+ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

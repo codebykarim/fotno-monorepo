@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Popover,
@@ -14,6 +15,7 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/components/icons";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { useSession } from "@workspace/lib/auth/auth-client";
 
 function MobileNavLink({
@@ -34,7 +36,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-3.5 w-3.5 overflow-visible stroke-slate-700"
+      className="h-3.5 w-3.5 overflow-visible stroke-foreground"
       fill="none"
       strokeWidth={2}
       strokeLinecap="round"
@@ -56,10 +58,8 @@ function MobileNavIcon({ open }: { open: boolean }) {
 
 function MobileNavigation({
   isUserLoggedIn,
-  isLoading,
 }: {
   isUserLoggedIn: boolean;
-  isLoading: boolean;
 }) {
   return (
     <Popover>
@@ -81,30 +81,36 @@ function MobileNavigation({
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#pricing">Pricing</MobileNavLink>
         <hr className="m-2 border-primary/40" />
-        {isLoading ? (
-          <div className="h-10 bg-background/10 animate-pulse rounded-full" />
-        ) : isUserLoggedIn ? (
+        {isUserLoggedIn ? (
           <MobileNavLink
             href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
           >
             My Dashboard
           </MobileNavLink>
         ) : (
-          <div className="flex flex-col w-fit">
-            <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
-              <span>
-                Get started <span className="hidden lg:inline">today</span>
-              </span>
-            </MobileNavLink>
-          </div>
+          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
+            Get started
+          </MobileNavLink>
         )}
       </PopoverPanel>
     </Popover>
   );
 }
 
+const AUTH_TIMEOUT_MS = 1500;
+
 export function Header() {
   const { data: session, isPending } = useSession();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!isPending) {
+      setReady(true);
+      return;
+    }
+    const timer = setTimeout(() => setReady(true), AUTH_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [isPending]);
 
   return (
     <header className="py-10 bg-background">
@@ -126,10 +132,14 @@ export function Header() {
             </div>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
-            <div className="hidden md:block">
-              {isPending ? (
-                <div className="w-[140px] h-10 bg-foreground/10 animate-pulse rounded-full" />
-              ) : session?.user ? (
+            <ThemeToggle />
+            <div
+              className={cn(
+                "hidden md:block transition-opacity duration-300",
+                ready ? "opacity-100" : "opacity-0"
+              )}
+            >
+              {session?.user ? (
                 <Button
                   href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
                   color="main"
@@ -137,24 +147,26 @@ export function Header() {
                   My Dashboard
                 </Button>
               ) : (
-                <div className="flex gap-2 items-center">
-                  <Button
-                    href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
-                    color="main"
-                  >
-                    <span>
-                      Get started{" "}
-                      <span className="hidden lg:inline">today</span>
-                    </span>
-                  </Button>
-                </div>
+                <Button
+                  href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
+                  color="main"
+                >
+                  <span>
+                    Get started{" "}
+                    <span className="hidden lg:inline">today</span>
+                  </span>
+                </Button>
               )}
             </div>
 
-            <div className="-mr-1 md:hidden">
+            <div
+              className={cn(
+                "-mr-1 md:hidden transition-opacity duration-300",
+                ready ? "opacity-100" : "opacity-0"
+              )}
+            >
               <MobileNavigation
-                isUserLoggedIn={session?.user !== undefined}
-                isLoading={isPending}
+                isUserLoggedIn={!!session?.user}
               />
             </div>
           </div>

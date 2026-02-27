@@ -307,6 +307,20 @@ exports.Prisma.AlbumPhotoScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.GalleryCommentScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  photoId: 'photoId',
+  parentId: 'parentId',
+  authorName: 'authorName',
+  authorRole: 'authorRole',
+  viewerId: 'viewerId',
+  message: 'message',
+  likes: 'likes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -389,7 +403,8 @@ exports.Prisma.ModelName = {
   Client: 'Client',
   GalleryClient: 'GalleryClient',
   Album: 'Album',
-  AlbumPhoto: 'AlbumPhoto'
+  AlbumPhoto: 'AlbumPhoto',
+  GalleryComment: 'GalleryComment'
 };
 
 /**

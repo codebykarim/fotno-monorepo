@@ -1,7 +1,6 @@
 import {
   DeleteObjectCommand,
   GetObjectCommand,
-  PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -30,10 +29,7 @@ if (!endpoint && !looksLikeAwsRegion(region)) {
 const s3Client = new S3Client({
   region,
   ...(endpoint ? { endpoint } : {}),
-  // R2 works reliably with path-style bucket URLs for signed requests.
   forcePathStyle: Boolean(endpoint),
-  // Prevent optional checksum headers from being baked into presigned PUT URLs.
-  // Browser uploads only send Content-Type in this app.
   requestChecksumCalculation: "WHEN_REQUIRED",
   responseChecksumValidation: "WHEN_REQUIRED",
   credentials: {
@@ -43,24 +39,8 @@ const s3Client = new S3Client({
 });
 
 /**
- * Generates a presigned URL for direct S3 uploads.
- */
-export const getPresignedUploadUrl = async (
-  key: string,
-  mimeType: string,
-  expiresIn = 300,
-): Promise<string> => {
-  const command = new PutObjectCommand({
-    Bucket: bucket,
-    Key: key,
-    ContentType: mimeType,
-  });
-
-  return getSignedUrl(s3Client, command, { expiresIn });
-};
-
-/**
- * Generates a presigned URL for secure S3 downloads.
+ * Generates a presigned URL for downloading an S3/R2 object. Used to serve photos to the client
+ * without exposing storage credentials. URLs expire after the given number of seconds.
  */
 export const getPresignedDownloadUrl = async (
   key: string,
@@ -75,7 +55,8 @@ export const getPresignedDownloadUrl = async (
 };
 
 /**
- * Deletes an object from S3.
+ * Deletes an object from S3/R2 by key. Used by the cleanup worker when a user deletes a photo
+ * or gallery to remove the original file, thumbnail, and preview.
  */
 export const deleteS3Object = async (key: string): Promise<void> => {
   await s3Client.send(
@@ -84,47 +65,4 @@ export const deleteS3Object = async (key: string): Promise<void> => {
       Key: key,
     }),
   );
-};
-
-/**
- * Uploads binary content to S3.
- */
-export const putS3Object = async (
-  key: string,
-  body: Buffer,
-  contentType: string,
-): Promise<void> => {
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: bucket,
-      Key: key,
-      Body: body,
-      ContentType: contentType,
-    }),
-  );
-};
-
-/**
- * Downloads binary content from S3.
- */
-export const getS3ObjectBuffer = async (key: string): Promise<Buffer> => {
-  const response = await s3Client.send(
-    new GetObjectCommand({
-      Bucket: bucket,
-      Key: key,
-    }),
-  );
-
-  if (!response.Body) {
-    throw new Error(`S3 object body is empty for key: ${key}`);
-  }
-
-  const bytes = await response.Body.transformToByteArray();
-  return Buffer.from(bytes);
-};
-
-export const s3Config = {
-  bucket,
-  region,
-  endpoint,
 };

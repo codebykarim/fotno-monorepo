@@ -83,6 +83,11 @@ export type Album = $Result.DefaultSelection<Prisma.$AlbumPayload>
  * 
  */
 export type AlbumPhoto = $Result.DefaultSelection<Prisma.$AlbumPhotoPayload>
+/**
+ * Model GalleryComment
+ * 
+ */
+export type GalleryComment = $Result.DefaultSelection<Prisma.$GalleryCommentPayload>
 
 /**
  * Enums
@@ -438,6 +443,16 @@ export class PrismaClient<
     * ```
     */
   get albumPhoto(): Prisma.AlbumPhotoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.galleryComment`: Exposes CRUD operations for the **GalleryComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GalleryComments
+    * const galleryComments = await prisma.galleryComment.findMany()
+    * ```
+    */
+  get galleryComment(): Prisma.GalleryCommentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -885,7 +900,8 @@ export namespace Prisma {
     Client: 'Client',
     GalleryClient: 'GalleryClient',
     Album: 'Album',
-    AlbumPhoto: 'AlbumPhoto'
+    AlbumPhoto: 'AlbumPhoto',
+    GalleryComment: 'GalleryComment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -901,7 +917,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1941,6 +1957,80 @@ export namespace Prisma {
           }
         }
       }
+      GalleryComment: {
+        payload: Prisma.$GalleryCommentPayload<ExtArgs>
+        fields: Prisma.GalleryCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GalleryCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GalleryCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.GalleryCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GalleryCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          findMany: {
+            args: Prisma.GalleryCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>[]
+          }
+          create: {
+            args: Prisma.GalleryCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          createMany: {
+            args: Prisma.GalleryCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GalleryCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>[]
+          }
+          delete: {
+            args: Prisma.GalleryCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          update: {
+            args: Prisma.GalleryCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.GalleryCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GalleryCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GalleryCommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.GalleryCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.GalleryCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGalleryComment>
+          }
+          groupBy: {
+            args: Prisma.GalleryCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GalleryCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GalleryCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<GalleryCommentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2063,6 +2153,7 @@ export namespace Prisma {
     galleryClient?: GalleryClientOmit
     album?: AlbumOmit
     albumPhoto?: AlbumPhotoOmit
+    galleryComment?: GalleryCommentOmit
   }
 
   /* Types for Logging */
@@ -2222,12 +2313,14 @@ export namespace Prisma {
     photos: number
     albums: number
     clients: number
+    comments: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos?: boolean | GalleryCountOutputTypeCountPhotosArgs
     albums?: boolean | GalleryCountOutputTypeCountAlbumsArgs
     clients?: boolean | GalleryCountOutputTypeCountClientsArgs
+    comments?: boolean | GalleryCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
@@ -2262,6 +2355,13 @@ export namespace Prisma {
     where?: GalleryClientWhereInput
   }
 
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryCommentWhereInput
+  }
+
 
   /**
    * Count Type PhotoCountOutputType
@@ -2270,11 +2370,13 @@ export namespace Prisma {
   export type PhotoCountOutputType = {
     usedAsCoverIn: number
     albumPhotos: number
+    comments: number
   }
 
   export type PhotoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     usedAsCoverIn?: boolean | PhotoCountOutputTypeCountUsedAsCoverInArgs
     albumPhotos?: boolean | PhotoCountOutputTypeCountAlbumPhotosArgs
+    comments?: boolean | PhotoCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
@@ -2300,6 +2402,13 @@ export namespace Prisma {
    */
   export type PhotoCountOutputTypeCountAlbumPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AlbumPhotoWhereInput
+  }
+
+  /**
+   * PhotoCountOutputType without action
+   */
+  export type PhotoCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryCommentWhereInput
   }
 
 
@@ -2362,6 +2471,37 @@ export namespace Prisma {
    */
   export type AlbumCountOutputTypeCountPhotosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AlbumPhotoWhereInput
+  }
+
+
+  /**
+   * Count Type GalleryCommentCountOutputType
+   */
+
+  export type GalleryCommentCountOutputType = {
+    replies: number
+  }
+
+  export type GalleryCommentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    replies?: boolean | GalleryCommentCountOutputTypeCountRepliesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GalleryCommentCountOutputType without action
+   */
+  export type GalleryCommentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryCommentCountOutputType
+     */
+    select?: GalleryCommentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GalleryCommentCountOutputType without action
+   */
+  export type GalleryCommentCountOutputTypeCountRepliesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryCommentWhereInput
   }
 
 
@@ -9756,6 +9896,7 @@ export namespace Prisma {
     photos?: boolean | Gallery$photosArgs<ExtArgs>
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
+    comments?: boolean | Gallery$commentsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -9815,6 +9956,7 @@ export namespace Prisma {
     photos?: boolean | Gallery$photosArgs<ExtArgs>
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
+    comments?: boolean | Gallery$commentsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9834,6 +9976,7 @@ export namespace Prisma {
       photos: Prisma.$PhotoPayload<ExtArgs>[]
       albums: Prisma.$AlbumPayload<ExtArgs>[]
       clients: Prisma.$GalleryClientPayload<ExtArgs>[]
+      comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10247,6 +10390,7 @@ export namespace Prisma {
     photos<T extends Gallery$photosArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$photosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     albums<T extends Gallery$albumsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$albumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     clients<T extends Gallery$clientsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments<T extends Gallery$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10775,6 +10919,30 @@ export namespace Prisma {
   }
 
   /**
+   * Gallery.comments
+   */
+  export type Gallery$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    where?: GalleryCommentWhereInput
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    cursor?: GalleryCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
    * Gallery without action
    */
   export type GalleryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11171,6 +11339,7 @@ export namespace Prisma {
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
     uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
+    comments?: boolean | Photo$commentsArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
 
@@ -11263,6 +11432,7 @@ export namespace Prisma {
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
     uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
+    comments?: boolean | Photo$commentsArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PhotoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11279,6 +11449,7 @@ export namespace Prisma {
       usedAsCoverIn: Prisma.$GalleryPayload<ExtArgs>[]
       uploadSession: Prisma.$UploadSessionPayload<ExtArgs> | null
       albumPhotos: Prisma.$AlbumPhotoPayload<ExtArgs>[]
+      comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11703,6 +11874,7 @@ export namespace Prisma {
     usedAsCoverIn<T extends Photo$usedAsCoverInArgs<ExtArgs> = {}>(args?: Subset<T, Photo$usedAsCoverInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploadSession<T extends Photo$uploadSessionArgs<ExtArgs> = {}>(args?: Subset<T, Photo$uploadSessionArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     albumPhotos<T extends Photo$albumPhotosArgs<ExtArgs> = {}>(args?: Subset<T, Photo$albumPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments<T extends Photo$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Photo$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12216,6 +12388,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
+  }
+
+  /**
+   * Photo.comments
+   */
+  export type Photo$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    where?: GalleryCommentWhereInput
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    cursor?: GalleryCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
   }
 
   /**
@@ -18795,6 +18991,1222 @@ export namespace Prisma {
 
 
   /**
+   * Model GalleryComment
+   */
+
+  export type AggregateGalleryComment = {
+    _count: GalleryCommentCountAggregateOutputType | null
+    _min: GalleryCommentMinAggregateOutputType | null
+    _max: GalleryCommentMaxAggregateOutputType | null
+  }
+
+  export type GalleryCommentMinAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    photoId: string | null
+    parentId: string | null
+    authorName: string | null
+    authorRole: string | null
+    viewerId: string | null
+    message: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GalleryCommentMaxAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    photoId: string | null
+    parentId: string | null
+    authorName: string | null
+    authorRole: string | null
+    viewerId: string | null
+    message: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GalleryCommentCountAggregateOutputType = {
+    id: number
+    galleryId: number
+    photoId: number
+    parentId: number
+    authorName: number
+    authorRole: number
+    viewerId: number
+    message: number
+    likes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GalleryCommentMinAggregateInputType = {
+    id?: true
+    galleryId?: true
+    photoId?: true
+    parentId?: true
+    authorName?: true
+    authorRole?: true
+    viewerId?: true
+    message?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GalleryCommentMaxAggregateInputType = {
+    id?: true
+    galleryId?: true
+    photoId?: true
+    parentId?: true
+    authorName?: true
+    authorRole?: true
+    viewerId?: true
+    message?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GalleryCommentCountAggregateInputType = {
+    id?: true
+    galleryId?: true
+    photoId?: true
+    parentId?: true
+    authorName?: true
+    authorRole?: true
+    viewerId?: true
+    message?: true
+    likes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GalleryCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GalleryComment to aggregate.
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryComments to fetch.
+     */
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GalleryCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GalleryComments
+    **/
+    _count?: true | GalleryCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GalleryCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GalleryCommentMaxAggregateInputType
+  }
+
+  export type GetGalleryCommentAggregateType<T extends GalleryCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateGalleryComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGalleryComment[P]>
+      : GetScalarType<T[P], AggregateGalleryComment[P]>
+  }
+
+
+
+
+  export type GalleryCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryCommentWhereInput
+    orderBy?: GalleryCommentOrderByWithAggregationInput | GalleryCommentOrderByWithAggregationInput[]
+    by: GalleryCommentScalarFieldEnum[] | GalleryCommentScalarFieldEnum
+    having?: GalleryCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GalleryCommentCountAggregateInputType | true
+    _min?: GalleryCommentMinAggregateInputType
+    _max?: GalleryCommentMaxAggregateInputType
+  }
+
+  export type GalleryCommentGroupByOutputType = {
+    id: string
+    galleryId: string
+    photoId: string | null
+    parentId: string | null
+    authorName: string
+    authorRole: string
+    viewerId: string | null
+    message: string
+    likes: string[]
+    createdAt: Date
+    updatedAt: Date
+    _count: GalleryCommentCountAggregateOutputType | null
+    _min: GalleryCommentMinAggregateOutputType | null
+    _max: GalleryCommentMaxAggregateOutputType | null
+  }
+
+  type GetGalleryCommentGroupByPayload<T extends GalleryCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GalleryCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GalleryCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GalleryCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], GalleryCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GalleryCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    photoId?: boolean
+    parentId?: boolean
+    authorName?: boolean
+    authorRole?: boolean
+    viewerId?: boolean
+    message?: boolean
+    likes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+    replies?: boolean | GalleryComment$repliesArgs<ExtArgs>
+    _count?: boolean | GalleryCommentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryComment"]>
+
+  export type GalleryCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    photoId?: boolean
+    parentId?: boolean
+    authorName?: boolean
+    authorRole?: boolean
+    viewerId?: boolean
+    message?: boolean
+    likes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryComment"]>
+
+  export type GalleryCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    photoId?: boolean
+    parentId?: boolean
+    authorName?: boolean
+    authorRole?: boolean
+    viewerId?: boolean
+    message?: boolean
+    likes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryComment"]>
+
+  export type GalleryCommentSelectScalar = {
+    id?: boolean
+    galleryId?: boolean
+    photoId?: boolean
+    parentId?: boolean
+    authorName?: boolean
+    authorRole?: boolean
+    viewerId?: boolean
+    message?: boolean
+    likes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GalleryCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "photoId" | "parentId" | "authorName" | "authorRole" | "viewerId" | "message" | "likes" | "createdAt" | "updatedAt", ExtArgs["result"]["galleryComment"]>
+  export type GalleryCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+    replies?: boolean | GalleryComment$repliesArgs<ExtArgs>
+    _count?: boolean | GalleryCommentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GalleryCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+  }
+  export type GalleryCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | GalleryComment$photoArgs<ExtArgs>
+    parent?: boolean | GalleryComment$parentArgs<ExtArgs>
+  }
+
+  export type $GalleryCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GalleryComment"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+      photo: Prisma.$PhotoPayload<ExtArgs> | null
+      parent: Prisma.$GalleryCommentPayload<ExtArgs> | null
+      replies: Prisma.$GalleryCommentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      galleryId: string
+      photoId: string | null
+      parentId: string | null
+      authorName: string
+      authorRole: string
+      viewerId: string | null
+      message: string
+      likes: string[]
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["galleryComment"]>
+    composites: {}
+  }
+
+  type GalleryCommentGetPayload<S extends boolean | null | undefined | GalleryCommentDefaultArgs> = $Result.GetResult<Prisma.$GalleryCommentPayload, S>
+
+  type GalleryCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GalleryCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GalleryCommentCountAggregateInputType | true
+    }
+
+  export interface GalleryCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GalleryComment'], meta: { name: 'GalleryComment' } }
+    /**
+     * Find zero or one GalleryComment that matches the filter.
+     * @param {GalleryCommentFindUniqueArgs} args - Arguments to find a GalleryComment
+     * @example
+     * // Get one GalleryComment
+     * const galleryComment = await prisma.galleryComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GalleryCommentFindUniqueArgs>(args: SelectSubset<T, GalleryCommentFindUniqueArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GalleryComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GalleryCommentFindUniqueOrThrowArgs} args - Arguments to find a GalleryComment
+     * @example
+     * // Get one GalleryComment
+     * const galleryComment = await prisma.galleryComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GalleryCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, GalleryCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GalleryComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentFindFirstArgs} args - Arguments to find a GalleryComment
+     * @example
+     * // Get one GalleryComment
+     * const galleryComment = await prisma.galleryComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GalleryCommentFindFirstArgs>(args?: SelectSubset<T, GalleryCommentFindFirstArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GalleryComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentFindFirstOrThrowArgs} args - Arguments to find a GalleryComment
+     * @example
+     * // Get one GalleryComment
+     * const galleryComment = await prisma.galleryComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GalleryCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, GalleryCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GalleryComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GalleryComments
+     * const galleryComments = await prisma.galleryComment.findMany()
+     * 
+     * // Get first 10 GalleryComments
+     * const galleryComments = await prisma.galleryComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const galleryCommentWithIdOnly = await prisma.galleryComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GalleryCommentFindManyArgs>(args?: SelectSubset<T, GalleryCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GalleryComment.
+     * @param {GalleryCommentCreateArgs} args - Arguments to create a GalleryComment.
+     * @example
+     * // Create one GalleryComment
+     * const GalleryComment = await prisma.galleryComment.create({
+     *   data: {
+     *     // ... data to create a GalleryComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends GalleryCommentCreateArgs>(args: SelectSubset<T, GalleryCommentCreateArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GalleryComments.
+     * @param {GalleryCommentCreateManyArgs} args - Arguments to create many GalleryComments.
+     * @example
+     * // Create many GalleryComments
+     * const galleryComment = await prisma.galleryComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GalleryCommentCreateManyArgs>(args?: SelectSubset<T, GalleryCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GalleryComments and returns the data saved in the database.
+     * @param {GalleryCommentCreateManyAndReturnArgs} args - Arguments to create many GalleryComments.
+     * @example
+     * // Create many GalleryComments
+     * const galleryComment = await prisma.galleryComment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GalleryComments and only return the `id`
+     * const galleryCommentWithIdOnly = await prisma.galleryComment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GalleryCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, GalleryCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GalleryComment.
+     * @param {GalleryCommentDeleteArgs} args - Arguments to delete one GalleryComment.
+     * @example
+     * // Delete one GalleryComment
+     * const GalleryComment = await prisma.galleryComment.delete({
+     *   where: {
+     *     // ... filter to delete one GalleryComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GalleryCommentDeleteArgs>(args: SelectSubset<T, GalleryCommentDeleteArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GalleryComment.
+     * @param {GalleryCommentUpdateArgs} args - Arguments to update one GalleryComment.
+     * @example
+     * // Update one GalleryComment
+     * const galleryComment = await prisma.galleryComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GalleryCommentUpdateArgs>(args: SelectSubset<T, GalleryCommentUpdateArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GalleryComments.
+     * @param {GalleryCommentDeleteManyArgs} args - Arguments to filter GalleryComments to delete.
+     * @example
+     * // Delete a few GalleryComments
+     * const { count } = await prisma.galleryComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GalleryCommentDeleteManyArgs>(args?: SelectSubset<T, GalleryCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GalleryComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GalleryComments
+     * const galleryComment = await prisma.galleryComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GalleryCommentUpdateManyArgs>(args: SelectSubset<T, GalleryCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GalleryComments and returns the data updated in the database.
+     * @param {GalleryCommentUpdateManyAndReturnArgs} args - Arguments to update many GalleryComments.
+     * @example
+     * // Update many GalleryComments
+     * const galleryComment = await prisma.galleryComment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GalleryComments and only return the `id`
+     * const galleryCommentWithIdOnly = await prisma.galleryComment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GalleryCommentUpdateManyAndReturnArgs>(args: SelectSubset<T, GalleryCommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GalleryComment.
+     * @param {GalleryCommentUpsertArgs} args - Arguments to update or create a GalleryComment.
+     * @example
+     * // Update or create a GalleryComment
+     * const galleryComment = await prisma.galleryComment.upsert({
+     *   create: {
+     *     // ... data to create a GalleryComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GalleryComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GalleryCommentUpsertArgs>(args: SelectSubset<T, GalleryCommentUpsertArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GalleryComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentCountArgs} args - Arguments to filter GalleryComments to count.
+     * @example
+     * // Count the number of GalleryComments
+     * const count = await prisma.galleryComment.count({
+     *   where: {
+     *     // ... the filter for the GalleryComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends GalleryCommentCountArgs>(
+      args?: Subset<T, GalleryCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GalleryCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GalleryComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GalleryCommentAggregateArgs>(args: Subset<T, GalleryCommentAggregateArgs>): Prisma.PrismaPromise<GetGalleryCommentAggregateType<T>>
+
+    /**
+     * Group by GalleryComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GalleryCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GalleryCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GalleryCommentGroupByArgs['orderBy'] }
+        : { orderBy?: GalleryCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GalleryCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGalleryCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GalleryComment model
+   */
+  readonly fields: GalleryCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GalleryComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GalleryCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    photo<T extends GalleryComment$photoArgs<ExtArgs> = {}>(args?: Subset<T, GalleryComment$photoArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    parent<T extends GalleryComment$parentArgs<ExtArgs> = {}>(args?: Subset<T, GalleryComment$parentArgs<ExtArgs>>): Prisma__GalleryCommentClient<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    replies<T extends GalleryComment$repliesArgs<ExtArgs> = {}>(args?: Subset<T, GalleryComment$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GalleryComment model
+   */
+  interface GalleryCommentFieldRefs {
+    readonly id: FieldRef<"GalleryComment", 'String'>
+    readonly galleryId: FieldRef<"GalleryComment", 'String'>
+    readonly photoId: FieldRef<"GalleryComment", 'String'>
+    readonly parentId: FieldRef<"GalleryComment", 'String'>
+    readonly authorName: FieldRef<"GalleryComment", 'String'>
+    readonly authorRole: FieldRef<"GalleryComment", 'String'>
+    readonly viewerId: FieldRef<"GalleryComment", 'String'>
+    readonly message: FieldRef<"GalleryComment", 'String'>
+    readonly likes: FieldRef<"GalleryComment", 'String[]'>
+    readonly createdAt: FieldRef<"GalleryComment", 'DateTime'>
+    readonly updatedAt: FieldRef<"GalleryComment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GalleryComment findUnique
+   */
+  export type GalleryCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryComment to fetch.
+     */
+    where: GalleryCommentWhereUniqueInput
+  }
+
+  /**
+   * GalleryComment findUniqueOrThrow
+   */
+  export type GalleryCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryComment to fetch.
+     */
+    where: GalleryCommentWhereUniqueInput
+  }
+
+  /**
+   * GalleryComment findFirst
+   */
+  export type GalleryCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryComment to fetch.
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryComments to fetch.
+     */
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GalleryComments.
+     */
+    cursor?: GalleryCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryComments.
+     */
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryComment findFirstOrThrow
+   */
+  export type GalleryCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryComment to fetch.
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryComments to fetch.
+     */
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GalleryComments.
+     */
+    cursor?: GalleryCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryComments.
+     */
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryComment findMany
+   */
+  export type GalleryCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryComments to fetch.
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GalleryComments to fetch.
+     */
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GalleryComments.
+     */
+    cursor?: GalleryCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GalleryComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GalleryComments.
+     */
+    skip?: number
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryComment create
+   */
+  export type GalleryCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GalleryComment.
+     */
+    data: XOR<GalleryCommentCreateInput, GalleryCommentUncheckedCreateInput>
+  }
+
+  /**
+   * GalleryComment createMany
+   */
+  export type GalleryCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GalleryComments.
+     */
+    data: GalleryCommentCreateManyInput | GalleryCommentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GalleryComment createManyAndReturn
+   */
+  export type GalleryCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many GalleryComments.
+     */
+    data: GalleryCommentCreateManyInput | GalleryCommentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GalleryComment update
+   */
+  export type GalleryCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GalleryComment.
+     */
+    data: XOR<GalleryCommentUpdateInput, GalleryCommentUncheckedUpdateInput>
+    /**
+     * Choose, which GalleryComment to update.
+     */
+    where: GalleryCommentWhereUniqueInput
+  }
+
+  /**
+   * GalleryComment updateMany
+   */
+  export type GalleryCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GalleryComments.
+     */
+    data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which GalleryComments to update
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * Limit how many GalleryComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GalleryComment updateManyAndReturn
+   */
+  export type GalleryCommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * The data used to update GalleryComments.
+     */
+    data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which GalleryComments to update
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * Limit how many GalleryComments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GalleryComment upsert
+   */
+  export type GalleryCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GalleryComment to update in case it exists.
+     */
+    where: GalleryCommentWhereUniqueInput
+    /**
+     * In case the GalleryComment found by the `where` argument doesn't exist, create a new GalleryComment with this data.
+     */
+    create: XOR<GalleryCommentCreateInput, GalleryCommentUncheckedCreateInput>
+    /**
+     * In case the GalleryComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GalleryCommentUpdateInput, GalleryCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * GalleryComment delete
+   */
+  export type GalleryCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    /**
+     * Filter which GalleryComment to delete.
+     */
+    where: GalleryCommentWhereUniqueInput
+  }
+
+  /**
+   * GalleryComment deleteMany
+   */
+  export type GalleryCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GalleryComments to delete
+     */
+    where?: GalleryCommentWhereInput
+    /**
+     * Limit how many GalleryComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GalleryComment.photo
+   */
+  export type GalleryComment$photoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Photo
+     */
+    select?: PhotoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Photo
+     */
+    omit?: PhotoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhotoInclude<ExtArgs> | null
+    where?: PhotoWhereInput
+  }
+
+  /**
+   * GalleryComment.parent
+   */
+  export type GalleryComment$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    where?: GalleryCommentWhereInput
+  }
+
+  /**
+   * GalleryComment.replies
+   */
+  export type GalleryComment$repliesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+    where?: GalleryCommentWhereInput
+    orderBy?: GalleryCommentOrderByWithRelationInput | GalleryCommentOrderByWithRelationInput[]
+    cursor?: GalleryCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * GalleryComment without action
+   */
+  export type GalleryCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryComment
+     */
+    select?: GalleryCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryComment
+     */
+    omit?: GalleryCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -19035,6 +20447,23 @@ export namespace Prisma {
   };
 
   export type AlbumPhotoScalarFieldEnum = (typeof AlbumPhotoScalarFieldEnum)[keyof typeof AlbumPhotoScalarFieldEnum]
+
+
+  export const GalleryCommentScalarFieldEnum: {
+    id: 'id',
+    galleryId: 'galleryId',
+    photoId: 'photoId',
+    parentId: 'parentId',
+    authorName: 'authorName',
+    authorRole: 'authorRole',
+    viewerId: 'viewerId',
+    message: 'message',
+    likes: 'likes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GalleryCommentScalarFieldEnum = (typeof GalleryCommentScalarFieldEnum)[keyof typeof GalleryCommentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -19866,6 +21295,7 @@ export namespace Prisma {
     photos?: PhotoListRelationFilter
     albums?: AlbumListRelationFilter
     clients?: GalleryClientListRelationFilter
+    comments?: GalleryCommentListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -19886,6 +21316,7 @@ export namespace Prisma {
     photos?: PhotoOrderByRelationAggregateInput
     albums?: AlbumOrderByRelationAggregateInput
     clients?: GalleryClientOrderByRelationAggregateInput
+    comments?: GalleryCommentOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -19910,6 +21341,7 @@ export namespace Prisma {
     photos?: PhotoListRelationFilter
     albums?: AlbumListRelationFilter
     clients?: GalleryClientListRelationFilter
+    comments?: GalleryCommentListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -19980,6 +21412,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryListRelationFilter
     uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
+    comments?: GalleryCommentListRelationFilter
   }
 
   export type PhotoOrderByWithRelationInput = {
@@ -20011,6 +21444,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryOrderByRelationAggregateInput
     uploadSession?: UploadSessionOrderByWithRelationInput
     albumPhotos?: AlbumPhotoOrderByRelationAggregateInput
+    comments?: GalleryCommentOrderByRelationAggregateInput
   }
 
   export type PhotoWhereUniqueInput = Prisma.AtLeast<{
@@ -20045,6 +21479,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryListRelationFilter
     uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
+    comments?: GalleryCommentListRelationFilter
   }, "id" | "id">
 
   export type PhotoOrderByWithAggregationInput = {
@@ -20481,6 +21916,100 @@ export namespace Prisma {
     albumId?: StringWithAggregatesFilter<"AlbumPhoto"> | string
     photoId?: StringWithAggregatesFilter<"AlbumPhoto"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AlbumPhoto"> | Date | string
+  }
+
+  export type GalleryCommentWhereInput = {
+    AND?: GalleryCommentWhereInput | GalleryCommentWhereInput[]
+    OR?: GalleryCommentWhereInput[]
+    NOT?: GalleryCommentWhereInput | GalleryCommentWhereInput[]
+    id?: StringFilter<"GalleryComment"> | string
+    galleryId?: StringFilter<"GalleryComment"> | string
+    photoId?: StringNullableFilter<"GalleryComment"> | string | null
+    parentId?: StringNullableFilter<"GalleryComment"> | string | null
+    authorName?: StringFilter<"GalleryComment"> | string
+    authorRole?: StringFilter<"GalleryComment"> | string
+    viewerId?: StringNullableFilter<"GalleryComment"> | string | null
+    message?: StringFilter<"GalleryComment"> | string
+    likes?: StringNullableListFilter<"GalleryComment">
+    createdAt?: DateTimeFilter<"GalleryComment"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryComment"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photo?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
+    parent?: XOR<GalleryCommentNullableScalarRelationFilter, GalleryCommentWhereInput> | null
+    replies?: GalleryCommentListRelationFilter
+  }
+
+  export type GalleryCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    parentId?: SortOrderInput | SortOrder
+    authorName?: SortOrder
+    authorRole?: SortOrder
+    viewerId?: SortOrderInput | SortOrder
+    message?: SortOrder
+    likes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+    photo?: PhotoOrderByWithRelationInput
+    parent?: GalleryCommentOrderByWithRelationInput
+    replies?: GalleryCommentOrderByRelationAggregateInput
+  }
+
+  export type GalleryCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GalleryCommentWhereInput | GalleryCommentWhereInput[]
+    OR?: GalleryCommentWhereInput[]
+    NOT?: GalleryCommentWhereInput | GalleryCommentWhereInput[]
+    galleryId?: StringFilter<"GalleryComment"> | string
+    photoId?: StringNullableFilter<"GalleryComment"> | string | null
+    parentId?: StringNullableFilter<"GalleryComment"> | string | null
+    authorName?: StringFilter<"GalleryComment"> | string
+    authorRole?: StringFilter<"GalleryComment"> | string
+    viewerId?: StringNullableFilter<"GalleryComment"> | string | null
+    message?: StringFilter<"GalleryComment"> | string
+    likes?: StringNullableListFilter<"GalleryComment">
+    createdAt?: DateTimeFilter<"GalleryComment"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryComment"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photo?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
+    parent?: XOR<GalleryCommentNullableScalarRelationFilter, GalleryCommentWhereInput> | null
+    replies?: GalleryCommentListRelationFilter
+  }, "id">
+
+  export type GalleryCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    parentId?: SortOrderInput | SortOrder
+    authorName?: SortOrder
+    authorRole?: SortOrder
+    viewerId?: SortOrderInput | SortOrder
+    message?: SortOrder
+    likes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GalleryCommentCountOrderByAggregateInput
+    _max?: GalleryCommentMaxOrderByAggregateInput
+    _min?: GalleryCommentMinOrderByAggregateInput
+  }
+
+  export type GalleryCommentScalarWhereWithAggregatesInput = {
+    AND?: GalleryCommentScalarWhereWithAggregatesInput | GalleryCommentScalarWhereWithAggregatesInput[]
+    OR?: GalleryCommentScalarWhereWithAggregatesInput[]
+    NOT?: GalleryCommentScalarWhereWithAggregatesInput | GalleryCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GalleryComment"> | string
+    galleryId?: StringWithAggregatesFilter<"GalleryComment"> | string
+    photoId?: StringNullableWithAggregatesFilter<"GalleryComment"> | string | null
+    parentId?: StringNullableWithAggregatesFilter<"GalleryComment"> | string | null
+    authorName?: StringWithAggregatesFilter<"GalleryComment"> | string
+    authorRole?: StringWithAggregatesFilter<"GalleryComment"> | string
+    viewerId?: StringNullableWithAggregatesFilter<"GalleryComment"> | string | null
+    message?: StringWithAggregatesFilter<"GalleryComment"> | string
+    likes?: StringNullableListFilter<"GalleryComment">
+    createdAt?: DateTimeWithAggregatesFilter<"GalleryComment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GalleryComment"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -21161,6 +22690,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -21179,6 +22709,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
@@ -21197,6 +22728,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -21215,6 +22747,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -21288,6 +22821,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateInput = {
@@ -21318,6 +22852,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUpdateInput = {
@@ -21348,6 +22883,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateInput = {
@@ -21378,6 +22914,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoCreateManyInput = {
@@ -21829,6 +23366,105 @@ export namespace Prisma {
     albumId?: StringFieldUpdateOperationsInput | string
     photoId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCommentCreateInput = {
+    id?: string
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutCommentsInput
+    photo?: PhotoCreateNestedOneWithoutCommentsInput
+    parent?: GalleryCommentCreateNestedOneWithoutRepliesInput
+    replies?: GalleryCommentCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentUncheckedCreateInput = {
+    id?: string
+    galleryId: string
+    photoId?: string | null
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: GalleryCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutCommentsNestedInput
+    photo?: PhotoUpdateOneWithoutCommentsNestedInput
+    parent?: GalleryCommentUpdateOneWithoutRepliesNestedInput
+    replies?: GalleryCommentUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: GalleryCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentCreateManyInput = {
+    id?: string
+    galleryId: string
+    photoId?: string | null
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryCommentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCommentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -22549,6 +24185,12 @@ export namespace Prisma {
     none?: GalleryClientWhereInput
   }
 
+  export type GalleryCommentListRelationFilter = {
+    every?: GalleryCommentWhereInput
+    some?: GalleryCommentWhereInput
+    none?: GalleryCommentWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -22558,6 +24200,10 @@ export namespace Prisma {
   }
 
   export type GalleryClientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GalleryCommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23030,6 +24676,51 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type GalleryCommentNullableScalarRelationFilter = {
+    is?: GalleryCommentWhereInput | null
+    isNot?: GalleryCommentWhereInput | null
+  }
+
+  export type GalleryCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    parentId?: SortOrder
+    authorName?: SortOrder
+    authorRole?: SortOrder
+    viewerId?: SortOrder
+    message?: SortOrder
+    likes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GalleryCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    parentId?: SortOrder
+    authorName?: SortOrder
+    authorRole?: SortOrder
+    viewerId?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GalleryCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    parentId?: SortOrder
+    authorName?: SortOrder
+    authorRole?: SortOrder
+    viewerId?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -23476,6 +25167,13 @@ export namespace Prisma {
     connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
   }
 
+  export type GalleryCommentCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput> | GalleryCommentCreateWithoutGalleryInput[] | GalleryCommentUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryCommentCreateManyGalleryInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -23495,6 +25193,13 @@ export namespace Prisma {
     connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
     createMany?: GalleryClientCreateManyGalleryInputEnvelope
     connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
+  }
+
+  export type GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput> | GalleryCommentCreateWithoutGalleryInput[] | GalleryCommentUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryCommentCreateManyGalleryInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutGalleriesNestedInput = {
@@ -23557,6 +25262,20 @@ export namespace Prisma {
     deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
+  export type GalleryCommentUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput> | GalleryCommentCreateWithoutGalleryInput[] | GalleryCommentUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput | GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryCommentCreateManyGalleryInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput | GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutGalleryInput | GalleryCommentUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -23599,6 +25318,20 @@ export namespace Prisma {
     deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
+  export type GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput> | GalleryCommentCreateWithoutGalleryInput[] | GalleryCommentUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput | GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryCommentCreateManyGalleryInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput | GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutGalleryInput | GalleryCommentUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
   export type PhotoCreateaiTagsInput = {
     set: string[]
   }
@@ -23629,6 +25362,13 @@ export namespace Prisma {
     connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
   }
 
+  export type GalleryCommentCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput> | GalleryCommentCreateWithoutPhotoInput[] | GalleryCommentUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutPhotoInput | GalleryCommentCreateOrConnectWithoutPhotoInput[]
+    createMany?: GalleryCommentCreateManyPhotoInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+  }
+
   export type GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
@@ -23647,6 +25387,13 @@ export namespace Prisma {
     connectOrCreate?: AlbumPhotoCreateOrConnectWithoutPhotoInput | AlbumPhotoCreateOrConnectWithoutPhotoInput[]
     createMany?: AlbumPhotoCreateManyPhotoInputEnvelope
     connect?: AlbumPhotoWhereUniqueInput | AlbumPhotoWhereUniqueInput[]
+  }
+
+  export type GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput> | GalleryCommentCreateWithoutPhotoInput[] | GalleryCommentUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutPhotoInput | GalleryCommentCreateOrConnectWithoutPhotoInput[]
+    createMany?: GalleryCommentCreateManyPhotoInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -23708,6 +25455,20 @@ export namespace Prisma {
     deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
   }
 
+  export type GalleryCommentUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput> | GalleryCommentCreateWithoutPhotoInput[] | GalleryCommentUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutPhotoInput | GalleryCommentCreateOrConnectWithoutPhotoInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutPhotoInput | GalleryCommentUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: GalleryCommentCreateManyPhotoInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput | GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutPhotoInput | GalleryCommentUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
@@ -23744,6 +25505,20 @@ export namespace Prisma {
     update?: AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput | AlbumPhotoUpdateWithWhereUniqueWithoutPhotoInput[]
     updateMany?: AlbumPhotoUpdateManyWithWhereWithoutPhotoInput | AlbumPhotoUpdateManyWithWhereWithoutPhotoInput[]
     deleteMany?: AlbumPhotoScalarWhereInput | AlbumPhotoScalarWhereInput[]
+  }
+
+  export type GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput> | GalleryCommentCreateWithoutPhotoInput[] | GalleryCommentUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutPhotoInput | GalleryCommentCreateOrConnectWithoutPhotoInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutPhotoInput | GalleryCommentUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: GalleryCommentCreateManyPhotoInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput | GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutPhotoInput | GalleryCommentUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
   export type PhotoCreateNestedOneWithoutUploadSessionInput = {
@@ -23944,6 +25719,103 @@ export namespace Prisma {
     upsert?: PhotoUpsertWithoutAlbumPhotosInput
     connect?: PhotoWhereUniqueInput
     update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutAlbumPhotosInput, PhotoUpdateWithoutAlbumPhotosInput>, PhotoUncheckedUpdateWithoutAlbumPhotosInput>
+  }
+
+  export type GalleryCommentCreatelikesInput = {
+    set: string[]
+  }
+
+  export type GalleryCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<GalleryCreateWithoutCommentsInput, GalleryUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutCommentsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type PhotoCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<PhotoCreateWithoutCommentsInput, PhotoUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutCommentsInput
+    connect?: PhotoWhereUniqueInput
+  }
+
+  export type GalleryCommentCreateNestedOneWithoutRepliesInput = {
+    create?: XOR<GalleryCommentCreateWithoutRepliesInput, GalleryCommentUncheckedCreateWithoutRepliesInput>
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutRepliesInput
+    connect?: GalleryCommentWhereUniqueInput
+  }
+
+  export type GalleryCommentCreateNestedManyWithoutParentInput = {
+    create?: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput> | GalleryCommentCreateWithoutParentInput[] | GalleryCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutParentInput | GalleryCommentCreateOrConnectWithoutParentInput[]
+    createMany?: GalleryCommentCreateManyParentInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+  }
+
+  export type GalleryCommentUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput> | GalleryCommentCreateWithoutParentInput[] | GalleryCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutParentInput | GalleryCommentCreateOrConnectWithoutParentInput[]
+    createMany?: GalleryCommentCreateManyParentInputEnvelope
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+  }
+
+  export type GalleryCommentUpdatelikesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type GalleryUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<GalleryCreateWithoutCommentsInput, GalleryUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutCommentsInput
+    upsert?: GalleryUpsertWithoutCommentsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutCommentsInput, GalleryUpdateWithoutCommentsInput>, GalleryUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type PhotoUpdateOneWithoutCommentsNestedInput = {
+    create?: XOR<PhotoCreateWithoutCommentsInput, PhotoUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutCommentsInput
+    upsert?: PhotoUpsertWithoutCommentsInput
+    disconnect?: PhotoWhereInput | boolean
+    delete?: PhotoWhereInput | boolean
+    connect?: PhotoWhereUniqueInput
+    update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutCommentsInput, PhotoUpdateWithoutCommentsInput>, PhotoUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type GalleryCommentUpdateOneWithoutRepliesNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutRepliesInput, GalleryCommentUncheckedCreateWithoutRepliesInput>
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutRepliesInput
+    upsert?: GalleryCommentUpsertWithoutRepliesInput
+    disconnect?: GalleryCommentWhereInput | boolean
+    delete?: GalleryCommentWhereInput | boolean
+    connect?: GalleryCommentWhereUniqueInput
+    update?: XOR<XOR<GalleryCommentUpdateToOneWithWhereWithoutRepliesInput, GalleryCommentUpdateWithoutRepliesInput>, GalleryCommentUncheckedUpdateWithoutRepliesInput>
+  }
+
+  export type GalleryCommentUpdateManyWithoutParentNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput> | GalleryCommentCreateWithoutParentInput[] | GalleryCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutParentInput | GalleryCommentCreateOrConnectWithoutParentInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutParentInput | GalleryCommentUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: GalleryCommentCreateManyParentInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutParentInput | GalleryCommentUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutParentInput | GalleryCommentUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
+  export type GalleryCommentUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput> | GalleryCommentCreateWithoutParentInput[] | GalleryCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: GalleryCommentCreateOrConnectWithoutParentInput | GalleryCommentCreateOrConnectWithoutParentInput[]
+    upsert?: GalleryCommentUpsertWithWhereUniqueWithoutParentInput | GalleryCommentUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: GalleryCommentCreateManyParentInputEnvelope
+    set?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    disconnect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    delete?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+    update?: GalleryCommentUpdateWithWhereUniqueWithoutParentInput | GalleryCommentUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: GalleryCommentUpdateManyWithWhereWithoutParentInput | GalleryCommentUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -24483,6 +26355,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
@@ -24500,6 +26373,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -25466,6 +27340,7 @@ export namespace Prisma {
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUsedAsCoverInInput = {
@@ -25495,6 +27370,7 @@ export namespace Prisma {
     createdAt?: Date | string
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutUsedAsCoverInInput = {
@@ -25529,6 +27405,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutGalleryInput = {
@@ -25558,6 +27435,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutGalleryInput = {
@@ -25613,6 +27491,44 @@ export namespace Prisma {
 
   export type GalleryClientCreateManyGalleryInputEnvelope = {
     data: GalleryClientCreateManyGalleryInput | GalleryClientCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryCommentCreateWithoutGalleryInput = {
+    id?: string
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photo?: PhotoCreateNestedOneWithoutCommentsInput
+    parent?: GalleryCommentCreateNestedOneWithoutRepliesInput
+    replies?: GalleryCommentCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    photoId?: string | null
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: GalleryCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentCreateOrConnectWithoutGalleryInput = {
+    where: GalleryCommentWhereUniqueInput
+    create: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryCommentCreateManyGalleryInputEnvelope = {
+    data: GalleryCommentCreateManyGalleryInput | GalleryCommentCreateManyGalleryInput[]
     skipDuplicates?: boolean
   }
 
@@ -25729,6 +27645,7 @@ export namespace Prisma {
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUsedAsCoverInInput = {
@@ -25758,6 +27675,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUpsertWithWhereUniqueWithoutGalleryInput = {
@@ -25858,6 +27776,39 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
   }
 
+  export type GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryCommentWhereUniqueInput
+    update: XOR<GalleryCommentUpdateWithoutGalleryInput, GalleryCommentUncheckedUpdateWithoutGalleryInput>
+    create: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryCommentWhereUniqueInput
+    data: XOR<GalleryCommentUpdateWithoutGalleryInput, GalleryCommentUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type GalleryCommentUpdateManyWithWhereWithoutGalleryInput = {
+    where: GalleryCommentScalarWhereInput
+    data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type GalleryCommentScalarWhereInput = {
+    AND?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+    OR?: GalleryCommentScalarWhereInput[]
+    NOT?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+    id?: StringFilter<"GalleryComment"> | string
+    galleryId?: StringFilter<"GalleryComment"> | string
+    photoId?: StringNullableFilter<"GalleryComment"> | string | null
+    parentId?: StringNullableFilter<"GalleryComment"> | string | null
+    authorName?: StringFilter<"GalleryComment"> | string
+    authorRole?: StringFilter<"GalleryComment"> | string
+    viewerId?: StringNullableFilter<"GalleryComment"> | string | null
+    message?: StringFilter<"GalleryComment"> | string
+    likes?: StringNullableListFilter<"GalleryComment">
+    createdAt?: DateTimeFilter<"GalleryComment"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryComment"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
@@ -25873,6 +27824,7 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -25890,6 +27842,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -25912,6 +27865,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -25929,6 +27883,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -25992,6 +27947,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GalleryCommentCreateWithoutPhotoInput = {
+    id?: string
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutCommentsInput
+    parent?: GalleryCommentCreateNestedOneWithoutRepliesInput
+    replies?: GalleryCommentCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentUncheckedCreateWithoutPhotoInput = {
+    id?: string
+    galleryId: string
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: GalleryCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentCreateOrConnectWithoutPhotoInput = {
+    where: GalleryCommentWhereUniqueInput
+    create: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type GalleryCommentCreateManyPhotoInputEnvelope = {
+    data: GalleryCommentCreateManyPhotoInput | GalleryCommentCreateManyPhotoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GalleryUpsertWithoutPhotosInput = {
     update: XOR<GalleryUpdateWithoutPhotosInput, GalleryUncheckedUpdateWithoutPhotosInput>
     create: XOR<GalleryCreateWithoutPhotosInput, GalleryUncheckedCreateWithoutPhotosInput>
@@ -26018,6 +28011,7 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -26035,6 +28029,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -26115,6 +28110,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AlbumPhoto"> | Date | string
   }
 
+  export type GalleryCommentUpsertWithWhereUniqueWithoutPhotoInput = {
+    where: GalleryCommentWhereUniqueInput
+    update: XOR<GalleryCommentUpdateWithoutPhotoInput, GalleryCommentUncheckedUpdateWithoutPhotoInput>
+    create: XOR<GalleryCommentCreateWithoutPhotoInput, GalleryCommentUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput = {
+    where: GalleryCommentWhereUniqueInput
+    data: XOR<GalleryCommentUpdateWithoutPhotoInput, GalleryCommentUncheckedUpdateWithoutPhotoInput>
+  }
+
+  export type GalleryCommentUpdateManyWithWhereWithoutPhotoInput = {
+    where: GalleryCommentScalarWhereInput
+    data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutPhotoInput>
+  }
+
   export type PhotoCreateWithoutUploadSessionInput = {
     id?: string
     checksum?: string | null
@@ -26142,6 +28153,7 @@ export namespace Prisma {
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUploadSessionInput = {
@@ -26171,6 +28183,7 @@ export namespace Prisma {
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutUploadSessionInput = {
@@ -26216,6 +28229,7 @@ export namespace Prisma {
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUploadSessionInput = {
@@ -26245,6 +28259,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type UserCreateWithoutStorageEventsInput = {
@@ -26586,6 +28601,7 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutClientsInput = {
@@ -26603,6 +28619,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutClientsInput = {
@@ -26661,6 +28678,7 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutClientsInput = {
@@ -26678,6 +28696,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type ClientUpsertWithoutGalleriesInput = {
@@ -26726,6 +28745,7 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutAlbumsInput = {
@@ -26743,6 +28763,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutAlbumsInput = {
@@ -26796,6 +28817,7 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutAlbumsInput = {
@@ -26813,6 +28835,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -26879,6 +28902,7 @@ export namespace Prisma {
     gallery: GalleryCreateNestedOneWithoutPhotosInput
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutAlbumPhotosInput = {
@@ -26908,6 +28932,7 @@ export namespace Prisma {
     createdAt?: Date | string
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutAlbumPhotosInput = {
@@ -26980,6 +29005,7 @@ export namespace Prisma {
     gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutAlbumPhotosInput = {
@@ -27009,6 +29035,357 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type GalleryCreateWithoutCommentsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutCommentsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutCommentsInput, GalleryUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type PhotoCreateWithoutCommentsInput = {
+    id?: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutPhotosInput
+    usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    galleryId: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoCreateOrConnectWithoutCommentsInput = {
+    where: PhotoWhereUniqueInput
+    create: XOR<PhotoCreateWithoutCommentsInput, PhotoUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type GalleryCommentCreateWithoutRepliesInput = {
+    id?: string
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutCommentsInput
+    photo?: PhotoCreateNestedOneWithoutCommentsInput
+    parent?: GalleryCommentCreateNestedOneWithoutRepliesInput
+  }
+
+  export type GalleryCommentUncheckedCreateWithoutRepliesInput = {
+    id?: string
+    galleryId: string
+    photoId?: string | null
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryCommentCreateOrConnectWithoutRepliesInput = {
+    where: GalleryCommentWhereUniqueInput
+    create: XOR<GalleryCommentCreateWithoutRepliesInput, GalleryCommentUncheckedCreateWithoutRepliesInput>
+  }
+
+  export type GalleryCommentCreateWithoutParentInput = {
+    id?: string
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutCommentsInput
+    photo?: PhotoCreateNestedOneWithoutCommentsInput
+    replies?: GalleryCommentCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentUncheckedCreateWithoutParentInput = {
+    id?: string
+    galleryId: string
+    photoId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: GalleryCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type GalleryCommentCreateOrConnectWithoutParentInput = {
+    where: GalleryCommentWhereUniqueInput
+    create: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput>
+  }
+
+  export type GalleryCommentCreateManyParentInputEnvelope = {
+    data: GalleryCommentCreateManyParentInput | GalleryCommentCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryUpsertWithoutCommentsInput = {
+    update: XOR<GalleryUpdateWithoutCommentsInput, GalleryUncheckedUpdateWithoutCommentsInput>
+    create: XOR<GalleryCreateWithoutCommentsInput, GalleryUncheckedCreateWithoutCommentsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutCommentsInput, GalleryUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type GalleryUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type PhotoUpsertWithoutCommentsInput = {
+    update: XOR<PhotoUpdateWithoutCommentsInput, PhotoUncheckedUpdateWithoutCommentsInput>
+    create: XOR<PhotoCreateWithoutCommentsInput, PhotoUncheckedCreateWithoutCommentsInput>
+    where?: PhotoWhereInput
+  }
+
+  export type PhotoUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: PhotoWhereInput
+    data: XOR<PhotoUpdateWithoutCommentsInput, PhotoUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type PhotoUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type PhotoUncheckedUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type GalleryCommentUpsertWithoutRepliesInput = {
+    update: XOR<GalleryCommentUpdateWithoutRepliesInput, GalleryCommentUncheckedUpdateWithoutRepliesInput>
+    create: XOR<GalleryCommentCreateWithoutRepliesInput, GalleryCommentUncheckedCreateWithoutRepliesInput>
+    where?: GalleryCommentWhereInput
+  }
+
+  export type GalleryCommentUpdateToOneWithWhereWithoutRepliesInput = {
+    where?: GalleryCommentWhereInput
+    data: XOR<GalleryCommentUpdateWithoutRepliesInput, GalleryCommentUncheckedUpdateWithoutRepliesInput>
+  }
+
+  export type GalleryCommentUpdateWithoutRepliesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutCommentsNestedInput
+    photo?: PhotoUpdateOneWithoutCommentsNestedInput
+    parent?: GalleryCommentUpdateOneWithoutRepliesNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateWithoutRepliesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCommentUpsertWithWhereUniqueWithoutParentInput = {
+    where: GalleryCommentWhereUniqueInput
+    update: XOR<GalleryCommentUpdateWithoutParentInput, GalleryCommentUncheckedUpdateWithoutParentInput>
+    create: XOR<GalleryCommentCreateWithoutParentInput, GalleryCommentUncheckedCreateWithoutParentInput>
+  }
+
+  export type GalleryCommentUpdateWithWhereUniqueWithoutParentInput = {
+    where: GalleryCommentWhereUniqueInput
+    data: XOR<GalleryCommentUpdateWithoutParentInput, GalleryCommentUncheckedUpdateWithoutParentInput>
+  }
+
+  export type GalleryCommentUpdateManyWithWhereWithoutParentInput = {
+    where: GalleryCommentScalarWhereInput
+    data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutParentInput>
   }
 
   export type SessionCreateManyUserInput = {
@@ -27220,6 +29597,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
@@ -27237,6 +29615,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
@@ -27344,6 +29723,19 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type GalleryCommentCreateManyGalleryInput = {
+    id?: string
+    photoId?: string | null
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type PhotoUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     checksum?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27371,6 +29763,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutGalleryInput = {
@@ -27400,6 +29793,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateManyWithoutGalleryInput = {
@@ -27466,6 +29860,47 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GalleryCommentUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photo?: PhotoUpdateOneWithoutCommentsNestedInput
+    parent?: GalleryCommentUpdateOneWithoutRepliesNestedInput
+    replies?: GalleryCommentUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: GalleryCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
@@ -27485,6 +29920,19 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type GalleryCommentCreateManyPhotoInput = {
+    id?: string
+    galleryId: string
+    parentId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type GalleryUpdateWithoutCoverPhotoInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -27500,6 +29948,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -27517,6 +29966,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {
@@ -27546,6 +29996,47 @@ export namespace Prisma {
   export type AlbumPhotoUncheckedUpdateManyWithoutPhotoInput = {
     albumId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCommentUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutCommentsNestedInput
+    parent?: GalleryCommentUpdateOneWithoutRepliesNestedInput
+    replies?: GalleryCommentUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: GalleryCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateManyWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GalleryClientCreateManyClientInput = {
@@ -27586,6 +30077,60 @@ export namespace Prisma {
   export type AlbumPhotoUncheckedUpdateManyWithoutAlbumInput = {
     photoId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryCommentCreateManyParentInput = {
+    id?: string
+    galleryId: string
+    photoId?: string | null
+    authorName: string
+    authorRole?: string
+    viewerId?: string | null
+    message: string
+    likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryCommentUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutCommentsNestedInput
+    photo?: PhotoUpdateOneWithoutCommentsNestedInput
+    replies?: GalleryCommentUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: GalleryCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type GalleryCommentUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    authorName?: StringFieldUpdateOperationsInput | string
+    authorRole?: StringFieldUpdateOperationsInput | string
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: StringFieldUpdateOperationsInput | string
+    likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

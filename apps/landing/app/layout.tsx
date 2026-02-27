@@ -1,8 +1,9 @@
 import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type React from "react"; // Import React
+import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
+import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,11 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body className={cn(inter.className, "bg-white")}>{children}</body>
+      <body className={cn(inter.className, "bg-background text-foreground")}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

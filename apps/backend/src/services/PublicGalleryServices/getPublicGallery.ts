@@ -10,6 +10,7 @@ export const getPublicGallery = async (shareToken: string) => {
       title: true,
       passwordHash: true,
       coverPhotoId: true,
+      userId: true,
       user: {
         select: {
           name: true,
@@ -48,6 +49,7 @@ export const getPublicGallery = async (shareToken: string) => {
 
   return {
     id: gallery.id,
+    userId: gallery.userId,
     // Gallery frontend uses this value in URL segments; keep it slug-compatible.
     shareToken: gallery.slug,
     title: gallery.title,

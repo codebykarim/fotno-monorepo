@@ -1,34 +1,45 @@
 import React from "react";
-import { Separator } from "@workspace/ui/components/separator";
-import { AppsDropdown } from "@workspace/ui/components/apps_dropdown";
-
 import { NavUser } from "@workspace/ui/components/nav-user";
 import { Icons } from "@workspace/ui/components/icons";
-import { NotificationPopover } from "@workspace/ui/components/notification-popover";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
+import { DashboardNavLinks } from "@workspace/ui/components/dashboard-nav-links";
 import Link from "next/link";
+
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
 
 type Props = {
   main: Main;
 };
 
+const dashboardNavItems = [
+  { title: "Overview", href: "/" },
+  { title: "Galleries", href: "/galleries" },
+  { title: "Clients", href: "/clients" },
+  { title: "Settings", href: "/settings" },
+];
+
 const Header = async ({ main }: Props) => {
   return (
-    <header className="flex items-center justify-between py-4 h-20 px-5">
-      <div className="flex h-full items-center space-x-2 text-sm">
-        <Link href={`${process.env.NEXT_PUBLIC_LANDING_URL}`} aria-label="Home">
-          <div className="flex items-center justify-center gap-2">
-            <Icons.logo className="h-8 w-auto text-primary" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-              FOTNO
-            </h1>
-          </div>
+    <header className="sticky top-0 z-40 flex items-center justify-between h-14 px-5 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="flex items-center gap-5">
+        <Link
+          href={`${process.env.NEXT_PUBLIC_LANDING_URL ?? "/"}`}
+          aria-label="Home"
+          className="flex items-center gap-2 shrink-0"
+        >
+          <Icons.logo className="h-6 w-6 text-primary" />
+          <span className="text-base font-bold tracking-tight bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
+            FOTNO
+          </span>
         </Link>
-        <Separator orientation="vertical" className="h-5" />
-        <AppsDropdown main={main} />
+
+        {main === "DASHBOARD" && (
+          <DashboardNavLinks items={dashboardNavItems} />
+        )}
       </div>
-      <div className="flex items-center space-x-5">
-        {/* <NotificationPopover /> */}
+
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
         <NavUser />
       </div>
     </header>

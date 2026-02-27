@@ -1,150 +1,104 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
-
 import { Container } from "@/components/Container";
-import backgroundImage from "@/images/background-features.jpg";
-import screenshotExpenses from "@/images/screenshots/expenses.png";
-import screenshotPayroll from "@/images/screenshots/payroll.png";
-import screenshotReporting from "@/images/screenshots/reporting.png";
-import screenshotVatReturns from "@/images/screenshots/vat-returns.png";
+import {
+  Images,
+  Shield,
+  Heart,
+  Upload,
+  Globe,
+  Palette,
+} from "lucide-react";
 
 const features = [
   {
-    title: "Gallery",
+    title: "Stunning galleries",
     description:
-      "Add your sessions to the gallery and share them with your clients.",
-    image: screenshotPayroll,
+      "Create beautiful, responsive photo galleries for every session. Your clients see their photos in a premium lightbox experience -- no clunky downloads or zip files.",
+    icon: Images,
   },
   {
-    title: "Client management",
+    title: "Password protection",
     description:
-      "Add your clients to the client management system and manage payments, sessions, and more.",
-    image: screenshotExpenses,
+      "Every gallery can be locked behind a password so only your clients can view their photos. Share the link and the password -- done.",
+    icon: Shield,
   },
   {
-    title: "Website builder",
+    title: "Client favorites",
     description:
-      "Build a website to showcase your work and share it with your clients.",
-    image: screenshotVatReturns,
+      "Clients tap the heart icon on photos they love. You see their picks in real-time on your dashboard, making final selection effortless.",
+    icon: Heart,
+  },
+  {
+    title: "Bulk upload",
+    description:
+      "Drag-and-drop hundreds of photos at once. Our upload pipeline handles chunked multipart uploads with automatic retries so nothing gets lost.",
+    icon: Upload,
+  },
+  {
+    title: "Custom delivery links",
+    description:
+      "Each gallery gets a clean slug URL on your own Fotno subdomain. Share a link that looks professional, not a random cloud storage URL.",
+    icon: Globe,
+  },
+  {
+    title: "Dark mode everywhere",
+    description:
+      "Your brand, your vibe. Every Fotno surface supports light and dark mode. Galleries adapt to your client's preference automatically.",
+    icon: Palette,
   },
 ];
 
 export function PrimaryFeatures() {
-  const [tabOrientation, setTabOrientation] = useState<
-    "horizontal" | "vertical"
-  >("horizontal");
-
-  useEffect(() => {
-    const lgMediaQuery = window.matchMedia("(min-width: 1024px)");
-
-    function onMediaQueryChange({ matches }: { matches: boolean }) {
-      setTabOrientation(matches ? "vertical" : "horizontal");
-    }
-
-    onMediaQueryChange(lgMediaQuery);
-    lgMediaQuery.addEventListener("change", onMediaQueryChange);
-
-    return () => {
-      lgMediaQuery.removeEventListener("change", onMediaQueryChange);
-    };
-  }, []);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <section
       id="features"
-      aria-label="Features for running your books"
-      className="relative overflow-hidden bg-foreground pt-20 pb-28 sm:py-32"
+      aria-label="Fotno features"
+      className="bg-foreground py-20 sm:py-32"
     >
-      {/* <Image
-        className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
-        src={backgroundImage}
-        alt=""
-        width={2245}
-        height={1636}
-        unoptimized
-      /> */}
-      <Container className="relative">
+      <Container>
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
-          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Everything you need to manage your photos and videos.
+          <h2 className="text-3xl tracking-tight text-background sm:text-4xl md:text-5xl font-semibold">
+            Everything you need to deliver photos professionally.
           </h2>
-          <p className="mt-6 text-lg tracking-tight text-secondary/70">
-            Well everything you need if you're a photographer or a videographer.
+          <p className="mt-6 text-lg tracking-tight text-background/60">
+            Built from scratch for photographers who want a modern, premium
+            experience for themselves and their clients.
           </p>
         </div>
-        <TabGroup
-          className="mt-16 grid grid-cols-1 items-center gap-y-2 pt-10 sm:gap-y-6 md:mt-20 lg:grid-cols-12 lg:pt-0"
-          vertical={tabOrientation === "vertical"}
-        >
-          {({ selectedIndex }) => (
-            <>
-              <div className="-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
-                <TabList className="relative z-10 flex gap-x-4 px-4 whitespace-nowrap sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:gap-x-0 lg:gap-y-1 lg:whitespace-normal">
-                  {features.map((feature, featureIndex) => (
-                    <div
-                      key={feature.title}
-                      className={cn(
-                        "group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6",
-                        selectedIndex === featureIndex
-                          ? "bg-foreground lg:bg-white/10 lg:ring-1 lg:ring-white/10 lg:ring-inset"
-                          : "hover:bg-white/10 lg:hover:bg-white/5"
-                      )}
-                    >
-                      <h3>
-                        <Tab
-                          className={cn(
-                            "font-display font-medium text-lg data-selected:not-data-focus:outline-hidden",
-                            selectedIndex === featureIndex
-                              ? "text-secondary lg:text-secondary"
-                              : "text-secondary hover:text-secondary/60 lg:text-white"
-                          )}
-                        >
-                          <span className="absolute inset-0 rounded-full lg:rounded-l-xl lg:rounded-r-none" />
-                          {feature.title}
-                        </Tab>
-                      </h3>
-                      <p
-                        className={cn(
-                          "mt-2 hidden text-sm lg:block",
-                          selectedIndex === featureIndex
-                            ? "text-white"
-                            : "text-blue-100 group-hover:text-white"
-                        )}
-                      >
-                        {feature.description}
-                      </p>
-                    </div>
-                  ))}
-                </TabList>
+
+        <div className="mt-16 grid gap-6 md:mt-20 md:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={feature.title}
+                className={cn(
+                  "group relative rounded-2xl border border-white/10 p-8 transition-all duration-300",
+                  hoveredIndex === index
+                    ? "bg-white/10 border-primary/40"
+                    : "bg-white/5 hover:bg-white/8"
+                )}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div className="mb-4 inline-flex rounded-xl bg-primary/20 p-3">
+                  <Icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold text-background">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-background/60">
+                  {feature.description}
+                </p>
               </div>
-              <TabPanels className="lg:col-span-7">
-                {features.map((feature) => (
-                  <TabPanel key={feature.title} unmount={false}>
-                    <div className="relative sm:px-6 lg:hidden">
-                      <div className="absolute -inset-x-4 top-[-6.5rem] bottom-[-4.25rem] bg-white/10 ring-1 ring-white/10 ring-inset sm:inset-x-0 sm:rounded-t-xl" />
-                      <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
-                        {feature.description}
-                      </p>
-                    </div>
-                    <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
-                      <Image
-                        className="w-full"
-                        src={feature.image}
-                        alt=""
-                        priority
-                        sizes="(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem"
-                      />
-                    </div>
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </>
-          )}
-        </TabGroup>
+            );
+          })}
+        </div>
       </Container>
     </section>
   );

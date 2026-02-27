@@ -7,18 +7,8 @@ export type GalleryViewer = {
   lastSeenAt: number;
 };
 
-export type GalleryComment = {
-  id: string;
-  shareToken: string;
-  authorName: string;
-  message: string;
-  photoId: string | null;
-  createdAt: string;
-};
-
 type RuntimeStore = {
   viewersByGallery: Map<string, Map<string, GalleryViewer>>;
-  commentsByGallery: Map<string, GalleryComment[]>;
 };
 
 const getStore = (): RuntimeStore => {
@@ -29,7 +19,6 @@ const getStore = (): RuntimeStore => {
   if (!globalStore.__fotnoGalleryStore) {
     globalStore.__fotnoGalleryStore = {
       viewersByGallery: new Map(),
-      commentsByGallery: new Map(),
     };
   }
 
@@ -102,15 +91,39 @@ export const getActiveViewers = (shareToken: string): GalleryViewer[] => {
     : [];
 };
 
-export const addComment = (comment: GalleryComment): GalleryComment[] => {
-  const store = getStore();
-  const comments = store.commentsByGallery.get(comment.shareToken) ?? [];
-  const updated = [comment, ...comments].slice(0, 200);
-  store.commentsByGallery.set(comment.shareToken, updated);
-  return updated;
+/* ── Comment SSE pub/sub ── */
+
+type CommentListener = (data: string) => void;
+
+const getListeners = (): Map<string, Set<CommentListener>> => {
+  const g = globalThis as typeof globalThis & {
+    __fotnoCommentListeners?: Map<string, Set<CommentListener>>;
+  };
+  if (!g.__fotnoCommentListeners) {
+    g.__fotnoCommentListeners = new Map();
+  }
+  return g.__fotnoCommentListeners;
 };
 
-export const listComments = (shareToken: string): GalleryComment[] => {
-  const store = getStore();
-  return store.commentsByGallery.get(shareToken) ?? [];
+export const subscribeComments = (
+  shareToken: string,
+  listener: CommentListener,
+): (() => void) => {
+  const map = getListeners();
+  const set = map.get(shareToken) ?? new Set();
+  set.add(listener);
+  map.set(shareToken, set);
+
+  return () => {
+    set.delete(listener);
+    if (set.size === 0) map.delete(shareToken);
+  };
+};
+
+export const broadcastComments = (shareToken: string, data: string): void => {
+  const set = getListeners().get(shareToken);
+  if (!set) return;
+  for (const listener of set) {
+    listener(data);
+  }
 };

@@ -32,9 +32,9 @@ export default function PasswordGate({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 px-5 py-6 text-white sm:px-8 sm:py-10">
-      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-indigo-500/25 blur-3xl" />
+    <div className="relative min-h-screen overflow-hidden px-5 py-6 text-white sm:px-8 sm:py-10" style={{ background: "oklch(0.14 0.01 50)" }}>
+      <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-6xl items-stretch overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] shadow-[0_30px_120px_rgba(0,0,0,0.6)] backdrop-blur-sm">
         <section className="relative hidden min-h-[32rem] flex-1 overflow-hidden lg:block">
@@ -74,7 +74,7 @@ export default function PasswordGate({
             />
 
             <div className="mt-10 rounded-3xl border border-white/15 bg-white/[0.05] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-md sm:p-8">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-900 shadow-sm">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
                 <LockKeyhole className="h-6 w-6" />
               </div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
@@ -101,13 +101,13 @@ export default function PasswordGate({
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="Enter gallery password"
-                  className="h-12 w-full rounded-2xl border border-white/20 bg-black/20 px-4 text-sm text-white placeholder:text-white/45 outline-none ring-0 transition focus:border-cyan-300/80 focus:bg-black/35"
+                  className="h-12 w-full rounded-2xl border border-white/20 bg-black/20 px-4 text-sm text-white placeholder:text-white/45 outline-none ring-0 transition focus:border-primary/80 focus:bg-black/35"
                   required
                 />
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="h-12 w-full rounded-2xl bg-white text-sm font-semibold text-slate-900 shadow-[0_10px_35px_rgba(255,255,255,0.18)] transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="h-12 w-full rounded-2xl bg-primary text-sm font-semibold text-primary-foreground shadow-[0_10px_35px_oklch(0.72_0.14_65_/_0.25)] transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isSubmitting ? "Unlocking..." : "Unlock Gallery"}
                 </button>

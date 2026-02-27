@@ -26,6 +26,7 @@ export interface PublicAlbum {
 
 export interface PublicGallery {
   id: string;
+  userId: string | null;
   shareToken: string;
   title: string;
   hasPassword: boolean;

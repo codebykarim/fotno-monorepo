@@ -3,6 +3,7 @@
 import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
+import { Icons } from "@workspace/ui/components/icons";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -106,19 +107,15 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
 
   return (
     <div className={cn("min-h-screen flex text-foreground")}>
-      {/* Left side - Form */}
       <div className="min-h-screen flex-1 bg-card/90 px-4 py-8 sm:px-6 lg:min-h-0 lg:px-20 xl:px-24 flex flex-col justify-center">
         <div className="mx-auto w-full max-w-sm lg:w-96">
-          {/* FOTNO Logo */}
-          <div className={"relative w-40 h-10 left-1/2 -translate-x-1/2 mb-8"}>
-            <img
-              src="/logo.png"
-              alt="FOTNO Logo"
-              className="w-full h-full object-cover"
-            />
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Icons.logo className="h-8 w-8 text-primary" />
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
+              FOTNO
+            </span>
           </div>
 
-          {/* Welcome Text */}
           <div className="mb-8">
             <h1 className="mb-2 text-3xl font-bold text-foreground">
               Reset your password
@@ -208,91 +205,19 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
         </div>
       </div>
 
-      {/* Right side - Photography Illustration */}
       <div className="hidden lg:block relative w-0 flex-1">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600">
-          {/* Photography Illustration Container */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Background decorative elements - Camera-themed */}
-            <div className="absolute top-20 left-20 w-8 h-8 bg-white rounded-lg opacity-20 transform rotate-12">
-              <div className="w-2 h-2 bg-blue-300 rounded-full absolute top-1 left-1"></div>
-            </div>
-            <div className="absolute top-40 right-32 w-6 h-6 bg-yellow-300 rounded-full opacity-60"></div>
-            <div className="absolute bottom-32 left-16 w-4 h-4 bg-white rounded-sm opacity-30 transform rotate-45"></div>
-            <div className="absolute bottom-20 right-20 w-3 h-3 bg-purple-300 rounded-full opacity-80"></div>
+        <div className="absolute inset-0 overflow-hidden" style={{ background: "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)" }}>
+          <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-primary/25 blur-3xl" />
+          <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
-            {/* Floating camera elements */}
-            <div className="absolute top-32 right-16 w-12 h-8 bg-white rounded-lg opacity-25 transform -rotate-12">
-              <div className="w-3 h-3 bg-blue-400 rounded-full absolute top-1 right-1"></div>
-            </div>
-            <div className="absolute bottom-40 left-24 w-10 h-6 bg-white rounded-md opacity-20 transform rotate-6">
-              <div className="w-2 h-2 bg-purple-400 rounded-full absolute top-1 left-1"></div>
-            </div>
-
-            {/* Main Photography Scene */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                {/* Large Camera Body */}
-                <div className="w-80 h-56 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl relative shadow-2xl">
-                  {/* Camera Top */}
-                  <div className="absolute -top-4 left-8 right-8 h-8 bg-gradient-to-r from-gray-700 to-gray-800 rounded-t-lg"></div>
-
-                  {/* Lens */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-to-br from-gray-600 to-black rounded-full shadow-inner">
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-br from-blue-900 to-purple-900 rounded-full">
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-blue-800 to-purple-800 rounded-full">
-                        <div className="absolute top-2 left-2 w-3 h-3 bg-white rounded-full opacity-60"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Camera Details */}
-                  <div className="absolute top-4 left-4 w-6 h-6 bg-red-500 rounded-full shadow-lg"></div>
-                  <div className="absolute top-4 right-4 w-4 h-4 bg-green-400 rounded-sm"></div>
-                  <div className="absolute bottom-4 left-4 w-8 h-2 bg-gray-600 rounded-full"></div>
-                  <div className="absolute bottom-4 right-4 w-12 h-3 bg-gray-600 rounded-lg"></div>
-
-                  {/* Flash */}
-                  <div className="absolute -top-2 left-1/4 w-8 h-4 bg-white rounded-md shadow-lg">
-                    <div className="absolute inset-1 bg-gradient-to-r from-yellow-200 to-yellow-100 rounded-sm"></div>
-                  </div>
-                </div>
-
-                {/* Floating Photos */}
-                <div className="absolute -top-20 -left-16 w-16 h-12 bg-white rounded-lg shadow-lg transform rotate-12 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-blue-200 to-purple-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
-
-                <div className="absolute -top-16 -right-20 w-14 h-10 bg-white rounded-lg shadow-lg transform -rotate-6 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-green-200 to-blue-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
-
-                <div className="absolute -bottom-20 -left-20 w-18 h-14 bg-white rounded-lg shadow-lg transform rotate-6 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-purple-200 to-pink-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
-
-                <div className="absolute -bottom-16 -right-16 w-16 h-12 bg-white rounded-lg shadow-lg transform -rotate-12 border-2 border-gray-200">
-                  <div className="absolute inset-2 bg-gradient-to-br from-orange-200 to-red-200 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-2 bg-gray-100 rounded-sm"></div>
-                </div>
-
-                {/* Light Rays */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-1 h-32 bg-gradient-to-t from-transparent via-yellow-300 to-transparent opacity-40"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-1 h-32 bg-gradient-to-t from-transparent via-yellow-300 to-transparent opacity-40"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-yellow-300 to-transparent opacity-40"></div>
-              </div>
-            </div>
-
-            {/* Additional photography elements */}
-            <div className="absolute top-1/4 left-1/6 w-16 h-16 bg-gradient-to-br from-white to-gray-200 rounded-full opacity-30 flex items-center justify-center">
-              <div className="w-8 h-8 bg-blue-400 rounded-full"></div>
-            </div>
-            <div className="absolute bottom-1/4 right-1/6 w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full opacity-40 flex items-center justify-center">
-              <div className="w-4 h-4 bg-white rounded-sm transform rotate-45"></div>
-            </div>
+          <div className="relative flex h-full flex-col items-center justify-center text-white p-10">
+            <Icons.logo className="h-16 w-16 text-primary mb-6" />
+            <h2 className="max-w-md text-3xl font-semibold leading-tight text-center">
+              Secure your account, protect your work.
+            </h2>
+            <p className="mt-4 max-w-sm text-sm text-white/60 text-center">
+              A strong password keeps your galleries, clients, and billing information safe.
+            </p>
           </div>
         </div>
       </div>

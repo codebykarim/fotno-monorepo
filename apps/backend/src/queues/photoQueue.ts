@@ -1,13 +1,8 @@
 import Bull, { JobOptions, Queue } from "bull";
 
-export type ProcessPhotoJobData = {
-  photoId: string;
-};
-
-export type AiAnalyzePhotoJobData = {
-  photoId: string;
-};
-
+/**
+ * Job data for S3/R2 asset deletion. Keys are S3 object keys (originals, thumbnails, previews).
+ */
 export type CleanupPhotoJobData = {
   keys: string[];
 };
@@ -19,27 +14,12 @@ if (!redisUrl) {
 }
 
 /**
- * Primary queue for photo processing jobs.
- */
-export const photoQueue: Queue<ProcessPhotoJobData> = new Bull(
-  "photo-processing",
-  redisUrl
-);
-
-/**
- * Queue used by downstream AI analysis phase.
- */
-export const aiQueue: Queue<AiAnalyzePhotoJobData> = new Bull(
-  "photo-ai-analysis",
-  redisUrl
-);
-
-/**
- * Queue used for best-effort S3 cleanup after photo deletion.
+ * Bull queue for best-effort deletion of photo assets from S3/R2.
+ * Used when a user deletes a photo or gallery; the worker deletes original, thumbnail, and preview objects.
  */
 export const cleanupQueue: Queue<CleanupPhotoJobData> = new Bull(
   "photo-cleanup",
-  redisUrl
+  redisUrl,
 );
 
 const defaultJobOptions: JobOptions = {
@@ -53,21 +33,8 @@ const defaultJobOptions: JobOptions = {
 };
 
 /**
- * Enqueues a process-photo background job.
- */
-export const enqueueProcessPhoto = async (photoId: string): Promise<void> => {
-  await photoQueue.add("process-photo", { photoId }, defaultJobOptions);
-};
-
-/**
- * Enqueues an ai-analyze-photo background job.
- */
-export const enqueueAiAnalyzePhoto = async (photoId: string): Promise<void> => {
-  await aiQueue.add("ai-analyze-photo", { photoId }, defaultJobOptions);
-};
-
-/**
- * Enqueues S3 object deletion for photo asset keys.
+ * Enqueues a job to delete the given S3/R2 object keys. Used after deleting a photo or gallery.
+ * Empty keys are filtered out. The cleanup worker runs in the backend process (or standalone).
  */
 export const enqueuePhotoCleanup = async (keys: string[]): Promise<void> => {
   await cleanupQueue.add(

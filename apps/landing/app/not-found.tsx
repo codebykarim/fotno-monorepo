@@ -10,18 +10,18 @@ export default function NotFound() {
       <div className="flex">
         <Link href="/" aria-label="Home">
           <div className="flex items-center justify-center gap-2">
-            <Icons.logo className="h-8 w-auto text-secondary" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-secondary to-background bg-clip-text text-transparent">
+            <Icons.logo className="h-8 w-auto text-primary" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
               FOTNO
             </h1>
           </div>
         </Link>
       </div>
-      <p className="mt-20 text-sm font-medium text-gray-700">404</p>
-      <h1 className="mt-3 text-lg font-semibold text-gray-900">
+      <p className="mt-20 text-sm font-medium text-muted-foreground">404</p>
+      <h1 className="mt-3 text-lg font-semibold text-foreground">
         Page not found
       </h1>
-      <p className="mt-3 text-sm text-gray-700">
+      <p className="mt-3 text-sm text-muted-foreground">
         Sorry, we couldn’t find the page you’re looking for.
       </p>
       <Button href="/" className="mt-10">

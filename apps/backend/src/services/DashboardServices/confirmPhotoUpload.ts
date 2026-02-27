@@ -11,6 +11,11 @@ type ConfirmUploadResponse = {
   };
 };
 
+/**
+ * Finalizes an upload by telling the upload-service to complete the S3 multipart and enqueue processing.
+ * Then loads the photo from DB and returns it with presigned download URLs for thumbnail, preview, and original.
+ * Called when the client has uploaded all chunks and is ready to mark the photo as done.
+ */
 export const confirmPhotoUpload = async (
   userId: string,
   galleryId: string,

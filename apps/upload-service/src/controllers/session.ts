@@ -8,6 +8,7 @@ import { logger } from '../utils/logger'
 
 const log = logger.child({ module: 'session.controller' })
 
+/** Parses stored completedParts JSON into PartRecord array. */
 function parseCompletedParts(value: unknown): PartRecord[] {
   if (!Array.isArray(value)) {
     return []
@@ -38,7 +39,9 @@ function parseCompletedParts(value: unknown): PartRecord[] {
     .filter((part): part is PartRecord => part !== null)
 }
 
+/** Handles upload session listing for resume flows. */
 export class SessionController {
+  /** Returns all in-progress upload sessions for a gallery, with S3-synced completed parts and fresh presigned URLs for missing parts. */
   async getGallerySession(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const galleryId = req.params.galleryId

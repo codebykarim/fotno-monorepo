@@ -2,18 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MoreHorizontal } from "lucide-react";
+import { useState } from "react";
+import { Images, MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@workspace/ui/components/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import {
@@ -24,101 +21,125 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@workspace/ui/components/dialog";
-import { toast } from "sonner";
-import { GalleryListItem } from "@/lib/types/api";
-import { GalleryStatusBadge } from "@/components/dashboard/gallery-status-badge";
-import { useState } from "react";
 import { Input } from "@workspace/ui/components/input";
+import { GalleryListItem } from "@/lib/types/api";
+import { cn } from "@workspace/ui/lib/utils";
 
 type Props = {
   gallery: GalleryListItem;
   onDelete: (id: string) => Promise<void>;
 };
 
+const GRID_SLOTS = 12;
+
 export function GalleryCard({ gallery, onDelete }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
-  const [disableDeleteButton, setDisableDeleteButton] = useState(true);
-  const createdDate = new Date(gallery.createdAt).toLocaleDateString();
   const galleryBaseUrl =
     process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
 
+  const urls = gallery.previewPhotoUrls ?? [];
+
   return (
-    <Card className="group overflow-hidden border-border/70 bg-white/80 shadow-[0_16px_40px_-34px_rgba(2,6,23,0.8)] transition-transform duration-300 hover:-translate-y-0.5">
-      <Link href={`/galleries/${gallery.id}`}>
-        <div className="relative aspect-[4/3] bg-muted">
-          {gallery.coverPhotoUrl ? (
-            <Image
-              src={gallery.coverPhotoUrl}
-              alt={gallery.title}
-              fill
-              className="object-cover transition duration-500 group-hover:scale-[1.03]"
-            />
+    <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/25">
+      <Link href={`/galleries/${gallery.id}`} className="block">
+        <div className="relative aspect-[4/3] bg-muted overflow-hidden">
+          {urls.length > 0 ? (
+            <div className="grid h-full w-full grid-cols-4 grid-rows-3 gap-px bg-border/30">
+              {Array.from({ length: GRID_SLOTS }).map((_, i) => {
+                const url = urls[i];
+                return (
+                  <div key={i} className="relative overflow-hidden bg-muted">
+                    {url ? (
+                      <Image
+                        src={url}
+                        alt=""
+                        fill
+                        sizes="(max-width: 768px) 25vw, 10vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-muted/60" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
-              No cover photo
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-foreground">
+              <Images className="h-8 w-8 opacity-30" />
+              <span className="text-xs">No photos yet</span>
             </div>
           )}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       </Link>
 
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0 space-y-1">
-            <CardTitle className="truncate text-lg">{gallery.title}</CardTitle>
-            <p className="text-xs text-muted-foreground">
-              Created {createdDate}
-            </p>
+      <div className="flex items-center justify-between gap-2 px-3.5 py-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/galleries/${gallery.id}`}
+              className="truncate text-sm font-medium hover:underline"
+            >
+              {gallery.title}
+            </Link>
+            <span
+              className={cn(
+                "inline-block h-2 w-2 shrink-0 rounded-full",
+                gallery.status === "published" ? "bg-emerald-500" : "bg-zinc-400",
+              )}
+              title={gallery.status === "published" ? "Published" : "Draft"}
+            />
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="More actions">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href={`/galleries/${gallery.id}/settings`}>Edit</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  if (!gallery.isPublished) {
-                    toast.error("Publish this gallery before sharing");
-                    return;
-                  }
-
-                  const link = `${galleryBaseUrl.replace(/\/$/, "")}/${gallery.slug}`;
-                  navigator.clipboard.writeText(link);
-                  toast.success("Share link copied");
-                }}
-              >
-                Share
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
-                onClick={() => setShowDeleteDialog(true)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </CardHeader>
-
-      <CardContent className="flex items-center justify-between pt-0">
-        <div className="space-y-1">
-          <p className="text-sm text-muted-foreground">
-            {gallery.photoCount} photos
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Date: {gallery.eventDate ?? "-"} • Deadline:{" "}
-            {gallery.deadline ?? "-"}
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {gallery.photoCount} photo{gallery.photoCount !== 1 ? "s" : ""}
           </p>
         </div>
-        <GalleryStatusBadge status={gallery.status} />
-      </CardContent>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 shrink-0 text-muted-foreground"
+              aria-label="More actions"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem asChild>
+              <Link href={`/galleries/${gallery.id}`}>Open</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/galleries/${gallery.id}/settings`}>Settings</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                if (!gallery.isPublished) {
+                  toast.error("Publish this gallery before sharing");
+                  return;
+                }
+                const link = `${galleryBaseUrl.replace(/\/$/, "")}/${gallery.slug}`;
+                navigator.clipboard.writeText(link);
+                toast.success("Share link copied");
+              }}
+            >
+              Copy share link
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onClick={() => setShowDeleteDialog(true)}
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>
@@ -131,19 +152,12 @@ export function GalleryCard({ gallery, onDelete }: Props) {
           </DialogHeader>
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">
-              Type gallery title to delete "{gallery.title}"
+              Type &ldquo;{gallery.title}&rdquo; to confirm
             </p>
             <Input
               placeholder={gallery.title}
               value={deleteGalleryTitle}
-              onChange={(e) => {
-                setDeleteGalleryTitle(e.target.value);
-                if (e.target.value === gallery.title) {
-                  setDisableDeleteButton(false);
-                } else {
-                  setDisableDeleteButton(true);
-                }
-              }}
+              onChange={(e) => setDeleteGalleryTitle(e.target.value)}
             />
           </div>
           <DialogFooter>
@@ -155,17 +169,17 @@ export function GalleryCard({ gallery, onDelete }: Props) {
             </Button>
             <Button
               variant="destructive"
-              disabled={disableDeleteButton}
+              disabled={deleteGalleryTitle !== gallery.title}
               onClick={() => {
                 setShowDeleteDialog(false);
                 onDelete(gallery.id);
               }}
             >
-              Confirm delete
+              Delete gallery
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Card>
+    </div>
   );
 }

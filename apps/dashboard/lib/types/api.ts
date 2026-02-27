@@ -13,6 +13,7 @@ export type GalleryListItem = {
   status: "draft" | "published";
   photoCount: number;
   coverPhotoUrl: string | null;
+  previewPhotoUrls: string[];
 };
 
 export type ListGalleriesResponse = {

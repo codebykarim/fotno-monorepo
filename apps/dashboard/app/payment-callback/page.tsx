@@ -53,9 +53,9 @@ export default function PaymentCallback() {
   return (
     <div className="min-h-screen bg-foreground flex items-center justify-center">
       <div className="bg-background p-8 rounded-lg shadow-lg text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
         <h2 className="text-xl font-semibold mb-2">Verifying Payment</h2>
-        <p className="text-gray-500">
+        <p className="text-muted-foreground">
           Please wait while we confirm your payment...
         </p>
       </div>

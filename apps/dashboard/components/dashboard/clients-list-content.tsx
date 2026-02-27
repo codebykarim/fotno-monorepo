@@ -81,8 +81,8 @@ export function ClientsListContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
-        <p className="text-muted-foreground">
+        <h1 className="dashboard-title text-3xl font-semibold tracking-tight">Clients</h1>
+        <p className="mt-1 text-muted-foreground">
           Clients and galleries shared with each contact.
         </p>
       </div>
@@ -126,7 +126,7 @@ export function ClientsListContent() {
                   data?.clients.map((client) => (
                     <tr
                       key={client.id}
-                      className="border-t border-border/60 transition-colors hover:bg-muted/20"
+                      className="border-t border-border/60 transition-colors hover:bg-primary/4"
                     >
                       <td className="px-4 py-4 align-top font-medium">
                         {editingClientId === client.id ? (

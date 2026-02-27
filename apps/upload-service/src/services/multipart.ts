@@ -21,6 +21,10 @@ import type { PartRecord, PresignedPart } from '../interfaces/index'
 import { buildPartNumbers } from '../utils/chunks'
 import { logger } from '../utils/logger'
 
+/**
+ * Handles all S3/R2 multipart upload operations: init, presign parts, complete, abort,
+ * list parts, download, and upload. Also defines the S3 key patterns (originals, thumbnails, previews).
+ */
 class MultipartService {
   private readonly s3: S3Client
 
@@ -48,19 +52,22 @@ class MultipartService {
     this.bucket = env.AWS_S3_BUCKET
   }
 
-  // S3 Key builders — single source of truth for all key patterns
+  /** S3 key for the original upload: originals/{galleryId}/{photoId}/{filename} */
   buildOriginalKey(galleryId: string, photoId: string, filename: string): string {
     return `originals/${galleryId}/${photoId}/${filename}`
   }
 
+  /** S3 key for the thumbnail: thumbnails/{galleryId}/{photoId}.webp */
   buildThumbnailKey(galleryId: string, photoId: string): string {
     return `thumbnails/${galleryId}/${photoId}.webp`
   }
 
+  /** S3 key for the preview: previews/{galleryId}/{photoId}.webp */
   buildPreviewKey(galleryId: string, photoId: string): string {
     return `previews/${galleryId}/${photoId}.webp`
   }
 
+  /** Starts a multipart upload on S3 and returns the upload ID. */
   async initUpload(key: string, mimeType: string): Promise<string> {
     try {
       const response = await this.s3.send(
@@ -84,6 +91,7 @@ class MultipartService {
     }
   }
 
+  /** Generates presigned PUT URLs for all part numbers (1..totalParts). */
   async presignParts(
     key: string,
     uploadId: string,
@@ -92,6 +100,7 @@ class MultipartService {
     return this.presignPartNumbers(key, uploadId, buildPartNumbers(totalParts))
   }
 
+  /** Generates presigned PUT URLs for the given part numbers only. Used for resume (missing parts). */
   async presignPartNumbers(
     key: string,
     uploadId: string,
@@ -127,6 +136,7 @@ class MultipartService {
     }
   }
 
+  /** Finalizes the multipart upload by sending the completed part list to S3. */
   async completeUpload(key: string, uploadId: string, parts: PartRecord[]): Promise<void> {
     const completedParts: CompletedPart[] = parts
       .slice()
@@ -155,6 +165,7 @@ class MultipartService {
     }
   }
 
+  /** Aborts an in-progress multipart upload and frees S3 resources. */
   async abortUpload(key: string, uploadId: string): Promise<void> {
     try {
       await this.s3.send(
@@ -176,6 +187,7 @@ class MultipartService {
     }
   }
 
+  /** Lists all parts already uploaded to S3 for the given multipart upload. Used for resume logic. */
   async listCompletedParts(key: string, uploadId: string): Promise<PartRecord[]> {
     const allParts: PartRecord[] = []
     let nextPartNumberMarker: string | undefined
@@ -215,6 +227,7 @@ class MultipartService {
     }
   }
 
+  /** Downloads an S3 object into a Buffer. Used by the image processor to read originals. */
   async downloadToBuffer(key: string): Promise<Buffer> {
     try {
       const response = await this.s3.send(
@@ -249,6 +262,7 @@ class MultipartService {
     }
   }
 
+  /** Uploads a buffer to S3 as a single object. Used for thumbnails and previews. */
   async uploadBuffer(key: string, buffer: Buffer, mimeType: string): Promise<void> {
     try {
       await this.s3.send(

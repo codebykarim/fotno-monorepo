@@ -2,6 +2,11 @@ import { db } from "./_shared";
 import { enqueuePhotoCleanup } from "../../queues/photoQueue";
 import { removeStorage } from "../StorageServices";
 
+/**
+ * Deletes a photo belonging to the user: updates storage accounting, removes the DB record,
+ * and enqueues S3 cleanup for the original, thumbnail, and preview objects.
+ * Returns false if the photo was not found or not owned by the user.
+ */
 export const deletePhoto = async (userId: string, photoId: string) => {
   const photo = await db.photo.findFirst({
     where: {

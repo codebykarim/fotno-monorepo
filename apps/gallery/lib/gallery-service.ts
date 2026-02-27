@@ -20,6 +20,7 @@ type BackendPhoto = {
 
 type BackendGallery = {
   id: string;
+  userId?: string;
   shareToken: string;
   title: string;
   passwordHash: string | null;
@@ -100,6 +101,7 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
 
   return {
     id: input.id,
+    userId: input.userId ?? null,
     shareToken: input.shareToken,
     title: input.title,
     hasPassword: Boolean(input.passwordHash),
@@ -177,6 +179,7 @@ const loadGalleryFromDashboardMock = async (
   return {
     gallery: {
       id: gallery.id,
+      userId: null,
       shareToken: gallery.slug,
       title: gallery.title,
       hasPassword: Boolean(gallery.passwordEnabled),

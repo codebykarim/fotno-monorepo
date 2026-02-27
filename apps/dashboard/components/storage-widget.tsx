@@ -40,7 +40,7 @@ export const StorageWidget = ({ compact = false }: { compact?: boolean }) => {
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
         <div
           className={`h-full transition-all ${
-            is95 ? "bg-red-500" : is80 ? "bg-amber-500" : "bg-yellow-500"
+            is95 ? "bg-destructive" : is80 ? "bg-primary/70" : "bg-primary"
           }`}
           style={{ width: `${percent}%` }}
         />

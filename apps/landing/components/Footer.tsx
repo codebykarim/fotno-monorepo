@@ -1,43 +1,47 @@
 import Link from "next/link";
-
 import { Container } from "@/components/Container";
-import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/components/icons";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-50">
+    <footer className="bg-foreground">
       <Container>
         <div className="py-16">
           <div className="flex items-center justify-center gap-2">
             <Icons.logo className="h-8 w-auto text-primary" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-background bg-clip-text text-transparent">
               FOTNO
-            </h1>
+            </span>
           </div>
           <nav className="mt-10 text-sm" aria-label="quick links">
             <div className="-my-1 flex justify-center gap-x-6">
-              <NavLink href="#features">Features</NavLink>
-              <NavLink href="#testimonials">Testimonials</NavLink>
-              <NavLink href="#pricing">Pricing</NavLink>
+              <Link href="#features" className="text-background/60 hover:text-background transition-colors">
+                Features
+              </Link>
+              <Link href="#testimonials" className="text-background/60 hover:text-background transition-colors">
+                Testimonials
+              </Link>
+              <Link href="#pricing" className="text-background/60 hover:text-background transition-colors">
+                Pricing
+              </Link>
             </div>
           </nav>
         </div>
-        <div className="flex flex-col items-center border-t border-slate-400/10 py-10 sm:flex-row-reverse sm:justify-between">
+        <div className="flex flex-col items-center border-t border-background/10 py-10 sm:flex-row-reverse sm:justify-between">
           <div className="flex gap-x-6">
-            <Link href="#" className="group" aria-label="TaxPal on X">
+            <Link href="#" className="group" aria-label="Fotno on X">
               <svg
-                className="h-6 w-6 fill-slate-500 group-hover:fill-slate-700"
+                className="h-6 w-6 fill-background/40 group-hover:fill-background/70 transition-colors"
                 aria-hidden="true"
                 viewBox="0 0 24 24"
               >
                 <path d="M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z" />
               </svg>
             </Link>
-            <Link href="#" className="group" aria-label="TaxPal on GitHub">
+            <Link href="#" className="group" aria-label="Fotno on GitHub">
               <svg
-                className="h-6 w-6 fill-slate-500 group-hover:fill-slate-700"
+                className="h-6 w-6 fill-background/40 group-hover:fill-background/70 transition-colors"
                 aria-hidden="true"
                 viewBox="0 0 24 24"
               >
@@ -45,7 +49,7 @@ export function Footer() {
               </svg>
             </Link>
           </div>
-          <p className="mt-6 text-sm text-slate-500 sm:mt-0">
+          <p className="mt-6 text-sm text-background/40 sm:mt-0">
             Copyright &copy; {new Date().getFullYear()} FOTNO. All rights
             reserved.
           </p>

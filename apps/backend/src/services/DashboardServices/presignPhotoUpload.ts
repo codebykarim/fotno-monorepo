@@ -17,6 +17,11 @@ type BatchInitResponse = {
   storageWarning?: "approaching_limit" | "over_limit";
 };
 
+/**
+ * Initializes a multipart upload by calling the upload-service batch-init. Creates a photo record and
+ * returns presigned URLs for each chunk. Called when the user starts uploading a file.
+ * Validates gallery ownership and passes through storage warnings.
+ */
 export const presignPhotoUpload = async (
   userId: string,
   galleryId: string,

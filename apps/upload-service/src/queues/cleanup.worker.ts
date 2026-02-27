@@ -8,6 +8,7 @@ import { bullConnection } from './connection'
 
 const workerLogger = logger.child({ module: 'cleanup.worker' })
 
+/** Aborts expired multipart uploads on S3, marks sessions EXPIRED, deletes pending photos, releases storage reservations. */
 async function cleanupExpiredSessions(batchSize: number): Promise<void> {
   const now = new Date()
   const sessions = await prisma.uploadSession.findMany({
@@ -86,6 +87,7 @@ async function cleanupExpiredSessions(batchSize: number): Promise<void> {
   )
 }
 
+/** Reconciles storage_used vs actual photo sizes for all users. Fixes drift from failed jobs or bugs. */
 async function reconcileStorageForUsers(): Promise<void> {
   const rows = await prisma.$queryRaw<Array<{ userId: string }>>`
     SELECT DISTINCT g."userId"
@@ -112,6 +114,7 @@ async function reconcileStorageForUsers(): Promise<void> {
   )
 }
 
+/** BullMQ worker for upload-cleanup jobs: cleanup (expire stale sessions) and reconcile (fix storage drift). */
 export const cleanupWorker = new Worker<CleanupJobData>(
   'upload-cleanup',
   async (job) => {

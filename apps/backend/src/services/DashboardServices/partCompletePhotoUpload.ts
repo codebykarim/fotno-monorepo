@@ -7,6 +7,10 @@ type PartCompleteResponse = {
   isComplete: boolean;
 };
 
+/**
+ * Records that a multipart chunk has been uploaded. Called by the client after each PUT to S3.
+ * The upload-service updates the session's completed parts. Returns completedCount, totalParts, and isComplete.
+ */
 export const partCompletePhotoUpload = async (
   userId: string,
   galleryId: string,

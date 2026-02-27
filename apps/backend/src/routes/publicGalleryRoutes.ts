@@ -18,6 +18,26 @@ const publicGalleryMethods: { [key: string]: MethodInfo } = {
     httpMethod: "GET",
     controllerFunction: PublicGalleryController.getPublicPhotoUrlController,
   },
+  "list-gallery-comments": {
+    httpMethod: "GET",
+    controllerFunction: PublicGalleryController.listGalleryCommentsController,
+  },
+  "create-gallery-comment": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.createGalleryCommentController,
+  },
+  "edit-gallery-comment": {
+    httpMethod: "PATCH",
+    controllerFunction: PublicGalleryController.editGalleryCommentController,
+  },
+  "delete-gallery-comment": {
+    httpMethod: "DELETE",
+    controllerFunction: PublicGalleryController.deleteGalleryCommentController,
+  },
+  "toggle-comment-like": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.toggleCommentLikeController,
+  },
 };
 
 const mappedMethods = init(publicGalleryMethods);
@@ -35,6 +55,26 @@ publicGalleryRoutes.get(
 publicGalleryRoutes.post(
   "/public/gallery/:shareToken/unlock",
   handleMethod("unlock-public-gallery"),
+);
+publicGalleryRoutes.get(
+  "/public/gallery/:shareToken/comments",
+  handleMethod("list-gallery-comments"),
+);
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/comments",
+  handleMethod("create-gallery-comment"),
+);
+publicGalleryRoutes.patch(
+  "/public/gallery/:shareToken/comments/:commentId",
+  handleMethod("edit-gallery-comment"),
+);
+publicGalleryRoutes.delete(
+  "/public/gallery/:shareToken/comments/:commentId",
+  handleMethod("delete-gallery-comment"),
+);
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/comments/:commentId/like",
+  handleMethod("toggle-comment-like"),
 );
 publicGalleryRoutes.get(
   "/public/photos/:photoId/url",

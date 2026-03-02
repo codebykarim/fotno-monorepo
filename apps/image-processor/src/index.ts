@@ -1,7 +1,7 @@
 import "../../backend/src/bootstrap";
 import sharp from "sharp";
 import { prisma } from "@workspace/db";
-import { getS3ObjectBuffer, putS3Object } from "../../backend/src/utils/s3";
+import { multipartService } from "../../upload-service/src/services/multipart";
 
 type CompressionOptions = {
   targetWidth: number;
@@ -183,7 +183,7 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
   console.log(`[image-processor] started photoId=${photo.id}`);
 
   try {
-    const originalBuffer = await getS3ObjectBuffer(photo.s3Key);
+    const originalBuffer = await multipartService.downloadToBuffer(photo.s3Key);
     const metadata = await sharp(originalBuffer).metadata();
 
     const thumbnailKey = `thumbnails/${photo.id}.webp`;
@@ -213,8 +213,8 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
     });
 
     await Promise.all([
-      putS3Object(thumbnailKey, thumbnailBuffer, "image/webp"),
-      putS3Object(previewKey, previewBuffer, "image/webp"),
+      multipartService.uploadBuffer(thumbnailKey, thumbnailBuffer, "image/webp"),
+      multipartService.uploadBuffer(previewKey, previewBuffer, "image/webp"),
     ]);
 
     await (prisma as any).photo.update({

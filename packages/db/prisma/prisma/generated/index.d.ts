@@ -88,6 +88,16 @@ export type AlbumPhoto = $Result.DefaultSelection<Prisma.$AlbumPhotoPayload>
  * 
  */
 export type GalleryComment = $Result.DefaultSelection<Prisma.$GalleryCommentPayload>
+/**
+ * Model ImageSearchImage
+ * 
+ */
+export type ImageSearchImage = $Result.DefaultSelection<Prisma.$ImageSearchImagePayload>
+/**
+ * Model ImageSearchAlbumCache
+ * 
+ */
+export type ImageSearchAlbumCache = $Result.DefaultSelection<Prisma.$ImageSearchAlbumCachePayload>
 
 /**
  * Enums
@@ -193,7 +203,9 @@ export const UploadSessionStatus: typeof $Enums.UploadSessionStatus
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Users
  * const users = await prisma.user.findMany()
  * ```
@@ -214,7 +226,9 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Users
    * const users = await prisma.user.findMany()
    * ```
@@ -453,6 +467,26 @@ export class PrismaClient<
     * ```
     */
   get galleryComment(): Prisma.GalleryCommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.imageSearchImage`: Exposes CRUD operations for the **ImageSearchImage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ImageSearchImages
+    * const imageSearchImages = await prisma.imageSearchImage.findMany()
+    * ```
+    */
+  get imageSearchImage(): Prisma.ImageSearchImageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.imageSearchAlbumCache`: Exposes CRUD operations for the **ImageSearchAlbumCache** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ImageSearchAlbumCaches
+    * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany()
+    * ```
+    */
+  get imageSearchAlbumCache(): Prisma.ImageSearchAlbumCacheDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -503,8 +537,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.4.1
-   * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
+   * Prisma Client JS version: 7.4.2
+   * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
    */
   export type PrismaVersion = {
     client: string
@@ -901,7 +935,9 @@ export namespace Prisma {
     GalleryClient: 'GalleryClient',
     Album: 'Album',
     AlbumPhoto: 'AlbumPhoto',
-    GalleryComment: 'GalleryComment'
+    GalleryComment: 'GalleryComment',
+    ImageSearchImage: 'ImageSearchImage',
+    ImageSearchAlbumCache: 'ImageSearchAlbumCache'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -917,7 +953,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "imageSearchImage" | "imageSearchAlbumCache"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2031,6 +2067,154 @@ export namespace Prisma {
           }
         }
       }
+      ImageSearchImage: {
+        payload: Prisma.$ImageSearchImagePayload<ExtArgs>
+        fields: Prisma.ImageSearchImageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ImageSearchImageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ImageSearchImageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          findFirst: {
+            args: Prisma.ImageSearchImageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ImageSearchImageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          findMany: {
+            args: Prisma.ImageSearchImageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+          }
+          create: {
+            args: Prisma.ImageSearchImageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          createMany: {
+            args: Prisma.ImageSearchImageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ImageSearchImageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+          }
+          delete: {
+            args: Prisma.ImageSearchImageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          update: {
+            args: Prisma.ImageSearchImageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          deleteMany: {
+            args: Prisma.ImageSearchImageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ImageSearchImageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ImageSearchImageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+          }
+          upsert: {
+            args: Prisma.ImageSearchImageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+          }
+          aggregate: {
+            args: Prisma.ImageSearchImageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateImageSearchImage>
+          }
+          groupBy: {
+            args: Prisma.ImageSearchImageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ImageSearchImageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ImageSearchImageCountArgs<ExtArgs>
+            result: $Utils.Optional<ImageSearchImageCountAggregateOutputType> | number
+          }
+        }
+      }
+      ImageSearchAlbumCache: {
+        payload: Prisma.$ImageSearchAlbumCachePayload<ExtArgs>
+        fields: Prisma.ImageSearchAlbumCacheFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ImageSearchAlbumCacheFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          findFirst: {
+            args: Prisma.ImageSearchAlbumCacheFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          findMany: {
+            args: Prisma.ImageSearchAlbumCacheFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+          }
+          create: {
+            args: Prisma.ImageSearchAlbumCacheCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          createMany: {
+            args: Prisma.ImageSearchAlbumCacheCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+          }
+          delete: {
+            args: Prisma.ImageSearchAlbumCacheDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          update: {
+            args: Prisma.ImageSearchAlbumCacheUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          deleteMany: {
+            args: Prisma.ImageSearchAlbumCacheDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ImageSearchAlbumCacheUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+          }
+          upsert: {
+            args: Prisma.ImageSearchAlbumCacheUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+          }
+          aggregate: {
+            args: Prisma.ImageSearchAlbumCacheAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateImageSearchAlbumCache>
+          }
+          groupBy: {
+            args: Prisma.ImageSearchAlbumCacheGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ImageSearchAlbumCacheGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ImageSearchAlbumCacheCountArgs<ExtArgs>
+            result: $Utils.Optional<ImageSearchAlbumCacheCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2154,6 +2338,8 @@ export namespace Prisma {
     album?: AlbumOmit
     albumPhoto?: AlbumPhotoOmit
     galleryComment?: GalleryCommentOmit
+    imageSearchImage?: ImageSearchImageOmit
+    imageSearchAlbumCache?: ImageSearchAlbumCacheOmit
   }
 
   /* Types for Logging */
@@ -20207,6 +20393,2174 @@ export namespace Prisma {
 
 
   /**
+   * Model ImageSearchImage
+   */
+
+  export type AggregateImageSearchImage = {
+    _count: ImageSearchImageCountAggregateOutputType | null
+    _avg: ImageSearchImageAvgAggregateOutputType | null
+    _sum: ImageSearchImageSumAggregateOutputType | null
+    _min: ImageSearchImageMinAggregateOutputType | null
+    _max: ImageSearchImageMaxAggregateOutputType | null
+  }
+
+  export type ImageSearchImageAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type ImageSearchImageSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type ImageSearchImageMinAggregateOutputType = {
+    id: string | null
+    photoId: string | null
+    userId: string | null
+    galleryId: string | null
+    storageUrl: string | null
+    thumbnailUrl: string | null
+    caption: string | null
+    indexedAt: Date | null
+    version: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ImageSearchImageMaxAggregateOutputType = {
+    id: string | null
+    photoId: string | null
+    userId: string | null
+    galleryId: string | null
+    storageUrl: string | null
+    thumbnailUrl: string | null
+    caption: string | null
+    indexedAt: Date | null
+    version: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ImageSearchImageCountAggregateOutputType = {
+    id: number
+    photoId: number
+    userId: number
+    galleryId: number
+    storageUrl: number
+    thumbnailUrl: number
+    caption: number
+    tags: number
+    metadata: number
+    indexedAt: number
+    version: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ImageSearchImageAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type ImageSearchImageSumAggregateInputType = {
+    version?: true
+  }
+
+  export type ImageSearchImageMinAggregateInputType = {
+    id?: true
+    photoId?: true
+    userId?: true
+    galleryId?: true
+    storageUrl?: true
+    thumbnailUrl?: true
+    caption?: true
+    indexedAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ImageSearchImageMaxAggregateInputType = {
+    id?: true
+    photoId?: true
+    userId?: true
+    galleryId?: true
+    storageUrl?: true
+    thumbnailUrl?: true
+    caption?: true
+    indexedAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ImageSearchImageCountAggregateInputType = {
+    id?: true
+    photoId?: true
+    userId?: true
+    galleryId?: true
+    storageUrl?: true
+    thumbnailUrl?: true
+    caption?: true
+    tags?: true
+    metadata?: true
+    indexedAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ImageSearchImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImageSearchImage to aggregate.
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchImages to fetch.
+     */
+    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ImageSearchImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ImageSearchImages
+    **/
+    _count?: true | ImageSearchImageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ImageSearchImageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ImageSearchImageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ImageSearchImageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ImageSearchImageMaxAggregateInputType
+  }
+
+  export type GetImageSearchImageAggregateType<T extends ImageSearchImageAggregateArgs> = {
+        [P in keyof T & keyof AggregateImageSearchImage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateImageSearchImage[P]>
+      : GetScalarType<T[P], AggregateImageSearchImage[P]>
+  }
+
+
+
+
+  export type ImageSearchImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImageSearchImageWhereInput
+    orderBy?: ImageSearchImageOrderByWithAggregationInput | ImageSearchImageOrderByWithAggregationInput[]
+    by: ImageSearchImageScalarFieldEnum[] | ImageSearchImageScalarFieldEnum
+    having?: ImageSearchImageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ImageSearchImageCountAggregateInputType | true
+    _avg?: ImageSearchImageAvgAggregateInputType
+    _sum?: ImageSearchImageSumAggregateInputType
+    _min?: ImageSearchImageMinAggregateInputType
+    _max?: ImageSearchImageMaxAggregateInputType
+  }
+
+  export type ImageSearchImageGroupByOutputType = {
+    id: string
+    photoId: string
+    userId: string
+    galleryId: string
+    storageUrl: string
+    thumbnailUrl: string | null
+    caption: string | null
+    tags: string[]
+    metadata: JsonValue | null
+    indexedAt: Date | null
+    version: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ImageSearchImageCountAggregateOutputType | null
+    _avg: ImageSearchImageAvgAggregateOutputType | null
+    _sum: ImageSearchImageSumAggregateOutputType | null
+    _min: ImageSearchImageMinAggregateOutputType | null
+    _max: ImageSearchImageMaxAggregateOutputType | null
+  }
+
+  type GetImageSearchImageGroupByPayload<T extends ImageSearchImageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ImageSearchImageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ImageSearchImageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ImageSearchImageGroupByOutputType[P]>
+            : GetScalarType<T[P], ImageSearchImageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ImageSearchImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    userId?: boolean
+    galleryId?: boolean
+    storageUrl?: boolean
+    thumbnailUrl?: boolean
+    caption?: boolean
+    tags?: boolean
+    metadata?: boolean
+    indexedAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["imageSearchImage"]>
+
+  export type ImageSearchImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    userId?: boolean
+    galleryId?: boolean
+    storageUrl?: boolean
+    thumbnailUrl?: boolean
+    caption?: boolean
+    tags?: boolean
+    metadata?: boolean
+    indexedAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["imageSearchImage"]>
+
+  export type ImageSearchImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    photoId?: boolean
+    userId?: boolean
+    galleryId?: boolean
+    storageUrl?: boolean
+    thumbnailUrl?: boolean
+    caption?: boolean
+    tags?: boolean
+    metadata?: boolean
+    indexedAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["imageSearchImage"]>
+
+  export type ImageSearchImageSelectScalar = {
+    id?: boolean
+    photoId?: boolean
+    userId?: boolean
+    galleryId?: boolean
+    storageUrl?: boolean
+    thumbnailUrl?: boolean
+    caption?: boolean
+    tags?: boolean
+    metadata?: boolean
+    indexedAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ImageSearchImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "photoId" | "userId" | "galleryId" | "storageUrl" | "thumbnailUrl" | "caption" | "tags" | "metadata" | "indexedAt" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["imageSearchImage"]>
+
+  export type $ImageSearchImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ImageSearchImage"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      photoId: string
+      userId: string
+      galleryId: string
+      storageUrl: string
+      thumbnailUrl: string | null
+      caption: string | null
+      tags: string[]
+      metadata: Prisma.JsonValue | null
+      indexedAt: Date | null
+      version: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["imageSearchImage"]>
+    composites: {}
+  }
+
+  type ImageSearchImageGetPayload<S extends boolean | null | undefined | ImageSearchImageDefaultArgs> = $Result.GetResult<Prisma.$ImageSearchImagePayload, S>
+
+  type ImageSearchImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ImageSearchImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ImageSearchImageCountAggregateInputType | true
+    }
+
+  export interface ImageSearchImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImageSearchImage'], meta: { name: 'ImageSearchImage' } }
+    /**
+     * Find zero or one ImageSearchImage that matches the filter.
+     * @param {ImageSearchImageFindUniqueArgs} args - Arguments to find a ImageSearchImage
+     * @example
+     * // Get one ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ImageSearchImageFindUniqueArgs>(args: SelectSubset<T, ImageSearchImageFindUniqueArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ImageSearchImage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ImageSearchImageFindUniqueOrThrowArgs} args - Arguments to find a ImageSearchImage
+     * @example
+     * // Get one ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ImageSearchImageFindUniqueOrThrowArgs>(args: SelectSubset<T, ImageSearchImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImageSearchImage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageFindFirstArgs} args - Arguments to find a ImageSearchImage
+     * @example
+     * // Get one ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ImageSearchImageFindFirstArgs>(args?: SelectSubset<T, ImageSearchImageFindFirstArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImageSearchImage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageFindFirstOrThrowArgs} args - Arguments to find a ImageSearchImage
+     * @example
+     * // Get one ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ImageSearchImageFindFirstOrThrowArgs>(args?: SelectSubset<T, ImageSearchImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ImageSearchImages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ImageSearchImages
+     * const imageSearchImages = await prisma.imageSearchImage.findMany()
+     * 
+     * // Get first 10 ImageSearchImages
+     * const imageSearchImages = await prisma.imageSearchImage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ImageSearchImageFindManyArgs>(args?: SelectSubset<T, ImageSearchImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ImageSearchImage.
+     * @param {ImageSearchImageCreateArgs} args - Arguments to create a ImageSearchImage.
+     * @example
+     * // Create one ImageSearchImage
+     * const ImageSearchImage = await prisma.imageSearchImage.create({
+     *   data: {
+     *     // ... data to create a ImageSearchImage
+     *   }
+     * })
+     * 
+     */
+    create<T extends ImageSearchImageCreateArgs>(args: SelectSubset<T, ImageSearchImageCreateArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ImageSearchImages.
+     * @param {ImageSearchImageCreateManyArgs} args - Arguments to create many ImageSearchImages.
+     * @example
+     * // Create many ImageSearchImages
+     * const imageSearchImage = await prisma.imageSearchImage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ImageSearchImageCreateManyArgs>(args?: SelectSubset<T, ImageSearchImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ImageSearchImages and returns the data saved in the database.
+     * @param {ImageSearchImageCreateManyAndReturnArgs} args - Arguments to create many ImageSearchImages.
+     * @example
+     * // Create many ImageSearchImages
+     * const imageSearchImage = await prisma.imageSearchImage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ImageSearchImages and only return the `id`
+     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ImageSearchImageCreateManyAndReturnArgs>(args?: SelectSubset<T, ImageSearchImageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ImageSearchImage.
+     * @param {ImageSearchImageDeleteArgs} args - Arguments to delete one ImageSearchImage.
+     * @example
+     * // Delete one ImageSearchImage
+     * const ImageSearchImage = await prisma.imageSearchImage.delete({
+     *   where: {
+     *     // ... filter to delete one ImageSearchImage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ImageSearchImageDeleteArgs>(args: SelectSubset<T, ImageSearchImageDeleteArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ImageSearchImage.
+     * @param {ImageSearchImageUpdateArgs} args - Arguments to update one ImageSearchImage.
+     * @example
+     * // Update one ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ImageSearchImageUpdateArgs>(args: SelectSubset<T, ImageSearchImageUpdateArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ImageSearchImages.
+     * @param {ImageSearchImageDeleteManyArgs} args - Arguments to filter ImageSearchImages to delete.
+     * @example
+     * // Delete a few ImageSearchImages
+     * const { count } = await prisma.imageSearchImage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ImageSearchImageDeleteManyArgs>(args?: SelectSubset<T, ImageSearchImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImageSearchImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ImageSearchImages
+     * const imageSearchImage = await prisma.imageSearchImage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ImageSearchImageUpdateManyArgs>(args: SelectSubset<T, ImageSearchImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImageSearchImages and returns the data updated in the database.
+     * @param {ImageSearchImageUpdateManyAndReturnArgs} args - Arguments to update many ImageSearchImages.
+     * @example
+     * // Update many ImageSearchImages
+     * const imageSearchImage = await prisma.imageSearchImage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ImageSearchImages and only return the `id`
+     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ImageSearchImageUpdateManyAndReturnArgs>(args: SelectSubset<T, ImageSearchImageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ImageSearchImage.
+     * @param {ImageSearchImageUpsertArgs} args - Arguments to update or create a ImageSearchImage.
+     * @example
+     * // Update or create a ImageSearchImage
+     * const imageSearchImage = await prisma.imageSearchImage.upsert({
+     *   create: {
+     *     // ... data to create a ImageSearchImage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ImageSearchImage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ImageSearchImageUpsertArgs>(args: SelectSubset<T, ImageSearchImageUpsertArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ImageSearchImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageCountArgs} args - Arguments to filter ImageSearchImages to count.
+     * @example
+     * // Count the number of ImageSearchImages
+     * const count = await prisma.imageSearchImage.count({
+     *   where: {
+     *     // ... the filter for the ImageSearchImages we want to count
+     *   }
+     * })
+    **/
+    count<T extends ImageSearchImageCountArgs>(
+      args?: Subset<T, ImageSearchImageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ImageSearchImageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ImageSearchImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ImageSearchImageAggregateArgs>(args: Subset<T, ImageSearchImageAggregateArgs>): Prisma.PrismaPromise<GetImageSearchImageAggregateType<T>>
+
+    /**
+     * Group by ImageSearchImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchImageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ImageSearchImageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ImageSearchImageGroupByArgs['orderBy'] }
+        : { orderBy?: ImageSearchImageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ImageSearchImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImageSearchImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ImageSearchImage model
+   */
+  readonly fields: ImageSearchImageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ImageSearchImage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ImageSearchImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ImageSearchImage model
+   */
+  interface ImageSearchImageFieldRefs {
+    readonly id: FieldRef<"ImageSearchImage", 'String'>
+    readonly photoId: FieldRef<"ImageSearchImage", 'String'>
+    readonly userId: FieldRef<"ImageSearchImage", 'String'>
+    readonly galleryId: FieldRef<"ImageSearchImage", 'String'>
+    readonly storageUrl: FieldRef<"ImageSearchImage", 'String'>
+    readonly thumbnailUrl: FieldRef<"ImageSearchImage", 'String'>
+    readonly caption: FieldRef<"ImageSearchImage", 'String'>
+    readonly tags: FieldRef<"ImageSearchImage", 'String[]'>
+    readonly metadata: FieldRef<"ImageSearchImage", 'Json'>
+    readonly indexedAt: FieldRef<"ImageSearchImage", 'DateTime'>
+    readonly version: FieldRef<"ImageSearchImage", 'Int'>
+    readonly createdAt: FieldRef<"ImageSearchImage", 'DateTime'>
+    readonly updatedAt: FieldRef<"ImageSearchImage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ImageSearchImage findUnique
+   */
+  export type ImageSearchImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchImage to fetch.
+     */
+    where: ImageSearchImageWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchImage findUniqueOrThrow
+   */
+  export type ImageSearchImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchImage to fetch.
+     */
+    where: ImageSearchImageWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchImage findFirst
+   */
+  export type ImageSearchImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchImage to fetch.
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchImages to fetch.
+     */
+    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImageSearchImages.
+     */
+    cursor?: ImageSearchImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImageSearchImages.
+     */
+    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchImage findFirstOrThrow
+   */
+  export type ImageSearchImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchImage to fetch.
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchImages to fetch.
+     */
+    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImageSearchImages.
+     */
+    cursor?: ImageSearchImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImageSearchImages.
+     */
+    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchImage findMany
+   */
+  export type ImageSearchImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchImages to fetch.
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchImages to fetch.
+     */
+    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ImageSearchImages.
+     */
+    cursor?: ImageSearchImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchImages.
+     */
+    skip?: number
+    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchImage create
+   */
+  export type ImageSearchImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ImageSearchImage.
+     */
+    data: XOR<ImageSearchImageCreateInput, ImageSearchImageUncheckedCreateInput>
+  }
+
+  /**
+   * ImageSearchImage createMany
+   */
+  export type ImageSearchImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ImageSearchImages.
+     */
+    data: ImageSearchImageCreateManyInput | ImageSearchImageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ImageSearchImage createManyAndReturn
+   */
+  export type ImageSearchImageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * The data used to create many ImageSearchImages.
+     */
+    data: ImageSearchImageCreateManyInput | ImageSearchImageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ImageSearchImage update
+   */
+  export type ImageSearchImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ImageSearchImage.
+     */
+    data: XOR<ImageSearchImageUpdateInput, ImageSearchImageUncheckedUpdateInput>
+    /**
+     * Choose, which ImageSearchImage to update.
+     */
+    where: ImageSearchImageWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchImage updateMany
+   */
+  export type ImageSearchImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ImageSearchImages.
+     */
+    data: XOR<ImageSearchImageUpdateManyMutationInput, ImageSearchImageUncheckedUpdateManyInput>
+    /**
+     * Filter which ImageSearchImages to update
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * Limit how many ImageSearchImages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchImage updateManyAndReturn
+   */
+  export type ImageSearchImageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * The data used to update ImageSearchImages.
+     */
+    data: XOR<ImageSearchImageUpdateManyMutationInput, ImageSearchImageUncheckedUpdateManyInput>
+    /**
+     * Filter which ImageSearchImages to update
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * Limit how many ImageSearchImages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchImage upsert
+   */
+  export type ImageSearchImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ImageSearchImage to update in case it exists.
+     */
+    where: ImageSearchImageWhereUniqueInput
+    /**
+     * In case the ImageSearchImage found by the `where` argument doesn't exist, create a new ImageSearchImage with this data.
+     */
+    create: XOR<ImageSearchImageCreateInput, ImageSearchImageUncheckedCreateInput>
+    /**
+     * In case the ImageSearchImage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ImageSearchImageUpdateInput, ImageSearchImageUncheckedUpdateInput>
+  }
+
+  /**
+   * ImageSearchImage delete
+   */
+  export type ImageSearchImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+    /**
+     * Filter which ImageSearchImage to delete.
+     */
+    where: ImageSearchImageWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchImage deleteMany
+   */
+  export type ImageSearchImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImageSearchImages to delete
+     */
+    where?: ImageSearchImageWhereInput
+    /**
+     * Limit how many ImageSearchImages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchImage without action
+   */
+  export type ImageSearchImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchImage
+     */
+    select?: ImageSearchImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchImage
+     */
+    omit?: ImageSearchImageOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ImageSearchAlbumCache
+   */
+
+  export type AggregateImageSearchAlbumCache = {
+    _count: ImageSearchAlbumCacheCountAggregateOutputType | null
+    _min: ImageSearchAlbumCacheMinAggregateOutputType | null
+    _max: ImageSearchAlbumCacheMaxAggregateOutputType | null
+  }
+
+  export type ImageSearchAlbumCacheMinAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    userId: string | null
+    normalizedPrompt: string | null
+    albumTitle: string | null
+    albumDescription: string | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ImageSearchAlbumCacheMaxAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    userId: string | null
+    normalizedPrompt: string | null
+    albumTitle: string | null
+    albumDescription: string | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type ImageSearchAlbumCacheCountAggregateOutputType = {
+    id: number
+    galleryId: number
+    userId: number
+    normalizedPrompt: number
+    photoIds: number
+    albumTitle: number
+    albumDescription: number
+    expiresAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ImageSearchAlbumCacheMinAggregateInputType = {
+    id?: true
+    galleryId?: true
+    userId?: true
+    normalizedPrompt?: true
+    albumTitle?: true
+    albumDescription?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type ImageSearchAlbumCacheMaxAggregateInputType = {
+    id?: true
+    galleryId?: true
+    userId?: true
+    normalizedPrompt?: true
+    albumTitle?: true
+    albumDescription?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type ImageSearchAlbumCacheCountAggregateInputType = {
+    id?: true
+    galleryId?: true
+    userId?: true
+    normalizedPrompt?: true
+    photoIds?: true
+    albumTitle?: true
+    albumDescription?: true
+    expiresAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ImageSearchAlbumCacheAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImageSearchAlbumCache to aggregate.
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchAlbumCaches to fetch.
+     */
+    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchAlbumCaches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ImageSearchAlbumCaches
+    **/
+    _count?: true | ImageSearchAlbumCacheCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ImageSearchAlbumCacheMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ImageSearchAlbumCacheMaxAggregateInputType
+  }
+
+  export type GetImageSearchAlbumCacheAggregateType<T extends ImageSearchAlbumCacheAggregateArgs> = {
+        [P in keyof T & keyof AggregateImageSearchAlbumCache]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateImageSearchAlbumCache[P]>
+      : GetScalarType<T[P], AggregateImageSearchAlbumCache[P]>
+  }
+
+
+
+
+  export type ImageSearchAlbumCacheGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImageSearchAlbumCacheWhereInput
+    orderBy?: ImageSearchAlbumCacheOrderByWithAggregationInput | ImageSearchAlbumCacheOrderByWithAggregationInput[]
+    by: ImageSearchAlbumCacheScalarFieldEnum[] | ImageSearchAlbumCacheScalarFieldEnum
+    having?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ImageSearchAlbumCacheCountAggregateInputType | true
+    _min?: ImageSearchAlbumCacheMinAggregateInputType
+    _max?: ImageSearchAlbumCacheMaxAggregateInputType
+  }
+
+  export type ImageSearchAlbumCacheGroupByOutputType = {
+    id: string
+    galleryId: string
+    userId: string
+    normalizedPrompt: string
+    photoIds: string[]
+    albumTitle: string | null
+    albumDescription: string | null
+    expiresAt: Date
+    createdAt: Date
+    _count: ImageSearchAlbumCacheCountAggregateOutputType | null
+    _min: ImageSearchAlbumCacheMinAggregateOutputType | null
+    _max: ImageSearchAlbumCacheMaxAggregateOutputType | null
+  }
+
+  type GetImageSearchAlbumCacheGroupByPayload<T extends ImageSearchAlbumCacheGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ImageSearchAlbumCacheGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ImageSearchAlbumCacheGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ImageSearchAlbumCacheGroupByOutputType[P]>
+            : GetScalarType<T[P], ImageSearchAlbumCacheGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ImageSearchAlbumCacheSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    userId?: boolean
+    normalizedPrompt?: boolean
+    photoIds?: boolean
+    albumTitle?: boolean
+    albumDescription?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+
+  export type ImageSearchAlbumCacheSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    userId?: boolean
+    normalizedPrompt?: boolean
+    photoIds?: boolean
+    albumTitle?: boolean
+    albumDescription?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+
+  export type ImageSearchAlbumCacheSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    userId?: boolean
+    normalizedPrompt?: boolean
+    photoIds?: boolean
+    albumTitle?: boolean
+    albumDescription?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+
+  export type ImageSearchAlbumCacheSelectScalar = {
+    id?: boolean
+    galleryId?: boolean
+    userId?: boolean
+    normalizedPrompt?: boolean
+    photoIds?: boolean
+    albumTitle?: boolean
+    albumDescription?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type ImageSearchAlbumCacheOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "userId" | "normalizedPrompt" | "photoIds" | "albumTitle" | "albumDescription" | "expiresAt" | "createdAt", ExtArgs["result"]["imageSearchAlbumCache"]>
+
+  export type $ImageSearchAlbumCachePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ImageSearchAlbumCache"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      galleryId: string
+      userId: string
+      normalizedPrompt: string
+      photoIds: string[]
+      albumTitle: string | null
+      albumDescription: string | null
+      expiresAt: Date
+      createdAt: Date
+    }, ExtArgs["result"]["imageSearchAlbumCache"]>
+    composites: {}
+  }
+
+  type ImageSearchAlbumCacheGetPayload<S extends boolean | null | undefined | ImageSearchAlbumCacheDefaultArgs> = $Result.GetResult<Prisma.$ImageSearchAlbumCachePayload, S>
+
+  type ImageSearchAlbumCacheCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ImageSearchAlbumCacheFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ImageSearchAlbumCacheCountAggregateInputType | true
+    }
+
+  export interface ImageSearchAlbumCacheDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImageSearchAlbumCache'], meta: { name: 'ImageSearchAlbumCache' } }
+    /**
+     * Find zero or one ImageSearchAlbumCache that matches the filter.
+     * @param {ImageSearchAlbumCacheFindUniqueArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @example
+     * // Get one ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ImageSearchAlbumCacheFindUniqueArgs>(args: SelectSubset<T, ImageSearchAlbumCacheFindUniqueArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ImageSearchAlbumCache that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ImageSearchAlbumCacheFindUniqueOrThrowArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @example
+     * // Get one ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ImageSearchAlbumCacheFindUniqueOrThrowArgs>(args: SelectSubset<T, ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImageSearchAlbumCache that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheFindFirstArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @example
+     * // Get one ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ImageSearchAlbumCacheFindFirstArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindFirstArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImageSearchAlbumCache that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheFindFirstOrThrowArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @example
+     * // Get one ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ImageSearchAlbumCacheFindFirstOrThrowArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ImageSearchAlbumCaches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ImageSearchAlbumCaches
+     * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany()
+     * 
+     * // Get first 10 ImageSearchAlbumCaches
+     * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ImageSearchAlbumCacheFindManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ImageSearchAlbumCache.
+     * @param {ImageSearchAlbumCacheCreateArgs} args - Arguments to create a ImageSearchAlbumCache.
+     * @example
+     * // Create one ImageSearchAlbumCache
+     * const ImageSearchAlbumCache = await prisma.imageSearchAlbumCache.create({
+     *   data: {
+     *     // ... data to create a ImageSearchAlbumCache
+     *   }
+     * })
+     * 
+     */
+    create<T extends ImageSearchAlbumCacheCreateArgs>(args: SelectSubset<T, ImageSearchAlbumCacheCreateArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ImageSearchAlbumCaches.
+     * @param {ImageSearchAlbumCacheCreateManyArgs} args - Arguments to create many ImageSearchAlbumCaches.
+     * @example
+     * // Create many ImageSearchAlbumCaches
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ImageSearchAlbumCacheCreateManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ImageSearchAlbumCaches and returns the data saved in the database.
+     * @param {ImageSearchAlbumCacheCreateManyAndReturnArgs} args - Arguments to create many ImageSearchAlbumCaches.
+     * @example
+     * // Create many ImageSearchAlbumCaches
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ImageSearchAlbumCaches and only return the `id`
+     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ImageSearchAlbumCacheCreateManyAndReturnArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ImageSearchAlbumCache.
+     * @param {ImageSearchAlbumCacheDeleteArgs} args - Arguments to delete one ImageSearchAlbumCache.
+     * @example
+     * // Delete one ImageSearchAlbumCache
+     * const ImageSearchAlbumCache = await prisma.imageSearchAlbumCache.delete({
+     *   where: {
+     *     // ... filter to delete one ImageSearchAlbumCache
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ImageSearchAlbumCacheDeleteArgs>(args: SelectSubset<T, ImageSearchAlbumCacheDeleteArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ImageSearchAlbumCache.
+     * @param {ImageSearchAlbumCacheUpdateArgs} args - Arguments to update one ImageSearchAlbumCache.
+     * @example
+     * // Update one ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ImageSearchAlbumCacheUpdateArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ImageSearchAlbumCaches.
+     * @param {ImageSearchAlbumCacheDeleteManyArgs} args - Arguments to filter ImageSearchAlbumCaches to delete.
+     * @example
+     * // Delete a few ImageSearchAlbumCaches
+     * const { count } = await prisma.imageSearchAlbumCache.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ImageSearchAlbumCacheDeleteManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImageSearchAlbumCaches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ImageSearchAlbumCaches
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ImageSearchAlbumCacheUpdateManyArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImageSearchAlbumCaches and returns the data updated in the database.
+     * @param {ImageSearchAlbumCacheUpdateManyAndReturnArgs} args - Arguments to update many ImageSearchAlbumCaches.
+     * @example
+     * // Update many ImageSearchAlbumCaches
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ImageSearchAlbumCaches and only return the `id`
+     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ImageSearchAlbumCacheUpdateManyAndReturnArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ImageSearchAlbumCache.
+     * @param {ImageSearchAlbumCacheUpsertArgs} args - Arguments to update or create a ImageSearchAlbumCache.
+     * @example
+     * // Update or create a ImageSearchAlbumCache
+     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.upsert({
+     *   create: {
+     *     // ... data to create a ImageSearchAlbumCache
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ImageSearchAlbumCache we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ImageSearchAlbumCacheUpsertArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpsertArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ImageSearchAlbumCaches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheCountArgs} args - Arguments to filter ImageSearchAlbumCaches to count.
+     * @example
+     * // Count the number of ImageSearchAlbumCaches
+     * const count = await prisma.imageSearchAlbumCache.count({
+     *   where: {
+     *     // ... the filter for the ImageSearchAlbumCaches we want to count
+     *   }
+     * })
+    **/
+    count<T extends ImageSearchAlbumCacheCountArgs>(
+      args?: Subset<T, ImageSearchAlbumCacheCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ImageSearchAlbumCacheCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ImageSearchAlbumCache.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ImageSearchAlbumCacheAggregateArgs>(args: Subset<T, ImageSearchAlbumCacheAggregateArgs>): Prisma.PrismaPromise<GetImageSearchAlbumCacheAggregateType<T>>
+
+    /**
+     * Group by ImageSearchAlbumCache.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageSearchAlbumCacheGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ImageSearchAlbumCacheGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ImageSearchAlbumCacheGroupByArgs['orderBy'] }
+        : { orderBy?: ImageSearchAlbumCacheGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ImageSearchAlbumCacheGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImageSearchAlbumCacheGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ImageSearchAlbumCache model
+   */
+  readonly fields: ImageSearchAlbumCacheFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ImageSearchAlbumCache.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ImageSearchAlbumCacheClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ImageSearchAlbumCache model
+   */
+  interface ImageSearchAlbumCacheFieldRefs {
+    readonly id: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly galleryId: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly userId: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly normalizedPrompt: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly photoIds: FieldRef<"ImageSearchAlbumCache", 'String[]'>
+    readonly albumTitle: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly albumDescription: FieldRef<"ImageSearchAlbumCache", 'String'>
+    readonly expiresAt: FieldRef<"ImageSearchAlbumCache", 'DateTime'>
+    readonly createdAt: FieldRef<"ImageSearchAlbumCache", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ImageSearchAlbumCache findUnique
+   */
+  export type ImageSearchAlbumCacheFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchAlbumCache to fetch.
+     */
+    where: ImageSearchAlbumCacheWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchAlbumCache findUniqueOrThrow
+   */
+  export type ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchAlbumCache to fetch.
+     */
+    where: ImageSearchAlbumCacheWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchAlbumCache findFirst
+   */
+  export type ImageSearchAlbumCacheFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchAlbumCache to fetch.
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchAlbumCaches to fetch.
+     */
+    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImageSearchAlbumCaches.
+     */
+    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchAlbumCaches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImageSearchAlbumCaches.
+     */
+    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchAlbumCache findFirstOrThrow
+   */
+  export type ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchAlbumCache to fetch.
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchAlbumCaches to fetch.
+     */
+    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImageSearchAlbumCaches.
+     */
+    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchAlbumCaches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImageSearchAlbumCaches.
+     */
+    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchAlbumCache findMany
+   */
+  export type ImageSearchAlbumCacheFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter, which ImageSearchAlbumCaches to fetch.
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImageSearchAlbumCaches to fetch.
+     */
+    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ImageSearchAlbumCaches.
+     */
+    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImageSearchAlbumCaches.
+     */
+    skip?: number
+    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+  }
+
+  /**
+   * ImageSearchAlbumCache create
+   */
+  export type ImageSearchAlbumCacheCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ImageSearchAlbumCache.
+     */
+    data: XOR<ImageSearchAlbumCacheCreateInput, ImageSearchAlbumCacheUncheckedCreateInput>
+  }
+
+  /**
+   * ImageSearchAlbumCache createMany
+   */
+  export type ImageSearchAlbumCacheCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ImageSearchAlbumCaches.
+     */
+    data: ImageSearchAlbumCacheCreateManyInput | ImageSearchAlbumCacheCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ImageSearchAlbumCache createManyAndReturn
+   */
+  export type ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * The data used to create many ImageSearchAlbumCaches.
+     */
+    data: ImageSearchAlbumCacheCreateManyInput | ImageSearchAlbumCacheCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ImageSearchAlbumCache update
+   */
+  export type ImageSearchAlbumCacheUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ImageSearchAlbumCache.
+     */
+    data: XOR<ImageSearchAlbumCacheUpdateInput, ImageSearchAlbumCacheUncheckedUpdateInput>
+    /**
+     * Choose, which ImageSearchAlbumCache to update.
+     */
+    where: ImageSearchAlbumCacheWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchAlbumCache updateMany
+   */
+  export type ImageSearchAlbumCacheUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ImageSearchAlbumCaches.
+     */
+    data: XOR<ImageSearchAlbumCacheUpdateManyMutationInput, ImageSearchAlbumCacheUncheckedUpdateManyInput>
+    /**
+     * Filter which ImageSearchAlbumCaches to update
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * Limit how many ImageSearchAlbumCaches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchAlbumCache updateManyAndReturn
+   */
+  export type ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * The data used to update ImageSearchAlbumCaches.
+     */
+    data: XOR<ImageSearchAlbumCacheUpdateManyMutationInput, ImageSearchAlbumCacheUncheckedUpdateManyInput>
+    /**
+     * Filter which ImageSearchAlbumCaches to update
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * Limit how many ImageSearchAlbumCaches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchAlbumCache upsert
+   */
+  export type ImageSearchAlbumCacheUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ImageSearchAlbumCache to update in case it exists.
+     */
+    where: ImageSearchAlbumCacheWhereUniqueInput
+    /**
+     * In case the ImageSearchAlbumCache found by the `where` argument doesn't exist, create a new ImageSearchAlbumCache with this data.
+     */
+    create: XOR<ImageSearchAlbumCacheCreateInput, ImageSearchAlbumCacheUncheckedCreateInput>
+    /**
+     * In case the ImageSearchAlbumCache was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ImageSearchAlbumCacheUpdateInput, ImageSearchAlbumCacheUncheckedUpdateInput>
+  }
+
+  /**
+   * ImageSearchAlbumCache delete
+   */
+  export type ImageSearchAlbumCacheDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    /**
+     * Filter which ImageSearchAlbumCache to delete.
+     */
+    where: ImageSearchAlbumCacheWhereUniqueInput
+  }
+
+  /**
+   * ImageSearchAlbumCache deleteMany
+   */
+  export type ImageSearchAlbumCacheDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImageSearchAlbumCaches to delete
+     */
+    where?: ImageSearchAlbumCacheWhereInput
+    /**
+     * Limit how many ImageSearchAlbumCaches to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImageSearchAlbumCache without action
+   */
+  export type ImageSearchAlbumCacheDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImageSearchAlbumCache
+     */
+    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImageSearchAlbumCache
+     */
+    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -20466,6 +22820,40 @@ export namespace Prisma {
   export type GalleryCommentScalarFieldEnum = (typeof GalleryCommentScalarFieldEnum)[keyof typeof GalleryCommentScalarFieldEnum]
 
 
+  export const ImageSearchImageScalarFieldEnum: {
+    id: 'id',
+    photoId: 'photoId',
+    userId: 'userId',
+    galleryId: 'galleryId',
+    storageUrl: 'storageUrl',
+    thumbnailUrl: 'thumbnailUrl',
+    caption: 'caption',
+    tags: 'tags',
+    metadata: 'metadata',
+    indexedAt: 'indexedAt',
+    version: 'version',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ImageSearchImageScalarFieldEnum = (typeof ImageSearchImageScalarFieldEnum)[keyof typeof ImageSearchImageScalarFieldEnum]
+
+
+  export const ImageSearchAlbumCacheScalarFieldEnum: {
+    id: 'id',
+    galleryId: 'galleryId',
+    userId: 'userId',
+    normalizedPrompt: 'normalizedPrompt',
+    photoIds: 'photoIds',
+    albumTitle: 'albumTitle',
+    albumDescription: 'albumDescription',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt'
+  };
+
+  export type ImageSearchAlbumCacheScalarFieldEnum = (typeof ImageSearchAlbumCacheScalarFieldEnum)[keyof typeof ImageSearchAlbumCacheScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -20479,6 +22867,14 @@ export namespace Prisma {
   };
 
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -22012,6 +24408,173 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"GalleryComment"> | Date | string
   }
 
+  export type ImageSearchImageWhereInput = {
+    AND?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
+    OR?: ImageSearchImageWhereInput[]
+    NOT?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
+    id?: StringFilter<"ImageSearchImage"> | string
+    photoId?: StringFilter<"ImageSearchImage"> | string
+    userId?: StringFilter<"ImageSearchImage"> | string
+    galleryId?: StringFilter<"ImageSearchImage"> | string
+    storageUrl?: StringFilter<"ImageSearchImage"> | string
+    thumbnailUrl?: StringNullableFilter<"ImageSearchImage"> | string | null
+    caption?: StringNullableFilter<"ImageSearchImage"> | string | null
+    tags?: StringNullableListFilter<"ImageSearchImage">
+    metadata?: JsonNullableFilter<"ImageSearchImage">
+    indexedAt?: DateTimeNullableFilter<"ImageSearchImage"> | Date | string | null
+    version?: IntFilter<"ImageSearchImage"> | number
+    createdAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
+    updatedAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
+  }
+
+  export type ImageSearchImageOrderByWithRelationInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    userId?: SortOrder
+    galleryId?: SortOrder
+    storageUrl?: SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    indexedAt?: SortOrderInput | SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ImageSearchImageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    photoId?: string
+    AND?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
+    OR?: ImageSearchImageWhereInput[]
+    NOT?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
+    userId?: StringFilter<"ImageSearchImage"> | string
+    galleryId?: StringFilter<"ImageSearchImage"> | string
+    storageUrl?: StringFilter<"ImageSearchImage"> | string
+    thumbnailUrl?: StringNullableFilter<"ImageSearchImage"> | string | null
+    caption?: StringNullableFilter<"ImageSearchImage"> | string | null
+    tags?: StringNullableListFilter<"ImageSearchImage">
+    metadata?: JsonNullableFilter<"ImageSearchImage">
+    indexedAt?: DateTimeNullableFilter<"ImageSearchImage"> | Date | string | null
+    version?: IntFilter<"ImageSearchImage"> | number
+    createdAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
+    updatedAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
+  }, "id" | "photoId">
+
+  export type ImageSearchImageOrderByWithAggregationInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    userId?: SortOrder
+    galleryId?: SortOrder
+    storageUrl?: SortOrder
+    thumbnailUrl?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    indexedAt?: SortOrderInput | SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ImageSearchImageCountOrderByAggregateInput
+    _avg?: ImageSearchImageAvgOrderByAggregateInput
+    _max?: ImageSearchImageMaxOrderByAggregateInput
+    _min?: ImageSearchImageMinOrderByAggregateInput
+    _sum?: ImageSearchImageSumOrderByAggregateInput
+  }
+
+  export type ImageSearchImageScalarWhereWithAggregatesInput = {
+    AND?: ImageSearchImageScalarWhereWithAggregatesInput | ImageSearchImageScalarWhereWithAggregatesInput[]
+    OR?: ImageSearchImageScalarWhereWithAggregatesInput[]
+    NOT?: ImageSearchImageScalarWhereWithAggregatesInput | ImageSearchImageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ImageSearchImage"> | string
+    photoId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
+    userId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
+    galleryId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
+    storageUrl?: StringWithAggregatesFilter<"ImageSearchImage"> | string
+    thumbnailUrl?: StringNullableWithAggregatesFilter<"ImageSearchImage"> | string | null
+    caption?: StringNullableWithAggregatesFilter<"ImageSearchImage"> | string | null
+    tags?: StringNullableListFilter<"ImageSearchImage">
+    metadata?: JsonNullableWithAggregatesFilter<"ImageSearchImage">
+    indexedAt?: DateTimeNullableWithAggregatesFilter<"ImageSearchImage"> | Date | string | null
+    version?: IntWithAggregatesFilter<"ImageSearchImage"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ImageSearchImage"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ImageSearchImage"> | Date | string
+  }
+
+  export type ImageSearchAlbumCacheWhereInput = {
+    AND?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
+    OR?: ImageSearchAlbumCacheWhereInput[]
+    NOT?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
+    id?: StringFilter<"ImageSearchAlbumCache"> | string
+    galleryId?: StringFilter<"ImageSearchAlbumCache"> | string
+    userId?: StringFilter<"ImageSearchAlbumCache"> | string
+    normalizedPrompt?: StringFilter<"ImageSearchAlbumCache"> | string
+    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
+    albumTitle?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
+    albumDescription?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
+    expiresAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
+    createdAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
+  }
+
+  export type ImageSearchAlbumCacheOrderByWithRelationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    userId?: SortOrder
+    normalizedPrompt?: SortOrder
+    photoIds?: SortOrder
+    albumTitle?: SortOrderInput | SortOrder
+    albumDescription?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ImageSearchAlbumCacheWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    galleryId_userId_normalizedPrompt?: ImageSearchAlbumCacheGalleryIdUserIdNormalizedPromptCompoundUniqueInput
+    AND?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
+    OR?: ImageSearchAlbumCacheWhereInput[]
+    NOT?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
+    galleryId?: StringFilter<"ImageSearchAlbumCache"> | string
+    userId?: StringFilter<"ImageSearchAlbumCache"> | string
+    normalizedPrompt?: StringFilter<"ImageSearchAlbumCache"> | string
+    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
+    albumTitle?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
+    albumDescription?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
+    expiresAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
+    createdAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
+  }, "id" | "galleryId_userId_normalizedPrompt">
+
+  export type ImageSearchAlbumCacheOrderByWithAggregationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    userId?: SortOrder
+    normalizedPrompt?: SortOrder
+    photoIds?: SortOrder
+    albumTitle?: SortOrderInput | SortOrder
+    albumDescription?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    _count?: ImageSearchAlbumCacheCountOrderByAggregateInput
+    _max?: ImageSearchAlbumCacheMaxOrderByAggregateInput
+    _min?: ImageSearchAlbumCacheMinOrderByAggregateInput
+  }
+
+  export type ImageSearchAlbumCacheScalarWhereWithAggregatesInput = {
+    AND?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput | ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
+    OR?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
+    NOT?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput | ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
+    galleryId?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
+    userId?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
+    normalizedPrompt?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
+    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
+    albumTitle?: StringNullableWithAggregatesFilter<"ImageSearchAlbumCache"> | string | null
+    albumDescription?: StringNullableWithAggregatesFilter<"ImageSearchAlbumCache"> | string | null
+    expiresAt?: DateTimeWithAggregatesFilter<"ImageSearchAlbumCache"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"ImageSearchAlbumCache"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -23467,6 +26030,202 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ImageSearchImageCreateInput = {
+    id?: string
+    photoId: string
+    userId: string
+    galleryId: string
+    storageUrl: string
+    thumbnailUrl?: string | null
+    caption?: string | null
+    tags?: ImageSearchImageCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ImageSearchImageUncheckedCreateInput = {
+    id?: string
+    photoId: string
+    userId: string
+    galleryId: string
+    storageUrl: string
+    thumbnailUrl?: string | null
+    caption?: string | null
+    tags?: ImageSearchImageCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ImageSearchImageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    storageUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ImageSearchImageUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchImageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    storageUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ImageSearchImageUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchImageCreateManyInput = {
+    id?: string
+    photoId: string
+    userId: string
+    galleryId: string
+    storageUrl: string
+    thumbnailUrl?: string | null
+    caption?: string | null
+    tags?: ImageSearchImageCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ImageSearchImageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    storageUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ImageSearchImageUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchImageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    storageUrl?: StringFieldUpdateOperationsInput | string
+    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ImageSearchImageUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchAlbumCacheCreateInput = {
+    id?: string
+    galleryId: string
+    userId: string
+    normalizedPrompt: string
+    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
+    albumTitle?: string | null
+    albumDescription?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type ImageSearchAlbumCacheUncheckedCreateInput = {
+    id?: string
+    galleryId: string
+    userId: string
+    normalizedPrompt: string
+    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
+    albumTitle?: string | null
+    albumDescription?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type ImageSearchAlbumCacheUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    normalizedPrompt?: StringFieldUpdateOperationsInput | string
+    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
+    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchAlbumCacheUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    normalizedPrompt?: StringFieldUpdateOperationsInput | string
+    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
+    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchAlbumCacheCreateManyInput = {
+    id?: string
+    galleryId: string
+    userId: string
+    normalizedPrompt: string
+    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
+    albumTitle?: string | null
+    albumDescription?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type ImageSearchAlbumCacheUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    normalizedPrompt?: StringFieldUpdateOperationsInput | string
+    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
+    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageSearchAlbumCacheUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    normalizedPrompt?: StringFieldUpdateOperationsInput | string
+    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
+    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24720,6 +27479,147 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ImageSearchImageCountOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    userId?: SortOrder
+    galleryId?: SortOrder
+    storageUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    caption?: SortOrder
+    tags?: SortOrder
+    metadata?: SortOrder
+    indexedAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ImageSearchImageAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type ImageSearchImageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    userId?: SortOrder
+    galleryId?: SortOrder
+    storageUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    caption?: SortOrder
+    indexedAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ImageSearchImageMinOrderByAggregateInput = {
+    id?: SortOrder
+    photoId?: SortOrder
+    userId?: SortOrder
+    galleryId?: SortOrder
+    storageUrl?: SortOrder
+    thumbnailUrl?: SortOrder
+    caption?: SortOrder
+    indexedAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ImageSearchImageSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type ImageSearchAlbumCacheGalleryIdUserIdNormalizedPromptCompoundUniqueInput = {
+    galleryId: string
+    userId: string
+    normalizedPrompt: string
+  }
+
+  export type ImageSearchAlbumCacheCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    userId?: SortOrder
+    normalizedPrompt?: SortOrder
+    photoIds?: SortOrder
+    albumTitle?: SortOrder
+    albumDescription?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ImageSearchAlbumCacheMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    userId?: SortOrder
+    normalizedPrompt?: SortOrder
+    albumTitle?: SortOrder
+    albumDescription?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ImageSearchAlbumCacheMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    userId?: SortOrder
+    normalizedPrompt?: SortOrder
+    albumTitle?: SortOrder
+    albumDescription?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
 
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
@@ -25818,6 +28718,24 @@ export namespace Prisma {
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
+  export type ImageSearchImageCreatetagsInput = {
+    set: string[]
+  }
+
+  export type ImageSearchImageUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ImageSearchAlbumCacheCreatephotoIdsInput = {
+    set: string[]
+  }
+
+  export type ImageSearchAlbumCacheUpdatephotoIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26199,6 +29117,29 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type SessionCreateWithoutUserInput = {

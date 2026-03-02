@@ -4,25 +4,25 @@ overview: Design a cost-efficient, scalable image search and album suggestion pi
 todos:
   - id: decide-language-and-contracts
     content: Decide whether ImageSearchService is implemented in Node.js or Python and finalize HTTP contracts between ImageProcessor, ImageSearchService, SigLIP service, and Backend.
-    status: pending
+    status: completed
   - id: implement-siglip-service
     content: Implement and deploy a Python SigLIP inference service exposing /embed-image and /embed-text with batching support.
-    status: pending
+    status: completed
   - id: create-db-schema
     content: Create Postgres+pgvector schema and migrations for image_search_images and optional image_search_album_cache tables.
-    status: pending
+    status: completed
   - id: build-imagesearchservice-skeleton
     content: Scaffold the ImageSearchService with config, DB access, SigLIP client, and basic health endpoint.
-    status: pending
+    status: completed
   - id: hook-up-ingestion-and-worker
     content: Implement /ingest-photo, the embedding job queue, and worker logic to batch embed photos and upsert into Postgres.
-    status: pending
+    status: completed
   - id: implement-search-and-suggest-album
     content: Implement /search and /suggest-album endpoints in ImageSearchService and integrate Backend to use them for album suggestions.
-    status: pending
+    status: completed
   - id: add-llm-and-caching
     content: Optionally add LLM-based album shaping and implement prompt-level caching using image_search_album_cache.
-    status: pending
+    status: completed
   - id: observability-and-scaling
     content: Add metrics, logging, and load tests; tune pgvector, SigLIP batching, and LLM usage for cost-effective scale to 10k users with 2k-photo galleries.
     status: pending

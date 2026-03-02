@@ -3,6 +3,9 @@ import sharp from "sharp";
 import { prisma } from "@workspace/db";
 import { multipartService } from "../../upload-service/src/services/multipart";
 
+const IMAGE_SEARCH_SERVICE_URL =
+  process.env.IMAGE_SEARCH_SERVICE_URL || "http://localhost:4002";
+
 type CompressionOptions = {
   targetWidth: number;
   minWidth: number;
@@ -14,6 +17,9 @@ type CompressionOptions = {
 type ProcessingPhoto = {
   id: string;
   s3Key: string;
+  galleryId: string;
+  aiCaption: string | null;
+  aiTags: string[];
   gallery: {
     userId: string;
   };
@@ -30,6 +36,48 @@ const PROCESSING_STALE_MS = Number(
 
 const sleep = async (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+const ingestPhotoToSearchService = async (
+  photoId: string,
+  userId: string,
+  galleryId: string,
+  previewKey: string,
+  caption?: string | null,
+  tags?: string[],
+): Promise<void> => {
+  try {
+    const previewUrl = `${process.env.AWS_S3_PUBLIC_URL || ""}/${previewKey}`;
+
+    const response = await fetch(`${IMAGE_SEARCH_SERVICE_URL}/ingest-photo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        photoId,
+        userId,
+        galleryId,
+        storageUrl: previewUrl,
+        caption: caption ?? undefined,
+        tags: tags ?? [],
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.warn(
+        `[image-processor] failed to ingest photo to search service photoId=${photoId} error=${error}`,
+      );
+    } else {
+      console.log(
+        `[image-processor] ingested to search service photoId=${photoId}`,
+      );
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.warn(
+      `[image-processor] search service ingest failed photoId=${photoId} error=${message}`,
+    );
+  }
+};
 
 const addProcessingStorage = async (
   userId: string,
@@ -146,6 +194,9 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
     select: {
       id: true,
       s3Key: true,
+      galleryId: true,
+      aiCaption: true,
+      aiTags: true,
       gallery: {
         select: {
           userId: true,
@@ -237,6 +288,16 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       photo.gallery.userId,
       BigInt(thumbnailBuffer.length + previewBuffer.length),
       photo.id,
+    );
+
+    // Ingest to image search service for embedding
+    void ingestPhotoToSearchService(
+      photo.id,
+      photo.gallery.userId,
+      photo.galleryId,
+      previewKey,
+      photo.aiCaption,
+      photo.aiTags,
     );
 
     console.log(

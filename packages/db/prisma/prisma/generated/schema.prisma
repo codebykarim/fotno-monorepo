@@ -325,3 +325,41 @@ model GalleryComment {
   @@index([galleryId, createdAt])
   @@map("gallery_comment")
 }
+
+model ImageSearchImage {
+  id           String                       @id @default(uuid())
+  photoId      String                       @unique
+  userId       String
+  galleryId    String
+  storageUrl   String
+  thumbnailUrl String?
+  caption      String?
+  tags         String[]
+  metadata     Json?
+  embedding    Unsupported("vector(1152)")?
+  indexedAt    DateTime?
+  version      Int                          @default(1)
+  createdAt    DateTime                     @default(now())
+  updatedAt    DateTime                     @default(now()) @updatedAt
+
+  @@index([galleryId, userId])
+  @@index([photoId])
+  @@map("image_search_image")
+}
+
+model ImageSearchAlbumCache {
+  id               String   @id @default(uuid())
+  galleryId        String
+  userId           String
+  normalizedPrompt String
+  photoIds         String[]
+  albumTitle       String?
+  albumDescription String?
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+
+  @@unique([galleryId, userId, normalizedPrompt])
+  @@index([galleryId, userId])
+  @@index([expiresAt])
+  @@map("image_search_album_cache")
+}

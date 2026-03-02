@@ -6,6 +6,9 @@
     "build": "nx run-many -t build",
     "dev": "nx run-many -t dev --parallel=10",
     "dev:image-processor": "pnpm --filter image-processor dev",
+    "db:generate": "pnpm --filter db db:generate",
+    "db:deploy": "pnpm --filter db db:deploy && pnpm --filter image-search-service db:deploy",
+    "db:reset": "pnpm --filter db db:reset && pnpm --filter image-search-service db:reset",
     "lint": "nx run-many -t lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "kill": "lsof -t -i:3000,3001,3002,3003,8000 | xargs -r kill"

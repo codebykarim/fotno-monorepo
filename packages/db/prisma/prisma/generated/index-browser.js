@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.4.1
- * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
+ * Prisma Client JS version: 7.4.2
+ * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
  */
 Prisma.prismaVersion = {
-  client: "7.4.1",
-  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
+  client: "7.4.2",
+  engine: "94a226be1cf2967af2541cca5529f0f7ba866919"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -321,12 +321,45 @@ exports.Prisma.GalleryCommentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ImageSearchImageScalarFieldEnum = {
+  id: 'id',
+  photoId: 'photoId',
+  userId: 'userId',
+  galleryId: 'galleryId',
+  storageUrl: 'storageUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  caption: 'caption',
+  tags: 'tags',
+  metadata: 'metadata',
+  indexedAt: 'indexedAt',
+  version: 'version',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ImageSearchAlbumCacheScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  userId: 'userId',
+  normalizedPrompt: 'normalizedPrompt',
+  photoIds: 'photoIds',
+  albumTitle: 'albumTitle',
+  albumDescription: 'albumDescription',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -404,7 +437,9 @@ exports.Prisma.ModelName = {
   GalleryClient: 'GalleryClient',
   Album: 'Album',
   AlbumPhoto: 'AlbumPhoto',
-  GalleryComment: 'GalleryComment'
+  GalleryComment: 'GalleryComment',
+  ImageSearchImage: 'ImageSearchImage',
+  ImageSearchAlbumCache: 'ImageSearchAlbumCache'
 };
 
 /**

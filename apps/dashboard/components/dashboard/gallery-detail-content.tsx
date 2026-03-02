@@ -29,6 +29,7 @@ import {
   Loader2,
   FolderKanban,
   Album,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
@@ -50,7 +51,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@workspace/ui/components/dialog";
 import {
   DropdownMenu,
@@ -66,13 +67,15 @@ import {
   type UploadQueueItem,
 } from "@/lib/stores/gallery-ui-store";
 import { cn } from "@workspace/ui/lib/utils";
+import { GalleryAiTab } from "./gallery-ai-tab";
 
-const tabs = ["photos", "albums", "settings", "share"] as const;
+const tabs = ["photos", "albums", "ai", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
 
 const TAB_META: Record<Tab, { label: string; icon: typeof Images }> = {
   photos: { label: "Photos", icon: Grid2x2 },
   albums: { label: "Albums", icon: Album },
+  ai: { label: "AI", icon: Wand2 },
   settings: { label: "Settings", icon: Settings2 },
   share: { label: "Share", icon: Share2 },
 };
@@ -148,7 +151,9 @@ export function GalleryDetailContent({
         body: JSON.stringify({ isPublished: !data.gallery.isPublished }),
       });
       await mutate();
-      toast.success(data.gallery.isPublished ? "Gallery unpublished" : "Gallery published");
+      toast.success(
+        data.gallery.isPublished ? "Gallery unpublished" : "Gallery published",
+      );
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to update");
     } finally {
@@ -164,9 +169,15 @@ export function GalleryDetailContent({
         body: JSON.stringify({ passwordEnabled: enabled, password: pw }),
       });
       await mutate();
-      toast.success(enabled ? "Password protection enabled" : "Password protection disabled");
+      toast.success(
+        enabled
+          ? "Password protection enabled"
+          : "Password protection disabled",
+      );
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update password");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update password",
+      );
     } finally {
       setPasswordSaving(false);
     }
@@ -220,10 +231,14 @@ export function GalleryDetailContent({
                 onCheckedChange={togglePublish}
                 disabled={publishSaving}
               />
-              <span className={cn(
-                "text-xs font-medium",
-                data.gallery.isPublished ? "text-emerald-600" : "text-muted-foreground",
-              )}>
+              <span
+                className={cn(
+                  "text-xs font-medium",
+                  data.gallery.isPublished
+                    ? "text-emerald-600"
+                    : "text-muted-foreground",
+                )}
+              >
                 {data.gallery.isPublished ? "Published" : "Draft"}
               </span>
             </div>
@@ -249,7 +264,9 @@ export function GalleryDetailContent({
                   <div>
                     <p className="text-sm font-medium">Password</p>
                     <p className="text-xs text-muted-foreground">
-                      {passwordEnabled ? "Gallery is password protected" : "Protect this gallery"}
+                      {passwordEnabled
+                        ? "Gallery is password protected"
+                        : "Protect this gallery"}
                     </p>
                   </div>
                   <Switch
@@ -274,7 +291,11 @@ export function GalleryDetailContent({
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder={passwordEnabled ? "Change password" : "Enter a password"}
+                        placeholder={
+                          passwordEnabled
+                            ? "Change password"
+                            : "Enter a password"
+                        }
                         className="pr-10 text-sm"
                         autoFocus={passwordEditing && !passwordEnabled}
                       />
@@ -283,7 +304,11 @@ export function GalleryDetailContent({
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                        {showPassword ? (
+                          <EyeOff className="h-3.5 w-3.5" />
+                        ) : (
+                          <Eye className="h-3.5 w-3.5" />
+                        )}
                       </button>
                     </div>
                     <Button
@@ -291,10 +316,14 @@ export function GalleryDetailContent({
                       className="w-full"
                       disabled={passwordSaving || !password.trim()}
                       onClick={() => {
-                        void savePassword(true, password).then(() => setPasswordEditing(false));
+                        void savePassword(true, password).then(() =>
+                          setPasswordEditing(false),
+                        );
                       }}
                     >
-                      {passwordSaving ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
+                      {passwordSaving ? (
+                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                      ) : null}
                       {passwordEnabled ? "Update password" : "Enable password"}
                     </Button>
                   </div>
@@ -368,7 +397,9 @@ export function GalleryDetailContent({
                       const svg = document.querySelector("#qr-popover-svg svg");
                       if (!svg) return;
                       const source = new XMLSerializer().serializeToString(svg);
-                      const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+                      const blob = new Blob([source], {
+                        type: "image/svg+xml;charset=utf-8",
+                      });
                       const url = URL.createObjectURL(blob);
                       const link = document.createElement("a");
                       link.href = url;
@@ -389,11 +420,13 @@ export function GalleryDetailContent({
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <Images className="h-3 w-3" />
-            {data.gallery.photos.length} photo{data.gallery.photos.length !== 1 ? "s" : ""}
+            {data.gallery.photos.length} photo
+            {data.gallery.photos.length !== 1 ? "s" : ""}
           </span>
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <FolderKanban className="h-3 w-3" />
-            {data.gallery.albums.length} album{data.gallery.albums.length !== 1 ? "s" : ""}
+            {data.gallery.albums.length} album
+            {data.gallery.albums.length !== 1 ? "s" : ""}
           </span>
           {data.gallery.eventDate && (
             <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
@@ -438,7 +471,11 @@ export function GalleryDetailContent({
 
       {/* ── Tab content ── */}
       {activeTab === "photos" && (
-        <PhotosTab galleryId={galleryId} mutate={mutate} photos={data.gallery.photos} />
+        <PhotosTab
+          galleryId={galleryId}
+          mutate={mutate}
+          photos={data.gallery.photos}
+        />
       )}
       {activeTab === "albums" && (
         <AlbumsTab
@@ -448,12 +485,17 @@ export function GalleryDetailContent({
           mutate={mutate}
         />
       )}
+      {activeTab === "ai" && (
+        <GalleryAiTab
+          galleryId={galleryId}
+          photos={data.gallery.photos}
+          mutate={mutate}
+        />
+      )}
       {activeTab === "settings" && (
         <SettingsTab galleryId={galleryId} mutate={mutate} data={data} />
       )}
-      {activeTab === "share" && (
-        <ShareTab data={data} galleryId={galleryId} />
-      )}
+      {activeTab === "share" && <ShareTab data={data} galleryId={galleryId} />}
     </div>
   );
 }
@@ -463,8 +505,12 @@ export function GalleryDetailContent({
    ═══════════════════════════════════════════════════════════════════ */
 
 function getGalleryShareLink(slug: string) {
-  const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(/\/$/, "");
-  const buildShareUrl = (baseUrl: string) => `${baseUrl.replace(/\/$/, "")}/${slug}`;
+  const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
+    /\/$/,
+    "",
+  );
+  const buildShareUrl = (baseUrl: string) =>
+    `${baseUrl.replace(/\/$/, "")}/${slug}`;
 
   const mapLocalhostToCurrentHost = (urlString: string): string => {
     if (typeof window === "undefined") return urlString;
@@ -479,8 +525,10 @@ function getGalleryShareLink(slug: string) {
     }
   };
 
-  if (configuredGalleryUrl) return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
-  if (typeof window === "undefined") return buildShareUrl("http://localhost:3003");
+  if (configuredGalleryUrl)
+    return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
+  if (typeof window === "undefined")
+    return buildShareUrl("http://localhost:3003");
 
   const inferredBaseUrl =
     window.location.port === "3001"
@@ -561,7 +609,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const persistedRaw = window.localStorage.getItem(getUploadQueueStorageKey(galleryId));
+    const persistedRaw = window.localStorage.getItem(
+      getUploadQueueStorageKey(galleryId),
+    );
     if (!persistedRaw) return;
     try {
       const parsed = JSON.parse(persistedRaw);
@@ -574,11 +624,15 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           typeof candidate.fileName !== "string" ||
           typeof candidate.progress !== "number" ||
           typeof candidate.status !== "string"
-        ) continue;
+        )
+          continue;
         const normalizedStatus =
-          candidate.status === "queued" || candidate.status === "uploading" ||
-          candidate.status === "confirming" || candidate.status === "paused" ||
-          candidate.status === "done" || candidate.status === "error"
+          candidate.status === "queued" ||
+          candidate.status === "uploading" ||
+          candidate.status === "confirming" ||
+          candidate.status === "paused" ||
+          candidate.status === "done" ||
+          candidate.status === "error"
             ? candidate.status
             : "paused";
         upsertQueueItem({
@@ -591,7 +645,9 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           errorMessage: candidate.errorMessage,
         });
       }
-    } catch { /* ignore malformed data */ }
+    } catch {
+      /* ignore malformed data */
+    }
   }, [galleryId, upsertQueueItem]);
 
   useEffect(() => {
@@ -607,7 +663,11 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
 
   const markInFlightUploadsAsPaused = (reason?: string) => {
     for (const item of uploadQueueRef.current) {
-      if (item.status === "queued" || item.status === "uploading" || item.status === "confirming") {
+      if (
+        item.status === "queued" ||
+        item.status === "uploading" ||
+        item.status === "confirming"
+      ) {
         upsertQueueItem({ ...item, status: "paused", errorMessage: reason });
       }
     }
@@ -628,7 +688,10 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       const hasInFlight = uploadQueueRef.current.some(
-        (item) => item.status === "queued" || item.status === "uploading" || item.status === "confirming",
+        (item) =>
+          item.status === "queued" ||
+          item.status === "uploading" ||
+          item.status === "confirming",
       );
       if (!hasInFlight) return;
       pauseAllUploads("Paused because you left the page");
@@ -645,8 +708,12 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   useEffect(() => {
     let cancelled = false;
     type ResumeSession = {
-      photoId: string; filename: string; mimeType: string; checksum?: string | null;
-      totalSize?: string; totalParts: number;
+      photoId: string;
+      filename: string;
+      mimeType: string;
+      checksum?: string | null;
+      totalSize?: string;
+      totalParts: number;
       completedParts: Array<{ partNumber: number; etag: string }>;
       presignedParts: Array<{ partNumber: number; url: string }>;
     };
@@ -657,10 +724,20 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           { method: "GET" },
         );
         if (cancelled) return;
-        const sessions = Array.isArray(response.sessions) ? response.sessions : [];
+        const sessions = Array.isArray(response.sessions)
+          ? response.sessions
+          : [];
         for (const session of sessions) {
-          const progress = 20 + Math.floor(((session.completedParts.length || 0) / Math.max(1, session.totalParts || 1)) * 65);
-          const existing = uploadQueueRef.current.find((item) => item.photoId === session.photoId);
+          const progress =
+            20 +
+            Math.floor(
+              ((session.completedParts.length || 0) /
+                Math.max(1, session.totalParts || 1)) *
+                65,
+            );
+          const existing = uploadQueueRef.current.find(
+            (item) => item.photoId === session.photoId,
+          );
           upsertQueueItem({
             id: existing?.id ?? `session-${session.photoId}`,
             galleryId,
@@ -671,39 +748,58 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             errorMessage: "Paused. Select files to resume.",
           });
         }
-      } catch { /* optional enhancement */ }
+      } catch {
+        /* optional enhancement */
+      }
     };
     void syncRemoteSessions();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [galleryId, upsertQueueItem]);
 
   const computeFileChecksum = async (file: File): Promise<string> => {
     const sample = file.slice(0, 1024 * 1024);
     const buffer = await sample.arrayBuffer();
     const digest = await crypto.subtle.digest("SHA-256", buffer);
-    return Array.from(new Uint8Array(digest)).map((v) => v.toString(16).padStart(2, "0")).join("");
+    return Array.from(new Uint8Array(digest))
+      .map((v) => v.toString(16).padStart(2, "0"))
+      .join("");
   };
 
   async function uploadFiles(files: File[]) {
     if (files.length === 0) return;
 
     type PresignResponse = {
-      photoId: string; totalParts: number; chunkSizeBytes: number; duplicate: boolean;
+      photoId: string;
+      totalParts: number;
+      chunkSizeBytes: number;
+      duplicate: boolean;
       presignedParts: Array<{ partNumber: number; url: string }>;
-      partCompleteUrl: string; confirmUrl: string;
+      partCompleteUrl: string;
+      confirmUrl: string;
     };
     type ResumeSession = {
-      photoId: string; filename: string; mimeType: string; checksum?: string | null;
-      totalSize?: string; totalParts: number;
+      photoId: string;
+      filename: string;
+      mimeType: string;
+      checksum?: string | null;
+      totalSize?: string;
+      totalParts: number;
       completedParts: Array<{ partNumber: number; etag: string }>;
       presignedParts: Array<{ partNumber: number; url: string }>;
     };
 
-    const withAbortSignal = async <T,>(task: (signal: AbortSignal) => Promise<T>): Promise<T> => {
+    const withAbortSignal = async <T,>(
+      task: (signal: AbortSignal) => Promise<T>,
+    ): Promise<T> => {
       const controller = new AbortController();
       activeUploadControllersRef.current.add(controller);
-      try { return await task(controller.signal); }
-      finally { activeUploadControllersRef.current.delete(controller); }
+      try {
+        return await task(controller.signal);
+      } finally {
+        activeUploadControllersRef.current.delete(controller);
+      }
     };
 
     const clearStaleQueueForPhotoId = (photoId: string, keepId?: string) => {
@@ -722,34 +818,60 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
 
     for (const item of queuedFiles) {
       fileByQueueIdRef.current.set(item.tempId, item.file);
-      upsertQueueItem({ id: item.tempId, galleryId, fileName: item.file.name, progress: 5, status: "queued" });
+      upsertQueueItem({
+        id: item.tempId,
+        galleryId,
+        fileName: item.file.name,
+        progress: 5,
+        status: "queued",
+      });
     }
 
     let resumableSessions: ResumeSession[] = [];
     try {
       const response = await withAbortSignal((signal) =>
-        apiRequest<{ sessions?: ResumeSession[] }>(`/api/galleries/${galleryId}/photos/session`, { method: "GET", signal }),
+        apiRequest<{ sessions?: ResumeSession[] }>(
+          `/api/galleries/${galleryId}/photos/session`,
+          { method: "GET", signal },
+        ),
       );
-      resumableSessions = Array.isArray(response.sessions) ? response.sessions : [];
+      resumableSessions = Array.isArray(response.sessions)
+        ? response.sessions
+        : [];
     } catch (error) {
-      if (isAbortError(error)) { markInFlightUploadsAsPaused("Paused"); return; }
+      if (isAbortError(error)) {
+        markInFlightUploadsAsPaused("Paused");
+        return;
+      }
       resumableSessions = [];
     }
 
-    const claimResumeSession = (file: File, checksum: string): ResumeSession | undefined => {
+    const claimResumeSession = (
+      file: File,
+      checksum: string,
+    ): ResumeSession | undefined => {
       const indexByChecksum = resumableSessions.findIndex((s) => {
         if (!s.checksum) return false;
-        return s.checksum === checksum && Number(s.totalSize ?? 0) === file.size;
+        return (
+          s.checksum === checksum && Number(s.totalSize ?? 0) === file.size
+        );
       });
-      if (indexByChecksum >= 0) return resumableSessions.splice(indexByChecksum, 1)[0];
-      const indexByName = resumableSessions.findIndex((s) =>
-        s.filename === file.name && s.mimeType === file.type && Number(s.totalSize ?? 0) === file.size,
+      if (indexByChecksum >= 0)
+        return resumableSessions.splice(indexByChecksum, 1)[0];
+      const indexByName = resumableSessions.findIndex(
+        (s) =>
+          s.filename === file.name &&
+          s.mimeType === file.type &&
+          Number(s.totalSize ?? 0) === file.size,
       );
       if (indexByName >= 0) return resumableSessions.splice(indexByName, 1)[0];
       return undefined;
     };
 
-    const uploadSingleFile = async (file: File, tempId: string): Promise<void> => {
+    const uploadSingleFile = async (
+      file: File,
+      tempId: string,
+    ): Promise<void> => {
       try {
         const checksum = await computeFileChecksum(file);
         const resumeSession = claimResumeSession(file, checksum);
@@ -760,66 +882,123 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           alreadyCompletedParts = resumeSession.completedParts.length;
           clearStaleQueueForPhotoId(resumeSession.photoId, tempId);
           presigned = {
-            photoId: resumeSession.photoId, totalParts: resumeSession.totalParts,
-            chunkSizeBytes: DEFAULT_CHUNK_SIZE_BYTES, duplicate: false,
+            photoId: resumeSession.photoId,
+            totalParts: resumeSession.totalParts,
+            chunkSizeBytes: DEFAULT_CHUNK_SIZE_BYTES,
+            duplicate: false,
             presignedParts: resumeSession.presignedParts,
             partCompleteUrl: `/api/galleries/${galleryId}/photos/part-complete`,
             confirmUrl: `/api/galleries/${galleryId}/photos/confirm`,
           };
         } else {
           presigned = await withAbortSignal((signal) =>
-            apiRequest<PresignResponse>(`/api/galleries/${galleryId}/photos/presign`, {
-              method: "POST",
-              body: JSON.stringify({ fileName: file.name, fileType: file.type, size: file.size, checksum }),
-              signal,
-            }),
+            apiRequest<PresignResponse>(
+              `/api/galleries/${galleryId}/photos/presign`,
+              {
+                method: "POST",
+                body: JSON.stringify({
+                  fileName: file.name,
+                  fileType: file.type,
+                  size: file.size,
+                  checksum,
+                }),
+                signal,
+              },
+            ),
           );
         }
 
         if (presigned.duplicate) {
-          upsertQueueItem({ id: tempId, galleryId, fileName: file.name, progress: 100, status: "done", photoId: presigned.photoId });
+          upsertQueueItem({
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: 100,
+            status: "done",
+            photoId: presigned.photoId,
+          });
           fileByQueueIdRef.current.delete(tempId);
           return;
         }
 
         clearStaleQueueForPhotoId(presigned.photoId, tempId);
-        const chunkSizeBytes = Number(presigned.chunkSizeBytes) > 0 ? Number(presigned.chunkSizeBytes) : DEFAULT_CHUNK_SIZE_BYTES;
-        const parts = presigned.presignedParts.slice().sort((a, b) => a.partNumber - b.partNumber);
-        const totalParts = Math.max(Number(presigned.totalParts ?? 0), parts.length);
-        if (totalParts <= 0) throw new Error("No upload parts were returned for this file");
+        const chunkSizeBytes =
+          Number(presigned.chunkSizeBytes) > 0
+            ? Number(presigned.chunkSizeBytes)
+            : DEFAULT_CHUNK_SIZE_BYTES;
+        const parts = presigned.presignedParts
+          .slice()
+          .sort((a, b) => a.partNumber - b.partNumber);
+        const totalParts = Math.max(
+          Number(presigned.totalParts ?? 0),
+          parts.length,
+        );
+        if (totalParts <= 0)
+          throw new Error("No upload parts were returned for this file");
 
         let completedPartsCount = alreadyCompletedParts;
         const updateUploadProgress = () => {
-          const progress = 20 + Math.floor((Math.min(completedPartsCount, totalParts) / totalParts) * 65);
+          const progress =
+            20 +
+            Math.floor(
+              (Math.min(completedPartsCount, totalParts) / totalParts) * 65,
+            );
           upsertQueueItem({
-            id: tempId, galleryId, fileName: file.name,
-            progress: Math.min(85, progress), status: "uploading",
-            photoId: presigned.photoId, errorMessage: undefined,
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: Math.min(85, progress),
+            status: "uploading",
+            photoId: presigned.photoId,
+            errorMessage: undefined,
           });
         };
         updateUploadProgress();
 
-        const partCompleteUrl = presigned.partCompleteUrl ?? `/api/galleries/${galleryId}/photos/part-complete`;
+        const partCompleteUrl =
+          presigned.partCompleteUrl ??
+          `/api/galleries/${galleryId}/photos/part-complete`;
 
-        const uploadPart = async (partNumber: number, url: string): Promise<void> => {
+        const uploadPart = async (
+          partNumber: number,
+          url: string,
+        ): Promise<void> => {
           const start = (partNumber - 1) * chunkSizeBytes;
-          if (start >= file.size) throw new Error(`Invalid partNumber ${partNumber} for file ${file.name}`);
+          if (start >= file.size)
+            throw new Error(
+              `Invalid partNumber ${partNumber} for file ${file.name}`,
+            );
           const end = Math.min(start + chunkSizeBytes, file.size);
           const chunk = file.slice(start, end);
           const uploadResponse = await withAbortSignal((signal) =>
             fetch(url, {
-              method: "PUT", body: chunk,
-              headers: { "Content-Type": file.type || "application/octet-stream" },
+              method: "PUT",
+              body: chunk,
+              headers: {
+                "Content-Type": file.type || "application/octet-stream",
+              },
               signal,
             }),
           );
-          if (!uploadResponse.ok) throw new Error(`Upload failed with status ${uploadResponse.status}`);
-          const etag = uploadResponse.headers.get("etag") ?? uploadResponse.headers.get("ETag");
-          if (!etag) throw new Error("Upload succeeded but response did not include an ETag header");
+          if (!uploadResponse.ok)
+            throw new Error(
+              `Upload failed with status ${uploadResponse.status}`,
+            );
+          const etag =
+            uploadResponse.headers.get("etag") ??
+            uploadResponse.headers.get("ETag");
+          if (!etag)
+            throw new Error(
+              "Upload succeeded but response did not include an ETag header",
+            );
           await withAbortSignal((signal) =>
             apiRequest(partCompleteUrl, {
               method: "PATCH",
-              body: JSON.stringify({ photoId: presigned.photoId, partNumber, etag }),
+              body: JSON.stringify({
+                photoId: presigned.photoId,
+                partNumber,
+                etag,
+              }),
               signal,
             }),
           );
@@ -829,27 +1008,77 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
 
         const partQueue = [...parts];
         const partWorkers = Array.from(
-          { length: Math.max(1, Math.min(MAX_CONCURRENT_CHUNKS, partQueue.length || 1)) },
-          async () => { while (partQueue.length > 0) { const part = partQueue.shift(); if (!part) return; await uploadPart(part.partNumber, part.url); } },
+          {
+            length: Math.max(
+              1,
+              Math.min(MAX_CONCURRENT_CHUNKS, partQueue.length || 1),
+            ),
+          },
+          async () => {
+            while (partQueue.length > 0) {
+              const part = partQueue.shift();
+              if (!part) return;
+              await uploadPart(part.partNumber, part.url);
+            }
+          },
         );
         await Promise.all(partWorkers);
 
-        upsertQueueItem({ id: tempId, galleryId, fileName: file.name, progress: 85, status: "confirming", photoId: presigned.photoId, errorMessage: undefined });
+        upsertQueueItem({
+          id: tempId,
+          galleryId,
+          fileName: file.name,
+          progress: 85,
+          status: "confirming",
+          photoId: presigned.photoId,
+          errorMessage: undefined,
+        });
 
         await withAbortSignal((signal) =>
-          apiRequest(presigned.confirmUrl, { method: "POST", body: JSON.stringify({ photoId: presigned.photoId }), signal }),
+          apiRequest(presigned.confirmUrl, {
+            method: "POST",
+            body: JSON.stringify({ photoId: presigned.photoId }),
+            signal,
+          }),
         );
 
-        upsertQueueItem({ id: tempId, galleryId, fileName: file.name, progress: 100, status: "done", photoId: presigned.photoId, errorMessage: undefined });
+        upsertQueueItem({
+          id: tempId,
+          galleryId,
+          fileName: file.name,
+          progress: 100,
+          status: "done",
+          photoId: presigned.photoId,
+          errorMessage: undefined,
+        });
         fileByQueueIdRef.current.delete(tempId);
       } catch (error) {
-        const existingQueueItem = uploadQueueRef.current.find((item) => item.id === tempId);
+        const existingQueueItem = uploadQueueRef.current.find(
+          (item) => item.id === tempId,
+        );
         if (isAbortError(error)) {
-          upsertQueueItem({ id: tempId, galleryId, fileName: file.name, progress: existingQueueItem?.progress ?? 0, status: "paused", photoId: existingQueueItem?.photoId, errorMessage: "Paused. Select files to resume." });
+          upsertQueueItem({
+            id: tempId,
+            galleryId,
+            fileName: file.name,
+            progress: existingQueueItem?.progress ?? 0,
+            status: "paused",
+            photoId: existingQueueItem?.photoId,
+            errorMessage: "Paused. Select files to resume.",
+          });
           return;
         }
-        const errorMessage = error instanceof Error ? error.message : "Upload failed";
-        upsertQueueItem({ id: tempId, galleryId, fileName: file.name, progress: 100, status: "error", photoId: existingQueueItem?.photoId, errorMessage });
+        const errorMessage =
+          error instanceof Error ? error.message : "Upload failed";
+        upsertQueueItem({
+          id: tempId,
+          galleryId,
+          fileName: file.name,
+          progress: 100,
+          status: "error",
+          photoId: existingQueueItem?.photoId,
+          errorMessage,
+        });
         toast.error(errorMessage);
       }
     };
@@ -857,19 +1086,31 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     const fileQueue = [...queuedFiles];
     const fileWorkers = Array.from(
       { length: Math.max(1, Math.min(MAX_CONCURRENT_FILES, fileQueue.length)) },
-      async () => { while (fileQueue.length > 0) { const next = fileQueue.shift(); if (!next) return; await uploadSingleFile(next.file, next.tempId); } },
+      async () => {
+        while (fileQueue.length > 0) {
+          const next = fileQueue.shift();
+          if (!next) return;
+          await uploadSingleFile(next.file, next.tempId);
+        }
+      },
     );
     await Promise.all(fileWorkers);
 
     if (resumableSessions.length > 0) {
-      toast.message(`${resumableSessions.length} paused upload(s) still need files selected to resume`);
+      toast.message(
+        `${resumableSessions.length} paused upload(s) still need files selected to resume`,
+      );
     }
     await mutate();
   }
 
   const retryUploadItem = async (item: UploadQueueItem): Promise<void> => {
     const file = fileByQueueIdRef.current.get(item.id);
-    if (!file) { toast.message("Select files again to resume this upload"); fileInputRef.current?.click(); return; }
+    if (!file) {
+      toast.message("Select files again to resume this upload");
+      fileInputRef.current?.click();
+      return;
+    }
     removeQueueItem(item.id);
     await uploadFiles([file]);
   };
@@ -879,12 +1120,20 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     let missingFiles = 0;
     for (const item of failedUploads) {
       const file = fileByQueueIdRef.current.get(item.id);
-      if (!file) { missingFiles += 1; continue; }
+      if (!file) {
+        missingFiles += 1;
+        continue;
+      }
       retryFiles.push(file);
       removeQueueItem(item.id);
     }
     if (retryFiles.length > 0) await uploadFiles(retryFiles);
-    if (missingFiles > 0) { toast.message(`${missingFiles} failed upload(s) require selecting the original files again`); fileInputRef.current?.click(); }
+    if (missingFiles > 0) {
+      toast.message(
+        `${missingFiles} failed upload(s) require selecting the original files again`,
+      );
+      fileInputRef.current?.click();
+    }
   };
 
   const resumePausedUploads = async (): Promise<void> => {
@@ -892,12 +1141,20 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     let missingFiles = 0;
     for (const item of pausedUploads) {
       const file = fileByQueueIdRef.current.get(item.id);
-      if (!file) { missingFiles += 1; continue; }
+      if (!file) {
+        missingFiles += 1;
+        continue;
+      }
       localFilesToResume.push(file);
       removeQueueItem(item.id);
     }
     if (localFilesToResume.length > 0) await uploadFiles(localFilesToResume);
-    if (missingFiles > 0) { toast.message(`${missingFiles} paused upload(s) need source files. Select your full batch and resume will auto-match.`); fileInputRef.current?.click(); }
+    if (missingFiles > 0) {
+      toast.message(
+        `${missingFiles} paused upload(s) need source files. Select your full batch and resume will auto-match.`,
+      );
+      fileInputRef.current?.click();
+    }
   };
 
   const clearCompletedUploadsForGallery = () => {
@@ -907,34 +1164,53 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple: true,
     accept: { "image/*": [] },
-    
+
     onDrop: uploadFiles,
   });
 
   async function deletePhoto(id: string) {
     try {
       await apiRequest(`/api/photos/${id}`, { method: "DELETE" });
-      await Promise.all([mutateCache("/api/storage/summary"), mutateCache("/api/storage/events?limit=10&offset=0")]);
+      await Promise.all([
+        mutateCache("/api/storage/summary"),
+        mutateCache("/api/storage/events?limit=10&offset=0"),
+      ]);
       toast.success("Photo deleted");
       await mutate();
-      setSelected(galleryId, selected.filter((photoId) => photoId !== id));
+      setSelected(
+        galleryId,
+        selected.filter((photoId) => photoId !== id),
+      );
       setPhotoToDelete(null);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to delete photo");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to delete photo",
+      );
     }
   }
 
   async function deleteSelected() {
     if (selected.length === 0) return;
     try {
-      await Promise.all(selected.map((id) => apiRequest(`/api/photos/${id}`, { method: "DELETE" })));
-      await Promise.all([mutateCache("/api/storage/summary"), mutateCache("/api/storage/events?limit=10&offset=0")]);
+      await Promise.all(
+        selected.map((id) =>
+          apiRequest(`/api/photos/${id}`, { method: "DELETE" }),
+        ),
+      );
+      await Promise.all([
+        mutateCache("/api/storage/summary"),
+        mutateCache("/api/storage/events?limit=10&offset=0"),
+      ]);
       clearSelected(galleryId);
       await mutate();
       toast.success("Selected photos deleted");
       setDeleteSelectedOpen(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to delete selected photos");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to delete selected photos",
+      );
     }
   }
 
@@ -943,7 +1219,10 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
     try {
       await apiRequest(`/api/galleries/${galleryId}/albums`, {
         method: "POST",
-        body: JSON.stringify({ title: newAlbumTitle.trim(), photoIds: selected }),
+        body: JSON.stringify({
+          title: newAlbumTitle.trim(),
+          photoIds: selected,
+        }),
       });
       clearSelected(galleryId);
       setCreateAlbumOpen(false);
@@ -951,29 +1230,44 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       await mutate();
       toast.success("Album created");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to create album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create album",
+      );
     }
   }
 
   async function setAsCover() {
-    if (selected.length !== 1) { toast.error("Select exactly one photo to set as cover"); return; }
+    if (selected.length !== 1) {
+      toast.error("Select exactly one photo to set as cover");
+      return;
+    }
     try {
-      await apiRequest(`/api/galleries/${galleryId}`, { method: "PATCH", body: JSON.stringify({ coverPhotoId: selected[0] }) });
+      await apiRequest(`/api/galleries/${galleryId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ coverPhotoId: selected[0] }),
+      });
       clearSelected(galleryId);
       await mutate();
       toast.success("Cover photo updated");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update cover photo");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update cover photo",
+      );
     }
   }
 
   async function setPhotoAsCover(photoId: string) {
     try {
-      await apiRequest(`/api/galleries/${galleryId}`, { method: "PATCH", body: JSON.stringify({ coverPhotoId: photoId }) });
+      await apiRequest(`/api/galleries/${galleryId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ coverPhotoId: photoId }),
+      });
       await mutate();
       toast.success("Cover photo updated");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update cover photo");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update cover photo",
+      );
     }
   }
 
@@ -1007,37 +1301,74 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             </p>
             <div className="flex items-center gap-1.5">
               {hasRunningUploads && (
-                <Button variant="outline" size="sm" className="h-6 px-2 text-[11px]" onClick={() => { pauseAllUploads("Paused manually"); toast.message("Uploads paused"); }}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 px-2 text-[11px]"
+                  onClick={() => {
+                    pauseAllUploads("Paused manually");
+                    toast.message("Uploads paused");
+                  }}
+                >
                   Pause all
                 </Button>
               )}
               {pausedUploads.length > 0 && (
-                <Button variant="outline" size="sm" className="h-6 px-2 text-[11px]" onClick={() => void resumePausedUploads()}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 px-2 text-[11px]"
+                  onClick={() => void resumePausedUploads()}
+                >
                   Resume all
                 </Button>
               )}
               {failedUploads.length > 0 && (
-                <Button variant="outline" size="sm" className="h-6 px-2 text-[11px]" onClick={() => void retryAllFailedUploads()}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 px-2 text-[11px]"
+                  onClick={() => void retryAllFailedUploads()}
+                >
                   Retry failed
                 </Button>
               )}
-              <Button variant="ghost" size="sm" className="h-6 px-2 text-[11px]" onClick={clearCompletedUploadsForGallery}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2 text-[11px]"
+                onClick={clearCompletedUploadsForGallery}
+              >
                 Clear
               </Button>
             </div>
           </div>
           <div className="space-y-2">
             {galleryUploadQueue.map((item) => (
-              <div key={item.id} className="space-y-1.5 rounded-lg border border-border/40 bg-muted/40 p-2.5">
+              <div
+                key={item.id}
+                className="space-y-1.5 rounded-lg border border-border/40 bg-muted/40 p-2.5"
+              >
                 <div className="flex items-center justify-between text-xs">
                   <p className="truncate pr-2 font-medium">{item.fileName}</p>
-                  <p className="flex-shrink-0 capitalize text-muted-foreground">{item.status}</p>
+                  <p className="flex-shrink-0 capitalize text-muted-foreground">
+                    {item.status}
+                  </p>
                 </div>
-                {item.errorMessage && <p className="text-[11px] text-muted-foreground">{item.errorMessage}</p>}
+                {item.errorMessage && (
+                  <p className="text-[11px] text-muted-foreground">
+                    {item.errorMessage}
+                  </p>
+                )}
                 <Progress value={item.progress} className="h-1.5" />
                 {item.status === "error" && (
                   <div className="flex justify-end">
-                    <Button variant="outline" size="sm" className="h-6 px-2 text-[11px]" onClick={() => void retryUploadItem(item)}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-6 px-2 text-[11px]"
+                      onClick={() => void retryUploadItem(item)}
+                    >
                       Retry
                     </Button>
                   </div>
@@ -1055,15 +1386,26 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             <Checkbox
               checked={selected.length === photos.length && photos.length > 0}
               onCheckedChange={(checked) => {
-                if (checked) setSelected(galleryId, photos.map((p) => p.id));
+                if (checked)
+                  setSelected(
+                    galleryId,
+                    photos.map((p) => p.id),
+                  );
                 else clearSelected(galleryId);
               }}
             />
             <span className="text-sm text-muted-foreground">
-              {selected.length > 0 ? `${selected.length} selected` : `${photos.length} photos`}
+              {selected.length > 0
+                ? `${selected.length} selected`
+                : `${photos.length} photos`}
             </span>
             {selected.length > 0 && (
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => clearSelected(galleryId)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs"
+                onClick={() => clearSelected(galleryId)}
+              >
                 Clear
               </Button>
             )}
@@ -1073,7 +1415,11 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             <div className="flex items-center gap-1.5">
               <Dialog open={createAlbumOpen} onOpenChange={setCreateAlbumOpen}>
                 <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs gap-1"
+                  >
                     <FolderPlus className="h-3.5 w-3.5" />
                     Album
                   </Button>
@@ -1082,39 +1428,81 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                   <DialogHeader>
                     <DialogTitle>Create Album</DialogTitle>
                     <DialogDescription>
-                      Create a new album with {selected.length} selected photo{selected.length === 1 ? "" : "s"}.
+                      Create a new album with {selected.length} selected photo
+                      {selected.length === 1 ? "" : "s"}.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="py-4">
-                    <Label htmlFor="album-title" className="mb-2 block">Album Title</Label>
-                    <Input id="album-title" value={newAlbumTitle} onChange={(e) => setNewAlbumTitle(e.target.value)} placeholder="E.g., Getting Ready, Ceremony..." autoFocus />
+                    <Label htmlFor="album-title" className="mb-2 block">
+                      Album Title
+                    </Label>
+                    <Input
+                      id="album-title"
+                      value={newAlbumTitle}
+                      onChange={(e) => setNewAlbumTitle(e.target.value)}
+                      placeholder="E.g., Getting Ready, Ceremony..."
+                      autoFocus
+                    />
                   </div>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setCreateAlbumOpen(false)}>Cancel</Button>
-                    <Button onClick={createAlbumFromSelected}>Create Album</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setCreateAlbumOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={createAlbumFromSelected}>
+                      Create Album
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
 
-              <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={setAsCover} disabled={selected.length !== 1}>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 text-xs gap-1"
+                onClick={setAsCover}
+                disabled={selected.length !== 1}
+              >
                 <Star className="h-3.5 w-3.5" />
                 Cover
               </Button>
 
-              <Button size="sm" variant="outline" className="h-7 text-xs gap-1 text-destructive hover:text-destructive" onClick={() => setDeleteSelectedOpen(true)}>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 text-xs gap-1 text-destructive hover:text-destructive"
+                onClick={() => setDeleteSelectedOpen(true)}
+              >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
               </Button>
 
-              <Dialog open={deleteSelectedOpen} onOpenChange={setDeleteSelectedOpen}>
+              <Dialog
+                open={deleteSelectedOpen}
+                onOpenChange={setDeleteSelectedOpen}
+              >
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Delete {selected.length} photo{selected.length === 1 ? "" : "s"}?</DialogTitle>
-                    <DialogDescription>This action cannot be undone.</DialogDescription>
+                    <DialogTitle>
+                      Delete {selected.length} photo
+                      {selected.length === 1 ? "" : "s"}?
+                    </DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone.
+                    </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setDeleteSelectedOpen(false)}>Cancel</Button>
-                    <Button variant="destructive" onClick={deleteSelected}>Delete</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setDeleteSelectedOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="destructive" onClick={deleteSelected}>
+                      Delete
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -1127,12 +1515,14 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       {photos.length === 0 && galleryUploadQueue.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-primary/20 bg-primary/4 py-16 text-center">
           <Images className="h-10 w-10 text-muted-foreground/40" />
-          <p className="text-sm text-muted-foreground">No photos yet. Upload some to get started.</p>
+          <p className="text-sm text-muted-foreground">
+            No photos yet. Upload some to get started.
+          </p>
         </div>
       )}
 
       <div className="columns-2 gap-3 md:columns-3 xl:columns-3">
-        {photos.map((photo) => {
+        {photos.map((photo, index) => {
           const isSelected = selected.includes(photo.id);
           return (
             <div
@@ -1145,23 +1535,32 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
               )}
             >
               <div
-                className="relative aspect-[3/4] bg-muted cursor-pointer"
+                className="relative bg-muted cursor-pointer"
                 onClick={() => toggleSelected(galleryId, photo.id)}
               >
                 <Image
                   src={photo.thumbnailUrl ?? photo.previewUrl ?? photo.url}
                   alt="Gallery photo"
-                  fill
-                  sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  className="object-cover"
-                  unoptimized
+                  width={photo.width ?? 1200}
+                  height={photo.height ?? 900}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={
+                    "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+                  }
+                  draggable={false}
+                  onContextMenu={(event) => event.preventDefault()}
+                  className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                  priority={index < 8}
                 />
 
                 {/* Checkbox overlay */}
                 <div
                   className={cn(
                     "absolute left-2 top-2 transition-opacity duration-200",
-                    isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                    isSelected
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-100",
                   )}
                 >
                   <Checkbox
@@ -1185,17 +1584,26 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                 <div className="absolute right-2 bottom-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="secondary" size="icon" className="h-7 w-7 rounded-full shadow-md bg-card/80 backdrop-blur-sm">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-7 w-7 rounded-full shadow-md bg-card/80 backdrop-blur-sm"
+                      >
                         <MoreHorizontal className="h-3.5 w-3.5" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-36">
-                      <DropdownMenuItem onClick={() => setPhotoAsCover(photo.id)}>
+                      <DropdownMenuItem
+                        onClick={() => setPhotoAsCover(photo.id)}
+                      >
                         <Star className="mr-2 h-3.5 w-3.5" />
                         Set as cover
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setPhotoToDelete(photo.id)}>
+                      <DropdownMenuItem
+                        className="text-destructive focus:text-destructive"
+                        onClick={() => setPhotoToDelete(photo.id)}
+                      >
                         <Trash2 className="mr-2 h-3.5 w-3.5" />
                         Delete
                       </DropdownMenuItem>
@@ -1209,15 +1617,27 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
       </div>
 
       {/* Single photo delete dialog */}
-      <Dialog open={!!photoToDelete} onOpenChange={(open) => !open && setPhotoToDelete(null)}>
+      <Dialog
+        open={!!photoToDelete}
+        onOpenChange={(open) => !open && setPhotoToDelete(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete Photo</DialogTitle>
-            <DialogDescription>Are you sure? This action cannot be undone.</DialogDescription>
+            <DialogDescription>
+              Are you sure? This action cannot be undone.
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setPhotoToDelete(null)}>Cancel</Button>
-            <Button variant="destructive" onClick={() => photoToDelete && deletePhoto(photoToDelete)}>Delete</Button>
+            <Button variant="outline" onClick={() => setPhotoToDelete(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => photoToDelete && deletePhoto(photoToDelete)}
+            >
+              Delete
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1240,10 +1660,16 @@ function AlbumsTab({
   photos: GetGalleryResponse["gallery"]["photos"];
   mutate: () => Promise<GetGalleryResponse | undefined>;
 }) {
-  const photoMap = useMemo(() => new Map(photos.map((photo) => [photo.id, photo])), [photos]);
+  const photoMap = useMemo(
+    () => new Map(photos.map((photo) => [photo.id, photo])),
+    [photos],
+  );
 
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [albumToRename, setAlbumToRename] = useState<{ id: string; title: string } | null>(null);
+  const [albumToRename, setAlbumToRename] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
   const [newTitle, setNewTitle] = useState("");
 
   const handleRenameClick = (album: { id: string; title: string }) => {
@@ -1253,30 +1679,43 @@ function AlbumsTab({
   };
 
   const confirmRename = async () => {
-    if (!albumToRename || !newTitle.trim() || newTitle === albumToRename.title) {
+    if (
+      !albumToRename ||
+      !newTitle.trim() ||
+      newTitle === albumToRename.title
+    ) {
       setRenameDialogOpen(false);
       return;
     }
     try {
-      await apiRequest(`/api/galleries/${galleryId}/albums/${albumToRename.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ title: newTitle.trim() }),
-      });
+      await apiRequest(
+        `/api/galleries/${galleryId}/albums/${albumToRename.id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ title: newTitle.trim() }),
+        },
+      );
       await mutate();
       toast.success("Album updated");
       setRenameDialogOpen(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update album",
+      );
     }
   };
 
   const deleteAlbum = async (albumId: string) => {
     try {
-      await apiRequest(`/api/galleries/${galleryId}/albums/${albumId}`, { method: "DELETE" });
+      await apiRequest(`/api/galleries/${galleryId}/albums/${albumId}`, {
+        method: "DELETE",
+      });
       await mutate();
       toast.success("Album deleted");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to delete album");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to delete album",
+      );
     }
   };
 
@@ -1287,7 +1726,8 @@ function AlbumsTab({
         <div>
           <p className="text-sm font-medium text-foreground">No albums yet</p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Select photos in the Photos tab and click &ldquo;Album&rdquo; to create your first album.
+            Select photos in the Photos tab and click &ldquo;Album&rdquo; to
+            create your first album.
           </p>
         </div>
       </div>
@@ -1302,7 +1742,8 @@ function AlbumsTab({
             .map((id) => photoMap.get(id))
             .filter(Boolean) as GetGalleryResponse["gallery"]["photos"];
           const heroPhoto = albumPhotos[0];
-          const heroUrl = heroPhoto?.thumbnailUrl ?? heroPhoto?.previewUrl ?? heroPhoto?.url;
+          const heroUrl =
+            heroPhoto?.thumbnailUrl ?? heroPhoto?.previewUrl ?? heroPhoto?.url;
           const previewPhotos = albumPhotos.slice(1, 5);
 
           return (
@@ -1327,8 +1768,12 @@ function AlbumsTab({
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-3">
-                  <h3 className="text-sm font-medium text-white truncate">{album.title}</h3>
-                  <p className="text-xs text-white/70">{album.photoIds.length} photos</p>
+                  <h3 className="text-sm font-medium text-white truncate">
+                    {album.title}
+                  </h3>
+                  <p className="text-xs text-white/70">
+                    {album.photoIds.length} photos
+                  </p>
                 </div>
               </div>
 
@@ -1336,7 +1781,8 @@ function AlbumsTab({
               <div className="flex items-center justify-between gap-2 px-3 py-2">
                 <div className="flex gap-1 overflow-hidden">
                   {previewPhotos.map((photo) => {
-                    const thumb = photo.thumbnailUrl ?? photo.previewUrl ?? photo.url;
+                    const thumb =
+                      photo.thumbnailUrl ?? photo.previewUrl ?? photo.url;
                     return (
                       <Image
                         key={photo.id}
@@ -1358,14 +1804,23 @@ function AlbumsTab({
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-muted-foreground"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-32">
-                    <DropdownMenuItem onClick={() => handleRenameClick(album)}>Rename</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleRenameClick(album)}>
+                      Rename
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => void deleteAlbum(album.id)}>
+                    <DropdownMenuItem
+                      className="text-destructive focus:text-destructive"
+                      onClick={() => void deleteAlbum(album.id)}
+                    >
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -1383,11 +1838,23 @@ function AlbumsTab({
             <DialogTitle>Rename Album</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <Label htmlFor="rename-album" className="mb-2 block">Album Title</Label>
-            <Input id="rename-album" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} autoFocus />
+            <Label htmlFor="rename-album" className="mb-2 block">
+              Album Title
+            </Label>
+            <Input
+              id="rename-album"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              autoFocus
+            />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setRenameDialogOpen(false)}>Cancel</Button>
+            <Button
+              variant="outline"
+              onClick={() => setRenameDialogOpen(false)}
+            >
+              Cancel
+            </Button>
             <Button onClick={confirmRename}>Save changes</Button>
           </DialogFooter>
         </DialogContent>
@@ -1417,7 +1884,8 @@ function SettingsTab({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
 
-  const galleryBaseUrl = process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
+  const galleryBaseUrl =
+    process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
   const slugPreview = `${galleryBaseUrl.replace(/\/$/, "").replace(/^https?:\/\//, "")}/`;
 
   async function onSave() {
@@ -1426,7 +1894,8 @@ function SettingsTab({
       await apiRequest(`/api/galleries/${galleryId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          title, slug,
+          title,
+          slug,
           eventDate: eventDate || null,
           deadline: deadline || null,
         }),
@@ -1434,7 +1903,9 @@ function SettingsTab({
       await mutate();
       toast.success("Settings saved");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update gallery");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update gallery",
+      );
     } finally {
       setSaving(false);
     }
@@ -1442,7 +1913,10 @@ function SettingsTab({
 
   async function deleteGallery() {
     await apiRequest(`/api/galleries/${galleryId}`, { method: "DELETE" });
-    await Promise.all([mutateCache("/api/storage/summary"), mutateCache("/api/storage/events?limit=10&offset=0")]);
+    await Promise.all([
+      mutateCache("/api/storage/summary"),
+      mutateCache("/api/storage/events?limit=10&offset=0"),
+    ]);
     toast.success("Gallery deleted");
     window.location.href = "/galleries";
   }
@@ -1455,16 +1929,29 @@ function SettingsTab({
           <h3 className="text-sm font-medium">General</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="gallery-title" className="text-xs">Title</Label>
-              <Input id="gallery-title" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Label htmlFor="gallery-title" className="text-xs">
+                Title
+              </Label>
+              <Input
+                id="gallery-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="slug" className="text-xs">Slug</Label>
+              <Label htmlFor="slug" className="text-xs">
+                Slug
+              </Label>
               <div className="flex">
                 <span className="flex items-center rounded-l-md border border-r-0 border-input bg-muted px-2.5 text-xs text-muted-foreground whitespace-nowrap">
                   {slugPreview}
                 </span>
-                <Input id="slug" value={slug} onChange={(e) => setSlug(e.target.value)} className="rounded-l-none" />
+                <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="rounded-l-none"
+                />
               </div>
             </div>
           </div>
@@ -1475,19 +1962,39 @@ function SettingsTab({
           <h3 className="text-sm font-medium">Dates</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="eventDate" className="text-xs">Event Date</Label>
-              <Input id="eventDate" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+              <Label htmlFor="eventDate" className="text-xs">
+                Event Date
+              </Label>
+              <Input
+                id="eventDate"
+                type="date"
+                value={eventDate}
+                onChange={(e) => setEventDate(e.target.value)}
+              />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="deadline" className="text-xs">Deadline</Label>
-              <Input id="deadline" type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+              <Label htmlFor="deadline" className="text-xs">
+                Deadline
+              </Label>
+              <Input
+                id="deadline"
+                type="date"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+              />
             </div>
           </div>
         </section>
 
         {/* Save */}
         <Button onClick={onSave} disabled={saving} className="w-full sm:w-auto">
-          {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : "Save settings"}
+          {saving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
+            </>
+          ) : (
+            "Save settings"
+          )}
         </Button>
       </div>
 
@@ -1498,7 +2005,8 @@ function SettingsTab({
           Danger Zone
         </h3>
         <p className="text-xs text-muted-foreground">
-          Deleting a gallery permanently removes all photos and queues S3 cleanup. This cannot be undone.
+          Deleting a gallery permanently removes all photos and queues S3
+          cleanup. This cannot be undone.
         </p>
 
         <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
@@ -1510,10 +2018,15 @@ function SettingsTab({
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Delete this gallery?</DialogTitle>
-              <DialogDescription>This action cannot be undone. All photos and links will stop working.</DialogDescription>
+              <DialogDescription>
+                This action cannot be undone. All photos and links will stop
+                working.
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Type &ldquo;{title}&rdquo; to confirm</p>
+              <p className="text-sm text-muted-foreground">
+                Type &ldquo;{title}&rdquo; to confirm
+              </p>
               <Input
                 placeholder={title}
                 value={deleteGalleryTitle}
@@ -1521,11 +2034,19 @@ function SettingsTab({
               />
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteDialog(false)}
+              >
+                Cancel
+              </Button>
               <Button
                 variant="destructive"
                 disabled={deleteGalleryTitle !== title}
-                onClick={() => { setShowDeleteDialog(false); deleteGallery(); }}
+                onClick={() => {
+                  setShowDeleteDialog(false);
+                  deleteGallery();
+                }}
               >
                 Delete gallery
               </Button>
@@ -1550,15 +2071,24 @@ function ShareTab({
 }) {
   const { data: viewersData, mutate: refreshViewers } = useSWR<{
     count: number;
-    viewers?: Array<{ id: string; name: string; role: "client" | "photographer" }>;
-  }>(`/api/galleries/${galleryId}/viewers`, jsonFetcher, { revalidateOnFocus: true });
+    viewers?: Array<{
+      id: string;
+      name: string;
+      role: "client" | "photographer";
+    }>;
+  }>(`/api/galleries/${galleryId}/viewers`, jsonFetcher, {
+    revalidateOnFocus: true,
+  });
 
   useEffect(() => {
     const intervalId = window.setInterval(() => void refreshViewers(), 15000);
     return () => window.clearInterval(intervalId);
   }, [refreshViewers]);
 
-  const shareLink = useMemo(() => getGalleryShareLink(data.gallery.slug), [data.gallery.slug]);
+  const shareLink = useMemo(
+    () => getGalleryShareLink(data.gallery.slug),
+    [data.gallery.slug],
+  );
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -1582,27 +2112,47 @@ function ShareTab({
 
           <div className="flex gap-2">
             <Input readOnly value={shareLink} className="text-sm" />
-            <Button variant="outline" disabled={!data.gallery.isPublished} onClick={handleCopy} className="shrink-0 gap-1.5">
-              {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+            <Button
+              variant="outline"
+              disabled={!data.gallery.isPublished}
+              onClick={handleCopy}
+              className="shrink-0 gap-1.5"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-emerald-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
               {copied ? "Copied" : "Copy"}
             </Button>
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>Send via WhatsApp</Button>
-            <Button variant="outline" size="sm" disabled>Send via Email</Button>
+            <Button variant="outline" size="sm" disabled>
+              Send via WhatsApp
+            </Button>
+            <Button variant="outline" size="sm" disabled>
+              Send via Email
+            </Button>
           </div>
         </section>
 
         {viewersData && viewersData.count > 0 && (
           <section className="space-y-3 rounded-xl border border-border/60 bg-card p-5">
-            <h3 className="text-sm font-medium">Active Viewers ({viewersData.count})</h3>
+            <h3 className="text-sm font-medium">
+              Active Viewers ({viewersData.count})
+            </h3>
             <div className="space-y-2">
               {viewersData.viewers?.map((viewer) => (
-                <div key={viewer.id} className="flex items-center gap-2 text-sm">
+                <div
+                  key={viewer.id}
+                  className="flex items-center gap-2 text-sm"
+                >
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <span>{viewer.name}</span>
-                  <span className="text-xs text-muted-foreground">({viewer.role})</span>
+                  <span className="text-xs text-muted-foreground">
+                    ({viewer.role})
+                  </span>
                 </div>
               ))}
             </div>
@@ -1614,18 +2164,35 @@ function ShareTab({
         <h3 className="text-sm font-medium">QR Code</h3>
         {data.gallery.isPublished ? (
           <>
-            <div id="gallery-share-qr-wrap" className="flex items-center justify-center rounded-lg border bg-white p-3">
-              <QRCodeSVG value={shareLink} size={200} level="H" includeMargin bgColor="#ffffff" fgColor="#0f172a" />
+            <div
+              id="gallery-share-qr-wrap"
+              className="flex items-center justify-center rounded-lg border bg-white p-3"
+            >
+              <QRCodeSVG
+                value={shareLink}
+                size={200}
+                level="H"
+                includeMargin
+                bgColor="#ffffff"
+                fgColor="#0f172a"
+              />
             </div>
             <Button
               variant="outline"
               size="sm"
               className="w-full"
               onClick={() => {
-                const svg = document.querySelector("#gallery-share-qr-wrap svg");
-                if (!svg) { toast.error("Unable to export QR code"); return; }
+                const svg = document.querySelector(
+                  "#gallery-share-qr-wrap svg",
+                );
+                if (!svg) {
+                  toast.error("Unable to export QR code");
+                  return;
+                }
                 const source = new XMLSerializer().serializeToString(svg);
-                const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+                const blob = new Blob([source], {
+                  type: "image/svg+xml;charset=utf-8",
+                });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
                 link.href = url;
@@ -1638,7 +2205,9 @@ function ShareTab({
             </Button>
           </>
         ) : (
-          <p className="text-xs text-muted-foreground">Publish to enable QR sharing.</p>
+          <p className="text-xs text-muted-foreground">
+            Publish to enable QR sharing.
+          </p>
         )}
       </section>
     </div>

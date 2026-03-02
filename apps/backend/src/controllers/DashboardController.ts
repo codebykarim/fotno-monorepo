@@ -35,10 +35,14 @@ export const createGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
   const result = await DashboardService.createGallery(userId, req.body);
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
-  return res.status(asStatusCode(result.status, 201)).json({ gallery: result.gallery });
+  return res
+    .status(asStatusCode(result.status, 201))
+    .json({ gallery: result.gallery });
 };
 
 export const getGalleryController = async (req: Request, res: Response) => {
@@ -53,7 +57,11 @@ export const getGalleryController = async (req: Request, res: Response) => {
 
 export const updateGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.updateGallery(userId, req.params.id, req.body);
+  const result = await DashboardService.updateGallery(
+    userId,
+    req.params.id,
+    req.body,
+  );
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
   }
@@ -89,11 +97,20 @@ export const reorderGalleryPhotosController = async (
   return res.status(200).json({ success: true });
 };
 
-export const presignPhotoUploadController = async (req: Request, res: Response) => {
+export const presignPhotoUploadController = async (
+  req: Request,
+  res: Response,
+) => {
   const userId = getUserId(req);
-  const result = await DashboardService.presignPhotoUpload(userId, req.params.id, req.body);
+  const result = await DashboardService.presignPhotoUpload(
+    userId,
+    req.params.id,
+    req.body,
+  );
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
   return res.status(200).json(result);
@@ -104,12 +121,19 @@ export const getPhotoUploadSessionsController = async (
   res: Response,
 ) => {
   const userId = getUserId(req);
-  const result = await DashboardService.getPhotoUploadSessions(userId, req.params.id);
+  const result = await DashboardService.getPhotoUploadSessions(
+    userId,
+    req.params.id,
+  );
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
-  return res.status(asStatusCode(result.status, 200)).json({ sessions: result.sessions });
+  return res
+    .status(asStatusCode(result.status, 200))
+    .json({ sessions: result.sessions });
 };
 
 export const partCompletePhotoUploadController = async (
@@ -124,13 +148,18 @@ export const partCompletePhotoUploadController = async (
   );
 
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
   return res.status(200).json(result);
 };
 
-export const confirmPhotoUploadController = async (req: Request, res: Response) => {
+export const confirmPhotoUploadController = async (
+  req: Request,
+  res: Response,
+) => {
   const userId = getUserId(req);
   const result = await DashboardService.confirmPhotoUpload(
     userId,
@@ -138,20 +167,32 @@ export const confirmPhotoUploadController = async (req: Request, res: Response) 
     req.body?.photoId ?? req.body?.uploadId,
   );
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
-  return res.status(asStatusCode(result.status, 201)).json({ photo: result.photo });
+  return res
+    .status(asStatusCode(result.status, 201))
+    .json({ photo: result.photo });
 };
 
 export const createAlbumController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.createAlbum(userId, req.params.id, req.body);
+  const result = await DashboardService.createAlbum(
+    userId,
+    req.params.id,
+    req.body,
+  );
   if ("error" in result) {
-    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
   }
 
-  return res.status(asStatusCode(result.status, 201)).json({ album: result.album });
+  return res
+    .status(asStatusCode(result.status, 201))
+    .json({ album: result.album });
 };
 
 export const updateAlbumController = async (req: Request, res: Response) => {
@@ -191,7 +232,11 @@ export const listClientsController = async (req: Request, res: Response) => {
 
 export const updateClientController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.updateClient(userId, req.params.id, req.body);
+  const result = await DashboardService.updateClient(
+    userId,
+    req.params.id,
+    req.body,
+  );
   if (!result) {
     return res.status(404).json({ error: "Client not found" });
   }
@@ -221,4 +266,20 @@ export const deletePhotoController = async (req: Request, res: Response) => {
   }
 
   return res.status(200).json({ success: true });
+};
+
+export const suggestAlbumController = async (req: Request, res: Response) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.suggestAlbum(
+    userId,
+    req.params.id,
+    req.body?.prompt,
+  );
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+
+  return res.status(200).json(result);
 };

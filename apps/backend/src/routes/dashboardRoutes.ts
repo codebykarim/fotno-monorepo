@@ -97,6 +97,11 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.deletePhotoController,
     authFunction: isAuth,
   },
+  "suggest-album": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.suggestAlbumController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -145,6 +150,10 @@ dashboardRoutes.post(
 dashboardRoutes.post(
   "/dashboard/galleries/:id/albums",
   handleMethod("create-album"),
+);
+dashboardRoutes.post(
+  "/dashboard/galleries/:id/ai/suggest-album",
+  handleMethod("suggest-album"),
 );
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/albums/:albumId",

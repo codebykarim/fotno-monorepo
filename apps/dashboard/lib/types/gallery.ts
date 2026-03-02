@@ -7,6 +7,7 @@ export type Photo = {
   thumbnailUrl: string | null;
   previewUrl: string | null;
   originalUrl: string | null;
+  blurDataUrl: string;
   order: number;
   width: number;
   height: number;

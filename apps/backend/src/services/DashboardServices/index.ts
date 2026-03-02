@@ -17,3 +17,4 @@ export { listClients } from "./listClients";
 export { updateClient } from "./updateClient";
 export { updatePhotoLoved } from "./updatePhotoLoved";
 export { deletePhoto } from "./deletePhoto";
+export { suggestAlbum } from "./suggestAlbum";

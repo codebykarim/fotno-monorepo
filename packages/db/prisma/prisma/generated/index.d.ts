@@ -9877,6 +9877,7 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
+    aiContext: string | null
     isPublished: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9892,6 +9893,7 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
+    aiContext: string | null
     isPublished: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9907,6 +9909,7 @@ export namespace Prisma {
     coverPhotoId: number
     passwordHash: number
     shareToken: number
+    aiContext: number
     isPublished: number
     createdAt: number
     updatedAt: number
@@ -9924,6 +9927,7 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
+    aiContext?: true
     isPublished?: true
     createdAt?: true
     updatedAt?: true
@@ -9939,6 +9943,7 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
+    aiContext?: true
     isPublished?: true
     createdAt?: true
     updatedAt?: true
@@ -9954,6 +9959,7 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
+    aiContext?: true
     isPublished?: true
     createdAt?: true
     updatedAt?: true
@@ -10042,6 +10048,7 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string
+    aiContext: string | null
     isPublished: boolean
     createdAt: Date
     updatedAt: Date
@@ -10074,6 +10081,7 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
+    aiContext?: boolean
     isPublished?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10096,6 +10104,7 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
+    aiContext?: boolean
     isPublished?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10113,6 +10122,7 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
+    aiContext?: boolean
     isPublished?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -10130,12 +10140,13 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
+    aiContext?: boolean
     isPublished?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "aiContext" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
@@ -10174,6 +10185,7 @@ export namespace Prisma {
       coverPhotoId: string | null
       passwordHash: string | null
       shareToken: string
+      aiContext: string | null
       isPublished: boolean
       createdAt: Date
       updatedAt: Date
@@ -10615,6 +10627,7 @@ export namespace Prisma {
     readonly coverPhotoId: FieldRef<"Gallery", 'String'>
     readonly passwordHash: FieldRef<"Gallery", 'String'>
     readonly shareToken: FieldRef<"Gallery", 'String'>
+    readonly aiContext: FieldRef<"Gallery", 'String'>
     readonly isPublished: FieldRef<"Gallery", 'Boolean'>
     readonly createdAt: FieldRef<"Gallery", 'DateTime'>
     readonly updatedAt: FieldRef<"Gallery", 'DateTime'>
@@ -22694,6 +22707,7 @@ export namespace Prisma {
     coverPhotoId: 'coverPhotoId',
     passwordHash: 'passwordHash',
     shareToken: 'shareToken',
+    aiContext: 'aiContext',
     isPublished: 'isPublished',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -23683,6 +23697,7 @@ export namespace Prisma {
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
+    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
@@ -23704,6 +23719,7 @@ export namespace Prisma {
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
+    aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23729,6 +23745,7 @@ export namespace Prisma {
     deadline?: DateTimeNullableFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
+    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
@@ -23750,6 +23767,7 @@ export namespace Prisma {
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
+    aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23771,6 +23789,7 @@ export namespace Prisma {
     coverPhotoId?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     shareToken?: StringWithAggregatesFilter<"Gallery"> | string
+    aiContext?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     isPublished?: BoolWithAggregatesFilter<"Gallery"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
@@ -25245,6 +25264,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25266,6 +25286,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25283,6 +25304,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25304,6 +25326,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25323,6 +25346,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25336,6 +25360,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25351,6 +25376,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26981,6 +27007,7 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
+    aiContext?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26996,6 +27023,7 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
+    aiContext?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -27011,6 +27039,7 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
+    aiContext?: SortOrder
     isPublished?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29289,6 +29318,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29308,6 +29338,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29547,6 +29578,7 @@ export namespace Prisma {
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
+    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
@@ -30758,6 +30790,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30778,6 +30811,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30799,6 +30833,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30818,6 +30853,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30945,6 +30981,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30965,6 +31002,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31535,6 +31573,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31555,6 +31594,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31612,6 +31652,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31632,6 +31673,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31679,6 +31721,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31699,6 +31742,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31751,6 +31795,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31771,6 +31816,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31987,6 +32033,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32007,6 +32054,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32175,6 +32223,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32195,6 +32244,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32379,6 +32429,7 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32531,6 +32582,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32550,6 +32602,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32568,6 +32621,7 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32851,6 +32905,7 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
+    aiContext?: string | null
     isPublished?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32882,6 +32937,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32901,6 +32957,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32919,6 +32976,7 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -7,7 +7,9 @@ const SearchSchema = z.object({
   userId: z.string().min(1),
   galleryId: z.string().min(1),
   prompt: z.string().min(1),
+  context: z.string().optional(),
   limit: z.number().int().min(1).max(500).default(50),
+  minScore: z.number().min(0).max(1).optional(),
 })
 
 export async function search(req: Request, res: Response): Promise<void> {

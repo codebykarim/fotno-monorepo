@@ -31,6 +31,9 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
   if (typeof body?.deadline === "string" || body?.deadline === null) {
     data.deadline = body?.deadline ? toIsoOrNull(body.deadline) : null;
   }
+  if (typeof body?.aiContext === "string" || body?.aiContext === null) {
+    data.aiContext = body.aiContext;
+  }
 
   const updated = await db.gallery.update({
     where: { id: galleryId },
@@ -54,6 +57,7 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
       createdAt: updated.createdAt.toISOString(),
       updatedAt: updated.updatedAt.toISOString(),
       coverPhotoId: updated.coverPhotoId ?? null,
+      aiContext: updated.aiContext ?? null,
     },
   };
 };

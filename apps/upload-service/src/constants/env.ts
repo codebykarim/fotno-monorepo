@@ -42,6 +42,10 @@ const EnvSchema = z.object({
   UPLOAD_SESSION_TTL_HRS: z.coerce.number().min(1).default(24),
   /** Validity of presigned upload URLs in seconds. Client must complete upload before this expires. Default 7200 (2h). */
   PRESIGNED_URL_TTL_SEC: z.coerce.number().int().min(60).default(7200),
+  /** Base URL of the image-search-service for ingesting processed photos. */
+  IMAGE_SEARCH_SERVICE_URL: z.string().url().default('http://localhost:4002'),
+  /** Public base URL for S3/R2 objects (used to build storageUrl for search ingest). */
+  AWS_S3_PUBLIC_URL: z.string().optional(),
 })
 
 const parsedEnv = EnvSchema.parse(process.env)

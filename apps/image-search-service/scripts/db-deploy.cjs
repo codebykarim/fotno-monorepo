@@ -82,6 +82,74 @@ async function main() {
       WITH (m = 16, ef_construction = 64);
     `)
 
+    // --- Caption library table ---
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS "caption_library" (
+        "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
+        "embedding" vector(1152) NOT NULL,
+        "caption" TEXT NOT NULL,
+        "tags" TEXT[] NOT NULL DEFAULT '{}',
+        "usageCount" INTEGER NOT NULL DEFAULT 1,
+        "sourcePhotoId" TEXT,
+        "sourceGalleryId" TEXT,
+        "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT "caption_library_pkey" PRIMARY KEY ("id")
+      );
+    `)
+
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS "caption_library_embedding_idx" ON "caption_library"
+      USING hnsw ("embedding" vector_cosine_ops)
+      WITH (m = 16, ef_construction = 64);
+    `)
+
+    // --- New columns on image_search_image for captioning ---
+    await pool.query(`
+      ALTER TABLE "image_search_image"
+        ADD COLUMN IF NOT EXISTS "captionedAt" TIMESTAMP(3),
+        ADD COLUMN IF NOT EXISTS "captionSource" TEXT,
+        ADD COLUMN IF NOT EXISTS "captionTsv" tsvector;
+    `)
+
+    // --- Failure tracking columns ---
+    await pool.query(`
+      ALTER TABLE "image_search_image"
+        ADD COLUMN IF NOT EXISTS "embeddingAttempts" INTEGER NOT NULL DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS "embeddingError" TEXT,
+        ADD COLUMN IF NOT EXISTS "captionAttempts" INTEGER NOT NULL DEFAULT 0,
+        ADD COLUMN IF NOT EXISTS "captionError" TEXT;
+    `)
+
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS "image_search_image_captionTsv_idx"
+      ON "image_search_image" USING gin("captionTsv");
+    `)
+
+    // --- Full-text search trigger: auto-update captionTsv when caption/tags change ---
+    await pool.query(`
+      CREATE OR REPLACE FUNCTION image_search_caption_tsv_trigger() RETURNS trigger AS $$
+      BEGIN
+        NEW."captionTsv" := to_tsvector('english',
+          coalesce(NEW.caption, '') || ' ' || coalesce(array_to_string(NEW.tags, ' '), '')
+        );
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `)
+
+    await pool.query(`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_trigger WHERE tgname = 'trg_image_search_caption_tsv'
+        ) THEN
+          CREATE TRIGGER trg_image_search_caption_tsv
+            BEFORE INSERT OR UPDATE OF caption, tags ON "image_search_image"
+            FOR EACH ROW EXECUTE FUNCTION image_search_caption_tsv_trigger();
+        END IF;
+      END $$;
+    `)
+
     await pool.query('COMMIT')
     console.log('[image-search-service] Image-search database schema deployed successfully')
   } catch (err) {

@@ -2,6 +2,7 @@ import { Queue, Worker, Job } from 'bullmq'
 import { env } from '../constants/env'
 import { logger } from '../utils/logger'
 import { processEmbeddingBatch } from '../services/embedding.service'
+import { enqueueCaptioningJob } from './captioning.queue'
 
 const QUEUE_NAME = 'embedding-queue'
 
@@ -31,14 +32,24 @@ async function processJob(job: Job): Promise<void> {
   logger.info({ jobId: job.id }, 'Processing embedding job')
 
   let totalProcessed = 0
-  let batchProcessed: number
+  const allGalleryIds = new Set<string>()
+  let batchCount: number
 
   do {
-    batchProcessed = await processEmbeddingBatch(env.EMBEDDING_BATCH_SIZE)
-    totalProcessed += batchProcessed
-  } while (batchProcessed === env.EMBEDDING_BATCH_SIZE)
+    const result = await processEmbeddingBatch(env.EMBEDDING_BATCH_SIZE)
+    batchCount = result.count
+    totalProcessed += batchCount
+    for (const gid of result.galleryIds) {
+      allGalleryIds.add(gid)
+    }
+  } while (batchCount === env.EMBEDDING_BATCH_SIZE)
 
-  logger.info({ jobId: job.id, totalProcessed }, 'Embedding job complete')
+  // Enqueue captioning for each affected gallery
+  for (const galleryId of allGalleryIds) {
+    await enqueueCaptioningJob(galleryId)
+  }
+
+  logger.info({ jobId: job.id, totalProcessed, galleries: allGalleryIds.size }, 'Embedding job complete')
 }
 
 export function startEmbeddingWorker(): void {

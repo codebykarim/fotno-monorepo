@@ -6,6 +6,7 @@ interface SuggestAlbumParams {
   userId: string
   galleryId: string
   prompt: string
+  context?: string
   albumSize: number
   useLlm?: boolean
 }
@@ -70,7 +71,7 @@ async function cacheAlbum(
 }
 
 export async function suggestAlbum(params: SuggestAlbumParams): Promise<AlbumSuggestion> {
-  const { userId, galleryId, prompt, albumSize } = params
+  const { userId, galleryId, prompt, context, albumSize } = params
 
   logger.info({ galleryId, prompt, albumSize }, 'Suggesting album')
 
@@ -93,6 +94,7 @@ export async function suggestAlbum(params: SuggestAlbumParams): Promise<AlbumSug
     userId,
     galleryId,
     prompt,
+    context,
     limit: albumSize,
   })
 

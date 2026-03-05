@@ -222,6 +222,7 @@ exports.Prisma.GalleryScalarFieldEnum = {
   coverPhotoId: 'coverPhotoId',
   passwordHash: 'passwordHash',
   shareToken: 'shareToken',
+  aiContext: 'aiContext',
   isPublished: 'isPublished',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

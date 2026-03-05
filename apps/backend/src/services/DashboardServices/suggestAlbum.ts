@@ -19,7 +19,7 @@ export const suggestAlbum = async (
 ) => {
   const gallery = await db.gallery.findFirst({
     where: { id: galleryId, userId },
-    select: { id: true },
+    select: { id: true, aiContext: true, title: true },
   });
 
   if (!gallery) {
@@ -41,6 +41,7 @@ export const suggestAlbum = async (
         galleryId,
         prompt: prompt.trim(),
         albumSize: 50,
+        context: gallery.aiContext || undefined,
       }),
     });
 

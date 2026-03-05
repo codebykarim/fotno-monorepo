@@ -28,6 +28,7 @@ export type Gallery = {
   createdAt: string;
   updatedAt: string;
   coverPhotoId: string | null;
+  aiContext: string | null;
 };
 
 export type Album = {

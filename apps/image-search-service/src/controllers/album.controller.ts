@@ -7,6 +7,7 @@ const SuggestAlbumSchema = z.object({
   userId: z.string().min(1),
   galleryId: z.string().min(1),
   prompt: z.string().min(1),
+  context: z.string().optional(),
   albumSize: z.number().int().min(1).max(200).default(40),
   useLlm: z.boolean().optional().default(false),
 })

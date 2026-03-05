@@ -107,6 +107,7 @@ async def embed_image(request: ImageEmbedRequest):
 
         with torch.no_grad():
             image_features = model.get_image_features(**inputs)
+            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             embedding = image_features[0].cpu().numpy().tolist()
 
         return EmbeddingResponse(embedding=embedding)
@@ -135,6 +136,7 @@ async def embed_image_batch(request: ImageEmbedBatchRequest):
 
         with torch.no_grad():
             image_features = model.get_image_features(**inputs)
+            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             embeddings = image_features.cpu().numpy().tolist()
 
         return BatchEmbeddingResponse(embeddings=embeddings)
@@ -152,6 +154,7 @@ async def embed_text(request: TextEmbedRequest):
 
         with torch.no_grad():
             text_features = model.get_text_features(**inputs)
+            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
             embedding = text_features[0].cpu().numpy().tolist()
 
         return EmbeddingResponse(embedding=embedding)
@@ -173,6 +176,7 @@ async def embed_text_batch(request: TextEmbedBatchRequest):
 
         with torch.no_grad():
             text_features = model.get_text_features(**inputs)
+            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
             embeddings = text_features.cpu().numpy().tolist()
 
         return BatchEmbeddingResponse(embeddings=embeddings)
@@ -183,5 +187,5 @@ async def embed_text_batch(request: TextEmbedBatchRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", "8001"))
+    port = int(os.getenv("SIGLIP_SERVICE_PORT", "8001"))
     uvicorn.run(app, host="0.0.0.0", port=port)

@@ -1,23 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Loader2, Wand2, CheckCircle2, RotateCcw } from "lucide-react";
+import {
+  Loader2,
+  Wand2,
+  CheckCircle2,
+  RotateCcw,
+  Pencil,
+  ChevronDown,
+  ChevronUp,
+  BrainCircuit,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
+import { Progress } from "@workspace/ui/components/progress";
 import { apiRequest } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
 import { cn } from "@workspace/ui/lib/utils";
 
+interface AiStatus {
+  totalPhotos: number;
+  ingested: number;
+  embedded: number;
+  captioned: number;
+  failed: number;
+  ready: boolean;
+}
+
 type Props = {
   galleryId: string;
   photos: GetGalleryResponse["gallery"]["photos"];
+  aiContext: string | null;
   mutate: () => Promise<GetGalleryResponse | undefined>;
 };
 
-export function GalleryAiTab({ galleryId, photos, mutate }: Props) {
-  const [prompt, setPrompt] = useState("");
+export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
+  // Status polling
+  const [status, setStatus] = useState<AiStatus | null>(null);
+  const [statusError, setStatusError] = useState(false);
+
+  // Context editing
+  const [contextDraft, setContextDraft] = useState(aiContext ?? "");
+  const [isEditingContext, setIsEditingContext] = useState(false);
+  const [isSavingContext, setIsSavingContext] = useState(false);
+  const [contextExpanded, setContextExpanded] = useState(false);
+  const [skippedContext, setSkippedContext] = useState(false);
+
+  // Album generation (same as before)
+  const [prompt, setPrompt] = useState("I want all photos ");
   const [isGenerating, setIsGenerating] = useState(false);
   const [suggestedPhotoIds, setSuggestedPhotoIds] = useState<string[]>([]);
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<Set<string>>(
@@ -25,6 +57,53 @@ export function GalleryAiTab({ galleryId, photos, mutate }: Props) {
   );
   const [isCreatingAlbum, setIsCreatingAlbum] = useState(false);
   const [albumTitle, setAlbumTitle] = useState("");
+
+  const fetchStatus = useCallback(async () => {
+    try {
+      const res = await apiRequest<AiStatus>(
+        `/api/galleries/${galleryId}/ai/status`,
+      );
+      setStatus(res);
+      setStatusError(false);
+    } catch {
+      setStatusError(true);
+    }
+  }, [galleryId]);
+
+  // Poll status every 5 seconds while not ready
+  useEffect(() => {
+    void fetchStatus();
+    const interval = setInterval(() => {
+      if (!status?.ready) {
+        void fetchStatus();
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [fetchStatus, status?.ready]);
+
+  // Sync context draft when aiContext prop changes
+  useEffect(() => {
+    setContextDraft(aiContext ?? "");
+  }, [aiContext]);
+
+  const handleSaveContext = async () => {
+    setIsSavingContext(true);
+    try {
+      await apiRequest(`/api/galleries/${galleryId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ aiContext: contextDraft.trim() || null }),
+      });
+      toast.success("Gallery context saved");
+      await mutate();
+      setIsEditingContext(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to save context",
+      );
+    } finally {
+      setIsSavingContext(false);
+    }
+  };
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -122,8 +201,206 @@ export function GalleryAiTab({ galleryId, photos, mutate }: Props) {
     suggestedPhotoIds.includes(p.id),
   );
 
+  // State A: Not ready (still processing)
+  if (status && !status.ready) {
+    const progressTotal = status.totalPhotos || status.ingested || 1;
+    const progressPercent = Math.round((status.embedded / progressTotal) * 100);
+
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-sm text-center space-y-6">
+          <div className="mx-auto rounded-full bg-primary/10 p-4 w-fit">
+            <Loader2 className="h-8 w-8 text-primary animate-spin" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold tracking-tight">
+              Preparing photos for AI
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {status.embedded} of {progressTotal} photos ready
+            </p>
+          </div>
+          <Progress value={progressPercent} className="w-full" />
+          {status.failed > 0 && (
+            <p className="text-xs text-muted-foreground">
+              {status.failed} photo{status.failed !== 1 ? "s" : ""} failed to
+              process
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (!status) {
+    if (statusError) {
+      return (
+        <div className="flex items-center justify-center py-16">
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-sm text-center space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Unable to check AI processing status. The AI service may not be
+              running.
+            </p>
+            <Button variant="outline" size="sm" onClick={() => void fetchStatus()}>
+              Retry
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="flex items-center justify-center py-16">
+        <Loader2 className="h-6 w-6 text-muted-foreground animate-spin" />
+      </div>
+    );
+  }
+
+  // State B: Ready, no context set yet (and not skipped)
+  if (!aiContext && !skippedContext && !isEditingContext) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="w-full max-w-lg rounded-xl border border-border bg-card p-8 shadow-sm space-y-6">
+          <div className="text-center space-y-2">
+            <div className="mx-auto rounded-full bg-primary/10 p-4 w-fit">
+              <BrainCircuit className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold tracking-tight">
+              Tell the AI about this gallery
+            </h3>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto">
+              Adding context helps the AI understand your photos better, leading
+              to more accurate search results and album suggestions.
+            </p>
+          </div>
+          <textarea
+            className="flex min-h-[100px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
+            placeholder="e.g. Wedding session for Sarah & John. Outdoor ceremony, indoor reception. Main subjects: bride in white dress, groom in navy suit."
+            value={contextDraft}
+            onChange={(e) => setContextDraft(e.target.value)}
+          />
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setSkippedContext(true)}
+            >
+              Skip for now
+            </button>
+            <Button
+              onClick={() => void handleSaveContext()}
+              disabled={!contextDraft.trim() || isSavingContext}
+            >
+              {isSavingContext && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Save Context
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // State C: Ready with optional context (main UI)
   return (
     <div className="space-y-6">
+      {/* Context summary / edit */}
+      {aiContext && !isEditingContext && (
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              className="flex items-center gap-2 text-sm font-medium"
+              onClick={() => setContextExpanded(!contextExpanded)}
+            >
+              <BrainCircuit className="h-4 w-4 text-primary" />
+              Gallery Context
+              {contextExpanded ? (
+                <ChevronUp className="h-3 w-3 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+              )}
+            </button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsEditingContext(true);
+                setContextDraft(aiContext);
+              }}
+            >
+              <Pencil className="mr-1 h-3 w-3" />
+              Edit
+            </Button>
+          </div>
+          {contextExpanded && (
+            <p className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
+              {aiContext}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Context editing inline */}
+      {isEditingContext && (
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm space-y-3">
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <BrainCircuit className="h-4 w-4 text-primary" />
+            Edit Gallery Context
+          </div>
+          <textarea
+            className="flex min-h-[100px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
+            placeholder="e.g. Wedding session for Sarah & John. Outdoor ceremony, indoor reception."
+            value={contextDraft}
+            onChange={(e) => setContextDraft(e.target.value)}
+          />
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsEditingContext(false);
+                setContextDraft(aiContext ?? "");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => void handleSaveContext()}
+              disabled={isSavingContext}
+            >
+              {isSavingContext && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Save
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* No context banner (for skipped state) */}
+      {!aiContext && !isEditingContext && (
+        <div className="rounded-xl border border-dashed border-border bg-card/50 p-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <BrainCircuit className="h-4 w-4" />
+              No gallery context set. Adding context improves search accuracy.
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditingContext(true)}
+            >
+              <Pencil className="mr-1 h-3 w-3" />
+              Add Context
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Search / Album generation UI */}
       {suggestedPhotoIds.length === 0 ? (
         <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <div className="flex flex-col items-center justify-center space-y-4 py-8 text-center">
@@ -135,8 +412,7 @@ export function GalleryAiTab({ galleryId, photos, mutate }: Props) {
                 AI Album Generation
               </h3>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                Describe the album you want to create (e.g., &quot;only images
-                where groom and bride are in&quot;), and our AI will select the
+                Describe the album you want to create (e.g., &quot;I want all photos that are outdoor&quot;), and our AI will select the
                 matching photos.
               </p>
             </div>

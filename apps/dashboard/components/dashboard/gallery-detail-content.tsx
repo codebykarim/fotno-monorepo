@@ -489,6 +489,7 @@ export function GalleryDetailContent({
         <GalleryAiTab
           galleryId={galleryId}
           photos={data.gallery.photos}
+          aiContext={data.gallery.aiContext}
           mutate={mutate}
         />
       )}

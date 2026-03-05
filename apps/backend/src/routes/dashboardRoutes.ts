@@ -102,6 +102,11 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.suggestAlbumController,
     authFunction: isAuth,
   },
+  "gallery-ai-status": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getGalleryAiStatusController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -154,6 +159,10 @@ dashboardRoutes.post(
 dashboardRoutes.post(
   "/dashboard/galleries/:id/ai/suggest-album",
   handleMethod("suggest-album"),
+);
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/ai/status",
+  handleMethod("gallery-ai-status"),
 );
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/albums/:albumId",

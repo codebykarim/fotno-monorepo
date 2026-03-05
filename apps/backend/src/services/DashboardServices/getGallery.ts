@@ -70,6 +70,7 @@ export const getGallery = async (userId: string, galleryId: string) => {
       createdAt: gallery.createdAt.toISOString(),
       updatedAt: gallery.updatedAt.toISOString(),
       coverPhotoId: gallery.coverPhotoId ?? null,
+      aiContext: gallery.aiContext ?? null,
       photos,
       albums: gallery.albums.map((album: any) => ({
         id: album.id,

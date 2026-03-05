@@ -11,7 +11,7 @@
     "db:reset": "pnpm --filter db db:reset && pnpm --filter image-search-service db:reset",
     "lint": "nx run-many -t lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "kill": "lsof -t -i:3000,3001,3002,3003,8000 | xargs -r kill"
+    "kill": "lsof -t -i:3000,3001,3002,3003,3004,8000 | xargs -r kill"
   },
   "devDependencies": {
     "@nx/docker": "^21.5.3",

@@ -1,5 +1,6 @@
 import { getPool, closePool } from './utils/db'
 import { startEmbeddingWorker, stopEmbeddingWorker } from './queues/embedding.queue'
+import { startCaptioningWorker, stopCaptioningWorker } from './queues/captioning.queue'
 import { logger } from './utils/logger'
 
 export async function bootstrap(): Promise<void> {
@@ -8,8 +9,9 @@ export async function bootstrap(): Promise<void> {
   // Initialize database connection
   await getPool()
 
-  // Start embedding worker
+  // Start workers
   startEmbeddingWorker()
+  startCaptioningWorker()
 
   logger.info('Bootstrap complete')
 }
@@ -17,6 +19,7 @@ export async function bootstrap(): Promise<void> {
 export async function gracefulShutdown(): Promise<void> {
   logger.info('Graceful shutdown initiated...')
 
+  await stopCaptioningWorker()
   await stopEmbeddingWorker()
   await closePool()
 

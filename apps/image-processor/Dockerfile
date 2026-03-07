@@ -32,8 +32,10 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 # Copy workspace packages source
 COPY packages/ packages/
 
-# Copy app source
+# Copy app source (image-processor has cross-app imports into backend and upload-service)
 COPY apps/image-processor/ apps/image-processor/
+COPY apps/backend/ apps/backend/
+COPY apps/upload-service/ apps/upload-service/
 
 # Generate Prisma client and build
 RUN pnpm --filter @workspace/db db:generate

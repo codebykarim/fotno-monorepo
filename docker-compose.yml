@@ -1,0 +1,191 @@
+services:
+  # ──────────────────────────────────────────────
+  # Backend Services
+  # ──────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      IMAGE_SEARCH_SERVICE_URL: http://image-search-service:4002
+      UPLOAD_SERVICE_URL: http://upload-service:3010
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - image-search-service
+
+  upload-service:
+    build:
+      context: .
+      dockerfile: apps/upload-service/Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3010"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3010/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  image-processor:
+    build:
+      context: .
+      dockerfile: apps/image-processor/Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      IMAGE_SEARCH_SERVICE_URL: http://image-search-service:4002
+    # Background worker — no HTTP port
+    healthcheck:
+      disable: true
+    depends_on:
+      - image-search-service
+
+  image-search-service:
+    build:
+      context: .
+      dockerfile: apps/image-search-service/Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      # Override DATABASE_URL to use the pgvector database
+      DATABASE_URL: ${IMAGE_SEARCH_DATABASE_URL}
+      SIGLIP_SERVICE_URL: http://siglip-service:8001
+      QWEN_SERVICE_URL: http://qwen-ai-service:8002
+    expose:
+      - "4002"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4002/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - siglip-service
+      - qwen-ai-service
+
+  # ──────────────────────────────────────────────
+  # AI Services
+  # ──────────────────────────────────────────────
+  siglip-service:
+    build:
+      context: ./apps/siglip-service
+      dockerfile: Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      PORT: 8001
+      MAX_BATCH_SIZE: 16
+    expose:
+      - "8001"
+    volumes:
+      - huggingface-cache-siglip:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+  qwen-ai-service:
+    build:
+      context: ./apps/qwen-ai-service
+      dockerfile: Dockerfile
+      platform: linux/amd64
+    env_file: .env
+    environment:
+      QWEN_SERVICE_PORT: 8002
+      MODEL_SIZE: 2b
+      MAX_BATCH_SIZE: 8
+    expose:
+      - "8002"
+    volumes:
+      - huggingface-cache-qwen:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8002/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
+
+  # ──────────────────────────────────────────────
+  # Frontend Apps (Next.js)
+  # ──────────────────────────────────────────────
+  landing:
+    build:
+      context: .
+      dockerfile: apps/landing/Dockerfile
+      platform: linux/amd64
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+      platform: linux/amd64
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3001"
+
+  auth:
+    build:
+      context: .
+      dockerfile: apps/auth/Dockerfile
+      platform: linux/amd64
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3002"
+
+  gallery:
+    build:
+      context: .
+      dockerfile: apps/gallery/Dockerfile
+      platform: linux/amd64
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3003"
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+      platform: linux/amd64
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3004"
+
+volumes:
+  huggingface-cache-siglip:
+  huggingface-cache-qwen:

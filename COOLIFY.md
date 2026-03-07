@@ -1,281 +1,168 @@
-# Fotno — Coolify Deployment Guide
+# Fotno — Coolify Deployment Guide (Docker Compose)
 
-## Prerequisites
+## Overview
 
-Before deploying, ensure you have these provisioned in Coolify:
+All 11 services are deployed as a single Docker Compose stack in Coolify.
+Internal services communicate by service name (e.g. `http://siglip-service:8001`).
+Databases (PostgreSQL, pgvector, Redis) are provisioned separately in Coolify.
 
-- **PostgreSQL (main)** — for Prisma/app data
-- **PostgreSQL (pgvector)** — with `vector` extension enabled, for image search
-- **Redis** — for BullMQ job queues and caching
-- **S3/R2 storage** — already configured externally
+## Step 1: Delete Existing Individual Apps
 
-## Domain Plan
+In Coolify, delete all the individual Application resources you created earlier.
+Keep your 3 database resources (fotno-database, fotno-pgvector, fotno-redis).
+
+## Step 2: Create Docker Compose Service
+
+1. In Coolify, click **+ New** > **Docker Compose**
+2. Select your Git repository (`codebykarim/fotno-monorepo`)
+3. Branch: `main`
+4. Coolify will detect `docker-compose.yml` at the repo root
+
+## Step 3: Set Environment Variables
+
+In the Coolify **Environment Variables** section for the compose service,
+add all your variables. These are injected into every service via `env_file: .env`.
+
+### Required Variables
+
+```env
+# ── Main Database (your fotno-database in Coolify) ──
+DATABASE_URL=postgresql://user:pass@fotno-database:5432/fotno
+DIRECT_URL=postgresql://user:pass@fotno-database:5432/fotno
+
+# ── pgvector Database (your fotno-pgvector in Coolify) ──
+IMAGE_SEARCH_DATABASE_URL=postgresql://user:pass@fotno-pgvector:5432/fotno_search
+
+# ── Redis (your fotno-redis in Coolify) ──
+REDIS_URL=redis://fotno-redis:6379
+
+# ── Auth ──
+JWT_SECRET=<generate-a-strong-secret>
+BETTER_AUTH_SECRET=<generate-a-strong-secret>
+BETTER_AUTH_URL=https://api.fotno.com
+
+# ── S3 / Cloudflare R2 ──
+AWS_ACCESS_KEY_ID=<your-key>
+AWS_SECRET_ACCESS_KEY=<your-secret>
+AWS_REGION=auto
+AWS_S3_ENDPOINT=<your-r2-endpoint>
+AWS_S3_BUCKET=<your-bucket>
+
+# ── Email ──
+RESEND_API_KEY=<your-key>
+
+# ── AI / OpenAI (optional, for search tagging) ──
+OPENAI_API_KEY=<your-key>
+
+# ── Frontend build-time variable ──
+NEXT_PUBLIC_API_URL=https://api.fotno.com
+
+# ── OAuth (optional) ──
+GOOGLE_CLIENT_ID=<if-using-google-auth>
+GOOGLE_CLIENT_SECRET=<if-using-google-auth>
+GITHUB_CLIENT_ID=<if-using-github-auth>
+GITHUB_CLIENT_SECRET=<if-using-github-auth>
+
+# ── Payments (optional) ──
+PAYMOB_API_KEY=<if-using-paymob>
+PAYMOB_SECRET_KEY=<if-using-paymob>
+PAYMOB_PUBLIC_KEY=<if-using-paymob>
+```
+
+> **Important:** Use the Coolify internal hostnames for your databases
+> (e.g. `fotno-database`, `fotno-pgvector`, `fotno-redis`).
+> Check each database resource in Coolify for its internal hostname.
+
+## Step 4: Configure Domains
+
+In Coolify, for each service that needs a public domain, set the domain in the compose service settings:
 
 | Service | Domain | Port |
 |---------|--------|------|
-| landing | `fotno.com` | 3000 |
-| dashboard | `app.fotno.com` | 3001 |
-| auth | `auth.fotno.com` | 3002 |
-| gallery | `gallery.fotno.com` | 3003 |
-| admin | `admin.fotno.com` | 3004 |
-| backend | `api.fotno.com` | 8000 |
-| upload-service | `upload.fotno.com` | 3010 |
-| image-search-service | Internal only | 4002 |
-| image-processor | Internal only (no HTTP) | — |
-| siglip-service | Internal only | 8001 |
-| qwen-ai-service | Internal only | 8002 |
+| `backend` | `api.fotno.com` | 8000 |
+| `upload-service` | `upload.fotno.com` | 3010 |
+| `landing` | `fotno.com` | 3000 |
+| `dashboard` | `app.fotno.com` | 3001 |
+| `auth` | `auth.fotno.com` | 3002 |
+| `gallery` | `gallery.fotno.com` | 3003 |
+| `admin` | `admin.fotno.com` | 3004 |
 
-> Internal services don't need public domains. Use Coolify's internal networking
-> (service names as hostnames, e.g. `http://siglip-service:8001`).
+**Do NOT assign domains** to internal-only services:
+- `image-search-service` (port 4002)
+- `image-processor` (no HTTP port)
+- `siglip-service` (port 8001)
+- `qwen-ai-service` (port 8002)
 
-## Deploy Order
+## Step 5: Deploy
 
-Deploy infrastructure first, then services in dependency order:
+Click **Deploy**. Coolify will build all 11 services and start them.
 
-```
-1. Redis, PostgreSQL (main), PostgreSQL (pgvector)   — already provisioned
-2. siglip-service                                     — no dependencies
-3. qwen-ai-service                                    — no dependencies
-4. image-search-service                               — needs Redis, pgvector DB, siglip, qwen
-5. backend                                            — needs Redis, main DB
-6. upload-service                                     — needs Redis, main DB, S3
-7. image-processor                                    — needs main DB, S3, image-search-service
-8. landing, auth, dashboard, gallery, admin            — need backend API URL
-```
+First deployment will be slow (~10-15 min) because:
+- pnpm installs all dependencies
+- AI models download on first start (~1.7GB SigLIP, ~4GB Qwen)
 
-## Creating Each Service in Coolify
-
-For each service, create a new **Application** in Coolify with these settings:
-
-### Common Settings (all services)
-
-- **Repository:** Your Git repo URL
-- **Branch:** `main`
-- **Build context:** `/` (repo root)
-- **Build pack:** Dockerfile
-
-### Per-Service Configuration
-
-#### backend
-
-- **Dockerfile:** `apps/backend/Dockerfile`
-- **Port:** `8000`
-- **Domain:** `api.fotno.com`
-- **Health check path:** `/api/health` (or your health endpoint)
-- **Environment variables:**
-  ```
-  DATABASE_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  DIRECT_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  REDIS_URL=redis://<redis-host>:6379
-  JWT_SECRET=<your-secret>
-  BETTER_AUTH_SECRET=<your-secret>
-  BETTER_AUTH_URL=https://api.fotno.com
-  AWS_ACCESS_KEY_ID=<your-key>
-  AWS_SECRET_ACCESS_KEY=<your-secret>
-  AWS_REGION=auto
-  AWS_ENDPOINT=<your-r2-endpoint>
-  S3_BUCKET=<your-bucket>
-  RESEND_API_KEY=<your-key>
-  IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
-  UPLOAD_SERVICE_URL=http://upload-service:3010
-  ```
-
-#### upload-service
-
-- **Dockerfile:** `apps/upload-service/Dockerfile`
-- **Port:** `3010`
-- **Domain:** `upload.fotno.com`
-- **Environment variables:**
-  ```
-  DATABASE_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  DIRECT_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  REDIS_URL=redis://<redis-host>:6379
-  JWT_SECRET=<your-secret>
-  AWS_ACCESS_KEY_ID=<your-key>
-  AWS_SECRET_ACCESS_KEY=<your-secret>
-  AWS_REGION=auto
-  AWS_ENDPOINT=<your-r2-endpoint>
-  S3_BUCKET=<your-bucket>
-  ```
-
-#### image-processor
-
-- **Dockerfile:** `apps/image-processor/Dockerfile`
-- **Port:** None (background worker — disable health checks)
-- **Domain:** None
-- **Environment variables:**
-  ```
-  DATABASE_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  DIRECT_URL=postgresql://user:pass@<main-pg-host>:5432/fotno
-  AWS_ACCESS_KEY_ID=<your-key>
-  AWS_SECRET_ACCESS_KEY=<your-secret>
-  AWS_REGION=auto
-  AWS_ENDPOINT=<your-r2-endpoint>
-  S3_BUCKET=<your-bucket>
-  IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
-  ```
-
-#### image-search-service
-
-- **Dockerfile:** `apps/image-search-service/Dockerfile`
-- **Port:** `4002`
-- **Domain:** None (internal only)
-- **Environment variables:**
-  ```
-  DATABASE_URL=postgresql://user:pass@<pgvector-host>:5432/fotno_search
-  REDIS_URL=redis://<redis-host>:6379
-  JWT_SECRET=<your-secret>
-  SIGLIP_SERVICE_URL=http://siglip-service:8001
-  QWEN_SERVICE_URL=http://qwen-ai-service:8002
-  OPENAI_API_KEY=<your-key>
-  EMBEDDING_BATCH_SIZE=16
-  EMBEDDING_WORKER_CONCURRENCY=2
-  ```
-
-#### siglip-service
-
-- **Dockerfile:** `apps/siglip-service/Dockerfile`
-- **Port:** `8001`
-- **Domain:** None (internal only)
-- **Volumes:** Mount a persistent volume at `/root/.cache/huggingface` to cache the model (~1.7GB download on first start)
-- **Environment variables:**
-  ```
-  PORT=8001
-  MAX_BATCH_SIZE=16
-  ```
-
-#### qwen-ai-service
-
-- **Dockerfile:** `apps/qwen-ai-service/Dockerfile`
-- **Port:** `8002`
-- **Domain:** None (internal only)
-- **Volumes:** Mount a persistent volume at `/root/.cache/huggingface` to cache the model (~4GB download on first start)
-- **Environment variables:**
-  ```
-  QWEN_SERVICE_PORT=8002
-  MODEL_SIZE=2b
-  MAX_BATCH_SIZE=8
-  ```
-
-#### landing
-
-- **Dockerfile:** `apps/landing/Dockerfile`
-- **Port:** `3000`
-- **Domain:** `fotno.com`
-- **Environment variables (build-time):**
-  ```
-  NEXT_PUBLIC_API_URL=https://api.fotno.com
-  ```
-
-#### dashboard
-
-- **Dockerfile:** `apps/dashboard/Dockerfile`
-- **Port:** `3001`
-- **Domain:** `app.fotno.com`
-- **Environment variables (build-time):**
-  ```
-  NEXT_PUBLIC_API_URL=https://api.fotno.com
-  ```
-
-#### auth
-
-- **Dockerfile:** `apps/auth/Dockerfile`
-- **Port:** `3002`
-- **Domain:** `auth.fotno.com`
-- **Environment variables (build-time):**
-  ```
-  NEXT_PUBLIC_API_URL=https://api.fotno.com
-  ```
-
-#### gallery
-
-- **Dockerfile:** `apps/gallery/Dockerfile`
-- **Port:** `3003`
-- **Domain:** `gallery.fotno.com`
-- **Environment variables (build-time):**
-  ```
-  NEXT_PUBLIC_API_URL=https://api.fotno.com
-  ```
-
-#### admin
-
-- **Dockerfile:** `apps/admin/Dockerfile`
-- **Port:** `3004`
-- **Domain:** `admin.fotno.com`
-- **Environment variables (build-time):**
-  ```
-  NEXT_PUBLIC_API_URL=https://api.fotno.com
-  ```
+Subsequent deployments are faster thanks to Docker layer caching.
 
 ## Database Migrations
 
 ### Main database (Prisma)
 
-Run once after first deploy (or on schema changes) from the backend container:
+After first deploy, run from the **backend** container terminal in Coolify:
 
 ```bash
-npx prisma migrate deploy --schema=../../packages/db/prisma/schema.prisma
+cd /app && npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
 ```
 
-Or via Coolify's terminal for the backend service:
-```bash
-cd /app && pnpm --filter @workspace/db db:deploy
-```
+### pgvector database
 
-### pgvector database (image search)
-
-The image-search-service automatically runs its schema migration on every startup
-(`scripts/db-deploy.cjs`). All statements are idempotent (`CREATE IF NOT EXISTS`).
-
-## AI Services Notes (4-thread Xeon, CPU-only)
-
-- **SigLIP:** Embedding generation works well on CPU. Expect ~0.5-1s per image.
-- **Qwen 2b:** Captioning on CPU will be slow (~30-60s per image). This is acceptable
-  for background processing. The 2b model uses ~4GB RAM.
-- Both services set `OMP_NUM_THREADS=4` and `MKL_NUM_THREADS=4` to match your CPU.
-- Mount persistent volumes for `/root/.cache/huggingface` to avoid re-downloading
-  models on container restarts.
-
-## Resource Recommendations
-
-| Service | RAM | CPU | Notes |
-|---------|-----|-----|-------|
-| backend | 512MB | 0.5 | Main API |
-| upload-service | 512MB | 0.5 | Handles chunked uploads |
-| image-processor | 512MB | 0.5 | Sharp image processing |
-| image-search-service | 256MB | 0.25 | Search orchestration |
-| siglip-service | 2.5GB | 1 | Model loaded in memory |
-| qwen-ai-service | 5GB | 2 | 2b model loaded in memory |
-| landing | 128MB | 0.1 | Static-ish Next.js |
-| dashboard | 256MB | 0.25 | SSR Next.js |
-| auth | 128MB | 0.1 | Auth pages |
-| gallery | 256MB | 0.25 | SSR galleries |
-| admin | 128MB | 0.1 | Admin panel |
-
-**Total:** ~10GB RAM, 4 CPU cores
+Runs automatically on every startup of `image-search-service` (idempotent).
 
 ## Networking
 
-Coolify uses Docker networking. Internal services communicate via container names:
+Docker Compose creates a shared network. Internal service URLs are hardcoded
+in `docker-compose.yml` via `environment:` overrides:
 
-- `http://backend:8000` — from frontends (server-side)
-- `http://siglip-service:8001` — from image-search-service
-- `http://qwen-ai-service:8002` — from image-search-service
-- `http://image-search-service:4002` — from backend and image-processor
-- `http://upload-service:3010` — from backend
+```
+backend        → http://image-search-service:4002
+image-processor → http://image-search-service:4002
+image-search   → http://siglip-service:8001
+image-search   → http://qwen-ai-service:8002
+```
 
-> Make sure all services are on the same Docker network in Coolify.
+Databases are reached via their Coolify internal hostnames set in the env vars.
+
+## Resource Requirements
+
+| Service | RAM | Notes |
+|---------|-----|-------|
+| backend | 512MB | API + cleanup worker |
+| upload-service | 512MB | Chunked uploads + Sharp |
+| image-processor | 512MB | Sharp image processing |
+| image-search-service | 256MB | Search orchestration |
+| siglip-service | 2.5GB | SigLIP model in memory |
+| qwen-ai-service | 5GB | Qwen 2b model in memory |
+| landing | 128MB | Static Next.js |
+| dashboard | 256MB | SSR Next.js |
+| auth | 128MB | Auth pages |
+| gallery | 256MB | SSR galleries |
+| admin | 128MB | Admin panel |
+
+**Total:** ~10GB RAM, 4 CPU cores
 
 ## Troubleshooting
 
-### Build fails with "frozen lockfile" error
-Ensure `pnpm-lock.yaml` is committed and up to date. Run `pnpm install` locally and commit the lockfile.
+### "frozen lockfile" build error
+Run `pnpm install` locally and commit `pnpm-lock.yaml`.
 
-### Prisma generate fails
-The Prisma schema uses `binaryTargets = ["native"]` which auto-detects the Docker build platform. If issues arise, add `"debian-openssl-3.0.x"` to the binaryTargets array in `packages/db/prisma/schema.prisma`.
+### AI services OOM
+Increase RAM in Coolify resource limits. SigLIP needs ~2.5GB, Qwen 2b needs ~5GB.
 
-### AI services OOM (Out of Memory)
-Increase the RAM allocation. SigLIP needs ~2.5GB, Qwen 2b needs ~5GB.
+### Image processor not picking up photos
+Check that `IMAGE_SEARCH_SERVICE_URL` resolves (test from container terminal).
 
-### Image processor not processing photos
-Check that `IMAGE_SEARCH_SERVICE_URL` is reachable and that the main database connection is working. The processor polls every 3 seconds.
+### Database connection refused
+Ensure databases and compose services are on the same Docker network.
+Check Coolify internal hostnames match your env vars.
+
+### Next.js shows wrong API URL
+`NEXT_PUBLIC_API_URL` is baked in at build time. You must redeploy after changing it.

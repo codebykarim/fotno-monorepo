@@ -36,6 +36,8 @@ COPY apps/gallery/ apps/gallery/
 # Generate Prisma client and build Next.js
 RUN pnpm --filter @workspace/db db:generate
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN cd apps/gallery && pnpm build
 
 # --- Production runner ---

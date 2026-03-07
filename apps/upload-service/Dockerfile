@@ -10,6 +10,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json ./
 
 # Copy all package.json files for pnpm workspace resolution
 COPY packages/db/package.json packages/db/
+COPY packages/db/prisma.config.ts packages/db/
+COPY packages/db/prisma/schema.prisma packages/db/prisma/
 COPY packages/lib/package.json packages/lib/
 COPY packages/ui/package.json packages/ui/
 COPY packages/eslint-config/package.json packages/eslint-config/

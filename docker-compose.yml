@@ -64,7 +64,7 @@ services:
     environment:
       NODE_ENV: production
       # Override DATABASE_URL to use the pgvector database
-      DATABASE_URL: ${IMAGE_SEARCH_DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
       SIGLIP_SERVICE_URL: http://siglip-service:8001
       QWEN_SERVICE_URL: http://qwen-ai-service:8002
     ports:

@@ -63,7 +63,7 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
     body: req.body,
     agent: req.headers["user-agent"],
     key: "INTERNAL_SERVER_ERROR",
-    env: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "development",
+    env: process.env.NODE_ENV as "development" | "production" | "test",
   };
 
   if (req.user?.id !== undefined) {

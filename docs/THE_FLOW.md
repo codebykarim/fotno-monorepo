@@ -118,7 +118,7 @@ Each arrow is async. The user only waits for the first step (S3 upload). Everyth
          │
          ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  PHASE 5: CAPTIONING (image-search-service → Florence-2, port 8002)       │
+│  PHASE 5: CAPTIONING (image-search-service → Qwen2-VL, port 8002)       │
 │                                                                           │
 │  BullMQ worker picks up captioning job                                    │
 │         │                                                                 │
@@ -136,10 +136,10 @@ Each arrow is async. The user only waits for the first step (S3 upload). Everyth
 │    │                                                                      │
 │    └── If no library match:                                               │
 │          ├── Get presigned URL for representative                         │
-│          ├── POST florence-service/caption                                 │
+│          ├── POST qwen2vl-service/caption                                 │
 │          │     → Returns { caption, tags }                                │
 │          ├── Save to caption library for future reuse                     │
-│          └── source: "florence2" or "florence2-cluster"                    │
+│          └── source: "qwen2vl" or "qwen2vl-cluster"                    │
 │         │                                                                 │
 │         ▼                                                                 │
 │  UPDATE image_search_image                                                │
@@ -148,7 +148,7 @@ Each arrow is async. The user only waits for the first step (S3 upload). Everyth
 │  UPDATE Photo (main DB, non-fatal)                                        │
 │    SET aiCaption, aiTags                                                  │
 │         │                                                                 │
-│         │  ⚠️  If Florence-2 is down, caption stays NULL.                 │
+│         │  ⚠️  If Qwen2-VL is down, caption stays NULL.                 │
 │         │     Photo IS searchable by vector, but NOT by text.             │
 │         │     Fails silently per-cluster, continues with others.          │
 │         │                                                                 │
@@ -218,7 +218,7 @@ Each arrow is async. The user only waits for the first step (S3 upload). Everyth
 |-------|-----------|------------|--------------|
 | 2 → 3 | Ingest HTTP call | Retries 3x with backoff. Logs error on final failure. | Check upload-service logs for "ingest failed after 3 attempts" |
 | 4 | SigLIP down/error | Tries batch first, falls back to per-image. Tracks `embeddingAttempts` + `embeddingError`. Gives up after 3 attempts per image. | `SELECT * FROM image_search_image WHERE "embeddingAttempts" >= 3` |
-| 5 | Florence-2 down/error | Tracks `captionAttempts` + `captionError` per cluster. Gives up after 3 attempts. Photo still vector-searchable. | `SELECT * FROM image_search_image WHERE "captionAttempts" >= 3` |
+| 5 | Qwen2-VL down/error | Tracks `captionAttempts` + `captionError` per cluster. Gives up after 3 attempts. Photo still vector-searchable. | `SELECT * FROM image_search_image WHERE "captionAttempts" >= 3` |
 | 5 | Prisma sync to Photo | Non-fatal, logged as warning. Captions still work in search. | Check image-search-service logs for "Failed to sync captions" |
 
 ### Useful Diagnostic Queries

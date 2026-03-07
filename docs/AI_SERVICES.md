@@ -25,7 +25,7 @@ Three services work together to make every uploaded photo searchable by natural 
 │            embedding      │          │      captioning                     │
 │                           │          │                                     │
 │                    ┌──────▼──┐  ┌────▼──────┐                              │
-│                    │ SigLIP  │  │Florence-2 │                              │
+│                    │ SigLIP  │  │Qwen2-VL │                              │
 │                    │ (8001)  │  │  (8002)   │                              │
 │                    │         │  │           │                              │
 │                    │ Image → │  │ Image →   │                              │
@@ -83,19 +83,29 @@ These vectors are stored in PostgreSQL with pgvector. At search time, the user's
 
 ---
 
-## Florence-2 Service (port 8002)
+## Qwen2-VL Service (port 8002)
 
-**Model:** `microsoft/Florence-2-large`
+**Model:** `Qwen/Qwen2-VL-2B-Instruct` (configurable: 2B / 7B / 72B)
 **Language:** Python (FastAPI)
 **Purpose:** Looks at photos and describes what's in them
 
-Florence-2 is a vision-language model. For each image it runs **two tasks**:
+Qwen2-VL is a vision-language model by Alibaba. For each image it runs **two prompts**:
 
-1. **`<MORE_DETAILED_CAPTION>`** — generates a descriptive sentence
-   *"A bride and groom standing under a floral arch in a garden ceremony"*
+1. **Caption prompt** — generates a detailed descriptive paragraph
+   *"A bride and groom standing under a floral arch in a garden ceremony, surrounded by guests in formal attire. Warm golden light filters through the trees."*
 
-2. **`<OD>` (object detection)** — extracts object labels as tags
-   `["person", "dress", "flowers", "arch"]`
+2. **Tags prompt** — extracts key objects/elements as comma-separated tags
+   `["person", "bride", "groom", "flowers", "arch", "garden"]`
+
+### Model Sizes
+
+| Size | Model ID | RAM | Best for |
+|------|----------|-----|----------|
+| `2b` | `Qwen/Qwen2-VL-2B-Instruct` | ~4 GB | Development, single-GPU |
+| `7b` | `Qwen/Qwen2-VL-7B-Instruct` | ~16 GB | Production, better captions |
+| `72b` | `Qwen/Qwen2-VL-72B-Instruct` | ~150 GB | Maximum quality, multi-GPU |
+
+Set `MODEL_SIZE=2b` (or `7b` / `72b`) in the environment to choose.
 
 ### Endpoints
 
@@ -105,7 +115,7 @@ Florence-2 is a vision-language model. For each image it runs **two tasks**:
 | `POST /caption/batch` | `{ image_urls[] }` | `{ results: [{ caption, tags }, ...] }` |
 | `GET /health` | — | `{ status, model, device }` |
 
-### Why Both SigLIP AND Florence-2?
+### Why Both SigLIP AND Qwen2-VL?
 
 They solve different problems:
 
@@ -119,7 +129,7 @@ They solve different problems:
 │     Fast similarity matching via pgvector                        │
 │     BUT: can't match on specific words/names                     │
 │                                                                  │
-│   Florence-2 (captions) answers: "What IS in this photo?"       │
+│   Qwen2-VL (captions) answers: "What IS in this photo?"         │
 │                                                                  │
 │     Enables keyword search: "cake" matches "a wedding cake       │
 │     decorated with white frosting"                               │
@@ -135,8 +145,9 @@ They solve different problems:
 
 | Env Var | Default | Description |
 |---------|---------|-------------|
-| `FLORENCE_SERVICE_PORT` | `8002` | Port |
+| `QWEN_SERVICE_PORT` | `8002` | Port |
 | `MAX_BATCH_SIZE` | `16` | Max images per batch request |
+| `MODEL_SIZE` | `2b` | Model variant: `2b`, `7b`, or `72b` |
 
 ---
 
@@ -145,9 +156,9 @@ They solve different problems:
 **Language:** Node.js / Express / TypeScript
 **Database:** PostgreSQL with pgvector extension (separate from main DB)
 **Queue:** BullMQ (Redis)
-**Purpose:** Orchestrates SigLIP + Florence-2 into a search pipeline
+**Purpose:** Orchestrates SigLIP + Qwen2-VL into a search pipeline
 
-This is the brain. SigLIP and Florence-2 are stateless inference endpoints — they take an image and return results. The image-search-service manages everything around them: queuing, batching, clustering, caching, error handling, retries, and serving search queries.
+This is the brain. SigLIP and Qwen2-VL are stateless inference endpoints — they take an image and return results. The image-search-service manages everything around them: queuing, batching, clustering, caching, error handling, retries, and serving search queries.
 
 ### What It Does
 
@@ -169,10 +180,10 @@ This is the brain. SigLIP and Florence-2 are stateless inference endpoints — t
 │  3. CAPTION ─────────────────────────────────────────────────────────    │
 │     BullMQ worker fetches embedded-but-uncaptioned photos                │
 │     Clusters similar photos (cosine sim > 0.93)                          │
-│       → captions only 1 per cluster (saves Florence-2 calls)             │
+│       → captions only 1 per cluster (saves Qwen2-VL calls)             │
 │     Checks caption library cache first                                   │
 │       → reuses if similar image was already captioned                    │
-│     Calls Florence-2 /caption for new images                             │
+│     Calls Qwen2-VL /caption for new images                             │
 │     Syncs aiCaption + aiTags back to main Prisma Photo model             │
 │                                                                          │
 │  4. SEARCH ──────────────────────────────────────────────────────────    │
@@ -252,7 +263,7 @@ Photo processed ──POST──▶  /ingest-photo
                            │                 │
                            ▼                 ▼
                       Reuse caption   ┌───────────────┐
-                      from library    │Florence-2      │
+                      from library    │Qwen2-VL      │
                                       │/caption        │──▶ { caption, tags }
                                       └───────┬────────┘
                                               │
@@ -309,9 +320,9 @@ User types "bride and groom under the arch"
 
 ### Optimizations
 
-**Clustering** — When a photographer uploads 50 similar ceremony shots, they look nearly identical to the model. Instead of captioning all 50, the service groups them by cosine similarity (threshold ~0.93) and only captions one representative per cluster. The rest inherit the same caption. This can reduce Florence-2 calls by 60-80%.
+**Clustering** — When a photographer uploads 50 similar ceremony shots, they look nearly identical to the model. Instead of captioning all 50, the service groups them by cosine similarity (threshold ~0.93) and only captions one representative per cluster. The rest inherit the same caption. This can reduce Qwen2-VL calls by 60-80%.
 
-**Caption Library** — A persistent cache of embedding→caption mappings. Before calling Florence-2, the service checks if a visually similar image has already been captioned. If the cosine similarity exceeds the threshold, it reuses the cached caption. This helps across galleries (e.g., a photographer who shoots similar venues).
+**Caption Library** — A persistent cache of embedding→caption mappings. Before calling Qwen2-VL, the service checks if a visually similar image has already been captioned. If the cosine similarity exceeds the threshold, it reuses the cached caption. This helps across galleries (e.g., a photographer who shoots similar venues).
 
 **Retry Budgets** — Each photo gets 3 embedding attempts and 3 captioning attempts. After exhausting retries, the photo is left in its current state (vector-searchable but not text-searchable, or not searchable at all). Failed photos can be retried by resetting their attempt counters.
 
@@ -324,10 +335,10 @@ The image-search-service uses its own PostgreSQL database with the pgvector exte
 image_search_image
   ├── photoId (links to main DB Photo.id)
   ├── embedding vector(1152)     -- from SigLIP
-  ├── caption text               -- from Florence-2
-  ├── tags text[]                -- from Florence-2
+  ├── caption text               -- from Qwen2-VL
+  ├── tags text[]                -- from Qwen2-VL
   ├── captionTsv tsvector        -- auto-generated for full-text search
-  ├── captionSource              -- "library" | "florence2" | "florence2-cluster"
+  ├── captionSource              -- "library" | "qwen2vl" | "qwen2vl-cluster"
   ├── embeddingAttempts / Error   -- retry tracking
   └── captionAttempts / Error     -- retry tracking
 

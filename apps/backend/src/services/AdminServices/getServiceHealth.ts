@@ -43,7 +43,7 @@ export const getServiceHealth = async () => {
     checkEndpoint("Upload Service", "http://localhost:3010/health"),
     checkEndpoint("Image Search", "http://localhost:4002/health"),
     checkEndpoint("SigLIP", "http://localhost:8001/health"),
-    checkEndpoint("Florence-2", "http://localhost:8002/health"),
+    checkEndpoint("Qwen2-VL", "http://localhost:8002/health"),
   ]);
 
   const results: ServiceHealthResult[] = services.map((s) =>

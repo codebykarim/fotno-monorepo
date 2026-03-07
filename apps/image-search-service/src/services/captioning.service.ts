@@ -2,7 +2,7 @@ import { query } from '../utils/db'
 import { getPresignedUrl } from '../utils/s3'
 import { logger } from '../utils/logger'
 import { env } from '../constants/env'
-import { captionImage } from './florence.client'
+import { captionImage } from './qwen.client'
 import { findMatchingCaption, addToLibrary } from './caption-library.service'
 import { prisma } from '@workspace/db'
 
@@ -150,7 +150,7 @@ export async function processCaptioning(galleryId?: string): Promise<{
       const presignedUrl = await getPresignedUrl(rep.storageUrl)
       const result = await captionImage(presignedUrl)
 
-      const source = cluster.members.length > 1 ? 'florence2-cluster' : 'florence2'
+      const source = cluster.members.length > 1 ? 'qwen2vl-cluster' : 'qwen2vl'
       await applyCaptionToPhotos(cluster.members, result.caption, result.tags, source)
       await syncCaptionsToPrisma(cluster.members, result.caption, result.tags)
 

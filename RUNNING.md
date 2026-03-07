@@ -31,8 +31,8 @@ source .venv/bin/activate    # activate it (use each time you open a new termina
 pip install -r requirements.txt
 cd ../..
 
-# 5. Set up the Python Florence-2 service (uses a virtual environment)
-cd apps/florence-service
+# 5. Set up the Python Qwen2-VL captioning service (uses a virtual environment)
+cd apps/qwen-ai-service
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -50,7 +50,7 @@ cd ../..
 Services must start in this order because of dependencies:
 
 ```
-Redis → SigLIP → Florence-2 → Image Search Service → Upload Service → Image Processor → Backend → Frontends
+Redis → SigLIP → Qwen2-VL → Image Search Service → Upload Service → Image Processor → Backend → Frontends
 ```
 
 ### Step 1 — Redis
@@ -87,22 +87,23 @@ curl http://localhost:8001/health
 
 ---
 
-### Step 3 — Florence-2 Captioning Service (Python)
+### Step 3 — Qwen2-VL Captioning Service (Python)
 
 ```bash
-cd apps/florence-service
+cd apps/qwen-ai-service
 source .venv/bin/activate   # activate the venv (created during first-time setup)
 python main.py
 ```
 
 - Runs on port **8002**
-- First start downloads `microsoft/Florence-2-large` (~1.5 GB) — this is a one-time download
+- First start downloads the Qwen2-VL model — size depends on `MODEL_SIZE` env var:
+  - `2b` (~4 GB), `7b` (~16 GB), `72b` (~150 GB)
 - Device auto-detected: CUDA > MPS > CPU
 
 Validate:
 ```bash
 curl http://localhost:8002/health
-# Expected: {"status":"healthy","model":"microsoft/Florence-2-large","device":"cpu|mps|cuda"}
+# Expected: {"status":"healthy","model":"Qwen/Qwen2-VL-2B-Instruct","model_size":"2b","device":"cpu|mps|cuda"}
 ```
 
 ---
@@ -216,7 +217,7 @@ Open **6 terminals** and run:
 |---|---|
 | 1 | `redis-server` |
 | 2 | `cd apps/siglip-service && source .venv/bin/activate && python main.py` |
-| 3 | `cd apps/florence-service && source .venv/bin/activate && python main.py` |
+| 3 | `cd apps/qwen-ai-service && source .venv/bin/activate && python main.py` |
 | 4 | `pnpm dev` (starts all Node services + frontends via Nx) |
 | 5 | `cd apps/image-search-service && pnpm dev` |
 | 6 | `cd apps/upload-service && pnpm dev` |
@@ -238,7 +239,7 @@ Open **6 terminals** and run:
 | Image Search Service | 4002 |
 | Backend API | 8000 |
 | SigLIP Service (Python) | 8001 |
-| Florence-2 Service (Python) | 8002 |
+| Qwen2-VL Service (Python) | 8002 |
 | Main Postgres DB | 5433 |
 | PgVector Postgres DB | 5466 |
 | Redis | 6379 |
@@ -390,7 +391,7 @@ pnpm kill
 lsof -ti:4002 | xargs kill  # image-search-service
 lsof -ti:3010 | xargs kill  # upload-service
 lsof -ti:8001 | xargs kill  # siglip-service
-lsof -ti:8002 | xargs kill  # florence-service
+lsof -ti:8002 | xargs kill  # qwen-ai-service
 ```
 
 ---

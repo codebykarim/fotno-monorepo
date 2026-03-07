@@ -14,7 +14,7 @@ const EnvSchema = z.object({
   AWS_S3_BUCKET: z.string().min(1),
   AWS_ACCESS_KEY_ID: z.string().min(1),
   AWS_SECRET_ACCESS_KEY: z.string().min(1),
-  FLORENCE_SERVICE_URL: z.string().url().default('http://localhost:8002'),
+  QWEN_SERVICE_URL: z.string().url().default('http://localhost:8002'),
   CAPTIONING_BATCH_SIZE: z.coerce.number().int().min(1).default(20),
   CAPTIONING_WORKER_CONCURRENCY: z.coerce.number().int().min(1).default(2),
   CAPTION_LIBRARY_SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.92),

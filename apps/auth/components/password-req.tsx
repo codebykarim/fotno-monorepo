@@ -1,12 +1,8 @@
 import React from "react";
-import { UseFormReturn } from "react-hook-form";
-import { AuthFormData } from "./unified-auth-form";
+import { UseFormReturn, FieldValues } from "react-hook-form";
 
-type Props = {
-  form: UseFormReturn<AuthFormData>;
-};
-
-const PasswordRequirements = ({ form }: Props) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PasswordRequirements = ({ form }: { form: UseFormReturn<any> }) => {
   const password = form.watch("password") || "";
 
   const requirements = [

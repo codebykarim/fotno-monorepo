@@ -46,4 +46,5 @@ ENV NODE_ENV=production
 WORKDIR /app/apps/image-processor
 
 # No HTTP port — this is a background polling worker
-CMD ["tsx", "dist/index.js"]
+# Run source directly via tsx — cross-app relative imports need source, not compiled dist/
+CMD ["tsx", "src/index.ts"]

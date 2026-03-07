@@ -31,6 +31,8 @@ const seedPhotos: Photo[] = [
     width: 900,
     height: 1200,
     loved: false,
+    blurDataUrl: "",
+    isCover: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString(),
   },
   {
@@ -47,6 +49,8 @@ const seedPhotos: Photo[] = [
     width: 900,
     height: 1350,
     loved: true,
+    blurDataUrl: "",
+    isCover: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 5).toISOString(),
   },
   {
@@ -63,6 +67,8 @@ const seedPhotos: Photo[] = [
     width: 900,
     height: 1100,
     loved: false,
+    blurDataUrl: "",
+    isCover: false,
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 2).toISOString(),
   },
 ];
@@ -80,6 +86,7 @@ const seedGalleries: Gallery[] = [
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString(),
     updatedAt: new Date(now - 1000 * 60 * 60 * 12).toISOString(),
     coverPhotoId: "p1",
+    aiContext: null,
   },
   {
     id: "g2",
@@ -93,6 +100,7 @@ const seedGalleries: Gallery[] = [
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
     updatedAt: new Date(now - 1000 * 60 * 60 * 3).toISOString(),
     coverPhotoId: "p3",
+    aiContext: null,
   },
 ];
 

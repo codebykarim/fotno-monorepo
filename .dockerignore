@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/dist
+.git
+**/.env
+**/.env.local
+**/.env.*.local
+**/.DS_Store
+**/coverage
+**/.turbo
+**/*.tsbuildinfo
+**/.eslintcache
+**/npm-debug.log*
+**/pnpm-debug.log*

@@ -13,6 +13,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py .
 
 ENV PORT=8002
+ENV MODEL_SIZE=2b
+ENV OMP_NUM_THREADS=4
+ENV MKL_NUM_THREADS=4
+
 EXPOSE 8002
 
 CMD ["python", "main.py"]

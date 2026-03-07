@@ -26,7 +26,8 @@ COPY apps/upload-service/package.json apps/upload-service/
 COPY apps/image-search-service/package.json apps/image-search-service/
 COPY apps/image-processor/package.json apps/image-processor/
 
-# Install dependencies (cached if package.json files unchanged)
+# Install dependencies (DIRECT_URL needed by prisma generate postinstall, dummy value for build)
+ARG DIRECT_URL="postgresql://build:build@localhost:5432/build"
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Copy workspace packages source

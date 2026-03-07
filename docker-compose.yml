@@ -133,6 +133,11 @@ services:
       dockerfile: apps/landing/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+        NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+        NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
     expose:
@@ -145,6 +150,11 @@ services:
       dockerfile: apps/dashboard/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+        NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+        NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
     expose:
@@ -157,6 +167,11 @@ services:
       dockerfile: apps/auth/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+        NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+        NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
     expose:
@@ -169,6 +184,11 @@ services:
       dockerfile: apps/gallery/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+        NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+        NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
     expose:
@@ -181,6 +201,11 @@ services:
       dockerfile: apps/admin/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+        NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+        NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
     expose:

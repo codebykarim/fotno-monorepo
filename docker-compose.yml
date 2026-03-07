@@ -3,10 +3,10 @@ services:
   # Backend Services
   # ──────────────────────────────────────────────
   backend:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       NODE_ENV: production
@@ -24,10 +24,10 @@ services:
       - image-search-service
 
   upload-service:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/upload-service/Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       NODE_ENV: production
@@ -41,10 +41,10 @@ services:
       start_period: 20s
 
   image-processor:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/image-processor/Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       NODE_ENV: production
@@ -56,10 +56,10 @@ services:
       - image-search-service
 
   image-search-service:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/image-search-service/Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       NODE_ENV: production
@@ -83,10 +83,10 @@ services:
   # AI Services
   # ──────────────────────────────────────────────
   siglip-service:
+    platform: linux/amd64
     build:
       context: ./apps/siglip-service
       dockerfile: Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       PORT: 8001
@@ -103,10 +103,10 @@ services:
       start_period: 120s
 
   qwen-ai-service:
+    platform: linux/amd64
     build:
       context: ./apps/qwen-ai-service
       dockerfile: Dockerfile
-      platform: linux/amd64
     env_file: .env
     environment:
       QWEN_SERVICE_PORT: 8002
@@ -127,10 +127,10 @@ services:
   # Frontend Apps (Next.js)
   # ──────────────────────────────────────────────
   landing:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/landing/Dockerfile
-      platform: linux/amd64
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     environment:
@@ -139,10 +139,10 @@ services:
       - "3000"
 
   dashboard:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/dashboard/Dockerfile
-      platform: linux/amd64
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     environment:
@@ -151,10 +151,10 @@ services:
       - "3001"
 
   auth:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/auth/Dockerfile
-      platform: linux/amd64
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     environment:
@@ -163,10 +163,10 @@ services:
       - "3002"
 
   gallery:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/gallery/Dockerfile
-      platform: linux/amd64
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     environment:
@@ -175,10 +175,10 @@ services:
       - "3003"
 
   admin:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: apps/admin/Dockerfile
-      platform: linux/amd64
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     environment:

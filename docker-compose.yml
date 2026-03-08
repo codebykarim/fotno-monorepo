@@ -171,9 +171,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: ${BACKEND_API_URL}
+        BACKEND_API_URL: http://backend:8000
     environment:
       - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8000
     expose:
       - "3000"
 
@@ -188,9 +189,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: ${BACKEND_API_URL}
+        BACKEND_API_URL: http://backend:8000
     environment:
       - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8000
     expose:
       - "3001"
 
@@ -205,9 +207,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: ${BACKEND_API_URL}
+        BACKEND_API_URL: http://backend:8000
     environment:
       - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8000
     expose:
       - "3002"
 
@@ -222,9 +225,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: ${BACKEND_API_URL}
+        BACKEND_API_URL: http://backend:8000
     environment:
       - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8000
       - GALLERY_SESSION_SECRET=${GALLERY_SESSION_SECRET}
     expose:
       - "3003"
@@ -240,9 +244,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: ${BACKEND_API_URL}
+        BACKEND_API_URL: http://backend:8000
     environment:
       - NODE_ENV=production
+      - BACKEND_API_URL=http://backend:8000
     expose:
       - "3004"
 

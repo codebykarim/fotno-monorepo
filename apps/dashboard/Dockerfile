@@ -60,6 +60,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Runtime env vars for server-side API calls (ARG → ENV so compose can override)
+ARG BACKEND_API_URL
+ARG NEXT_PUBLIC_API_URL
+ENV BACKEND_API_URL=${BACKEND_API_URL}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 

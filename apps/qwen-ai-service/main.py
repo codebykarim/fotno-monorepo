@@ -56,10 +56,7 @@ async def lifespan(app: FastAPI):
     global model, processor, device, dtype
     logger.info(f"Loading Qwen2-VL model: {MODEL_NAME} (size: {MODEL_SIZE})")
     device = get_device()
-    dtype = torch.float16 if device.type == "cuda" else torch.float32
-
-    if device.type == "mps":
-        dtype = torch.float32
+    dtype = torch.float32 if device.type == "mps" else torch.float16
 
     logger.info(f"Using device: {device}, dtype: {dtype}")
 

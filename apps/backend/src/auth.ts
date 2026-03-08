@@ -97,12 +97,14 @@ export const auth = betterAuth({
     "http://localhost:3004",
     "http://localhost:3005",
     "https://www.fotno.com",
+    "https://fotno.com",
     "https://auth.fotno.com",
     "https://admin.fotno.com",
     "https://gallery.fotno.com",
     "https://api.fotno.com",
     "https://upload.fotno.com",
     "https://app.fotno.com",
+    "https://gallery.fotno.com",
   ],
   // emailVerification: {
   //   sendVerificationEmail: async ({ user, url, token }, request) => {

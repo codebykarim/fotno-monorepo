@@ -36,13 +36,11 @@ services:
       - NEXT_PUBLIC_DASHBOARD_URL=${NEXT_PUBLIC_DASHBOARD_URL}
       - NEXT_PUBLIC_GALLERY_URL=${NEXT_PUBLIC_GALLERY_URL}
       - NEXT_PUBLIC_LANDING_URL=${NEXT_PUBLIC_LANDING_URL}
-      - IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
-      - UPLOAD_SERVICE_URL=http://upload-service:3010
+      - IMAGE_SEARCH_SERVICE_URL=${IMAGE_SEARCH_SERVICE_URL}
+      - UPLOAD_SERVICE_URL=${UPLOAD_SERVICE_URL}
       - PHOTO_WORKER_IN_API=${PHOTO_WORKER_IN_API}
     expose:
       - "8000"
-    depends_on:
-      - image-search-service
 
   upload-service:
     platform: linux/amd64
@@ -85,8 +83,8 @@ services:
       - AWS_S3_ENDPOINT=${AWS_S3_ENDPOINT}
       - AWS_S3_PUBLIC_URL=${AWS_S3_PUBLIC_URL}
       - AWS_REGION=${AWS_REGION}
-      - IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
-      - UPLOAD_SERVICE_URL=http://upload-service:3010
+      - IMAGE_SEARCH_SERVICE_URL=${IMAGE_SEARCH_SERVICE_URL}
+      - UPLOAD_SERVICE_URL=${UPLOAD_SERVICE_URL}
       - IMAGE_PROCESSOR_BATCH_SIZE=${IMAGE_PROCESSOR_BATCH_SIZE}
       - IMAGE_PROCESSOR_POLL_MS=${IMAGE_PROCESSOR_POLL_MS}
       - IMAGE_PROCESSOR_RETRY_FAILED=${IMAGE_PROCESSOR_RETRY_FAILED}
@@ -98,8 +96,6 @@ services:
       - UPLOAD_SESSION_TTL_HRS=${UPLOAD_SESSION_TTL_HRS}
     healthcheck:
       disable: true
-    depends_on:
-      - image-search-service
 
   image-search-service:
     platform: linux/amd64
@@ -112,8 +108,8 @@ services:
       - REDIS_URL=${REDIS_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - PORT=4002
-      - SIGLIP_SERVICE_URL=http://siglip-service:8001
-      - QWEN_SERVICE_URL=http://qwen-ai-service:8002
+      - SIGLIP_SERVICE_URL=${SIGLIP_SERVICE_URL}
+      - QWEN_SERVICE_URL=${QWEN_SERVICE_URL}
       - EMBEDDING_BATCH_SIZE=${EMBEDDING_BATCH_SIZE}
       - EMBEDDING_WORKER_CONCURRENCY=${EMBEDDING_WORKER_CONCURRENCY}
       - CAPTIONING_BATCH_SIZE=${CAPTIONING_BATCH_SIZE}
@@ -123,9 +119,6 @@ services:
       - CAPTION_LIBRARY_SIMILARITY_THRESHOLD=${CAPTION_LIBRARY_SIMILARITY_THRESHOLD}
     expose:
       - "4002"
-    depends_on:
-      - siglip-service
-      - qwen-ai-service
 
   # ──────────────────────────────────────────────
   # AI Services
@@ -171,10 +164,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: http://backend:8000
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       - NODE_ENV=production
-      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_API_URL=${BACKEND_API_URL}
     expose:
       - "3000"
 
@@ -189,10 +182,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: http://backend:8000
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       - NODE_ENV=production
-      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_API_URL=${BACKEND_API_URL}
     expose:
       - "3001"
 
@@ -207,10 +200,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: http://backend:8000
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       - NODE_ENV=production
-      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_API_URL=${BACKEND_API_URL}
     expose:
       - "3002"
 
@@ -225,10 +218,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: http://backend:8000
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       - NODE_ENV=production
-      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_API_URL=${BACKEND_API_URL}
       - GALLERY_SESSION_SECRET=${GALLERY_SESSION_SECRET}
     expose:
       - "3003"
@@ -244,10 +237,10 @@ services:
         NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
         NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
         NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
-        BACKEND_API_URL: http://backend:8000
+        BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       - NODE_ENV=production
-      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_API_URL=${BACKEND_API_URL}
     expose:
       - "3004"
 

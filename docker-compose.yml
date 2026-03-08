@@ -7,13 +7,40 @@ services:
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
-    env_file: .env
     environment:
       NODE_ENV: production
+      PORT: 8000
+      DIRECT_URL: ${DIRECT_URL}
+      DATABASE_URL: ${DIRECT_URL}
+      REDIS_URL: ${REDIS_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_S3_ENDPOINT: ${AWS_S3_ENDPOINT}
+      AWS_S3_PUBLIC_URL: ${AWS_S3_PUBLIC_URL}
+      AWS_REGION: ${AWS_REGION}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      PAYMOB_API_KEY: ${PAYMOB_API_KEY}
+      PAYMOB_SECRET_KEY: ${PAYMOB_SECRET_KEY}
+      PAYMOB_PUBLIC_KEY: ${PAYMOB_PUBLIC_KEY}
+      PAYMOB_INTEGRATION_ID: ${PAYMOB_INTEGRATION_ID}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
+      NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+      NEXT_PUBLIC_GALLERY_URL: ${NEXT_PUBLIC_GALLERY_URL}
+      NEXT_PUBLIC_LANDING_URL: ${NEXT_PUBLIC_LANDING_URL}
       IMAGE_SEARCH_SERVICE_URL: http://image-search-service:4002
       UPLOAD_SERVICE_URL: http://upload-service:3010
-    ports:
-      - "8000:8000"
+      PHOTO_WORKER_IN_API: ${PHOTO_WORKER_IN_API}
+    expose:
+      - "8000"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
       interval: 30s
@@ -28,11 +55,26 @@ services:
     build:
       context: .
       dockerfile: apps/upload-service/Dockerfile
-    env_file: .env
     environment:
       NODE_ENV: production
-    ports:
-      - "3010:3010"
+      PORT: 3010
+      DIRECT_URL: ${DIRECT_URL}
+      DATABASE_URL: ${DIRECT_URL}
+      REDIS_URL: ${REDIS_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_S3_ENDPOINT: ${AWS_S3_ENDPOINT}
+      AWS_S3_PUBLIC_URL: ${AWS_S3_PUBLIC_URL}
+      AWS_REGION: ${AWS_REGION}
+      CHUNK_SIZE_BYTES: ${CHUNK_SIZE_BYTES}
+      MAX_FILE_SIZE_BYTES: ${MAX_FILE_SIZE_BYTES}
+      MAX_FILES_PER_BATCH: ${MAX_FILES_PER_BATCH}
+      PRESIGNED_URL_TTL_SEC: ${PRESIGNED_URL_TTL_SEC}
+      UPLOAD_SESSION_TTL_HRS: ${UPLOAD_SESSION_TTL_HRS}
+      UPLOAD_SERVICE_PORT: ${UPLOAD_SERVICE_PORT}
+    expose:
+      - "3010"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3010/ || exit 1"]
       interval: 30s
@@ -45,10 +87,27 @@ services:
     build:
       context: .
       dockerfile: apps/image-processor/Dockerfile
-    env_file: .env
     environment:
       NODE_ENV: production
+      DIRECT_URL: ${DIRECT_URL}
+      DATABASE_URL: ${DIRECT_URL}
+      REDIS_URL: ${REDIS_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_S3_ENDPOINT: ${AWS_S3_ENDPOINT}
+      AWS_S3_PUBLIC_URL: ${AWS_S3_PUBLIC_URL}
+      AWS_REGION: ${AWS_REGION}
       IMAGE_SEARCH_SERVICE_URL: http://image-search-service:4002
+      IMAGE_PROCESSOR_BATCH_SIZE: ${IMAGE_PROCESSOR_BATCH_SIZE}
+      IMAGE_PROCESSOR_POLL_MS: ${IMAGE_PROCESSOR_POLL_MS}
+      IMAGE_PROCESSOR_RETRY_FAILED: ${IMAGE_PROCESSOR_RETRY_FAILED}
+      IMAGE_PROCESSOR_STALE_MS: ${IMAGE_PROCESSOR_STALE_MS}
+      PROCESSOR_CONCURRENCY: ${PROCESSOR_CONCURRENCY}
+      CHUNK_SIZE_BYTES: ${CHUNK_SIZE_BYTES}
+      MAX_FILE_SIZE_BYTES: ${MAX_FILE_SIZE_BYTES}
+      PRESIGNED_URL_TTL_SEC: ${PRESIGNED_URL_TTL_SEC}
+      UPLOAD_SESSION_TTL_HRS: ${UPLOAD_SESSION_TTL_HRS}
     # Background worker — no HTTP port
     healthcheck:
       disable: true
@@ -60,15 +119,23 @@ services:
     build:
       context: .
       dockerfile: apps/image-search-service/Dockerfile
-    env_file: .env
     environment:
       NODE_ENV: production
-      # Override DATABASE_URL to use the pgvector database
       DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      IMAGE_SEARCH_SERVICE_PORT: ${IMAGE_SEARCH_SERVICE_PORT}
       SIGLIP_SERVICE_URL: http://siglip-service:8001
       QWEN_SERVICE_URL: http://qwen-ai-service:8002
-    ports:
-      - "4002:4002"
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE}
+      EMBEDDING_WORKER_CONCURRENCY: ${EMBEDDING_WORKER_CONCURRENCY}
+      CAPTIONING_BATCH_SIZE: ${CAPTIONING_BATCH_SIZE}
+      CAPTIONING_ENABLED: ${CAPTIONING_ENABLED}
+      CAPTIONING_WORKER_CONCURRENCY: ${CAPTIONING_WORKER_CONCURRENCY}
+      CAPTION_CLUSTER_THRESHOLD: ${CAPTION_CLUSTER_THRESHOLD}
+      CAPTION_LIBRARY_SIMILARITY_THRESHOLD: ${CAPTION_LIBRARY_SIMILARITY_THRESHOLD}
+    expose:
+      - "4002"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:4002/ || exit 1"]
       interval: 30s
@@ -87,12 +154,11 @@ services:
     build:
       context: ./apps/siglip-service
       dockerfile: Dockerfile
-    env_file: .env
     environment:
       PORT: 8001
       MAX_BATCH_SIZE: 16
-    ports:
-      - "8001:8001"
+    expose:
+      - "8001"
     volumes:
       - huggingface-cache-siglip:/root/.cache/huggingface
     healthcheck:
@@ -107,13 +173,12 @@ services:
     build:
       context: ./apps/qwen-ai-service
       dockerfile: Dockerfile
-    env_file: .env
     environment:
       QWEN_SERVICE_PORT: 8002
       MODEL_SIZE: 2b
       MAX_BATCH_SIZE: 8
-    ports:
-      - "8002:8002"
+    expose:
+      - "8002"
     volumes:
       - huggingface-cache-qwen:/root/.cache/huggingface
     healthcheck:
@@ -140,8 +205,8 @@ services:
         BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
 
   dashboard:
     platform: linux/amd64
@@ -157,8 +222,8 @@ services:
         BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
 
   auth:
     platform: linux/amd64
@@ -174,8 +239,8 @@ services:
         BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
-    ports:
-      - "3002:3002"
+    expose:
+      - "3002"
 
   gallery:
     platform: linux/amd64
@@ -191,8 +256,9 @@ services:
         BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
-    ports:
-      - "3003:3003"
+      GALLERY_SESSION_SECRET: ${GALLERY_SESSION_SECRET}
+    expose:
+      - "3003"
 
   admin:
     platform: linux/amd64
@@ -208,8 +274,8 @@ services:
         BACKEND_API_URL: ${BACKEND_API_URL}
     environment:
       NODE_ENV: production
-    ports:
-      - "3004:3004"
+    expose:
+      - "3004"
 
 volumes:
   huggingface-cache-siglip:

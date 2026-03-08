@@ -5,9 +5,12 @@ import { processCaptioning } from '../services/captioning.service'
 
 const QUEUE_NAME = 'captioning-queue'
 
+const redisUrl = new URL(env.REDIS_URL)
 const redisConnection = {
-  host: new URL(env.REDIS_URL).hostname,
-  port: parseInt(new URL(env.REDIS_URL).port || '6379', 10),
+  host: redisUrl.hostname,
+  port: parseInt(redisUrl.port || '6379', 10),
+  password: redisUrl.password || undefined,
+  username: redisUrl.username || undefined,
   maxRetriesPerRequest: null,
 }
 

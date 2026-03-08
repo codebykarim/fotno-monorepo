@@ -49,7 +49,7 @@ services:
       dockerfile: apps/upload-service/Dockerfile
     environment:
       - NODE_ENV=production
-      - PORT=3010
+      - UPLOAD_SERVICE_PORT=4001
       - DIRECT_URL=${DIRECT_URL}
       - DATABASE_URL=${DIRECT_URL}
       - REDIS_URL=${REDIS_URL}
@@ -65,7 +65,7 @@ services:
       - PRESIGNED_URL_TTL_SEC=${PRESIGNED_URL_TTL_SEC}
       - UPLOAD_SESSION_TTL_HRS=${UPLOAD_SESSION_TTL_HRS}
     expose:
-      - "3010"
+      - "4001"
 
   image-processor:
     platform: linux/amd64

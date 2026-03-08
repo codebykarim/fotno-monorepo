@@ -43,6 +43,6 @@ RUN cd apps/upload-service && pnpm build
 ENV NODE_ENV=production
 WORKDIR /app/apps/upload-service
 
-EXPOSE 3010
+EXPOSE 4001
 
 CMD ["tsx", "dist/server.js"]

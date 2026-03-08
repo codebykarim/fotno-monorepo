@@ -1,4 +1,5 @@
 import { db } from "./_shared";
+import { Pool } from 'pg'
 
 interface ServiceHealthResult {
   name: string;
@@ -39,11 +40,11 @@ const checkEndpoint = async (
 
 export const getServiceHealth = async () => {
   const services = await Promise.allSettled([
-    checkEndpoint("Backend API", "http://localhost:8000/"),
-    checkEndpoint("Upload Service", "http://localhost:3010/health"),
-    checkEndpoint("Image Search", "http://localhost:4002/health"),
-    checkEndpoint("SigLIP", "http://localhost:8001/health"),
-    checkEndpoint("Qwen2-VL", "http://localhost:8002/health"),
+    checkEndpoint("Backend API", `${process.env.NEXT_PUBLIC_API_URL}/`),
+    checkEndpoint("Upload Service", `${process.env.UPLOAD_SERVICE_URL}/health`),
+    checkEndpoint("Image Search", `${process.env.IMAGE_SEARCH_SERVICE_URL}/health`),
+    checkEndpoint("SigLIP", `${process.env.SIGLIP_SERVICE_URL}/health`),
+    checkEndpoint("Qwen2-VL", `${process.env.QWEN_SERVICE_URL}/health`),
   ]);
 
   const results: ServiceHealthResult[] = services.map((s) =>
@@ -69,6 +70,34 @@ export const getServiceHealth = async () => {
     });
   }
 
+  // Check PGVector
+  const connectionString = process.env.DATABASE_URL
+  const pgVectorStart = Date.now();
+  if (!connectionString) {
+    results.push({
+      name: "PGVector",
+      status: "down",
+      responseTime: 0,
+    });
+  }
+  const pool = new Pool({ connectionString });
+  try {
+    await pool.query("SELECT 1");
+    results.push({
+      name: "PGVector",
+      status: "healthy",
+      responseTime: Date.now() - pgVectorStart,
+    });
+  } catch {
+    results.push({
+      name: "PGVector",
+      status: "down",
+      responseTime: Date.now() - pgVectorStart,
+    });
+  }
+  finally {
+    await pool.end();
+  }
   // Check Redis
   const redisStart = Date.now();
   try {

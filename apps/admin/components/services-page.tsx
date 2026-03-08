@@ -59,10 +59,10 @@ export function ServicesPage() {
   }
 
   const appServices = data.services.filter(
-    (s) => !["PostgreSQL", "Redis"].includes(s.name)
+    (s) => !["PostgreSQL", "Redis", "PGVector"].includes(s.name)
   );
   const infraServices = data.services.filter((s) =>
-    ["PostgreSQL", "Redis"].includes(s.name)
+    ["PostgreSQL", "Redis", "PGVector"].includes(s.name)
   );
 
   const healthyCount = data.services.filter((s) => s.status === "healthy").length;
@@ -93,7 +93,7 @@ export function ServicesPage() {
       {/* Infrastructure */}
       <div>
         <h2 className="text-sm font-medium text-muted-foreground mb-3">
-          Infrastructure
+          Database Services
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {infraServices.map((service) => (

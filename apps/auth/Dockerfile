@@ -28,7 +28,7 @@ COPY apps/image-processor/package.json apps/image-processor/
 
 # Install dependencies (DIRECT_URL needed by prisma generate postinstall, dummy value for build)
 ARG DIRECT_URL="postgresql://build:build@localhost:5432/build"
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copy workspace packages source
 COPY packages/ packages/

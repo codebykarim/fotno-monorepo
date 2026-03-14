@@ -126,7 +126,7 @@ export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
         setSuggestedPhotoIds(response.suggestedPhotoIds);
         setSelectedPhotoIds(new Set(response.suggestedPhotoIds));
         setAlbumTitle(
-          `AI Album: ${prompt.slice(0, 30)}${prompt.length > 30 ? "..." : ""}`,
+          `${prompt.slice(0, 30)}${prompt.length > 30 ? "..." : ""}`,
         );
       }
     } catch (error) {

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Fetcher<T> = (key: string) => Promise<T>;
 
 type SWROptions = {
   revalidateOnFocus?: boolean;
+  refreshInterval?: number;
 };
 
 type SWRResult<T> = {
@@ -125,7 +126,7 @@ export default function useSWR<T>(
   }, [key]);
 
   useEffect(() => {
-    if (!key || options?.revalidateOnFocus === false) {
+    if (!key || options?.revalidateOnFocus !== true) {
       return;
     }
 
@@ -136,6 +137,30 @@ export default function useSWR<T>(
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
   }, [doFetch, key, options?.revalidateOnFocus]);
+
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    const interval = options?.refreshInterval;
+    if (!key || !interval || interval <= 0) {
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      void doFetch();
+    }, interval);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [doFetch, key, options?.refreshInterval]);
 
   const mutate = useCallback(
     async (updater?: T | Promise<T> | ((current?: T) => T | Promise<T>)) => {

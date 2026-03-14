@@ -35,6 +35,7 @@ export const {
   signUp,
   forgetPassword,
   resetPassword,
+  linkSocial,
 } = authClient;
 
 export const sendVerificationOTP = authClient.emailOtp.sendVerificationOtp;

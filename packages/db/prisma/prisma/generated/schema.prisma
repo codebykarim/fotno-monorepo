@@ -9,23 +9,23 @@ datasource db {
 }
 
 model User {
-  id                 String          @id @unique @default(uuid())
+  id                 String           @id @unique @default(uuid())
   name               String
   email              String
-  plan               Plan            @default(FREE)
-  storageUsed        BigInt          @default(0)
-  storageLimit       BigInt          @default(0)
-  storageReserved    BigInt          @default(0)
-  overageBytes       BigInt          @default(0)
+  plan               Plan             @default(FREE)
+  storageUsed        BigInt           @default(0)
+  storageLimit       BigInt           @default(0)
+  storageReserved    BigInt           @default(0)
+  overageBytes       BigInt           @default(0)
   overageResetAt     DateTime?
-  stripeCustomerId   String?         @unique
-  stripeSubId        String?         @unique
-  warningEmailSent80 Boolean         @default(false)
-  warningEmailSent95 Boolean         @default(false)
+  stripeCustomerId   String?          @unique
+  stripeSubId        String?          @unique
+  warningEmailSent80 Boolean          @default(false)
+  warningEmailSent95 Boolean          @default(false)
   emailVerified      Boolean
   image              String?
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @default(now()) @updatedAt
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now()) @updatedAt
   role               String?
   banned             Boolean?
   banReason          String?
@@ -39,6 +39,7 @@ model User {
   galleries          Gallery[]
   clients            Client[]
   storageEvents      StorageEvent[]
+  driveImportJobs    DriveImportJob[]
 
   @@unique([email])
   @@map("user")
@@ -163,25 +164,26 @@ model UserOnboarding {
 }
 
 model Gallery {
-  id           String           @id @unique @default(uuid())
-  userId       String
-  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title        String
-  slug         String
-  eventDate    DateTime?
-  deadline     DateTime?
-  coverPhotoId String?
-  coverPhoto   Photo?           @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
-  passwordHash String?
-  shareToken   String           @unique @default(uuid())
-  aiContext    String?
-  isPublished  Boolean          @default(false)
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @default(now()) @updatedAt
-  photos       Photo[]          @relation("GalleryPhotos")
-  albums       Album[]
-  clients      GalleryClient[]
-  comments     GalleryComment[]
+  id               String            @id @unique @default(uuid())
+  userId           String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String
+  eventDate        DateTime?
+  deadline         DateTime?
+  coverPhotoId     String?
+  coverPhoto       Photo?            @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  passwordHash     String?
+  shareToken       String            @unique @default(uuid())
+  aiContext        String?
+  isPublished      Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  photos           Photo[]           @relation("GalleryPhotos")
+  albums           Album[]
+  clients          GalleryClient[]
+  comments         GalleryComment[]
+  driveImportItems DriveImportItem[]
 
   @@unique([userId, slug])
   @@map("gallery")
@@ -363,4 +365,71 @@ model ImageSearchAlbumCache {
   @@index([galleryId, userId])
   @@index([expiresAt])
   @@map("image_search_album_cache")
+}
+
+enum ImportSource {
+  DRIVE
+  PHOTOS
+}
+
+enum DriveImportStatus {
+  PENDING
+  LISTING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum DriveImportItemStatus {
+  PENDING
+  DOWNLOADING
+  UPLOADED
+  PROCESSING
+  COMPLETED
+  FAILED
+  SKIPPED
+}
+
+model DriveImportJob {
+  id             String            @id @default(uuid())
+  userId         String
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source         ImportSource      @default(DRIVE)
+  status         DriveImportStatus @default(PENDING)
+  totalFiles     Int               @default(0)
+  completedFiles Int               @default(0)
+  failedFiles    Int               @default(0)
+  skippedFiles   Int               @default(0)
+  errorMessage   String?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
+  items          DriveImportItem[]
+
+  @@index([userId, status])
+  @@map("drive_import_job")
+}
+
+model DriveImportItem {
+  id              String                @id @default(uuid())
+  jobId           String
+  job             DriveImportJob        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  galleryId       String
+  gallery         Gallery               @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  driveFolderId   String
+  driveFolderName String
+  driveFileId     String?
+  driveFileName   String?
+  driveFileSize   BigInt                @default(0)
+  driveMimeType   String?
+  photoId         String?
+  status          DriveImportItemStatus @default(PENDING)
+  errorMessage    String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @default(now()) @updatedAt
+
+  @@index([jobId, status])
+  @@map("drive_import_item")
 }

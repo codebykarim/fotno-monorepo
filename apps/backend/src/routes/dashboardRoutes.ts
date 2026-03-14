@@ -107,6 +107,86 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.getGalleryAiStatusController,
     authFunction: isAuth,
   },
+  "gdrive-auth-status": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdriveAuthStatusController,
+    authFunction: isAuth,
+  },
+  "gdrive-disconnect": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gdriveDisconnectController,
+    authFunction: isAuth,
+  },
+  "gdrive-folders": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdriveFoldersController,
+    authFunction: isAuth,
+  },
+  "gdrive-photo-folders": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdrivePhotoFoldersController,
+    authFunction: isAuth,
+  },
+  "gdrive-folder-preview": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdriveFolderPreviewController,
+    authFunction: isAuth,
+  },
+  "gdrive-start-import": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gdriveStartImportController,
+    authFunction: isAuth,
+  },
+  "gdrive-import-status": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdriveImportStatusController,
+    authFunction: isAuth,
+  },
+  "gdrive-list-imports": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gdriveListImportsController,
+    authFunction: isAuth,
+  },
+  "gdrive-cancel-import": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gdriveCancelImportController,
+    authFunction: isAuth,
+  },
+  "gphotos-auth-status": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gphotosAuthStatusController,
+    authFunction: isAuth,
+  },
+  "gphotos-disconnect": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gphotosDisconnectController,
+    authFunction: isAuth,
+  },
+  "gphotos-create-session": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gphotosCreateSessionController,
+    authFunction: isAuth,
+  },
+  "gphotos-session-status": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gphotosSessionStatusController,
+    authFunction: isAuth,
+  },
+  "gphotos-picked-items": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gphotosPickedItemsController,
+    authFunction: isAuth,
+  },
+  "gphotos-proxy-image": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.gphotosProxyImageController,
+    authFunction: isAuth,
+  },
+  "gphotos-start-import": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.gphotosStartImportController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -178,5 +258,73 @@ dashboardRoutes.patch("/dashboard/clients/:id", handleMethod("update-client"));
 
 dashboardRoutes.patch("/dashboard/photos/:id", handleMethod("update-photo"));
 dashboardRoutes.delete("/dashboard/photos/:id", handleMethod("delete-photo"));
+
+// ─── Google Drive Import ────────────────────────────────────────────────────
+dashboardRoutes.get(
+  "/dashboard/gdrive/auth-status",
+  handleMethod("gdrive-auth-status"),
+);
+dashboardRoutes.post(
+  "/dashboard/gdrive/disconnect",
+  handleMethod("gdrive-disconnect"),
+);
+dashboardRoutes.get(
+  "/dashboard/gdrive/folders",
+  handleMethod("gdrive-folders"),
+);
+dashboardRoutes.get(
+  "/dashboard/gdrive/photo-folders",
+  handleMethod("gdrive-photo-folders"),
+);
+dashboardRoutes.get(
+  "/dashboard/gdrive/folders/:folderId/preview",
+  handleMethod("gdrive-folder-preview"),
+);
+dashboardRoutes.post(
+  "/dashboard/gdrive/import",
+  handleMethod("gdrive-start-import"),
+);
+dashboardRoutes.get(
+  "/dashboard/gdrive/import/:jobId",
+  handleMethod("gdrive-import-status"),
+);
+dashboardRoutes.get(
+  "/dashboard/gdrive/imports",
+  handleMethod("gdrive-list-imports"),
+);
+dashboardRoutes.post(
+  "/dashboard/gdrive/import/:jobId/cancel",
+  handleMethod("gdrive-cancel-import"),
+);
+
+// ─── Google Photos Import ───────────────────────────────────────────────────
+dashboardRoutes.get(
+  "/dashboard/gphotos/auth-status",
+  handleMethod("gphotos-auth-status"),
+);
+dashboardRoutes.post(
+  "/dashboard/gphotos/disconnect",
+  handleMethod("gphotos-disconnect"),
+);
+dashboardRoutes.post(
+  "/dashboard/gphotos/session",
+  handleMethod("gphotos-create-session"),
+);
+dashboardRoutes.get(
+  "/dashboard/gphotos/session/:sessionId",
+  handleMethod("gphotos-session-status"),
+);
+dashboardRoutes.get(
+  "/dashboard/gphotos/session/:sessionId/items",
+  handleMethod("gphotos-picked-items"),
+);
+dashboardRoutes.get(
+  "/dashboard/gphotos/image",
+  handleMethod("gphotos-proxy-image"),
+);
+dashboardRoutes.post(
+  "/dashboard/gphotos/import",
+  handleMethod("gphotos-start-import"),
+);
 
 export default dashboardRoutes;

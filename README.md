@@ -2,17 +2,17 @@
 
 ```bash
 # Generate Prisma client
-pnpm --filter backend exec prisma generate
+pnpm --filter @workspace/db exec prisma generate
 
 # Format Prisma schema
-pnpm --filter backend exec prisma format
+pnpm --filter @workspace/db exec prisma format
 
 # Create and run database migration
-pnpm --filter backend exec prisma migrate dev --name init
+pnpm --filter @workspace/db exec prisma migrate dev --name init
 
 # Push schema changes to database
-pnpm --filter backend exec prisma db push
+pnpm --filter @workspace/db exec prisma db push
 
 # Reset database
-pnpm --filter backend exec prisma migrate reset
+pnpm --filter @workspace/db exec prisma migrate reset
 ```

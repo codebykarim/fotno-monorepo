@@ -98,6 +98,16 @@ export type ImageSearchImage = $Result.DefaultSelection<Prisma.$ImageSearchImage
  * 
  */
 export type ImageSearchAlbumCache = $Result.DefaultSelection<Prisma.$ImageSearchAlbumCachePayload>
+/**
+ * Model DriveImportJob
+ * 
+ */
+export type DriveImportJob = $Result.DefaultSelection<Prisma.$DriveImportJobPayload>
+/**
+ * Model DriveImportItem
+ * 
+ */
+export type DriveImportItem = $Result.DefaultSelection<Prisma.$DriveImportItemPayload>
 
 /**
  * Enums
@@ -167,6 +177,39 @@ export const UploadSessionStatus: {
 
 export type UploadSessionStatus = (typeof UploadSessionStatus)[keyof typeof UploadSessionStatus]
 
+
+export const ImportSource: {
+  DRIVE: 'DRIVE',
+  PHOTOS: 'PHOTOS'
+};
+
+export type ImportSource = (typeof ImportSource)[keyof typeof ImportSource]
+
+
+export const DriveImportStatus: {
+  PENDING: 'PENDING',
+  LISTING: 'LISTING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type DriveImportStatus = (typeof DriveImportStatus)[keyof typeof DriveImportStatus]
+
+
+export const DriveImportItemStatus: {
+  PENDING: 'PENDING',
+  DOWNLOADING: 'DOWNLOADING',
+  UPLOADED: 'UPLOADED',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+export type DriveImportItemStatus = (typeof DriveImportItemStatus)[keyof typeof DriveImportItemStatus]
+
 }
 
 export type Plan = $Enums.Plan
@@ -197,15 +240,25 @@ export type UploadSessionStatus = $Enums.UploadSessionStatus
 
 export const UploadSessionStatus: typeof $Enums.UploadSessionStatus
 
+export type ImportSource = $Enums.ImportSource
+
+export const ImportSource: typeof $Enums.ImportSource
+
+export type DriveImportStatus = $Enums.DriveImportStatus
+
+export const DriveImportStatus: typeof $Enums.DriveImportStatus
+
+export type DriveImportItemStatus = $Enums.DriveImportItemStatus
+
+export const DriveImportItemStatus: typeof $Enums.DriveImportItemStatus
+
 /**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient({
- *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
- * })
+ * const prisma = new PrismaClient()
  * // Fetch zero or more Users
  * const users = await prisma.user.findMany()
  * ```
@@ -226,9 +279,7 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient({
-   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
-   * })
+   * const prisma = new PrismaClient()
    * // Fetch zero or more Users
    * const users = await prisma.user.findMany()
    * ```
@@ -487,6 +538,26 @@ export class PrismaClient<
     * ```
     */
   get imageSearchAlbumCache(): Prisma.ImageSearchAlbumCacheDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.driveImportJob`: Exposes CRUD operations for the **DriveImportJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DriveImportJobs
+    * const driveImportJobs = await prisma.driveImportJob.findMany()
+    * ```
+    */
+  get driveImportJob(): Prisma.DriveImportJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.driveImportItem`: Exposes CRUD operations for the **DriveImportItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DriveImportItems
+    * const driveImportItems = await prisma.driveImportItem.findMany()
+    * ```
+    */
+  get driveImportItem(): Prisma.DriveImportItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -537,8 +608,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.4.2
-   * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
+   * Prisma Client JS version: 7.4.1
+   * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
    */
   export type PrismaVersion = {
     client: string
@@ -937,7 +1008,9 @@ export namespace Prisma {
     AlbumPhoto: 'AlbumPhoto',
     GalleryComment: 'GalleryComment',
     ImageSearchImage: 'ImageSearchImage',
-    ImageSearchAlbumCache: 'ImageSearchAlbumCache'
+    ImageSearchAlbumCache: 'ImageSearchAlbumCache',
+    DriveImportJob: 'DriveImportJob',
+    DriveImportItem: 'DriveImportItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -953,7 +1026,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "imageSearchImage" | "imageSearchAlbumCache"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "imageSearchImage" | "imageSearchAlbumCache" | "driveImportJob" | "driveImportItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2215,6 +2288,154 @@ export namespace Prisma {
           }
         }
       }
+      DriveImportJob: {
+        payload: Prisma.$DriveImportJobPayload<ExtArgs>
+        fields: Prisma.DriveImportJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DriveImportJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DriveImportJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          findFirst: {
+            args: Prisma.DriveImportJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DriveImportJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          findMany: {
+            args: Prisma.DriveImportJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>[]
+          }
+          create: {
+            args: Prisma.DriveImportJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          createMany: {
+            args: Prisma.DriveImportJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DriveImportJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>[]
+          }
+          delete: {
+            args: Prisma.DriveImportJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          update: {
+            args: Prisma.DriveImportJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.DriveImportJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DriveImportJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DriveImportJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.DriveImportJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportJobPayload>
+          }
+          aggregate: {
+            args: Prisma.DriveImportJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDriveImportJob>
+          }
+          groupBy: {
+            args: Prisma.DriveImportJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DriveImportJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DriveImportJobCountArgs<ExtArgs>
+            result: $Utils.Optional<DriveImportJobCountAggregateOutputType> | number
+          }
+        }
+      }
+      DriveImportItem: {
+        payload: Prisma.$DriveImportItemPayload<ExtArgs>
+        fields: Prisma.DriveImportItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DriveImportItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DriveImportItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          findFirst: {
+            args: Prisma.DriveImportItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DriveImportItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          findMany: {
+            args: Prisma.DriveImportItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>[]
+          }
+          create: {
+            args: Prisma.DriveImportItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          createMany: {
+            args: Prisma.DriveImportItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DriveImportItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>[]
+          }
+          delete: {
+            args: Prisma.DriveImportItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          update: {
+            args: Prisma.DriveImportItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.DriveImportItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DriveImportItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DriveImportItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.DriveImportItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DriveImportItemPayload>
+          }
+          aggregate: {
+            args: Prisma.DriveImportItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDriveImportItem>
+          }
+          groupBy: {
+            args: Prisma.DriveImportItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DriveImportItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DriveImportItemCountArgs<ExtArgs>
+            result: $Utils.Optional<DriveImportItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2340,6 +2561,8 @@ export namespace Prisma {
     galleryComment?: GalleryCommentOmit
     imageSearchImage?: ImageSearchImageOmit
     imageSearchAlbumCache?: ImageSearchAlbumCacheOmit
+    driveImportJob?: DriveImportJobOmit
+    driveImportItem?: DriveImportItemOmit
   }
 
   /* Types for Logging */
@@ -2426,6 +2649,7 @@ export namespace Prisma {
     galleries: number
     clients: number
     storageEvents: number
+    driveImportJobs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2435,6 +2659,7 @@ export namespace Prisma {
     galleries?: boolean | UserCountOutputTypeCountGalleriesArgs
     clients?: boolean | UserCountOutputTypeCountClientsArgs
     storageEvents?: boolean | UserCountOutputTypeCountStorageEventsArgs
+    driveImportJobs?: boolean | UserCountOutputTypeCountDriveImportJobsArgs
   }
 
   // Custom InputTypes
@@ -2490,6 +2715,13 @@ export namespace Prisma {
     where?: StorageEventWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDriveImportJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriveImportJobWhereInput
+  }
+
 
   /**
    * Count Type GalleryCountOutputType
@@ -2500,6 +2732,7 @@ export namespace Prisma {
     albums: number
     clients: number
     comments: number
+    driveImportItems: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2507,6 +2740,7 @@ export namespace Prisma {
     albums?: boolean | GalleryCountOutputTypeCountAlbumsArgs
     clients?: boolean | GalleryCountOutputTypeCountClientsArgs
     comments?: boolean | GalleryCountOutputTypeCountCommentsArgs
+    driveImportItems?: boolean | GalleryCountOutputTypeCountDriveImportItemsArgs
   }
 
   // Custom InputTypes
@@ -2546,6 +2780,13 @@ export namespace Prisma {
    */
   export type GalleryCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GalleryCommentWhereInput
+  }
+
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountDriveImportItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriveImportItemWhereInput
   }
 
 
@@ -2688,6 +2929,37 @@ export namespace Prisma {
    */
   export type GalleryCommentCountOutputTypeCountRepliesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GalleryCommentWhereInput
+  }
+
+
+  /**
+   * Count Type DriveImportJobCountOutputType
+   */
+
+  export type DriveImportJobCountOutputType = {
+    items: number
+  }
+
+  export type DriveImportJobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | DriveImportJobCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DriveImportJobCountOutputType without action
+   */
+  export type DriveImportJobCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJobCountOutputType
+     */
+    select?: DriveImportJobCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DriveImportJobCountOutputType without action
+   */
+  export type DriveImportJobCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriveImportItemWhereInput
   }
 
 
@@ -3056,6 +3328,7 @@ export namespace Prisma {
     galleries?: boolean | User$galleriesArgs<ExtArgs>
     clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
+    driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3146,6 +3419,7 @@ export namespace Prisma {
     galleries?: boolean | User$galleriesArgs<ExtArgs>
     clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
+    driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3161,6 +3435,7 @@ export namespace Prisma {
       galleries: Prisma.$GalleryPayload<ExtArgs>[]
       clients: Prisma.$ClientPayload<ExtArgs>[]
       storageEvents: Prisma.$StorageEventPayload<ExtArgs>[]
+      driveImportJobs: Prisma.$DriveImportJobPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3587,6 +3862,7 @@ export namespace Prisma {
     galleries<T extends User$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, User$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     storageEvents<T extends User$storageEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$storageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    driveImportJobs<T extends User$driveImportJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$driveImportJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4187,6 +4463,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
+  }
+
+  /**
+   * User.driveImportJobs
+   */
+  export type User$driveImportJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    where?: DriveImportJobWhereInput
+    orderBy?: DriveImportJobOrderByWithRelationInput | DriveImportJobOrderByWithRelationInput[]
+    cursor?: DriveImportJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
   }
 
   /**
@@ -10091,6 +10391,7 @@ export namespace Prisma {
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
+    driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -10154,6 +10455,7 @@ export namespace Prisma {
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
+    driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10174,6 +10476,7 @@ export namespace Prisma {
       albums: Prisma.$AlbumPayload<ExtArgs>[]
       clients: Prisma.$GalleryClientPayload<ExtArgs>[]
       comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
+      driveImportItems: Prisma.$DriveImportItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10589,6 +10892,7 @@ export namespace Prisma {
     albums<T extends Gallery$albumsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$albumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     clients<T extends Gallery$clientsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Gallery$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    driveImportItems<T extends Gallery$driveImportItemsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$driveImportItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11139,6 +11443,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.driveImportItems
+   */
+  export type Gallery$driveImportItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    where?: DriveImportItemWhereInput
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    cursor?: DriveImportItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
   }
 
   /**
@@ -22574,6 +22902,2461 @@ export namespace Prisma {
 
 
   /**
+   * Model DriveImportJob
+   */
+
+  export type AggregateDriveImportJob = {
+    _count: DriveImportJobCountAggregateOutputType | null
+    _avg: DriveImportJobAvgAggregateOutputType | null
+    _sum: DriveImportJobSumAggregateOutputType | null
+    _min: DriveImportJobMinAggregateOutputType | null
+    _max: DriveImportJobMaxAggregateOutputType | null
+  }
+
+  export type DriveImportJobAvgAggregateOutputType = {
+    totalFiles: number | null
+    completedFiles: number | null
+    failedFiles: number | null
+    skippedFiles: number | null
+  }
+
+  export type DriveImportJobSumAggregateOutputType = {
+    totalFiles: number | null
+    completedFiles: number | null
+    failedFiles: number | null
+    skippedFiles: number | null
+  }
+
+  export type DriveImportJobMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    source: $Enums.ImportSource | null
+    status: $Enums.DriveImportStatus | null
+    totalFiles: number | null
+    completedFiles: number | null
+    failedFiles: number | null
+    skippedFiles: number | null
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DriveImportJobMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    source: $Enums.ImportSource | null
+    status: $Enums.DriveImportStatus | null
+    totalFiles: number | null
+    completedFiles: number | null
+    failedFiles: number | null
+    skippedFiles: number | null
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DriveImportJobCountAggregateOutputType = {
+    id: number
+    userId: number
+    source: number
+    status: number
+    totalFiles: number
+    completedFiles: number
+    failedFiles: number
+    skippedFiles: number
+    errorMessage: number
+    startedAt: number
+    completedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DriveImportJobAvgAggregateInputType = {
+    totalFiles?: true
+    completedFiles?: true
+    failedFiles?: true
+    skippedFiles?: true
+  }
+
+  export type DriveImportJobSumAggregateInputType = {
+    totalFiles?: true
+    completedFiles?: true
+    failedFiles?: true
+    skippedFiles?: true
+  }
+
+  export type DriveImportJobMinAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    status?: true
+    totalFiles?: true
+    completedFiles?: true
+    failedFiles?: true
+    skippedFiles?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DriveImportJobMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    status?: true
+    totalFiles?: true
+    completedFiles?: true
+    failedFiles?: true
+    skippedFiles?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DriveImportJobCountAggregateInputType = {
+    id?: true
+    userId?: true
+    source?: true
+    status?: true
+    totalFiles?: true
+    completedFiles?: true
+    failedFiles?: true
+    skippedFiles?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DriveImportJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DriveImportJob to aggregate.
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportJobs to fetch.
+     */
+    orderBy?: DriveImportJobOrderByWithRelationInput | DriveImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DriveImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DriveImportJobs
+    **/
+    _count?: true | DriveImportJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DriveImportJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DriveImportJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DriveImportJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DriveImportJobMaxAggregateInputType
+  }
+
+  export type GetDriveImportJobAggregateType<T extends DriveImportJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateDriveImportJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDriveImportJob[P]>
+      : GetScalarType<T[P], AggregateDriveImportJob[P]>
+  }
+
+
+
+
+  export type DriveImportJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriveImportJobWhereInput
+    orderBy?: DriveImportJobOrderByWithAggregationInput | DriveImportJobOrderByWithAggregationInput[]
+    by: DriveImportJobScalarFieldEnum[] | DriveImportJobScalarFieldEnum
+    having?: DriveImportJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DriveImportJobCountAggregateInputType | true
+    _avg?: DriveImportJobAvgAggregateInputType
+    _sum?: DriveImportJobSumAggregateInputType
+    _min?: DriveImportJobMinAggregateInputType
+    _max?: DriveImportJobMaxAggregateInputType
+  }
+
+  export type DriveImportJobGroupByOutputType = {
+    id: string
+    userId: string
+    source: $Enums.ImportSource
+    status: $Enums.DriveImportStatus
+    totalFiles: number
+    completedFiles: number
+    failedFiles: number
+    skippedFiles: number
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DriveImportJobCountAggregateOutputType | null
+    _avg: DriveImportJobAvgAggregateOutputType | null
+    _sum: DriveImportJobSumAggregateOutputType | null
+    _min: DriveImportJobMinAggregateOutputType | null
+    _max: DriveImportJobMaxAggregateOutputType | null
+  }
+
+  type GetDriveImportJobGroupByPayload<T extends DriveImportJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DriveImportJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DriveImportJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DriveImportJobGroupByOutputType[P]>
+            : GetScalarType<T[P], DriveImportJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DriveImportJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    status?: boolean
+    totalFiles?: boolean
+    completedFiles?: boolean
+    failedFiles?: boolean
+    skippedFiles?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | DriveImportJob$itemsArgs<ExtArgs>
+    _count?: boolean | DriveImportJobCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportJob"]>
+
+  export type DriveImportJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    status?: boolean
+    totalFiles?: boolean
+    completedFiles?: boolean
+    failedFiles?: boolean
+    skippedFiles?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportJob"]>
+
+  export type DriveImportJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    status?: boolean
+    totalFiles?: boolean
+    completedFiles?: boolean
+    failedFiles?: boolean
+    skippedFiles?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportJob"]>
+
+  export type DriveImportJobSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    source?: boolean
+    status?: boolean
+    totalFiles?: boolean
+    completedFiles?: boolean
+    failedFiles?: boolean
+    skippedFiles?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DriveImportJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "status" | "totalFiles" | "completedFiles" | "failedFiles" | "skippedFiles" | "errorMessage" | "startedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["driveImportJob"]>
+  export type DriveImportJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | DriveImportJob$itemsArgs<ExtArgs>
+    _count?: boolean | DriveImportJobCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DriveImportJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DriveImportJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DriveImportJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DriveImportJob"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      items: Prisma.$DriveImportItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      source: $Enums.ImportSource
+      status: $Enums.DriveImportStatus
+      totalFiles: number
+      completedFiles: number
+      failedFiles: number
+      skippedFiles: number
+      errorMessage: string | null
+      startedAt: Date | null
+      completedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["driveImportJob"]>
+    composites: {}
+  }
+
+  type DriveImportJobGetPayload<S extends boolean | null | undefined | DriveImportJobDefaultArgs> = $Result.GetResult<Prisma.$DriveImportJobPayload, S>
+
+  type DriveImportJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DriveImportJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DriveImportJobCountAggregateInputType | true
+    }
+
+  export interface DriveImportJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DriveImportJob'], meta: { name: 'DriveImportJob' } }
+    /**
+     * Find zero or one DriveImportJob that matches the filter.
+     * @param {DriveImportJobFindUniqueArgs} args - Arguments to find a DriveImportJob
+     * @example
+     * // Get one DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DriveImportJobFindUniqueArgs>(args: SelectSubset<T, DriveImportJobFindUniqueArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DriveImportJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DriveImportJobFindUniqueOrThrowArgs} args - Arguments to find a DriveImportJob
+     * @example
+     * // Get one DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DriveImportJobFindUniqueOrThrowArgs>(args: SelectSubset<T, DriveImportJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DriveImportJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobFindFirstArgs} args - Arguments to find a DriveImportJob
+     * @example
+     * // Get one DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DriveImportJobFindFirstArgs>(args?: SelectSubset<T, DriveImportJobFindFirstArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DriveImportJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobFindFirstOrThrowArgs} args - Arguments to find a DriveImportJob
+     * @example
+     * // Get one DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DriveImportJobFindFirstOrThrowArgs>(args?: SelectSubset<T, DriveImportJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DriveImportJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DriveImportJobs
+     * const driveImportJobs = await prisma.driveImportJob.findMany()
+     * 
+     * // Get first 10 DriveImportJobs
+     * const driveImportJobs = await prisma.driveImportJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const driveImportJobWithIdOnly = await prisma.driveImportJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DriveImportJobFindManyArgs>(args?: SelectSubset<T, DriveImportJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DriveImportJob.
+     * @param {DriveImportJobCreateArgs} args - Arguments to create a DriveImportJob.
+     * @example
+     * // Create one DriveImportJob
+     * const DriveImportJob = await prisma.driveImportJob.create({
+     *   data: {
+     *     // ... data to create a DriveImportJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends DriveImportJobCreateArgs>(args: SelectSubset<T, DriveImportJobCreateArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DriveImportJobs.
+     * @param {DriveImportJobCreateManyArgs} args - Arguments to create many DriveImportJobs.
+     * @example
+     * // Create many DriveImportJobs
+     * const driveImportJob = await prisma.driveImportJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DriveImportJobCreateManyArgs>(args?: SelectSubset<T, DriveImportJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DriveImportJobs and returns the data saved in the database.
+     * @param {DriveImportJobCreateManyAndReturnArgs} args - Arguments to create many DriveImportJobs.
+     * @example
+     * // Create many DriveImportJobs
+     * const driveImportJob = await prisma.driveImportJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DriveImportJobs and only return the `id`
+     * const driveImportJobWithIdOnly = await prisma.driveImportJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DriveImportJobCreateManyAndReturnArgs>(args?: SelectSubset<T, DriveImportJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DriveImportJob.
+     * @param {DriveImportJobDeleteArgs} args - Arguments to delete one DriveImportJob.
+     * @example
+     * // Delete one DriveImportJob
+     * const DriveImportJob = await prisma.driveImportJob.delete({
+     *   where: {
+     *     // ... filter to delete one DriveImportJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DriveImportJobDeleteArgs>(args: SelectSubset<T, DriveImportJobDeleteArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DriveImportJob.
+     * @param {DriveImportJobUpdateArgs} args - Arguments to update one DriveImportJob.
+     * @example
+     * // Update one DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DriveImportJobUpdateArgs>(args: SelectSubset<T, DriveImportJobUpdateArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DriveImportJobs.
+     * @param {DriveImportJobDeleteManyArgs} args - Arguments to filter DriveImportJobs to delete.
+     * @example
+     * // Delete a few DriveImportJobs
+     * const { count } = await prisma.driveImportJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DriveImportJobDeleteManyArgs>(args?: SelectSubset<T, DriveImportJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DriveImportJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DriveImportJobs
+     * const driveImportJob = await prisma.driveImportJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DriveImportJobUpdateManyArgs>(args: SelectSubset<T, DriveImportJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DriveImportJobs and returns the data updated in the database.
+     * @param {DriveImportJobUpdateManyAndReturnArgs} args - Arguments to update many DriveImportJobs.
+     * @example
+     * // Update many DriveImportJobs
+     * const driveImportJob = await prisma.driveImportJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DriveImportJobs and only return the `id`
+     * const driveImportJobWithIdOnly = await prisma.driveImportJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DriveImportJobUpdateManyAndReturnArgs>(args: SelectSubset<T, DriveImportJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DriveImportJob.
+     * @param {DriveImportJobUpsertArgs} args - Arguments to update or create a DriveImportJob.
+     * @example
+     * // Update or create a DriveImportJob
+     * const driveImportJob = await prisma.driveImportJob.upsert({
+     *   create: {
+     *     // ... data to create a DriveImportJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DriveImportJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DriveImportJobUpsertArgs>(args: SelectSubset<T, DriveImportJobUpsertArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DriveImportJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobCountArgs} args - Arguments to filter DriveImportJobs to count.
+     * @example
+     * // Count the number of DriveImportJobs
+     * const count = await prisma.driveImportJob.count({
+     *   where: {
+     *     // ... the filter for the DriveImportJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends DriveImportJobCountArgs>(
+      args?: Subset<T, DriveImportJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DriveImportJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DriveImportJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DriveImportJobAggregateArgs>(args: Subset<T, DriveImportJobAggregateArgs>): Prisma.PrismaPromise<GetDriveImportJobAggregateType<T>>
+
+    /**
+     * Group by DriveImportJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DriveImportJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DriveImportJobGroupByArgs['orderBy'] }
+        : { orderBy?: DriveImportJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DriveImportJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDriveImportJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DriveImportJob model
+   */
+  readonly fields: DriveImportJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DriveImportJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DriveImportJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends DriveImportJob$itemsArgs<ExtArgs> = {}>(args?: Subset<T, DriveImportJob$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DriveImportJob model
+   */
+  interface DriveImportJobFieldRefs {
+    readonly id: FieldRef<"DriveImportJob", 'String'>
+    readonly userId: FieldRef<"DriveImportJob", 'String'>
+    readonly source: FieldRef<"DriveImportJob", 'ImportSource'>
+    readonly status: FieldRef<"DriveImportJob", 'DriveImportStatus'>
+    readonly totalFiles: FieldRef<"DriveImportJob", 'Int'>
+    readonly completedFiles: FieldRef<"DriveImportJob", 'Int'>
+    readonly failedFiles: FieldRef<"DriveImportJob", 'Int'>
+    readonly skippedFiles: FieldRef<"DriveImportJob", 'Int'>
+    readonly errorMessage: FieldRef<"DriveImportJob", 'String'>
+    readonly startedAt: FieldRef<"DriveImportJob", 'DateTime'>
+    readonly completedAt: FieldRef<"DriveImportJob", 'DateTime'>
+    readonly createdAt: FieldRef<"DriveImportJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"DriveImportJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DriveImportJob findUnique
+   */
+  export type DriveImportJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportJob to fetch.
+     */
+    where: DriveImportJobWhereUniqueInput
+  }
+
+  /**
+   * DriveImportJob findUniqueOrThrow
+   */
+  export type DriveImportJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportJob to fetch.
+     */
+    where: DriveImportJobWhereUniqueInput
+  }
+
+  /**
+   * DriveImportJob findFirst
+   */
+  export type DriveImportJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportJob to fetch.
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportJobs to fetch.
+     */
+    orderBy?: DriveImportJobOrderByWithRelationInput | DriveImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DriveImportJobs.
+     */
+    cursor?: DriveImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportJobs.
+     */
+    distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportJob findFirstOrThrow
+   */
+  export type DriveImportJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportJob to fetch.
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportJobs to fetch.
+     */
+    orderBy?: DriveImportJobOrderByWithRelationInput | DriveImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DriveImportJobs.
+     */
+    cursor?: DriveImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportJobs.
+     */
+    distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportJob findMany
+   */
+  export type DriveImportJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportJobs to fetch.
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportJobs to fetch.
+     */
+    orderBy?: DriveImportJobOrderByWithRelationInput | DriveImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DriveImportJobs.
+     */
+    cursor?: DriveImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportJobs.
+     */
+    skip?: number
+    distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportJob create
+   */
+  export type DriveImportJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DriveImportJob.
+     */
+    data: XOR<DriveImportJobCreateInput, DriveImportJobUncheckedCreateInput>
+  }
+
+  /**
+   * DriveImportJob createMany
+   */
+  export type DriveImportJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DriveImportJobs.
+     */
+    data: DriveImportJobCreateManyInput | DriveImportJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DriveImportJob createManyAndReturn
+   */
+  export type DriveImportJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many DriveImportJobs.
+     */
+    data: DriveImportJobCreateManyInput | DriveImportJobCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DriveImportJob update
+   */
+  export type DriveImportJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DriveImportJob.
+     */
+    data: XOR<DriveImportJobUpdateInput, DriveImportJobUncheckedUpdateInput>
+    /**
+     * Choose, which DriveImportJob to update.
+     */
+    where: DriveImportJobWhereUniqueInput
+  }
+
+  /**
+   * DriveImportJob updateMany
+   */
+  export type DriveImportJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DriveImportJobs.
+     */
+    data: XOR<DriveImportJobUpdateManyMutationInput, DriveImportJobUncheckedUpdateManyInput>
+    /**
+     * Filter which DriveImportJobs to update
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * Limit how many DriveImportJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DriveImportJob updateManyAndReturn
+   */
+  export type DriveImportJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * The data used to update DriveImportJobs.
+     */
+    data: XOR<DriveImportJobUpdateManyMutationInput, DriveImportJobUncheckedUpdateManyInput>
+    /**
+     * Filter which DriveImportJobs to update
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * Limit how many DriveImportJobs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DriveImportJob upsert
+   */
+  export type DriveImportJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DriveImportJob to update in case it exists.
+     */
+    where: DriveImportJobWhereUniqueInput
+    /**
+     * In case the DriveImportJob found by the `where` argument doesn't exist, create a new DriveImportJob with this data.
+     */
+    create: XOR<DriveImportJobCreateInput, DriveImportJobUncheckedCreateInput>
+    /**
+     * In case the DriveImportJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DriveImportJobUpdateInput, DriveImportJobUncheckedUpdateInput>
+  }
+
+  /**
+   * DriveImportJob delete
+   */
+  export type DriveImportJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+    /**
+     * Filter which DriveImportJob to delete.
+     */
+    where: DriveImportJobWhereUniqueInput
+  }
+
+  /**
+   * DriveImportJob deleteMany
+   */
+  export type DriveImportJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DriveImportJobs to delete
+     */
+    where?: DriveImportJobWhereInput
+    /**
+     * Limit how many DriveImportJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DriveImportJob.items
+   */
+  export type DriveImportJob$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    where?: DriveImportItemWhereInput
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    cursor?: DriveImportItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportJob without action
+   */
+  export type DriveImportJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportJob
+     */
+    select?: DriveImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportJob
+     */
+    omit?: DriveImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportJobInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DriveImportItem
+   */
+
+  export type AggregateDriveImportItem = {
+    _count: DriveImportItemCountAggregateOutputType | null
+    _avg: DriveImportItemAvgAggregateOutputType | null
+    _sum: DriveImportItemSumAggregateOutputType | null
+    _min: DriveImportItemMinAggregateOutputType | null
+    _max: DriveImportItemMaxAggregateOutputType | null
+  }
+
+  export type DriveImportItemAvgAggregateOutputType = {
+    driveFileSize: number | null
+  }
+
+  export type DriveImportItemSumAggregateOutputType = {
+    driveFileSize: bigint | null
+  }
+
+  export type DriveImportItemMinAggregateOutputType = {
+    id: string | null
+    jobId: string | null
+    galleryId: string | null
+    driveFolderId: string | null
+    driveFolderName: string | null
+    driveFileId: string | null
+    driveFileName: string | null
+    driveFileSize: bigint | null
+    driveMimeType: string | null
+    photoId: string | null
+    status: $Enums.DriveImportItemStatus | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DriveImportItemMaxAggregateOutputType = {
+    id: string | null
+    jobId: string | null
+    galleryId: string | null
+    driveFolderId: string | null
+    driveFolderName: string | null
+    driveFileId: string | null
+    driveFileName: string | null
+    driveFileSize: bigint | null
+    driveMimeType: string | null
+    photoId: string | null
+    status: $Enums.DriveImportItemStatus | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DriveImportItemCountAggregateOutputType = {
+    id: number
+    jobId: number
+    galleryId: number
+    driveFolderId: number
+    driveFolderName: number
+    driveFileId: number
+    driveFileName: number
+    driveFileSize: number
+    driveMimeType: number
+    photoId: number
+    status: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DriveImportItemAvgAggregateInputType = {
+    driveFileSize?: true
+  }
+
+  export type DriveImportItemSumAggregateInputType = {
+    driveFileSize?: true
+  }
+
+  export type DriveImportItemMinAggregateInputType = {
+    id?: true
+    jobId?: true
+    galleryId?: true
+    driveFolderId?: true
+    driveFolderName?: true
+    driveFileId?: true
+    driveFileName?: true
+    driveFileSize?: true
+    driveMimeType?: true
+    photoId?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DriveImportItemMaxAggregateInputType = {
+    id?: true
+    jobId?: true
+    galleryId?: true
+    driveFolderId?: true
+    driveFolderName?: true
+    driveFileId?: true
+    driveFileName?: true
+    driveFileSize?: true
+    driveMimeType?: true
+    photoId?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DriveImportItemCountAggregateInputType = {
+    id?: true
+    jobId?: true
+    galleryId?: true
+    driveFolderId?: true
+    driveFolderName?: true
+    driveFileId?: true
+    driveFileName?: true
+    driveFileSize?: true
+    driveMimeType?: true
+    photoId?: true
+    status?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DriveImportItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DriveImportItem to aggregate.
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportItems to fetch.
+     */
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DriveImportItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DriveImportItems
+    **/
+    _count?: true | DriveImportItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DriveImportItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DriveImportItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DriveImportItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DriveImportItemMaxAggregateInputType
+  }
+
+  export type GetDriveImportItemAggregateType<T extends DriveImportItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateDriveImportItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDriveImportItem[P]>
+      : GetScalarType<T[P], AggregateDriveImportItem[P]>
+  }
+
+
+
+
+  export type DriveImportItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriveImportItemWhereInput
+    orderBy?: DriveImportItemOrderByWithAggregationInput | DriveImportItemOrderByWithAggregationInput[]
+    by: DriveImportItemScalarFieldEnum[] | DriveImportItemScalarFieldEnum
+    having?: DriveImportItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DriveImportItemCountAggregateInputType | true
+    _avg?: DriveImportItemAvgAggregateInputType
+    _sum?: DriveImportItemSumAggregateInputType
+    _min?: DriveImportItemMinAggregateInputType
+    _max?: DriveImportItemMaxAggregateInputType
+  }
+
+  export type DriveImportItemGroupByOutputType = {
+    id: string
+    jobId: string
+    galleryId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId: string | null
+    driveFileName: string | null
+    driveFileSize: bigint
+    driveMimeType: string | null
+    photoId: string | null
+    status: $Enums.DriveImportItemStatus
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DriveImportItemCountAggregateOutputType | null
+    _avg: DriveImportItemAvgAggregateOutputType | null
+    _sum: DriveImportItemSumAggregateOutputType | null
+    _min: DriveImportItemMinAggregateOutputType | null
+    _max: DriveImportItemMaxAggregateOutputType | null
+  }
+
+  type GetDriveImportItemGroupByPayload<T extends DriveImportItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DriveImportItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DriveImportItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DriveImportItemGroupByOutputType[P]>
+            : GetScalarType<T[P], DriveImportItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DriveImportItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    galleryId?: boolean
+    driveFolderId?: boolean
+    driveFolderName?: boolean
+    driveFileId?: boolean
+    driveFileName?: boolean
+    driveFileSize?: boolean
+    driveMimeType?: boolean
+    photoId?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportItem"]>
+
+  export type DriveImportItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    galleryId?: boolean
+    driveFolderId?: boolean
+    driveFolderName?: boolean
+    driveFileId?: boolean
+    driveFileName?: boolean
+    driveFileSize?: boolean
+    driveMimeType?: boolean
+    photoId?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportItem"]>
+
+  export type DriveImportItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    galleryId?: boolean
+    driveFolderId?: boolean
+    driveFolderName?: boolean
+    driveFileId?: boolean
+    driveFileName?: boolean
+    driveFileSize?: boolean
+    driveMimeType?: boolean
+    photoId?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["driveImportItem"]>
+
+  export type DriveImportItemSelectScalar = {
+    id?: boolean
+    jobId?: boolean
+    galleryId?: boolean
+    driveFolderId?: boolean
+    driveFolderName?: boolean
+    driveFileId?: boolean
+    driveFileName?: boolean
+    driveFileSize?: boolean
+    driveMimeType?: boolean
+    photoId?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DriveImportItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "jobId" | "galleryId" | "driveFolderId" | "driveFolderName" | "driveFileId" | "driveFileName" | "driveFileSize" | "driveMimeType" | "photoId" | "status" | "errorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["driveImportItem"]>
+  export type DriveImportItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type DriveImportItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type DriveImportItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | DriveImportJobDefaultArgs<ExtArgs>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+
+  export type $DriveImportItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DriveImportItem"
+    objects: {
+      job: Prisma.$DriveImportJobPayload<ExtArgs>
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      jobId: string
+      galleryId: string
+      driveFolderId: string
+      driveFolderName: string
+      driveFileId: string | null
+      driveFileName: string | null
+      driveFileSize: bigint
+      driveMimeType: string | null
+      photoId: string | null
+      status: $Enums.DriveImportItemStatus
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["driveImportItem"]>
+    composites: {}
+  }
+
+  type DriveImportItemGetPayload<S extends boolean | null | undefined | DriveImportItemDefaultArgs> = $Result.GetResult<Prisma.$DriveImportItemPayload, S>
+
+  type DriveImportItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DriveImportItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DriveImportItemCountAggregateInputType | true
+    }
+
+  export interface DriveImportItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DriveImportItem'], meta: { name: 'DriveImportItem' } }
+    /**
+     * Find zero or one DriveImportItem that matches the filter.
+     * @param {DriveImportItemFindUniqueArgs} args - Arguments to find a DriveImportItem
+     * @example
+     * // Get one DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DriveImportItemFindUniqueArgs>(args: SelectSubset<T, DriveImportItemFindUniqueArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DriveImportItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DriveImportItemFindUniqueOrThrowArgs} args - Arguments to find a DriveImportItem
+     * @example
+     * // Get one DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DriveImportItemFindUniqueOrThrowArgs>(args: SelectSubset<T, DriveImportItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DriveImportItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemFindFirstArgs} args - Arguments to find a DriveImportItem
+     * @example
+     * // Get one DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DriveImportItemFindFirstArgs>(args?: SelectSubset<T, DriveImportItemFindFirstArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DriveImportItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemFindFirstOrThrowArgs} args - Arguments to find a DriveImportItem
+     * @example
+     * // Get one DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DriveImportItemFindFirstOrThrowArgs>(args?: SelectSubset<T, DriveImportItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DriveImportItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DriveImportItems
+     * const driveImportItems = await prisma.driveImportItem.findMany()
+     * 
+     * // Get first 10 DriveImportItems
+     * const driveImportItems = await prisma.driveImportItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const driveImportItemWithIdOnly = await prisma.driveImportItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DriveImportItemFindManyArgs>(args?: SelectSubset<T, DriveImportItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DriveImportItem.
+     * @param {DriveImportItemCreateArgs} args - Arguments to create a DriveImportItem.
+     * @example
+     * // Create one DriveImportItem
+     * const DriveImportItem = await prisma.driveImportItem.create({
+     *   data: {
+     *     // ... data to create a DriveImportItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends DriveImportItemCreateArgs>(args: SelectSubset<T, DriveImportItemCreateArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DriveImportItems.
+     * @param {DriveImportItemCreateManyArgs} args - Arguments to create many DriveImportItems.
+     * @example
+     * // Create many DriveImportItems
+     * const driveImportItem = await prisma.driveImportItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DriveImportItemCreateManyArgs>(args?: SelectSubset<T, DriveImportItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DriveImportItems and returns the data saved in the database.
+     * @param {DriveImportItemCreateManyAndReturnArgs} args - Arguments to create many DriveImportItems.
+     * @example
+     * // Create many DriveImportItems
+     * const driveImportItem = await prisma.driveImportItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DriveImportItems and only return the `id`
+     * const driveImportItemWithIdOnly = await prisma.driveImportItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DriveImportItemCreateManyAndReturnArgs>(args?: SelectSubset<T, DriveImportItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DriveImportItem.
+     * @param {DriveImportItemDeleteArgs} args - Arguments to delete one DriveImportItem.
+     * @example
+     * // Delete one DriveImportItem
+     * const DriveImportItem = await prisma.driveImportItem.delete({
+     *   where: {
+     *     // ... filter to delete one DriveImportItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DriveImportItemDeleteArgs>(args: SelectSubset<T, DriveImportItemDeleteArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DriveImportItem.
+     * @param {DriveImportItemUpdateArgs} args - Arguments to update one DriveImportItem.
+     * @example
+     * // Update one DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DriveImportItemUpdateArgs>(args: SelectSubset<T, DriveImportItemUpdateArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DriveImportItems.
+     * @param {DriveImportItemDeleteManyArgs} args - Arguments to filter DriveImportItems to delete.
+     * @example
+     * // Delete a few DriveImportItems
+     * const { count } = await prisma.driveImportItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DriveImportItemDeleteManyArgs>(args?: SelectSubset<T, DriveImportItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DriveImportItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DriveImportItems
+     * const driveImportItem = await prisma.driveImportItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DriveImportItemUpdateManyArgs>(args: SelectSubset<T, DriveImportItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DriveImportItems and returns the data updated in the database.
+     * @param {DriveImportItemUpdateManyAndReturnArgs} args - Arguments to update many DriveImportItems.
+     * @example
+     * // Update many DriveImportItems
+     * const driveImportItem = await prisma.driveImportItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DriveImportItems and only return the `id`
+     * const driveImportItemWithIdOnly = await prisma.driveImportItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DriveImportItemUpdateManyAndReturnArgs>(args: SelectSubset<T, DriveImportItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DriveImportItem.
+     * @param {DriveImportItemUpsertArgs} args - Arguments to update or create a DriveImportItem.
+     * @example
+     * // Update or create a DriveImportItem
+     * const driveImportItem = await prisma.driveImportItem.upsert({
+     *   create: {
+     *     // ... data to create a DriveImportItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DriveImportItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DriveImportItemUpsertArgs>(args: SelectSubset<T, DriveImportItemUpsertArgs<ExtArgs>>): Prisma__DriveImportItemClient<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DriveImportItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemCountArgs} args - Arguments to filter DriveImportItems to count.
+     * @example
+     * // Count the number of DriveImportItems
+     * const count = await prisma.driveImportItem.count({
+     *   where: {
+     *     // ... the filter for the DriveImportItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends DriveImportItemCountArgs>(
+      args?: Subset<T, DriveImportItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DriveImportItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DriveImportItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DriveImportItemAggregateArgs>(args: Subset<T, DriveImportItemAggregateArgs>): Prisma.PrismaPromise<GetDriveImportItemAggregateType<T>>
+
+    /**
+     * Group by DriveImportItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DriveImportItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DriveImportItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DriveImportItemGroupByArgs['orderBy'] }
+        : { orderBy?: DriveImportItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DriveImportItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDriveImportItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DriveImportItem model
+   */
+  readonly fields: DriveImportItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DriveImportItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DriveImportItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    job<T extends DriveImportJobDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DriveImportJobDefaultArgs<ExtArgs>>): Prisma__DriveImportJobClient<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DriveImportItem model
+   */
+  interface DriveImportItemFieldRefs {
+    readonly id: FieldRef<"DriveImportItem", 'String'>
+    readonly jobId: FieldRef<"DriveImportItem", 'String'>
+    readonly galleryId: FieldRef<"DriveImportItem", 'String'>
+    readonly driveFolderId: FieldRef<"DriveImportItem", 'String'>
+    readonly driveFolderName: FieldRef<"DriveImportItem", 'String'>
+    readonly driveFileId: FieldRef<"DriveImportItem", 'String'>
+    readonly driveFileName: FieldRef<"DriveImportItem", 'String'>
+    readonly driveFileSize: FieldRef<"DriveImportItem", 'BigInt'>
+    readonly driveMimeType: FieldRef<"DriveImportItem", 'String'>
+    readonly photoId: FieldRef<"DriveImportItem", 'String'>
+    readonly status: FieldRef<"DriveImportItem", 'DriveImportItemStatus'>
+    readonly errorMessage: FieldRef<"DriveImportItem", 'String'>
+    readonly createdAt: FieldRef<"DriveImportItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"DriveImportItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DriveImportItem findUnique
+   */
+  export type DriveImportItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportItem to fetch.
+     */
+    where: DriveImportItemWhereUniqueInput
+  }
+
+  /**
+   * DriveImportItem findUniqueOrThrow
+   */
+  export type DriveImportItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportItem to fetch.
+     */
+    where: DriveImportItemWhereUniqueInput
+  }
+
+  /**
+   * DriveImportItem findFirst
+   */
+  export type DriveImportItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportItem to fetch.
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportItems to fetch.
+     */
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DriveImportItems.
+     */
+    cursor?: DriveImportItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportItems.
+     */
+    distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportItem findFirstOrThrow
+   */
+  export type DriveImportItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportItem to fetch.
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportItems to fetch.
+     */
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DriveImportItems.
+     */
+    cursor?: DriveImportItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportItems.
+     */
+    distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportItem findMany
+   */
+  export type DriveImportItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DriveImportItems to fetch.
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DriveImportItems to fetch.
+     */
+    orderBy?: DriveImportItemOrderByWithRelationInput | DriveImportItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DriveImportItems.
+     */
+    cursor?: DriveImportItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DriveImportItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DriveImportItems.
+     */
+    skip?: number
+    distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
+  }
+
+  /**
+   * DriveImportItem create
+   */
+  export type DriveImportItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DriveImportItem.
+     */
+    data: XOR<DriveImportItemCreateInput, DriveImportItemUncheckedCreateInput>
+  }
+
+  /**
+   * DriveImportItem createMany
+   */
+  export type DriveImportItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DriveImportItems.
+     */
+    data: DriveImportItemCreateManyInput | DriveImportItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DriveImportItem createManyAndReturn
+   */
+  export type DriveImportItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many DriveImportItems.
+     */
+    data: DriveImportItemCreateManyInput | DriveImportItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DriveImportItem update
+   */
+  export type DriveImportItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DriveImportItem.
+     */
+    data: XOR<DriveImportItemUpdateInput, DriveImportItemUncheckedUpdateInput>
+    /**
+     * Choose, which DriveImportItem to update.
+     */
+    where: DriveImportItemWhereUniqueInput
+  }
+
+  /**
+   * DriveImportItem updateMany
+   */
+  export type DriveImportItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DriveImportItems.
+     */
+    data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DriveImportItems to update
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * Limit how many DriveImportItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DriveImportItem updateManyAndReturn
+   */
+  export type DriveImportItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * The data used to update DriveImportItems.
+     */
+    data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DriveImportItems to update
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * Limit how many DriveImportItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DriveImportItem upsert
+   */
+  export type DriveImportItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DriveImportItem to update in case it exists.
+     */
+    where: DriveImportItemWhereUniqueInput
+    /**
+     * In case the DriveImportItem found by the `where` argument doesn't exist, create a new DriveImportItem with this data.
+     */
+    create: XOR<DriveImportItemCreateInput, DriveImportItemUncheckedCreateInput>
+    /**
+     * In case the DriveImportItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DriveImportItemUpdateInput, DriveImportItemUncheckedUpdateInput>
+  }
+
+  /**
+   * DriveImportItem delete
+   */
+  export type DriveImportItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+    /**
+     * Filter which DriveImportItem to delete.
+     */
+    where: DriveImportItemWhereUniqueInput
+  }
+
+  /**
+   * DriveImportItem deleteMany
+   */
+  export type DriveImportItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DriveImportItems to delete
+     */
+    where?: DriveImportItemWhereInput
+    /**
+     * Limit how many DriveImportItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DriveImportItem without action
+   */
+  export type DriveImportItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriveImportItem
+     */
+    select?: DriveImportItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DriveImportItem
+     */
+    omit?: DriveImportItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriveImportItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -22868,6 +25651,45 @@ export namespace Prisma {
   export type ImageSearchAlbumCacheScalarFieldEnum = (typeof ImageSearchAlbumCacheScalarFieldEnum)[keyof typeof ImageSearchAlbumCacheScalarFieldEnum]
 
 
+  export const DriveImportJobScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    source: 'source',
+    status: 'status',
+    totalFiles: 'totalFiles',
+    completedFiles: 'completedFiles',
+    failedFiles: 'failedFiles',
+    skippedFiles: 'skippedFiles',
+    errorMessage: 'errorMessage',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DriveImportJobScalarFieldEnum = (typeof DriveImportJobScalarFieldEnum)[keyof typeof DriveImportJobScalarFieldEnum]
+
+
+  export const DriveImportItemScalarFieldEnum: {
+    id: 'id',
+    jobId: 'jobId',
+    galleryId: 'galleryId',
+    driveFolderId: 'driveFolderId',
+    driveFolderName: 'driveFolderName',
+    driveFileId: 'driveFileId',
+    driveFileName: 'driveFileName',
+    driveFileSize: 'driveFileSize',
+    driveMimeType: 'driveMimeType',
+    photoId: 'photoId',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DriveImportItemScalarFieldEnum = (typeof DriveImportItemScalarFieldEnum)[keyof typeof DriveImportItemScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -23097,6 +25919,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ImportSource'
+   */
+  export type EnumImportSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImportSource'>
+    
+
+
+  /**
+   * Reference to a field of type 'ImportSource[]'
+   */
+  export type ListEnumImportSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImportSource[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportStatus'
+   */
+  export type EnumDriveImportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportStatus[]'
+   */
+  export type ListEnumDriveImportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportItemStatus'
+   */
+  export type EnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportItemStatus[]'
+   */
+  export type ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -23147,6 +26011,7 @@ export namespace Prisma {
     galleries?: GalleryListRelationFilter
     clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
+    driveImportJobs?: DriveImportJobListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -23180,6 +26045,7 @@ export namespace Prisma {
     galleries?: GalleryOrderByRelationAggregateInput
     clients?: ClientOrderByRelationAggregateInput
     storageEvents?: StorageEventOrderByRelationAggregateInput
+    driveImportJobs?: DriveImportJobOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -23216,6 +26082,7 @@ export namespace Prisma {
     galleries?: GalleryListRelationFilter
     clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
+    driveImportJobs?: DriveImportJobListRelationFilter
   }, "id" | "id" | "stripeCustomerId" | "stripeSubId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -23707,6 +26574,7 @@ export namespace Prisma {
     albums?: AlbumListRelationFilter
     clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
+    driveImportItems?: DriveImportItemListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -23729,6 +26597,7 @@ export namespace Prisma {
     albums?: AlbumOrderByRelationAggregateInput
     clients?: GalleryClientOrderByRelationAggregateInput
     comments?: GalleryCommentOrderByRelationAggregateInput
+    driveImportItems?: DriveImportItemOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -23755,6 +26624,7 @@ export namespace Prisma {
     albums?: AlbumListRelationFilter
     clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
+    driveImportItems?: DriveImportItemListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -24594,6 +27464,211 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ImageSearchAlbumCache"> | Date | string
   }
 
+  export type DriveImportJobWhereInput = {
+    AND?: DriveImportJobWhereInput | DriveImportJobWhereInput[]
+    OR?: DriveImportJobWhereInput[]
+    NOT?: DriveImportJobWhereInput | DriveImportJobWhereInput[]
+    id?: StringFilter<"DriveImportJob"> | string
+    userId?: StringFilter<"DriveImportJob"> | string
+    source?: EnumImportSourceFilter<"DriveImportJob"> | $Enums.ImportSource
+    status?: EnumDriveImportStatusFilter<"DriveImportJob"> | $Enums.DriveImportStatus
+    totalFiles?: IntFilter<"DriveImportJob"> | number
+    completedFiles?: IntFilter<"DriveImportJob"> | number
+    failedFiles?: IntFilter<"DriveImportJob"> | number
+    skippedFiles?: IntFilter<"DriveImportJob"> | number
+    errorMessage?: StringNullableFilter<"DriveImportJob"> | string | null
+    startedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: DriveImportItemListRelationFilter
+  }
+
+  export type DriveImportJobOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    items?: DriveImportItemOrderByRelationAggregateInput
+  }
+
+  export type DriveImportJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DriveImportJobWhereInput | DriveImportJobWhereInput[]
+    OR?: DriveImportJobWhereInput[]
+    NOT?: DriveImportJobWhereInput | DriveImportJobWhereInput[]
+    userId?: StringFilter<"DriveImportJob"> | string
+    source?: EnumImportSourceFilter<"DriveImportJob"> | $Enums.ImportSource
+    status?: EnumDriveImportStatusFilter<"DriveImportJob"> | $Enums.DriveImportStatus
+    totalFiles?: IntFilter<"DriveImportJob"> | number
+    completedFiles?: IntFilter<"DriveImportJob"> | number
+    failedFiles?: IntFilter<"DriveImportJob"> | number
+    skippedFiles?: IntFilter<"DriveImportJob"> | number
+    errorMessage?: StringNullableFilter<"DriveImportJob"> | string | null
+    startedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: DriveImportItemListRelationFilter
+  }, "id">
+
+  export type DriveImportJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DriveImportJobCountOrderByAggregateInput
+    _avg?: DriveImportJobAvgOrderByAggregateInput
+    _max?: DriveImportJobMaxOrderByAggregateInput
+    _min?: DriveImportJobMinOrderByAggregateInput
+    _sum?: DriveImportJobSumOrderByAggregateInput
+  }
+
+  export type DriveImportJobScalarWhereWithAggregatesInput = {
+    AND?: DriveImportJobScalarWhereWithAggregatesInput | DriveImportJobScalarWhereWithAggregatesInput[]
+    OR?: DriveImportJobScalarWhereWithAggregatesInput[]
+    NOT?: DriveImportJobScalarWhereWithAggregatesInput | DriveImportJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DriveImportJob"> | string
+    userId?: StringWithAggregatesFilter<"DriveImportJob"> | string
+    source?: EnumImportSourceWithAggregatesFilter<"DriveImportJob"> | $Enums.ImportSource
+    status?: EnumDriveImportStatusWithAggregatesFilter<"DriveImportJob"> | $Enums.DriveImportStatus
+    totalFiles?: IntWithAggregatesFilter<"DriveImportJob"> | number
+    completedFiles?: IntWithAggregatesFilter<"DriveImportJob"> | number
+    failedFiles?: IntWithAggregatesFilter<"DriveImportJob"> | number
+    skippedFiles?: IntWithAggregatesFilter<"DriveImportJob"> | number
+    errorMessage?: StringNullableWithAggregatesFilter<"DriveImportJob"> | string | null
+    startedAt?: DateTimeNullableWithAggregatesFilter<"DriveImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"DriveImportJob"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DriveImportJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DriveImportJob"> | Date | string
+  }
+
+  export type DriveImportItemWhereInput = {
+    AND?: DriveImportItemWhereInput | DriveImportItemWhereInput[]
+    OR?: DriveImportItemWhereInput[]
+    NOT?: DriveImportItemWhereInput | DriveImportItemWhereInput[]
+    id?: StringFilter<"DriveImportItem"> | string
+    jobId?: StringFilter<"DriveImportItem"> | string
+    galleryId?: StringFilter<"DriveImportItem"> | string
+    driveFolderId?: StringFilter<"DriveImportItem"> | string
+    driveFolderName?: StringFilter<"DriveImportItem"> | string
+    driveFileId?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileName?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileSize?: BigIntFilter<"DriveImportItem"> | bigint | number
+    driveMimeType?: StringNullableFilter<"DriveImportItem"> | string | null
+    photoId?: StringNullableFilter<"DriveImportItem"> | string | null
+    status?: EnumDriveImportItemStatusFilter<"DriveImportItem"> | $Enums.DriveImportItemStatus
+    errorMessage?: StringNullableFilter<"DriveImportItem"> | string | null
+    createdAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+    job?: XOR<DriveImportJobScalarRelationFilter, DriveImportJobWhereInput>
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+  }
+
+  export type DriveImportItemOrderByWithRelationInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    galleryId?: SortOrder
+    driveFolderId?: SortOrder
+    driveFolderName?: SortOrder
+    driveFileId?: SortOrderInput | SortOrder
+    driveFileName?: SortOrderInput | SortOrder
+    driveFileSize?: SortOrder
+    driveMimeType?: SortOrderInput | SortOrder
+    photoId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    job?: DriveImportJobOrderByWithRelationInput
+    gallery?: GalleryOrderByWithRelationInput
+  }
+
+  export type DriveImportItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DriveImportItemWhereInput | DriveImportItemWhereInput[]
+    OR?: DriveImportItemWhereInput[]
+    NOT?: DriveImportItemWhereInput | DriveImportItemWhereInput[]
+    jobId?: StringFilter<"DriveImportItem"> | string
+    galleryId?: StringFilter<"DriveImportItem"> | string
+    driveFolderId?: StringFilter<"DriveImportItem"> | string
+    driveFolderName?: StringFilter<"DriveImportItem"> | string
+    driveFileId?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileName?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileSize?: BigIntFilter<"DriveImportItem"> | bigint | number
+    driveMimeType?: StringNullableFilter<"DriveImportItem"> | string | null
+    photoId?: StringNullableFilter<"DriveImportItem"> | string | null
+    status?: EnumDriveImportItemStatusFilter<"DriveImportItem"> | $Enums.DriveImportItemStatus
+    errorMessage?: StringNullableFilter<"DriveImportItem"> | string | null
+    createdAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+    job?: XOR<DriveImportJobScalarRelationFilter, DriveImportJobWhereInput>
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+  }, "id">
+
+  export type DriveImportItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    galleryId?: SortOrder
+    driveFolderId?: SortOrder
+    driveFolderName?: SortOrder
+    driveFileId?: SortOrderInput | SortOrder
+    driveFileName?: SortOrderInput | SortOrder
+    driveFileSize?: SortOrder
+    driveMimeType?: SortOrderInput | SortOrder
+    photoId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DriveImportItemCountOrderByAggregateInput
+    _avg?: DriveImportItemAvgOrderByAggregateInput
+    _max?: DriveImportItemMaxOrderByAggregateInput
+    _min?: DriveImportItemMinOrderByAggregateInput
+    _sum?: DriveImportItemSumOrderByAggregateInput
+  }
+
+  export type DriveImportItemScalarWhereWithAggregatesInput = {
+    AND?: DriveImportItemScalarWhereWithAggregatesInput | DriveImportItemScalarWhereWithAggregatesInput[]
+    OR?: DriveImportItemScalarWhereWithAggregatesInput[]
+    NOT?: DriveImportItemScalarWhereWithAggregatesInput | DriveImportItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DriveImportItem"> | string
+    jobId?: StringWithAggregatesFilter<"DriveImportItem"> | string
+    galleryId?: StringWithAggregatesFilter<"DriveImportItem"> | string
+    driveFolderId?: StringWithAggregatesFilter<"DriveImportItem"> | string
+    driveFolderName?: StringWithAggregatesFilter<"DriveImportItem"> | string
+    driveFileId?: StringNullableWithAggregatesFilter<"DriveImportItem"> | string | null
+    driveFileName?: StringNullableWithAggregatesFilter<"DriveImportItem"> | string | null
+    driveFileSize?: BigIntWithAggregatesFilter<"DriveImportItem"> | bigint | number
+    driveMimeType?: StringNullableWithAggregatesFilter<"DriveImportItem"> | string | null
+    photoId?: StringNullableWithAggregatesFilter<"DriveImportItem"> | string | null
+    status?: EnumDriveImportItemStatusWithAggregatesFilter<"DriveImportItem"> | $Enums.DriveImportItemStatus
+    errorMessage?: StringNullableWithAggregatesFilter<"DriveImportItem"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DriveImportItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DriveImportItem"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -24625,6 +27700,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -24658,6 +27734,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -24691,6 +27768,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -24724,6 +27802,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -25274,6 +28353,7 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -25294,6 +28374,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
@@ -25314,6 +28395,7 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -25334,6 +28416,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -26252,6 +29335,238 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DriveImportJobCreateInput = {
+    id?: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDriveImportJobsInput
+    items?: DriveImportItemCreateNestedManyWithoutJobInput
+  }
+
+  export type DriveImportJobUncheckedCreateInput = {
+    id?: string
+    userId: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DriveImportItemUncheckedCreateNestedManyWithoutJobInput
+  }
+
+  export type DriveImportJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDriveImportJobsNestedInput
+    items?: DriveImportItemUpdateManyWithoutJobNestedInput
+  }
+
+  export type DriveImportJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DriveImportItemUncheckedUpdateManyWithoutJobNestedInput
+  }
+
+  export type DriveImportJobCreateManyInput = {
+    id?: string
+    userId: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemCreateInput = {
+    id?: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    job: DriveImportJobCreateNestedOneWithoutItemsInput
+    gallery: GalleryCreateNestedOneWithoutDriveImportItemsInput
+  }
+
+  export type DriveImportItemUncheckedCreateInput = {
+    id?: string
+    jobId: string
+    galleryId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    job?: DriveImportJobUpdateOneRequiredWithoutItemsNestedInput
+    gallery?: GalleryUpdateOneRequiredWithoutDriveImportItemsNestedInput
+  }
+
+  export type DriveImportItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemCreateManyInput = {
+    id?: string
+    jobId: string
+    galleryId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26373,6 +29688,12 @@ export namespace Prisma {
     none?: StorageEventWhereInput
   }
 
+  export type DriveImportJobListRelationFilter = {
+    every?: DriveImportJobWhereInput
+    some?: DriveImportJobWhereInput
+    none?: DriveImportJobWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -26399,6 +29720,10 @@ export namespace Prisma {
   }
 
   export type StorageEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DriveImportJobOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -26976,6 +30301,12 @@ export namespace Prisma {
     none?: GalleryCommentWhereInput
   }
 
+  export type DriveImportItemListRelationFilter = {
+    every?: DriveImportItemWhereInput
+    some?: DriveImportItemWhereInput
+    none?: DriveImportItemWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -26989,6 +30320,10 @@ export namespace Prisma {
   }
 
   export type GalleryCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DriveImportItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27650,6 +30985,183 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumImportSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ImportSource | EnumImportSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumImportSourceFilter<$PrismaModel> | $Enums.ImportSource
+  }
+
+  export type EnumDriveImportStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportStatus | EnumDriveImportStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportStatusFilter<$PrismaModel> | $Enums.DriveImportStatus
+  }
+
+  export type DriveImportJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportJobAvgOrderByAggregateInput = {
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+  }
+
+  export type DriveImportJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    source?: SortOrder
+    status?: SortOrder
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportJobSumOrderByAggregateInput = {
+    totalFiles?: SortOrder
+    completedFiles?: SortOrder
+    failedFiles?: SortOrder
+    skippedFiles?: SortOrder
+  }
+
+  export type EnumImportSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ImportSource | EnumImportSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumImportSourceWithAggregatesFilter<$PrismaModel> | $Enums.ImportSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumImportSourceFilter<$PrismaModel>
+    _max?: NestedEnumImportSourceFilter<$PrismaModel>
+  }
+
+  export type EnumDriveImportStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportStatus | EnumDriveImportStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportStatusWithAggregatesFilter<$PrismaModel> | $Enums.DriveImportStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDriveImportStatusFilter<$PrismaModel>
+    _max?: NestedEnumDriveImportStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDriveImportItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportItemStatus | EnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportItemStatusFilter<$PrismaModel> | $Enums.DriveImportItemStatus
+  }
+
+  export type DriveImportJobScalarRelationFilter = {
+    is?: DriveImportJobWhereInput
+    isNot?: DriveImportJobWhereInput
+  }
+
+  export type DriveImportItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    galleryId?: SortOrder
+    driveFolderId?: SortOrder
+    driveFolderName?: SortOrder
+    driveFileId?: SortOrder
+    driveFileName?: SortOrder
+    driveFileSize?: SortOrder
+    driveMimeType?: SortOrder
+    photoId?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportItemAvgOrderByAggregateInput = {
+    driveFileSize?: SortOrder
+  }
+
+  export type DriveImportItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    galleryId?: SortOrder
+    driveFolderId?: SortOrder
+    driveFolderName?: SortOrder
+    driveFileId?: SortOrder
+    driveFileName?: SortOrder
+    driveFileSize?: SortOrder
+    driveMimeType?: SortOrder
+    photoId?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    galleryId?: SortOrder
+    driveFolderId?: SortOrder
+    driveFolderName?: SortOrder
+    driveFileId?: SortOrder
+    driveFileName?: SortOrder
+    driveFileSize?: SortOrder
+    driveMimeType?: SortOrder
+    photoId?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DriveImportItemSumOrderByAggregateInput = {
+    driveFileSize?: SortOrder
+  }
+
+  export type EnumDriveImportItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportItemStatus | EnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.DriveImportItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -27698,6 +31210,13 @@ export namespace Prisma {
     connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
   }
 
+  export type DriveImportJobCreateNestedManyWithoutUserInput = {
+    create?: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput> | DriveImportJobCreateWithoutUserInput[] | DriveImportJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutUserInput | DriveImportJobCreateOrConnectWithoutUserInput[]
+    createMany?: DriveImportJobCreateManyUserInputEnvelope
+    connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -27744,6 +31263,13 @@ export namespace Prisma {
     connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
     createMany?: StorageEventCreateManyUserInputEnvelope
     connect?: StorageEventWhereUniqueInput | StorageEventWhereUniqueInput[]
+  }
+
+  export type DriveImportJobUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput> | DriveImportJobCreateWithoutUserInput[] | DriveImportJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutUserInput | DriveImportJobCreateOrConnectWithoutUserInput[]
+    createMany?: DriveImportJobCreateManyUserInputEnvelope
+    connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -27876,6 +31402,20 @@ export namespace Prisma {
     deleteMany?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
   }
 
+  export type DriveImportJobUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput> | DriveImportJobCreateWithoutUserInput[] | DriveImportJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutUserInput | DriveImportJobCreateOrConnectWithoutUserInput[]
+    upsert?: DriveImportJobUpsertWithWhereUniqueWithoutUserInput | DriveImportJobUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DriveImportJobCreateManyUserInputEnvelope
+    set?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    disconnect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    delete?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    update?: DriveImportJobUpdateWithWhereUniqueWithoutUserInput | DriveImportJobUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DriveImportJobUpdateManyWithWhereWithoutUserInput | DriveImportJobUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -27968,6 +31508,20 @@ export namespace Prisma {
     update?: StorageEventUpdateWithWhereUniqueWithoutUserInput | StorageEventUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: StorageEventUpdateManyWithWhereWithoutUserInput | StorageEventUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: StorageEventScalarWhereInput | StorageEventScalarWhereInput[]
+  }
+
+  export type DriveImportJobUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput> | DriveImportJobCreateWithoutUserInput[] | DriveImportJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutUserInput | DriveImportJobCreateOrConnectWithoutUserInput[]
+    upsert?: DriveImportJobUpsertWithWhereUniqueWithoutUserInput | DriveImportJobUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DriveImportJobCreateManyUserInputEnvelope
+    set?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    disconnect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    delete?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+    update?: DriveImportJobUpdateWithWhereUniqueWithoutUserInput | DriveImportJobUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DriveImportJobUpdateManyWithWhereWithoutUserInput | DriveImportJobUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -28103,6 +31657,13 @@ export namespace Prisma {
     connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
   }
 
+  export type DriveImportItemCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput> | DriveImportItemCreateWithoutGalleryInput[] | DriveImportItemUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutGalleryInput | DriveImportItemCreateOrConnectWithoutGalleryInput[]
+    createMany?: DriveImportItemCreateManyGalleryInputEnvelope
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -28129,6 +31690,13 @@ export namespace Prisma {
     connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
     createMany?: GalleryCommentCreateManyGalleryInputEnvelope
     connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
+  }
+
+  export type DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput> | DriveImportItemCreateWithoutGalleryInput[] | DriveImportItemUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutGalleryInput | DriveImportItemCreateOrConnectWithoutGalleryInput[]
+    createMany?: DriveImportItemCreateManyGalleryInputEnvelope
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutGalleriesNestedInput = {
@@ -28205,6 +31773,20 @@ export namespace Prisma {
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
+  export type DriveImportItemUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput> | DriveImportItemCreateWithoutGalleryInput[] | DriveImportItemUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutGalleryInput | DriveImportItemCreateOrConnectWithoutGalleryInput[]
+    upsert?: DriveImportItemUpsertWithWhereUniqueWithoutGalleryInput | DriveImportItemUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: DriveImportItemCreateManyGalleryInputEnvelope
+    set?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    disconnect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    delete?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    update?: DriveImportItemUpdateWithWhereUniqueWithoutGalleryInput | DriveImportItemUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: DriveImportItemUpdateManyWithWhereWithoutGalleryInput | DriveImportItemUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -28259,6 +31841,20 @@ export namespace Prisma {
     update?: GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput | GalleryCommentUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: GalleryCommentUpdateManyWithWhereWithoutGalleryInput | GalleryCommentUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
+  export type DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput> | DriveImportItemCreateWithoutGalleryInput[] | DriveImportItemUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutGalleryInput | DriveImportItemCreateOrConnectWithoutGalleryInput[]
+    upsert?: DriveImportItemUpsertWithWhereUniqueWithoutGalleryInput | DriveImportItemUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: DriveImportItemCreateManyGalleryInputEnvelope
+    set?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    disconnect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    delete?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    update?: DriveImportItemUpdateWithWhereUniqueWithoutGalleryInput | DriveImportItemUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: DriveImportItemUpdateManyWithWhereWithoutGalleryInput | DriveImportItemUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
   }
 
   export type PhotoCreateaiTagsInput = {
@@ -28765,6 +32361,102 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type UserCreateNestedOneWithoutDriveImportJobsInput = {
+    create?: XOR<UserCreateWithoutDriveImportJobsInput, UserUncheckedCreateWithoutDriveImportJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDriveImportJobsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DriveImportItemCreateNestedManyWithoutJobInput = {
+    create?: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput> | DriveImportItemCreateWithoutJobInput[] | DriveImportItemUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutJobInput | DriveImportItemCreateOrConnectWithoutJobInput[]
+    createMany?: DriveImportItemCreateManyJobInputEnvelope
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+  }
+
+  export type DriveImportItemUncheckedCreateNestedManyWithoutJobInput = {
+    create?: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput> | DriveImportItemCreateWithoutJobInput[] | DriveImportItemUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutJobInput | DriveImportItemCreateOrConnectWithoutJobInput[]
+    createMany?: DriveImportItemCreateManyJobInputEnvelope
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+  }
+
+  export type EnumImportSourceFieldUpdateOperationsInput = {
+    set?: $Enums.ImportSource
+  }
+
+  export type EnumDriveImportStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DriveImportStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutDriveImportJobsNestedInput = {
+    create?: XOR<UserCreateWithoutDriveImportJobsInput, UserUncheckedCreateWithoutDriveImportJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDriveImportJobsInput
+    upsert?: UserUpsertWithoutDriveImportJobsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDriveImportJobsInput, UserUpdateWithoutDriveImportJobsInput>, UserUncheckedUpdateWithoutDriveImportJobsInput>
+  }
+
+  export type DriveImportItemUpdateManyWithoutJobNestedInput = {
+    create?: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput> | DriveImportItemCreateWithoutJobInput[] | DriveImportItemUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutJobInput | DriveImportItemCreateOrConnectWithoutJobInput[]
+    upsert?: DriveImportItemUpsertWithWhereUniqueWithoutJobInput | DriveImportItemUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: DriveImportItemCreateManyJobInputEnvelope
+    set?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    disconnect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    delete?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    update?: DriveImportItemUpdateWithWhereUniqueWithoutJobInput | DriveImportItemUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: DriveImportItemUpdateManyWithWhereWithoutJobInput | DriveImportItemUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+  }
+
+  export type DriveImportItemUncheckedUpdateManyWithoutJobNestedInput = {
+    create?: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput> | DriveImportItemCreateWithoutJobInput[] | DriveImportItemUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: DriveImportItemCreateOrConnectWithoutJobInput | DriveImportItemCreateOrConnectWithoutJobInput[]
+    upsert?: DriveImportItemUpsertWithWhereUniqueWithoutJobInput | DriveImportItemUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: DriveImportItemCreateManyJobInputEnvelope
+    set?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    disconnect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    delete?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+    update?: DriveImportItemUpdateWithWhereUniqueWithoutJobInput | DriveImportItemUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: DriveImportItemUpdateManyWithWhereWithoutJobInput | DriveImportItemUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+  }
+
+  export type DriveImportJobCreateNestedOneWithoutItemsInput = {
+    create?: XOR<DriveImportJobCreateWithoutItemsInput, DriveImportJobUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutItemsInput
+    connect?: DriveImportJobWhereUniqueInput
+  }
+
+  export type GalleryCreateNestedOneWithoutDriveImportItemsInput = {
+    create?: XOR<GalleryCreateWithoutDriveImportItemsInput, GalleryUncheckedCreateWithoutDriveImportItemsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutDriveImportItemsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type EnumDriveImportItemStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DriveImportItemStatus
+  }
+
+  export type DriveImportJobUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<DriveImportJobCreateWithoutItemsInput, DriveImportJobUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DriveImportJobCreateOrConnectWithoutItemsInput
+    upsert?: DriveImportJobUpsertWithoutItemsInput
+    connect?: DriveImportJobWhereUniqueInput
+    update?: XOR<XOR<DriveImportJobUpdateToOneWithWhereWithoutItemsInput, DriveImportJobUpdateWithoutItemsInput>, DriveImportJobUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type GalleryUpdateOneRequiredWithoutDriveImportItemsNestedInput = {
+    create?: XOR<GalleryCreateWithoutDriveImportItemsInput, GalleryUncheckedCreateWithoutDriveImportItemsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutDriveImportItemsInput
+    upsert?: GalleryUpsertWithoutDriveImportItemsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutDriveImportItemsInput, GalleryUpdateWithoutDriveImportItemsInput>, GalleryUncheckedUpdateWithoutDriveImportItemsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29171,6 +32863,57 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumImportSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ImportSource | EnumImportSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumImportSourceFilter<$PrismaModel> | $Enums.ImportSource
+  }
+
+  export type NestedEnumDriveImportStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportStatus | EnumDriveImportStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportStatusFilter<$PrismaModel> | $Enums.DriveImportStatus
+  }
+
+  export type NestedEnumImportSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ImportSource | EnumImportSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ImportSource[] | ListEnumImportSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumImportSourceWithAggregatesFilter<$PrismaModel> | $Enums.ImportSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumImportSourceFilter<$PrismaModel>
+    _max?: NestedEnumImportSourceFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDriveImportStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportStatus | EnumDriveImportStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportStatus[] | ListEnumDriveImportStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportStatusWithAggregatesFilter<$PrismaModel> | $Enums.DriveImportStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDriveImportStatusFilter<$PrismaModel>
+    _max?: NestedEnumDriveImportStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDriveImportItemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportItemStatus | EnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportItemStatusFilter<$PrismaModel> | $Enums.DriveImportItemStatus
+  }
+
+  export type NestedEnumDriveImportItemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DriveImportItemStatus | EnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDriveImportItemStatusWithAggregatesFilter<$PrismaModel> | $Enums.DriveImportItemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
+    _max?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id?: string
     expiresAt: Date | string
@@ -29327,6 +33070,7 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
@@ -29346,6 +33090,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -29411,6 +33156,48 @@ export namespace Prisma {
 
   export type StorageEventCreateManyUserInputEnvelope = {
     data: StorageEventCreateManyUserInput | StorageEventCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DriveImportJobCreateWithoutUserInput = {
+    id?: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DriveImportItemCreateNestedManyWithoutJobInput
+  }
+
+  export type DriveImportJobUncheckedCreateWithoutUserInput = {
+    id?: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DriveImportItemUncheckedCreateNestedManyWithoutJobInput
+  }
+
+  export type DriveImportJobCreateOrConnectWithoutUserInput = {
+    where: DriveImportJobWhereUniqueInput
+    create: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput>
+  }
+
+  export type DriveImportJobCreateManyUserInputEnvelope = {
+    data: DriveImportJobCreateManyUserInput | DriveImportJobCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -29641,6 +33428,41 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"StorageEvent"> | Date | string
   }
 
+  export type DriveImportJobUpsertWithWhereUniqueWithoutUserInput = {
+    where: DriveImportJobWhereUniqueInput
+    update: XOR<DriveImportJobUpdateWithoutUserInput, DriveImportJobUncheckedUpdateWithoutUserInput>
+    create: XOR<DriveImportJobCreateWithoutUserInput, DriveImportJobUncheckedCreateWithoutUserInput>
+  }
+
+  export type DriveImportJobUpdateWithWhereUniqueWithoutUserInput = {
+    where: DriveImportJobWhereUniqueInput
+    data: XOR<DriveImportJobUpdateWithoutUserInput, DriveImportJobUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DriveImportJobUpdateManyWithWhereWithoutUserInput = {
+    where: DriveImportJobScalarWhereInput
+    data: XOR<DriveImportJobUpdateManyMutationInput, DriveImportJobUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DriveImportJobScalarWhereInput = {
+    AND?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
+    OR?: DriveImportJobScalarWhereInput[]
+    NOT?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
+    id?: StringFilter<"DriveImportJob"> | string
+    userId?: StringFilter<"DriveImportJob"> | string
+    source?: EnumImportSourceFilter<"DriveImportJob"> | $Enums.ImportSource
+    status?: EnumDriveImportStatusFilter<"DriveImportJob"> | $Enums.DriveImportStatus
+    totalFiles?: IntFilter<"DriveImportJob"> | number
+    completedFiles?: IntFilter<"DriveImportJob"> | number
+    failedFiles?: IntFilter<"DriveImportJob"> | number
+    skippedFiles?: IntFilter<"DriveImportJob"> | number
+    errorMessage?: StringNullableFilter<"DriveImportJob"> | string | null
+    startedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DriveImportJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportJob"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -29671,6 +33493,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -29703,6 +33526,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -29751,6 +33575,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -29783,6 +33608,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -29815,6 +33641,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -29847,6 +33674,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -29895,6 +33723,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -29927,6 +33756,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPaymentInput = {
@@ -29959,6 +33789,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
@@ -29991,6 +33822,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -30039,6 +33871,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
@@ -30071,6 +33904,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
@@ -30103,6 +33937,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
@@ -30135,6 +33970,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -30183,6 +34019,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
@@ -30215,6 +34052,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
@@ -30247,6 +34085,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
@@ -30279,6 +34118,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -30505,6 +34345,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DriveImportItemCreateWithoutGalleryInput = {
+    id?: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    job: DriveImportJobCreateNestedOneWithoutItemsInput
+  }
+
+  export type DriveImportItemUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    jobId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemCreateOrConnectWithoutGalleryInput = {
+    where: DriveImportItemWhereUniqueInput
+    create: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type DriveImportItemCreateManyGalleryInputEnvelope = {
+    data: DriveImportItemCreateManyGalleryInput | DriveImportItemCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutGalleriesInput = {
     update: XOR<UserUpdateWithoutGalleriesInput, UserUncheckedUpdateWithoutGalleriesInput>
     create: XOR<UserCreateWithoutGalleriesInput, UserUncheckedCreateWithoutGalleriesInput>
@@ -30546,6 +34428,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
@@ -30578,6 +34461,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -30782,6 +34666,42 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"GalleryComment"> | Date | string
   }
 
+  export type DriveImportItemUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: DriveImportItemWhereUniqueInput
+    update: XOR<DriveImportItemUpdateWithoutGalleryInput, DriveImportItemUncheckedUpdateWithoutGalleryInput>
+    create: XOR<DriveImportItemCreateWithoutGalleryInput, DriveImportItemUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type DriveImportItemUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: DriveImportItemWhereUniqueInput
+    data: XOR<DriveImportItemUpdateWithoutGalleryInput, DriveImportItemUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type DriveImportItemUpdateManyWithWhereWithoutGalleryInput = {
+    where: DriveImportItemScalarWhereInput
+    data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type DriveImportItemScalarWhereInput = {
+    AND?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+    OR?: DriveImportItemScalarWhereInput[]
+    NOT?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+    id?: StringFilter<"DriveImportItem"> | string
+    jobId?: StringFilter<"DriveImportItem"> | string
+    galleryId?: StringFilter<"DriveImportItem"> | string
+    driveFolderId?: StringFilter<"DriveImportItem"> | string
+    driveFolderName?: StringFilter<"DriveImportItem"> | string
+    driveFileId?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileName?: StringNullableFilter<"DriveImportItem"> | string | null
+    driveFileSize?: BigIntFilter<"DriveImportItem"> | bigint | number
+    driveMimeType?: StringNullableFilter<"DriveImportItem"> | string | null
+    photoId?: StringNullableFilter<"DriveImportItem"> | string | null
+    status?: EnumDriveImportItemStatusFilter<"DriveImportItem"> | $Enums.DriveImportItemStatus
+    errorMessage?: StringNullableFilter<"DriveImportItem"> | string | null
+    createdAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+    updatedAt?: DateTimeFilter<"DriveImportItem"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
@@ -30799,6 +34719,7 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -30818,6 +34739,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -30842,6 +34764,7 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -30861,6 +34784,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -30990,6 +34914,7 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -31009,6 +34934,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -31271,6 +35197,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStorageEventsInput = {
@@ -31303,6 +35230,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStorageEventsInput = {
@@ -31351,6 +35279,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStorageEventsInput = {
@@ -31383,6 +35312,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutClientsInput = {
@@ -31415,6 +35345,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClientsInput = {
@@ -31447,6 +35378,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientsInput = {
@@ -31515,6 +35447,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientsInput = {
@@ -31547,6 +35480,7 @@ export namespace Prisma {
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GalleryClientUpsertWithWhereUniqueWithoutClientInput = {
@@ -31582,6 +35516,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutClientsInput = {
@@ -31601,6 +35536,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutClientsInput = {
@@ -31661,6 +35597,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutClientsInput = {
@@ -31680,6 +35617,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type ClientUpsertWithoutGalleriesInput = {
@@ -31730,6 +35668,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutAlbumsInput = {
@@ -31749,6 +35688,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutAlbumsInput = {
@@ -31804,6 +35744,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutAlbumsInput = {
@@ -31823,6 +35764,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -32042,6 +35984,7 @@ export namespace Prisma {
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCommentsInput = {
@@ -32061,6 +36004,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCommentsInput = {
@@ -32232,6 +36176,7 @@ export namespace Prisma {
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCommentsInput = {
@@ -32251,6 +36196,7 @@ export namespace Prisma {
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutCommentsInput = {
@@ -32379,6 +36325,388 @@ export namespace Prisma {
     data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutParentInput>
   }
 
+  export type UserCreateWithoutDriveImportJobsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    payment?: PaymentCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDriveImportJobsInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    stripeSubId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDriveImportJobsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDriveImportJobsInput, UserUncheckedCreateWithoutDriveImportJobsInput>
+  }
+
+  export type DriveImportItemCreateWithoutJobInput = {
+    id?: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutDriveImportItemsInput
+  }
+
+  export type DriveImportItemUncheckedCreateWithoutJobInput = {
+    id?: string
+    galleryId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemCreateOrConnectWithoutJobInput = {
+    where: DriveImportItemWhereUniqueInput
+    create: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput>
+  }
+
+  export type DriveImportItemCreateManyJobInputEnvelope = {
+    data: DriveImportItemCreateManyJobInput | DriveImportItemCreateManyJobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutDriveImportJobsInput = {
+    update: XOR<UserUpdateWithoutDriveImportJobsInput, UserUncheckedUpdateWithoutDriveImportJobsInput>
+    create: XOR<UserCreateWithoutDriveImportJobsInput, UserUncheckedCreateWithoutDriveImportJobsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDriveImportJobsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDriveImportJobsInput, UserUncheckedUpdateWithoutDriveImportJobsInput>
+  }
+
+  export type UserUpdateWithoutDriveImportJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    payment?: PaymentUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDriveImportJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DriveImportItemUpsertWithWhereUniqueWithoutJobInput = {
+    where: DriveImportItemWhereUniqueInput
+    update: XOR<DriveImportItemUpdateWithoutJobInput, DriveImportItemUncheckedUpdateWithoutJobInput>
+    create: XOR<DriveImportItemCreateWithoutJobInput, DriveImportItemUncheckedCreateWithoutJobInput>
+  }
+
+  export type DriveImportItemUpdateWithWhereUniqueWithoutJobInput = {
+    where: DriveImportItemWhereUniqueInput
+    data: XOR<DriveImportItemUpdateWithoutJobInput, DriveImportItemUncheckedUpdateWithoutJobInput>
+  }
+
+  export type DriveImportItemUpdateManyWithWhereWithoutJobInput = {
+    where: DriveImportItemScalarWhereInput
+    data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyWithoutJobInput>
+  }
+
+  export type DriveImportJobCreateWithoutItemsInput = {
+    id?: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDriveImportJobsInput
+  }
+
+  export type DriveImportJobUncheckedCreateWithoutItemsInput = {
+    id?: string
+    userId: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportJobCreateOrConnectWithoutItemsInput = {
+    where: DriveImportJobWhereUniqueInput
+    create: XOR<DriveImportJobCreateWithoutItemsInput, DriveImportJobUncheckedCreateWithoutItemsInput>
+  }
+
+  export type GalleryCreateWithoutDriveImportItemsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutDriveImportItemsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutDriveImportItemsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutDriveImportItemsInput, GalleryUncheckedCreateWithoutDriveImportItemsInput>
+  }
+
+  export type DriveImportJobUpsertWithoutItemsInput = {
+    update: XOR<DriveImportJobUpdateWithoutItemsInput, DriveImportJobUncheckedUpdateWithoutItemsInput>
+    create: XOR<DriveImportJobCreateWithoutItemsInput, DriveImportJobUncheckedCreateWithoutItemsInput>
+    where?: DriveImportJobWhereInput
+  }
+
+  export type DriveImportJobUpdateToOneWithWhereWithoutItemsInput = {
+    where?: DriveImportJobWhereInput
+    data: XOR<DriveImportJobUpdateWithoutItemsInput, DriveImportJobUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type DriveImportJobUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDriveImportJobsNestedInput
+  }
+
+  export type DriveImportJobUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryUpsertWithoutDriveImportItemsInput = {
+    update: XOR<GalleryUpdateWithoutDriveImportItemsInput, GalleryUncheckedUpdateWithoutDriveImportItemsInput>
+    create: XOR<GalleryCreateWithoutDriveImportItemsInput, GalleryUncheckedCreateWithoutDriveImportItemsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutDriveImportItemsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutDriveImportItemsInput, GalleryUncheckedUpdateWithoutDriveImportItemsInput>
+  }
+
+  export type GalleryUpdateWithoutDriveImportItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutDriveImportItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
   export type SessionCreateManyUserInput = {
     id?: string
     expiresAt: Date | string
@@ -32450,6 +36778,21 @@ export namespace Prisma {
     delta: bigint | number
     reason: string
     createdAt?: Date | string
+  }
+
+  export type DriveImportJobCreateManyUserInput = {
+    id?: string
+    source?: $Enums.ImportSource
+    status?: $Enums.DriveImportStatus
+    totalFiles?: number
+    completedFiles?: number
+    failedFiles?: number
+    skippedFiles?: number
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -32591,6 +36934,7 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
@@ -32610,6 +36954,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
@@ -32680,6 +37025,53 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DriveImportJobUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DriveImportItemUpdateManyWithoutJobNestedInput
+  }
+
+  export type DriveImportJobUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DriveImportItemUncheckedUpdateManyWithoutJobNestedInput
+  }
+
+  export type DriveImportJobUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: EnumImportSourceFieldUpdateOperationsInput | $Enums.ImportSource
+    status?: EnumDriveImportStatusFieldUpdateOperationsInput | $Enums.DriveImportStatus
+    totalFiles?: IntFieldUpdateOperationsInput | number
+    completedFiles?: IntFieldUpdateOperationsInput | number
+    failedFiles?: IntFieldUpdateOperationsInput | number
+    skippedFiles?: IntFieldUpdateOperationsInput | number
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PhotoCreateManyGalleryInput = {
     id?: string
     checksum?: string | null
@@ -32727,6 +37119,22 @@ export namespace Prisma {
     viewerId?: string | null
     message: string
     likes?: GalleryCommentCreatelikesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemCreateManyGalleryInput = {
+    id?: string
+    jobId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32896,6 +37304,54 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DriveImportItemUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    job?: DriveImportJobUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type DriveImportItemUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
@@ -32946,6 +37402,7 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -32965,6 +37422,7 @@ export namespace Prisma {
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {
@@ -33128,6 +37586,70 @@ export namespace Prisma {
     viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemCreateManyJobInput = {
+    id?: string
+    galleryId: string
+    driveFolderId: string
+    driveFolderName: string
+    driveFileId?: string | null
+    driveFileName?: string | null
+    driveFileSize?: bigint | number
+    driveMimeType?: string | null
+    photoId?: string | null
+    status?: $Enums.DriveImportItemStatus
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriveImportItemUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutDriveImportItemsNestedInput
+  }
+
+  export type DriveImportItemUncheckedUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriveImportItemUncheckedUpdateManyWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    driveFolderId?: StringFieldUpdateOperationsInput | string
+    driveFolderName?: StringFieldUpdateOperationsInput | string
+    driveFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    driveFileSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    driveMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

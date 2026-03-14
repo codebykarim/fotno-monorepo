@@ -377,9 +377,17 @@ export function UnifiedAuthForm({
       return;
     }
 
-    const { error } = await forgetPassword({
+    const { error } = await forgetPassword.emailOtp({
       email: parsed.data.email,
-      redirectTo: "/reset-password",
+      fetchOptions: {
+        onSuccess: () => {
+          setIsResetPassword(true);
+          toast.success("Password reset email sent");
+        },
+        onError: (error: unknown) => {
+          toast.error(getErrorMessage(error, "Failed to send reset email"));
+        },
+      },
     });
 
     if (error) {
@@ -395,14 +403,18 @@ export function UnifiedAuthForm({
     setIsLoading(true);
 
     try {
-      const { error } = await signIn.social({
+      const response = await signIn.social({
         provider,
         callbackURL: dashboardUrl,
       });
 
-      if (error) {
-        toast.error(error.message || `Failed to sign in with ${provider}`);
+      if (response.error) {
+        toast.error(
+          response.error.message || `Failed to sign in with ${provider}`,
+        );
         setIsLoading(false);
+      } else if (response.data?.url) {
+        window.location.href = response.data.url;
       }
     } catch {
       toast.error(`Failed to sign in with ${provider}`);
@@ -749,7 +761,13 @@ export function UnifiedAuthForm({
           </div>
         </section>
 
-        <aside className="relative hidden flex-1 overflow-hidden rounded-tr-3xl border border-border p-10 lg:block" style={{ background: "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)" }}>
+        <aside
+          className="relative hidden flex-1 overflow-hidden rounded-tr-3xl border border-border p-10 lg:block"
+          style={{
+            background:
+              "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)",
+          }}
+        >
           <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-primary/25 blur-3xl" />
           <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 

@@ -46,6 +46,10 @@ const EnvSchema = z.object({
   IMAGE_SEARCH_SERVICE_URL: z.string().url().default('http://localhost:4002'),
   /** Public base URL for S3/R2 objects (used to build storageUrl for search ingest). */
   AWS_S3_PUBLIC_URL: z.string().optional(),
+  /** Google OAuth client ID for Drive token refresh in the import worker. */
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  /** Google OAuth client secret for Drive token refresh in the import worker. */
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
 })
 
 const parsedEnv = EnvSchema.parse(process.env)

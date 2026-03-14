@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.4.2
- * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
+ * Prisma Client JS version: 7.4.1
+ * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
  */
 Prisma.prismaVersion = {
-  client: "7.4.2",
-  engine: "94a226be1cf2967af2541cca5529f0f7ba866919"
+  client: "7.4.1",
+  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -350,6 +350,39 @@ exports.Prisma.ImageSearchAlbumCacheScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DriveImportJobScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  source: 'source',
+  status: 'status',
+  totalFiles: 'totalFiles',
+  completedFiles: 'completedFiles',
+  failedFiles: 'failedFiles',
+  skippedFiles: 'skippedFiles',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DriveImportItemScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  galleryId: 'galleryId',
+  driveFolderId: 'driveFolderId',
+  driveFolderName: 'driveFolderName',
+  driveFileId: 'driveFileId',
+  driveFileName: 'driveFileName',
+  driveFileSize: 'driveFileSize',
+  driveMimeType: 'driveMimeType',
+  photoId: 'photoId',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -423,6 +456,30 @@ exports.UploadSessionStatus = exports.$Enums.UploadSessionStatus = {
   EXPIRED: 'EXPIRED'
 };
 
+exports.ImportSource = exports.$Enums.ImportSource = {
+  DRIVE: 'DRIVE',
+  PHOTOS: 'PHOTOS'
+};
+
+exports.DriveImportStatus = exports.$Enums.DriveImportStatus = {
+  PENDING: 'PENDING',
+  LISTING: 'LISTING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.DriveImportItemStatus = exports.$Enums.DriveImportItemStatus = {
+  PENDING: 'PENDING',
+  DOWNLOADING: 'DOWNLOADING',
+  UPLOADED: 'UPLOADED',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -440,7 +497,9 @@ exports.Prisma.ModelName = {
   AlbumPhoto: 'AlbumPhoto',
   GalleryComment: 'GalleryComment',
   ImageSearchImage: 'ImageSearchImage',
-  ImageSearchAlbumCache: 'ImageSearchAlbumCache'
+  ImageSearchAlbumCache: 'ImageSearchAlbumCache',
+  DriveImportJob: 'DriveImportJob',
+  DriveImportItem: 'DriveImportItem'
 };
 
 /**

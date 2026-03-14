@@ -301,3 +301,225 @@ export const suggestAlbumController = async (req: Request, res: Response) => {
 
   return res.status(200).json(result);
 };
+
+// ─── Google Drive Import ────────────────────────────────────────────────────
+
+export const gdriveAuthStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveAuthStatus(userId);
+  return res.status(200).json(result);
+};
+
+export const gdriveDisconnectController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveDisconnect(userId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gdriveFoldersController = async (req: Request, res: Response) => {
+  const userId = getUserId(req);
+  const parentId = req.query.parentId ? String(req.query.parentId) : undefined;
+  const result = await DashboardService.gdriveFolders(userId, parentId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gdrivePhotoFoldersController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdrivePhotoFolders(userId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gdriveFolderPreviewController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const folderId = req.params.folderId;
+  const result = await DashboardService.gdriveFolderPreview(userId, folderId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gdriveStartImportController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveStartImport(userId, req.body);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(201).json(result);
+};
+
+export const gdriveImportStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveImportStatus(
+    userId,
+    req.params.jobId,
+  );
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gdriveListImportsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveListImports(userId);
+  return res.status(200).json(result);
+};
+
+export const gdriveCancelImportController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gdriveCancelImport(
+    userId,
+    req.params.jobId,
+  );
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+// ─── Google Photos Import ───────────────────────────────────────────────────
+
+export const gphotosAuthStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gphotosAuthStatus(userId);
+  return res.status(200).json(result);
+};
+
+export const gphotosDisconnectController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gphotosDisconnect(userId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+export const gphotosCreateSessionController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gphotosCreateSession(userId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(201).json(result);
+};
+
+export const gphotosSessionStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const sessionId = req.params.sessionId;
+  const result = await DashboardService.gphotosSessionStatus(userId, sessionId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gphotosPickedItemsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const sessionId = req.params.sessionId;
+  const result = await DashboardService.gphotosPickedItems(userId, sessionId);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const gphotosProxyImageController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const url = String(req.query.url ?? "");
+  const result = await DashboardService.gphotosProxyImage(userId, url);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  res.setHeader("Content-Type", result.contentType);
+  res.setHeader("Cache-Control", "private, max-age=3600");
+  return res.send(result.buffer);
+};
+
+export const gphotosStartImportController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.gphotosStartImport(userId, req.body);
+  if ("error" in result) {
+    return res
+      .status(asStatusCode(result.status, 400))
+      .json({ error: result.error });
+  }
+  return res.status(201).json(result);
+};

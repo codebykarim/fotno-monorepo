@@ -12,7 +12,10 @@ const hasGithubOAuth =
   Boolean(process.env.GITHUB_CLIENT_ID) &&
   Boolean(process.env.GITHUB_CLIENT_SECRET);
 
+  console.log("hasGithubOAuth", hasGithubOAuth, "hasGoogleOAuth", hasGoogleOAuth);
+
 export const auth = betterAuth({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
@@ -38,6 +41,8 @@ export const auth = betterAuth({
           google: {
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            accessType: "offline",
+            prompt: "consent",
           },
         }
       : {}),

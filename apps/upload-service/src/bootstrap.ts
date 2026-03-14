@@ -12,6 +12,8 @@ export let redis: Redis
 
 let processPhotoWorkerRef: { close: () => Promise<void> } | null = null
 let cleanupWorkerRef: { close: () => Promise<void> } | null = null
+let gdriveImportWorkerRef: { close: () => Promise<void> } | null = null
+let gphotosImportWorkerRef: { close: () => Promise<void> } | null = null
 
 /** Verifies Redis is reachable before startup. Fails fast if Redis is down. */
 async function assertRedisAvailable(redisUrl: string): Promise<void> {
@@ -53,9 +55,13 @@ export async function bootstrap(): Promise<void> {
 
   const { processPhotoWorker } = await import('./queues/process-photo-worker')
   const { cleanupWorker } = await import('./queues/cleanup.worker')
+  const { gdriveImportWorker } = await import('./queues/gdrive-import-worker')
+  const { gphotosImportWorker } = await import('./queues/gphotos-import-worker')
 
   processPhotoWorkerRef = processPhotoWorker
   cleanupWorkerRef = cleanupWorker
+  gdriveImportWorkerRef = gdriveImportWorker
+  gphotosImportWorkerRef = gphotosImportWorker
 
   const { registerCleanupRecurringJobs } = await import('./queues/cleanup.queue')
   await registerCleanupRecurringJobs()
@@ -69,6 +75,8 @@ export async function gracefulShutdown(): Promise<void> {
 
   await processPhotoWorkerRef?.close().catch(() => {})
   await cleanupWorkerRef?.close().catch(() => {})
+  await gdriveImportWorkerRef?.close().catch(() => {})
+  await gphotosImportWorkerRef?.close().catch(() => {})
 
   await prisma.$disconnect().catch(() => {})
 

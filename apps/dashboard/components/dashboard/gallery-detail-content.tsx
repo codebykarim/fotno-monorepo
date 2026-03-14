@@ -69,7 +69,7 @@ import {
 import { cn } from "@workspace/ui/lib/utils";
 import { GalleryAiTab } from "./gallery-ai-tab";
 
-const tabs = ["photos", "albums", "ai", "settings", "share"] as const;
+const tabs = ["photos", "albums", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
 
 const TAB_META: Record<Tab, { label: string; icon: typeof Images }> = {

@@ -13,3 +13,7 @@
 **/.eslintcache
 **/npm-debug.log*
 **/pnpm-debug.log*
+**/venv
+**/__pycache__
+**/.pytest_cache
+**/*.md

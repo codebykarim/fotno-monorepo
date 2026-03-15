@@ -57,3 +57,20 @@ export interface PublicGallery {
 export interface GalleryApiResponse {
   gallery: PublicGallery;
 }
+
+export interface SharedFavoritesPhoto extends PublicPhoto {
+  note: string | null;
+}
+
+export interface SharedFavoritesData {
+  viewerName: string;
+  gallery: {
+    id: string;
+    shareToken: string;
+    title: string;
+    userId: string | null;
+    photographer: PhotographerProfile;
+    settings?: Partial<GallerySettings>;
+  };
+  photos: SharedFavoritesPhoto[];
+}

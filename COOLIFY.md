@@ -54,8 +54,24 @@ RESEND_API_KEY=<your-key>
 # ── AI / OpenAI (optional, for search tagging) ──
 OPENAI_API_KEY=<your-key>
 
-# ── Frontend build-time variable ──
+# ── Frontend URLs (NEXT_PUBLIC_* are baked at build time) ──
 NEXT_PUBLIC_API_URL=https://api.fotno.com
+NEXT_PUBLIC_AUTH_URL=https://auth.fotno.com
+NEXT_PUBLIC_DASHBOARD_URL=https://app.fotno.com
+NEXT_PUBLIC_GALLERY_URL=https://gallery.fotno.com
+NEXT_PUBLIC_LANDING_URL=https://fotno.com
+
+# ── Internal backend URL (used by Next.js SSR to reach backend over Docker network) ──
+BACKEND_API_URL=http://backend:8000
+
+# ── Internal service URLs ──
+IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
+UPLOAD_SERVICE_URL=http://upload-service:4001
+SIGLIP_SERVICE_URL=http://siglip-service:8001
+QWEN_SERVICE_URL=http://qwen-ai-service:8002
+
+# ── Gallery session (server-side secret for password-protected galleries) ──
+GALLERY_SESSION_SECRET=<generate-a-strong-secret>
 
 # ── OAuth (optional) ──
 GOOGLE_CLIENT_ID=<if-using-google-auth>
@@ -80,7 +96,7 @@ In Coolify, for each service that needs a public domain, set the domain in the c
 | Service | Domain | Port |
 |---------|--------|------|
 | `backend` | `api.fotno.com` | 8000 |
-| `upload-service` | `upload.fotno.com` | 3010 |
+| `upload-service` | `upload.fotno.com` | 4001 |
 | `landing` | `fotno.com` | 3000 |
 | `dashboard` | `app.fotno.com` | 3001 |
 | `auth` | `auth.fotno.com` | 3002 |
@@ -107,10 +123,14 @@ Subsequent deployments are faster thanks to Docker layer caching.
 
 ### Main database (Prisma)
 
-After first deploy, run from the **backend** container terminal in Coolify:
+Runs automatically on every startup of the `backend` container.
+The backend CMD runs `prisma migrate deploy` before starting the API server,
+so new migrations are applied on each deployment with zero manual intervention.
+
+If you need to run migrations manually (e.g. troubleshooting), exec into the backend container:
 
 ```bash
-cd /app && npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
+cd /app/packages/db && npx prisma migrate deploy
 ```
 
 ### pgvector database

@@ -210,6 +210,7 @@ model Gallery {
   driveImportItems DriveImportItem[]
   favorites        GalleryFavorite[]
   downloadEvents   DownloadEvent[]
+  favoriteShares   FavoriteShare[]
 
   @@unique([userId, slug])
   @@map("gallery")
@@ -372,6 +373,19 @@ model GalleryFavorite {
   @@unique([galleryId, photoId, viewerId])
   @@index([galleryId])
   @@map("gallery_favorite")
+}
+
+model FavoriteShare {
+  id         String   @id @default(uuid())
+  galleryId  String
+  gallery    Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  viewerId   String
+  viewerName String
+  shareToken String   @unique @default(uuid())
+  createdAt  DateTime @default(now())
+
+  @@unique([galleryId, viewerId])
+  @@map("favorite_share")
 }
 
 model DownloadEvent {

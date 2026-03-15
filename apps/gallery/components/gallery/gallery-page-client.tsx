@@ -11,18 +11,20 @@ import {
   Download,
   DownloadCloud,
   Heart,
-  Link2,
   Lock,
+  LogOut,
   MessageSquare,
   Minus,
   Pause,
   Pencil,
+  Phone,
   Play,
   Plus,
   Reply,
   Share2,
   ThumbsUp,
   Trash2,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -58,6 +60,14 @@ import {
 } from "@workspace/ui/components/input-otp";
 import { Input } from "@workspace/ui/components/input";
 import { PhoneInputComponent } from "@workspace/ui/components/phone";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
 import { useSession } from "@workspace/lib/auth/auth-client";
 
 type GalleryPageClientProps = {
@@ -395,6 +405,7 @@ export default function GalleryPageClient({
   );
   const [filterMode, setFilterMode] = useState<string>("all");
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [favoriteNotes, setFavoriteNotes] = useState<Record<string, string>>({});
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -435,12 +446,14 @@ export default function GalleryPageClient({
   );
   const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
   const [phoneDialogMode, setPhoneDialogMode] = useState<
-    "identify" | "retrieve"
+    "identify" | "retrieve" | "changePhone"
   >("identify");
   const [phoneValue, setPhoneValue] = useState("");
   const [nameValue, setNameValue] = useState("");
   const [phoneSubmitting, setPhoneSubmitting] = useState(false);
   const pendingFavoritePhotoIdRef = useRef<string | null>(null);
+  const [editNameDialogOpen, setEditNameDialogOpen] = useState(false);
+  const [editNameValue, setEditNameValue] = useState("");
 
   const isPhotographer =
     Boolean(session?.user?.id) && session?.user?.id === gallery.userId;
@@ -479,30 +492,83 @@ export default function GalleryPageClient({
     setSlideshowActive(true);
   };
 
-  // Social sharing
-  const handleCopyLink = async () => {
+  // Share favorites — create shareable link and copy URL
+  const [sharingFavorites, setSharingFavorites] = useState(false);
+
+  const handleShareFavorites = async () => {
+    const viewerId = sessionStorage.getItem(getViewerIdKey(gallery.shareToken));
+    const viewerName =
+      sessionStorage.getItem(getViewerNameKey(gallery.shareToken)) || "Guest";
+    if (!viewerId) {
+      toast.error("Please identify yourself first by favoriting a photo.");
+      return;
+    }
+    setSharingFavorites(true);
     try {
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success("Link copied to clipboard");
+      const res = await fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorite-share`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ viewerId, viewerName }),
+        },
+      );
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        toast.error(data?.error || "Failed to create share link");
+        return;
+      }
+      const { favoriteShareToken } = await res.json();
+      const url = `${window.location.origin}/favorites/${favoriteShareToken}`;
+      await navigator.clipboard.writeText(url);
+      toast.success("Favorites link copied to clipboard");
     } catch {
-      toast.error("Failed to copy link");
+      toast.error("Failed to create share link");
+    } finally {
+      setSharingFavorites(false);
     }
   };
 
-  const handleNativeShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: gallery.title,
-          text: `${gallery.title} by ${gallery.photographer.name}`,
-          url: window.location.href,
-        });
-      } catch {
-        // User cancelled
-      }
-    } else {
-      await handleCopyLink();
+  // ─── Viewer Account Management ──────────────────────────────────────────────
+
+  const getViewerDisplayInfo = () => {
+    const id = sessionStorage.getItem(getViewerIdKey(gallery.shareToken));
+    const name = sessionStorage.getItem(getViewerNameKey(gallery.shareToken));
+    return { viewerId: id, viewerName: name };
+  };
+
+  const handleSignOut = () => {
+    sessionStorage.removeItem(getViewerIdKey(gallery.shareToken));
+    sessionStorage.removeItem(getViewerNameKey(gallery.shareToken));
+    setFavorites([]);
+    setFavoriteNotes({});
+    setFilterMode("all");
+    toast.success("Signed out successfully");
+  };
+
+  const handleSaveNameChange = () => {
+    const trimmed = editNameValue.trim();
+    if (!trimmed) {
+      toast.error("Name cannot be empty");
+      return;
     }
+    sessionStorage.setItem(getViewerNameKey(gallery.shareToken), trimmed);
+    setEditNameDialogOpen(false);
+    toast.success("Name updated");
+  };
+
+  const handleOpenChangeName = () => {
+    const current =
+      sessionStorage.getItem(getViewerNameKey(gallery.shareToken)) || "";
+    setEditNameValue(current);
+    setEditNameDialogOpen(true);
+  };
+
+  const handleOpenChangePhone = () => {
+    setPhoneDialogMode("changePhone");
+    setPhoneValue("");
+    setNameValue("");
+    setPhoneDialogOpen(true);
   };
 
   useEffect(() => {
@@ -544,6 +610,11 @@ export default function GalleryPageClient({
             setFavorites(
               data.favorites.map((f: { photoId: string }) => f.photoId),
             );
+            const notes: Record<string, string> = {};
+            for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+              if (f.note) notes[f.photoId] = f.note;
+            }
+            setFavoriteNotes(notes);
           }
         })
         .catch(() => {
@@ -1167,39 +1238,32 @@ export default function GalleryPageClient({
         );
       }
 
-      if (phoneDialogMode === "retrieve") {
-        // Load existing favorites for this phone number
-        const res = await fetch(
-          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
-          { cache: "no-store" },
-        );
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.favorites) {
-            setFavorites(
-              data.favorites.map((f: { photoId: string }) => f.photoId),
-            );
+      // Load existing favorites for this phone number
+      const res = await fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
+        { cache: "no-store" },
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.favorites) {
+          setFavorites(
+            data.favorites.map((f: { photoId: string }) => f.photoId),
+          );
+          const notes: Record<string, string> = {};
+          for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+            if (f.note) notes[f.photoId] = f.note;
           }
+          setFavoriteNotes(notes);
         }
-        setPhoneDialogOpen(false);
+      }
+      setPhoneDialogOpen(false);
+
+      if (phoneDialogMode === "changePhone") {
+        toast.success("Phone number updated");
+      } else if (phoneDialogMode === "retrieve") {
         setFilterMode("loved");
         toast.success("Favorites loaded!");
       } else {
-        // Identify mode: load existing favorites then proceed with pending action
-        const res = await fetch(
-          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
-          { cache: "no-store" },
-        );
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.favorites) {
-            setFavorites(
-              data.favorites.map((f: { photoId: string }) => f.photoId),
-            );
-          }
-        }
-        setPhoneDialogOpen(false);
-
         // Continue with the pending favorite action
         const pendingPhotoId = pendingFavoritePhotoIdRef.current;
         pendingFavoritePhotoIdRef.current = null;
@@ -1235,6 +1299,16 @@ export default function GalleryPageClient({
       : [...favorites, photoId];
     setFavorites(next);
 
+    // Clean up note when removing
+    const removedNote = isRemoving ? favoriteNotes[photoId] : undefined;
+    if (isRemoving && favoriteNotes[photoId]) {
+      setFavoriteNotes((prev) => {
+        const n = { ...prev };
+        delete n[photoId];
+        return n;
+      });
+    }
+
     if (favoritesEnabled) {
       try {
         if (isRemoving) {
@@ -1246,6 +1320,10 @@ export default function GalleryPageClient({
         setFavorites(
           isRemoving ? [...next, photoId] : next.filter((id) => id !== photoId),
         );
+        // Restore note on error
+        if (isRemoving && removedNote) {
+          setFavoriteNotes((prev) => ({ ...prev, [photoId]: removedNote }));
+        }
       }
     } else {
       localStorage.setItem(
@@ -1258,12 +1336,23 @@ export default function GalleryPageClient({
   const submitFavoriteWithNote = async () => {
     if (!noteDialogPhotoId) return;
     const photoId = noteDialogPhotoId;
+    const note = noteText.trim();
     setFavorites((prev) => [...prev, photoId]);
+    if (note) {
+      setFavoriteNotes((prev) => ({ ...prev, [photoId]: note }));
+    }
     setNoteDialogPhotoId(null);
     try {
-      await saveFavoriteToServer(photoId, noteText);
+      await saveFavoriteToServer(photoId, note || undefined);
     } catch {
       setFavorites((prev) => prev.filter((id) => id !== photoId));
+      if (note) {
+        setFavoriteNotes((prev) => {
+          const next = { ...prev };
+          delete next[photoId];
+          return next;
+        });
+      }
     }
   };
 
@@ -1272,7 +1361,7 @@ export default function GalleryPageClient({
       return;
     }
 
-    const currentIndex = gallery.photos.findIndex(
+    const currentIndex = visiblePhotos.findIndex(
       (photo) => photo.id === activePhotoId,
     );
     if (currentIndex < 0) {
@@ -1280,11 +1369,11 @@ export default function GalleryPageClient({
     }
 
     const nextIndex = currentIndex + direction;
-    if (nextIndex < 0 || nextIndex >= gallery.photos.length) {
+    if (nextIndex < 0 || nextIndex >= visiblePhotos.length) {
       return;
     }
 
-    setActivePhotoId(gallery.photos[nextIndex]?.id ?? null);
+    setActivePhotoId(visiblePhotos[nextIndex]?.id ?? null);
     setZoom(1);
     setPan({ x: 0, y: 0 });
   };
@@ -1656,25 +1745,120 @@ export default function GalleryPageClient({
 
   return (
     <div className="min-h-screen select-none bg-background relative">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/95 px-4 py-4 backdrop-blur-md md:px-8 transition-colors">
-        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur-md transition-colors">
+        {/* Top row: Title + Actions */}
+        <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-4 px-4 py-3 md:px-8">
+          <div className="min-w-0">
+            <h1 className="truncate text-lg font-semibold tracking-tight text-foreground md:text-xl">
               {gallery.title}
             </h1>
-            <p className="text-sm text-muted-foreground">
-              {gallery.photographer.name} • {photoCountLabel}
+            <p className="flex items-center gap-1.5 text-xs text-muted-foreground md:text-sm">
+              <span>{gallery.photographer.name}</span>
+              <span className="text-border">|</span>
+              <span>{photoCountLabel}</span>
+              <span className="text-border">|</span>
+              <span className="inline-flex items-center gap-1">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-40" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary/70" />
+                </span>
+                {viewerCount} online
+              </span>
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
+            {slideshowEnabled && visiblePhotos.length > 1 && (
+              <button
+                type="button"
+                onClick={startSlideshow}
+                className="hidden h-9 items-center justify-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 text-sm font-medium text-foreground transition hover:bg-accent sm:inline-flex"
+              >
+                <Play className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">Slideshow</span>
+              </button>
+            )}
+            {socialSharingEnabled && favorites.length > 0 && (
+              <button
+                type="button"
+                onClick={() => void handleShareFavorites()}
+                disabled={sharingFavorites}
+                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 text-sm font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
+                aria-label="Share favorites"
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">
+                  {sharingFavorites ? "Creating..." : "Share"}
+                </span>
+              </button>
+            )}
+            {downloadsEnabled && (
+              <button
+                type="button"
+                onClick={handleDownloadAll}
+                disabled={isDownloadingAll}
+                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-foreground px-3 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50 md:px-4"
+              >
+                <DownloadCloud className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">
+                  {isDownloadingAll ? "Preparing..." : "Download"}
+                </span>
+              </button>
+            )}
+
+            {/* Viewer Account Dropdown */}
+            {isViewerIdentified() && !isPhotographer && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-muted text-foreground transition hover:bg-accent"
+                    aria-label="Account"
+                  >
+                    <User className="h-4 w-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col gap-0.5">
+                      <p className="text-sm font-medium">
+                        {getViewerDisplayInfo().viewerName || "Guest"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {getViewerDisplayInfo().viewerId}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleOpenChangeName}>
+                    <Pencil className="h-4 w-4" />
+                    Change Name
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleOpenChangePhone}>
+                    <Phone className="h-4 w-4" />
+                    Change Phone
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom row: Filter tabs */}
+        <div className="mx-auto w-full max-w-[1500px] px-4 pb-2 md:px-8">
+          <div className="-mx-1 flex items-center gap-1 overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => setFilterMode("all")}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-all ${
                 filterMode === "all"
                   ? "bg-foreground text-background"
-                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
               All Photos
@@ -1684,7 +1868,6 @@ export default function GalleryPageClient({
                 type="button"
                 onClick={() => {
                   if (!isViewerIdentified() && !isPhotographer) {
-                    // Show phone dialog in retrieve mode
                     setPhoneDialogMode("retrieve");
                     setPhoneValue("");
                     setNameValue("");
@@ -1693,76 +1876,32 @@ export default function GalleryPageClient({
                   }
                   setFilterMode("loved");
                 }}
-                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-all ${
                   filterMode === "loved"
                     ? "bg-primary text-primary-foreground"
-                    : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 <Heart
                   className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-primary-foreground text-primary-foreground" : "text-muted-foreground"}`}
                 />
-                {favorites.length > 0
-                  ? `${favorites.length} loved`
-                  : "Loved"}
+                {favorites.length > 0 ? `${favorites.length} Loved` : "Loved"}
               </button>
             )}
-
             {gallery.albums?.map((album) => (
               <button
                 key={album.id}
                 type="button"
                 onClick={() => setFilterMode(album.id)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-all ${
                   filterMode === album.id
                     ? "bg-foreground text-background"
-                    : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {album.title}
               </button>
             ))}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-40"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary/70"></span>
-              </span>
-              {viewerCount} online
-            </span>
-            {slideshowEnabled && visiblePhotos.length > 1 && (
-              <button
-                type="button"
-                onClick={startSlideshow}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-border/80 bg-muted px-4 text-sm font-medium text-foreground transition hover:bg-accent"
-              >
-                <Play className="h-4 w-4" />
-                Slideshow
-              </button>
-            )}
-            {socialSharingEnabled && (
-              <button
-                type="button"
-                onClick={() => void handleNativeShare()}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-muted text-foreground transition hover:bg-accent"
-                aria-label="Share gallery"
-              >
-                <Share2 className="h-4 w-4" />
-              </button>
-            )}
-            {downloadsEnabled && (
-              <button
-                type="button"
-                onClick={handleDownloadAll}
-                disabled={isDownloadingAll}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <DownloadCloud className="h-4 w-4" />
-                {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
-              </button>
-            )}
           </div>
         </div>
       </header>
@@ -1820,6 +1959,14 @@ export default function GalleryPageClient({
                         }`}
                       />
                     </button>
+                  )}
+
+                  {loved && favoriteNotes[photo.id] && (
+                    <div className="absolute left-3 bottom-3 max-w-[calc(100%-4rem)] pointer-events-none">
+                      <span className="inline-block truncate rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white/90 backdrop-blur">
+                        &ldquo;{favoriteNotes[photo.id]}&rdquo;
+                      </span>
+                    </div>
                   )}
 
                   {downloadsEnabled && (
@@ -1953,6 +2100,17 @@ export default function GalleryPageClient({
               →
             </button>
           </div>
+
+          {/* Favorite note in modal */}
+          {favorites.includes(activePhoto.id) &&
+            favoriteNotes[activePhoto.id] && (
+              <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 px-4 py-2 text-sm text-white/90 backdrop-blur">
+                  <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
+                  &ldquo;{favoriteNotes[activePhoto.id]}&rdquo;
+                </span>
+              </div>
+            )}
         </div>
       ) : null}
 
@@ -2196,15 +2354,26 @@ export default function GalleryPageClient({
         <DialogContent className="sm:max-w-[420px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Heart className="h-4 w-4 fill-primary text-primary" />
-              {phoneDialogMode === "retrieve"
-                ? "View Your Favorites"
-                : "Save Your Favorites"}
+              {phoneDialogMode === "changePhone" ? (
+                <>
+                  <Phone className="h-4 w-4 text-primary" />
+                  Change Phone Number
+                </>
+              ) : (
+                <>
+                  <Heart className="h-4 w-4 fill-primary text-primary" />
+                  {phoneDialogMode === "retrieve"
+                    ? "View Your Favorites"
+                    : "Save Your Favorites"}
+                </>
+              )}
             </DialogTitle>
             <DialogDescription>
-              {phoneDialogMode === "retrieve"
-                ? "Enter your phone number to retrieve your saved favorites."
-                : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
+              {phoneDialogMode === "changePhone"
+                ? "Enter your new phone number. Your favorites will be transferred."
+                : phoneDialogMode === "retrieve"
+                  ? "Enter your phone number to retrieve your saved favorites."
+                  : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
@@ -2252,9 +2421,53 @@ export default function GalleryPageClient({
             >
               {phoneSubmitting
                 ? "Loading..."
-                : phoneDialogMode === "retrieve"
-                  ? "Load Favorites"
-                  : "Continue"}
+                : phoneDialogMode === "changePhone"
+                  ? "Update Phone"
+                  : phoneDialogMode === "retrieve"
+                    ? "Load Favorites"
+                    : "Continue"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Name Dialog */}
+      <Dialog open={editNameDialogOpen} onOpenChange={setEditNameDialogOpen}>
+        <DialogContent className="sm:max-w-[380px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Pencil className="h-4 w-4 text-primary" />
+              Change Name
+            </DialogTitle>
+            <DialogDescription>
+              Update your display name.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-2">
+            <Input
+              value={editNameValue}
+              onChange={(e) => setEditNameValue(e.target.value)}
+              placeholder="Your name"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && editNameValue.trim()) {
+                  handleSaveNameChange();
+                }
+              }}
+              autoFocus
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setEditNameDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSaveNameChange}
+              disabled={!editNameValue.trim()}
+            >
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>

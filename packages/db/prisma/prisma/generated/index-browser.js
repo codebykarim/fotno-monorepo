@@ -351,6 +351,15 @@ exports.Prisma.GalleryFavoriteScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FavoriteShareScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  viewerId: 'viewerId',
+  viewerName: 'viewerName',
+  shareToken: 'shareToken',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.DownloadEventScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
@@ -503,6 +512,7 @@ exports.Prisma.ModelName = {
   AlbumPhoto: 'AlbumPhoto',
   GalleryComment: 'GalleryComment',
   GalleryFavorite: 'GalleryFavorite',
+  FavoriteShare: 'FavoriteShare',
   DownloadEvent: 'DownloadEvent',
   DriveImportJob: 'DriveImportJob',
   DriveImportItem: 'DriveImportItem'

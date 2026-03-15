@@ -198,16 +198,21 @@ function FavoritesActivity({ galleryId }: { galleryId: string }) {
               </span>
             </div>
             {viewer.favorites.some((f) => f.note) && (
-              <div className="space-y-1 pl-5">
+              <div className="space-y-1.5 pl-5 mt-1">
                 {viewer.favorites
                   .filter((f) => f.note)
                   .map((f) => (
-                    <p
+                    <div
                       key={f.id}
-                      className="text-xs text-muted-foreground italic"
+                      className="flex items-start gap-2 text-xs"
                     >
-                      &ldquo;{f.note}&rdquo;
-                    </p>
+                      <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                        {f.photoId.slice(0, 8)}
+                      </span>
+                      <span className="text-muted-foreground italic">
+                        &ldquo;{f.note}&rdquo;
+                      </span>
+                    </div>
                   ))}
               </div>
             )}

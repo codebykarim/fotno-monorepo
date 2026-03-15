@@ -4,6 +4,8 @@ import type {
   PhotoVariant,
   PublicGallery,
   PublicPhoto,
+  SharedFavoritesData,
+  SharedFavoritesPhoto,
 } from "@/lib/gallery-types";
 
 const TRANSPARENT_BLUR =
@@ -341,4 +343,67 @@ export const getPhotoPresignedUrl = async (
 
     throw error;
   }
+};
+
+export const getSharedFavorites = async (
+  favoriteShareToken: string,
+): Promise<SharedFavoritesData> => {
+  const response = await backendFetch(
+    `/api/public/shared-favorites/${encodeURIComponent(favoriteShareToken)}`,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(body || "Failed to fetch shared favorites");
+  }
+
+  const payload = await response.json();
+  const galleryShareToken = payload.gallery?.shareToken ?? "";
+
+  const photos: SharedFavoritesPhoto[] = (payload.photos ?? []).map(
+    (p: any) => ({
+      id: p.id,
+      originalFilename: p.originalFilename || `${p.id}.jpg`,
+      aiCaption: p.aiCaption ?? null,
+      width: p.width ?? null,
+      height: p.height ?? null,
+      order: p.order ?? 0,
+      blurDataUrl: TRANSPARENT_BLUR,
+      thumbnailSrc: `/api/photos/${p.id}/proxy?variant=thumbnail&shareToken=${encodeURIComponent(galleryShareToken)}`,
+      previewSrc: `/api/photos/${p.id}/proxy?variant=preview&shareToken=${encodeURIComponent(galleryShareToken)}`,
+      originalSrc: null,
+      note: p.note ?? null,
+    }),
+  );
+
+  return {
+    viewerName: payload.viewerName ?? "",
+    gallery: {
+      id: payload.gallery.id,
+      shareToken: galleryShareToken,
+      title: payload.gallery.title,
+      userId: payload.gallery.userId ?? null,
+      photographer: {
+        name: payload.gallery.photographer?.name ?? "FOTNO",
+        logoUrl: payload.gallery.photographer?.logoUrl ?? null,
+      },
+      settings: payload.gallery.settings
+        ? {
+            slideshowEnabled: payload.gallery.settings.slideshowEnabled ?? true,
+            downloadEnabled: payload.gallery.settings.downloadEnabled ?? true,
+            hasDownloadPin: payload.gallery.settings.hasDownloadPin ?? false,
+            downloadSizes: {
+              original:
+                payload.gallery.settings.downloadSizes?.original ?? true,
+              highRes:
+                payload.gallery.settings.downloadSizes?.highRes ?? false,
+              web: payload.gallery.settings.downloadSizes?.web ?? true,
+            },
+            downloadLimit: payload.gallery.settings.downloadLimit ?? null,
+          }
+        : undefined,
+    },
+    photos,
+  };
 };

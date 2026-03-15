@@ -58,6 +58,14 @@ const publicGalleryMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: PublicGalleryController.trackDownloadController,
   },
+  "create-favorite-share": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.createFavoriteShareController,
+  },
+  "get-shared-favorites": {
+    httpMethod: "GET",
+    controllerFunction: PublicGalleryController.getSharedFavoritesController,
+  },
 };
 
 const mappedMethods = init(publicGalleryMethods);
@@ -123,6 +131,16 @@ publicGalleryRoutes.post(
 publicGalleryRoutes.post(
   "/public/gallery/:shareToken/download-event",
   handleMethod("track-download"),
+);
+
+// ─── Favorite Shares ───────────────────────────────────────────────────────
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/favorite-share",
+  handleMethod("create-favorite-share"),
+);
+publicGalleryRoutes.get(
+  "/public/shared-favorites/:favoriteShareToken",
+  handleMethod("get-shared-favorites"),
 );
 
 export default publicGalleryRoutes;

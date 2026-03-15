@@ -12,6 +12,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json ./
 COPY packages/db/package.json packages/db/
 COPY packages/db/prisma.config.ts packages/db/
 COPY packages/db/prisma/schema.prisma packages/db/prisma/
+COPY packages/db/prisma/migrations/ packages/db/prisma/migrations/
 COPY packages/lib/package.json packages/lib/
 COPY packages/ui/package.json packages/ui/
 COPY packages/eslint-config/package.json packages/eslint-config/
@@ -45,4 +46,4 @@ WORKDIR /app/apps/backend
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "tsx dist/workers/cleanupPhotoWorker.js & exec tsx dist/server.js"]
+CMD ["sh", "-c", "cd /app/packages/db && npx prisma migrate deploy && cd /app/apps/backend && tsx dist/workers/cleanupPhotoWorker.js & exec tsx dist/server.js"]

@@ -1,6 +1,7 @@
 import { getPhotoPresignedUrl } from "@/lib/gallery-service";
 import { getDashboardGalleryAccessBySlug } from "@/lib/dashboard-gallery";
 import { verifyGallerySessionToken } from "@/lib/gallery-session";
+import { backendFetch } from "@/lib/backend";
 import { NextRequest, NextResponse } from "next/server";
 
 const sanitizeFileName = (value: string): string => {
@@ -24,6 +25,8 @@ export async function GET(
     const sessionToken =
       request.nextUrl.searchParams.get("sessionToken") ??
       request.headers.get("x-gallery-session");
+    const favoriteShareToken =
+      request.nextUrl.searchParams.get("favoriteShareToken");
 
     if (!shareToken) {
       return NextResponse.json(
@@ -32,20 +35,40 @@ export async function GET(
       );
     }
 
-    const dashboardAccess = await getDashboardGalleryAccessBySlug(shareToken);
-    if (dashboardAccess?.passwordEnabled) {
-      if (!sessionToken) {
-        return NextResponse.json({ error: "Gallery lock required" }, { status: 401 });
+    // If favoriteShareToken provided, validate it to bypass password
+    let passwordBypassed = false;
+    if (favoriteShareToken) {
+      const validateRes = await backendFetch(
+        `/api/public/shared-favorites/${encodeURIComponent(favoriteShareToken)}`,
+        { cache: "no-store" },
+      );
+      if (validateRes.ok) {
+        const data = await validateRes.json();
+        const photoInFavorites = data.photos?.some(
+          (p: { id: string }) => p.id === photoId,
+        );
+        if (photoInFavorites && data.gallery?.shareToken === shareToken) {
+          passwordBypassed = true;
+        }
       }
+    }
 
-      const validSession = verifyGallerySessionToken({
-        token: sessionToken,
-        shareToken,
-        password: dashboardAccess.password,
-      });
+    if (!passwordBypassed) {
+      const dashboardAccess = await getDashboardGalleryAccessBySlug(shareToken);
+      if (dashboardAccess?.passwordEnabled) {
+        if (!sessionToken) {
+          return NextResponse.json({ error: "Gallery lock required" }, { status: 401 });
+        }
 
-      if (!validSession) {
-        return NextResponse.json({ error: "Session expired" }, { status: 401 });
+        const validSession = verifyGallerySessionToken({
+          token: sessionToken,
+          shareToken,
+          password: dashboardAccess.password,
+        });
+
+        if (!validSession) {
+          return NextResponse.json({ error: "Session expired" }, { status: 401 });
+        }
       }
     }
 

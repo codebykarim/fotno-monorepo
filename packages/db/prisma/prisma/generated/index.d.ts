@@ -94,6 +94,11 @@ export type GalleryComment = $Result.DefaultSelection<Prisma.$GalleryCommentPayl
  */
 export type GalleryFavorite = $Result.DefaultSelection<Prisma.$GalleryFavoritePayload>
 /**
+ * Model FavoriteShare
+ * 
+ */
+export type FavoriteShare = $Result.DefaultSelection<Prisma.$FavoriteSharePayload>
+/**
  * Model DownloadEvent
  * 
  */
@@ -532,6 +537,16 @@ export class PrismaClient<
     * ```
     */
   get galleryFavorite(): Prisma.GalleryFavoriteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.favoriteShare`: Exposes CRUD operations for the **FavoriteShare** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FavoriteShares
+    * const favoriteShares = await prisma.favoriteShare.findMany()
+    * ```
+    */
+  get favoriteShare(): Prisma.FavoriteShareDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.downloadEvent`: Exposes CRUD operations for the **DownloadEvent** model.
@@ -1012,6 +1027,7 @@ export namespace Prisma {
     AlbumPhoto: 'AlbumPhoto',
     GalleryComment: 'GalleryComment',
     GalleryFavorite: 'GalleryFavorite',
+    FavoriteShare: 'FavoriteShare',
     DownloadEvent: 'DownloadEvent',
     DriveImportJob: 'DriveImportJob',
     DriveImportItem: 'DriveImportItem'
@@ -1030,7 +1046,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "downloadEvent" | "driveImportJob" | "driveImportItem"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "driveImportItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2218,6 +2234,80 @@ export namespace Prisma {
           }
         }
       }
+      FavoriteShare: {
+        payload: Prisma.$FavoriteSharePayload<ExtArgs>
+        fields: Prisma.FavoriteShareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FavoriteShareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FavoriteShareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          findFirst: {
+            args: Prisma.FavoriteShareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FavoriteShareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          findMany: {
+            args: Prisma.FavoriteShareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>[]
+          }
+          create: {
+            args: Prisma.FavoriteShareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          createMany: {
+            args: Prisma.FavoriteShareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FavoriteShareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>[]
+          }
+          delete: {
+            args: Prisma.FavoriteShareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          update: {
+            args: Prisma.FavoriteShareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          deleteMany: {
+            args: Prisma.FavoriteShareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FavoriteShareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FavoriteShareUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>[]
+          }
+          upsert: {
+            args: Prisma.FavoriteShareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteSharePayload>
+          }
+          aggregate: {
+            args: Prisma.FavoriteShareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFavoriteShare>
+          }
+          groupBy: {
+            args: Prisma.FavoriteShareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteShareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FavoriteShareCountArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteShareCountAggregateOutputType> | number
+          }
+        }
+      }
       DownloadEvent: {
         payload: Prisma.$DownloadEventPayload<ExtArgs>
         fields: Prisma.DownloadEventFieldRefs
@@ -2564,6 +2654,7 @@ export namespace Prisma {
     albumPhoto?: AlbumPhotoOmit
     galleryComment?: GalleryCommentOmit
     galleryFavorite?: GalleryFavoriteOmit
+    favoriteShare?: FavoriteShareOmit
     downloadEvent?: DownloadEventOmit
     driveImportJob?: DriveImportJobOmit
     driveImportItem?: DriveImportItemOmit
@@ -2739,6 +2830,7 @@ export namespace Prisma {
     driveImportItems: number
     favorites: number
     downloadEvents: number
+    favoriteShares: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2749,6 +2841,7 @@ export namespace Prisma {
     driveImportItems?: boolean | GalleryCountOutputTypeCountDriveImportItemsArgs
     favorites?: boolean | GalleryCountOutputTypeCountFavoritesArgs
     downloadEvents?: boolean | GalleryCountOutputTypeCountDownloadEventsArgs
+    favoriteShares?: boolean | GalleryCountOutputTypeCountFavoriteSharesArgs
   }
 
   // Custom InputTypes
@@ -2809,6 +2902,13 @@ export namespace Prisma {
    */
   export type GalleryCountOutputTypeCountDownloadEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DownloadEventWhereInput
+  }
+
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountFavoriteSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteShareWhereInput
   }
 
 
@@ -10629,6 +10729,7 @@ export namespace Prisma {
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
     downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
+    favoriteShares?: boolean | Gallery$favoriteSharesArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -10746,6 +10847,7 @@ export namespace Prisma {
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
     downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
+    favoriteShares?: boolean | Gallery$favoriteSharesArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10769,6 +10871,7 @@ export namespace Prisma {
       driveImportItems: Prisma.$DriveImportItemPayload<ExtArgs>[]
       favorites: Prisma.$GalleryFavoritePayload<ExtArgs>[]
       downloadEvents: Prisma.$DownloadEventPayload<ExtArgs>[]
+      favoriteShares: Prisma.$FavoriteSharePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11204,6 +11307,7 @@ export namespace Prisma {
     driveImportItems<T extends Gallery$driveImportItemsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$driveImportItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favorites<T extends Gallery$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     downloadEvents<T extends Gallery$downloadEventsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$downloadEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favoriteShares<T extends Gallery$favoriteSharesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoriteSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11848,6 +11952,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DownloadEventScalarFieldEnum | DownloadEventScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.favoriteShares
+   */
+  export type Gallery$favoriteSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    where?: FavoriteShareWhereInput
+    orderBy?: FavoriteShareOrderByWithRelationInput | FavoriteShareOrderByWithRelationInput[]
+    cursor?: FavoriteShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FavoriteShareScalarFieldEnum | FavoriteShareScalarFieldEnum[]
   }
 
   /**
@@ -22306,6 +22434,1082 @@ export namespace Prisma {
 
 
   /**
+   * Model FavoriteShare
+   */
+
+  export type AggregateFavoriteShare = {
+    _count: FavoriteShareCountAggregateOutputType | null
+    _min: FavoriteShareMinAggregateOutputType | null
+    _max: FavoriteShareMaxAggregateOutputType | null
+  }
+
+  export type FavoriteShareMinAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    viewerId: string | null
+    viewerName: string | null
+    shareToken: string | null
+    createdAt: Date | null
+  }
+
+  export type FavoriteShareMaxAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    viewerId: string | null
+    viewerName: string | null
+    shareToken: string | null
+    createdAt: Date | null
+  }
+
+  export type FavoriteShareCountAggregateOutputType = {
+    id: number
+    galleryId: number
+    viewerId: number
+    viewerName: number
+    shareToken: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FavoriteShareMinAggregateInputType = {
+    id?: true
+    galleryId?: true
+    viewerId?: true
+    viewerName?: true
+    shareToken?: true
+    createdAt?: true
+  }
+
+  export type FavoriteShareMaxAggregateInputType = {
+    id?: true
+    galleryId?: true
+    viewerId?: true
+    viewerName?: true
+    shareToken?: true
+    createdAt?: true
+  }
+
+  export type FavoriteShareCountAggregateInputType = {
+    id?: true
+    galleryId?: true
+    viewerId?: true
+    viewerName?: true
+    shareToken?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FavoriteShareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FavoriteShare to aggregate.
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteShares to fetch.
+     */
+    orderBy?: FavoriteShareOrderByWithRelationInput | FavoriteShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FavoriteShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FavoriteShares
+    **/
+    _count?: true | FavoriteShareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FavoriteShareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FavoriteShareMaxAggregateInputType
+  }
+
+  export type GetFavoriteShareAggregateType<T extends FavoriteShareAggregateArgs> = {
+        [P in keyof T & keyof AggregateFavoriteShare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFavoriteShare[P]>
+      : GetScalarType<T[P], AggregateFavoriteShare[P]>
+  }
+
+
+
+
+  export type FavoriteShareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteShareWhereInput
+    orderBy?: FavoriteShareOrderByWithAggregationInput | FavoriteShareOrderByWithAggregationInput[]
+    by: FavoriteShareScalarFieldEnum[] | FavoriteShareScalarFieldEnum
+    having?: FavoriteShareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FavoriteShareCountAggregateInputType | true
+    _min?: FavoriteShareMinAggregateInputType
+    _max?: FavoriteShareMaxAggregateInputType
+  }
+
+  export type FavoriteShareGroupByOutputType = {
+    id: string
+    galleryId: string
+    viewerId: string
+    viewerName: string
+    shareToken: string
+    createdAt: Date
+    _count: FavoriteShareCountAggregateOutputType | null
+    _min: FavoriteShareMinAggregateOutputType | null
+    _max: FavoriteShareMaxAggregateOutputType | null
+  }
+
+  type GetFavoriteShareGroupByPayload<T extends FavoriteShareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FavoriteShareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FavoriteShareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FavoriteShareGroupByOutputType[P]>
+            : GetScalarType<T[P], FavoriteShareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FavoriteShareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    shareToken?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["favoriteShare"]>
+
+  export type FavoriteShareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    shareToken?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["favoriteShare"]>
+
+  export type FavoriteShareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    shareToken?: boolean
+    createdAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["favoriteShare"]>
+
+  export type FavoriteShareSelectScalar = {
+    id?: boolean
+    galleryId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    shareToken?: boolean
+    createdAt?: boolean
+  }
+
+  export type FavoriteShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "viewerId" | "viewerName" | "shareToken" | "createdAt", ExtArgs["result"]["favoriteShare"]>
+  export type FavoriteShareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type FavoriteShareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type FavoriteShareIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+
+  export type $FavoriteSharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FavoriteShare"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      galleryId: string
+      viewerId: string
+      viewerName: string
+      shareToken: string
+      createdAt: Date
+    }, ExtArgs["result"]["favoriteShare"]>
+    composites: {}
+  }
+
+  type FavoriteShareGetPayload<S extends boolean | null | undefined | FavoriteShareDefaultArgs> = $Result.GetResult<Prisma.$FavoriteSharePayload, S>
+
+  type FavoriteShareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FavoriteShareFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FavoriteShareCountAggregateInputType | true
+    }
+
+  export interface FavoriteShareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FavoriteShare'], meta: { name: 'FavoriteShare' } }
+    /**
+     * Find zero or one FavoriteShare that matches the filter.
+     * @param {FavoriteShareFindUniqueArgs} args - Arguments to find a FavoriteShare
+     * @example
+     * // Get one FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FavoriteShareFindUniqueArgs>(args: SelectSubset<T, FavoriteShareFindUniqueArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FavoriteShare that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FavoriteShareFindUniqueOrThrowArgs} args - Arguments to find a FavoriteShare
+     * @example
+     * // Get one FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FavoriteShareFindUniqueOrThrowArgs>(args: SelectSubset<T, FavoriteShareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FavoriteShare that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareFindFirstArgs} args - Arguments to find a FavoriteShare
+     * @example
+     * // Get one FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FavoriteShareFindFirstArgs>(args?: SelectSubset<T, FavoriteShareFindFirstArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FavoriteShare that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareFindFirstOrThrowArgs} args - Arguments to find a FavoriteShare
+     * @example
+     * // Get one FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FavoriteShareFindFirstOrThrowArgs>(args?: SelectSubset<T, FavoriteShareFindFirstOrThrowArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FavoriteShares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FavoriteShares
+     * const favoriteShares = await prisma.favoriteShare.findMany()
+     * 
+     * // Get first 10 FavoriteShares
+     * const favoriteShares = await prisma.favoriteShare.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const favoriteShareWithIdOnly = await prisma.favoriteShare.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FavoriteShareFindManyArgs>(args?: SelectSubset<T, FavoriteShareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FavoriteShare.
+     * @param {FavoriteShareCreateArgs} args - Arguments to create a FavoriteShare.
+     * @example
+     * // Create one FavoriteShare
+     * const FavoriteShare = await prisma.favoriteShare.create({
+     *   data: {
+     *     // ... data to create a FavoriteShare
+     *   }
+     * })
+     * 
+     */
+    create<T extends FavoriteShareCreateArgs>(args: SelectSubset<T, FavoriteShareCreateArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FavoriteShares.
+     * @param {FavoriteShareCreateManyArgs} args - Arguments to create many FavoriteShares.
+     * @example
+     * // Create many FavoriteShares
+     * const favoriteShare = await prisma.favoriteShare.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FavoriteShareCreateManyArgs>(args?: SelectSubset<T, FavoriteShareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FavoriteShares and returns the data saved in the database.
+     * @param {FavoriteShareCreateManyAndReturnArgs} args - Arguments to create many FavoriteShares.
+     * @example
+     * // Create many FavoriteShares
+     * const favoriteShare = await prisma.favoriteShare.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FavoriteShares and only return the `id`
+     * const favoriteShareWithIdOnly = await prisma.favoriteShare.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FavoriteShareCreateManyAndReturnArgs>(args?: SelectSubset<T, FavoriteShareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FavoriteShare.
+     * @param {FavoriteShareDeleteArgs} args - Arguments to delete one FavoriteShare.
+     * @example
+     * // Delete one FavoriteShare
+     * const FavoriteShare = await prisma.favoriteShare.delete({
+     *   where: {
+     *     // ... filter to delete one FavoriteShare
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FavoriteShareDeleteArgs>(args: SelectSubset<T, FavoriteShareDeleteArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FavoriteShare.
+     * @param {FavoriteShareUpdateArgs} args - Arguments to update one FavoriteShare.
+     * @example
+     * // Update one FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FavoriteShareUpdateArgs>(args: SelectSubset<T, FavoriteShareUpdateArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FavoriteShares.
+     * @param {FavoriteShareDeleteManyArgs} args - Arguments to filter FavoriteShares to delete.
+     * @example
+     * // Delete a few FavoriteShares
+     * const { count } = await prisma.favoriteShare.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FavoriteShareDeleteManyArgs>(args?: SelectSubset<T, FavoriteShareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FavoriteShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FavoriteShares
+     * const favoriteShare = await prisma.favoriteShare.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FavoriteShareUpdateManyArgs>(args: SelectSubset<T, FavoriteShareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FavoriteShares and returns the data updated in the database.
+     * @param {FavoriteShareUpdateManyAndReturnArgs} args - Arguments to update many FavoriteShares.
+     * @example
+     * // Update many FavoriteShares
+     * const favoriteShare = await prisma.favoriteShare.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FavoriteShares and only return the `id`
+     * const favoriteShareWithIdOnly = await prisma.favoriteShare.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FavoriteShareUpdateManyAndReturnArgs>(args: SelectSubset<T, FavoriteShareUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FavoriteShare.
+     * @param {FavoriteShareUpsertArgs} args - Arguments to update or create a FavoriteShare.
+     * @example
+     * // Update or create a FavoriteShare
+     * const favoriteShare = await prisma.favoriteShare.upsert({
+     *   create: {
+     *     // ... data to create a FavoriteShare
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FavoriteShare we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FavoriteShareUpsertArgs>(args: SelectSubset<T, FavoriteShareUpsertArgs<ExtArgs>>): Prisma__FavoriteShareClient<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FavoriteShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareCountArgs} args - Arguments to filter FavoriteShares to count.
+     * @example
+     * // Count the number of FavoriteShares
+     * const count = await prisma.favoriteShare.count({
+     *   where: {
+     *     // ... the filter for the FavoriteShares we want to count
+     *   }
+     * })
+    **/
+    count<T extends FavoriteShareCountArgs>(
+      args?: Subset<T, FavoriteShareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FavoriteShareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FavoriteShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FavoriteShareAggregateArgs>(args: Subset<T, FavoriteShareAggregateArgs>): Prisma.PrismaPromise<GetFavoriteShareAggregateType<T>>
+
+    /**
+     * Group by FavoriteShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteShareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FavoriteShareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FavoriteShareGroupByArgs['orderBy'] }
+        : { orderBy?: FavoriteShareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FavoriteShareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFavoriteShareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FavoriteShare model
+   */
+  readonly fields: FavoriteShareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FavoriteShare.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FavoriteShareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FavoriteShare model
+   */
+  interface FavoriteShareFieldRefs {
+    readonly id: FieldRef<"FavoriteShare", 'String'>
+    readonly galleryId: FieldRef<"FavoriteShare", 'String'>
+    readonly viewerId: FieldRef<"FavoriteShare", 'String'>
+    readonly viewerName: FieldRef<"FavoriteShare", 'String'>
+    readonly shareToken: FieldRef<"FavoriteShare", 'String'>
+    readonly createdAt: FieldRef<"FavoriteShare", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FavoriteShare findUnique
+   */
+  export type FavoriteShareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter, which FavoriteShare to fetch.
+     */
+    where: FavoriteShareWhereUniqueInput
+  }
+
+  /**
+   * FavoriteShare findUniqueOrThrow
+   */
+  export type FavoriteShareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter, which FavoriteShare to fetch.
+     */
+    where: FavoriteShareWhereUniqueInput
+  }
+
+  /**
+   * FavoriteShare findFirst
+   */
+  export type FavoriteShareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter, which FavoriteShare to fetch.
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteShares to fetch.
+     */
+    orderBy?: FavoriteShareOrderByWithRelationInput | FavoriteShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FavoriteShares.
+     */
+    cursor?: FavoriteShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FavoriteShares.
+     */
+    distinct?: FavoriteShareScalarFieldEnum | FavoriteShareScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteShare findFirstOrThrow
+   */
+  export type FavoriteShareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter, which FavoriteShare to fetch.
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteShares to fetch.
+     */
+    orderBy?: FavoriteShareOrderByWithRelationInput | FavoriteShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FavoriteShares.
+     */
+    cursor?: FavoriteShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FavoriteShares.
+     */
+    distinct?: FavoriteShareScalarFieldEnum | FavoriteShareScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteShare findMany
+   */
+  export type FavoriteShareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter, which FavoriteShares to fetch.
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteShares to fetch.
+     */
+    orderBy?: FavoriteShareOrderByWithRelationInput | FavoriteShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FavoriteShares.
+     */
+    cursor?: FavoriteShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FavoriteShares.
+     */
+    distinct?: FavoriteShareScalarFieldEnum | FavoriteShareScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteShare create
+   */
+  export type FavoriteShareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FavoriteShare.
+     */
+    data: XOR<FavoriteShareCreateInput, FavoriteShareUncheckedCreateInput>
+  }
+
+  /**
+   * FavoriteShare createMany
+   */
+  export type FavoriteShareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FavoriteShares.
+     */
+    data: FavoriteShareCreateManyInput | FavoriteShareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FavoriteShare createManyAndReturn
+   */
+  export type FavoriteShareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * The data used to create many FavoriteShares.
+     */
+    data: FavoriteShareCreateManyInput | FavoriteShareCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FavoriteShare update
+   */
+  export type FavoriteShareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FavoriteShare.
+     */
+    data: XOR<FavoriteShareUpdateInput, FavoriteShareUncheckedUpdateInput>
+    /**
+     * Choose, which FavoriteShare to update.
+     */
+    where: FavoriteShareWhereUniqueInput
+  }
+
+  /**
+   * FavoriteShare updateMany
+   */
+  export type FavoriteShareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FavoriteShares.
+     */
+    data: XOR<FavoriteShareUpdateManyMutationInput, FavoriteShareUncheckedUpdateManyInput>
+    /**
+     * Filter which FavoriteShares to update
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * Limit how many FavoriteShares to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FavoriteShare updateManyAndReturn
+   */
+  export type FavoriteShareUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * The data used to update FavoriteShares.
+     */
+    data: XOR<FavoriteShareUpdateManyMutationInput, FavoriteShareUncheckedUpdateManyInput>
+    /**
+     * Filter which FavoriteShares to update
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * Limit how many FavoriteShares to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FavoriteShare upsert
+   */
+  export type FavoriteShareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FavoriteShare to update in case it exists.
+     */
+    where: FavoriteShareWhereUniqueInput
+    /**
+     * In case the FavoriteShare found by the `where` argument doesn't exist, create a new FavoriteShare with this data.
+     */
+    create: XOR<FavoriteShareCreateInput, FavoriteShareUncheckedCreateInput>
+    /**
+     * In case the FavoriteShare was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FavoriteShareUpdateInput, FavoriteShareUncheckedUpdateInput>
+  }
+
+  /**
+   * FavoriteShare delete
+   */
+  export type FavoriteShareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+    /**
+     * Filter which FavoriteShare to delete.
+     */
+    where: FavoriteShareWhereUniqueInput
+  }
+
+  /**
+   * FavoriteShare deleteMany
+   */
+  export type FavoriteShareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FavoriteShares to delete
+     */
+    where?: FavoriteShareWhereInput
+    /**
+     * Limit how many FavoriteShares to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FavoriteShare without action
+   */
+  export type FavoriteShareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteShare
+     */
+    select?: FavoriteShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteShare
+     */
+    omit?: FavoriteShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FavoriteShareInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model DownloadEvent
    */
 
@@ -26152,6 +27356,18 @@ export namespace Prisma {
   export type GalleryFavoriteScalarFieldEnum = (typeof GalleryFavoriteScalarFieldEnum)[keyof typeof GalleryFavoriteScalarFieldEnum]
 
 
+  export const FavoriteShareScalarFieldEnum: {
+    id: 'id',
+    galleryId: 'galleryId',
+    viewerId: 'viewerId',
+    viewerName: 'viewerName',
+    shareToken: 'shareToken',
+    createdAt: 'createdAt'
+  };
+
+  export type FavoriteShareScalarFieldEnum = (typeof FavoriteShareScalarFieldEnum)[keyof typeof FavoriteShareScalarFieldEnum]
+
+
   export const DownloadEventScalarFieldEnum: {
     id: 'id',
     galleryId: 'galleryId',
@@ -27100,6 +28316,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemListRelationFilter
     favorites?: GalleryFavoriteListRelationFilter
     downloadEvents?: DownloadEventListRelationFilter
+    favoriteShares?: FavoriteShareListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -27142,6 +28359,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemOrderByRelationAggregateInput
     favorites?: GalleryFavoriteOrderByRelationAggregateInput
     downloadEvents?: DownloadEventOrderByRelationAggregateInput
+    favoriteShares?: FavoriteShareOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -27188,6 +28406,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemListRelationFilter
     favorites?: GalleryFavoriteListRelationFilter
     downloadEvents?: DownloadEventListRelationFilter
+    favoriteShares?: FavoriteShareListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -27976,6 +29195,67 @@ export namespace Prisma {
     note?: StringNullableWithAggregatesFilter<"GalleryFavorite"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"GalleryFavorite"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"GalleryFavorite"> | Date | string
+  }
+
+  export type FavoriteShareWhereInput = {
+    AND?: FavoriteShareWhereInput | FavoriteShareWhereInput[]
+    OR?: FavoriteShareWhereInput[]
+    NOT?: FavoriteShareWhereInput | FavoriteShareWhereInput[]
+    id?: StringFilter<"FavoriteShare"> | string
+    galleryId?: StringFilter<"FavoriteShare"> | string
+    viewerId?: StringFilter<"FavoriteShare"> | string
+    viewerName?: StringFilter<"FavoriteShare"> | string
+    shareToken?: StringFilter<"FavoriteShare"> | string
+    createdAt?: DateTimeFilter<"FavoriteShare"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+  }
+
+  export type FavoriteShareOrderByWithRelationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    shareToken?: SortOrder
+    createdAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+  }
+
+  export type FavoriteShareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    shareToken?: string
+    galleryId_viewerId?: FavoriteShareGalleryIdViewerIdCompoundUniqueInput
+    AND?: FavoriteShareWhereInput | FavoriteShareWhereInput[]
+    OR?: FavoriteShareWhereInput[]
+    NOT?: FavoriteShareWhereInput | FavoriteShareWhereInput[]
+    galleryId?: StringFilter<"FavoriteShare"> | string
+    viewerId?: StringFilter<"FavoriteShare"> | string
+    viewerName?: StringFilter<"FavoriteShare"> | string
+    createdAt?: DateTimeFilter<"FavoriteShare"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+  }, "id" | "shareToken" | "galleryId_viewerId">
+
+  export type FavoriteShareOrderByWithAggregationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    shareToken?: SortOrder
+    createdAt?: SortOrder
+    _count?: FavoriteShareCountOrderByAggregateInput
+    _max?: FavoriteShareMaxOrderByAggregateInput
+    _min?: FavoriteShareMinOrderByAggregateInput
+  }
+
+  export type FavoriteShareScalarWhereWithAggregatesInput = {
+    AND?: FavoriteShareScalarWhereWithAggregatesInput | FavoriteShareScalarWhereWithAggregatesInput[]
+    OR?: FavoriteShareScalarWhereWithAggregatesInput[]
+    NOT?: FavoriteShareScalarWhereWithAggregatesInput | FavoriteShareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FavoriteShare"> | string
+    galleryId?: StringWithAggregatesFilter<"FavoriteShare"> | string
+    viewerId?: StringWithAggregatesFilter<"FavoriteShare"> | string
+    viewerName?: StringWithAggregatesFilter<"FavoriteShare"> | string
+    shareToken?: StringWithAggregatesFilter<"FavoriteShare"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FavoriteShare"> | Date | string
   }
 
   export type DownloadEventWhereInput = {
@@ -28952,6 +30232,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -28992,6 +30273,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
@@ -29032,6 +30314,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -29072,6 +30355,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -29929,6 +31213,68 @@ export namespace Prisma {
     note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteShareCreateInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutFavoriteSharesInput
+  }
+
+  export type FavoriteShareUncheckedCreateInput = {
+    id?: string
+    galleryId: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
+    createdAt?: Date | string
+  }
+
+  export type FavoriteShareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutFavoriteSharesNestedInput
+  }
+
+  export type FavoriteShareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteShareCreateManyInput = {
+    id?: string
+    galleryId: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
+    createdAt?: Date | string
+  }
+
+  export type FavoriteShareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteShareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DownloadEventCreateInput = {
@@ -30995,6 +32341,12 @@ export namespace Prisma {
     none?: DownloadEventWhereInput
   }
 
+  export type FavoriteShareListRelationFilter = {
+    every?: FavoriteShareWhereInput
+    some?: FavoriteShareWhereInput
+    none?: FavoriteShareWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -31020,6 +32372,10 @@ export namespace Prisma {
   }
 
   export type DownloadEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FavoriteShareOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31630,6 +32986,38 @@ export namespace Prisma {
     note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FavoriteShareGalleryIdViewerIdCompoundUniqueInput = {
+    galleryId: string
+    viewerId: string
+  }
+
+  export type FavoriteShareCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    shareToken?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FavoriteShareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    shareToken?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FavoriteShareMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    shareToken?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type DownloadEventCountOrderByAggregateInput = {
@@ -32359,6 +33747,13 @@ export namespace Prisma {
     connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
   }
 
+  export type FavoriteShareCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput> | FavoriteShareCreateWithoutGalleryInput[] | FavoriteShareUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: FavoriteShareCreateOrConnectWithoutGalleryInput | FavoriteShareCreateOrConnectWithoutGalleryInput[]
+    createMany?: FavoriteShareCreateManyGalleryInputEnvelope
+    connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -32406,6 +33801,13 @@ export namespace Prisma {
     connectOrCreate?: DownloadEventCreateOrConnectWithoutGalleryInput | DownloadEventCreateOrConnectWithoutGalleryInput[]
     createMany?: DownloadEventCreateManyGalleryInputEnvelope
     connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+  }
+
+  export type FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput> | FavoriteShareCreateWithoutGalleryInput[] | FavoriteShareUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: FavoriteShareCreateOrConnectWithoutGalleryInput | FavoriteShareCreateOrConnectWithoutGalleryInput[]
+    createMany?: FavoriteShareCreateManyGalleryInputEnvelope
+    connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
   }
 
   export type GalleryUpdatecategoryTagsInput = {
@@ -32537,6 +33939,20 @@ export namespace Prisma {
     deleteMany?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
   }
 
+  export type FavoriteShareUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput> | FavoriteShareCreateWithoutGalleryInput[] | FavoriteShareUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: FavoriteShareCreateOrConnectWithoutGalleryInput | FavoriteShareCreateOrConnectWithoutGalleryInput[]
+    upsert?: FavoriteShareUpsertWithWhereUniqueWithoutGalleryInput | FavoriteShareUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: FavoriteShareCreateManyGalleryInputEnvelope
+    set?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    disconnect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    delete?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    update?: FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput | FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: FavoriteShareUpdateManyWithWhereWithoutGalleryInput | FavoriteShareUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -32633,6 +34049,20 @@ export namespace Prisma {
     update?: DownloadEventUpdateWithWhereUniqueWithoutGalleryInput | DownloadEventUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: DownloadEventUpdateManyWithWhereWithoutGalleryInput | DownloadEventUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
+  }
+
+  export type FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput> | FavoriteShareCreateWithoutGalleryInput[] | FavoriteShareUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: FavoriteShareCreateOrConnectWithoutGalleryInput | FavoriteShareCreateOrConnectWithoutGalleryInput[]
+    upsert?: FavoriteShareUpsertWithWhereUniqueWithoutGalleryInput | FavoriteShareUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: FavoriteShareCreateManyGalleryInputEnvelope
+    set?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    disconnect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    delete?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+    update?: FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput | FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: FavoriteShareUpdateManyWithWhereWithoutGalleryInput | FavoriteShareUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
   }
 
   export type PhotoCreateaiTagsInput = {
@@ -33181,6 +34611,20 @@ export namespace Prisma {
     upsert?: PhotoUpsertWithoutFavoritesInput
     connect?: PhotoWhereUniqueInput
     update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutFavoritesInput, PhotoUpdateWithoutFavoritesInput>, PhotoUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type GalleryCreateNestedOneWithoutFavoriteSharesInput = {
+    create?: XOR<GalleryCreateWithoutFavoriteSharesInput, GalleryUncheckedCreateWithoutFavoriteSharesInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutFavoriteSharesInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type GalleryUpdateOneRequiredWithoutFavoriteSharesNestedInput = {
+    create?: XOR<GalleryCreateWithoutFavoriteSharesInput, GalleryUncheckedCreateWithoutFavoriteSharesInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutFavoriteSharesInput
+    upsert?: GalleryUpsertWithoutFavoriteSharesInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutFavoriteSharesInput, GalleryUpdateWithoutFavoriteSharesInput>, GalleryUncheckedUpdateWithoutFavoriteSharesInput>
   }
 
   export type GalleryCreateNestedOneWithoutDownloadEventsInput = {
@@ -33903,6 +35347,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
@@ -33942,6 +35387,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -35319,6 +36765,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FavoriteShareCreateWithoutGalleryInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
+    createdAt?: Date | string
+  }
+
+  export type FavoriteShareUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
+    createdAt?: Date | string
+  }
+
+  export type FavoriteShareCreateOrConnectWithoutGalleryInput = {
+    where: FavoriteShareWhereUniqueInput
+    create: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type FavoriteShareCreateManyGalleryInputEnvelope = {
+    data: FavoriteShareCreateManyGalleryInput | FavoriteShareCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutGalleriesInput = {
     update: XOR<UserUpdateWithoutGalleriesInput, UserUncheckedUpdateWithoutGalleriesInput>
     create: XOR<UserCreateWithoutGalleriesInput, UserUncheckedCreateWithoutGalleriesInput>
@@ -35696,6 +37168,34 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"DownloadEvent"> | Date | string
   }
 
+  export type FavoriteShareUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: FavoriteShareWhereUniqueInput
+    update: XOR<FavoriteShareUpdateWithoutGalleryInput, FavoriteShareUncheckedUpdateWithoutGalleryInput>
+    create: XOR<FavoriteShareCreateWithoutGalleryInput, FavoriteShareUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: FavoriteShareWhereUniqueInput
+    data: XOR<FavoriteShareUpdateWithoutGalleryInput, FavoriteShareUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type FavoriteShareUpdateManyWithWhereWithoutGalleryInput = {
+    where: FavoriteShareScalarWhereInput
+    data: XOR<FavoriteShareUpdateManyMutationInput, FavoriteShareUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type FavoriteShareScalarWhereInput = {
+    AND?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
+    OR?: FavoriteShareScalarWhereInput[]
+    NOT?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
+    id?: StringFilter<"FavoriteShare"> | string
+    galleryId?: StringFilter<"FavoriteShare"> | string
+    viewerId?: StringFilter<"FavoriteShare"> | string
+    viewerName?: StringFilter<"FavoriteShare"> | string
+    shareToken?: StringFilter<"FavoriteShare"> | string
+    createdAt?: DateTimeFilter<"FavoriteShare"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
@@ -35733,6 +37233,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -35772,6 +37273,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -35816,6 +37318,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -35855,6 +37358,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -36034,6 +37538,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -36073,6 +37578,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -36694,6 +38200,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutClientsInput = {
@@ -36733,6 +38240,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutClientsInput = {
@@ -36813,6 +38321,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutClientsInput = {
@@ -36852,6 +38361,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type ClientUpsertWithoutGalleriesInput = {
@@ -36922,6 +38432,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutAlbumsInput = {
@@ -36961,6 +38472,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutAlbumsInput = {
@@ -37036,6 +38548,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutAlbumsInput = {
@@ -37075,6 +38588,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -37322,6 +38836,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCommentsInput = {
@@ -37361,6 +38876,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCommentsInput = {
@@ -37554,6 +39070,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCommentsInput = {
@@ -37593,6 +39110,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutCommentsInput = {
@@ -37760,6 +39278,7 @@ export namespace Prisma {
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutFavoritesInput = {
@@ -37799,6 +39318,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutFavoritesInput = {
@@ -37921,6 +39441,7 @@ export namespace Prisma {
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutFavoritesInput = {
@@ -37960,6 +39481,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutFavoritesInput = {
@@ -38035,6 +39557,182 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
+  export type GalleryCreateWithoutFavoriteSharesInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutFavoriteSharesInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutFavoriteSharesInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutFavoriteSharesInput, GalleryUncheckedCreateWithoutFavoriteSharesInput>
+  }
+
+  export type GalleryUpsertWithoutFavoriteSharesInput = {
+    update: XOR<GalleryUpdateWithoutFavoriteSharesInput, GalleryUncheckedUpdateWithoutFavoriteSharesInput>
+    create: XOR<GalleryCreateWithoutFavoriteSharesInput, GalleryUncheckedCreateWithoutFavoriteSharesInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutFavoriteSharesInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutFavoriteSharesInput, GalleryUncheckedUpdateWithoutFavoriteSharesInput>
+  }
+
+  export type GalleryUpdateWithoutFavoriteSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutFavoriteSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
   export type GalleryCreateWithoutDownloadEventsInput = {
     id?: string
     title: string
@@ -38072,6 +39770,7 @@ export namespace Prisma {
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutDownloadEventsInput = {
@@ -38111,6 +39810,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutDownloadEventsInput = {
@@ -38166,6 +39866,7 @@ export namespace Prisma {
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutDownloadEventsInput = {
@@ -38205,6 +39906,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type UserCreateWithoutDriveImportJobsInput = {
@@ -38487,6 +40189,7 @@ export namespace Prisma {
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutDriveImportItemsInput = {
@@ -38526,6 +40229,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutDriveImportItemsInput = {
@@ -38624,6 +40328,7 @@ export namespace Prisma {
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutDriveImportItemsInput = {
@@ -38663,6 +40368,7 @@ export namespace Prisma {
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -38929,6 +40635,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
@@ -38968,6 +40675,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
@@ -39186,6 +40894,14 @@ export namespace Prisma {
     viewerName?: string | null
     viewerIp?: string | null
     type: string
+    createdAt?: Date | string
+  }
+
+  export type FavoriteShareCreateManyGalleryInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    shareToken?: string
     createdAt?: Date | string
   }
 
@@ -39464,6 +41180,30 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FavoriteShareUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteShareUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteShareUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
@@ -39561,6 +41301,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -39600,6 +41341,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {

@@ -169,15 +169,15 @@ export const getPublicPhotoUrlController = async (req: Request, res: Response) =
 
 export const addFavoriteController = async (req: Request, res: Response) => {
   const { photoId, viewerId, viewerName, note } = req.body ?? {};
-  if (!photoId || !viewerId || !viewerName) {
+  if (!photoId || !viewerId) {
     return res
       .status(400)
-      .json({ error: "photoId, viewerId, and viewerName are required" });
+      .json({ error: "photoId and viewerId are required" });
   }
 
   const result = await PublicGalleryServices.addFavorite(
     req.params.shareToken,
-    { photoId, viewerId, viewerName, note },
+    { photoId, viewerId, viewerName: viewerName || "", note },
   );
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -233,6 +233,42 @@ export const verifyDownloadPinController = async (
   const result = await PublicGalleryServices.verifyDownloadPin(
     req.params.shareToken,
     pin,
+  );
+  if ("error" in result) {
+    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+// ─── Favorite Shares ────────────────────────────────────────────────────────
+
+export const createFavoriteShareController = async (
+  req: Request,
+  res: Response,
+) => {
+  const { viewerId, viewerName } = req.body ?? {};
+  if (!viewerId || !viewerName) {
+    return res
+      .status(400)
+      .json({ error: "viewerId and viewerName are required" });
+  }
+
+  const result = await PublicGalleryServices.createFavoriteShare(
+    req.params.shareToken,
+    { viewerId, viewerName },
+  );
+  if ("error" in result) {
+    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const getSharedFavoritesController = async (
+  req: Request,
+  res: Response,
+) => {
+  const result = await PublicGalleryServices.getSharedFavorites(
+    req.params.favoriteShareToken,
   );
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });

@@ -11,3 +11,5 @@ export { removeFavorite } from "./removeFavorite";
 export { listViewerFavorites } from "./listViewerFavorites";
 export { verifyDownloadPin } from "./verifyDownloadPin";
 export { trackDownload } from "./trackDownload";
+export { createFavoriteShare } from "./createFavoriteShare";
+export { getSharedFavorites } from "./getSharedFavorites";

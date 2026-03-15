@@ -53,9 +53,6 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
   const [socialSharingEnabled, setSocialSharingEnabled] = useState(
     g.socialSharingEnabled,
   );
-  const [emailRegistration, setEmailRegistration] = useState(
-    g.emailRegistration,
-  );
   const [language, setLanguage] = useState(g.language);
   const [saving, setSaving] = useState(false);
 
@@ -89,7 +86,6 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
           categoryTags,
           slideshowEnabled,
           socialSharingEnabled,
-          emailRegistration,
           language,
         }),
       });
@@ -254,18 +250,6 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
             <Switch
               checked={socialSharingEnabled}
               onCheckedChange={setSocialSharingEnabled}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm">Email Registration</p>
-              <p className="text-xs text-muted-foreground">
-                Require visitors to enter their email before viewing.
-              </p>
-            </div>
-            <Switch
-              checked={emailRegistration}
-              onCheckedChange={setEmailRegistration}
             />
           </div>
         </div>

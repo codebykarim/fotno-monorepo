@@ -5,16 +5,22 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Camera,
   Check,
+  ChevronLeft,
+  ChevronRight,
   CornerDownRight,
   Download,
   DownloadCloud,
   Heart,
+  Link2,
   Lock,
   MessageSquare,
   Minus,
+  Pause,
   Pencil,
+  Play,
   Plus,
   Reply,
+  Share2,
   ThumbsUp,
   Trash2,
   Users,
@@ -452,6 +458,52 @@ export default function GalleryPageClient({
   const hasDownloadPin = settings?.hasDownloadPin === true;
   const favoriteNotesEnabled =
     favoritesEnabled && settings?.favoriteNotesEnabled !== false;
+  const slideshowEnabled = settings?.slideshowEnabled !== false;
+  const socialSharingEnabled = settings?.socialSharingEnabled !== false;
+
+  // Slideshow state
+  const [slideshowActive, setSlideshowActive] = useState(false);
+  const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const slideshowTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopSlideshow = () => {
+    setSlideshowActive(false);
+    if (slideshowTimerRef.current) {
+      clearInterval(slideshowTimerRef.current);
+      slideshowTimerRef.current = null;
+    }
+  };
+
+  const startSlideshow = () => {
+    setSlideshowIndex(0);
+    setSlideshowActive(true);
+  };
+
+  // Social sharing
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("Link copied to clipboard");
+    } catch {
+      toast.error("Failed to copy link");
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: gallery.title,
+          text: `${gallery.title} by ${gallery.photographer.name}`,
+          url: window.location.href,
+        });
+      } catch {
+        // User cancelled
+      }
+    } else {
+      await handleCopyLink();
+    }
+  };
 
   useEffect(() => {
     if (!gallery.hasPassword) {
@@ -709,6 +761,48 @@ export default function GalleryPageClient({
 
     return gallery.photos;
   }, [favorites, filterMode, gallery.photos, gallery.albums]);
+
+  // Slideshow auto-advance effect (needs visiblePhotos)
+  useEffect(() => {
+    if (!slideshowActive) return;
+    slideshowTimerRef.current = setInterval(() => {
+      setSlideshowIndex((prev) => {
+        if (prev >= visiblePhotos.length - 1) {
+          stopSlideshow();
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 4000);
+    return () => {
+      if (slideshowTimerRef.current) {
+        clearInterval(slideshowTimerRef.current);
+        slideshowTimerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slideshowActive, visiblePhotos.length]);
+
+  const slideshowPhoto = slideshowActive ? visiblePhotos[slideshowIndex] : null;
+
+  // Slideshow keyboard controls
+  useEffect(() => {
+    if (!slideshowActive) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        stopSlideshow();
+      } else if (event.key === "ArrowRight") {
+        setSlideshowIndex((prev) =>
+          Math.min(visiblePhotos.length - 1, prev + 1),
+        );
+      } else if (event.key === "ArrowLeft") {
+        setSlideshowIndex((prev) => Math.max(0, prev - 1));
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slideshowActive, visiblePhotos.length]);
 
   const activePhoto = useMemo(
     () => gallery.photos.find((photo) => photo.id === activePhotoId) ?? null,
@@ -1638,6 +1732,26 @@ export default function GalleryPageClient({
               </span>
               {viewerCount} online
             </span>
+            {slideshowEnabled && visiblePhotos.length > 1 && (
+              <button
+                type="button"
+                onClick={startSlideshow}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-border/80 bg-muted px-4 text-sm font-medium text-foreground transition hover:bg-accent"
+              >
+                <Play className="h-4 w-4" />
+                Slideshow
+              </button>
+            )}
+            {socialSharingEnabled && (
+              <button
+                type="button"
+                onClick={() => void handleNativeShare()}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-muted text-foreground transition hover:bg-accent"
+                aria-label="Share gallery"
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
+            )}
             {downloadsEnabled && (
               <button
                 type="button"
@@ -1841,6 +1955,88 @@ export default function GalleryPageClient({
           </div>
         </div>
       ) : null}
+
+      {/* Slideshow Overlay */}
+      {slideshowActive && slideshowPhoto && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image
+              key={slideshowPhoto.id}
+              src={withOptionalToken(slideshowPhoto.previewSrc)}
+              alt={slideshowPhoto.aiCaption ?? slideshowPhoto.originalFilename}
+              width={slideshowPhoto.width ?? 1600}
+              height={slideshowPhoto.height ?? 1200}
+              sizes="100vw"
+              draggable={false}
+              className="max-h-screen max-w-full object-contain animate-in fade-in duration-700"
+              onContextMenu={(e) => e.preventDefault()}
+              priority
+              unoptimized
+            />
+          </div>
+
+          {/* Slideshow controls */}
+          <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                setSlideshowIndex((prev) => Math.max(0, prev - 1))
+              }
+              disabled={slideshowIndex === 0}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white transition hover:bg-black/80 disabled:opacity-30"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={stopSlideshow}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white transition hover:bg-black/80"
+              aria-label="Pause slideshow"
+            >
+              <Pause className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setSlideshowIndex((prev) =>
+                  Math.min(visiblePhotos.length - 1, prev + 1),
+                )
+              }
+              disabled={slideshowIndex >= visiblePhotos.length - 1}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white transition hover:bg-black/80 disabled:opacity-30"
+              aria-label="Next"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Close button */}
+          <button
+            type="button"
+            onClick={stopSlideshow}
+            className="absolute right-6 top-6 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white transition hover:bg-black/80"
+            aria-label="Close slideshow"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          {/* Progress bar */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+            <div
+              className="h-full bg-white/60 transition-all duration-300"
+              style={{
+                width: `${((slideshowIndex + 1) / visiblePhotos.length) * 100}%`,
+              }}
+            />
+          </div>
+
+          {/* Counter */}
+          <div className="absolute left-6 top-6 z-10 rounded-full bg-black/60 px-3 py-1.5 text-sm text-white/80">
+            {slideshowIndex + 1} / {visiblePhotos.length}
+          </div>
+        </div>
+      )}
 
       {/* Download PIN Dialog */}
       <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>

@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
   // },
   images: {
     formats: ["image/avif", "image/webp"],
+    localPatterns: [
+      {
+        pathname: "/api/photos/**",
+      },
+      {
+        pathname: "/logo.png"
+      }
+    ],
     remotePatterns: [
       {
         hostname: "images.unsplash.com",

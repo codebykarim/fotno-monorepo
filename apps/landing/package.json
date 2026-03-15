@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.1.0",
+    "@tailwindcss/postcss": "^4.0.8",
     "@types/node": "^20.10.8",
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",
@@ -18,12 +19,11 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.10",
-    "next": "15.1.9",
+    "next": "16.1.6",
     "react": "^19.0.2",
     "react-dom": "^19.0.2",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss": "^4.0.8",
-    "@tailwindcss/postcss": "^4.0.8"
+    "tailwindcss": "^4.0.8"
   },
   "devDependencies": {
     "@types/react": "^19.0.2",

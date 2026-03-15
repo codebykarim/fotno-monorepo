@@ -6,3 +6,8 @@ export { createGalleryComment } from "./createGalleryComment";
 export { editGalleryComment } from "./editGalleryComment";
 export { deleteGalleryComment } from "./deleteGalleryComment";
 export { toggleCommentLike } from "./toggleCommentLike";
+export { addFavorite } from "./addFavorite";
+export { removeFavorite } from "./removeFavorite";
+export { listViewerFavorites } from "./listViewerFavorites";
+export { verifyDownloadPin } from "./verifyDownloadPin";
+export { trackDownload } from "./trackDownload";

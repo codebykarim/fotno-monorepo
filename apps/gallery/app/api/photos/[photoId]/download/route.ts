@@ -49,10 +49,16 @@ export async function GET(
       }
     }
 
+    const variant = request.nextUrl.searchParams.get("variant") ?? "original";
+    const validVariants = ["thumbnail", "preview", "original"] as const;
+    const resolvedVariant = validVariants.includes(variant as any)
+      ? (variant as (typeof validVariants)[number])
+      : "original";
+
     const upstreamUrl = await getPhotoPresignedUrl(
       photoId,
       shareToken,
-      "original",
+      resolvedVariant,
       galleryJwt,
     );
     const upstream = await fetch(upstreamUrl, { cache: "no-store" });

@@ -523,3 +523,41 @@ export const gphotosStartImportController = async (
   }
   return res.status(201).json(result);
 };
+
+// ─── Gallery Favorites ──────────────────────────────────────────────────────
+
+export const listGalleryFavoritesController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.listGalleryFavorites(
+    userId,
+    req.params.id,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};
+
+// ─── Download Activity ──────────────────────────────────────────────────────
+
+export const getDownloadActivityController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const limit = Math.min(Number(req.query.limit) || 50, 200);
+  const offset = Number(req.query.offset) || 0;
+  const result = await DashboardService.getDownloadActivity(
+    userId,
+    req.params.id,
+    limit,
+    offset,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};

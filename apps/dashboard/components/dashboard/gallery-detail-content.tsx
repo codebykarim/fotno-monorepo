@@ -6,13 +6,10 @@ import useSWR, { mutate as mutateCache } from "swr";
 import { useDropzone } from "react-dropzone";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  AlertTriangle,
   CalendarDays,
   Check,
   Copy,
   ExternalLink,
-  Eye,
-  EyeOff,
   FolderPlus,
   Grid2x2,
   Images,
@@ -68,6 +65,7 @@ import {
 } from "@/lib/stores/gallery-ui-store";
 import { cn } from "@workspace/ui/lib/utils";
 import { GalleryAiTab } from "./gallery-ai-tab";
+import { GallerySettings } from "./gallery-settings/settings-layout";
 
 const tabs = ["photos", "albums", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
@@ -75,7 +73,7 @@ type Tab = (typeof tabs)[number];
 const TAB_META: Record<Tab, { label: string; icon: typeof Images }> = {
   photos: { label: "Photos", icon: Grid2x2 },
   albums: { label: "Albums", icon: Album },
-  ai: { label: "AI", icon: Wand2 },
+  // ai: { label: "AI", icon: Wand2 },
   settings: { label: "Settings", icon: Settings2 },
   share: { label: "Share", icon: Share2 },
 };
@@ -124,23 +122,11 @@ export function GalleryDetailContent({
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [publishSaving, setPublishSaving] = useState(false);
-  const [passwordEnabled, setPasswordEnabled] = useState(false);
-  const [passwordEditing, setPasswordEditing] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordSaving, setPasswordSaving] = useState(false);
   const { data, mutate, isLoading } = useSWR<GetGalleryResponse>(
     `/api/galleries/${galleryId}`,
     jsonFetcher,
     { revalidateOnFocus: false },
   );
-
-  useEffect(() => {
-    if (data) {
-      setPasswordEnabled(data.gallery.passwordEnabled);
-      setPassword(data.gallery.password ?? "");
-    }
-  }, [data]);
 
   const togglePublish = async () => {
     if (!data) return;
@@ -158,28 +144,6 @@ export function GalleryDetailContent({
       toast.error(error instanceof Error ? error.message : "Failed to update");
     } finally {
       setPublishSaving(false);
-    }
-  };
-
-  const savePassword = async (enabled: boolean, pw: string) => {
-    setPasswordSaving(true);
-    try {
-      await apiRequest(`/api/galleries/${galleryId}`, {
-        method: "PATCH",
-        body: JSON.stringify({ passwordEnabled: enabled, password: pw }),
-      });
-      await mutate();
-      toast.success(
-        enabled
-          ? "Password protection enabled"
-          : "Password protection disabled",
-      );
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to update password",
-      );
-    } finally {
-      setPasswordSaving(false);
     }
   };
 
@@ -243,93 +207,21 @@ export function GalleryDetailContent({
               </span>
             </div>
 
-            {/* Password popover */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 gap-1.5"
-                  title={passwordEnabled ? "Password protected" : "No password"}
-                >
-                  {passwordEnabled ? (
-                    <Lock className="h-3.5 w-3.5 text-primary" />
-                  ) : (
-                    <LockOpen className="h-3.5 w-3.5 text-muted-foreground" />
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-72 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">Password</p>
-                    <p className="text-xs text-muted-foreground">
-                      {passwordEnabled
-                        ? "Gallery is password protected"
-                        : "Protect this gallery"}
-                    </p>
-                  </div>
-                  <Switch
-                    checked={passwordEnabled || passwordEditing}
-                    disabled={passwordSaving}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setPasswordEditing(true);
-                        setPassword("");
-                      } else {
-                        setPasswordEditing(false);
-                        setPasswordEnabled(false);
-                        void savePassword(false, "");
-                      }
-                    }}
-                  />
-                </div>
-                {(passwordEnabled || passwordEditing) && (
-                  <div className="space-y-2">
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder={
-                          passwordEnabled
-                            ? "Change password"
-                            : "Enter a password"
-                        }
-                        className="pr-10 text-sm"
-                        autoFocus={passwordEditing && !passwordEnabled}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-3.5 w-3.5" />
-                        ) : (
-                          <Eye className="h-3.5 w-3.5" />
-                        )}
-                      </button>
-                    </div>
-                    <Button
-                      size="sm"
-                      className="w-full"
-                      disabled={passwordSaving || !password.trim()}
-                      onClick={() => {
-                        void savePassword(true, password).then(() =>
-                          setPasswordEditing(false),
-                        );
-                      }}
-                    >
-                      {passwordSaving ? (
-                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                      ) : null}
-                      {passwordEnabled ? "Update password" : "Enable password"}
-                    </Button>
-                  </div>
-                )}
-              </PopoverContent>
-            </Popover>
+            {/* Password status indicator */}
+            <div
+              className="flex h-8 items-center rounded-md border border-border px-2"
+              title={
+                data.gallery.passwordEnabled
+                  ? "Password protected"
+                  : "No password"
+              }
+            >
+              {data.gallery.passwordEnabled ? (
+                <Lock className="h-3.5 w-3.5 text-primary" />
+              ) : (
+                <LockOpen className="h-3.5 w-3.5 text-muted-foreground" />
+              )}
+            </div>
 
             {/* Preview */}
             <Button
@@ -485,16 +377,16 @@ export function GalleryDetailContent({
           mutate={mutate}
         />
       )}
-      {activeTab === "ai" && (
+      {/* {activeTab === "ai" && (
         <GalleryAiTab
           galleryId={galleryId}
           photos={data.gallery.photos}
           aiContext={data.gallery.aiContext}
           mutate={mutate}
         />
-      )}
+      )} */}
       {activeTab === "settings" && (
-        <SettingsTab galleryId={galleryId} mutate={mutate} data={data} />
+        <GallerySettings galleryId={galleryId} data={data} mutate={mutate} />
       )}
       {activeTab === "share" && <ShareTab data={data} galleryId={galleryId} />}
     </div>
@@ -505,7 +397,7 @@ export function GalleryDetailContent({
    Helper
    ═══════════════════════════════════════════════════════════════════ */
 
-function getGalleryShareLink(slug: string) {
+export function getGalleryShareLink(slug: string) {
   const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
     /\/$/,
     "",
@@ -549,7 +441,7 @@ type PhotosTabProps = {
   mutate: () => Promise<GetGalleryResponse | undefined>;
 };
 
-function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
+export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
   const selected = useGalleryUiStore(
     (state) => state.selectedByGallery[galleryId] ?? EMPTY_SELECTION,
   );
@@ -1650,7 +1542,7 @@ function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
    Albums Tab
    ═══════════════════════════════════════════════════════════════════ */
 
-function AlbumsTab({
+export function AlbumsTab({
   galleryId,
   albums,
   photos,
@@ -1865,205 +1757,10 @@ function AlbumsTab({
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   Settings Tab
-   ═══════════════════════════════════════════════════════════════════ */
-
-function SettingsTab({
-  galleryId,
-  mutate,
-  data,
-}: {
-  galleryId: string;
-  mutate: () => Promise<GetGalleryResponse | undefined>;
-  data: GetGalleryResponse;
-}) {
-  const [title, setTitle] = useState(data.gallery.title);
-  const [slug, setSlug] = useState(data.gallery.slug);
-  const [eventDate, setEventDate] = useState(data.gallery.eventDate ?? "");
-  const [deadline, setDeadline] = useState(data.gallery.deadline ?? "");
-  const [saving, setSaving] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
-
-  const galleryBaseUrl =
-    process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
-  const slugPreview = `${galleryBaseUrl.replace(/\/$/, "").replace(/^https?:\/\//, "")}/`;
-
-  async function onSave() {
-    setSaving(true);
-    try {
-      await apiRequest(`/api/galleries/${galleryId}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          title,
-          slug,
-          eventDate: eventDate || null,
-          deadline: deadline || null,
-        }),
-      });
-      await mutate();
-      toast.success("Settings saved");
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to update gallery",
-      );
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function deleteGallery() {
-    await apiRequest(`/api/galleries/${galleryId}`, { method: "DELETE" });
-    await Promise.all([
-      mutateCache("/api/storage/summary"),
-      mutateCache("/api/storage/events?limit=10&offset=0"),
-    ]);
-    toast.success("Gallery deleted");
-    window.location.href = "/galleries";
-  }
-
-  return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
-      <div className="space-y-6">
-        {/* General */}
-        <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
-          <h3 className="text-sm font-medium">General</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="gallery-title" className="text-xs">
-                Title
-              </Label>
-              <Input
-                id="gallery-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="slug" className="text-xs">
-                Slug
-              </Label>
-              <div className="flex">
-                <span className="flex items-center rounded-l-md border border-r-0 border-input bg-muted px-2.5 text-xs text-muted-foreground whitespace-nowrap">
-                  {slugPreview}
-                </span>
-                <Input
-                  id="slug"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  className="rounded-l-none"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Dates */}
-        <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
-          <h3 className="text-sm font-medium">Dates</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="eventDate" className="text-xs">
-                Event Date
-              </Label>
-              <Input
-                id="eventDate"
-                type="date"
-                value={eventDate}
-                onChange={(e) => setEventDate(e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="deadline" className="text-xs">
-                Deadline
-              </Label>
-              <Input
-                id="deadline"
-                type="date"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Save */}
-        <Button onClick={onSave} disabled={saving} className="w-full sm:w-auto">
-          {saving ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
-            </>
-          ) : (
-            "Save settings"
-          )}
-        </Button>
-      </div>
-
-      {/* Danger zone */}
-      <div className="h-fit space-y-4 rounded-xl border border-destructive/15 bg-destructive/5 p-5">
-        <h3 className="flex items-center gap-2 text-sm font-medium">
-          <AlertTriangle className="h-4 w-4 text-destructive" />
-          Danger Zone
-        </h3>
-        <p className="text-xs text-muted-foreground">
-          Deleting a gallery permanently removes all photos and queues S3
-          cleanup. This cannot be undone.
-        </p>
-
-        <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-          <DialogTrigger asChild>
-            <Button variant="destructive" size="sm" className="w-full">
-              Delete gallery
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Delete this gallery?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. All photos and links will stop
-                working.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Type &ldquo;{title}&rdquo; to confirm
-              </p>
-              <Input
-                placeholder={title}
-                value={deleteGalleryTitle}
-                onChange={(e) => setDeleteGalleryTitle(e.target.value)}
-              />
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setShowDeleteDialog(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                disabled={deleteGalleryTitle !== title}
-                onClick={() => {
-                  setShowDeleteDialog(false);
-                  deleteGallery();
-                }}
-              >
-                Delete gallery
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    Share Tab
    ═══════════════════════════════════════════════════════════════════ */
 
-function ShareTab({
+export function ShareTab({
   data,
   galleryId,
 }: {

@@ -73,6 +73,27 @@ const seedPhotos: Photo[] = [
   },
 ];
 
+const galleryDefaults = {
+  aiContext: null,
+  categoryTags: [] as string[],
+  expiresAt: null,
+  slideshowEnabled: true,
+  socialSharingEnabled: true,
+  emailRegistration: false,
+  language: "en",
+  downloadEnabled: true,
+  downloadPin: null,
+  downloadSizeOriginal: true,
+  downloadSizeHighRes: false,
+  downloadSizeWeb: true,
+  downloadWebMaxPx: 2048,
+  downloadHighResMaxPx: 3600,
+  downloadLimit: null,
+  downloadContactsOnly: false,
+  favoritesEnabled: true,
+  favoriteNotesEnabled: true,
+};
+
 const seedGalleries: Gallery[] = [
   {
     id: "g1",
@@ -86,7 +107,7 @@ const seedGalleries: Gallery[] = [
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString(),
     updatedAt: new Date(now - 1000 * 60 * 60 * 12).toISOString(),
     coverPhotoId: "p1",
-    aiContext: null,
+    ...galleryDefaults,
   },
   {
     id: "g2",
@@ -100,7 +121,7 @@ const seedGalleries: Gallery[] = [
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
     updatedAt: new Date(now - 1000 * 60 * 60 * 3).toISOString(),
     coverPhotoId: "p3",
-    aiContext: null,
+    ...galleryDefaults,
   },
 ];
 
@@ -109,6 +130,7 @@ const seedAlbums: Album[] = [
     id: "al1",
     galleryId: "g1",
     title: "Ceremony Highlights",
+    downloadEnabled: true,
     photoIds: ["p1", "p2"],
     createdAt: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
   },

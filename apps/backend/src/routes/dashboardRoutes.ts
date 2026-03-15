@@ -187,6 +187,16 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.gphotosStartImportController,
     authFunction: isAuth,
   },
+  "list-gallery-favorites": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.listGalleryFavoritesController,
+    authFunction: isAuth,
+  },
+  "get-download-activity": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getDownloadActivityController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -325,6 +335,16 @@ dashboardRoutes.get(
 dashboardRoutes.post(
   "/dashboard/gphotos/import",
   handleMethod("gphotos-start-import"),
+);
+
+// ─── Gallery Favorites & Download Activity ────────────────────────────────
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/favorites",
+  handleMethod("list-gallery-favorites"),
+);
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/download-activity",
+  handleMethod("get-download-activity"),
 );
 
 export default dashboardRoutes;

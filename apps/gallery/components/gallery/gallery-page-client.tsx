@@ -9,6 +9,7 @@ import {
   Download,
   DownloadCloud,
   Heart,
+  Lock,
   MessageSquare,
   Minus,
   Pencil,
@@ -36,6 +37,21 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { Button } from "@workspace/ui/components/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@workspace/ui/components/input-otp";
+import { Input } from "@workspace/ui/components/input";
+import { PhoneInputComponent } from "@workspace/ui/components/phone";
 import { useSession } from "@workspace/lib/auth/auth-client";
 
 type GalleryPageClientProps = {
@@ -72,6 +88,9 @@ const getFavoritesKey = (shareToken: string) =>
 
 const getViewerIdKey = (shareToken: string) =>
   `fotno_gallery_viewer_${shareToken}`;
+
+const getViewerNameKey = (shareToken: string) =>
+  `fotno_gallery_viewer_name_${shareToken}`;
 
 const readStoredToken = (shareToken: string): string | null => {
   const token = sessionStorage.getItem(getSessionTokenKey(shareToken));
@@ -130,10 +149,7 @@ const formatRelative = (isoString: string): string => {
 };
 
 const countAllComments = (list: GalleryComment[]): number =>
-  list.reduce(
-    (sum, c) => sum + 1 + countAllComments(c.replies ?? []),
-    0,
-  );
+  list.reduce((sum, c) => sum + 1 + countAllComments(c.replies ?? []), 0);
 
 const MAX_REPLY_DEPTH = 6;
 
@@ -175,7 +191,8 @@ function CommentNode({
   formatRelative,
 }: CommentNodeProps) {
   const isEditing = editingComment?.id === comment.id;
-  const isOwn = Boolean(currentViewerId) && comment.viewerId === currentViewerId;
+  const isOwn =
+    Boolean(currentViewerId) && comment.viewerId === currentViewerId;
   const canEdit = isOwn;
   const canDelete = isOwn || isPhotographer;
   const liked = comment.likes.includes(currentViewerId);
@@ -207,7 +224,9 @@ function CommentNode({
               </span>
             )}
             {comment.updatedAt !== comment.createdAt ? (
-              <span className="text-[10px] text-muted-foreground/60">(edited)</span>
+              <span className="text-[10px] text-muted-foreground/60">
+                (edited)
+              </span>
             ) : null}
           </div>
           <span className="shrink-0 text-muted-foreground">
@@ -392,15 +411,47 @@ export default function GalleryPageClient({
   const [commentText, setCommentText] = useState("");
   const [commentPhotoId, setCommentPhotoId] = useState<string>("");
   const [replyingTo, setReplyingTo] = useState<GalleryComment | null>(null);
-  const [editingComment, setEditingComment] = useState<GalleryComment | null>(null);
+  const [editingComment, setEditingComment] = useState<GalleryComment | null>(
+    null,
+  );
   const [editText, setEditText] = useState("");
+  const [pinDialogOpen, setPinDialogOpen] = useState(false);
+  const [pinValue, setPinValue] = useState("");
+  const [pinVerified, setPinVerified] = useState(false);
+  const [pinVerifying, setPinVerifying] = useState(false);
+  const pendingDownloadRef = useRef<(() => void) | null>(null);
+  const [noteDialogPhotoId, setNoteDialogPhotoId] = useState<string | null>(
+    null,
+  );
+  const [noteText, setNoteText] = useState("");
+  const [sizePickerPhoto, setSizePickerPhoto] = useState<PublicPhoto | null>(
+    null,
+  );
+  const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
+  const [phoneDialogMode, setPhoneDialogMode] = useState<
+    "identify" | "retrieve"
+  >("identify");
+  const [phoneValue, setPhoneValue] = useState("");
+  const [nameValue, setNameValue] = useState("");
+  const [phoneSubmitting, setPhoneSubmitting] = useState(false);
+  const pendingFavoritePhotoIdRef = useRef<string | null>(null);
 
   const isPhotographer =
     Boolean(session?.user?.id) && session?.user?.id === gallery.userId;
-  const viewerRole: "client" | "photographer" =
-    isPhotographer ? "photographer" : "client";
-  const viewerDisplayName =
-    isPhotographer ? (session?.user?.name ?? gallery.photographer.name) : "Client";
+  const viewerRole: "client" | "photographer" = isPhotographer
+    ? "photographer"
+    : "client";
+  const viewerDisplayName = isPhotographer
+    ? (session?.user?.name ?? gallery.photographer.name)
+    : "Client";
+
+  // Settings with backwards-compatible defaults
+  const settings = gallery.settings;
+  const downloadsEnabled = settings?.downloadEnabled !== false;
+  const favoritesEnabled = settings?.favoritesEnabled !== false;
+  const hasDownloadPin = settings?.hasDownloadPin === true;
+  const favoriteNotesEnabled =
+    favoritesEnabled && settings?.favoriteNotesEnabled !== false;
 
   useEffect(() => {
     if (!gallery.hasPassword) {
@@ -422,22 +473,49 @@ export default function GalleryPageClient({
   }, [gallery.shareToken, gallery.hasPassword]);
 
   useEffect(() => {
-    const favoritesRaw = localStorage.getItem(
-      getFavoritesKey(gallery.shareToken),
-    );
-    if (!favoritesRaw) {
-      return;
-    }
-
-    try {
-      const parsed = JSON.parse(favoritesRaw) as string[];
-      if (Array.isArray(parsed)) {
-        setFavorites(parsed);
+    if (favoritesEnabled) {
+      // Server-side favorites: load from API only if viewer already identified
+      const viewerId = sessionStorage.getItem(
+        getViewerIdKey(gallery.shareToken),
+      );
+      if (!viewerId) {
+        // Not identified yet — no favorites to load
+        return;
       }
-    } catch {
-      localStorage.removeItem(getFavoritesKey(gallery.shareToken));
+      fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(viewerId)}`,
+        { cache: "no-store" },
+      )
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.favorites) {
+            setFavorites(
+              data.favorites.map((f: { photoId: string }) => f.photoId),
+            );
+          }
+        })
+        .catch(() => {
+          // Fallback to localStorage on API error
+          const raw = localStorage.getItem(getFavoritesKey(gallery.shareToken));
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw) as string[];
+              if (Array.isArray(parsed)) setFavorites(parsed);
+            } catch {}
+          }
+        });
+    } else {
+      // Favorites disabled server-side: use localStorage
+      const raw = localStorage.getItem(getFavoritesKey(gallery.shareToken));
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw) as string[];
+        if (Array.isArray(parsed)) setFavorites(parsed);
+      } catch {
+        localStorage.removeItem(getFavoritesKey(gallery.shareToken));
+      }
     }
-  }, [gallery.shareToken]);
+  }, [gallery.shareToken, favoritesEnabled]);
 
   useEffect(() => {
     const preventContextMenu = (event: MouseEvent) => {
@@ -489,7 +567,9 @@ export default function GalleryPageClient({
         if (data.comments) {
           setComments(data.comments);
         }
-      } catch { /* ignore malformed events */ }
+      } catch {
+        /* ignore malformed events */
+      }
     });
 
     const refreshInterval = window.setInterval(() => {
@@ -516,12 +596,12 @@ export default function GalleryPageClient({
       return;
     }
 
-    const viewerIdKey = getViewerIdKey(gallery.shareToken);
-    let viewerId = sessionStorage.getItem(viewerIdKey);
-
-    if (!viewerId) {
-      viewerId = crypto.randomUUID();
-      sessionStorage.setItem(viewerIdKey, viewerId);
+    // Presence uses its own anonymous ID, separate from favorites phone identity
+    const presenceKey = `fotno_gallery_presence_${gallery.shareToken}`;
+    let presenceId = sessionStorage.getItem(presenceKey);
+    if (!presenceId) {
+      presenceId = crypto.randomUUID();
+      sessionStorage.setItem(presenceKey, presenceId);
     }
 
     const sendHeartbeat = async () => {
@@ -533,7 +613,7 @@ export default function GalleryPageClient({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            viewerId,
+            viewerId: presenceId,
             name: viewerDisplayName,
             role: viewerRole,
           }),
@@ -564,7 +644,7 @@ export default function GalleryPageClient({
           "Content-Type": "application/json",
         },
         keepalive: true,
-        body: JSON.stringify({ viewerId }),
+        body: JSON.stringify({ viewerId: presenceId }),
       });
     };
 
@@ -750,11 +830,102 @@ export default function GalleryPageClient({
     }
   };
 
-  const handleSingleDownload = async (photo: PublicPhoto) => {
-    setDownloadingPhotoId(photo.id);
+  const downloadLimit = settings?.downloadLimit ?? null;
+
+  const trackDownloadEvent = async (
+    type: string,
+    photoId?: string,
+  ): Promise<boolean> => {
     try {
+      const res = await fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-event`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type,
+            photoId: photoId ?? null,
+            viewerName: viewerDisplayName,
+          }),
+        },
+      );
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        if (data.limitReached) {
+          toast.error("Download limit reached for this photo");
+          return false;
+        }
+      }
+      return true;
+    } catch {
+      return true;
+    }
+  };
+
+  const requirePin = (onVerified: () => void): boolean => {
+    if (!hasDownloadPin || pinVerified) return false;
+    pendingDownloadRef.current = onVerified;
+    setPinValue("");
+    setPinDialogOpen(true);
+    return true;
+  };
+
+  const handleVerifyPin = async () => {
+    setPinVerifying(true);
+    try {
+      const res = await fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/verify-pin`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pin: pinValue }),
+        },
+      );
+      const data = await res.json();
+      if (data.valid) {
+        setPinVerified(true);
+        setPinDialogOpen(false);
+        pendingDownloadRef.current?.();
+        pendingDownloadRef.current = null;
+      } else {
+        toast.error("Incorrect PIN");
+      }
+    } catch {
+      toast.error("Failed to verify PIN");
+    } finally {
+      setPinVerifying(false);
+    }
+  };
+
+  const availableDownloadSizes = useMemo(() => {
+    const sizes: { key: string; label: string; variant: string }[] = [];
+    const ds = settings?.downloadSizes;
+    if (!ds || ds.original)
+      sizes.push({ key: "original", label: "Original", variant: "original" });
+    if (ds?.highRes)
+      sizes.push({
+        key: "highRes",
+        label: "High Resolution",
+        variant: "original",
+      });
+    if (!ds || ds.web)
+      sizes.push({ key: "web", label: "Web Size", variant: "preview" });
+    return sizes;
+  }, [settings]);
+
+  const downloadPhotoWithVariant = async (
+    photo: PublicPhoto,
+    variant: string,
+  ) => {
+    setDownloadingPhotoId(photo.id);
+    setSizePickerPhoto(null);
+    try {
+      // Track + enforce limit before downloading
+      const allowed = await trackDownloadEvent("single", photo.id);
+      if (!allowed) return;
+
       const response = await fetch(
-        `/api/photos/${photo.id}/download?shareToken=${encodeURIComponent(gallery.shareToken)}&fileName=${encodeURIComponent(photo.originalFilename)}${sessionToken ? `&sessionToken=${encodeURIComponent(sessionToken)}` : ""}`,
+        `/api/photos/${photo.id}/download?shareToken=${encodeURIComponent(gallery.shareToken)}&fileName=${encodeURIComponent(photo.originalFilename)}&variant=${encodeURIComponent(variant)}${sessionToken ? `&sessionToken=${encodeURIComponent(sessionToken)}` : ""}`,
         {
           headers: {
             ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
@@ -783,49 +954,223 @@ export default function GalleryPageClient({
     }
   };
 
+  const handleSingleDownload = async (photo: PublicPhoto) => {
+    const doDownload = async () => {
+      if (availableDownloadSizes.length > 1) {
+        setSizePickerPhoto(photo);
+        return;
+      }
+      const variant = availableDownloadSizes[0]?.variant ?? "original";
+      await downloadPhotoWithVariant(photo, variant);
+    };
+
+    if (requirePin(doDownload)) return;
+    await doDownload();
+  };
+
   const handleDownloadAll = async () => {
-    setIsDownloadingAll(true);
-
-    try {
-      const response = await fetch(
-        `/api/gallery/${gallery.shareToken}/download-all`,
-        {
-          headers: {
-            ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
-            ...(sessionToken ? { "x-gallery-session": sessionToken } : {}),
+    const doDownload = async () => {
+      setIsDownloadingAll(true);
+      try {
+        const response = await fetch(
+          `/api/gallery/${gallery.shareToken}/download-all`,
+          {
+            headers: {
+              ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
+              ...(sessionToken ? { "x-gallery-session": sessionToken } : {}),
+            },
           },
-        },
-      );
+        );
 
-      if (!response.ok) {
-        throw new Error(await readErrorText(response));
+        if (!response.ok) {
+          throw new Error(await readErrorText(response));
+        }
+
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = objectUrl;
+        anchor.download = `${gallery.title.replace(/\s+/g, "-").toLowerCase()}.zip`;
+        anchor.click();
+        URL.revokeObjectURL(objectUrl);
+        void trackDownloadEvent("gallery");
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unable to download ZIP";
+        toast.error(message);
+      } finally {
+        setIsDownloadingAll(false);
+      }
+    };
+
+    if (requirePin(doDownload)) return;
+    await doDownload();
+  };
+
+  const saveFavoriteToServer = async (photoId: string, note?: string) => {
+    const viewerId =
+      sessionStorage.getItem(getViewerIdKey(gallery.shareToken)) ?? "";
+    const viewerName =
+      sessionStorage.getItem(getViewerNameKey(gallery.shareToken)) ?? "";
+    await fetch(
+      `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          photoId,
+          viewerId,
+          viewerName,
+          note: note || undefined,
+        }),
+      },
+    );
+  };
+
+  const removeFavoriteFromServer = async (photoId: string) => {
+    const viewerId =
+      sessionStorage.getItem(getViewerIdKey(gallery.shareToken)) ?? "";
+    await fetch(
+      `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites/${encodeURIComponent(photoId)}?viewerId=${encodeURIComponent(viewerId)}`,
+      { method: "DELETE" },
+    );
+  };
+
+  const isViewerIdentified = (): boolean => {
+    if (isPhotographer) return true;
+    return Boolean(
+      sessionStorage.getItem(getViewerIdKey(gallery.shareToken)),
+    );
+  };
+
+  const requirePhoneIdentity = (photoId: string): boolean => {
+    if (isPhotographer || !favoritesEnabled) return false;
+    if (isViewerIdentified()) return false;
+    pendingFavoritePhotoIdRef.current = photoId;
+    setPhoneDialogMode("identify");
+    setPhoneValue("");
+    setNameValue("");
+    setPhoneDialogOpen(true);
+    return true;
+  };
+
+  const handlePhoneSubmit = async () => {
+    if (!phoneValue || phoneValue.length < 8) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+    setPhoneSubmitting(true);
+    try {
+      // Store phone as viewerId and name
+      sessionStorage.setItem(
+        getViewerIdKey(gallery.shareToken),
+        phoneValue,
+      );
+      if (nameValue.trim()) {
+        sessionStorage.setItem(
+          getViewerNameKey(gallery.shareToken),
+          nameValue.trim(),
+        );
       }
 
-      const blob = await response.blob();
-      const objectUrl = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = objectUrl;
-      anchor.download = `${gallery.title.replace(/\s+/g, "-").toLowerCase()}.zip`;
-      anchor.click();
-      URL.revokeObjectURL(objectUrl);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Unable to download ZIP";
-      toast.error(message);
+      if (phoneDialogMode === "retrieve") {
+        // Load existing favorites for this phone number
+        const res = await fetch(
+          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
+          { cache: "no-store" },
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.favorites) {
+            setFavorites(
+              data.favorites.map((f: { photoId: string }) => f.photoId),
+            );
+          }
+        }
+        setPhoneDialogOpen(false);
+        setFilterMode("loved");
+        toast.success("Favorites loaded!");
+      } else {
+        // Identify mode: load existing favorites then proceed with pending action
+        const res = await fetch(
+          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
+          { cache: "no-store" },
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.favorites) {
+            setFavorites(
+              data.favorites.map((f: { photoId: string }) => f.photoId),
+            );
+          }
+        }
+        setPhoneDialogOpen(false);
+
+        // Continue with the pending favorite action
+        const pendingPhotoId = pendingFavoritePhotoIdRef.current;
+        pendingFavoritePhotoIdRef.current = null;
+        if (pendingPhotoId) {
+          // Re-trigger toggleFavorite now that identity is set
+          void toggleFavorite(pendingPhotoId);
+        }
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsDownloadingAll(false);
+      setPhoneSubmitting(false);
     }
   };
 
-  const toggleFavorite = (photoId: string) => {
-    const next = favorites.includes(photoId)
+  const toggleFavorite = async (photoId: string) => {
+    const isRemoving = favorites.includes(photoId);
+
+    // Gate on phone identification for server-side favorites (adding only)
+    if (!isRemoving && favoritesEnabled && requirePhoneIdentity(photoId)) {
+      return;
+    }
+
+    // If adding + notes enabled → show note dialog first
+    if (!isRemoving && favoriteNotesEnabled && favoritesEnabled) {
+      setNoteDialogPhotoId(photoId);
+      setNoteText("");
+      return;
+    }
+
+    const next = isRemoving
       ? favorites.filter((id) => id !== photoId)
       : [...favorites, photoId];
     setFavorites(next);
-    localStorage.setItem(
-      getFavoritesKey(gallery.shareToken),
-      JSON.stringify(next),
-    );
+
+    if (favoritesEnabled) {
+      try {
+        if (isRemoving) {
+          await removeFavoriteFromServer(photoId);
+        } else {
+          await saveFavoriteToServer(photoId);
+        }
+      } catch {
+        setFavorites(
+          isRemoving ? [...next, photoId] : next.filter((id) => id !== photoId),
+        );
+      }
+    } else {
+      localStorage.setItem(
+        getFavoritesKey(gallery.shareToken),
+        JSON.stringify(next),
+      );
+    }
+  };
+
+  const submitFavoriteWithNote = async () => {
+    if (!noteDialogPhotoId) return;
+    const photoId = noteDialogPhotoId;
+    setFavorites((prev) => [...prev, photoId]);
+    setNoteDialogPhotoId(null);
+    try {
+      await saveFavoriteToServer(photoId, noteText);
+    } catch {
+      setFavorites((prev) => prev.filter((id) => id !== photoId));
+    }
   };
 
   const navigateModal = (direction: 1 | -1) => {
@@ -1240,20 +1585,34 @@ export default function GalleryPageClient({
             >
               All Photos
             </button>
-            <button
-              type="button"
-              onClick={() => setFilterMode("loved")}
-              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                filterMode === "loved"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
-              }`}
-            >
-              <Heart
-                className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-primary-foreground text-primary-foreground" : "text-muted-foreground"}`}
-              />
-              {favorites.length} loved
-            </button>
+            {favoritesEnabled && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (!isViewerIdentified() && !isPhotographer) {
+                    // Show phone dialog in retrieve mode
+                    setPhoneDialogMode("retrieve");
+                    setPhoneValue("");
+                    setNameValue("");
+                    setPhoneDialogOpen(true);
+                    return;
+                  }
+                  setFilterMode("loved");
+                }}
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  filterMode === "loved"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
+                }`}
+              >
+                <Heart
+                  className={`h-3.5 w-3.5 ${filterMode === "loved" ? "fill-primary-foreground text-primary-foreground" : "text-muted-foreground"}`}
+                />
+                {favorites.length > 0
+                  ? `${favorites.length} loved`
+                  : "Loved"}
+              </button>
+            )}
 
             {gallery.albums?.map((album) => (
               <button
@@ -1262,8 +1621,8 @@ export default function GalleryPageClient({
                 onClick={() => setFilterMode(album.id)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                   filterMode === album.id
-                  ? "bg-foreground text-background"
-                  : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
+                    ? "bg-foreground text-background"
+                    : "bg-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
                 {album.title}
@@ -1279,15 +1638,17 @@ export default function GalleryPageClient({
               </span>
               {viewerCount} online
             </span>
-            <button
-              type="button"
-              onClick={handleDownloadAll}
-              disabled={isDownloadingAll}
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <DownloadCloud className="h-4 w-4" />
-              {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
-            </button>
+            {downloadsEnabled && (
+              <button
+                type="button"
+                onClick={handleDownloadAll}
+                disabled={isDownloadingAll}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <DownloadCloud className="h-4 w-4" />
+                {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -1332,30 +1693,34 @@ export default function GalleryPageClient({
 
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                  <button
-                    type="button"
-                    onClick={() => toggleFavorite(photo.id)}
-                    className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:bg-black/70"
-                    aria-label={loved ? "Remove from loved" : "Add to loved"}
-                  >
-                    <Heart
-                      className={`h-4 w-4 transition-colors ${
-                        loved ? "fill-primary text-primary" : "text-white"
-                      }`}
-                    />
-                  </button>
+                  {favoritesEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => toggleFavorite(photo.id)}
+                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:bg-black/70"
+                      aria-label={loved ? "Remove from loved" : "Add to loved"}
+                    >
+                      <Heart
+                        className={`h-4 w-4 transition-colors ${
+                          loved ? "fill-primary text-primary" : "text-white"
+                        }`}
+                      />
+                    </button>
+                  )}
 
-                  <button
-                    type="button"
-                    onClick={() => handleSingleDownload(photo)}
-                    disabled={downloadingPhotoId === photo.id}
-                    className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
-                    aria-label="Download photo"
-                  >
-                    <Download
-                      className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
-                    />
-                  </button>
+                  {downloadsEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handleSingleDownload(photo)}
+                      disabled={downloadingPhotoId === photo.id}
+                      className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
+                      aria-label="Download photo"
+                    >
+                      <Download
+                        className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
+                      />
+                    </button>
+                  )}
                 </article>
               );
             })}
@@ -1389,17 +1754,19 @@ export default function GalleryPageClient({
             >
               {Math.round(zoom * 100)}%
             </button>
-            <button
-              type="button"
-              onClick={() => void handleSingleDownload(activePhoto)}
-              disabled={downloadingPhotoId === activePhoto.id}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/45 px-4 text-sm text-white"
-            >
-              <Download className="h-4 w-4" />
-              {downloadingPhotoId === activePhoto.id
-                ? "Downloading..."
-                : "Download"}
-            </button>
+            {downloadsEnabled && (
+              <button
+                type="button"
+                onClick={() => void handleSingleDownload(activePhoto)}
+                disabled={downloadingPhotoId === activePhoto.id}
+                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/45 px-4 text-sm text-white"
+              >
+                <Download className="h-4 w-4" />
+                {downloadingPhotoId === activePhoto.id
+                  ? "Downloading..."
+                  : "Download"}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => {
@@ -1475,6 +1842,228 @@ export default function GalleryPageClient({
         </div>
       ) : null}
 
+      {/* Download PIN Dialog */}
+      <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>
+        <DialogContent className="sm:max-w-[360px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="h-4 w-4" />
+              Download PIN
+            </DialogTitle>
+            <DialogDescription>
+              Enter the 4-digit PIN to download photos.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center py-4">
+            <InputOTP
+              maxLength={4}
+              value={pinValue}
+              onChange={setPinValue}
+              onComplete={() => void handleVerifyPin()}
+              autoFocus
+              type="numeric"
+              inputMode="numeric"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+            >
+              <InputOTPGroup className="">
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setPinDialogOpen(false);
+                pendingDownloadRef.current = null;
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => void handleVerifyPin()}
+              disabled={pinValue.length !== 4 || pinVerifying}
+            >
+              {pinVerifying ? "Verifying..." : "Verify"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Favorite Note Dialog */}
+      <Dialog
+        open={noteDialogPhotoId !== null}
+        onOpenChange={(open) => {
+          if (!open) setNoteDialogPhotoId(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Heart className="h-4 w-4 fill-primary text-primary" />
+              Add to Favorites
+            </DialogTitle>
+            <DialogDescription>
+              Add an optional note for the photographer (e.g. &ldquo;print
+              this&rdquo; or &ldquo;use as album cover&rdquo;).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-2">
+            <Input
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              placeholder="Optional note..."
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  void submitFavoriteWithNote();
+                }
+              }}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setNoteDialogPhotoId(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setNoteText("");
+                void submitFavoriteWithNote();
+              }}
+            >
+              Skip Note
+            </Button>
+            <Button onClick={() => void submitFavoriteWithNote()}>
+              <Heart className="mr-1.5 h-3.5 w-3.5 fill-current" />
+              Favorite
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Download Size Picker */}
+      <Dialog
+        open={sizePickerPhoto !== null}
+        onOpenChange={(open) => {
+          if (!open) setSizePickerPhoto(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-[360px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Choose Download Size
+            </DialogTitle>
+            <DialogDescription>
+              Select the image quality you&apos;d like to download.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 py-2">
+            {availableDownloadSizes.map((size) => (
+              <button
+                key={size.key}
+                type="button"
+                onClick={() => {
+                  if (sizePickerPhoto) {
+                    void downloadPhotoWithVariant(sizePickerPhoto, size.variant);
+                  }
+                }}
+                disabled={downloadingPhotoId !== null}
+                className="flex w-full items-center justify-between rounded-lg border border-border px-4 py-3 text-left transition hover:bg-accent disabled:opacity-50"
+              >
+                <div>
+                  <p className="text-sm font-medium">{size.label}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {size.key === "original" && "Full resolution as uploaded"}
+                    {size.key === "highRes" && "High resolution"}
+                    {size.key === "web" && "Optimized for web & social"}
+                  </p>
+                </div>
+                <Download className="h-4 w-4 text-muted-foreground" />
+              </button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Phone Identity Dialog */}
+      <Dialog open={phoneDialogOpen} onOpenChange={setPhoneDialogOpen}>
+        <DialogContent className="sm:max-w-[420px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Heart className="h-4 w-4 fill-primary text-primary" />
+              {phoneDialogMode === "retrieve"
+                ? "View Your Favorites"
+                : "Save Your Favorites"}
+            </DialogTitle>
+            <DialogDescription>
+              {phoneDialogMode === "retrieve"
+                ? "Enter your phone number to retrieve your saved favorites."
+                : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <PhoneInputComponent
+              value={phoneValue}
+              onChange={setPhoneValue}
+              label="Phone number"
+              placeholder="Enter your phone number"
+            />
+            {phoneDialogMode === "identify" && (
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="viewer-name"
+                  className="text-sm font-medium"
+                >
+                  Name
+                </label>
+                <Input
+                  id="viewer-name"
+                  value={nameValue}
+                  onChange={(e) => setNameValue(e.target.value)}
+                  placeholder="Your name (optional)"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && phoneValue.length >= 8) {
+                      void handlePhoneSubmit();
+                    }
+                  }}
+                />
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setPhoneDialogOpen(false);
+                pendingFavoritePhotoIdRef.current = null;
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => void handlePhoneSubmit()}
+              disabled={!phoneValue || phoneValue.length < 8 || phoneSubmitting}
+            >
+              {phoneSubmitting
+                ? "Loading..."
+                : phoneDialogMode === "retrieve"
+                  ? "Load Favorites"
+                  : "Continue"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
         Powered by <span className="font-semibold text-primary">FOTNO</span>
       </footer>
@@ -1494,7 +2083,9 @@ export default function GalleryPageClient({
         <SheetContent className="flex flex-col overflow-hidden">
           <SheetHeader>
             <SheetTitle>
-              {viewerRole === "photographer" ? "Gallery Feedback" : "Leave Feedback"}
+              {viewerRole === "photographer"
+                ? "Gallery Feedback"
+                : "Leave Feedback"}
             </SheetTitle>
             <SheetDescription>
               {viewerRole === "photographer"
@@ -1597,7 +2188,9 @@ export default function GalleryPageClient({
               {comments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <MessageSquare className="mb-2 h-8 w-8 text-muted-foreground/40" />
-                  <p className="text-sm text-muted-foreground">No comments yet.</p>
+                  <p className="text-sm text-muted-foreground">
+                    No comments yet.
+                  </p>
                   <p className="mt-0.5 text-xs text-muted-foreground/60">
                     Be the first to leave feedback
                   </p>

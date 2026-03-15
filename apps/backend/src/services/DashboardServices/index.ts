@@ -34,3 +34,5 @@ export { gphotosProxyImage } from "./gphotosProxyImage";
 export { gphotosSessionStatus } from "./gphotosSessionStatus";
 export { gphotosStartImport } from "./gphotosStartImport";
 export { gphotosDisconnect } from "./gphotosDisconnect";
+export { listGalleryFavorites } from "./listGalleryFavorites";
+export { getDownloadActivity } from "./getDownloadActivity";

@@ -33,10 +33,26 @@ type BackendGallery = {
     name?: string | null;
     image?: string | null;
   } | null;
+  settings?: {
+    slideshowEnabled?: boolean;
+    socialSharingEnabled?: boolean;
+    emailRegistration?: boolean;
+    downloadEnabled?: boolean;
+    hasDownloadPin?: boolean;
+    downloadSizes?: {
+      original?: boolean;
+      highRes?: boolean;
+      web?: boolean;
+    };
+    downloadLimit?: number | null;
+    favoritesEnabled?: boolean;
+    favoriteNotesEnabled?: boolean;
+  };
   photos?: BackendPhoto[];
   albums?: Array<{
     id: string;
     title: string;
+    downloadEnabled?: boolean;
     photoIds: string[];
   }>;
 };
@@ -110,8 +126,30 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
       logoUrl: photographerLogo,
     },
     coverPhotoId: input.coverPhotoId ?? null,
+    settings: input.settings
+      ? {
+          slideshowEnabled: input.settings.slideshowEnabled ?? true,
+          socialSharingEnabled: input.settings.socialSharingEnabled ?? true,
+          emailRegistration: input.settings.emailRegistration ?? false,
+          downloadEnabled: input.settings.downloadEnabled ?? true,
+          hasDownloadPin: input.settings.hasDownloadPin ?? false,
+          downloadSizes: {
+            original: input.settings.downloadSizes?.original ?? true,
+            highRes: input.settings.downloadSizes?.highRes ?? false,
+            web: input.settings.downloadSizes?.web ?? true,
+          },
+          downloadLimit: input.settings.downloadLimit ?? null,
+          favoritesEnabled: input.settings.favoritesEnabled ?? true,
+          favoriteNotesEnabled: input.settings.favoriteNotesEnabled ?? true,
+        }
+      : undefined,
     photos,
-    albums: input.albums ?? [],
+    albums: (input.albums ?? []).map((a) => ({
+      id: a.id,
+      title: a.title,
+      downloadEnabled: a.downloadEnabled ?? true,
+      photoIds: a.photoIds,
+    })),
   };
 };
 
@@ -189,7 +227,12 @@ const loadGalleryFromDashboardMock = async (
       },
       coverPhotoId: gallery.coverPhotoId ?? null,
       photos,
-      albums: gallery.albums ?? [],
+      albums: (gallery.albums ?? []).map((a) => ({
+        id: a.id,
+        title: a.title,
+        downloadEnabled: true,
+        photoIds: a.photoIds,
+      })),
     },
   };
 };

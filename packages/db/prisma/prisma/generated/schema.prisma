@@ -164,19 +164,43 @@ model UserOnboarding {
 }
 
 model Gallery {
-  id               String            @id @unique @default(uuid())
-  userId           String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title            String
-  slug             String
-  eventDate        DateTime?
-  deadline         DateTime?
-  coverPhotoId     String?
-  coverPhoto       Photo?            @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
-  passwordHash     String?
-  shareToken       String            @unique @default(uuid())
-  aiContext        String?
-  isPublished      Boolean           @default(false)
+  id           String    @id @unique @default(uuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  slug         String
+  eventDate    DateTime?
+  deadline     DateTime?
+  coverPhotoId String?
+  coverPhoto   Photo?    @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  passwordHash String?
+  shareToken   String    @unique @default(uuid())
+  aiContext    String?
+  isPublished  Boolean   @default(false)
+
+  // General settings
+  categoryTags         String[]  @default([])
+  expiresAt            DateTime?
+  slideshowEnabled     Boolean   @default(true)
+  socialSharingEnabled Boolean   @default(true)
+  emailRegistration    Boolean   @default(false)
+  language             String    @default("en")
+
+  // Download settings
+  downloadEnabled      Boolean @default(true)
+  downloadPin          String?
+  downloadSizeOriginal Boolean @default(true)
+  downloadSizeHighRes  Boolean @default(false)
+  downloadSizeWeb      Boolean @default(true)
+  downloadWebMaxPx     Int     @default(2048)
+  downloadHighResMaxPx Int     @default(3600)
+  downloadLimit        Int?
+  downloadContactsOnly Boolean @default(false)
+
+  // Favorites settings
+  favoritesEnabled     Boolean @default(true)
+  favoriteNotesEnabled Boolean @default(true)
+
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @default(now()) @updatedAt
   photos           Photo[]           @relation("GalleryPhotos")
@@ -184,41 +208,44 @@ model Gallery {
   clients          GalleryClient[]
   comments         GalleryComment[]
   driveImportItems DriveImportItem[]
+  favorites        GalleryFavorite[]
+  downloadEvents   DownloadEvent[]
 
   @@unique([userId, slug])
   @@map("gallery")
 }
 
 model Photo {
-  id               String           @id @unique @default(uuid())
+  id               String            @id @unique @default(uuid())
   galleryId        String
-  gallery          Gallery          @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
-  usedAsCoverIn    Gallery[]        @relation("GalleryCoverPhoto")
+  gallery          Gallery           @relation("GalleryPhotos", fields: [galleryId], references: [id], onDelete: Cascade)
+  usedAsCoverIn    Gallery[]         @relation("GalleryCoverPhoto")
   checksum         String?
   s3Key            String
   s3Bucket         String
   originalFilename String
-  originalSize     BigInt           @default(0)
-  thumbnailSize    BigInt           @default(0)
-  previewSize      BigInt           @default(0)
-  totalSize        BigInt           @default(0)
+  originalSize     BigInt            @default(0)
+  thumbnailSize    BigInt            @default(0)
+  previewSize      BigInt            @default(0)
+  totalSize        BigInt            @default(0)
   width            Int?
   height           Int?
   mimeType         String
-  order            Int              @default(0)
-  isCulled         Boolean          @default(false)
-  loved            Boolean          @default(false)
+  order            Int               @default(0)
+  isCulled         Boolean           @default(false)
+  loved            Boolean           @default(false)
   aiCaption        String?
   aiTags           String[]
-  faceCount        Int              @default(0)
+  faceCount        Int               @default(0)
   thumbnailKey     String?
   previewKey       String?
-  status           String           @default("pending")
+  status           String            @default("pending")
   processedAt      DateTime?
-  createdAt        DateTime         @default(now())
+  createdAt        DateTime          @default(now())
   uploadSession    UploadSession?
   albumPhotos      AlbumPhoto[]
   comments         GalleryComment[]
+  favorites        GalleryFavorite[]
 
   @@index([galleryId, order])
   @@map("photo")
@@ -286,13 +313,14 @@ model GalleryClient {
 }
 
 model Album {
-  id        String       @id @unique @default(uuid())
-  galleryId String
-  gallery   Gallery      @relation(fields: [galleryId], references: [id], onDelete: Cascade)
-  title     String
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @default(now()) @updatedAt
-  photos    AlbumPhoto[]
+  id              String       @id @unique @default(uuid())
+  galleryId       String
+  gallery         Gallery      @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  title           String
+  downloadEnabled Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @default(now()) @updatedAt
+  photos          AlbumPhoto[]
 
   @@map("album")
 }
@@ -329,42 +357,35 @@ model GalleryComment {
   @@map("gallery_comment")
 }
 
-model ImageSearchImage {
-  id           String                       @id @default(uuid())
-  photoId      String                       @unique
-  userId       String
-  galleryId    String
-  storageUrl   String
-  thumbnailUrl String?
-  caption      String?
-  tags         String[]
-  metadata     Json?
-  embedding    Unsupported("vector(1152)")?
-  indexedAt    DateTime?
-  version      Int                          @default(1)
-  createdAt    DateTime                     @default(now())
-  updatedAt    DateTime                     @default(now()) @updatedAt
+model GalleryFavorite {
+  id         String   @id @default(uuid())
+  galleryId  String
+  gallery    Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  photoId    String
+  photo      Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  viewerId   String
+  viewerName String
+  note       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 
-  @@index([galleryId, userId])
-  @@index([photoId])
-  @@map("image_search_image")
+  @@unique([galleryId, photoId, viewerId])
+  @@index([galleryId])
+  @@map("gallery_favorite")
 }
 
-model ImageSearchAlbumCache {
-  id               String   @id @default(uuid())
-  galleryId        String
-  userId           String
-  normalizedPrompt String
-  photoIds         String[]
-  albumTitle       String?
-  albumDescription String?
-  expiresAt        DateTime
-  createdAt        DateTime @default(now())
+model DownloadEvent {
+  id         String   @id @default(uuid())
+  galleryId  String
+  gallery    Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  photoId    String?
+  viewerName String?
+  viewerIp   String?
+  type       String
+  createdAt  DateTime @default(now())
 
-  @@unique([galleryId, userId, normalizedPrompt])
-  @@index([galleryId, userId])
-  @@index([expiresAt])
-  @@map("image_search_album_cache")
+  @@index([galleryId])
+  @@map("download_event")
 }
 
 enum ImportSource {

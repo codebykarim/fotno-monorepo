@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.4.1
- * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
+ * Prisma Client JS version: 7.5.0
+ * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
  */
 Prisma.prismaVersion = {
-  client: "7.4.1",
-  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
+  client: "7.5.0",
+  engine: "280c870be64f457428992c43c1f6d557fab6e29e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -224,6 +224,23 @@ exports.Prisma.GalleryScalarFieldEnum = {
   shareToken: 'shareToken',
   aiContext: 'aiContext',
   isPublished: 'isPublished',
+  categoryTags: 'categoryTags',
+  expiresAt: 'expiresAt',
+  slideshowEnabled: 'slideshowEnabled',
+  socialSharingEnabled: 'socialSharingEnabled',
+  emailRegistration: 'emailRegistration',
+  language: 'language',
+  downloadEnabled: 'downloadEnabled',
+  downloadPin: 'downloadPin',
+  downloadSizeOriginal: 'downloadSizeOriginal',
+  downloadSizeHighRes: 'downloadSizeHighRes',
+  downloadSizeWeb: 'downloadSizeWeb',
+  downloadWebMaxPx: 'downloadWebMaxPx',
+  downloadHighResMaxPx: 'downloadHighResMaxPx',
+  downloadLimit: 'downloadLimit',
+  downloadContactsOnly: 'downloadContactsOnly',
+  favoritesEnabled: 'favoritesEnabled',
+  favoriteNotesEnabled: 'favoriteNotesEnabled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -298,6 +315,7 @@ exports.Prisma.AlbumScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
   title: 'title',
+  downloadEnabled: 'downloadEnabled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -322,31 +340,24 @@ exports.Prisma.GalleryCommentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ImageSearchImageScalarFieldEnum = {
+exports.Prisma.GalleryFavoriteScalarFieldEnum = {
   id: 'id',
-  photoId: 'photoId',
-  userId: 'userId',
   galleryId: 'galleryId',
-  storageUrl: 'storageUrl',
-  thumbnailUrl: 'thumbnailUrl',
-  caption: 'caption',
-  tags: 'tags',
-  metadata: 'metadata',
-  indexedAt: 'indexedAt',
-  version: 'version',
+  photoId: 'photoId',
+  viewerId: 'viewerId',
+  viewerName: 'viewerName',
+  note: 'note',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ImageSearchAlbumCacheScalarFieldEnum = {
+exports.Prisma.DownloadEventScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
-  userId: 'userId',
-  normalizedPrompt: 'normalizedPrompt',
-  photoIds: 'photoIds',
-  albumTitle: 'albumTitle',
-  albumDescription: 'albumDescription',
-  expiresAt: 'expiresAt',
+  photoId: 'photoId',
+  viewerName: 'viewerName',
+  viewerIp: 'viewerIp',
+  type: 'type',
   createdAt: 'createdAt'
 };
 
@@ -389,11 +400,6 @@ exports.Prisma.SortOrder = {
 };
 
 exports.Prisma.JsonNullValueInput = {
-  JsonNull: Prisma.JsonNull
-};
-
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -496,8 +502,8 @@ exports.Prisma.ModelName = {
   Album: 'Album',
   AlbumPhoto: 'AlbumPhoto',
   GalleryComment: 'GalleryComment',
-  ImageSearchImage: 'ImageSearchImage',
-  ImageSearchAlbumCache: 'ImageSearchAlbumCache',
+  GalleryFavorite: 'GalleryFavorite',
+  DownloadEvent: 'DownloadEvent',
   DriveImportJob: 'DriveImportJob',
   DriveImportItem: 'DriveImportItem'
 };

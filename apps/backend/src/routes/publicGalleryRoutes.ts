@@ -38,6 +38,26 @@ const publicGalleryMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: PublicGalleryController.toggleCommentLikeController,
   },
+  "add-favorite": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.addFavoriteController,
+  },
+  "remove-favorite": {
+    httpMethod: "DELETE",
+    controllerFunction: PublicGalleryController.removeFavoriteController,
+  },
+  "list-viewer-favorites": {
+    httpMethod: "GET",
+    controllerFunction: PublicGalleryController.listViewerFavoritesController,
+  },
+  "verify-download-pin": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.verifyDownloadPinController,
+  },
+  "track-download": {
+    httpMethod: "POST",
+    controllerFunction: PublicGalleryController.trackDownloadController,
+  },
 };
 
 const mappedMethods = init(publicGalleryMethods);
@@ -79,6 +99,30 @@ publicGalleryRoutes.post(
 publicGalleryRoutes.get(
   "/public/photos/:photoId/url",
   handleMethod("get-public-photo-url"),
+);
+
+// ─── Favorites ──────────────────────────────────────────────────────────────
+publicGalleryRoutes.get(
+  "/public/gallery/:shareToken/favorites",
+  handleMethod("list-viewer-favorites"),
+);
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/favorites",
+  handleMethod("add-favorite"),
+);
+publicGalleryRoutes.delete(
+  "/public/gallery/:shareToken/favorites/:photoId",
+  handleMethod("remove-favorite"),
+);
+
+// ─── Download ───────────────────────────────────────────────────────────────
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/verify-download-pin",
+  handleMethod("verify-download-pin"),
+);
+publicGalleryRoutes.post(
+  "/public/gallery/:shareToken/download-event",
+  handleMethod("track-download"),
 );
 
 export default publicGalleryRoutes;

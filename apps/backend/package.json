@@ -18,7 +18,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@prisma/client": "^7.4.1",
+    "@prisma/client": "^7.5.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -31,7 +31,7 @@
     "@types/qrcode-terminal": "^0.12.2",
     "@types/request-ip": "^0.0.41",
     "nodemon": "^3.0.3",
-    "prisma": "^7.4.1",
+    "prisma": "^7.5.0",
     "supabase": "^1.178.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
@@ -40,7 +40,7 @@
     "@aws-sdk/client-s3": "^3.888.0",
     "@aws-sdk/s3-request-presigner": "^3.888.0",
     "@hapi/boom": "^10.0.1",
-    "@prisma/adapter-pg": "^7.4.1",
+    "@prisma/adapter-pg": "^7.5.0",
     "@supabase/supabase-js": "^2.39.3",
     "@types/body-parser": "^1.19.5",
     "@types/express-serve-static-core": "^5.0.1",

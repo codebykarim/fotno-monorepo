@@ -21,7 +21,24 @@ export interface PublicPhoto {
 export interface PublicAlbum {
   id: string;
   title: string;
+  downloadEnabled: boolean;
   photoIds: string[];
+}
+
+export interface GallerySettings {
+  slideshowEnabled: boolean;
+  socialSharingEnabled: boolean;
+  emailRegistration: boolean;
+  downloadEnabled: boolean;
+  hasDownloadPin: boolean;
+  downloadSizes: {
+    original: boolean;
+    highRes: boolean;
+    web: boolean;
+  };
+  downloadLimit: number | null;
+  favoritesEnabled: boolean;
+  favoriteNotesEnabled: boolean;
 }
 
 export interface PublicGallery {
@@ -32,6 +49,7 @@ export interface PublicGallery {
   hasPassword: boolean;
   photographer: PhotographerProfile;
   coverPhotoId: string | null;
+  settings?: GallerySettings;
   photos: PublicPhoto[];
   albums?: PublicAlbum[];
 }

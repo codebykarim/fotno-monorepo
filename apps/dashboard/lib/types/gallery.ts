@@ -29,12 +29,33 @@ export type Gallery = {
   updatedAt: string;
   coverPhotoId: string | null;
   aiContext: string | null;
+  // General settings
+  categoryTags: string[];
+  expiresAt: string | null;
+  slideshowEnabled: boolean;
+  socialSharingEnabled: boolean;
+  emailRegistration: boolean;
+  language: string;
+  // Download settings
+  downloadEnabled: boolean;
+  downloadPin: string | null;
+  downloadSizeOriginal: boolean;
+  downloadSizeHighRes: boolean;
+  downloadSizeWeb: boolean;
+  downloadWebMaxPx: number;
+  downloadHighResMaxPx: number;
+  downloadLimit: number | null;
+  downloadContactsOnly: boolean;
+  // Favorites settings
+  favoritesEnabled: boolean;
+  favoriteNotesEnabled: boolean;
 };
 
 export type Album = {
   id: string;
   galleryId: string;
   title: string;
+  downloadEnabled: boolean;
   photoIds: string[];
   createdAt: string;
 };

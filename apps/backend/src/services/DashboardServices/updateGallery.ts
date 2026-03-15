@@ -35,6 +35,63 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
     data.aiContext = body.aiContext;
   }
 
+  // General settings
+  if (Array.isArray(body?.categoryTags)) {
+    data.categoryTags = body.categoryTags.filter((t: unknown) => typeof t === "string");
+  }
+  if (typeof body?.expiresAt === "string" || body?.expiresAt === null) {
+    data.expiresAt = body.expiresAt ? toIsoOrNull(body.expiresAt) : null;
+  }
+  if (typeof body?.slideshowEnabled === "boolean") {
+    data.slideshowEnabled = body.slideshowEnabled;
+  }
+  if (typeof body?.socialSharingEnabled === "boolean") {
+    data.socialSharingEnabled = body.socialSharingEnabled;
+  }
+  if (typeof body?.emailRegistration === "boolean") {
+    data.emailRegistration = body.emailRegistration;
+  }
+  if (typeof body?.language === "string") {
+    data.language = body.language;
+  }
+
+  // Download settings
+  if (typeof body?.downloadEnabled === "boolean") {
+    data.downloadEnabled = body.downloadEnabled;
+  }
+  if (typeof body?.downloadPin === "string" || body?.downloadPin === null) {
+    data.downloadPin = body.downloadPin;
+  }
+  if (typeof body?.downloadSizeOriginal === "boolean") {
+    data.downloadSizeOriginal = body.downloadSizeOriginal;
+  }
+  if (typeof body?.downloadSizeHighRes === "boolean") {
+    data.downloadSizeHighRes = body.downloadSizeHighRes;
+  }
+  if (typeof body?.downloadSizeWeb === "boolean") {
+    data.downloadSizeWeb = body.downloadSizeWeb;
+  }
+  if (typeof body?.downloadWebMaxPx === "number") {
+    data.downloadWebMaxPx = body.downloadWebMaxPx;
+  }
+  if (typeof body?.downloadHighResMaxPx === "number") {
+    data.downloadHighResMaxPx = body.downloadHighResMaxPx;
+  }
+  if (typeof body?.downloadLimit === "number" || body?.downloadLimit === null) {
+    data.downloadLimit = body.downloadLimit;
+  }
+  if (typeof body?.downloadContactsOnly === "boolean") {
+    data.downloadContactsOnly = body.downloadContactsOnly;
+  }
+
+  // Favorites settings
+  if (typeof body?.favoritesEnabled === "boolean") {
+    data.favoritesEnabled = body.favoritesEnabled;
+  }
+  if (typeof body?.favoriteNotesEnabled === "boolean") {
+    data.favoriteNotesEnabled = body.favoriteNotesEnabled;
+  }
+
   const updated = await db.gallery.update({
     where: { id: galleryId },
     data,
@@ -58,6 +115,26 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
       updatedAt: updated.updatedAt.toISOString(),
       coverPhotoId: updated.coverPhotoId ?? null,
       aiContext: updated.aiContext ?? null,
+      // General settings
+      categoryTags: updated.categoryTags,
+      expiresAt: updated.expiresAt ? updated.expiresAt.toISOString() : null,
+      slideshowEnabled: updated.slideshowEnabled,
+      socialSharingEnabled: updated.socialSharingEnabled,
+      emailRegistration: updated.emailRegistration,
+      language: updated.language,
+      // Download settings
+      downloadEnabled: updated.downloadEnabled,
+      downloadPin: updated.downloadPin ?? null,
+      downloadSizeOriginal: updated.downloadSizeOriginal,
+      downloadSizeHighRes: updated.downloadSizeHighRes,
+      downloadSizeWeb: updated.downloadSizeWeb,
+      downloadWebMaxPx: updated.downloadWebMaxPx,
+      downloadHighResMaxPx: updated.downloadHighResMaxPx,
+      downloadLimit: updated.downloadLimit ?? null,
+      downloadContactsOnly: updated.downloadContactsOnly,
+      // Favorites settings
+      favoritesEnabled: updated.favoritesEnabled,
+      favoriteNotesEnabled: updated.favoriteNotesEnabled,
     },
   };
 };

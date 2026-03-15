@@ -89,15 +89,15 @@ export type AlbumPhoto = $Result.DefaultSelection<Prisma.$AlbumPhotoPayload>
  */
 export type GalleryComment = $Result.DefaultSelection<Prisma.$GalleryCommentPayload>
 /**
- * Model ImageSearchImage
+ * Model GalleryFavorite
  * 
  */
-export type ImageSearchImage = $Result.DefaultSelection<Prisma.$ImageSearchImagePayload>
+export type GalleryFavorite = $Result.DefaultSelection<Prisma.$GalleryFavoritePayload>
 /**
- * Model ImageSearchAlbumCache
+ * Model DownloadEvent
  * 
  */
-export type ImageSearchAlbumCache = $Result.DefaultSelection<Prisma.$ImageSearchAlbumCachePayload>
+export type DownloadEvent = $Result.DefaultSelection<Prisma.$DownloadEventPayload>
 /**
  * Model DriveImportJob
  * 
@@ -258,7 +258,9 @@ export const DriveImportItemStatus: typeof $Enums.DriveImportItemStatus
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Users
  * const users = await prisma.user.findMany()
  * ```
@@ -279,7 +281,9 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Users
    * const users = await prisma.user.findMany()
    * ```
@@ -520,24 +524,24 @@ export class PrismaClient<
   get galleryComment(): Prisma.GalleryCommentDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.imageSearchImage`: Exposes CRUD operations for the **ImageSearchImage** model.
+   * `prisma.galleryFavorite`: Exposes CRUD operations for the **GalleryFavorite** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ImageSearchImages
-    * const imageSearchImages = await prisma.imageSearchImage.findMany()
+    * // Fetch zero or more GalleryFavorites
+    * const galleryFavorites = await prisma.galleryFavorite.findMany()
     * ```
     */
-  get imageSearchImage(): Prisma.ImageSearchImageDelegate<ExtArgs, ClientOptions>;
+  get galleryFavorite(): Prisma.GalleryFavoriteDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.imageSearchAlbumCache`: Exposes CRUD operations for the **ImageSearchAlbumCache** model.
+   * `prisma.downloadEvent`: Exposes CRUD operations for the **DownloadEvent** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ImageSearchAlbumCaches
-    * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany()
+    * // Fetch zero or more DownloadEvents
+    * const downloadEvents = await prisma.downloadEvent.findMany()
     * ```
     */
-  get imageSearchAlbumCache(): Prisma.ImageSearchAlbumCacheDelegate<ExtArgs, ClientOptions>;
+  get downloadEvent(): Prisma.DownloadEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.driveImportJob`: Exposes CRUD operations for the **DriveImportJob** model.
@@ -608,8 +612,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.4.1
-   * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
+   * Prisma Client JS version: 7.5.0
+   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
    */
   export type PrismaVersion = {
     client: string
@@ -1007,8 +1011,8 @@ export namespace Prisma {
     Album: 'Album',
     AlbumPhoto: 'AlbumPhoto',
     GalleryComment: 'GalleryComment',
-    ImageSearchImage: 'ImageSearchImage',
-    ImageSearchAlbumCache: 'ImageSearchAlbumCache',
+    GalleryFavorite: 'GalleryFavorite',
+    DownloadEvent: 'DownloadEvent',
     DriveImportJob: 'DriveImportJob',
     DriveImportItem: 'DriveImportItem'
   };
@@ -1026,7 +1030,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "imageSearchImage" | "imageSearchAlbumCache" | "driveImportJob" | "driveImportItem"
+      modelProps: "user" | "session" | "account" | "verification" | "payment" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "downloadEvent" | "driveImportJob" | "driveImportItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2140,151 +2144,151 @@ export namespace Prisma {
           }
         }
       }
-      ImageSearchImage: {
-        payload: Prisma.$ImageSearchImagePayload<ExtArgs>
-        fields: Prisma.ImageSearchImageFieldRefs
+      GalleryFavorite: {
+        payload: Prisma.$GalleryFavoritePayload<ExtArgs>
+        fields: Prisma.GalleryFavoriteFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ImageSearchImageFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload> | null
+            args: Prisma.GalleryFavoriteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ImageSearchImageFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           findFirst: {
-            args: Prisma.ImageSearchImageFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload> | null
+            args: Prisma.GalleryFavoriteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ImageSearchImageFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           findMany: {
-            args: Prisma.ImageSearchImageFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+            args: Prisma.GalleryFavoriteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>[]
           }
           create: {
-            args: Prisma.ImageSearchImageCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           createMany: {
-            args: Prisma.ImageSearchImageCreateManyArgs<ExtArgs>
+            args: Prisma.GalleryFavoriteCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.ImageSearchImageCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+            args: Prisma.GalleryFavoriteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>[]
           }
           delete: {
-            args: Prisma.ImageSearchImageDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           update: {
-            args: Prisma.ImageSearchImageUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           deleteMany: {
-            args: Prisma.ImageSearchImageDeleteManyArgs<ExtArgs>
+            args: Prisma.GalleryFavoriteDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ImageSearchImageUpdateManyArgs<ExtArgs>
+            args: Prisma.GalleryFavoriteUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.ImageSearchImageUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>[]
+            args: Prisma.GalleryFavoriteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>[]
           }
           upsert: {
-            args: Prisma.ImageSearchImageUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchImagePayload>
+            args: Prisma.GalleryFavoriteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GalleryFavoritePayload>
           }
           aggregate: {
-            args: Prisma.ImageSearchImageAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateImageSearchImage>
+            args: Prisma.GalleryFavoriteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGalleryFavorite>
           }
           groupBy: {
-            args: Prisma.ImageSearchImageGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ImageSearchImageGroupByOutputType>[]
+            args: Prisma.GalleryFavoriteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GalleryFavoriteGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ImageSearchImageCountArgs<ExtArgs>
-            result: $Utils.Optional<ImageSearchImageCountAggregateOutputType> | number
+            args: Prisma.GalleryFavoriteCountArgs<ExtArgs>
+            result: $Utils.Optional<GalleryFavoriteCountAggregateOutputType> | number
           }
         }
       }
-      ImageSearchAlbumCache: {
-        payload: Prisma.$ImageSearchAlbumCachePayload<ExtArgs>
-        fields: Prisma.ImageSearchAlbumCacheFieldRefs
+      DownloadEvent: {
+        payload: Prisma.$DownloadEventPayload<ExtArgs>
+        fields: Prisma.DownloadEventFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ImageSearchAlbumCacheFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload> | null
+            args: Prisma.DownloadEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           findFirst: {
-            args: Prisma.ImageSearchAlbumCacheFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload> | null
+            args: Prisma.DownloadEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           findMany: {
-            args: Prisma.ImageSearchAlbumCacheFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+            args: Prisma.DownloadEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>[]
           }
           create: {
-            args: Prisma.ImageSearchAlbumCacheCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           createMany: {
-            args: Prisma.ImageSearchAlbumCacheCreateManyArgs<ExtArgs>
+            args: Prisma.DownloadEventCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+            args: Prisma.DownloadEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>[]
           }
           delete: {
-            args: Prisma.ImageSearchAlbumCacheDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           update: {
-            args: Prisma.ImageSearchAlbumCacheUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           deleteMany: {
-            args: Prisma.ImageSearchAlbumCacheDeleteManyArgs<ExtArgs>
+            args: Prisma.DownloadEventDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ImageSearchAlbumCacheUpdateManyArgs<ExtArgs>
+            args: Prisma.DownloadEventUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>[]
+            args: Prisma.DownloadEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>[]
           }
           upsert: {
-            args: Prisma.ImageSearchAlbumCacheUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImageSearchAlbumCachePayload>
+            args: Prisma.DownloadEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DownloadEventPayload>
           }
           aggregate: {
-            args: Prisma.ImageSearchAlbumCacheAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateImageSearchAlbumCache>
+            args: Prisma.DownloadEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDownloadEvent>
           }
           groupBy: {
-            args: Prisma.ImageSearchAlbumCacheGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ImageSearchAlbumCacheGroupByOutputType>[]
+            args: Prisma.DownloadEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DownloadEventGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ImageSearchAlbumCacheCountArgs<ExtArgs>
-            result: $Utils.Optional<ImageSearchAlbumCacheCountAggregateOutputType> | number
+            args: Prisma.DownloadEventCountArgs<ExtArgs>
+            result: $Utils.Optional<DownloadEventCountAggregateOutputType> | number
           }
         }
       }
@@ -2559,8 +2563,8 @@ export namespace Prisma {
     album?: AlbumOmit
     albumPhoto?: AlbumPhotoOmit
     galleryComment?: GalleryCommentOmit
-    imageSearchImage?: ImageSearchImageOmit
-    imageSearchAlbumCache?: ImageSearchAlbumCacheOmit
+    galleryFavorite?: GalleryFavoriteOmit
+    downloadEvent?: DownloadEventOmit
     driveImportJob?: DriveImportJobOmit
     driveImportItem?: DriveImportItemOmit
   }
@@ -2733,6 +2737,8 @@ export namespace Prisma {
     clients: number
     comments: number
     driveImportItems: number
+    favorites: number
+    downloadEvents: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2741,6 +2747,8 @@ export namespace Prisma {
     clients?: boolean | GalleryCountOutputTypeCountClientsArgs
     comments?: boolean | GalleryCountOutputTypeCountCommentsArgs
     driveImportItems?: boolean | GalleryCountOutputTypeCountDriveImportItemsArgs
+    favorites?: boolean | GalleryCountOutputTypeCountFavoritesArgs
+    downloadEvents?: boolean | GalleryCountOutputTypeCountDownloadEventsArgs
   }
 
   // Custom InputTypes
@@ -2789,6 +2797,20 @@ export namespace Prisma {
     where?: DriveImportItemWhereInput
   }
 
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountFavoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryFavoriteWhereInput
+  }
+
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountDownloadEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DownloadEventWhereInput
+  }
+
 
   /**
    * Count Type PhotoCountOutputType
@@ -2798,12 +2820,14 @@ export namespace Prisma {
     usedAsCoverIn: number
     albumPhotos: number
     comments: number
+    favorites: number
   }
 
   export type PhotoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     usedAsCoverIn?: boolean | PhotoCountOutputTypeCountUsedAsCoverInArgs
     albumPhotos?: boolean | PhotoCountOutputTypeCountAlbumPhotosArgs
     comments?: boolean | PhotoCountOutputTypeCountCommentsArgs
+    favorites?: boolean | PhotoCountOutputTypeCountFavoritesArgs
   }
 
   // Custom InputTypes
@@ -2836,6 +2860,13 @@ export namespace Prisma {
    */
   export type PhotoCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GalleryCommentWhereInput
+  }
+
+  /**
+   * PhotoCountOutputType without action
+   */
+  export type PhotoCountOutputTypeCountFavoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryFavoriteWhereInput
   }
 
 
@@ -4111,6 +4142,11 @@ export namespace Prisma {
      * Skip the first `n` Users.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
@@ -5400,6 +5436,11 @@ export namespace Prisma {
      * Skip the first `n` Sessions.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
@@ -6562,6 +6603,11 @@ export namespace Prisma {
      * Skip the first `n` Accounts.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
 
@@ -7598,6 +7644,11 @@ export namespace Prisma {
      * Skip the first `n` Verifications.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Verifications.
+     */
     distinct?: VerificationScalarFieldEnum | VerificationScalarFieldEnum[]
   }
 
@@ -8786,6 +8837,11 @@ export namespace Prisma {
      * Skip the first `n` Payments.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Payments.
+     */
     distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
   }
 
@@ -9939,6 +9995,11 @@ export namespace Prisma {
      * Skip the first `n` UserOnboardings.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserOnboardings.
+     */
     distinct?: UserOnboardingScalarFieldEnum | UserOnboardingScalarFieldEnum[]
   }
 
@@ -10163,8 +10224,22 @@ export namespace Prisma {
 
   export type AggregateGallery = {
     _count: GalleryCountAggregateOutputType | null
+    _avg: GalleryAvgAggregateOutputType | null
+    _sum: GallerySumAggregateOutputType | null
     _min: GalleryMinAggregateOutputType | null
     _max: GalleryMaxAggregateOutputType | null
+  }
+
+  export type GalleryAvgAggregateOutputType = {
+    downloadWebMaxPx: number | null
+    downloadHighResMaxPx: number | null
+    downloadLimit: number | null
+  }
+
+  export type GallerySumAggregateOutputType = {
+    downloadWebMaxPx: number | null
+    downloadHighResMaxPx: number | null
+    downloadLimit: number | null
   }
 
   export type GalleryMinAggregateOutputType = {
@@ -10179,6 +10254,22 @@ export namespace Prisma {
     shareToken: string | null
     aiContext: string | null
     isPublished: boolean | null
+    expiresAt: Date | null
+    slideshowEnabled: boolean | null
+    socialSharingEnabled: boolean | null
+    emailRegistration: boolean | null
+    language: string | null
+    downloadEnabled: boolean | null
+    downloadPin: string | null
+    downloadSizeOriginal: boolean | null
+    downloadSizeHighRes: boolean | null
+    downloadSizeWeb: boolean | null
+    downloadWebMaxPx: number | null
+    downloadHighResMaxPx: number | null
+    downloadLimit: number | null
+    downloadContactsOnly: boolean | null
+    favoritesEnabled: boolean | null
+    favoriteNotesEnabled: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10195,6 +10286,22 @@ export namespace Prisma {
     shareToken: string | null
     aiContext: string | null
     isPublished: boolean | null
+    expiresAt: Date | null
+    slideshowEnabled: boolean | null
+    socialSharingEnabled: boolean | null
+    emailRegistration: boolean | null
+    language: string | null
+    downloadEnabled: boolean | null
+    downloadPin: string | null
+    downloadSizeOriginal: boolean | null
+    downloadSizeHighRes: boolean | null
+    downloadSizeWeb: boolean | null
+    downloadWebMaxPx: number | null
+    downloadHighResMaxPx: number | null
+    downloadLimit: number | null
+    downloadContactsOnly: boolean | null
+    favoritesEnabled: boolean | null
+    favoriteNotesEnabled: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10211,11 +10318,40 @@ export namespace Prisma {
     shareToken: number
     aiContext: number
     isPublished: number
+    categoryTags: number
+    expiresAt: number
+    slideshowEnabled: number
+    socialSharingEnabled: number
+    emailRegistration: number
+    language: number
+    downloadEnabled: number
+    downloadPin: number
+    downloadSizeOriginal: number
+    downloadSizeHighRes: number
+    downloadSizeWeb: number
+    downloadWebMaxPx: number
+    downloadHighResMaxPx: number
+    downloadLimit: number
+    downloadContactsOnly: number
+    favoritesEnabled: number
+    favoriteNotesEnabled: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type GalleryAvgAggregateInputType = {
+    downloadWebMaxPx?: true
+    downloadHighResMaxPx?: true
+    downloadLimit?: true
+  }
+
+  export type GallerySumAggregateInputType = {
+    downloadWebMaxPx?: true
+    downloadHighResMaxPx?: true
+    downloadLimit?: true
+  }
 
   export type GalleryMinAggregateInputType = {
     id?: true
@@ -10229,6 +10365,22 @@ export namespace Prisma {
     shareToken?: true
     aiContext?: true
     isPublished?: true
+    expiresAt?: true
+    slideshowEnabled?: true
+    socialSharingEnabled?: true
+    emailRegistration?: true
+    language?: true
+    downloadEnabled?: true
+    downloadPin?: true
+    downloadSizeOriginal?: true
+    downloadSizeHighRes?: true
+    downloadSizeWeb?: true
+    downloadWebMaxPx?: true
+    downloadHighResMaxPx?: true
+    downloadLimit?: true
+    downloadContactsOnly?: true
+    favoritesEnabled?: true
+    favoriteNotesEnabled?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10245,6 +10397,22 @@ export namespace Prisma {
     shareToken?: true
     aiContext?: true
     isPublished?: true
+    expiresAt?: true
+    slideshowEnabled?: true
+    socialSharingEnabled?: true
+    emailRegistration?: true
+    language?: true
+    downloadEnabled?: true
+    downloadPin?: true
+    downloadSizeOriginal?: true
+    downloadSizeHighRes?: true
+    downloadSizeWeb?: true
+    downloadWebMaxPx?: true
+    downloadHighResMaxPx?: true
+    downloadLimit?: true
+    downloadContactsOnly?: true
+    favoritesEnabled?: true
+    favoriteNotesEnabled?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10261,6 +10429,23 @@ export namespace Prisma {
     shareToken?: true
     aiContext?: true
     isPublished?: true
+    categoryTags?: true
+    expiresAt?: true
+    slideshowEnabled?: true
+    socialSharingEnabled?: true
+    emailRegistration?: true
+    language?: true
+    downloadEnabled?: true
+    downloadPin?: true
+    downloadSizeOriginal?: true
+    downloadSizeHighRes?: true
+    downloadSizeWeb?: true
+    downloadWebMaxPx?: true
+    downloadHighResMaxPx?: true
+    downloadLimit?: true
+    downloadContactsOnly?: true
+    favoritesEnabled?: true
+    favoriteNotesEnabled?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10304,6 +10489,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: GalleryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GallerySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: GalleryMinAggregateInputType
@@ -10334,6 +10531,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: GalleryCountAggregateInputType | true
+    _avg?: GalleryAvgAggregateInputType
+    _sum?: GallerySumAggregateInputType
     _min?: GalleryMinAggregateInputType
     _max?: GalleryMaxAggregateInputType
   }
@@ -10350,9 +10549,28 @@ export namespace Prisma {
     shareToken: string
     aiContext: string | null
     isPublished: boolean
+    categoryTags: string[]
+    expiresAt: Date | null
+    slideshowEnabled: boolean
+    socialSharingEnabled: boolean
+    emailRegistration: boolean
+    language: string
+    downloadEnabled: boolean
+    downloadPin: string | null
+    downloadSizeOriginal: boolean
+    downloadSizeHighRes: boolean
+    downloadSizeWeb: boolean
+    downloadWebMaxPx: number
+    downloadHighResMaxPx: number
+    downloadLimit: number | null
+    downloadContactsOnly: boolean
+    favoritesEnabled: boolean
+    favoriteNotesEnabled: boolean
     createdAt: Date
     updatedAt: Date
     _count: GalleryCountAggregateOutputType | null
+    _avg: GalleryAvgAggregateOutputType | null
+    _sum: GallerySumAggregateOutputType | null
     _min: GalleryMinAggregateOutputType | null
     _max: GalleryMaxAggregateOutputType | null
   }
@@ -10383,6 +10601,23 @@ export namespace Prisma {
     shareToken?: boolean
     aiContext?: boolean
     isPublished?: boolean
+    categoryTags?: boolean
+    expiresAt?: boolean
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: boolean
+    downloadEnabled?: boolean
+    downloadPin?: boolean
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: boolean
+    downloadHighResMaxPx?: boolean
+    downloadLimit?: boolean
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10392,6 +10627,8 @@ export namespace Prisma {
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
+    favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
+    downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -10407,6 +10644,23 @@ export namespace Prisma {
     shareToken?: boolean
     aiContext?: boolean
     isPublished?: boolean
+    categoryTags?: boolean
+    expiresAt?: boolean
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: boolean
+    downloadEnabled?: boolean
+    downloadPin?: boolean
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: boolean
+    downloadHighResMaxPx?: boolean
+    downloadLimit?: boolean
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10425,6 +10679,23 @@ export namespace Prisma {
     shareToken?: boolean
     aiContext?: boolean
     isPublished?: boolean
+    categoryTags?: boolean
+    expiresAt?: boolean
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: boolean
+    downloadEnabled?: boolean
+    downloadPin?: boolean
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: boolean
+    downloadHighResMaxPx?: boolean
+    downloadLimit?: boolean
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10443,11 +10714,28 @@ export namespace Prisma {
     shareToken?: boolean
     aiContext?: boolean
     isPublished?: boolean
+    categoryTags?: boolean
+    expiresAt?: boolean
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: boolean
+    downloadEnabled?: boolean
+    downloadPin?: boolean
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: boolean
+    downloadHighResMaxPx?: boolean
+    downloadLimit?: boolean
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "aiContext" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "aiContext" | "isPublished" | "categoryTags" | "expiresAt" | "slideshowEnabled" | "socialSharingEnabled" | "emailRegistration" | "language" | "downloadEnabled" | "downloadPin" | "downloadSizeOriginal" | "downloadSizeHighRes" | "downloadSizeWeb" | "downloadWebMaxPx" | "downloadHighResMaxPx" | "downloadLimit" | "downloadContactsOnly" | "favoritesEnabled" | "favoriteNotesEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
@@ -10456,6 +10744,8 @@ export namespace Prisma {
     clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
+    favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
+    downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10477,6 +10767,8 @@ export namespace Prisma {
       clients: Prisma.$GalleryClientPayload<ExtArgs>[]
       comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
       driveImportItems: Prisma.$DriveImportItemPayload<ExtArgs>[]
+      favorites: Prisma.$GalleryFavoritePayload<ExtArgs>[]
+      downloadEvents: Prisma.$DownloadEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10490,6 +10782,23 @@ export namespace Prisma {
       shareToken: string
       aiContext: string | null
       isPublished: boolean
+      categoryTags: string[]
+      expiresAt: Date | null
+      slideshowEnabled: boolean
+      socialSharingEnabled: boolean
+      emailRegistration: boolean
+      language: string
+      downloadEnabled: boolean
+      downloadPin: string | null
+      downloadSizeOriginal: boolean
+      downloadSizeHighRes: boolean
+      downloadSizeWeb: boolean
+      downloadWebMaxPx: number
+      downloadHighResMaxPx: number
+      downloadLimit: number | null
+      downloadContactsOnly: boolean
+      favoritesEnabled: boolean
+      favoriteNotesEnabled: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["gallery"]>
@@ -10893,6 +11202,8 @@ export namespace Prisma {
     clients<T extends Gallery$clientsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Gallery$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     driveImportItems<T extends Gallery$driveImportItemsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$driveImportItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favorites<T extends Gallery$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    downloadEvents<T extends Gallery$downloadEventsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$downloadEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10933,6 +11244,23 @@ export namespace Prisma {
     readonly shareToken: FieldRef<"Gallery", 'String'>
     readonly aiContext: FieldRef<"Gallery", 'String'>
     readonly isPublished: FieldRef<"Gallery", 'Boolean'>
+    readonly categoryTags: FieldRef<"Gallery", 'String[]'>
+    readonly expiresAt: FieldRef<"Gallery", 'DateTime'>
+    readonly slideshowEnabled: FieldRef<"Gallery", 'Boolean'>
+    readonly socialSharingEnabled: FieldRef<"Gallery", 'Boolean'>
+    readonly emailRegistration: FieldRef<"Gallery", 'Boolean'>
+    readonly language: FieldRef<"Gallery", 'String'>
+    readonly downloadEnabled: FieldRef<"Gallery", 'Boolean'>
+    readonly downloadPin: FieldRef<"Gallery", 'String'>
+    readonly downloadSizeOriginal: FieldRef<"Gallery", 'Boolean'>
+    readonly downloadSizeHighRes: FieldRef<"Gallery", 'Boolean'>
+    readonly downloadSizeWeb: FieldRef<"Gallery", 'Boolean'>
+    readonly downloadWebMaxPx: FieldRef<"Gallery", 'Int'>
+    readonly downloadHighResMaxPx: FieldRef<"Gallery", 'Int'>
+    readonly downloadLimit: FieldRef<"Gallery", 'Int'>
+    readonly downloadContactsOnly: FieldRef<"Gallery", 'Boolean'>
+    readonly favoritesEnabled: FieldRef<"Gallery", 'Boolean'>
+    readonly favoriteNotesEnabled: FieldRef<"Gallery", 'Boolean'>
     readonly createdAt: FieldRef<"Gallery", 'DateTime'>
     readonly updatedAt: FieldRef<"Gallery", 'DateTime'>
   }
@@ -11131,6 +11459,11 @@ export namespace Prisma {
      * Skip the first `n` Galleries.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Galleries.
+     */
     distinct?: GalleryScalarFieldEnum | GalleryScalarFieldEnum[]
   }
 
@@ -11467,6 +11800,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.favorites
+   */
+  export type Gallery$favoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryFavorite
+     */
+    select?: GalleryFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryFavorite
+     */
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    where?: GalleryFavoriteWhereInput
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
+    cursor?: GalleryFavoriteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryFavoriteScalarFieldEnum | GalleryFavoriteScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.downloadEvents
+   */
+  export type Gallery$downloadEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DownloadEvent
+     */
+    select?: DownloadEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DownloadEvent
+     */
+    omit?: DownloadEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DownloadEventInclude<ExtArgs> | null
+    where?: DownloadEventWhereInput
+    orderBy?: DownloadEventOrderByWithRelationInput | DownloadEventOrderByWithRelationInput[]
+    cursor?: DownloadEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DownloadEventScalarFieldEnum | DownloadEventScalarFieldEnum[]
   }
 
   /**
@@ -11867,6 +12248,7 @@ export namespace Prisma {
     uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     comments?: boolean | Photo$commentsArgs<ExtArgs>
+    favorites?: boolean | Photo$favoritesArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["photo"]>
 
@@ -11960,6 +12342,7 @@ export namespace Prisma {
     uploadSession?: boolean | Photo$uploadSessionArgs<ExtArgs>
     albumPhotos?: boolean | Photo$albumPhotosArgs<ExtArgs>
     comments?: boolean | Photo$commentsArgs<ExtArgs>
+    favorites?: boolean | Photo$favoritesArgs<ExtArgs>
     _count?: boolean | PhotoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PhotoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11977,6 +12360,7 @@ export namespace Prisma {
       uploadSession: Prisma.$UploadSessionPayload<ExtArgs> | null
       albumPhotos: Prisma.$AlbumPhotoPayload<ExtArgs>[]
       comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
+      favorites: Prisma.$GalleryFavoritePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12402,6 +12786,7 @@ export namespace Prisma {
     uploadSession<T extends Photo$uploadSessionArgs<ExtArgs> = {}>(args?: Subset<T, Photo$uploadSessionArgs<ExtArgs>>): Prisma__UploadSessionClient<$Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     albumPhotos<T extends Photo$albumPhotosArgs<ExtArgs> = {}>(args?: Subset<T, Photo$albumPhotosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Photo$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Photo$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favorites<T extends Photo$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Photo$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12651,6 +13036,11 @@ export namespace Prisma {
      * Skip the first `n` Photos.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Photos.
+     */
     distinct?: PhotoScalarFieldEnum | PhotoScalarFieldEnum[]
   }
 
@@ -12939,6 +13329,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
+  }
+
+  /**
+   * Photo.favorites
+   */
+  export type Photo$favoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryFavorite
+     */
+    select?: GalleryFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryFavorite
+     */
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    where?: GalleryFavoriteWhereInput
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
+    cursor?: GalleryFavoriteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GalleryFavoriteScalarFieldEnum | GalleryFavoriteScalarFieldEnum[]
   }
 
   /**
@@ -13912,6 +14326,11 @@ export namespace Prisma {
      * Skip the first `n` UploadSessions.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadSessions.
+     */
     distinct?: UploadSessionScalarFieldEnum | UploadSessionScalarFieldEnum[]
   }
 
@@ -15017,6 +15436,11 @@ export namespace Prisma {
      * Skip the first `n` StorageEvents.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StorageEvents.
+     */
     distinct?: StorageEventScalarFieldEnum | StorageEventScalarFieldEnum[]
   }
 
@@ -16107,6 +16531,11 @@ export namespace Prisma {
      * Skip the first `n` Clients.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     */
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
   }
 
@@ -17171,6 +17600,11 @@ export namespace Prisma {
      * Skip the first `n` GalleryClients.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryClients.
+     */
     distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
   }
 
@@ -17403,6 +17837,7 @@ export namespace Prisma {
     id: string | null
     galleryId: string | null
     title: string | null
+    downloadEnabled: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17411,6 +17846,7 @@ export namespace Prisma {
     id: string | null
     galleryId: string | null
     title: string | null
+    downloadEnabled: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17419,6 +17855,7 @@ export namespace Prisma {
     id: number
     galleryId: number
     title: number
+    downloadEnabled: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -17429,6 +17866,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     title?: true
+    downloadEnabled?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17437,6 +17875,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     title?: true
+    downloadEnabled?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17445,6 +17884,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     title?: true
+    downloadEnabled?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -17526,6 +17966,7 @@ export namespace Prisma {
     id: string
     galleryId: string
     title: string
+    downloadEnabled: boolean
     createdAt: Date
     updatedAt: Date
     _count: AlbumCountAggregateOutputType | null
@@ -17551,6 +17992,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     title?: boolean
+    downloadEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
@@ -17562,6 +18004,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     title?: boolean
+    downloadEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
@@ -17571,6 +18014,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     title?: boolean
+    downloadEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
@@ -17580,11 +18024,12 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     title?: boolean
+    downloadEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AlbumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "title" | "createdAt" | "updatedAt", ExtArgs["result"]["album"]>
+  export type AlbumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "title" | "downloadEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["album"]>
   export type AlbumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     photos?: boolean | Album$photosArgs<ExtArgs>
@@ -17607,6 +18052,7 @@ export namespace Prisma {
       id: string
       galleryId: string
       title: string
+      downloadEnabled: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["album"]>
@@ -18037,6 +18483,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Album", 'String'>
     readonly galleryId: FieldRef<"Album", 'String'>
     readonly title: FieldRef<"Album", 'String'>
+    readonly downloadEnabled: FieldRef<"Album", 'Boolean'>
     readonly createdAt: FieldRef<"Album", 'DateTime'>
     readonly updatedAt: FieldRef<"Album", 'DateTime'>
   }
@@ -18235,6 +18682,11 @@ export namespace Prisma {
      * Skip the first `n` Albums.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Albums.
+     */
     distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
   }
 
@@ -19299,6 +19751,11 @@ export namespace Prisma {
      * Skip the first `n` AlbumPhotos.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlbumPhotos.
+     */
     distinct?: AlbumPhotoScalarFieldEnum | AlbumPhotoScalarFieldEnum[]
   }
 
@@ -20453,6 +20910,11 @@ export namespace Prisma {
      * Skip the first `n` GalleryComments.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryComments.
+     */
     distinct?: GalleryCommentScalarFieldEnum | GalleryCommentScalarFieldEnum[]
   }
 
@@ -20734,458 +21196,393 @@ export namespace Prisma {
 
 
   /**
-   * Model ImageSearchImage
+   * Model GalleryFavorite
    */
 
-  export type AggregateImageSearchImage = {
-    _count: ImageSearchImageCountAggregateOutputType | null
-    _avg: ImageSearchImageAvgAggregateOutputType | null
-    _sum: ImageSearchImageSumAggregateOutputType | null
-    _min: ImageSearchImageMinAggregateOutputType | null
-    _max: ImageSearchImageMaxAggregateOutputType | null
+  export type AggregateGalleryFavorite = {
+    _count: GalleryFavoriteCountAggregateOutputType | null
+    _min: GalleryFavoriteMinAggregateOutputType | null
+    _max: GalleryFavoriteMaxAggregateOutputType | null
   }
 
-  export type ImageSearchImageAvgAggregateOutputType = {
-    version: number | null
-  }
-
-  export type ImageSearchImageSumAggregateOutputType = {
-    version: number | null
-  }
-
-  export type ImageSearchImageMinAggregateOutputType = {
+  export type GalleryFavoriteMinAggregateOutputType = {
     id: string | null
-    photoId: string | null
-    userId: string | null
     galleryId: string | null
-    storageUrl: string | null
-    thumbnailUrl: string | null
-    caption: string | null
-    indexedAt: Date | null
-    version: number | null
+    photoId: string | null
+    viewerId: string | null
+    viewerName: string | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ImageSearchImageMaxAggregateOutputType = {
+  export type GalleryFavoriteMaxAggregateOutputType = {
     id: string | null
-    photoId: string | null
-    userId: string | null
     galleryId: string | null
-    storageUrl: string | null
-    thumbnailUrl: string | null
-    caption: string | null
-    indexedAt: Date | null
-    version: number | null
+    photoId: string | null
+    viewerId: string | null
+    viewerName: string | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ImageSearchImageCountAggregateOutputType = {
+  export type GalleryFavoriteCountAggregateOutputType = {
     id: number
-    photoId: number
-    userId: number
     galleryId: number
-    storageUrl: number
-    thumbnailUrl: number
-    caption: number
-    tags: number
-    metadata: number
-    indexedAt: number
-    version: number
+    photoId: number
+    viewerId: number
+    viewerName: number
+    note: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type ImageSearchImageAvgAggregateInputType = {
-    version?: true
-  }
-
-  export type ImageSearchImageSumAggregateInputType = {
-    version?: true
-  }
-
-  export type ImageSearchImageMinAggregateInputType = {
+  export type GalleryFavoriteMinAggregateInputType = {
     id?: true
-    photoId?: true
-    userId?: true
     galleryId?: true
-    storageUrl?: true
-    thumbnailUrl?: true
-    caption?: true
-    indexedAt?: true
-    version?: true
+    photoId?: true
+    viewerId?: true
+    viewerName?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ImageSearchImageMaxAggregateInputType = {
+  export type GalleryFavoriteMaxAggregateInputType = {
     id?: true
-    photoId?: true
-    userId?: true
     galleryId?: true
-    storageUrl?: true
-    thumbnailUrl?: true
-    caption?: true
-    indexedAt?: true
-    version?: true
+    photoId?: true
+    viewerId?: true
+    viewerName?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ImageSearchImageCountAggregateInputType = {
+  export type GalleryFavoriteCountAggregateInputType = {
     id?: true
-    photoId?: true
-    userId?: true
     galleryId?: true
-    storageUrl?: true
-    thumbnailUrl?: true
-    caption?: true
-    tags?: true
-    metadata?: true
-    indexedAt?: true
-    version?: true
+    photoId?: true
+    viewerId?: true
+    viewerName?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type ImageSearchImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ImageSearchImage to aggregate.
+     * Filter which GalleryFavorite to aggregate.
      */
-    where?: ImageSearchImageWhereInput
+    where?: GalleryFavoriteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchImages to fetch.
+     * Determine the order of GalleryFavorites to fetch.
      */
-    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ImageSearchImageWhereUniqueInput
+    cursor?: GalleryFavoriteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchImages from the position of the cursor.
+     * Take `±n` GalleryFavorites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchImages.
+     * Skip the first `n` GalleryFavorites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ImageSearchImages
+     * Count returned GalleryFavorites
     **/
-    _count?: true | ImageSearchImageCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ImageSearchImageAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ImageSearchImageSumAggregateInputType
+    _count?: true | GalleryFavoriteCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ImageSearchImageMinAggregateInputType
+    _min?: GalleryFavoriteMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ImageSearchImageMaxAggregateInputType
+    _max?: GalleryFavoriteMaxAggregateInputType
   }
 
-  export type GetImageSearchImageAggregateType<T extends ImageSearchImageAggregateArgs> = {
-        [P in keyof T & keyof AggregateImageSearchImage]: P extends '_count' | 'count'
+  export type GetGalleryFavoriteAggregateType<T extends GalleryFavoriteAggregateArgs> = {
+        [P in keyof T & keyof AggregateGalleryFavorite]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateImageSearchImage[P]>
-      : GetScalarType<T[P], AggregateImageSearchImage[P]>
+        : GetScalarType<T[P], AggregateGalleryFavorite[P]>
+      : GetScalarType<T[P], AggregateGalleryFavorite[P]>
   }
 
 
 
 
-  export type ImageSearchImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImageSearchImageWhereInput
-    orderBy?: ImageSearchImageOrderByWithAggregationInput | ImageSearchImageOrderByWithAggregationInput[]
-    by: ImageSearchImageScalarFieldEnum[] | ImageSearchImageScalarFieldEnum
-    having?: ImageSearchImageScalarWhereWithAggregatesInput
+  export type GalleryFavoriteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GalleryFavoriteWhereInput
+    orderBy?: GalleryFavoriteOrderByWithAggregationInput | GalleryFavoriteOrderByWithAggregationInput[]
+    by: GalleryFavoriteScalarFieldEnum[] | GalleryFavoriteScalarFieldEnum
+    having?: GalleryFavoriteScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ImageSearchImageCountAggregateInputType | true
-    _avg?: ImageSearchImageAvgAggregateInputType
-    _sum?: ImageSearchImageSumAggregateInputType
-    _min?: ImageSearchImageMinAggregateInputType
-    _max?: ImageSearchImageMaxAggregateInputType
+    _count?: GalleryFavoriteCountAggregateInputType | true
+    _min?: GalleryFavoriteMinAggregateInputType
+    _max?: GalleryFavoriteMaxAggregateInputType
   }
 
-  export type ImageSearchImageGroupByOutputType = {
+  export type GalleryFavoriteGroupByOutputType = {
     id: string
-    photoId: string
-    userId: string
     galleryId: string
-    storageUrl: string
-    thumbnailUrl: string | null
-    caption: string | null
-    tags: string[]
-    metadata: JsonValue | null
-    indexedAt: Date | null
-    version: number
+    photoId: string
+    viewerId: string
+    viewerName: string
+    note: string | null
     createdAt: Date
     updatedAt: Date
-    _count: ImageSearchImageCountAggregateOutputType | null
-    _avg: ImageSearchImageAvgAggregateOutputType | null
-    _sum: ImageSearchImageSumAggregateOutputType | null
-    _min: ImageSearchImageMinAggregateOutputType | null
-    _max: ImageSearchImageMaxAggregateOutputType | null
+    _count: GalleryFavoriteCountAggregateOutputType | null
+    _min: GalleryFavoriteMinAggregateOutputType | null
+    _max: GalleryFavoriteMaxAggregateOutputType | null
   }
 
-  type GetImageSearchImageGroupByPayload<T extends ImageSearchImageGroupByArgs> = Prisma.PrismaPromise<
+  type GetGalleryFavoriteGroupByPayload<T extends GalleryFavoriteGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ImageSearchImageGroupByOutputType, T['by']> &
+      PickEnumerable<GalleryFavoriteGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ImageSearchImageGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof GalleryFavoriteGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ImageSearchImageGroupByOutputType[P]>
-            : GetScalarType<T[P], ImageSearchImageGroupByOutputType[P]>
+              : GetScalarType<T[P], GalleryFavoriteGroupByOutputType[P]>
+            : GetScalarType<T[P], GalleryFavoriteGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ImageSearchImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type GalleryFavoriteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    photoId?: boolean
-    userId?: boolean
     galleryId?: boolean
-    storageUrl?: boolean
-    thumbnailUrl?: boolean
-    caption?: boolean
-    tags?: boolean
-    metadata?: boolean
-    indexedAt?: boolean
-    version?: boolean
+    photoId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["imageSearchImage"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryFavorite"]>
 
-  export type ImageSearchImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type GalleryFavoriteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    photoId?: boolean
-    userId?: boolean
     galleryId?: boolean
-    storageUrl?: boolean
-    thumbnailUrl?: boolean
-    caption?: boolean
-    tags?: boolean
-    metadata?: boolean
-    indexedAt?: boolean
-    version?: boolean
+    photoId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["imageSearchImage"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryFavorite"]>
 
-  export type ImageSearchImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type GalleryFavoriteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    photoId?: boolean
-    userId?: boolean
     galleryId?: boolean
-    storageUrl?: boolean
-    thumbnailUrl?: boolean
-    caption?: boolean
-    tags?: boolean
-    metadata?: boolean
-    indexedAt?: boolean
-    version?: boolean
+    photoId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-  }, ExtArgs["result"]["imageSearchImage"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["galleryFavorite"]>
 
-  export type ImageSearchImageSelectScalar = {
+  export type GalleryFavoriteSelectScalar = {
     id?: boolean
-    photoId?: boolean
-    userId?: boolean
     galleryId?: boolean
-    storageUrl?: boolean
-    thumbnailUrl?: boolean
-    caption?: boolean
-    tags?: boolean
-    metadata?: boolean
-    indexedAt?: boolean
-    version?: boolean
+    photoId?: boolean
+    viewerId?: boolean
+    viewerName?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ImageSearchImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "photoId" | "userId" | "galleryId" | "storageUrl" | "thumbnailUrl" | "caption" | "tags" | "metadata" | "indexedAt" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["imageSearchImage"]>
+  export type GalleryFavoriteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "photoId" | "viewerId" | "viewerName" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["galleryFavorite"]>
+  export type GalleryFavoriteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type GalleryFavoriteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
+  export type GalleryFavoriteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    photo?: boolean | PhotoDefaultArgs<ExtArgs>
+  }
 
-  export type $ImageSearchImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ImageSearchImage"
-    objects: {}
+  export type $GalleryFavoritePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GalleryFavorite"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+      photo: Prisma.$PhotoPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      photoId: string
-      userId: string
       galleryId: string
-      storageUrl: string
-      thumbnailUrl: string | null
-      caption: string | null
-      tags: string[]
-      metadata: Prisma.JsonValue | null
-      indexedAt: Date | null
-      version: number
+      photoId: string
+      viewerId: string
+      viewerName: string
+      note: string | null
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["imageSearchImage"]>
+    }, ExtArgs["result"]["galleryFavorite"]>
     composites: {}
   }
 
-  type ImageSearchImageGetPayload<S extends boolean | null | undefined | ImageSearchImageDefaultArgs> = $Result.GetResult<Prisma.$ImageSearchImagePayload, S>
+  type GalleryFavoriteGetPayload<S extends boolean | null | undefined | GalleryFavoriteDefaultArgs> = $Result.GetResult<Prisma.$GalleryFavoritePayload, S>
 
-  type ImageSearchImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ImageSearchImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ImageSearchImageCountAggregateInputType | true
+  type GalleryFavoriteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GalleryFavoriteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GalleryFavoriteCountAggregateInputType | true
     }
 
-  export interface ImageSearchImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImageSearchImage'], meta: { name: 'ImageSearchImage' } }
+  export interface GalleryFavoriteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GalleryFavorite'], meta: { name: 'GalleryFavorite' } }
     /**
-     * Find zero or one ImageSearchImage that matches the filter.
-     * @param {ImageSearchImageFindUniqueArgs} args - Arguments to find a ImageSearchImage
+     * Find zero or one GalleryFavorite that matches the filter.
+     * @param {GalleryFavoriteFindUniqueArgs} args - Arguments to find a GalleryFavorite
      * @example
-     * // Get one ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.findUnique({
+     * // Get one GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ImageSearchImageFindUniqueArgs>(args: SelectSubset<T, ImageSearchImageFindUniqueArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends GalleryFavoriteFindUniqueArgs>(args: SelectSubset<T, GalleryFavoriteFindUniqueArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one ImageSearchImage that matches the filter or throw an error with `error.code='P2025'`
+     * Find one GalleryFavorite that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ImageSearchImageFindUniqueOrThrowArgs} args - Arguments to find a ImageSearchImage
+     * @param {GalleryFavoriteFindUniqueOrThrowArgs} args - Arguments to find a GalleryFavorite
      * @example
-     * // Get one ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.findUniqueOrThrow({
+     * // Get one GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ImageSearchImageFindUniqueOrThrowArgs>(args: SelectSubset<T, ImageSearchImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends GalleryFavoriteFindUniqueOrThrowArgs>(args: SelectSubset<T, GalleryFavoriteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ImageSearchImage that matches the filter.
+     * Find the first GalleryFavorite that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageFindFirstArgs} args - Arguments to find a ImageSearchImage
+     * @param {GalleryFavoriteFindFirstArgs} args - Arguments to find a GalleryFavorite
      * @example
-     * // Get one ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.findFirst({
+     * // Get one GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ImageSearchImageFindFirstArgs>(args?: SelectSubset<T, ImageSearchImageFindFirstArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends GalleryFavoriteFindFirstArgs>(args?: SelectSubset<T, GalleryFavoriteFindFirstArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ImageSearchImage that matches the filter or
+     * Find the first GalleryFavorite that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageFindFirstOrThrowArgs} args - Arguments to find a ImageSearchImage
+     * @param {GalleryFavoriteFindFirstOrThrowArgs} args - Arguments to find a GalleryFavorite
      * @example
-     * // Get one ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.findFirstOrThrow({
+     * // Get one GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ImageSearchImageFindFirstOrThrowArgs>(args?: SelectSubset<T, ImageSearchImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends GalleryFavoriteFindFirstOrThrowArgs>(args?: SelectSubset<T, GalleryFavoriteFindFirstOrThrowArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more ImageSearchImages that matches the filter.
+     * Find zero or more GalleryFavorites that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {GalleryFavoriteFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ImageSearchImages
-     * const imageSearchImages = await prisma.imageSearchImage.findMany()
+     * // Get all GalleryFavorites
+     * const galleryFavorites = await prisma.galleryFavorite.findMany()
      * 
-     * // Get first 10 ImageSearchImages
-     * const imageSearchImages = await prisma.imageSearchImage.findMany({ take: 10 })
+     * // Get first 10 GalleryFavorites
+     * const galleryFavorites = await prisma.galleryFavorite.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.findMany({ select: { id: true } })
+     * const galleryFavoriteWithIdOnly = await prisma.galleryFavorite.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ImageSearchImageFindManyArgs>(args?: SelectSubset<T, ImageSearchImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends GalleryFavoriteFindManyArgs>(args?: SelectSubset<T, GalleryFavoriteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a ImageSearchImage.
-     * @param {ImageSearchImageCreateArgs} args - Arguments to create a ImageSearchImage.
+     * Create a GalleryFavorite.
+     * @param {GalleryFavoriteCreateArgs} args - Arguments to create a GalleryFavorite.
      * @example
-     * // Create one ImageSearchImage
-     * const ImageSearchImage = await prisma.imageSearchImage.create({
+     * // Create one GalleryFavorite
+     * const GalleryFavorite = await prisma.galleryFavorite.create({
      *   data: {
-     *     // ... data to create a ImageSearchImage
+     *     // ... data to create a GalleryFavorite
      *   }
      * })
      * 
      */
-    create<T extends ImageSearchImageCreateArgs>(args: SelectSubset<T, ImageSearchImageCreateArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends GalleryFavoriteCreateArgs>(args: SelectSubset<T, GalleryFavoriteCreateArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many ImageSearchImages.
-     * @param {ImageSearchImageCreateManyArgs} args - Arguments to create many ImageSearchImages.
+     * Create many GalleryFavorites.
+     * @param {GalleryFavoriteCreateManyArgs} args - Arguments to create many GalleryFavorites.
      * @example
-     * // Create many ImageSearchImages
-     * const imageSearchImage = await prisma.imageSearchImage.createMany({
+     * // Create many GalleryFavorites
+     * const galleryFavorite = await prisma.galleryFavorite.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ImageSearchImageCreateManyArgs>(args?: SelectSubset<T, ImageSearchImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends GalleryFavoriteCreateManyArgs>(args?: SelectSubset<T, GalleryFavoriteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many ImageSearchImages and returns the data saved in the database.
-     * @param {ImageSearchImageCreateManyAndReturnArgs} args - Arguments to create many ImageSearchImages.
+     * Create many GalleryFavorites and returns the data saved in the database.
+     * @param {GalleryFavoriteCreateManyAndReturnArgs} args - Arguments to create many GalleryFavorites.
      * @example
-     * // Create many ImageSearchImages
-     * const imageSearchImage = await prisma.imageSearchImage.createManyAndReturn({
+     * // Create many GalleryFavorites
+     * const galleryFavorite = await prisma.galleryFavorite.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many ImageSearchImages and only return the `id`
-     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.createManyAndReturn({
+     * // Create many GalleryFavorites and only return the `id`
+     * const galleryFavoriteWithIdOnly = await prisma.galleryFavorite.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -21195,28 +21592,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends ImageSearchImageCreateManyAndReturnArgs>(args?: SelectSubset<T, ImageSearchImageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends GalleryFavoriteCreateManyAndReturnArgs>(args?: SelectSubset<T, GalleryFavoriteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a ImageSearchImage.
-     * @param {ImageSearchImageDeleteArgs} args - Arguments to delete one ImageSearchImage.
+     * Delete a GalleryFavorite.
+     * @param {GalleryFavoriteDeleteArgs} args - Arguments to delete one GalleryFavorite.
      * @example
-     * // Delete one ImageSearchImage
-     * const ImageSearchImage = await prisma.imageSearchImage.delete({
+     * // Delete one GalleryFavorite
+     * const GalleryFavorite = await prisma.galleryFavorite.delete({
      *   where: {
-     *     // ... filter to delete one ImageSearchImage
+     *     // ... filter to delete one GalleryFavorite
      *   }
      * })
      * 
      */
-    delete<T extends ImageSearchImageDeleteArgs>(args: SelectSubset<T, ImageSearchImageDeleteArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends GalleryFavoriteDeleteArgs>(args: SelectSubset<T, GalleryFavoriteDeleteArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one ImageSearchImage.
-     * @param {ImageSearchImageUpdateArgs} args - Arguments to update one ImageSearchImage.
+     * Update one GalleryFavorite.
+     * @param {GalleryFavoriteUpdateArgs} args - Arguments to update one GalleryFavorite.
      * @example
-     * // Update one ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.update({
+     * // Update one GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -21226,30 +21623,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ImageSearchImageUpdateArgs>(args: SelectSubset<T, ImageSearchImageUpdateArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends GalleryFavoriteUpdateArgs>(args: SelectSubset<T, GalleryFavoriteUpdateArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more ImageSearchImages.
-     * @param {ImageSearchImageDeleteManyArgs} args - Arguments to filter ImageSearchImages to delete.
+     * Delete zero or more GalleryFavorites.
+     * @param {GalleryFavoriteDeleteManyArgs} args - Arguments to filter GalleryFavorites to delete.
      * @example
-     * // Delete a few ImageSearchImages
-     * const { count } = await prisma.imageSearchImage.deleteMany({
+     * // Delete a few GalleryFavorites
+     * const { count } = await prisma.galleryFavorite.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ImageSearchImageDeleteManyArgs>(args?: SelectSubset<T, ImageSearchImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends GalleryFavoriteDeleteManyArgs>(args?: SelectSubset<T, GalleryFavoriteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ImageSearchImages.
+     * Update zero or more GalleryFavorites.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {GalleryFavoriteUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ImageSearchImages
-     * const imageSearchImage = await prisma.imageSearchImage.updateMany({
+     * // Update many GalleryFavorites
+     * const galleryFavorite = await prisma.galleryFavorite.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -21259,14 +21656,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ImageSearchImageUpdateManyArgs>(args: SelectSubset<T, ImageSearchImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends GalleryFavoriteUpdateManyArgs>(args: SelectSubset<T, GalleryFavoriteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ImageSearchImages and returns the data updated in the database.
-     * @param {ImageSearchImageUpdateManyAndReturnArgs} args - Arguments to update many ImageSearchImages.
+     * Update zero or more GalleryFavorites and returns the data updated in the database.
+     * @param {GalleryFavoriteUpdateManyAndReturnArgs} args - Arguments to update many GalleryFavorites.
      * @example
-     * // Update many ImageSearchImages
-     * const imageSearchImage = await prisma.imageSearchImage.updateManyAndReturn({
+     * // Update many GalleryFavorites
+     * const galleryFavorite = await prisma.galleryFavorite.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -21275,8 +21672,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more ImageSearchImages and only return the `id`
-     * const imageSearchImageWithIdOnly = await prisma.imageSearchImage.updateManyAndReturn({
+     * // Update zero or more GalleryFavorites and only return the `id`
+     * const galleryFavoriteWithIdOnly = await prisma.galleryFavorite.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -21289,56 +21686,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends ImageSearchImageUpdateManyAndReturnArgs>(args: SelectSubset<T, ImageSearchImageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends GalleryFavoriteUpdateManyAndReturnArgs>(args: SelectSubset<T, GalleryFavoriteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one ImageSearchImage.
-     * @param {ImageSearchImageUpsertArgs} args - Arguments to update or create a ImageSearchImage.
+     * Create or update one GalleryFavorite.
+     * @param {GalleryFavoriteUpsertArgs} args - Arguments to update or create a GalleryFavorite.
      * @example
-     * // Update or create a ImageSearchImage
-     * const imageSearchImage = await prisma.imageSearchImage.upsert({
+     * // Update or create a GalleryFavorite
+     * const galleryFavorite = await prisma.galleryFavorite.upsert({
      *   create: {
-     *     // ... data to create a ImageSearchImage
+     *     // ... data to create a GalleryFavorite
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ImageSearchImage we want to update
+     *     // ... the filter for the GalleryFavorite we want to update
      *   }
      * })
      */
-    upsert<T extends ImageSearchImageUpsertArgs>(args: SelectSubset<T, ImageSearchImageUpsertArgs<ExtArgs>>): Prisma__ImageSearchImageClient<$Result.GetResult<Prisma.$ImageSearchImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends GalleryFavoriteUpsertArgs>(args: SelectSubset<T, GalleryFavoriteUpsertArgs<ExtArgs>>): Prisma__GalleryFavoriteClient<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of ImageSearchImages.
+     * Count the number of GalleryFavorites.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageCountArgs} args - Arguments to filter ImageSearchImages to count.
+     * @param {GalleryFavoriteCountArgs} args - Arguments to filter GalleryFavorites to count.
      * @example
-     * // Count the number of ImageSearchImages
-     * const count = await prisma.imageSearchImage.count({
+     * // Count the number of GalleryFavorites
+     * const count = await prisma.galleryFavorite.count({
      *   where: {
-     *     // ... the filter for the ImageSearchImages we want to count
+     *     // ... the filter for the GalleryFavorites we want to count
      *   }
      * })
     **/
-    count<T extends ImageSearchImageCountArgs>(
-      args?: Subset<T, ImageSearchImageCountArgs>,
+    count<T extends GalleryFavoriteCountArgs>(
+      args?: Subset<T, GalleryFavoriteCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ImageSearchImageCountAggregateOutputType>
+          : GetScalarType<T['select'], GalleryFavoriteCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ImageSearchImage.
+     * Allows you to perform aggregations operations on a GalleryFavorite.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {GalleryFavoriteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -21358,13 +21755,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ImageSearchImageAggregateArgs>(args: Subset<T, ImageSearchImageAggregateArgs>): Prisma.PrismaPromise<GetImageSearchImageAggregateType<T>>
+    aggregate<T extends GalleryFavoriteAggregateArgs>(args: Subset<T, GalleryFavoriteAggregateArgs>): Prisma.PrismaPromise<GetGalleryFavoriteAggregateType<T>>
 
     /**
-     * Group by ImageSearchImage.
+     * Group by GalleryFavorite.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchImageGroupByArgs} args - Group by arguments.
+     * @param {GalleryFavoriteGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -21379,14 +21776,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ImageSearchImageGroupByArgs,
+      T extends GalleryFavoriteGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ImageSearchImageGroupByArgs['orderBy'] }
-        : { orderBy?: ImageSearchImageGroupByArgs['orderBy'] },
+        ? { orderBy: GalleryFavoriteGroupByArgs['orderBy'] }
+        : { orderBy?: GalleryFavoriteGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -21435,21 +21832,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ImageSearchImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImageSearchImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, GalleryFavoriteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGalleryFavoriteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the ImageSearchImage model
+   * Fields of the GalleryFavorite model
    */
-  readonly fields: ImageSearchImageFieldRefs;
+  readonly fields: GalleryFavoriteFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ImageSearchImage.
+   * The delegate class that acts as a "Promise-like" for GalleryFavorite.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ImageSearchImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__GalleryFavoriteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    photo<T extends PhotoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhotoDefaultArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21476,763 +21875,805 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the ImageSearchImage model
+   * Fields of the GalleryFavorite model
    */
-  interface ImageSearchImageFieldRefs {
-    readonly id: FieldRef<"ImageSearchImage", 'String'>
-    readonly photoId: FieldRef<"ImageSearchImage", 'String'>
-    readonly userId: FieldRef<"ImageSearchImage", 'String'>
-    readonly galleryId: FieldRef<"ImageSearchImage", 'String'>
-    readonly storageUrl: FieldRef<"ImageSearchImage", 'String'>
-    readonly thumbnailUrl: FieldRef<"ImageSearchImage", 'String'>
-    readonly caption: FieldRef<"ImageSearchImage", 'String'>
-    readonly tags: FieldRef<"ImageSearchImage", 'String[]'>
-    readonly metadata: FieldRef<"ImageSearchImage", 'Json'>
-    readonly indexedAt: FieldRef<"ImageSearchImage", 'DateTime'>
-    readonly version: FieldRef<"ImageSearchImage", 'Int'>
-    readonly createdAt: FieldRef<"ImageSearchImage", 'DateTime'>
-    readonly updatedAt: FieldRef<"ImageSearchImage", 'DateTime'>
+  interface GalleryFavoriteFieldRefs {
+    readonly id: FieldRef<"GalleryFavorite", 'String'>
+    readonly galleryId: FieldRef<"GalleryFavorite", 'String'>
+    readonly photoId: FieldRef<"GalleryFavorite", 'String'>
+    readonly viewerId: FieldRef<"GalleryFavorite", 'String'>
+    readonly viewerName: FieldRef<"GalleryFavorite", 'String'>
+    readonly note: FieldRef<"GalleryFavorite", 'String'>
+    readonly createdAt: FieldRef<"GalleryFavorite", 'DateTime'>
+    readonly updatedAt: FieldRef<"GalleryFavorite", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * ImageSearchImage findUnique
+   * GalleryFavorite findUnique
    */
-  export type ImageSearchImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchImage to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchImageWhereUniqueInput
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryFavorite to fetch.
+     */
+    where: GalleryFavoriteWhereUniqueInput
   }
 
   /**
-   * ImageSearchImage findUniqueOrThrow
+   * GalleryFavorite findUniqueOrThrow
    */
-  export type ImageSearchImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchImage to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchImageWhereUniqueInput
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryFavorite to fetch.
+     */
+    where: GalleryFavoriteWhereUniqueInput
   }
 
   /**
-   * ImageSearchImage findFirst
+   * GalleryFavorite findFirst
    */
-  export type ImageSearchImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchImage to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchImageWhereInput
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryFavorite to fetch.
+     */
+    where?: GalleryFavoriteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchImages to fetch.
+     * Determine the order of GalleryFavorites to fetch.
      */
-    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ImageSearchImages.
+     * Sets the position for searching for GalleryFavorites.
      */
-    cursor?: ImageSearchImageWhereUniqueInput
+    cursor?: GalleryFavoriteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchImages from the position of the cursor.
+     * Take `±n` GalleryFavorites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchImages.
+     * Skip the first `n` GalleryFavorites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ImageSearchImages.
+     * Filter by unique combinations of GalleryFavorites.
      */
-    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+    distinct?: GalleryFavoriteScalarFieldEnum | GalleryFavoriteScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchImage findFirstOrThrow
+   * GalleryFavorite findFirstOrThrow
    */
-  export type ImageSearchImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchImage to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchImageWhereInput
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryFavorite to fetch.
+     */
+    where?: GalleryFavoriteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchImages to fetch.
+     * Determine the order of GalleryFavorites to fetch.
      */
-    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ImageSearchImages.
+     * Sets the position for searching for GalleryFavorites.
      */
-    cursor?: ImageSearchImageWhereUniqueInput
+    cursor?: GalleryFavoriteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchImages from the position of the cursor.
+     * Take `±n` GalleryFavorites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchImages.
+     * Skip the first `n` GalleryFavorites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ImageSearchImages.
+     * Filter by unique combinations of GalleryFavorites.
      */
-    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+    distinct?: GalleryFavoriteScalarFieldEnum | GalleryFavoriteScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchImage findMany
+   * GalleryFavorite findMany
    */
-  export type ImageSearchImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchImages to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchImageWhereInput
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which GalleryFavorites to fetch.
+     */
+    where?: GalleryFavoriteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchImages to fetch.
+     * Determine the order of GalleryFavorites to fetch.
      */
-    orderBy?: ImageSearchImageOrderByWithRelationInput | ImageSearchImageOrderByWithRelationInput[]
+    orderBy?: GalleryFavoriteOrderByWithRelationInput | GalleryFavoriteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ImageSearchImages.
+     * Sets the position for listing GalleryFavorites.
      */
-    cursor?: ImageSearchImageWhereUniqueInput
+    cursor?: GalleryFavoriteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchImages from the position of the cursor.
+     * Take `±n` GalleryFavorites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchImages.
+     * Skip the first `n` GalleryFavorites.
      */
     skip?: number
-    distinct?: ImageSearchImageScalarFieldEnum | ImageSearchImageScalarFieldEnum[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GalleryFavorites.
+     */
+    distinct?: GalleryFavoriteScalarFieldEnum | GalleryFavoriteScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchImage create
+   * GalleryFavorite create
    */
-  export type ImageSearchImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * The data needed to create a ImageSearchImage.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ImageSearchImageCreateInput, ImageSearchImageUncheckedCreateInput>
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GalleryFavorite.
+     */
+    data: XOR<GalleryFavoriteCreateInput, GalleryFavoriteUncheckedCreateInput>
   }
 
   /**
-   * ImageSearchImage createMany
+   * GalleryFavorite createMany
    */
-  export type ImageSearchImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many ImageSearchImages.
+     * The data used to create many GalleryFavorites.
      */
-    data: ImageSearchImageCreateManyInput | ImageSearchImageCreateManyInput[]
+    data: GalleryFavoriteCreateManyInput | GalleryFavoriteCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * ImageSearchImage createManyAndReturn
+   * GalleryFavorite createManyAndReturn
    */
-  export type ImageSearchImageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelectCreateManyAndReturn<ExtArgs> | null
+    select?: GalleryFavoriteSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * The data used to create many ImageSearchImages.
+     * The data used to create many GalleryFavorites.
      */
-    data: ImageSearchImageCreateManyInput | ImageSearchImageCreateManyInput[]
+    data: GalleryFavoriteCreateManyInput | GalleryFavoriteCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * ImageSearchImage update
+   * GalleryFavorite update
    */
-  export type ImageSearchImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * The data needed to update a ImageSearchImage.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ImageSearchImageUpdateInput, ImageSearchImageUncheckedUpdateInput>
+    include?: GalleryFavoriteInclude<ExtArgs> | null
     /**
-     * Choose, which ImageSearchImage to update.
+     * The data needed to update a GalleryFavorite.
      */
-    where: ImageSearchImageWhereUniqueInput
+    data: XOR<GalleryFavoriteUpdateInput, GalleryFavoriteUncheckedUpdateInput>
+    /**
+     * Choose, which GalleryFavorite to update.
+     */
+    where: GalleryFavoriteWhereUniqueInput
   }
 
   /**
-   * ImageSearchImage updateMany
+   * GalleryFavorite updateMany
    */
-  export type ImageSearchImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update ImageSearchImages.
+     * The data used to update GalleryFavorites.
      */
-    data: XOR<ImageSearchImageUpdateManyMutationInput, ImageSearchImageUncheckedUpdateManyInput>
+    data: XOR<GalleryFavoriteUpdateManyMutationInput, GalleryFavoriteUncheckedUpdateManyInput>
     /**
-     * Filter which ImageSearchImages to update
+     * Filter which GalleryFavorites to update
      */
-    where?: ImageSearchImageWhereInput
+    where?: GalleryFavoriteWhereInput
     /**
-     * Limit how many ImageSearchImages to update.
+     * Limit how many GalleryFavorites to update.
      */
     limit?: number
   }
 
   /**
-   * ImageSearchImage updateManyAndReturn
+   * GalleryFavorite updateManyAndReturn
    */
-  export type ImageSearchImageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: GalleryFavoriteSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * The data used to update ImageSearchImages.
+     * The data used to update GalleryFavorites.
      */
-    data: XOR<ImageSearchImageUpdateManyMutationInput, ImageSearchImageUncheckedUpdateManyInput>
+    data: XOR<GalleryFavoriteUpdateManyMutationInput, GalleryFavoriteUncheckedUpdateManyInput>
     /**
-     * Filter which ImageSearchImages to update
+     * Filter which GalleryFavorites to update
      */
-    where?: ImageSearchImageWhereInput
+    where?: GalleryFavoriteWhereInput
     /**
-     * Limit how many ImageSearchImages to update.
+     * Limit how many GalleryFavorites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GalleryFavorite upsert
+   */
+  export type GalleryFavoriteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryFavorite
+     */
+    select?: GalleryFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryFavorite
+     */
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GalleryFavorite to update in case it exists.
+     */
+    where: GalleryFavoriteWhereUniqueInput
+    /**
+     * In case the GalleryFavorite found by the `where` argument doesn't exist, create a new GalleryFavorite with this data.
+     */
+    create: XOR<GalleryFavoriteCreateInput, GalleryFavoriteUncheckedCreateInput>
+    /**
+     * In case the GalleryFavorite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GalleryFavoriteUpdateInput, GalleryFavoriteUncheckedUpdateInput>
+  }
+
+  /**
+   * GalleryFavorite delete
+   */
+  export type GalleryFavoriteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GalleryFavorite
+     */
+    select?: GalleryFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GalleryFavorite
+     */
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GalleryFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter which GalleryFavorite to delete.
+     */
+    where: GalleryFavoriteWhereUniqueInput
+  }
+
+  /**
+   * GalleryFavorite deleteMany
+   */
+  export type GalleryFavoriteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GalleryFavorites to delete
+     */
+    where?: GalleryFavoriteWhereInput
+    /**
+     * Limit how many GalleryFavorites to delete.
      */
     limit?: number
   }
 
   /**
-   * ImageSearchImage upsert
+   * GalleryFavorite without action
    */
-  export type ImageSearchImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type GalleryFavoriteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchImage
+     * Select specific fields to fetch from the GalleryFavorite
      */
-    select?: ImageSearchImageSelect<ExtArgs> | null
+    select?: GalleryFavoriteSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchImage
+     * Omit specific fields from the GalleryFavorite
      */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    omit?: GalleryFavoriteOmit<ExtArgs> | null
     /**
-     * The filter to search for the ImageSearchImage to update in case it exists.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchImageWhereUniqueInput
-    /**
-     * In case the ImageSearchImage found by the `where` argument doesn't exist, create a new ImageSearchImage with this data.
-     */
-    create: XOR<ImageSearchImageCreateInput, ImageSearchImageUncheckedCreateInput>
-    /**
-     * In case the ImageSearchImage was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ImageSearchImageUpdateInput, ImageSearchImageUncheckedUpdateInput>
-  }
-
-  /**
-   * ImageSearchImage delete
-   */
-  export type ImageSearchImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImageSearchImage
-     */
-    select?: ImageSearchImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImageSearchImage
-     */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
-    /**
-     * Filter which ImageSearchImage to delete.
-     */
-    where: ImageSearchImageWhereUniqueInput
-  }
-
-  /**
-   * ImageSearchImage deleteMany
-   */
-  export type ImageSearchImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImageSearchImages to delete
-     */
-    where?: ImageSearchImageWhereInput
-    /**
-     * Limit how many ImageSearchImages to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImageSearchImage without action
-   */
-  export type ImageSearchImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImageSearchImage
-     */
-    select?: ImageSearchImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImageSearchImage
-     */
-    omit?: ImageSearchImageOmit<ExtArgs> | null
+    include?: GalleryFavoriteInclude<ExtArgs> | null
   }
 
 
   /**
-   * Model ImageSearchAlbumCache
+   * Model DownloadEvent
    */
 
-  export type AggregateImageSearchAlbumCache = {
-    _count: ImageSearchAlbumCacheCountAggregateOutputType | null
-    _min: ImageSearchAlbumCacheMinAggregateOutputType | null
-    _max: ImageSearchAlbumCacheMaxAggregateOutputType | null
+  export type AggregateDownloadEvent = {
+    _count: DownloadEventCountAggregateOutputType | null
+    _min: DownloadEventMinAggregateOutputType | null
+    _max: DownloadEventMaxAggregateOutputType | null
   }
 
-  export type ImageSearchAlbumCacheMinAggregateOutputType = {
+  export type DownloadEventMinAggregateOutputType = {
     id: string | null
     galleryId: string | null
-    userId: string | null
-    normalizedPrompt: string | null
-    albumTitle: string | null
-    albumDescription: string | null
-    expiresAt: Date | null
+    photoId: string | null
+    viewerName: string | null
+    viewerIp: string | null
+    type: string | null
     createdAt: Date | null
   }
 
-  export type ImageSearchAlbumCacheMaxAggregateOutputType = {
+  export type DownloadEventMaxAggregateOutputType = {
     id: string | null
     galleryId: string | null
-    userId: string | null
-    normalizedPrompt: string | null
-    albumTitle: string | null
-    albumDescription: string | null
-    expiresAt: Date | null
+    photoId: string | null
+    viewerName: string | null
+    viewerIp: string | null
+    type: string | null
     createdAt: Date | null
   }
 
-  export type ImageSearchAlbumCacheCountAggregateOutputType = {
+  export type DownloadEventCountAggregateOutputType = {
     id: number
     galleryId: number
-    userId: number
-    normalizedPrompt: number
-    photoIds: number
-    albumTitle: number
-    albumDescription: number
-    expiresAt: number
+    photoId: number
+    viewerName: number
+    viewerIp: number
+    type: number
     createdAt: number
     _all: number
   }
 
 
-  export type ImageSearchAlbumCacheMinAggregateInputType = {
+  export type DownloadEventMinAggregateInputType = {
     id?: true
     galleryId?: true
-    userId?: true
-    normalizedPrompt?: true
-    albumTitle?: true
-    albumDescription?: true
-    expiresAt?: true
+    photoId?: true
+    viewerName?: true
+    viewerIp?: true
+    type?: true
     createdAt?: true
   }
 
-  export type ImageSearchAlbumCacheMaxAggregateInputType = {
+  export type DownloadEventMaxAggregateInputType = {
     id?: true
     galleryId?: true
-    userId?: true
-    normalizedPrompt?: true
-    albumTitle?: true
-    albumDescription?: true
-    expiresAt?: true
+    photoId?: true
+    viewerName?: true
+    viewerIp?: true
+    type?: true
     createdAt?: true
   }
 
-  export type ImageSearchAlbumCacheCountAggregateInputType = {
+  export type DownloadEventCountAggregateInputType = {
     id?: true
     galleryId?: true
-    userId?: true
-    normalizedPrompt?: true
-    photoIds?: true
-    albumTitle?: true
-    albumDescription?: true
-    expiresAt?: true
+    photoId?: true
+    viewerName?: true
+    viewerIp?: true
+    type?: true
     createdAt?: true
     _all?: true
   }
 
-  export type ImageSearchAlbumCacheAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which ImageSearchAlbumCache to aggregate.
+     * Filter which DownloadEvent to aggregate.
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    where?: DownloadEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchAlbumCaches to fetch.
+     * Determine the order of DownloadEvents to fetch.
      */
-    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    orderBy?: DownloadEventOrderByWithRelationInput | DownloadEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    cursor?: DownloadEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     * Take `±n` DownloadEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchAlbumCaches.
+     * Skip the first `n` DownloadEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ImageSearchAlbumCaches
+     * Count returned DownloadEvents
     **/
-    _count?: true | ImageSearchAlbumCacheCountAggregateInputType
+    _count?: true | DownloadEventCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ImageSearchAlbumCacheMinAggregateInputType
+    _min?: DownloadEventMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ImageSearchAlbumCacheMaxAggregateInputType
+    _max?: DownloadEventMaxAggregateInputType
   }
 
-  export type GetImageSearchAlbumCacheAggregateType<T extends ImageSearchAlbumCacheAggregateArgs> = {
-        [P in keyof T & keyof AggregateImageSearchAlbumCache]: P extends '_count' | 'count'
+  export type GetDownloadEventAggregateType<T extends DownloadEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateDownloadEvent]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateImageSearchAlbumCache[P]>
-      : GetScalarType<T[P], AggregateImageSearchAlbumCache[P]>
+        : GetScalarType<T[P], AggregateDownloadEvent[P]>
+      : GetScalarType<T[P], AggregateDownloadEvent[P]>
   }
 
 
 
 
-  export type ImageSearchAlbumCacheGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImageSearchAlbumCacheWhereInput
-    orderBy?: ImageSearchAlbumCacheOrderByWithAggregationInput | ImageSearchAlbumCacheOrderByWithAggregationInput[]
-    by: ImageSearchAlbumCacheScalarFieldEnum[] | ImageSearchAlbumCacheScalarFieldEnum
-    having?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput
+  export type DownloadEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DownloadEventWhereInput
+    orderBy?: DownloadEventOrderByWithAggregationInput | DownloadEventOrderByWithAggregationInput[]
+    by: DownloadEventScalarFieldEnum[] | DownloadEventScalarFieldEnum
+    having?: DownloadEventScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ImageSearchAlbumCacheCountAggregateInputType | true
-    _min?: ImageSearchAlbumCacheMinAggregateInputType
-    _max?: ImageSearchAlbumCacheMaxAggregateInputType
+    _count?: DownloadEventCountAggregateInputType | true
+    _min?: DownloadEventMinAggregateInputType
+    _max?: DownloadEventMaxAggregateInputType
   }
 
-  export type ImageSearchAlbumCacheGroupByOutputType = {
+  export type DownloadEventGroupByOutputType = {
     id: string
     galleryId: string
-    userId: string
-    normalizedPrompt: string
-    photoIds: string[]
-    albumTitle: string | null
-    albumDescription: string | null
-    expiresAt: Date
+    photoId: string | null
+    viewerName: string | null
+    viewerIp: string | null
+    type: string
     createdAt: Date
-    _count: ImageSearchAlbumCacheCountAggregateOutputType | null
-    _min: ImageSearchAlbumCacheMinAggregateOutputType | null
-    _max: ImageSearchAlbumCacheMaxAggregateOutputType | null
+    _count: DownloadEventCountAggregateOutputType | null
+    _min: DownloadEventMinAggregateOutputType | null
+    _max: DownloadEventMaxAggregateOutputType | null
   }
 
-  type GetImageSearchAlbumCacheGroupByPayload<T extends ImageSearchAlbumCacheGroupByArgs> = Prisma.PrismaPromise<
+  type GetDownloadEventGroupByPayload<T extends DownloadEventGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ImageSearchAlbumCacheGroupByOutputType, T['by']> &
+      PickEnumerable<DownloadEventGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ImageSearchAlbumCacheGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof DownloadEventGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ImageSearchAlbumCacheGroupByOutputType[P]>
-            : GetScalarType<T[P], ImageSearchAlbumCacheGroupByOutputType[P]>
+              : GetScalarType<T[P], DownloadEventGroupByOutputType[P]>
+            : GetScalarType<T[P], DownloadEventGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ImageSearchAlbumCacheSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DownloadEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
-    userId?: boolean
-    normalizedPrompt?: boolean
-    photoIds?: boolean
-    albumTitle?: boolean
-    albumDescription?: boolean
-    expiresAt?: boolean
+    photoId?: boolean
+    viewerName?: boolean
+    viewerIp?: boolean
+    type?: boolean
     createdAt?: boolean
-  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["downloadEvent"]>
 
-  export type ImageSearchAlbumCacheSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DownloadEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
-    userId?: boolean
-    normalizedPrompt?: boolean
-    photoIds?: boolean
-    albumTitle?: boolean
-    albumDescription?: boolean
-    expiresAt?: boolean
+    photoId?: boolean
+    viewerName?: boolean
+    viewerIp?: boolean
+    type?: boolean
     createdAt?: boolean
-  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["downloadEvent"]>
 
-  export type ImageSearchAlbumCacheSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type DownloadEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     galleryId?: boolean
-    userId?: boolean
-    normalizedPrompt?: boolean
-    photoIds?: boolean
-    albumTitle?: boolean
-    albumDescription?: boolean
-    expiresAt?: boolean
+    photoId?: boolean
+    viewerName?: boolean
+    viewerIp?: boolean
+    type?: boolean
     createdAt?: boolean
-  }, ExtArgs["result"]["imageSearchAlbumCache"]>
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["downloadEvent"]>
 
-  export type ImageSearchAlbumCacheSelectScalar = {
+  export type DownloadEventSelectScalar = {
     id?: boolean
     galleryId?: boolean
-    userId?: boolean
-    normalizedPrompt?: boolean
-    photoIds?: boolean
-    albumTitle?: boolean
-    albumDescription?: boolean
-    expiresAt?: boolean
+    photoId?: boolean
+    viewerName?: boolean
+    viewerIp?: boolean
+    type?: boolean
     createdAt?: boolean
   }
 
-  export type ImageSearchAlbumCacheOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "userId" | "normalizedPrompt" | "photoIds" | "albumTitle" | "albumDescription" | "expiresAt" | "createdAt", ExtArgs["result"]["imageSearchAlbumCache"]>
+  export type DownloadEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "photoId" | "viewerName" | "viewerIp" | "type" | "createdAt", ExtArgs["result"]["downloadEvent"]>
+  export type DownloadEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type DownloadEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
+  export type DownloadEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+  }
 
-  export type $ImageSearchAlbumCachePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ImageSearchAlbumCache"
-    objects: {}
+  export type $DownloadEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DownloadEvent"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       galleryId: string
-      userId: string
-      normalizedPrompt: string
-      photoIds: string[]
-      albumTitle: string | null
-      albumDescription: string | null
-      expiresAt: Date
+      photoId: string | null
+      viewerName: string | null
+      viewerIp: string | null
+      type: string
       createdAt: Date
-    }, ExtArgs["result"]["imageSearchAlbumCache"]>
+    }, ExtArgs["result"]["downloadEvent"]>
     composites: {}
   }
 
-  type ImageSearchAlbumCacheGetPayload<S extends boolean | null | undefined | ImageSearchAlbumCacheDefaultArgs> = $Result.GetResult<Prisma.$ImageSearchAlbumCachePayload, S>
+  type DownloadEventGetPayload<S extends boolean | null | undefined | DownloadEventDefaultArgs> = $Result.GetResult<Prisma.$DownloadEventPayload, S>
 
-  type ImageSearchAlbumCacheCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ImageSearchAlbumCacheFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ImageSearchAlbumCacheCountAggregateInputType | true
+  type DownloadEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DownloadEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DownloadEventCountAggregateInputType | true
     }
 
-  export interface ImageSearchAlbumCacheDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImageSearchAlbumCache'], meta: { name: 'ImageSearchAlbumCache' } }
+  export interface DownloadEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DownloadEvent'], meta: { name: 'DownloadEvent' } }
     /**
-     * Find zero or one ImageSearchAlbumCache that matches the filter.
-     * @param {ImageSearchAlbumCacheFindUniqueArgs} args - Arguments to find a ImageSearchAlbumCache
+     * Find zero or one DownloadEvent that matches the filter.
+     * @param {DownloadEventFindUniqueArgs} args - Arguments to find a DownloadEvent
      * @example
-     * // Get one ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findUnique({
+     * // Get one DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ImageSearchAlbumCacheFindUniqueArgs>(args: SelectSubset<T, ImageSearchAlbumCacheFindUniqueArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends DownloadEventFindUniqueArgs>(args: SelectSubset<T, DownloadEventFindUniqueArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one ImageSearchAlbumCache that matches the filter or throw an error with `error.code='P2025'`
+     * Find one DownloadEvent that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ImageSearchAlbumCacheFindUniqueOrThrowArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @param {DownloadEventFindUniqueOrThrowArgs} args - Arguments to find a DownloadEvent
      * @example
-     * // Get one ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findUniqueOrThrow({
+     * // Get one DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ImageSearchAlbumCacheFindUniqueOrThrowArgs>(args: SelectSubset<T, ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends DownloadEventFindUniqueOrThrowArgs>(args: SelectSubset<T, DownloadEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ImageSearchAlbumCache that matches the filter.
+     * Find the first DownloadEvent that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheFindFirstArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @param {DownloadEventFindFirstArgs} args - Arguments to find a DownloadEvent
      * @example
-     * // Get one ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findFirst({
+     * // Get one DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ImageSearchAlbumCacheFindFirstArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindFirstArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends DownloadEventFindFirstArgs>(args?: SelectSubset<T, DownloadEventFindFirstArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first ImageSearchAlbumCache that matches the filter or
+     * Find the first DownloadEvent that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheFindFirstOrThrowArgs} args - Arguments to find a ImageSearchAlbumCache
+     * @param {DownloadEventFindFirstOrThrowArgs} args - Arguments to find a DownloadEvent
      * @example
-     * // Get one ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.findFirstOrThrow({
+     * // Get one DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ImageSearchAlbumCacheFindFirstOrThrowArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends DownloadEventFindFirstOrThrowArgs>(args?: SelectSubset<T, DownloadEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more ImageSearchAlbumCaches that matches the filter.
+     * Find zero or more DownloadEvents that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {DownloadEventFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ImageSearchAlbumCaches
-     * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany()
+     * // Get all DownloadEvents
+     * const downloadEvents = await prisma.downloadEvent.findMany()
      * 
-     * // Get first 10 ImageSearchAlbumCaches
-     * const imageSearchAlbumCaches = await prisma.imageSearchAlbumCache.findMany({ take: 10 })
+     * // Get first 10 DownloadEvents
+     * const downloadEvents = await prisma.downloadEvent.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.findMany({ select: { id: true } })
+     * const downloadEventWithIdOnly = await prisma.downloadEvent.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ImageSearchAlbumCacheFindManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends DownloadEventFindManyArgs>(args?: SelectSubset<T, DownloadEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a ImageSearchAlbumCache.
-     * @param {ImageSearchAlbumCacheCreateArgs} args - Arguments to create a ImageSearchAlbumCache.
+     * Create a DownloadEvent.
+     * @param {DownloadEventCreateArgs} args - Arguments to create a DownloadEvent.
      * @example
-     * // Create one ImageSearchAlbumCache
-     * const ImageSearchAlbumCache = await prisma.imageSearchAlbumCache.create({
+     * // Create one DownloadEvent
+     * const DownloadEvent = await prisma.downloadEvent.create({
      *   data: {
-     *     // ... data to create a ImageSearchAlbumCache
+     *     // ... data to create a DownloadEvent
      *   }
      * })
      * 
      */
-    create<T extends ImageSearchAlbumCacheCreateArgs>(args: SelectSubset<T, ImageSearchAlbumCacheCreateArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends DownloadEventCreateArgs>(args: SelectSubset<T, DownloadEventCreateArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many ImageSearchAlbumCaches.
-     * @param {ImageSearchAlbumCacheCreateManyArgs} args - Arguments to create many ImageSearchAlbumCaches.
+     * Create many DownloadEvents.
+     * @param {DownloadEventCreateManyArgs} args - Arguments to create many DownloadEvents.
      * @example
-     * // Create many ImageSearchAlbumCaches
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.createMany({
+     * // Create many DownloadEvents
+     * const downloadEvent = await prisma.downloadEvent.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ImageSearchAlbumCacheCreateManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends DownloadEventCreateManyArgs>(args?: SelectSubset<T, DownloadEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many ImageSearchAlbumCaches and returns the data saved in the database.
-     * @param {ImageSearchAlbumCacheCreateManyAndReturnArgs} args - Arguments to create many ImageSearchAlbumCaches.
+     * Create many DownloadEvents and returns the data saved in the database.
+     * @param {DownloadEventCreateManyAndReturnArgs} args - Arguments to create many DownloadEvents.
      * @example
-     * // Create many ImageSearchAlbumCaches
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.createManyAndReturn({
+     * // Create many DownloadEvents
+     * const downloadEvent = await prisma.downloadEvent.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many ImageSearchAlbumCaches and only return the `id`
-     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.createManyAndReturn({
+     * // Create many DownloadEvents and only return the `id`
+     * const downloadEventWithIdOnly = await prisma.downloadEvent.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -22242,28 +22683,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends ImageSearchAlbumCacheCreateManyAndReturnArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends DownloadEventCreateManyAndReturnArgs>(args?: SelectSubset<T, DownloadEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a ImageSearchAlbumCache.
-     * @param {ImageSearchAlbumCacheDeleteArgs} args - Arguments to delete one ImageSearchAlbumCache.
+     * Delete a DownloadEvent.
+     * @param {DownloadEventDeleteArgs} args - Arguments to delete one DownloadEvent.
      * @example
-     * // Delete one ImageSearchAlbumCache
-     * const ImageSearchAlbumCache = await prisma.imageSearchAlbumCache.delete({
+     * // Delete one DownloadEvent
+     * const DownloadEvent = await prisma.downloadEvent.delete({
      *   where: {
-     *     // ... filter to delete one ImageSearchAlbumCache
+     *     // ... filter to delete one DownloadEvent
      *   }
      * })
      * 
      */
-    delete<T extends ImageSearchAlbumCacheDeleteArgs>(args: SelectSubset<T, ImageSearchAlbumCacheDeleteArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends DownloadEventDeleteArgs>(args: SelectSubset<T, DownloadEventDeleteArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one ImageSearchAlbumCache.
-     * @param {ImageSearchAlbumCacheUpdateArgs} args - Arguments to update one ImageSearchAlbumCache.
+     * Update one DownloadEvent.
+     * @param {DownloadEventUpdateArgs} args - Arguments to update one DownloadEvent.
      * @example
-     * // Update one ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.update({
+     * // Update one DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22273,30 +22714,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ImageSearchAlbumCacheUpdateArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends DownloadEventUpdateArgs>(args: SelectSubset<T, DownloadEventUpdateArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more ImageSearchAlbumCaches.
-     * @param {ImageSearchAlbumCacheDeleteManyArgs} args - Arguments to filter ImageSearchAlbumCaches to delete.
+     * Delete zero or more DownloadEvents.
+     * @param {DownloadEventDeleteManyArgs} args - Arguments to filter DownloadEvents to delete.
      * @example
-     * // Delete a few ImageSearchAlbumCaches
-     * const { count } = await prisma.imageSearchAlbumCache.deleteMany({
+     * // Delete a few DownloadEvents
+     * const { count } = await prisma.downloadEvent.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ImageSearchAlbumCacheDeleteManyArgs>(args?: SelectSubset<T, ImageSearchAlbumCacheDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends DownloadEventDeleteManyArgs>(args?: SelectSubset<T, DownloadEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ImageSearchAlbumCaches.
+     * Update zero or more DownloadEvents.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {DownloadEventUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ImageSearchAlbumCaches
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.updateMany({
+     * // Update many DownloadEvents
+     * const downloadEvent = await prisma.downloadEvent.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22306,14 +22747,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ImageSearchAlbumCacheUpdateManyArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends DownloadEventUpdateManyArgs>(args: SelectSubset<T, DownloadEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ImageSearchAlbumCaches and returns the data updated in the database.
-     * @param {ImageSearchAlbumCacheUpdateManyAndReturnArgs} args - Arguments to update many ImageSearchAlbumCaches.
+     * Update zero or more DownloadEvents and returns the data updated in the database.
+     * @param {DownloadEventUpdateManyAndReturnArgs} args - Arguments to update many DownloadEvents.
      * @example
-     * // Update many ImageSearchAlbumCaches
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.updateManyAndReturn({
+     * // Update many DownloadEvents
+     * const downloadEvent = await prisma.downloadEvent.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -22322,8 +22763,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more ImageSearchAlbumCaches and only return the `id`
-     * const imageSearchAlbumCacheWithIdOnly = await prisma.imageSearchAlbumCache.updateManyAndReturn({
+     * // Update zero or more DownloadEvents and only return the `id`
+     * const downloadEventWithIdOnly = await prisma.downloadEvent.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -22336,56 +22777,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends ImageSearchAlbumCacheUpdateManyAndReturnArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends DownloadEventUpdateManyAndReturnArgs>(args: SelectSubset<T, DownloadEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one ImageSearchAlbumCache.
-     * @param {ImageSearchAlbumCacheUpsertArgs} args - Arguments to update or create a ImageSearchAlbumCache.
+     * Create or update one DownloadEvent.
+     * @param {DownloadEventUpsertArgs} args - Arguments to update or create a DownloadEvent.
      * @example
-     * // Update or create a ImageSearchAlbumCache
-     * const imageSearchAlbumCache = await prisma.imageSearchAlbumCache.upsert({
+     * // Update or create a DownloadEvent
+     * const downloadEvent = await prisma.downloadEvent.upsert({
      *   create: {
-     *     // ... data to create a ImageSearchAlbumCache
+     *     // ... data to create a DownloadEvent
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ImageSearchAlbumCache we want to update
+     *     // ... the filter for the DownloadEvent we want to update
      *   }
      * })
      */
-    upsert<T extends ImageSearchAlbumCacheUpsertArgs>(args: SelectSubset<T, ImageSearchAlbumCacheUpsertArgs<ExtArgs>>): Prisma__ImageSearchAlbumCacheClient<$Result.GetResult<Prisma.$ImageSearchAlbumCachePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends DownloadEventUpsertArgs>(args: SelectSubset<T, DownloadEventUpsertArgs<ExtArgs>>): Prisma__DownloadEventClient<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of ImageSearchAlbumCaches.
+     * Count the number of DownloadEvents.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheCountArgs} args - Arguments to filter ImageSearchAlbumCaches to count.
+     * @param {DownloadEventCountArgs} args - Arguments to filter DownloadEvents to count.
      * @example
-     * // Count the number of ImageSearchAlbumCaches
-     * const count = await prisma.imageSearchAlbumCache.count({
+     * // Count the number of DownloadEvents
+     * const count = await prisma.downloadEvent.count({
      *   where: {
-     *     // ... the filter for the ImageSearchAlbumCaches we want to count
+     *     // ... the filter for the DownloadEvents we want to count
      *   }
      * })
     **/
-    count<T extends ImageSearchAlbumCacheCountArgs>(
-      args?: Subset<T, ImageSearchAlbumCacheCountArgs>,
+    count<T extends DownloadEventCountArgs>(
+      args?: Subset<T, DownloadEventCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ImageSearchAlbumCacheCountAggregateOutputType>
+          : GetScalarType<T['select'], DownloadEventCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ImageSearchAlbumCache.
+     * Allows you to perform aggregations operations on a DownloadEvent.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {DownloadEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -22405,13 +22846,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ImageSearchAlbumCacheAggregateArgs>(args: Subset<T, ImageSearchAlbumCacheAggregateArgs>): Prisma.PrismaPromise<GetImageSearchAlbumCacheAggregateType<T>>
+    aggregate<T extends DownloadEventAggregateArgs>(args: Subset<T, DownloadEventAggregateArgs>): Prisma.PrismaPromise<GetDownloadEventAggregateType<T>>
 
     /**
-     * Group by ImageSearchAlbumCache.
+     * Group by DownloadEvent.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImageSearchAlbumCacheGroupByArgs} args - Group by arguments.
+     * @param {DownloadEventGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -22426,14 +22867,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ImageSearchAlbumCacheGroupByArgs,
+      T extends DownloadEventGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ImageSearchAlbumCacheGroupByArgs['orderBy'] }
-        : { orderBy?: ImageSearchAlbumCacheGroupByArgs['orderBy'] },
+        ? { orderBy: DownloadEventGroupByArgs['orderBy'] }
+        : { orderBy?: DownloadEventGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -22482,21 +22923,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ImageSearchAlbumCacheGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImageSearchAlbumCacheGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, DownloadEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDownloadEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the ImageSearchAlbumCache model
+   * Fields of the DownloadEvent model
    */
-  readonly fields: ImageSearchAlbumCacheFieldRefs;
+  readonly fields: DownloadEventFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ImageSearchAlbumCache.
+   * The delegate class that acts as a "Promise-like" for DownloadEvent.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ImageSearchAlbumCacheClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__DownloadEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22523,381 +22965,432 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the ImageSearchAlbumCache model
+   * Fields of the DownloadEvent model
    */
-  interface ImageSearchAlbumCacheFieldRefs {
-    readonly id: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly galleryId: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly userId: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly normalizedPrompt: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly photoIds: FieldRef<"ImageSearchAlbumCache", 'String[]'>
-    readonly albumTitle: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly albumDescription: FieldRef<"ImageSearchAlbumCache", 'String'>
-    readonly expiresAt: FieldRef<"ImageSearchAlbumCache", 'DateTime'>
-    readonly createdAt: FieldRef<"ImageSearchAlbumCache", 'DateTime'>
+  interface DownloadEventFieldRefs {
+    readonly id: FieldRef<"DownloadEvent", 'String'>
+    readonly galleryId: FieldRef<"DownloadEvent", 'String'>
+    readonly photoId: FieldRef<"DownloadEvent", 'String'>
+    readonly viewerName: FieldRef<"DownloadEvent", 'String'>
+    readonly viewerIp: FieldRef<"DownloadEvent", 'String'>
+    readonly type: FieldRef<"DownloadEvent", 'String'>
+    readonly createdAt: FieldRef<"DownloadEvent", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * ImageSearchAlbumCache findUnique
+   * DownloadEvent findUnique
    */
-  export type ImageSearchAlbumCacheFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchAlbumCache to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchAlbumCacheWhereUniqueInput
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DownloadEvent to fetch.
+     */
+    where: DownloadEventWhereUniqueInput
   }
 
   /**
-   * ImageSearchAlbumCache findUniqueOrThrow
+   * DownloadEvent findUniqueOrThrow
    */
-  export type ImageSearchAlbumCacheFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchAlbumCache to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchAlbumCacheWhereUniqueInput
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DownloadEvent to fetch.
+     */
+    where: DownloadEventWhereUniqueInput
   }
 
   /**
-   * ImageSearchAlbumCache findFirst
+   * DownloadEvent findFirst
    */
-  export type ImageSearchAlbumCacheFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchAlbumCache to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DownloadEvent to fetch.
+     */
+    where?: DownloadEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchAlbumCaches to fetch.
+     * Determine the order of DownloadEvents to fetch.
      */
-    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    orderBy?: DownloadEventOrderByWithRelationInput | DownloadEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ImageSearchAlbumCaches.
+     * Sets the position for searching for DownloadEvents.
      */
-    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    cursor?: DownloadEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     * Take `±n` DownloadEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchAlbumCaches.
+     * Skip the first `n` DownloadEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ImageSearchAlbumCaches.
+     * Filter by unique combinations of DownloadEvents.
      */
-    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+    distinct?: DownloadEventScalarFieldEnum | DownloadEventScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchAlbumCache findFirstOrThrow
+   * DownloadEvent findFirstOrThrow
    */
-  export type ImageSearchAlbumCacheFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchAlbumCache to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DownloadEvent to fetch.
+     */
+    where?: DownloadEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchAlbumCaches to fetch.
+     * Determine the order of DownloadEvents to fetch.
      */
-    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    orderBy?: DownloadEventOrderByWithRelationInput | DownloadEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ImageSearchAlbumCaches.
+     * Sets the position for searching for DownloadEvents.
      */
-    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    cursor?: DownloadEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     * Take `±n` DownloadEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchAlbumCaches.
+     * Skip the first `n` DownloadEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ImageSearchAlbumCaches.
+     * Filter by unique combinations of DownloadEvents.
      */
-    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+    distinct?: DownloadEventScalarFieldEnum | DownloadEventScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchAlbumCache findMany
+   * DownloadEvent findMany
    */
-  export type ImageSearchAlbumCacheFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * Filter, which ImageSearchAlbumCaches to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DownloadEvents to fetch.
+     */
+    where?: DownloadEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ImageSearchAlbumCaches to fetch.
+     * Determine the order of DownloadEvents to fetch.
      */
-    orderBy?: ImageSearchAlbumCacheOrderByWithRelationInput | ImageSearchAlbumCacheOrderByWithRelationInput[]
+    orderBy?: DownloadEventOrderByWithRelationInput | DownloadEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ImageSearchAlbumCaches.
+     * Sets the position for listing DownloadEvents.
      */
-    cursor?: ImageSearchAlbumCacheWhereUniqueInput
+    cursor?: DownloadEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ImageSearchAlbumCaches from the position of the cursor.
+     * Take `±n` DownloadEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ImageSearchAlbumCaches.
+     * Skip the first `n` DownloadEvents.
      */
     skip?: number
-    distinct?: ImageSearchAlbumCacheScalarFieldEnum | ImageSearchAlbumCacheScalarFieldEnum[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DownloadEvents.
+     */
+    distinct?: DownloadEventScalarFieldEnum | DownloadEventScalarFieldEnum[]
   }
 
   /**
-   * ImageSearchAlbumCache create
+   * DownloadEvent create
    */
-  export type ImageSearchAlbumCacheCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * The data needed to create a ImageSearchAlbumCache.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ImageSearchAlbumCacheCreateInput, ImageSearchAlbumCacheUncheckedCreateInput>
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DownloadEvent.
+     */
+    data: XOR<DownloadEventCreateInput, DownloadEventUncheckedCreateInput>
   }
 
   /**
-   * ImageSearchAlbumCache createMany
+   * DownloadEvent createMany
    */
-  export type ImageSearchAlbumCacheCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many ImageSearchAlbumCaches.
+     * The data used to create many DownloadEvents.
      */
-    data: ImageSearchAlbumCacheCreateManyInput | ImageSearchAlbumCacheCreateManyInput[]
+    data: DownloadEventCreateManyInput | DownloadEventCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * ImageSearchAlbumCache createManyAndReturn
+   * DownloadEvent createManyAndReturn
    */
-  export type ImageSearchAlbumCacheCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelectCreateManyAndReturn<ExtArgs> | null
+    select?: DownloadEventSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * The data used to create many ImageSearchAlbumCaches.
+     * The data used to create many DownloadEvents.
      */
-    data: ImageSearchAlbumCacheCreateManyInput | ImageSearchAlbumCacheCreateManyInput[]
+    data: DownloadEventCreateManyInput | DownloadEventCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DownloadEventIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * ImageSearchAlbumCache update
+   * DownloadEvent update
    */
-  export type ImageSearchAlbumCacheUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * The data needed to update a ImageSearchAlbumCache.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<ImageSearchAlbumCacheUpdateInput, ImageSearchAlbumCacheUncheckedUpdateInput>
+    include?: DownloadEventInclude<ExtArgs> | null
     /**
-     * Choose, which ImageSearchAlbumCache to update.
+     * The data needed to update a DownloadEvent.
      */
-    where: ImageSearchAlbumCacheWhereUniqueInput
+    data: XOR<DownloadEventUpdateInput, DownloadEventUncheckedUpdateInput>
+    /**
+     * Choose, which DownloadEvent to update.
+     */
+    where: DownloadEventWhereUniqueInput
   }
 
   /**
-   * ImageSearchAlbumCache updateMany
+   * DownloadEvent updateMany
    */
-  export type ImageSearchAlbumCacheUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update ImageSearchAlbumCaches.
+     * The data used to update DownloadEvents.
      */
-    data: XOR<ImageSearchAlbumCacheUpdateManyMutationInput, ImageSearchAlbumCacheUncheckedUpdateManyInput>
+    data: XOR<DownloadEventUpdateManyMutationInput, DownloadEventUncheckedUpdateManyInput>
     /**
-     * Filter which ImageSearchAlbumCaches to update
+     * Filter which DownloadEvents to update
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    where?: DownloadEventWhereInput
     /**
-     * Limit how many ImageSearchAlbumCaches to update.
+     * Limit how many DownloadEvents to update.
      */
     limit?: number
   }
 
   /**
-   * ImageSearchAlbumCache updateManyAndReturn
+   * DownloadEvent updateManyAndReturn
    */
-  export type ImageSearchAlbumCacheUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: DownloadEventSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * The data used to update ImageSearchAlbumCaches.
+     * The data used to update DownloadEvents.
      */
-    data: XOR<ImageSearchAlbumCacheUpdateManyMutationInput, ImageSearchAlbumCacheUncheckedUpdateManyInput>
+    data: XOR<DownloadEventUpdateManyMutationInput, DownloadEventUncheckedUpdateManyInput>
     /**
-     * Filter which ImageSearchAlbumCaches to update
+     * Filter which DownloadEvents to update
      */
-    where?: ImageSearchAlbumCacheWhereInput
+    where?: DownloadEventWhereInput
     /**
-     * Limit how many ImageSearchAlbumCaches to update.
+     * Limit how many DownloadEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DownloadEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DownloadEvent upsert
+   */
+  export type DownloadEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DownloadEvent
+     */
+    select?: DownloadEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DownloadEvent
+     */
+    omit?: DownloadEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DownloadEvent to update in case it exists.
+     */
+    where: DownloadEventWhereUniqueInput
+    /**
+     * In case the DownloadEvent found by the `where` argument doesn't exist, create a new DownloadEvent with this data.
+     */
+    create: XOR<DownloadEventCreateInput, DownloadEventUncheckedCreateInput>
+    /**
+     * In case the DownloadEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DownloadEventUpdateInput, DownloadEventUncheckedUpdateInput>
+  }
+
+  /**
+   * DownloadEvent delete
+   */
+  export type DownloadEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DownloadEvent
+     */
+    select?: DownloadEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DownloadEvent
+     */
+    omit?: DownloadEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DownloadEventInclude<ExtArgs> | null
+    /**
+     * Filter which DownloadEvent to delete.
+     */
+    where: DownloadEventWhereUniqueInput
+  }
+
+  /**
+   * DownloadEvent deleteMany
+   */
+  export type DownloadEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DownloadEvents to delete
+     */
+    where?: DownloadEventWhereInput
+    /**
+     * Limit how many DownloadEvents to delete.
      */
     limit?: number
   }
 
   /**
-   * ImageSearchAlbumCache upsert
+   * DownloadEvent without action
    */
-  export type ImageSearchAlbumCacheUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DownloadEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
+     * Select specific fields to fetch from the DownloadEvent
      */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
+    select?: DownloadEventSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ImageSearchAlbumCache
+     * Omit specific fields from the DownloadEvent
      */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    omit?: DownloadEventOmit<ExtArgs> | null
     /**
-     * The filter to search for the ImageSearchAlbumCache to update in case it exists.
+     * Choose, which related nodes to fetch as well
      */
-    where: ImageSearchAlbumCacheWhereUniqueInput
-    /**
-     * In case the ImageSearchAlbumCache found by the `where` argument doesn't exist, create a new ImageSearchAlbumCache with this data.
-     */
-    create: XOR<ImageSearchAlbumCacheCreateInput, ImageSearchAlbumCacheUncheckedCreateInput>
-    /**
-     * In case the ImageSearchAlbumCache was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ImageSearchAlbumCacheUpdateInput, ImageSearchAlbumCacheUncheckedUpdateInput>
-  }
-
-  /**
-   * ImageSearchAlbumCache delete
-   */
-  export type ImageSearchAlbumCacheDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
-     */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImageSearchAlbumCache
-     */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
-    /**
-     * Filter which ImageSearchAlbumCache to delete.
-     */
-    where: ImageSearchAlbumCacheWhereUniqueInput
-  }
-
-  /**
-   * ImageSearchAlbumCache deleteMany
-   */
-  export type ImageSearchAlbumCacheDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImageSearchAlbumCaches to delete
-     */
-    where?: ImageSearchAlbumCacheWhereInput
-    /**
-     * Limit how many ImageSearchAlbumCaches to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImageSearchAlbumCache without action
-   */
-  export type ImageSearchAlbumCacheDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImageSearchAlbumCache
-     */
-    select?: ImageSearchAlbumCacheSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImageSearchAlbumCache
-     */
-    omit?: ImageSearchAlbumCacheOmit<ExtArgs> | null
+    include?: DownloadEventInclude<ExtArgs> | null
   }
 
 
@@ -23897,6 +24390,11 @@ export namespace Prisma {
      * Skip the first `n` DriveImportJobs.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportJobs.
+     */
     distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
   }
 
@@ -25138,6 +25636,11 @@ export namespace Prisma {
      * Skip the first `n` DriveImportItems.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DriveImportItems.
+     */
     distinct?: DriveImportItemScalarFieldEnum | DriveImportItemScalarFieldEnum[]
   }
 
@@ -25492,6 +25995,23 @@ export namespace Prisma {
     shareToken: 'shareToken',
     aiContext: 'aiContext',
     isPublished: 'isPublished',
+    categoryTags: 'categoryTags',
+    expiresAt: 'expiresAt',
+    slideshowEnabled: 'slideshowEnabled',
+    socialSharingEnabled: 'socialSharingEnabled',
+    emailRegistration: 'emailRegistration',
+    language: 'language',
+    downloadEnabled: 'downloadEnabled',
+    downloadPin: 'downloadPin',
+    downloadSizeOriginal: 'downloadSizeOriginal',
+    downloadSizeHighRes: 'downloadSizeHighRes',
+    downloadSizeWeb: 'downloadSizeWeb',
+    downloadWebMaxPx: 'downloadWebMaxPx',
+    downloadHighResMaxPx: 'downloadHighResMaxPx',
+    downloadLimit: 'downloadLimit',
+    downloadContactsOnly: 'downloadContactsOnly',
+    favoritesEnabled: 'favoritesEnabled',
+    favoriteNotesEnabled: 'favoriteNotesEnabled',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -25584,6 +26104,7 @@ export namespace Prisma {
     id: 'id',
     galleryId: 'galleryId',
     title: 'title',
+    downloadEnabled: 'downloadEnabled',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -25617,38 +26138,31 @@ export namespace Prisma {
   export type GalleryCommentScalarFieldEnum = (typeof GalleryCommentScalarFieldEnum)[keyof typeof GalleryCommentScalarFieldEnum]
 
 
-  export const ImageSearchImageScalarFieldEnum: {
+  export const GalleryFavoriteScalarFieldEnum: {
     id: 'id',
-    photoId: 'photoId',
-    userId: 'userId',
     galleryId: 'galleryId',
-    storageUrl: 'storageUrl',
-    thumbnailUrl: 'thumbnailUrl',
-    caption: 'caption',
-    tags: 'tags',
-    metadata: 'metadata',
-    indexedAt: 'indexedAt',
-    version: 'version',
+    photoId: 'photoId',
+    viewerId: 'viewerId',
+    viewerName: 'viewerName',
+    note: 'note',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type ImageSearchImageScalarFieldEnum = (typeof ImageSearchImageScalarFieldEnum)[keyof typeof ImageSearchImageScalarFieldEnum]
+  export type GalleryFavoriteScalarFieldEnum = (typeof GalleryFavoriteScalarFieldEnum)[keyof typeof GalleryFavoriteScalarFieldEnum]
 
 
-  export const ImageSearchAlbumCacheScalarFieldEnum: {
+  export const DownloadEventScalarFieldEnum: {
     id: 'id',
     galleryId: 'galleryId',
-    userId: 'userId',
-    normalizedPrompt: 'normalizedPrompt',
-    photoIds: 'photoIds',
-    albumTitle: 'albumTitle',
-    albumDescription: 'albumDescription',
-    expiresAt: 'expiresAt',
+    photoId: 'photoId',
+    viewerName: 'viewerName',
+    viewerIp: 'viewerIp',
+    type: 'type',
     createdAt: 'createdAt'
   };
 
-  export type ImageSearchAlbumCacheScalarFieldEnum = (typeof ImageSearchAlbumCacheScalarFieldEnum)[keyof typeof ImageSearchAlbumCacheScalarFieldEnum]
+  export type DownloadEventScalarFieldEnum = (typeof DownloadEventScalarFieldEnum)[keyof typeof DownloadEventScalarFieldEnum]
 
 
   export const DriveImportJobScalarFieldEnum: {
@@ -25703,14 +26217,6 @@ export namespace Prisma {
   };
 
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -26566,6 +27072,23 @@ export namespace Prisma {
     shareToken?: StringFilter<"Gallery"> | string
     aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
+    categoryTags?: StringNullableListFilter<"Gallery">
+    expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    slideshowEnabled?: BoolFilter<"Gallery"> | boolean
+    socialSharingEnabled?: BoolFilter<"Gallery"> | boolean
+    emailRegistration?: BoolFilter<"Gallery"> | boolean
+    language?: StringFilter<"Gallery"> | string
+    downloadEnabled?: BoolFilter<"Gallery"> | boolean
+    downloadPin?: StringNullableFilter<"Gallery"> | string | null
+    downloadSizeOriginal?: BoolFilter<"Gallery"> | boolean
+    downloadSizeHighRes?: BoolFilter<"Gallery"> | boolean
+    downloadSizeWeb?: BoolFilter<"Gallery"> | boolean
+    downloadWebMaxPx?: IntFilter<"Gallery"> | number
+    downloadHighResMaxPx?: IntFilter<"Gallery"> | number
+    downloadLimit?: IntNullableFilter<"Gallery"> | number | null
+    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
+    favoritesEnabled?: BoolFilter<"Gallery"> | boolean
+    favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -26575,6 +27098,8 @@ export namespace Prisma {
     clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
     driveImportItems?: DriveImportItemListRelationFilter
+    favorites?: GalleryFavoriteListRelationFilter
+    downloadEvents?: DownloadEventListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -26589,6 +27114,23 @@ export namespace Prisma {
     shareToken?: SortOrder
     aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
+    categoryTags?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    slideshowEnabled?: SortOrder
+    socialSharingEnabled?: SortOrder
+    emailRegistration?: SortOrder
+    language?: SortOrder
+    downloadEnabled?: SortOrder
+    downloadPin?: SortOrderInput | SortOrder
+    downloadSizeOriginal?: SortOrder
+    downloadSizeHighRes?: SortOrder
+    downloadSizeWeb?: SortOrder
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrderInput | SortOrder
+    downloadContactsOnly?: SortOrder
+    favoritesEnabled?: SortOrder
+    favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -26598,6 +27140,8 @@ export namespace Prisma {
     clients?: GalleryClientOrderByRelationAggregateInput
     comments?: GalleryCommentOrderByRelationAggregateInput
     driveImportItems?: DriveImportItemOrderByRelationAggregateInput
+    favorites?: GalleryFavoriteOrderByRelationAggregateInput
+    downloadEvents?: DownloadEventOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -26616,6 +27160,23 @@ export namespace Prisma {
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
+    categoryTags?: StringNullableListFilter<"Gallery">
+    expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    slideshowEnabled?: BoolFilter<"Gallery"> | boolean
+    socialSharingEnabled?: BoolFilter<"Gallery"> | boolean
+    emailRegistration?: BoolFilter<"Gallery"> | boolean
+    language?: StringFilter<"Gallery"> | string
+    downloadEnabled?: BoolFilter<"Gallery"> | boolean
+    downloadPin?: StringNullableFilter<"Gallery"> | string | null
+    downloadSizeOriginal?: BoolFilter<"Gallery"> | boolean
+    downloadSizeHighRes?: BoolFilter<"Gallery"> | boolean
+    downloadSizeWeb?: BoolFilter<"Gallery"> | boolean
+    downloadWebMaxPx?: IntFilter<"Gallery"> | number
+    downloadHighResMaxPx?: IntFilter<"Gallery"> | number
+    downloadLimit?: IntNullableFilter<"Gallery"> | number | null
+    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
+    favoritesEnabled?: BoolFilter<"Gallery"> | boolean
+    favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -26625,6 +27186,8 @@ export namespace Prisma {
     clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
     driveImportItems?: DriveImportItemListRelationFilter
+    favorites?: GalleryFavoriteListRelationFilter
+    downloadEvents?: DownloadEventListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -26639,11 +27202,30 @@ export namespace Prisma {
     shareToken?: SortOrder
     aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
+    categoryTags?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    slideshowEnabled?: SortOrder
+    socialSharingEnabled?: SortOrder
+    emailRegistration?: SortOrder
+    language?: SortOrder
+    downloadEnabled?: SortOrder
+    downloadPin?: SortOrderInput | SortOrder
+    downloadSizeOriginal?: SortOrder
+    downloadSizeHighRes?: SortOrder
+    downloadSizeWeb?: SortOrder
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrderInput | SortOrder
+    downloadContactsOnly?: SortOrder
+    favoritesEnabled?: SortOrder
+    favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: GalleryCountOrderByAggregateInput
+    _avg?: GalleryAvgOrderByAggregateInput
     _max?: GalleryMaxOrderByAggregateInput
     _min?: GalleryMinOrderByAggregateInput
+    _sum?: GallerySumOrderByAggregateInput
   }
 
   export type GalleryScalarWhereWithAggregatesInput = {
@@ -26661,6 +27243,23 @@ export namespace Prisma {
     shareToken?: StringWithAggregatesFilter<"Gallery"> | string
     aiContext?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     isPublished?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    categoryTags?: StringNullableListFilter<"Gallery">
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"Gallery"> | Date | string | null
+    slideshowEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    socialSharingEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    emailRegistration?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    language?: StringWithAggregatesFilter<"Gallery"> | string
+    downloadEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    downloadPin?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
+    downloadSizeOriginal?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    downloadSizeHighRes?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    downloadSizeWeb?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    downloadWebMaxPx?: IntWithAggregatesFilter<"Gallery"> | number
+    downloadHighResMaxPx?: IntWithAggregatesFilter<"Gallery"> | number
+    downloadLimit?: IntNullableWithAggregatesFilter<"Gallery"> | number | null
+    downloadContactsOnly?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    favoritesEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
+    favoriteNotesEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
   }
@@ -26698,6 +27297,7 @@ export namespace Prisma {
     uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
     comments?: GalleryCommentListRelationFilter
+    favorites?: GalleryFavoriteListRelationFilter
   }
 
   export type PhotoOrderByWithRelationInput = {
@@ -26730,6 +27330,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionOrderByWithRelationInput
     albumPhotos?: AlbumPhotoOrderByRelationAggregateInput
     comments?: GalleryCommentOrderByRelationAggregateInput
+    favorites?: GalleryFavoriteOrderByRelationAggregateInput
   }
 
   export type PhotoWhereUniqueInput = Prisma.AtLeast<{
@@ -26765,6 +27366,7 @@ export namespace Prisma {
     uploadSession?: XOR<UploadSessionNullableScalarRelationFilter, UploadSessionWhereInput> | null
     albumPhotos?: AlbumPhotoListRelationFilter
     comments?: GalleryCommentListRelationFilter
+    favorites?: GalleryFavoriteListRelationFilter
   }, "id" | "id">
 
   export type PhotoOrderByWithAggregationInput = {
@@ -27103,6 +27705,7 @@ export namespace Prisma {
     id?: StringFilter<"Album"> | string
     galleryId?: StringFilter<"Album"> | string
     title?: StringFilter<"Album"> | string
+    downloadEnabled?: BoolFilter<"Album"> | boolean
     createdAt?: DateTimeFilter<"Album"> | Date | string
     updatedAt?: DateTimeFilter<"Album"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
@@ -27113,6 +27716,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     title?: SortOrder
+    downloadEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     gallery?: GalleryOrderByWithRelationInput
@@ -27126,6 +27730,7 @@ export namespace Prisma {
     NOT?: AlbumWhereInput | AlbumWhereInput[]
     galleryId?: StringFilter<"Album"> | string
     title?: StringFilter<"Album"> | string
+    downloadEnabled?: BoolFilter<"Album"> | boolean
     createdAt?: DateTimeFilter<"Album"> | Date | string
     updatedAt?: DateTimeFilter<"Album"> | Date | string
     gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
@@ -27136,6 +27741,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     title?: SortOrder
+    downloadEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AlbumCountOrderByAggregateInput
@@ -27150,6 +27756,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Album"> | string
     galleryId?: StringWithAggregatesFilter<"Album"> | string
     title?: StringWithAggregatesFilter<"Album"> | string
+    downloadEnabled?: BoolWithAggregatesFilter<"Album"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Album"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Album"> | Date | string
   }
@@ -27297,171 +27904,143 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"GalleryComment"> | Date | string
   }
 
-  export type ImageSearchImageWhereInput = {
-    AND?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
-    OR?: ImageSearchImageWhereInput[]
-    NOT?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
-    id?: StringFilter<"ImageSearchImage"> | string
-    photoId?: StringFilter<"ImageSearchImage"> | string
-    userId?: StringFilter<"ImageSearchImage"> | string
-    galleryId?: StringFilter<"ImageSearchImage"> | string
-    storageUrl?: StringFilter<"ImageSearchImage"> | string
-    thumbnailUrl?: StringNullableFilter<"ImageSearchImage"> | string | null
-    caption?: StringNullableFilter<"ImageSearchImage"> | string | null
-    tags?: StringNullableListFilter<"ImageSearchImage">
-    metadata?: JsonNullableFilter<"ImageSearchImage">
-    indexedAt?: DateTimeNullableFilter<"ImageSearchImage"> | Date | string | null
-    version?: IntFilter<"ImageSearchImage"> | number
-    createdAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
-    updatedAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
+  export type GalleryFavoriteWhereInput = {
+    AND?: GalleryFavoriteWhereInput | GalleryFavoriteWhereInput[]
+    OR?: GalleryFavoriteWhereInput[]
+    NOT?: GalleryFavoriteWhereInput | GalleryFavoriteWhereInput[]
+    id?: StringFilter<"GalleryFavorite"> | string
+    galleryId?: StringFilter<"GalleryFavorite"> | string
+    photoId?: StringFilter<"GalleryFavorite"> | string
+    viewerId?: StringFilter<"GalleryFavorite"> | string
+    viewerName?: StringFilter<"GalleryFavorite"> | string
+    note?: StringNullableFilter<"GalleryFavorite"> | string | null
+    createdAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
   }
 
-  export type ImageSearchImageOrderByWithRelationInput = {
+  export type GalleryFavoriteOrderByWithRelationInput = {
     id?: SortOrder
-    photoId?: SortOrder
-    userId?: SortOrder
     galleryId?: SortOrder
-    storageUrl?: SortOrder
-    thumbnailUrl?: SortOrderInput | SortOrder
-    caption?: SortOrderInput | SortOrder
-    tags?: SortOrder
-    metadata?: SortOrderInput | SortOrder
-    indexedAt?: SortOrderInput | SortOrder
-    version?: SortOrder
+    photoId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    note?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+    photo?: PhotoOrderByWithRelationInput
   }
 
-  export type ImageSearchImageWhereUniqueInput = Prisma.AtLeast<{
+  export type GalleryFavoriteWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    photoId?: string
-    AND?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
-    OR?: ImageSearchImageWhereInput[]
-    NOT?: ImageSearchImageWhereInput | ImageSearchImageWhereInput[]
-    userId?: StringFilter<"ImageSearchImage"> | string
-    galleryId?: StringFilter<"ImageSearchImage"> | string
-    storageUrl?: StringFilter<"ImageSearchImage"> | string
-    thumbnailUrl?: StringNullableFilter<"ImageSearchImage"> | string | null
-    caption?: StringNullableFilter<"ImageSearchImage"> | string | null
-    tags?: StringNullableListFilter<"ImageSearchImage">
-    metadata?: JsonNullableFilter<"ImageSearchImage">
-    indexedAt?: DateTimeNullableFilter<"ImageSearchImage"> | Date | string | null
-    version?: IntFilter<"ImageSearchImage"> | number
-    createdAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
-    updatedAt?: DateTimeFilter<"ImageSearchImage"> | Date | string
-  }, "id" | "photoId">
+    galleryId_photoId_viewerId?: GalleryFavoriteGalleryIdPhotoIdViewerIdCompoundUniqueInput
+    AND?: GalleryFavoriteWhereInput | GalleryFavoriteWhereInput[]
+    OR?: GalleryFavoriteWhereInput[]
+    NOT?: GalleryFavoriteWhereInput | GalleryFavoriteWhereInput[]
+    galleryId?: StringFilter<"GalleryFavorite"> | string
+    photoId?: StringFilter<"GalleryFavorite"> | string
+    viewerId?: StringFilter<"GalleryFavorite"> | string
+    viewerName?: StringFilter<"GalleryFavorite"> | string
+    note?: StringNullableFilter<"GalleryFavorite"> | string | null
+    createdAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    photo?: XOR<PhotoScalarRelationFilter, PhotoWhereInput>
+  }, "id" | "galleryId_photoId_viewerId">
 
-  export type ImageSearchImageOrderByWithAggregationInput = {
+  export type GalleryFavoriteOrderByWithAggregationInput = {
     id?: SortOrder
-    photoId?: SortOrder
-    userId?: SortOrder
     galleryId?: SortOrder
-    storageUrl?: SortOrder
-    thumbnailUrl?: SortOrderInput | SortOrder
-    caption?: SortOrderInput | SortOrder
-    tags?: SortOrder
-    metadata?: SortOrderInput | SortOrder
-    indexedAt?: SortOrderInput | SortOrder
-    version?: SortOrder
+    photoId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    note?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: ImageSearchImageCountOrderByAggregateInput
-    _avg?: ImageSearchImageAvgOrderByAggregateInput
-    _max?: ImageSearchImageMaxOrderByAggregateInput
-    _min?: ImageSearchImageMinOrderByAggregateInput
-    _sum?: ImageSearchImageSumOrderByAggregateInput
+    _count?: GalleryFavoriteCountOrderByAggregateInput
+    _max?: GalleryFavoriteMaxOrderByAggregateInput
+    _min?: GalleryFavoriteMinOrderByAggregateInput
   }
 
-  export type ImageSearchImageScalarWhereWithAggregatesInput = {
-    AND?: ImageSearchImageScalarWhereWithAggregatesInput | ImageSearchImageScalarWhereWithAggregatesInput[]
-    OR?: ImageSearchImageScalarWhereWithAggregatesInput[]
-    NOT?: ImageSearchImageScalarWhereWithAggregatesInput | ImageSearchImageScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ImageSearchImage"> | string
-    photoId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
-    userId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
-    galleryId?: StringWithAggregatesFilter<"ImageSearchImage"> | string
-    storageUrl?: StringWithAggregatesFilter<"ImageSearchImage"> | string
-    thumbnailUrl?: StringNullableWithAggregatesFilter<"ImageSearchImage"> | string | null
-    caption?: StringNullableWithAggregatesFilter<"ImageSearchImage"> | string | null
-    tags?: StringNullableListFilter<"ImageSearchImage">
-    metadata?: JsonNullableWithAggregatesFilter<"ImageSearchImage">
-    indexedAt?: DateTimeNullableWithAggregatesFilter<"ImageSearchImage"> | Date | string | null
-    version?: IntWithAggregatesFilter<"ImageSearchImage"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"ImageSearchImage"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ImageSearchImage"> | Date | string
+  export type GalleryFavoriteScalarWhereWithAggregatesInput = {
+    AND?: GalleryFavoriteScalarWhereWithAggregatesInput | GalleryFavoriteScalarWhereWithAggregatesInput[]
+    OR?: GalleryFavoriteScalarWhereWithAggregatesInput[]
+    NOT?: GalleryFavoriteScalarWhereWithAggregatesInput | GalleryFavoriteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GalleryFavorite"> | string
+    galleryId?: StringWithAggregatesFilter<"GalleryFavorite"> | string
+    photoId?: StringWithAggregatesFilter<"GalleryFavorite"> | string
+    viewerId?: StringWithAggregatesFilter<"GalleryFavorite"> | string
+    viewerName?: StringWithAggregatesFilter<"GalleryFavorite"> | string
+    note?: StringNullableWithAggregatesFilter<"GalleryFavorite"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GalleryFavorite"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GalleryFavorite"> | Date | string
   }
 
-  export type ImageSearchAlbumCacheWhereInput = {
-    AND?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
-    OR?: ImageSearchAlbumCacheWhereInput[]
-    NOT?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
-    id?: StringFilter<"ImageSearchAlbumCache"> | string
-    galleryId?: StringFilter<"ImageSearchAlbumCache"> | string
-    userId?: StringFilter<"ImageSearchAlbumCache"> | string
-    normalizedPrompt?: StringFilter<"ImageSearchAlbumCache"> | string
-    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
-    albumTitle?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
-    albumDescription?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
-    expiresAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
-    createdAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
+  export type DownloadEventWhereInput = {
+    AND?: DownloadEventWhereInput | DownloadEventWhereInput[]
+    OR?: DownloadEventWhereInput[]
+    NOT?: DownloadEventWhereInput | DownloadEventWhereInput[]
+    id?: StringFilter<"DownloadEvent"> | string
+    galleryId?: StringFilter<"DownloadEvent"> | string
+    photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
+    type?: StringFilter<"DownloadEvent"> | string
+    createdAt?: DateTimeFilter<"DownloadEvent"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
   }
 
-  export type ImageSearchAlbumCacheOrderByWithRelationInput = {
+  export type DownloadEventOrderByWithRelationInput = {
     id?: SortOrder
     galleryId?: SortOrder
-    userId?: SortOrder
-    normalizedPrompt?: SortOrder
-    photoIds?: SortOrder
-    albumTitle?: SortOrderInput | SortOrder
-    albumDescription?: SortOrderInput | SortOrder
-    expiresAt?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    viewerName?: SortOrderInput | SortOrder
+    viewerIp?: SortOrderInput | SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
   }
 
-  export type ImageSearchAlbumCacheWhereUniqueInput = Prisma.AtLeast<{
+  export type DownloadEventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    galleryId_userId_normalizedPrompt?: ImageSearchAlbumCacheGalleryIdUserIdNormalizedPromptCompoundUniqueInput
-    AND?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
-    OR?: ImageSearchAlbumCacheWhereInput[]
-    NOT?: ImageSearchAlbumCacheWhereInput | ImageSearchAlbumCacheWhereInput[]
-    galleryId?: StringFilter<"ImageSearchAlbumCache"> | string
-    userId?: StringFilter<"ImageSearchAlbumCache"> | string
-    normalizedPrompt?: StringFilter<"ImageSearchAlbumCache"> | string
-    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
-    albumTitle?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
-    albumDescription?: StringNullableFilter<"ImageSearchAlbumCache"> | string | null
-    expiresAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
-    createdAt?: DateTimeFilter<"ImageSearchAlbumCache"> | Date | string
-  }, "id" | "galleryId_userId_normalizedPrompt">
+    AND?: DownloadEventWhereInput | DownloadEventWhereInput[]
+    OR?: DownloadEventWhereInput[]
+    NOT?: DownloadEventWhereInput | DownloadEventWhereInput[]
+    galleryId?: StringFilter<"DownloadEvent"> | string
+    photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
+    type?: StringFilter<"DownloadEvent"> | string
+    createdAt?: DateTimeFilter<"DownloadEvent"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+  }, "id">
 
-  export type ImageSearchAlbumCacheOrderByWithAggregationInput = {
+  export type DownloadEventOrderByWithAggregationInput = {
     id?: SortOrder
     galleryId?: SortOrder
-    userId?: SortOrder
-    normalizedPrompt?: SortOrder
-    photoIds?: SortOrder
-    albumTitle?: SortOrderInput | SortOrder
-    albumDescription?: SortOrderInput | SortOrder
-    expiresAt?: SortOrder
+    photoId?: SortOrderInput | SortOrder
+    viewerName?: SortOrderInput | SortOrder
+    viewerIp?: SortOrderInput | SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
-    _count?: ImageSearchAlbumCacheCountOrderByAggregateInput
-    _max?: ImageSearchAlbumCacheMaxOrderByAggregateInput
-    _min?: ImageSearchAlbumCacheMinOrderByAggregateInput
+    _count?: DownloadEventCountOrderByAggregateInput
+    _max?: DownloadEventMaxOrderByAggregateInput
+    _min?: DownloadEventMinOrderByAggregateInput
   }
 
-  export type ImageSearchAlbumCacheScalarWhereWithAggregatesInput = {
-    AND?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput | ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
-    OR?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
-    NOT?: ImageSearchAlbumCacheScalarWhereWithAggregatesInput | ImageSearchAlbumCacheScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
-    galleryId?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
-    userId?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
-    normalizedPrompt?: StringWithAggregatesFilter<"ImageSearchAlbumCache"> | string
-    photoIds?: StringNullableListFilter<"ImageSearchAlbumCache">
-    albumTitle?: StringNullableWithAggregatesFilter<"ImageSearchAlbumCache"> | string | null
-    albumDescription?: StringNullableWithAggregatesFilter<"ImageSearchAlbumCache"> | string | null
-    expiresAt?: DateTimeWithAggregatesFilter<"ImageSearchAlbumCache"> | Date | string
-    createdAt?: DateTimeWithAggregatesFilter<"ImageSearchAlbumCache"> | Date | string
+  export type DownloadEventScalarWhereWithAggregatesInput = {
+    AND?: DownloadEventScalarWhereWithAggregatesInput | DownloadEventScalarWhereWithAggregatesInput[]
+    OR?: DownloadEventScalarWhereWithAggregatesInput[]
+    NOT?: DownloadEventScalarWhereWithAggregatesInput | DownloadEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DownloadEvent"> | string
+    galleryId?: StringWithAggregatesFilter<"DownloadEvent"> | string
+    photoId?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
+    viewerName?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
+    viewerIp?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
+    type?: StringWithAggregatesFilter<"DownloadEvent"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DownloadEvent"> | Date | string
   }
 
   export type DriveImportJobWhereInput = {
@@ -28345,6 +28924,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -28354,6 +28950,8 @@ export namespace Prisma {
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -28368,6 +28966,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
@@ -28375,6 +28990,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
@@ -28387,6 +29004,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -28396,6 +29030,8 @@ export namespace Prisma {
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -28410,6 +29046,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
@@ -28417,6 +29070,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -28431,6 +29086,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28445,6 +29117,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28461,6 +29150,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28494,6 +29200,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateInput = {
@@ -28525,6 +29232,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUpdateInput = {
@@ -28556,6 +29264,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateInput = {
@@ -28587,6 +29296,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoCreateManyInput = {
@@ -28944,6 +29654,7 @@ export namespace Prisma {
   export type AlbumCreateInput = {
     id?: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutAlbumsInput
@@ -28954,6 +29665,7 @@ export namespace Prisma {
     id?: string
     galleryId: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: AlbumPhotoUncheckedCreateNestedManyWithoutAlbumInput
@@ -28962,6 +29674,7 @@ export namespace Prisma {
   export type AlbumUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutAlbumsNestedInput
@@ -28972,6 +29685,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: AlbumPhotoUncheckedUpdateManyWithoutAlbumNestedInput
@@ -28981,6 +29695,7 @@ export namespace Prisma {
     id?: string
     galleryId: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28988,6 +29703,7 @@ export namespace Prisma {
   export type AlbumUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28996,6 +29712,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29139,199 +29856,147 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ImageSearchImageCreateInput = {
+  export type GalleryFavoriteCreateInput = {
     id?: string
-    photoId: string
-    userId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutFavoritesInput
+    photo: PhotoCreateNestedOneWithoutFavoritesInput
+  }
+
+  export type GalleryFavoriteUncheckedCreateInput = {
+    id?: string
     galleryId: string
-    storageUrl: string
-    thumbnailUrl?: string | null
-    caption?: string | null
-    tags?: ImageSearchImageCreatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: Date | string | null
-    version?: number
+    photoId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type ImageSearchImageUncheckedCreateInput = {
+  export type GalleryFavoriteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutFavoritesNestedInput
+    photo?: PhotoUpdateOneRequiredWithoutFavoritesNestedInput
+  }
+
+  export type GalleryFavoriteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryFavoriteCreateManyInput = {
     id?: string
-    photoId: string
-    userId: string
     galleryId: string
-    storageUrl: string
-    thumbnailUrl?: string | null
-    caption?: string | null
-    tags?: ImageSearchImageCreatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: Date | string | null
-    version?: number
+    photoId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type ImageSearchImageUpdateInput = {
+  export type GalleryFavoriteUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    photoId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    storageUrl?: StringFieldUpdateOperationsInput | string
-    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    caption?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: ImageSearchImageUpdatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    version?: IntFieldUpdateOperationsInput | number
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ImageSearchImageUncheckedUpdateInput = {
+  export type GalleryFavoriteUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    photoId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
-    storageUrl?: StringFieldUpdateOperationsInput | string
-    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    caption?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: ImageSearchImageUpdatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    version?: IntFieldUpdateOperationsInput | number
+    photoId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ImageSearchImageCreateManyInput = {
+  export type DownloadEventCreateInput = {
     id?: string
-    photoId: string
-    userId: string
-    galleryId: string
-    storageUrl: string
-    thumbnailUrl?: string | null
-    caption?: string | null
-    tags?: ImageSearchImageCreatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: Date | string | null
-    version?: number
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutDownloadEventsInput
   }
 
-  export type ImageSearchImageUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    photoId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    storageUrl?: StringFieldUpdateOperationsInput | string
-    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    caption?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: ImageSearchImageUpdatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    version?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImageSearchImageUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    photoId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    storageUrl?: StringFieldUpdateOperationsInput | string
-    thumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    caption?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: ImageSearchImageUpdatetagsInput | string[]
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    indexedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    version?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImageSearchAlbumCacheCreateInput = {
+  export type DownloadEventUncheckedCreateInput = {
     id?: string
     galleryId: string
-    userId: string
-    normalizedPrompt: string
-    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
-    albumTitle?: string | null
-    albumDescription?: string | null
-    expiresAt: Date | string
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
     createdAt?: Date | string
   }
 
-  export type ImageSearchAlbumCacheUncheckedCreateInput = {
+  export type DownloadEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutDownloadEventsNestedInput
+  }
+
+  export type DownloadEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DownloadEventCreateManyInput = {
     id?: string
     galleryId: string
-    userId: string
-    normalizedPrompt: string
-    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
-    albumTitle?: string | null
-    albumDescription?: string | null
-    expiresAt: Date | string
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
     createdAt?: Date | string
   }
 
-  export type ImageSearchAlbumCacheUpdateInput = {
+  export type DownloadEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    normalizedPrompt?: StringFieldUpdateOperationsInput | string
-    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
-    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ImageSearchAlbumCacheUncheckedUpdateInput = {
+  export type DownloadEventUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    normalizedPrompt?: StringFieldUpdateOperationsInput | string
-    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
-    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImageSearchAlbumCacheCreateManyInput = {
-    id?: string
-    galleryId: string
-    userId: string
-    normalizedPrompt: string
-    photoIds?: ImageSearchAlbumCacheCreatephotoIdsInput | string[]
-    albumTitle?: string | null
-    albumDescription?: string | null
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type ImageSearchAlbumCacheUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    normalizedPrompt?: StringFieldUpdateOperationsInput | string
-    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
-    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImageSearchAlbumCacheUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    galleryId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    normalizedPrompt?: StringFieldUpdateOperationsInput | string
-    photoIds?: ImageSearchAlbumCacheUpdatephotoIdsInput | string[]
-    albumTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    albumDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30272,6 +30937,17 @@ export namespace Prisma {
     _max?: NestedEnumContactMethodNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type PhotoNullableScalarRelationFilter = {
     is?: PhotoWhereInput | null
     isNot?: PhotoWhereInput | null
@@ -30307,6 +30983,18 @@ export namespace Prisma {
     none?: DriveImportItemWhereInput
   }
 
+  export type GalleryFavoriteListRelationFilter = {
+    every?: GalleryFavoriteWhereInput
+    some?: GalleryFavoriteWhereInput
+    none?: GalleryFavoriteWhereInput
+  }
+
+  export type DownloadEventListRelationFilter = {
+    every?: DownloadEventWhereInput
+    some?: DownloadEventWhereInput
+    none?: DownloadEventWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -30327,6 +31015,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type GalleryFavoriteOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DownloadEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type GalleryUserIdSlugCompoundUniqueInput = {
     userId: string
     slug: string
@@ -30344,8 +31040,31 @@ export namespace Prisma {
     shareToken?: SortOrder
     aiContext?: SortOrder
     isPublished?: SortOrder
+    categoryTags?: SortOrder
+    expiresAt?: SortOrder
+    slideshowEnabled?: SortOrder
+    socialSharingEnabled?: SortOrder
+    emailRegistration?: SortOrder
+    language?: SortOrder
+    downloadEnabled?: SortOrder
+    downloadPin?: SortOrder
+    downloadSizeOriginal?: SortOrder
+    downloadSizeHighRes?: SortOrder
+    downloadSizeWeb?: SortOrder
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrder
+    downloadContactsOnly?: SortOrder
+    favoritesEnabled?: SortOrder
+    favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type GalleryAvgOrderByAggregateInput = {
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrder
   }
 
   export type GalleryMaxOrderByAggregateInput = {
@@ -30360,6 +31079,22 @@ export namespace Prisma {
     shareToken?: SortOrder
     aiContext?: SortOrder
     isPublished?: SortOrder
+    expiresAt?: SortOrder
+    slideshowEnabled?: SortOrder
+    socialSharingEnabled?: SortOrder
+    emailRegistration?: SortOrder
+    language?: SortOrder
+    downloadEnabled?: SortOrder
+    downloadPin?: SortOrder
+    downloadSizeOriginal?: SortOrder
+    downloadSizeHighRes?: SortOrder
+    downloadSizeWeb?: SortOrder
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrder
+    downloadContactsOnly?: SortOrder
+    favoritesEnabled?: SortOrder
+    favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30376,11 +31111,33 @@ export namespace Prisma {
     shareToken?: SortOrder
     aiContext?: SortOrder
     isPublished?: SortOrder
+    expiresAt?: SortOrder
+    slideshowEnabled?: SortOrder
+    socialSharingEnabled?: SortOrder
+    emailRegistration?: SortOrder
+    language?: SortOrder
+    downloadEnabled?: SortOrder
+    downloadPin?: SortOrder
+    downloadSizeOriginal?: SortOrder
+    downloadSizeHighRes?: SortOrder
+    downloadSizeWeb?: SortOrder
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrder
+    downloadContactsOnly?: SortOrder
+    favoritesEnabled?: SortOrder
+    favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
+  export type GallerySumOrderByAggregateInput = {
+    downloadWebMaxPx?: SortOrder
+    downloadHighResMaxPx?: SortOrder
+    downloadLimit?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -30388,7 +31145,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type GalleryScalarRelationFilter = {
@@ -30510,22 +31272,6 @@ export namespace Prisma {
     height?: SortOrder
     order?: SortOrder
     faceCount?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -30751,6 +31497,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     title?: SortOrder
+    downloadEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30759,6 +31506,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     title?: SortOrder
+    downloadEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30767,6 +31515,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     title?: SortOrder
+    downloadEnabled?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30843,145 +31592,73 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type ImageSearchImageCountOrderByAggregateInput = {
-    id?: SortOrder
-    photoId?: SortOrder
-    userId?: SortOrder
-    galleryId?: SortOrder
-    storageUrl?: SortOrder
-    thumbnailUrl?: SortOrder
-    caption?: SortOrder
-    tags?: SortOrder
-    metadata?: SortOrder
-    indexedAt?: SortOrder
-    version?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ImageSearchImageAvgOrderByAggregateInput = {
-    version?: SortOrder
-  }
-
-  export type ImageSearchImageMaxOrderByAggregateInput = {
-    id?: SortOrder
-    photoId?: SortOrder
-    userId?: SortOrder
-    galleryId?: SortOrder
-    storageUrl?: SortOrder
-    thumbnailUrl?: SortOrder
-    caption?: SortOrder
-    indexedAt?: SortOrder
-    version?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ImageSearchImageMinOrderByAggregateInput = {
-    id?: SortOrder
-    photoId?: SortOrder
-    userId?: SortOrder
-    galleryId?: SortOrder
-    storageUrl?: SortOrder
-    thumbnailUrl?: SortOrder
-    caption?: SortOrder
-    indexedAt?: SortOrder
-    version?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ImageSearchImageSumOrderByAggregateInput = {
-    version?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
-
-  export type ImageSearchAlbumCacheGalleryIdUserIdNormalizedPromptCompoundUniqueInput = {
+  export type GalleryFavoriteGalleryIdPhotoIdViewerIdCompoundUniqueInput = {
     galleryId: string
-    userId: string
-    normalizedPrompt: string
+    photoId: string
+    viewerId: string
   }
 
-  export type ImageSearchAlbumCacheCountOrderByAggregateInput = {
+  export type GalleryFavoriteCountOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
-    userId?: SortOrder
-    normalizedPrompt?: SortOrder
-    photoIds?: SortOrder
-    albumTitle?: SortOrder
-    albumDescription?: SortOrder
-    expiresAt?: SortOrder
+    photoId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GalleryFavoriteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GalleryFavoriteMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    viewerId?: SortOrder
+    viewerName?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DownloadEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    photoId?: SortOrder
+    viewerName?: SortOrder
+    viewerIp?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type ImageSearchAlbumCacheMaxOrderByAggregateInput = {
+  export type DownloadEventMaxOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
-    userId?: SortOrder
-    normalizedPrompt?: SortOrder
-    albumTitle?: SortOrder
-    albumDescription?: SortOrder
-    expiresAt?: SortOrder
+    photoId?: SortOrder
+    viewerName?: SortOrder
+    viewerIp?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type ImageSearchAlbumCacheMinOrderByAggregateInput = {
+  export type DownloadEventMinOrderByAggregateInput = {
     id?: SortOrder
     galleryId?: SortOrder
-    userId?: SortOrder
-    normalizedPrompt?: SortOrder
-    albumTitle?: SortOrder
-    albumDescription?: SortOrder
-    expiresAt?: SortOrder
+    photoId?: SortOrder
+    viewerName?: SortOrder
+    viewerIp?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -31617,6 +32294,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserOnboardingInput, UserUpdateWithoutUserOnboardingInput>, UserUncheckedUpdateWithoutUserOnboardingInput>
   }
 
+  export type GalleryCreatecategoryTagsInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutGalleriesInput = {
     create?: XOR<UserCreateWithoutGalleriesInput, UserUncheckedCreateWithoutGalleriesInput>
     connectOrCreate?: UserCreateOrConnectWithoutGalleriesInput
@@ -31664,6 +32345,20 @@ export namespace Prisma {
     connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
   }
 
+  export type GalleryFavoriteCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput> | GalleryFavoriteCreateWithoutGalleryInput[] | GalleryFavoriteUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutGalleryInput | GalleryFavoriteCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryFavoriteCreateManyGalleryInputEnvelope
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+  }
+
+  export type DownloadEventCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput> | DownloadEventCreateWithoutGalleryInput[] | DownloadEventUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DownloadEventCreateOrConnectWithoutGalleryInput | DownloadEventCreateOrConnectWithoutGalleryInput[]
+    createMany?: DownloadEventCreateManyGalleryInputEnvelope
+    connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -31697,6 +32392,33 @@ export namespace Prisma {
     connectOrCreate?: DriveImportItemCreateOrConnectWithoutGalleryInput | DriveImportItemCreateOrConnectWithoutGalleryInput[]
     createMany?: DriveImportItemCreateManyGalleryInputEnvelope
     connect?: DriveImportItemWhereUniqueInput | DriveImportItemWhereUniqueInput[]
+  }
+
+  export type GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput> | GalleryFavoriteCreateWithoutGalleryInput[] | GalleryFavoriteUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutGalleryInput | GalleryFavoriteCreateOrConnectWithoutGalleryInput[]
+    createMany?: GalleryFavoriteCreateManyGalleryInputEnvelope
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+  }
+
+  export type DownloadEventUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput> | DownloadEventCreateWithoutGalleryInput[] | DownloadEventUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DownloadEventCreateOrConnectWithoutGalleryInput | DownloadEventCreateOrConnectWithoutGalleryInput[]
+    createMany?: DownloadEventCreateManyGalleryInputEnvelope
+    connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+  }
+
+  export type GalleryUpdatecategoryTagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutGalleriesNestedInput = {
@@ -31787,6 +32509,34 @@ export namespace Prisma {
     deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
   }
 
+  export type GalleryFavoriteUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput> | GalleryFavoriteCreateWithoutGalleryInput[] | GalleryFavoriteUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutGalleryInput | GalleryFavoriteCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryFavoriteUpsertWithWhereUniqueWithoutGalleryInput | GalleryFavoriteUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryFavoriteCreateManyGalleryInputEnvelope
+    set?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    disconnect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    delete?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    update?: GalleryFavoriteUpdateWithWhereUniqueWithoutGalleryInput | GalleryFavoriteUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryFavoriteUpdateManyWithWhereWithoutGalleryInput | GalleryFavoriteUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
+  }
+
+  export type DownloadEventUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput> | DownloadEventCreateWithoutGalleryInput[] | DownloadEventUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DownloadEventCreateOrConnectWithoutGalleryInput | DownloadEventCreateOrConnectWithoutGalleryInput[]
+    upsert?: DownloadEventUpsertWithWhereUniqueWithoutGalleryInput | DownloadEventUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: DownloadEventCreateManyGalleryInputEnvelope
+    set?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    disconnect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    delete?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    update?: DownloadEventUpdateWithWhereUniqueWithoutGalleryInput | DownloadEventUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: DownloadEventUpdateManyWithWhereWithoutGalleryInput | DownloadEventUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -31857,6 +32607,34 @@ export namespace Prisma {
     deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
   }
 
+  export type GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput> | GalleryFavoriteCreateWithoutGalleryInput[] | GalleryFavoriteUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutGalleryInput | GalleryFavoriteCreateOrConnectWithoutGalleryInput[]
+    upsert?: GalleryFavoriteUpsertWithWhereUniqueWithoutGalleryInput | GalleryFavoriteUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: GalleryFavoriteCreateManyGalleryInputEnvelope
+    set?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    disconnect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    delete?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    update?: GalleryFavoriteUpdateWithWhereUniqueWithoutGalleryInput | GalleryFavoriteUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: GalleryFavoriteUpdateManyWithWhereWithoutGalleryInput | GalleryFavoriteUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
+  }
+
+  export type DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput> | DownloadEventCreateWithoutGalleryInput[] | DownloadEventUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: DownloadEventCreateOrConnectWithoutGalleryInput | DownloadEventCreateOrConnectWithoutGalleryInput[]
+    upsert?: DownloadEventUpsertWithWhereUniqueWithoutGalleryInput | DownloadEventUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: DownloadEventCreateManyGalleryInputEnvelope
+    set?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    disconnect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    delete?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    connect?: DownloadEventWhereUniqueInput | DownloadEventWhereUniqueInput[]
+    update?: DownloadEventUpdateWithWhereUniqueWithoutGalleryInput | DownloadEventUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: DownloadEventUpdateManyWithWhereWithoutGalleryInput | DownloadEventUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
+  }
+
   export type PhotoCreateaiTagsInput = {
     set: string[]
   }
@@ -31894,6 +32672,13 @@ export namespace Prisma {
     connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
   }
 
+  export type GalleryFavoriteCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput> | GalleryFavoriteCreateWithoutPhotoInput[] | GalleryFavoriteUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutPhotoInput | GalleryFavoriteCreateOrConnectWithoutPhotoInput[]
+    createMany?: GalleryFavoriteCreateManyPhotoInputEnvelope
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+  }
+
   export type GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
@@ -31921,12 +32706,11 @@ export namespace Prisma {
     connect?: GalleryCommentWhereUniqueInput | GalleryCommentWhereUniqueInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput> | GalleryFavoriteCreateWithoutPhotoInput[] | GalleryFavoriteUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutPhotoInput | GalleryFavoriteCreateOrConnectWithoutPhotoInput[]
+    createMany?: GalleryFavoriteCreateManyPhotoInputEnvelope
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
   }
 
   export type PhotoUpdateaiTagsInput = {
@@ -31994,6 +32778,20 @@ export namespace Prisma {
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
+  export type GalleryFavoriteUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput> | GalleryFavoriteCreateWithoutPhotoInput[] | GalleryFavoriteUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutPhotoInput | GalleryFavoriteCreateOrConnectWithoutPhotoInput[]
+    upsert?: GalleryFavoriteUpsertWithWhereUniqueWithoutPhotoInput | GalleryFavoriteUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: GalleryFavoriteCreateManyPhotoInputEnvelope
+    set?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    disconnect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    delete?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    update?: GalleryFavoriteUpdateWithWhereUniqueWithoutPhotoInput | GalleryFavoriteUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: GalleryFavoriteUpdateManyWithWhereWithoutPhotoInput | GalleryFavoriteUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
+  }
+
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput = {
     create?: XOR<GalleryCreateWithoutCoverPhotoInput, GalleryUncheckedCreateWithoutCoverPhotoInput> | GalleryCreateWithoutCoverPhotoInput[] | GalleryUncheckedCreateWithoutCoverPhotoInput[]
     connectOrCreate?: GalleryCreateOrConnectWithoutCoverPhotoInput | GalleryCreateOrConnectWithoutCoverPhotoInput[]
@@ -32044,6 +32842,20 @@ export namespace Prisma {
     update?: GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput | GalleryCommentUpdateWithWhereUniqueWithoutPhotoInput[]
     updateMany?: GalleryCommentUpdateManyWithWhereWithoutPhotoInput | GalleryCommentUpdateManyWithWhereWithoutPhotoInput[]
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
+  }
+
+  export type GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput = {
+    create?: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput> | GalleryFavoriteCreateWithoutPhotoInput[] | GalleryFavoriteUncheckedCreateWithoutPhotoInput[]
+    connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutPhotoInput | GalleryFavoriteCreateOrConnectWithoutPhotoInput[]
+    upsert?: GalleryFavoriteUpsertWithWhereUniqueWithoutPhotoInput | GalleryFavoriteUpsertWithWhereUniqueWithoutPhotoInput[]
+    createMany?: GalleryFavoriteCreateManyPhotoInputEnvelope
+    set?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    disconnect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    delete?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
+    update?: GalleryFavoriteUpdateWithWhereUniqueWithoutPhotoInput | GalleryFavoriteUpdateWithWhereUniqueWithoutPhotoInput[]
+    updateMany?: GalleryFavoriteUpdateManyWithWhereWithoutPhotoInput | GalleryFavoriteUpdateManyWithWhereWithoutPhotoInput[]
+    deleteMany?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
   }
 
   export type PhotoCreateNestedOneWithoutUploadSessionInput = {
@@ -32343,22 +33155,46 @@ export namespace Prisma {
     deleteMany?: GalleryCommentScalarWhereInput | GalleryCommentScalarWhereInput[]
   }
 
-  export type ImageSearchImageCreatetagsInput = {
-    set: string[]
+  export type GalleryCreateNestedOneWithoutFavoritesInput = {
+    create?: XOR<GalleryCreateWithoutFavoritesInput, GalleryUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutFavoritesInput
+    connect?: GalleryWhereUniqueInput
   }
 
-  export type ImageSearchImageUpdatetagsInput = {
-    set?: string[]
-    push?: string | string[]
+  export type PhotoCreateNestedOneWithoutFavoritesInput = {
+    create?: XOR<PhotoCreateWithoutFavoritesInput, PhotoUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutFavoritesInput
+    connect?: PhotoWhereUniqueInput
   }
 
-  export type ImageSearchAlbumCacheCreatephotoIdsInput = {
-    set: string[]
+  export type GalleryUpdateOneRequiredWithoutFavoritesNestedInput = {
+    create?: XOR<GalleryCreateWithoutFavoritesInput, GalleryUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutFavoritesInput
+    upsert?: GalleryUpsertWithoutFavoritesInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutFavoritesInput, GalleryUpdateWithoutFavoritesInput>, GalleryUncheckedUpdateWithoutFavoritesInput>
   }
 
-  export type ImageSearchAlbumCacheUpdatephotoIdsInput = {
-    set?: string[]
-    push?: string | string[]
+  export type PhotoUpdateOneRequiredWithoutFavoritesNestedInput = {
+    create?: XOR<PhotoCreateWithoutFavoritesInput, PhotoUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: PhotoCreateOrConnectWithoutFavoritesInput
+    upsert?: PhotoUpsertWithoutFavoritesInput
+    connect?: PhotoWhereUniqueInput
+    update?: XOR<XOR<PhotoUpdateToOneWithWhereWithoutFavoritesInput, PhotoUpdateWithoutFavoritesInput>, PhotoUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type GalleryCreateNestedOneWithoutDownloadEventsInput = {
+    create?: XOR<GalleryCreateWithoutDownloadEventsInput, GalleryUncheckedCreateWithoutDownloadEventsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutDownloadEventsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type GalleryUpdateOneRequiredWithoutDownloadEventsNestedInput = {
+    create?: XOR<GalleryCreateWithoutDownloadEventsInput, GalleryUncheckedCreateWithoutDownloadEventsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutDownloadEventsInput
+    upsert?: GalleryUpsertWithoutDownloadEventsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutDownloadEventsInput, GalleryUpdateWithoutDownloadEventsInput>, GalleryUncheckedUpdateWithoutDownloadEventsInput>
   }
 
   export type UserCreateNestedOneWithoutDriveImportJobsInput = {
@@ -32839,29 +33675,6 @@ export namespace Prisma {
     _min?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumUploadSessionStatusFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedEnumImportSourceFilter<$PrismaModel = never> = {
     equals?: $Enums.ImportSource | EnumImportSourceFieldRefInput<$PrismaModel>
@@ -33063,6 +33876,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
@@ -33071,6 +33901,8 @@ export namespace Prisma {
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
@@ -33084,6 +33916,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
@@ -33091,6 +33940,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -33367,6 +34218,23 @@ export namespace Prisma {
     shareToken?: StringFilter<"Gallery"> | string
     aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
+    categoryTags?: StringNullableListFilter<"Gallery">
+    expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
+    slideshowEnabled?: BoolFilter<"Gallery"> | boolean
+    socialSharingEnabled?: BoolFilter<"Gallery"> | boolean
+    emailRegistration?: BoolFilter<"Gallery"> | boolean
+    language?: StringFilter<"Gallery"> | string
+    downloadEnabled?: BoolFilter<"Gallery"> | boolean
+    downloadPin?: StringNullableFilter<"Gallery"> | string | null
+    downloadSizeOriginal?: BoolFilter<"Gallery"> | boolean
+    downloadSizeHighRes?: BoolFilter<"Gallery"> | boolean
+    downloadSizeWeb?: BoolFilter<"Gallery"> | boolean
+    downloadWebMaxPx?: IntFilter<"Gallery"> | number
+    downloadHighResMaxPx?: IntFilter<"Gallery"> | number
+    downloadLimit?: IntNullableFilter<"Gallery"> | number | null
+    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
+    favoritesEnabled?: BoolFilter<"Gallery"> | boolean
+    favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
   }
@@ -34154,6 +35022,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUsedAsCoverInInput = {
@@ -34184,6 +35053,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutUsedAsCoverInInput = {
@@ -34219,6 +35089,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutGalleryInput = {
@@ -34249,6 +35120,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutGalleryInput = {
@@ -34264,6 +35136,7 @@ export namespace Prisma {
   export type AlbumCreateWithoutGalleryInput = {
     id?: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: AlbumPhotoCreateNestedManyWithoutAlbumInput
@@ -34272,6 +35145,7 @@ export namespace Prisma {
   export type AlbumUncheckedCreateWithoutGalleryInput = {
     id?: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: AlbumPhotoUncheckedCreateNestedManyWithoutAlbumInput
@@ -34384,6 +35258,64 @@ export namespace Prisma {
 
   export type DriveImportItemCreateManyGalleryInputEnvelope = {
     data: DriveImportItemCreateManyGalleryInput | DriveImportItemCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryFavoriteCreateWithoutGalleryInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photo: PhotoCreateNestedOneWithoutFavoritesInput
+  }
+
+  export type GalleryFavoriteUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    photoId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryFavoriteCreateOrConnectWithoutGalleryInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    create: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryFavoriteCreateManyGalleryInputEnvelope = {
+    data: GalleryFavoriteCreateManyGalleryInput | GalleryFavoriteCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DownloadEventCreateWithoutGalleryInput = {
+    id?: string
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
+    createdAt?: Date | string
+  }
+
+  export type DownloadEventUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
+    createdAt?: Date | string
+  }
+
+  export type DownloadEventCreateOrConnectWithoutGalleryInput = {
+    where: DownloadEventWhereUniqueInput
+    create: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type DownloadEventCreateManyGalleryInputEnvelope = {
+    data: DownloadEventCreateManyGalleryInput | DownloadEventCreateManyGalleryInput[]
     skipDuplicates?: boolean
   }
 
@@ -34503,6 +35435,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUsedAsCoverInInput = {
@@ -34533,6 +35466,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUpsertWithWhereUniqueWithoutGalleryInput = {
@@ -34604,6 +35538,7 @@ export namespace Prisma {
     id?: StringFilter<"Album"> | string
     galleryId?: StringFilter<"Album"> | string
     title?: StringFilter<"Album"> | string
+    downloadEnabled?: BoolFilter<"Album"> | boolean
     createdAt?: DateTimeFilter<"Album"> | Date | string
     updatedAt?: DateTimeFilter<"Album"> | Date | string
   }
@@ -34702,6 +35637,65 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DriveImportItem"> | Date | string
   }
 
+  export type GalleryFavoriteUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    update: XOR<GalleryFavoriteUpdateWithoutGalleryInput, GalleryFavoriteUncheckedUpdateWithoutGalleryInput>
+    create: XOR<GalleryFavoriteCreateWithoutGalleryInput, GalleryFavoriteUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type GalleryFavoriteUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    data: XOR<GalleryFavoriteUpdateWithoutGalleryInput, GalleryFavoriteUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type GalleryFavoriteUpdateManyWithWhereWithoutGalleryInput = {
+    where: GalleryFavoriteScalarWhereInput
+    data: XOR<GalleryFavoriteUpdateManyMutationInput, GalleryFavoriteUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type GalleryFavoriteScalarWhereInput = {
+    AND?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
+    OR?: GalleryFavoriteScalarWhereInput[]
+    NOT?: GalleryFavoriteScalarWhereInput | GalleryFavoriteScalarWhereInput[]
+    id?: StringFilter<"GalleryFavorite"> | string
+    galleryId?: StringFilter<"GalleryFavorite"> | string
+    photoId?: StringFilter<"GalleryFavorite"> | string
+    viewerId?: StringFilter<"GalleryFavorite"> | string
+    viewerName?: StringFilter<"GalleryFavorite"> | string
+    note?: StringNullableFilter<"GalleryFavorite"> | string | null
+    createdAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+    updatedAt?: DateTimeFilter<"GalleryFavorite"> | Date | string
+  }
+
+  export type DownloadEventUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: DownloadEventWhereUniqueInput
+    update: XOR<DownloadEventUpdateWithoutGalleryInput, DownloadEventUncheckedUpdateWithoutGalleryInput>
+    create: XOR<DownloadEventCreateWithoutGalleryInput, DownloadEventUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type DownloadEventUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: DownloadEventWhereUniqueInput
+    data: XOR<DownloadEventUpdateWithoutGalleryInput, DownloadEventUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type DownloadEventUpdateManyWithWhereWithoutGalleryInput = {
+    where: DownloadEventScalarWhereInput
+    data: XOR<DownloadEventUpdateManyMutationInput, DownloadEventUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type DownloadEventScalarWhereInput = {
+    AND?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
+    OR?: DownloadEventScalarWhereInput[]
+    NOT?: DownloadEventScalarWhereInput | DownloadEventScalarWhereInput[]
+    id?: StringFilter<"DownloadEvent"> | string
+    galleryId?: StringFilter<"DownloadEvent"> | string
+    photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
+    type?: StringFilter<"DownloadEvent"> | string
+    createdAt?: DateTimeFilter<"DownloadEvent"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
@@ -34712,6 +35706,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -34720,6 +35731,8 @@ export namespace Prisma {
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -34734,12 +35747,31 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -34757,6 +35789,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -34765,6 +35814,8 @@ export namespace Prisma {
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -34778,6 +35829,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
@@ -34785,6 +35853,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -34886,6 +35956,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GalleryFavoriteCreateWithoutPhotoInput = {
+    id?: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutFavoritesInput
+  }
+
+  export type GalleryFavoriteUncheckedCreateWithoutPhotoInput = {
+    id?: string
+    galleryId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GalleryFavoriteCreateOrConnectWithoutPhotoInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    create: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type GalleryFavoriteCreateManyPhotoInputEnvelope = {
+    data: GalleryFavoriteCreateManyPhotoInput | GalleryFavoriteCreateManyPhotoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GalleryUpsertWithoutPhotosInput = {
     update: XOR<GalleryUpdateWithoutPhotosInput, GalleryUncheckedUpdateWithoutPhotosInput>
     create: XOR<GalleryCreateWithoutPhotosInput, GalleryUncheckedCreateWithoutPhotosInput>
@@ -34907,6 +36007,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -34915,6 +36032,8 @@ export namespace Prisma {
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -34929,12 +36048,31 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -35031,6 +36169,22 @@ export namespace Prisma {
     data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutPhotoInput>
   }
 
+  export type GalleryFavoriteUpsertWithWhereUniqueWithoutPhotoInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    update: XOR<GalleryFavoriteUpdateWithoutPhotoInput, GalleryFavoriteUncheckedUpdateWithoutPhotoInput>
+    create: XOR<GalleryFavoriteCreateWithoutPhotoInput, GalleryFavoriteUncheckedCreateWithoutPhotoInput>
+  }
+
+  export type GalleryFavoriteUpdateWithWhereUniqueWithoutPhotoInput = {
+    where: GalleryFavoriteWhereUniqueInput
+    data: XOR<GalleryFavoriteUpdateWithoutPhotoInput, GalleryFavoriteUncheckedUpdateWithoutPhotoInput>
+  }
+
+  export type GalleryFavoriteUpdateManyWithWhereWithoutPhotoInput = {
+    where: GalleryFavoriteScalarWhereInput
+    data: XOR<GalleryFavoriteUpdateManyMutationInput, GalleryFavoriteUncheckedUpdateManyWithoutPhotoInput>
+  }
+
   export type PhotoCreateWithoutUploadSessionInput = {
     id?: string
     checksum?: string | null
@@ -35059,6 +36213,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutUploadSessionInput = {
@@ -35089,6 +36244,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutUploadSessionInput = {
@@ -35135,6 +36291,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutUploadSessionInput = {
@@ -35165,6 +36322,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type UserCreateWithoutStorageEventsInput = {
@@ -35509,6 +36667,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -35517,6 +36692,8 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutClientsInput = {
@@ -35531,12 +36708,31 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutClientsInput = {
@@ -35590,6 +36786,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -35598,6 +36811,8 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutClientsInput = {
@@ -35612,12 +36827,31 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type ClientUpsertWithoutGalleriesInput = {
@@ -35661,6 +36895,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -35669,6 +36920,8 @@ export namespace Prisma {
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutAlbumsInput = {
@@ -35683,12 +36936,31 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutAlbumsInput = {
@@ -35737,6 +37009,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -35745,6 +37034,8 @@ export namespace Prisma {
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutAlbumsInput = {
@@ -35759,12 +37050,31 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -35786,6 +37096,7 @@ export namespace Prisma {
   export type AlbumCreateWithoutPhotosInput = {
     id?: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     gallery: GalleryCreateNestedOneWithoutAlbumsInput
@@ -35795,6 +37106,7 @@ export namespace Prisma {
     id?: string
     galleryId: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -35832,6 +37144,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutAlbumPhotosInput = {
@@ -35862,6 +37175,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutAlbumPhotosInput = {
@@ -35883,6 +37197,7 @@ export namespace Prisma {
   export type AlbumUpdateWithoutPhotosInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     gallery?: GalleryUpdateOneRequiredWithoutAlbumsNestedInput
@@ -35892,6 +37207,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35935,6 +37251,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutAlbumPhotosInput = {
@@ -35965,6 +37282,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type GalleryCreateWithoutCommentsInput = {
@@ -35977,6 +37295,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -35985,6 +37320,8 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCommentsInput = {
@@ -35999,12 +37336,31 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCommentsInput = {
@@ -36040,6 +37396,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoUncheckedCreateWithoutCommentsInput = {
@@ -36070,6 +37427,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
     uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
     albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutPhotoInput
   }
 
   export type PhotoCreateOrConnectWithoutCommentsInput = {
@@ -36169,6 +37527,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -36177,6 +37552,8 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCommentsInput = {
@@ -36191,12 +37568,31 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutCommentsInput = {
@@ -36238,6 +37634,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutCommentsInput = {
@@ -36268,6 +37665,7 @@ export namespace Prisma {
     usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type GalleryCommentUpsertWithoutRepliesInput = {
@@ -36323,6 +37721,490 @@ export namespace Prisma {
   export type GalleryCommentUpdateManyWithWhereWithoutParentInput = {
     where: GalleryCommentScalarWhereInput
     data: XOR<GalleryCommentUpdateManyMutationInput, GalleryCommentUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type GalleryCreateWithoutFavoritesInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutFavoritesInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutFavoritesInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutFavoritesInput, GalleryUncheckedCreateWithoutFavoritesInput>
+  }
+
+  export type PhotoCreateWithoutFavoritesInput = {
+    id?: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutPhotosInput
+    usedAsCoverIn?: GalleryCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionCreateNestedOneWithoutPhotoInput
+    albumPhotos?: AlbumPhotoCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoUncheckedCreateWithoutFavoritesInput = {
+    id?: string
+    galleryId: string
+    checksum?: string | null
+    s3Key: string
+    s3Bucket: string
+    originalFilename: string
+    originalSize?: bigint | number
+    thumbnailSize?: bigint | number
+    previewSize?: bigint | number
+    totalSize?: bigint | number
+    width?: number | null
+    height?: number | null
+    mimeType: string
+    order?: number
+    isCulled?: boolean
+    loved?: boolean
+    aiCaption?: string | null
+    aiTags?: PhotoCreateaiTagsInput | string[]
+    faceCount?: number
+    thumbnailKey?: string | null
+    previewKey?: string | null
+    status?: string
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    usedAsCoverIn?: GalleryUncheckedCreateNestedManyWithoutCoverPhotoInput
+    uploadSession?: UploadSessionUncheckedCreateNestedOneWithoutPhotoInput
+    albumPhotos?: AlbumPhotoUncheckedCreateNestedManyWithoutPhotoInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutPhotoInput
+  }
+
+  export type PhotoCreateOrConnectWithoutFavoritesInput = {
+    where: PhotoWhereUniqueInput
+    create: XOR<PhotoCreateWithoutFavoritesInput, PhotoUncheckedCreateWithoutFavoritesInput>
+  }
+
+  export type GalleryUpsertWithoutFavoritesInput = {
+    update: XOR<GalleryUpdateWithoutFavoritesInput, GalleryUncheckedUpdateWithoutFavoritesInput>
+    create: XOR<GalleryCreateWithoutFavoritesInput, GalleryUncheckedCreateWithoutFavoritesInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutFavoritesInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutFavoritesInput, GalleryUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type GalleryUpdateWithoutFavoritesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutFavoritesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type PhotoUpsertWithoutFavoritesInput = {
+    update: XOR<PhotoUpdateWithoutFavoritesInput, PhotoUncheckedUpdateWithoutFavoritesInput>
+    create: XOR<PhotoCreateWithoutFavoritesInput, PhotoUncheckedCreateWithoutFavoritesInput>
+    where?: PhotoWhereInput
+  }
+
+  export type PhotoUpdateToOneWithWhereWithoutFavoritesInput = {
+    where?: PhotoWhereInput
+    data: XOR<PhotoUpdateWithoutFavoritesInput, PhotoUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type PhotoUpdateWithoutFavoritesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutPhotosNestedInput
+    usedAsCoverIn?: GalleryUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
+    albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type PhotoUncheckedUpdateWithoutFavoritesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    checksum?: NullableStringFieldUpdateOperationsInput | string | null
+    s3Key?: StringFieldUpdateOperationsInput | string
+    s3Bucket?: StringFieldUpdateOperationsInput | string
+    originalFilename?: StringFieldUpdateOperationsInput | string
+    originalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    thumbnailSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    previewSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    totalSize?: BigIntFieldUpdateOperationsInput | bigint | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCulled?: BoolFieldUpdateOperationsInput | boolean
+    loved?: BoolFieldUpdateOperationsInput | boolean
+    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
+    aiTags?: PhotoUpdateaiTagsInput | string[]
+    faceCount?: IntFieldUpdateOperationsInput | number
+    thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAsCoverIn?: GalleryUncheckedUpdateManyWithoutCoverPhotoNestedInput
+    uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
+    albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+  }
+
+  export type GalleryCreateWithoutDownloadEventsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutDownloadEventsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    aiContext?: string | null
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutDownloadEventsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutDownloadEventsInput, GalleryUncheckedCreateWithoutDownloadEventsInput>
+  }
+
+  export type GalleryUpsertWithoutDownloadEventsInput = {
+    update: XOR<GalleryUpdateWithoutDownloadEventsInput, GalleryUncheckedUpdateWithoutDownloadEventsInput>
+    create: XOR<GalleryCreateWithoutDownloadEventsInput, GalleryUncheckedCreateWithoutDownloadEventsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutDownloadEventsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutDownloadEventsInput, GalleryUncheckedUpdateWithoutDownloadEventsInput>
+  }
+
+  export type GalleryUpdateWithoutDownloadEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutDownloadEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type UserCreateWithoutDriveImportJobsInput = {
@@ -36578,6 +38460,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGalleriesInput
@@ -36586,6 +38485,8 @@ export namespace Prisma {
     albums?: AlbumCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutDriveImportItemsInput = {
@@ -36600,12 +38501,31 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
     clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutDriveImportItemsInput = {
@@ -36677,6 +38597,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -36685,6 +38622,8 @@ export namespace Prisma {
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutDriveImportItemsInput = {
@@ -36699,12 +38638,31 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -36759,6 +38717,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -36927,6 +38902,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
@@ -36935,6 +38927,8 @@ export namespace Prisma {
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
@@ -36948,6 +38942,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
@@ -36955,6 +38966,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
@@ -36968,6 +38981,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37101,6 +39131,7 @@ export namespace Prisma {
   export type AlbumCreateManyGalleryInput = {
     id?: string
     title: string
+    downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37139,6 +39170,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type GalleryFavoriteCreateManyGalleryInput = {
+    id?: string
+    photoId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DownloadEventCreateManyGalleryInput = {
+    id?: string
+    photoId?: string | null
+    viewerName?: string | null
+    viewerIp?: string | null
+    type: string
+    createdAt?: Date | string
+  }
+
   export type PhotoUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     checksum?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37167,6 +39217,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateWithoutGalleryInput = {
@@ -37197,6 +39248,7 @@ export namespace Prisma {
     uploadSession?: UploadSessionUncheckedUpdateOneWithoutPhotoNestedInput
     albumPhotos?: AlbumPhotoUncheckedUpdateManyWithoutPhotoNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutPhotoNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutPhotoNestedInput
   }
 
   export type PhotoUncheckedUpdateManyWithoutGalleryInput = {
@@ -37228,6 +39280,7 @@ export namespace Prisma {
   export type AlbumUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: AlbumPhotoUpdateManyWithoutAlbumNestedInput
@@ -37236,6 +39289,7 @@ export namespace Prisma {
   export type AlbumUncheckedUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: AlbumPhotoUncheckedUpdateManyWithoutAlbumNestedInput
@@ -37244,6 +39298,7 @@ export namespace Prisma {
   export type AlbumUncheckedUpdateManyWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37352,6 +39407,63 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GalleryFavoriteUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photo?: PhotoUpdateOneRequiredWithoutFavoritesNestedInput
+  }
+
+  export type GalleryFavoriteUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryFavoriteUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DownloadEventUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DownloadEventUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DownloadEventUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerName?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
@@ -37363,6 +39475,23 @@ export namespace Prisma {
     shareToken?: string
     aiContext?: string | null
     isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37385,6 +39514,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type GalleryFavoriteCreateManyPhotoInput = {
+    id?: string
+    galleryId: string
+    viewerId: string
+    viewerName: string
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type GalleryUpdateWithoutCoverPhotoInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -37395,6 +39534,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
@@ -37403,6 +39559,8 @@ export namespace Prisma {
     clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -37416,6 +39574,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
@@ -37423,6 +39598,8 @@ export namespace Prisma {
     clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {
@@ -37436,6 +39613,23 @@ export namespace Prisma {
     shareToken?: StringFieldUpdateOperationsInput | string
     aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37492,6 +39686,36 @@ export namespace Prisma {
     viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     likes?: GalleryCommentUpdatelikesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryFavoriteUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutFavoritesNestedInput
+  }
+
+  export type GalleryFavoriteUncheckedUpdateWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GalleryFavoriteUncheckedUpdateManyWithoutPhotoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    viewerId?: StringFieldUpdateOperationsInput | string
+    viewerName?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

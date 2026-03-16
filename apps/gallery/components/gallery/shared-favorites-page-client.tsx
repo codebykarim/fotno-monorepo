@@ -5,32 +5,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Download,
-  DownloadCloud,
-  Heart,
-  Lock,
+  ImageIcon,
   Minus,
   Pause,
   Play,
   Plus,
   X,
 } from "lucide-react";
-import { toast } from "sonner";
 import type { SharedFavoritesData, SharedFavoritesPhoto } from "@/lib/gallery-types";
-import { Button } from "@workspace/ui/components/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@workspace/ui/components/dialog";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@workspace/ui/components/input-otp";
 
 type Props = {
   data: SharedFavoritesData;
@@ -46,8 +28,6 @@ export default function SharedFavoritesPageClient({
 }: Props) {
   const { viewerName, gallery, photos } = data;
   const settings = gallery.settings;
-  const downloadsEnabled = settings?.downloadEnabled !== false;
-  const hasDownloadPin = settings?.hasDownloadPin === true;
   const slideshowEnabled = settings?.slideshowEnabled !== false;
 
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
@@ -62,16 +42,6 @@ export default function SharedFavoritesPageClient({
   } | null>(null);
   const panRef = useRef(pan);
   const modalViewportRef = useRef<HTMLDivElement>(null);
-
-  // Download state
-  const [downloadingPhotoId, setDownloadingPhotoId] = useState<string | null>(null);
-  const [isDownloadingAll, setIsDownloadingAll] = useState(false);
-  const [pinDialogOpen, setPinDialogOpen] = useState(false);
-  const [pinValue, setPinValue] = useState("");
-  const [pinVerifying, setPinVerifying] = useState(false);
-  const [pinVerified, setPinVerified] = useState(false);
-  const pendingDownloadRef = useRef<(() => void) | null>(null);
-  const [sizePickerPhoto, setSizePickerPhoto] = useState<SharedFavoritesPhoto | null>(null);
 
   // Slideshow state
   const [slideshowActive, setSlideshowActive] = useState(false);
@@ -258,166 +228,11 @@ export default function SharedFavoritesPageClient({
     setIsDragging(false);
   };
 
-  // Download helpers — same pattern as main gallery
-  const availableDownloadSizes = useMemo(() => {
-    const sizes: { key: string; label: string; variant: string }[] = [];
-    const ds = settings?.downloadSizes;
-    if (!ds || ds.original)
-      sizes.push({ key: "original", label: "Original", variant: "original" });
-    if (ds?.highRes)
-      sizes.push({ key: "highRes", label: "High Resolution", variant: "original" });
-    if (!ds || ds.web)
-      sizes.push({ key: "web", label: "Web Size", variant: "preview" });
-    return sizes;
-  }, [settings]);
-
-  const requirePin = (cb: () => void): boolean => {
-    if (!hasDownloadPin || pinVerified) return false;
-    pendingDownloadRef.current = cb;
-    setPinValue("");
-    setPinDialogOpen(true);
-    return true;
-  };
-
-  const handleVerifyPin = async () => {
-    setPinVerifying(true);
-    try {
-      const res = await fetch(
-        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/verify-pin`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pin: pinValue }),
-        },
-      );
-      const result = await res.json();
-      if (result.valid) {
-        setPinVerified(true);
-        setPinDialogOpen(false);
-        pendingDownloadRef.current?.();
-        pendingDownloadRef.current = null;
-      } else {
-        toast.error("Incorrect PIN");
-        setPinValue("");
-      }
-    } catch {
-      toast.error("Failed to verify PIN");
-    } finally {
-      setPinVerifying(false);
-    }
-  };
-
-  const trackDownloadEvent = async (
-    type: string,
-    photoId?: string,
-  ): Promise<boolean> => {
-    try {
-      const res = await fetch(
-        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-event`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type,
-            photoId: photoId ?? null,
-            viewerName,
-          }),
-        },
-      );
-      if (!res.ok) {
-        const d = await res.json().catch(() => ({}));
-        if (d.limitReached) {
-          toast.error("Download limit reached for this photo");
-          return false;
-        }
-      }
-      return true;
-    } catch {
-      return true;
-    }
-  };
-
-  const downloadPhotoWithVariant = async (
-    photo: SharedFavoritesPhoto,
-    variant: string,
-  ) => {
-    setDownloadingPhotoId(photo.id);
-    setSizePickerPhoto(null);
-    try {
-      const allowed = await trackDownloadEvent("single", photo.id);
-      if (!allowed) return;
-
-      const response = await fetch(
-        `/api/photos/${photo.id}/download?shareToken=${encodeURIComponent(gallery.shareToken)}&fileName=${encodeURIComponent(photo.originalFilename)}&variant=${encodeURIComponent(variant)}&favoriteShareToken=${encodeURIComponent(favoriteShareToken)}`,
-      );
-
-      if (!response.ok) {
-        throw new Error("Download failed");
-      }
-
-      const blob = await response.blob();
-      const objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = objectUrl;
-      link.download = photo.originalFilename;
-      link.click();
-      URL.revokeObjectURL(objectUrl);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Download failed";
-      toast.error(message);
-    } finally {
-      setDownloadingPhotoId(null);
-    }
-  };
-
-  const handleSingleDownload = async (photo: SharedFavoritesPhoto) => {
-    const doDownload = async () => {
-      if (availableDownloadSizes.length > 1) {
-        setSizePickerPhoto(photo);
-        return;
-      }
-      const variant = availableDownloadSizes[0]?.variant ?? "original";
-      await downloadPhotoWithVariant(photo, variant);
-    };
-    if (requirePin(doDownload)) return;
-    await doDownload();
-  };
-
-  const handleDownloadAll = async () => {
-    const doDownload = async () => {
-      setIsDownloadingAll(true);
-      try {
-        const response = await fetch(
-          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-all`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to prepare download");
-        }
-
-        const blob = await response.blob();
-        const objectUrl = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = objectUrl;
-        link.download = `${viewerName}_favorites.zip`;
-        link.click();
-        URL.revokeObjectURL(objectUrl);
-      } catch {
-        toast.error("Download failed");
-      } finally {
-        setIsDownloadingAll(false);
-      }
-    };
-    if (requirePin(doDownload)) return;
-    await doDownload();
-  };
-
   if (photos.length === 0) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center space-y-2">
-          <Heart className="mx-auto h-10 w-10 text-muted-foreground" />
+          <ImageIcon className="mx-auto h-10 w-10 text-muted-foreground" />
           <h1 className="text-xl font-semibold">No favorites to display</h1>
           <p className="text-sm text-muted-foreground">
             This favorites list is empty.
@@ -452,17 +267,6 @@ export default function SharedFavoritesPageClient({
               >
                 <Play className="h-4 w-4" />
                 Slideshow
-              </button>
-            )}
-            {downloadsEnabled && (
-              <button
-                type="button"
-                onClick={() => void handleDownloadAll()}
-                disabled={isDownloadingAll}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <DownloadCloud className="h-4 w-4" />
-                {isDownloadingAll ? "Preparing ZIP..." : "Download All"}
               </button>
             )}
           </div>
@@ -512,25 +316,6 @@ export default function SharedFavoritesPageClient({
                     </span>
                   </div>
                 )}
-
-                {/* Loved indicator */}
-                <div className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur pointer-events-none">
-                  <Heart className="h-4 w-4 fill-primary text-primary" />
-                </div>
-
-                {downloadsEnabled && (
-                  <button
-                    type="button"
-                    onClick={() => void handleSingleDownload(photo)}
-                    disabled={downloadingPhotoId === photo.id}
-                    className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
-                    aria-label="Download photo"
-                  >
-                    <Download
-                      className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
-                    />
-                  </button>
-                )}
               </article>
             ))}
           </div>
@@ -564,19 +349,6 @@ export default function SharedFavoritesPageClient({
             >
               {Math.round(zoom * 100)}%
             </button>
-            {downloadsEnabled && (
-              <button
-                type="button"
-                onClick={() => void handleSingleDownload(activePhoto)}
-                disabled={downloadingPhotoId === activePhoto.id}
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/45 px-4 text-sm text-white"
-              >
-                <Download className="h-4 w-4" />
-                {downloadingPhotoId === activePhoto.id
-                  ? "Downloading..."
-                  : "Download"}
-              </button>
-            )}
             <button
               type="button"
               onClick={() => {
@@ -650,7 +422,6 @@ export default function SharedFavoritesPageClient({
           {activePhoto.note && (
             <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 px-4 py-2 text-sm text-white/90 backdrop-blur">
-                <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
                 &ldquo;{activePhoto.note}&rdquo;
               </span>
             </div>
@@ -723,104 +494,6 @@ export default function SharedFavoritesPageClient({
           </div>
         </div>
       )}
-
-      {/* Download Size Picker */}
-      <Dialog
-        open={sizePickerPhoto !== null}
-        onOpenChange={(open) => {
-          if (!open) setSizePickerPhoto(null);
-        }}
-      >
-        <DialogContent className="sm:max-w-[360px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Download className="h-4 w-4" />
-              Choose Download Size
-            </DialogTitle>
-            <DialogDescription>
-              Select the image quality you&apos;d like to download.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-2 py-2">
-            {availableDownloadSizes.map((size) => (
-              <button
-                key={size.key}
-                type="button"
-                onClick={() => {
-                  if (sizePickerPhoto) {
-                    void downloadPhotoWithVariant(sizePickerPhoto, size.variant);
-                  }
-                }}
-                disabled={downloadingPhotoId !== null}
-                className="flex w-full items-center justify-between rounded-lg border border-border px-4 py-3 text-left transition hover:bg-accent disabled:opacity-50"
-              >
-                <div>
-                  <p className="text-sm font-medium">{size.label}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {size.key === "original" && "Full resolution as uploaded"}
-                    {size.key === "highRes" && "High resolution"}
-                    {size.key === "web" && "Optimized for web & social"}
-                  </p>
-                </div>
-                <Download className="h-4 w-4 text-muted-foreground" />
-              </button>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Download PIN Dialog */}
-      <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>
-        <DialogContent className="sm:max-w-[360px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              Download PIN
-            </DialogTitle>
-            <DialogDescription>
-              Enter the 4-digit PIN to download photos.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-center py-4">
-            <InputOTP
-              maxLength={4}
-              value={pinValue}
-              onChange={setPinValue}
-              onComplete={() => void handleVerifyPin()}
-              autoFocus
-              type="numeric"
-              inputMode="numeric"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setPinDialogOpen(false);
-                pendingDownloadRef.current = null;
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => void handleVerifyPin()}
-              disabled={pinValue.length !== 4 || pinVerifying}
-            >
-              {pinVerifying ? "Verifying..." : "Verify"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
         Powered by <span className="font-semibold text-primary">FOTNO</span>

@@ -4,6 +4,7 @@ export const trackDownload = async (
   shareToken: string,
   body: {
     photoId?: string;
+    viewerId?: string;
     viewerName?: string;
     viewerIp?: string;
     type: string;
@@ -17,15 +18,17 @@ export const trackDownload = async (
     return { error: "Gallery not found", status: 404 };
   }
 
-  // Enforce per-photo download limit
+  // Enforce per-user per-photo download limit
   if (gallery.downloadLimit && body.photoId && body.type === "single") {
-    const count = await db.downloadEvent.count({
-      where: {
-        galleryId: gallery.id,
-        photoId: body.photoId,
-        type: "single",
-      },
-    });
+    const where: Record<string, unknown> = {
+      galleryId: gallery.id,
+      photoId: body.photoId,
+      type: "single",
+    };
+    if (body.viewerId) {
+      where.viewerId = body.viewerId;
+    }
+    const count = await db.downloadEvent.count({ where: where as any });
     if (count >= gallery.downloadLimit) {
       return {
         error: "Download limit reached for this photo",
@@ -39,6 +42,7 @@ export const trackDownload = async (
     data: {
       galleryId: gallery.id,
       photoId: body.photoId ?? null,
+      viewerId: body.viewerId ?? null,
       viewerName: body.viewerName ?? null,
       viewerIp: body.viewerIp ?? null,
       type: body.type || "single",

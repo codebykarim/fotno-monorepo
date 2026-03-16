@@ -393,6 +393,7 @@ model DownloadEvent {
   galleryId  String
   gallery    Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
   photoId    String?
+  viewerId   String?
   viewerName String?
   viewerIp   String?
   type       String

@@ -23523,6 +23523,7 @@ export namespace Prisma {
     id: string | null
     galleryId: string | null
     photoId: string | null
+    viewerId: string | null
     viewerName: string | null
     viewerIp: string | null
     type: string | null
@@ -23533,6 +23534,7 @@ export namespace Prisma {
     id: string | null
     galleryId: string | null
     photoId: string | null
+    viewerId: string | null
     viewerName: string | null
     viewerIp: string | null
     type: string | null
@@ -23543,6 +23545,7 @@ export namespace Prisma {
     id: number
     galleryId: number
     photoId: number
+    viewerId: number
     viewerName: number
     viewerIp: number
     type: number
@@ -23555,6 +23558,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     photoId?: true
+    viewerId?: true
     viewerName?: true
     viewerIp?: true
     type?: true
@@ -23565,6 +23569,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     photoId?: true
+    viewerId?: true
     viewerName?: true
     viewerIp?: true
     type?: true
@@ -23575,6 +23580,7 @@ export namespace Prisma {
     id?: true
     galleryId?: true
     photoId?: true
+    viewerId?: true
     viewerName?: true
     viewerIp?: true
     type?: true
@@ -23658,6 +23664,7 @@ export namespace Prisma {
     id: string
     galleryId: string
     photoId: string | null
+    viewerId: string | null
     viewerName: string | null
     viewerIp: string | null
     type: string
@@ -23685,6 +23692,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     photoId?: boolean
+    viewerId?: boolean
     viewerName?: boolean
     viewerIp?: boolean
     type?: boolean
@@ -23696,6 +23704,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     photoId?: boolean
+    viewerId?: boolean
     viewerName?: boolean
     viewerIp?: boolean
     type?: boolean
@@ -23707,6 +23716,7 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     photoId?: boolean
+    viewerId?: boolean
     viewerName?: boolean
     viewerIp?: boolean
     type?: boolean
@@ -23718,13 +23728,14 @@ export namespace Prisma {
     id?: boolean
     galleryId?: boolean
     photoId?: boolean
+    viewerId?: boolean
     viewerName?: boolean
     viewerIp?: boolean
     type?: boolean
     createdAt?: boolean
   }
 
-  export type DownloadEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "photoId" | "viewerName" | "viewerIp" | "type" | "createdAt", ExtArgs["result"]["downloadEvent"]>
+  export type DownloadEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "photoId" | "viewerId" | "viewerName" | "viewerIp" | "type" | "createdAt", ExtArgs["result"]["downloadEvent"]>
   export type DownloadEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
   }
@@ -23744,6 +23755,7 @@ export namespace Prisma {
       id: string
       galleryId: string
       photoId: string | null
+      viewerId: string | null
       viewerName: string | null
       viewerIp: string | null
       type: string
@@ -24175,6 +24187,7 @@ export namespace Prisma {
     readonly id: FieldRef<"DownloadEvent", 'String'>
     readonly galleryId: FieldRef<"DownloadEvent", 'String'>
     readonly photoId: FieldRef<"DownloadEvent", 'String'>
+    readonly viewerId: FieldRef<"DownloadEvent", 'String'>
     readonly viewerName: FieldRef<"DownloadEvent", 'String'>
     readonly viewerIp: FieldRef<"DownloadEvent", 'String'>
     readonly type: FieldRef<"DownloadEvent", 'String'>
@@ -27372,6 +27385,7 @@ export namespace Prisma {
     id: 'id',
     galleryId: 'galleryId',
     photoId: 'photoId',
+    viewerId: 'viewerId',
     viewerName: 'viewerName',
     viewerIp: 'viewerIp',
     type: 'type',
@@ -29265,6 +29279,7 @@ export namespace Prisma {
     id?: StringFilter<"DownloadEvent"> | string
     galleryId?: StringFilter<"DownloadEvent"> | string
     photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerId?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
     type?: StringFilter<"DownloadEvent"> | string
@@ -29276,6 +29291,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     photoId?: SortOrderInput | SortOrder
+    viewerId?: SortOrderInput | SortOrder
     viewerName?: SortOrderInput | SortOrder
     viewerIp?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -29290,6 +29306,7 @@ export namespace Prisma {
     NOT?: DownloadEventWhereInput | DownloadEventWhereInput[]
     galleryId?: StringFilter<"DownloadEvent"> | string
     photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerId?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
     type?: StringFilter<"DownloadEvent"> | string
@@ -29301,6 +29318,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     photoId?: SortOrderInput | SortOrder
+    viewerId?: SortOrderInput | SortOrder
     viewerName?: SortOrderInput | SortOrder
     viewerIp?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -29317,6 +29335,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"DownloadEvent"> | string
     galleryId?: StringWithAggregatesFilter<"DownloadEvent"> | string
     photoId?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
+    viewerId?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
     viewerName?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
     viewerIp?: StringNullableWithAggregatesFilter<"DownloadEvent"> | string | null
     type?: StringWithAggregatesFilter<"DownloadEvent"> | string
@@ -31280,6 +31299,7 @@ export namespace Prisma {
   export type DownloadEventCreateInput = {
     id?: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -31291,6 +31311,7 @@ export namespace Prisma {
     id?: string
     galleryId: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -31300,6 +31321,7 @@ export namespace Prisma {
   export type DownloadEventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -31311,6 +31333,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -31321,6 +31344,7 @@ export namespace Prisma {
     id?: string
     galleryId: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -31330,6 +31354,7 @@ export namespace Prisma {
   export type DownloadEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -31340,6 +31365,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     galleryId?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -33024,6 +33050,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     photoId?: SortOrder
+    viewerId?: SortOrder
     viewerName?: SortOrder
     viewerIp?: SortOrder
     type?: SortOrder
@@ -33034,6 +33061,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     photoId?: SortOrder
+    viewerId?: SortOrder
     viewerName?: SortOrder
     viewerIp?: SortOrder
     type?: SortOrder
@@ -33044,6 +33072,7 @@ export namespace Prisma {
     id?: SortOrder
     galleryId?: SortOrder
     photoId?: SortOrder
+    viewerId?: SortOrder
     viewerName?: SortOrder
     viewerIp?: SortOrder
     type?: SortOrder
@@ -36740,6 +36769,7 @@ export namespace Prisma {
   export type DownloadEventCreateWithoutGalleryInput = {
     id?: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -36749,6 +36779,7 @@ export namespace Prisma {
   export type DownloadEventUncheckedCreateWithoutGalleryInput = {
     id?: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -37162,6 +37193,7 @@ export namespace Prisma {
     id?: StringFilter<"DownloadEvent"> | string
     galleryId?: StringFilter<"DownloadEvent"> | string
     photoId?: StringNullableFilter<"DownloadEvent"> | string | null
+    viewerId?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerName?: StringNullableFilter<"DownloadEvent"> | string | null
     viewerIp?: StringNullableFilter<"DownloadEvent"> | string | null
     type?: StringFilter<"DownloadEvent"> | string
@@ -40891,6 +40923,7 @@ export namespace Prisma {
   export type DownloadEventCreateManyGalleryInput = {
     id?: string
     photoId?: string | null
+    viewerId?: string | null
     viewerName?: string | null
     viewerIp?: string | null
     type: string
@@ -41156,6 +41189,7 @@ export namespace Prisma {
   export type DownloadEventUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -41165,6 +41199,7 @@ export namespace Prisma {
   export type DownloadEventUncheckedUpdateWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
@@ -41174,6 +41209,7 @@ export namespace Prisma {
   export type DownloadEventUncheckedUpdateManyWithoutGalleryInput = {
     id?: StringFieldUpdateOperationsInput | string
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
+    viewerId?: NullableStringFieldUpdateOperationsInput | string | null
     viewerName?: NullableStringFieldUpdateOperationsInput | string | null
     viewerIp?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string

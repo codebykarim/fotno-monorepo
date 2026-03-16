@@ -281,6 +281,7 @@ export const trackDownloadController = async (req: Request, res: Response) => {
     req.params.shareToken,
     {
       photoId: req.body?.photoId,
+      viewerId: req.body?.viewerId,
       viewerName: req.body?.viewerName,
       viewerIp: req.ip,
       type: req.body?.type || "single",

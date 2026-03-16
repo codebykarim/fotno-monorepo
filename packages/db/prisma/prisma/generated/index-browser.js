@@ -364,6 +364,7 @@ exports.Prisma.DownloadEventScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
   photoId: 'photoId',
+  viewerId: 'viewerId',
   viewerName: 'viewerName',
   viewerIp: 'viewerIp',
   type: 'type',

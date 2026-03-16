@@ -448,10 +448,12 @@ export default function GalleryPageClient({
   const [phoneDialogMode, setPhoneDialogMode] = useState<
     "identify" | "retrieve" | "changePhone"
   >("identify");
+  const [retrieveStep, setRetrieveStep] = useState<1 | 2>(1);
   const [phoneValue, setPhoneValue] = useState("");
   const [nameValue, setNameValue] = useState("");
   const [phoneSubmitting, setPhoneSubmitting] = useState(false);
   const pendingFavoritePhotoIdRef = useRef<string | null>(null);
+  const pendingDownloadActionRef = useRef<(() => void) | null>(null);
   const [editNameDialogOpen, setEditNameDialogOpen] = useState(false);
   const [editNameValue, setEditNameValue] = useState("");
 
@@ -1002,6 +1004,7 @@ export default function GalleryPageClient({
     photoId?: string,
   ): Promise<boolean> => {
     try {
+      const viewerId = sessionStorage.getItem(getViewerIdKey(gallery.shareToken));
       const res = await fetch(
         `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-event`,
         {
@@ -1010,6 +1013,7 @@ export default function GalleryPageClient({
           body: JSON.stringify({
             type,
             photoId: photoId ?? null,
+            viewerId: viewerId ?? undefined,
             viewerName: viewerDisplayName,
           }),
         },
@@ -1129,6 +1133,20 @@ export default function GalleryPageClient({
       await downloadPhotoWithVariant(photo, variant);
     };
 
+    // Require phone identity when download limit is set
+    if (downloadLimit && !isViewerIdentified() && !isPhotographer) {
+      pendingFavoritePhotoIdRef.current = null;
+      pendingDownloadActionRef.current = () => {
+        if (requirePin(doDownload)) return;
+        void doDownload();
+      };
+      setPhoneDialogMode("identify");
+      setPhoneValue("");
+      setNameValue("");
+      setPhoneDialogOpen(true);
+      return;
+    }
+
     if (requirePin(doDownload)) return;
     await doDownload();
   };
@@ -1224,6 +1242,61 @@ export default function GalleryPageClient({
       toast.error("Please enter a valid phone number");
       return;
     }
+
+    // Retrieve mode, step 1: only phone — check if favorites exist first
+    if (phoneDialogMode === "retrieve" && retrieveStep === 1) {
+      setPhoneSubmitting(true);
+      try {
+        const res = await fetch(
+          `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
+          { cache: "no-store" },
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.favorites?.length > 0) {
+            // User exists with favorites in this gallery — sign in and redirect
+            sessionStorage.setItem(getViewerIdKey(gallery.shareToken), phoneValue);
+            if (data.viewerName) {
+              sessionStorage.setItem(getViewerNameKey(gallery.shareToken), data.viewerName);
+            }
+            setFavorites(
+              data.favorites.map((f: { photoId: string }) => f.photoId),
+            );
+            const notes: Record<string, string> = {};
+            for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+              if (f.note) notes[f.photoId] = f.note;
+            }
+            setFavoriteNotes(notes);
+            setPhoneDialogOpen(false);
+            setFilterMode("loved");
+            toast.success("Favorites loaded!");
+            return;
+          }
+          // No favorites in this gallery, but viewer exists in another gallery
+          if (data?.viewerName) {
+            sessionStorage.setItem(getViewerIdKey(gallery.shareToken), phoneValue);
+            sessionStorage.setItem(getViewerNameKey(gallery.shareToken), data.viewerName);
+            setPhoneDialogOpen(false);
+            toast("No favorites in this gallery yet. Tap the heart on any photo to get started!", { icon: "💡" });
+            return;
+          }
+        }
+        // Phone number not found anywhere — move to step 2: ask for name
+        setRetrieveStep(2);
+      } catch {
+        toast.error("Something went wrong. Please try again.");
+      } finally {
+        setPhoneSubmitting(false);
+      }
+      return;
+    }
+
+    // Name is required for identify and retrieve step 2
+    if (phoneDialogMode !== "changePhone" && !nameValue.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+
     setPhoneSubmitting(true);
     try {
       // Store phone as viewerId and name
@@ -1239,6 +1312,7 @@ export default function GalleryPageClient({
       }
 
       // Load existing favorites for this phone number
+      let loadedCount = 0;
       const res = await fetch(
         `/api/gallery/${encodeURIComponent(gallery.shareToken)}/favorites?viewerId=${encodeURIComponent(phoneValue)}`,
         { cache: "no-store" },
@@ -1246,6 +1320,7 @@ export default function GalleryPageClient({
       if (res.ok) {
         const data = await res.json();
         if (data?.favorites) {
+          loadedCount = data.favorites.length;
           setFavorites(
             data.favorites.map((f: { photoId: string }) => f.photoId),
           );
@@ -1261,15 +1336,20 @@ export default function GalleryPageClient({
       if (phoneDialogMode === "changePhone") {
         toast.success("Phone number updated");
       } else if (phoneDialogMode === "retrieve") {
-        setFilterMode("loved");
-        toast.success("Favorites loaded!");
+        // Step 2 — user was new, now signed in
+        toast("No favorites in this gallery yet. Tap the heart on any photo to get started!", { icon: "💡" });
       } else {
-        // Continue with the pending favorite action
+        // identify mode — continue with the pending favorite action
         const pendingPhotoId = pendingFavoritePhotoIdRef.current;
         pendingFavoritePhotoIdRef.current = null;
         if (pendingPhotoId) {
-          // Re-trigger toggleFavorite now that identity is set
           void toggleFavorite(pendingPhotoId);
+        }
+        // Continue with the pending download action
+        const pendingDownload = pendingDownloadActionRef.current;
+        pendingDownloadActionRef.current = null;
+        if (pendingDownload) {
+          void pendingDownload();
         }
       }
     } catch {
@@ -1778,7 +1858,7 @@ export default function GalleryPageClient({
                 <span className="hidden md:inline">Slideshow</span>
               </button>
             )}
-            {socialSharingEnabled && favorites.length > 0 && (
+            {socialSharingEnabled && favorites.length > 0 && filterMode === "loved" && (
               <button
                 type="button"
                 onClick={() => void handleShareFavorites()}
@@ -1869,6 +1949,7 @@ export default function GalleryPageClient({
                 onClick={() => {
                   if (!isViewerIdentified() && !isPhotographer) {
                     setPhoneDialogMode("retrieve");
+                    setRetrieveStep(1);
                     setPhoneValue("");
                     setNameValue("");
                     setPhoneDialogOpen(true);
@@ -1908,6 +1989,15 @@ export default function GalleryPageClient({
 
       <main className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-8 md:py-10">
         <section className="min-w-0">
+          {filterMode === "loved" && visiblePhotos.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <Heart className="mb-3 h-10 w-10 text-muted-foreground/30" />
+              <p className="text-lg font-medium text-foreground">No favorites yet</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Tap the heart icon on any photo to get started.
+              </p>
+            </div>
+          ) : (
           <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
             {visiblePhotos.map((photo, index) => {
               const imageSrc = withOptionalToken(photo.thumbnailSrc);
@@ -1986,6 +2076,7 @@ export default function GalleryPageClient({
               );
             })}
           </div>
+          )}
         </section>
       </main>
 
@@ -2371,33 +2462,40 @@ export default function GalleryPageClient({
             <DialogDescription>
               {phoneDialogMode === "changePhone"
                 ? "Enter your new phone number. Your favorites will be transferred."
-                : phoneDialogMode === "retrieve"
+                : phoneDialogMode === "retrieve" && retrieveStep === 1
                   ? "Enter your phone number to retrieve your saved favorites."
-                  : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
+                  : phoneDialogMode === "retrieve" && retrieveStep === 2
+                    ? "We didn't find favorites for this number in this gallery. Enter your name to get started."
+                    : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <PhoneInputComponent
-              value={phoneValue}
-              onChange={setPhoneValue}
-              label="Phone number"
-              placeholder="Enter your phone number"
-            />
-            {phoneDialogMode === "identify" && (
+            {/* Phone: shown in step 1 of retrieve, or always for identify/changePhone */}
+            {!(phoneDialogMode === "retrieve" && retrieveStep === 2) && (
+              <PhoneInputComponent
+                value={phoneValue}
+                onChange={setPhoneValue}
+                label="Phone number"
+                placeholder="Enter your phone number"
+              />
+            )}
+            {/* Name: shown for identify mode, and retrieve step 2 */}
+            {(phoneDialogMode === "identify" || (phoneDialogMode === "retrieve" && retrieveStep === 2)) && (
               <div className="space-y-1.5">
                 <label
                   htmlFor="viewer-name"
                   className="text-sm font-medium"
                 >
-                  Name
+                  Name <span className="text-destructive">*</span>
                 </label>
                 <Input
                   id="viewer-name"
                   value={nameValue}
                   onChange={(e) => setNameValue(e.target.value)}
-                  placeholder="Your name (optional)"
+                  placeholder="Your name"
+                  autoFocus={phoneDialogMode === "retrieve" && retrieveStep === 2}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && phoneValue.length >= 8) {
+                    if (e.key === "Enter" && nameValue.trim()) {
                       void handlePhoneSubmit();
                     }
                   }}
@@ -2417,13 +2515,18 @@ export default function GalleryPageClient({
             </Button>
             <Button
               onClick={() => void handlePhoneSubmit()}
-              disabled={!phoneValue || phoneValue.length < 8 || phoneSubmitting}
+              disabled={
+                phoneSubmitting ||
+                (phoneDialogMode === "retrieve" && retrieveStep === 2
+                  ? !nameValue.trim()
+                  : !phoneValue || phoneValue.length < 8 || (phoneDialogMode === "identify" && !nameValue.trim()))
+              }
             >
               {phoneSubmitting
                 ? "Loading..."
                 : phoneDialogMode === "changePhone"
                   ? "Update Phone"
-                  : phoneDialogMode === "retrieve"
+                  : phoneDialogMode === "retrieve" && retrieveStep === 1
                     ? "Load Favorites"
                     : "Continue"}
             </Button>

@@ -405,7 +405,9 @@ export default function GalleryPageClient({
   );
   const [filterMode, setFilterMode] = useState<string>("all");
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [favoriteNotes, setFavoriteNotes] = useState<Record<string, string>>({});
+  const [favoriteNotes, setFavoriteNotes] = useState<Record<string, string>>(
+    {},
+  );
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -446,9 +448,12 @@ export default function GalleryPageClient({
   );
   const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
   const [phoneDialogMode, setPhoneDialogMode] = useState<
-    "identify" | "retrieve" | "changePhone"
-  >("identify");
+    "retrieve" | "changePhone"
+  >("retrieve");
   const [retrieveStep, setRetrieveStep] = useState<1 | 2>(1);
+  const [comeFrom, setComeFrom] = useState<"lovePhoto" | "lovedTab" | null>(
+    null,
+  );
   const [phoneValue, setPhoneValue] = useState("");
   const [nameValue, setNameValue] = useState("");
   const [phoneSubmitting, setPhoneSubmitting] = useState(false);
@@ -613,7 +618,10 @@ export default function GalleryPageClient({
               data.favorites.map((f: { photoId: string }) => f.photoId),
             );
             const notes: Record<string, string> = {};
-            for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+            for (const f of data.favorites as {
+              photoId: string;
+              note?: string | null;
+            }[]) {
               if (f.note) notes[f.photoId] = f.note;
             }
             setFavoriteNotes(notes);
@@ -1004,7 +1012,9 @@ export default function GalleryPageClient({
     photoId?: string,
   ): Promise<boolean> => {
     try {
-      const viewerId = sessionStorage.getItem(getViewerIdKey(gallery.shareToken));
+      const viewerId = sessionStorage.getItem(
+        getViewerIdKey(gallery.shareToken),
+      );
       const res = await fetch(
         `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-event`,
         {
@@ -1140,7 +1150,7 @@ export default function GalleryPageClient({
         if (requirePin(doDownload)) return;
         void doDownload();
       };
-      setPhoneDialogMode("identify");
+      setPhoneDialogMode("retrieve");
       setPhoneValue("");
       setNameValue("");
       setPhoneDialogOpen(true);
@@ -1221,16 +1231,14 @@ export default function GalleryPageClient({
 
   const isViewerIdentified = (): boolean => {
     if (isPhotographer) return true;
-    return Boolean(
-      sessionStorage.getItem(getViewerIdKey(gallery.shareToken)),
-    );
+    return Boolean(sessionStorage.getItem(getViewerIdKey(gallery.shareToken)));
   };
 
   const requirePhoneIdentity = (photoId: string): boolean => {
     if (isPhotographer || !favoritesEnabled) return false;
     if (isViewerIdentified()) return false;
     pendingFavoritePhotoIdRef.current = photoId;
-    setPhoneDialogMode("identify");
+    setPhoneDialogMode("retrieve");
     setPhoneValue("");
     setNameValue("");
     setPhoneDialogOpen(true);
@@ -1255,29 +1263,62 @@ export default function GalleryPageClient({
           const data = await res.json();
           if (data?.favorites?.length > 0) {
             // User exists with favorites in this gallery — sign in and redirect
-            sessionStorage.setItem(getViewerIdKey(gallery.shareToken), phoneValue);
+            sessionStorage.setItem(
+              getViewerIdKey(gallery.shareToken),
+              phoneValue,
+            );
             if (data.viewerName) {
-              sessionStorage.setItem(getViewerNameKey(gallery.shareToken), data.viewerName);
+              sessionStorage.setItem(
+                getViewerNameKey(gallery.shareToken),
+                data.viewerName,
+              );
             }
             setFavorites(
               data.favorites.map((f: { photoId: string }) => f.photoId),
             );
             const notes: Record<string, string> = {};
-            for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+            for (const f of data.favorites as {
+              photoId: string;
+              note?: string | null;
+            }[]) {
               if (f.note) notes[f.photoId] = f.note;
             }
             setFavoriteNotes(notes);
+
+            // If there was a pending action (favorite/download), complete it now
+            const pendingPhotoId = pendingFavoritePhotoIdRef.current;
+            const pendingDownload = pendingDownloadActionRef.current;
+            pendingFavoritePhotoIdRef.current = null;
+            pendingDownloadActionRef.current = null;
+            if (pendingPhotoId) {
+              void toggleFavorite(pendingPhotoId);
+            }
+            if (pendingDownload) {
+              void pendingDownload();
+            }
+
             setPhoneDialogOpen(false);
-            setFilterMode("loved");
+            if (comeFrom === "lovedTab") {
+              setFilterMode("loved");
+            }
             toast.success("Favorites loaded!");
             return;
           }
           // No favorites in this gallery, but viewer exists in another gallery
           if (data?.viewerName) {
-            sessionStorage.setItem(getViewerIdKey(gallery.shareToken), phoneValue);
-            sessionStorage.setItem(getViewerNameKey(gallery.shareToken), data.viewerName);
+            sessionStorage.setItem(
+              getViewerIdKey(gallery.shareToken),
+              phoneValue,
+            );
+            sessionStorage.setItem(
+              getViewerNameKey(gallery.shareToken),
+              data.viewerName,
+            );
             setPhoneDialogOpen(false);
-            toast("No favorites in this gallery yet. Tap the heart on any photo to get started!", { icon: "💡" });
+            toast(
+              "No favorites in this gallery yet. Tap the heart on any photo to get started!",
+              { icon: "💡" },
+            );
             return;
           }
         }
@@ -1300,10 +1341,7 @@ export default function GalleryPageClient({
     setPhoneSubmitting(true);
     try {
       // Store phone as viewerId and name
-      sessionStorage.setItem(
-        getViewerIdKey(gallery.shareToken),
-        phoneValue,
-      );
+      sessionStorage.setItem(getViewerIdKey(gallery.shareToken), phoneValue);
       if (nameValue.trim()) {
         sessionStorage.setItem(
           getViewerNameKey(gallery.shareToken),
@@ -1325,7 +1363,10 @@ export default function GalleryPageClient({
             data.favorites.map((f: { photoId: string }) => f.photoId),
           );
           const notes: Record<string, string> = {};
-          for (const f of data.favorites as { photoId: string; note?: string | null }[]) {
+          for (const f of data.favorites as {
+            photoId: string;
+            note?: string | null;
+          }[]) {
             if (f.note) notes[f.photoId] = f.note;
           }
           setFavoriteNotes(notes);
@@ -1333,19 +1374,24 @@ export default function GalleryPageClient({
       }
       setPhoneDialogOpen(false);
 
+      const hadPendingFavorite = Boolean(pendingFavoritePhotoIdRef.current);
+      const hadPendingDownload = Boolean(pendingDownloadActionRef.current);
+
       if (phoneDialogMode === "changePhone") {
         toast.success("Phone number updated");
-      } else if (phoneDialogMode === "retrieve") {
-        // Step 2 — user was new, now signed in
-        toast("No favorites in this gallery yet. Tap the heart on any photo to get started!", { icon: "💡" });
+      } else if (!hadPendingFavorite && !hadPendingDownload) {
+        // Pure retrieval flow (e.g. from Loved tab) — no pending actions
+        toast(
+          "No favorites in this gallery yet. Tap the heart on any photo to get started!",
+          { icon: "💡" },
+        );
       } else {
-        // identify mode — continue with the pending favorite action
+        // Identification flow — continue with any pending actions
         const pendingPhotoId = pendingFavoritePhotoIdRef.current;
         pendingFavoritePhotoIdRef.current = null;
         if (pendingPhotoId) {
           void toggleFavorite(pendingPhotoId);
         }
-        // Continue with the pending download action
         const pendingDownload = pendingDownloadActionRef.current;
         pendingDownloadActionRef.current = null;
         if (pendingDownload) {
@@ -1858,20 +1904,22 @@ export default function GalleryPageClient({
                 <span className="hidden md:inline">Slideshow</span>
               </button>
             )}
-            {socialSharingEnabled && favorites.length > 0 && filterMode === "loved" && (
-              <button
-                type="button"
-                onClick={() => void handleShareFavorites()}
-                disabled={sharingFavorites}
-                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 text-sm font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
-                aria-label="Share favorites"
-              >
-                <Share2 className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">
-                  {sharingFavorites ? "Creating..." : "Share"}
-                </span>
-              </button>
-            )}
+            {socialSharingEnabled &&
+              favorites.length > 0 &&
+              filterMode === "loved" && (
+                <button
+                  type="button"
+                  onClick={() => void handleShareFavorites()}
+                  disabled={sharingFavorites}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-border/80 bg-muted px-3 text-sm font-medium text-foreground transition hover:bg-accent disabled:opacity-50"
+                  aria-label="Share favorites"
+                >
+                  <Share2 className="h-3.5 w-3.5" />
+                  <span className="hidden md:inline">
+                    {sharingFavorites ? "Creating..." : "Share"}
+                  </span>
+                </button>
+              )}
             {downloadsEnabled && (
               <button
                 type="button"
@@ -1919,7 +1967,10 @@ export default function GalleryPageClient({
                     Change Phone
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
+                  <DropdownMenuItem
+                    onClick={handleSignOut}
+                    className="text-destructive focus:text-destructive"
+                  >
                     <LogOut className="h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -1953,6 +2004,7 @@ export default function GalleryPageClient({
                     setPhoneValue("");
                     setNameValue("");
                     setPhoneDialogOpen(true);
+                    setComeFrom("lovedTab");
                     return;
                   }
                   setFilterMode("loved");
@@ -1992,90 +2044,97 @@ export default function GalleryPageClient({
           {filterMode === "loved" && visiblePhotos.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <Heart className="mb-3 h-10 w-10 text-muted-foreground/30" />
-              <p className="text-lg font-medium text-foreground">No favorites yet</p>
+              <p className="text-lg font-medium text-foreground">
+                No favorites yet
+              </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Tap the heart icon on any photo to get started.
               </p>
             </div>
           ) : (
-          <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
-            {visiblePhotos.map((photo, index) => {
-              const imageSrc = withOptionalToken(photo.thumbnailSrc);
-              const loved = favorites.includes(photo.id);
+            <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
+              {visiblePhotos.map((photo, index) => {
+                const imageSrc = withOptionalToken(photo.thumbnailSrc);
+                const loved = favorites.includes(photo.id);
 
-              return (
-                <article
-                  key={photo.id}
-                  className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-foreground md:mb-4"
-                  style={{ contentVisibility: "auto" }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActivePhotoId(photo.id);
-                      setZoom(1);
-                      setPan({ x: 0, y: 0 });
-                      setCommentPhotoId(photo.id);
-                    }}
-                    className="block w-full"
+                return (
+                  <article
+                    key={photo.id}
+                    className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-foreground md:mb-4"
+                    style={{ contentVisibility: "auto" }}
                   >
-                    <Image
-                      src={imageSrc}
-                      alt={photo.aiCaption ?? photo.originalFilename}
-                      width={photo.width ?? 1200}
-                      height={photo.height ?? 900}
-                      sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
-                      placeholder="blur"
-                      blurDataURL={photo.blurDataUrl}
-                      draggable={false}
-                      onContextMenu={(event) => event.preventDefault()}
-                      className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                      priority={index < 8}
-                    />
-                  </button>
-
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-
-                  {favoritesEnabled && (
                     <button
                       type="button"
-                      onClick={() => toggleFavorite(photo.id)}
-                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:bg-black/70"
-                      aria-label={loved ? "Remove from loved" : "Add to loved"}
+                      onClick={() => {
+                        setActivePhotoId(photo.id);
+                        setZoom(1);
+                        setPan({ x: 0, y: 0 });
+                        setCommentPhotoId(photo.id);
+                      }}
+                      className="block w-full"
                     >
-                      <Heart
-                        className={`h-4 w-4 transition-colors ${
-                          loved ? "fill-primary text-primary" : "text-white"
-                        }`}
+                      <Image
+                        src={imageSrc}
+                        alt={photo.aiCaption ?? photo.originalFilename}
+                        width={photo.width ?? 1200}
+                        height={photo.height ?? 900}
+                        sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
+                        placeholder="blur"
+                        blurDataURL={photo.blurDataUrl}
+                        draggable={false}
+                        onContextMenu={(event) => event.preventDefault()}
+                        className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                        priority={index < 8}
                       />
                     </button>
-                  )}
 
-                  {loved && favoriteNotes[photo.id] && (
-                    <div className="absolute left-3 bottom-3 max-w-[calc(100%-4rem)] pointer-events-none">
-                      <span className="inline-block truncate rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white/90 backdrop-blur">
-                        &ldquo;{favoriteNotes[photo.id]}&rdquo;
-                      </span>
-                    </div>
-                  )}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                  {downloadsEnabled && (
-                    <button
-                      type="button"
-                      onClick={() => handleSingleDownload(photo)}
-                      disabled={downloadingPhotoId === photo.id}
-                      className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
-                      aria-label="Download photo"
-                    >
-                      <Download
-                        className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
-                      />
-                    </button>
-                  )}
-                </article>
-              );
-            })}
-          </div>
+                    {favoritesEnabled && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          toggleFavorite(photo.id);
+                          setComeFrom("lovePhoto");
+                        }}
+                        className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur transition hover:bg-black/70"
+                        aria-label={
+                          loved ? "Remove from loved" : "Add to loved"
+                        }
+                      >
+                        <Heart
+                          className={`h-4 w-4 transition-colors ${
+                            loved ? "fill-primary text-primary" : "text-white"
+                          }`}
+                        />
+                      </button>
+                    )}
+
+                    {loved && favoriteNotes[photo.id] && (
+                      <div className="absolute left-3 bottom-3 max-w-[calc(100%-4rem)] pointer-events-none">
+                        <span className="inline-block truncate rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white/90 backdrop-blur">
+                          &ldquo;{favoriteNotes[photo.id]}&rdquo;
+                        </span>
+                      </div>
+                    )}
+
+                    {downloadsEnabled && (
+                      <button
+                        type="button"
+                        onClick={() => handleSingleDownload(photo)}
+                        disabled={downloadingPhotoId === photo.id}
+                        className="absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground opacity-0 shadow-sm transition group-hover:opacity-100"
+                        aria-label="Download photo"
+                      >
+                        <Download
+                          className={`h-4 w-4 ${downloadingPhotoId === photo.id ? "animate-pulse" : ""}`}
+                        />
+                      </button>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
           )}
         </section>
       </main>
@@ -2228,9 +2287,7 @@ export default function GalleryPageClient({
           <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
             <button
               type="button"
-              onClick={() =>
-                setSlideshowIndex((prev) => Math.max(0, prev - 1))
-              }
+              onClick={() => setSlideshowIndex((prev) => Math.max(0, prev - 1))}
               disabled={slideshowIndex === 0}
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white transition hover:bg-black/80 disabled:opacity-30"
               aria-label="Previous"
@@ -2419,7 +2476,10 @@ export default function GalleryPageClient({
                 type="button"
                 onClick={() => {
                   if (sizePickerPhoto) {
-                    void downloadPhotoWithVariant(sizePickerPhoto, size.variant);
+                    void downloadPhotoWithVariant(
+                      sizePickerPhoto,
+                      size.variant,
+                    );
                   }
                 }}
                 disabled={downloadingPhotoId !== null}
@@ -2453,7 +2513,7 @@ export default function GalleryPageClient({
               ) : (
                 <>
                   <Heart className="h-4 w-4 fill-primary text-primary" />
-                  {phoneDialogMode === "retrieve"
+                  {phoneDialogMode === "retrieve" && comeFrom === "lovedTab"
                     ? "View Your Favorites"
                     : "Save Your Favorites"}
                 </>
@@ -2462,11 +2522,15 @@ export default function GalleryPageClient({
             <DialogDescription>
               {phoneDialogMode === "changePhone"
                 ? "Enter your new phone number. Your favorites will be transferred."
-                : phoneDialogMode === "retrieve" && retrieveStep === 1
+                : phoneDialogMode === "retrieve" &&
+                    retrieveStep === 1 &&
+                    comeFrom === "lovedTab"
                   ? "Enter your phone number to retrieve your saved favorites."
-                  : phoneDialogMode === "retrieve" && retrieveStep === 2
+                  : phoneDialogMode === "retrieve" &&
+                      retrieveStep === 2 &&
+                      comeFrom === "lovedTab"
                     ? "We didn't find favorites for this number in this gallery. Enter your name to get started."
-                    : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends, or download them."}
+                    : "Enter your phone number to save favorites. You can revisit them anytime, share with your photographer, family and friends"}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
@@ -2480,12 +2544,9 @@ export default function GalleryPageClient({
               />
             )}
             {/* Name: shown for identify mode, and retrieve step 2 */}
-            {(phoneDialogMode === "identify" || (phoneDialogMode === "retrieve" && retrieveStep === 2)) && (
+            {phoneDialogMode === "retrieve" && retrieveStep === 2 && (
               <div className="space-y-1.5">
-                <label
-                  htmlFor="viewer-name"
-                  className="text-sm font-medium"
-                >
+                <label htmlFor="viewer-name" className="text-sm font-medium">
                   Name <span className="text-destructive">*</span>
                 </label>
                 <Input
@@ -2493,7 +2554,9 @@ export default function GalleryPageClient({
                   value={nameValue}
                   onChange={(e) => setNameValue(e.target.value)}
                   placeholder="Your name"
-                  autoFocus={phoneDialogMode === "retrieve" && retrieveStep === 2}
+                  autoFocus={
+                    phoneDialogMode === "retrieve" && retrieveStep === 2
+                  }
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && nameValue.trim()) {
                       void handlePhoneSubmit();
@@ -2519,14 +2582,20 @@ export default function GalleryPageClient({
                 phoneSubmitting ||
                 (phoneDialogMode === "retrieve" && retrieveStep === 2
                   ? !nameValue.trim()
-                  : !phoneValue || phoneValue.length < 8 || (phoneDialogMode === "identify" && !nameValue.trim()))
+                  : !phoneValue ||
+                    phoneValue.length < 8 ||
+                    (phoneDialogMode === "retrieve" &&
+                      retrieveStep === 2 &&
+                      !nameValue.trim()))
               }
             >
               {phoneSubmitting
                 ? "Loading..."
                 : phoneDialogMode === "changePhone"
                   ? "Update Phone"
-                  : phoneDialogMode === "retrieve" && retrieveStep === 1
+                  : phoneDialogMode === "retrieve" &&
+                      retrieveStep === 1 &&
+                      comeFrom === "lovedTab"
                     ? "Load Favorites"
                     : "Continue"}
             </Button>
@@ -2542,9 +2611,7 @@ export default function GalleryPageClient({
               <Pencil className="h-4 w-4 text-primary" />
               Change Name
             </DialogTitle>
-            <DialogDescription>
-              Update your display name.
-            </DialogDescription>
+            <DialogDescription>Update your display name.</DialogDescription>
           </DialogHeader>
           <div className="py-2">
             <Input

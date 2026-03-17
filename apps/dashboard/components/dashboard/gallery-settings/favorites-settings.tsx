@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Heart, Loader2, Phone, User } from "lucide-react";
+import { ExternalLink, Heart, Link2, Loader2, Phone, User } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Switch } from "@workspace/ui/components/switch";
 import { apiRequest } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
+import Link from "next/link";
 
 type FavoriteViewer = {
   viewerId: string;
@@ -87,10 +88,7 @@ export function FavoritesSettings({ galleryId, data, mutate }: Props) {
                 cover&rdquo;).
               </p>
             </div>
-            <Switch
-              checked={notesEnabled}
-              onCheckedChange={setNotesEnabled}
-            />
+            <Switch checked={notesEnabled} onCheckedChange={setNotesEnabled} />
           </div>
         </section>
       )}
@@ -105,9 +103,7 @@ export function FavoritesSettings({ galleryId, data, mutate }: Props) {
         )}
       </Button>
 
-      {enabled && (
-        <FavoritesActivity galleryId={galleryId} />
-      )}
+      {enabled && <FavoritesActivity galleryId={galleryId} />}
     </div>
   );
 }
@@ -192,30 +188,16 @@ function FavoritesActivity({ galleryId }: { galleryId: string }) {
                   )}
                 </div>
               </div>
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <Heart className="h-3 w-3" />
-                {viewer.count}
-              </span>
-            </div>
-            {viewer.favorites.some((f) => f.note) && (
-              <div className="space-y-1.5 pl-5 mt-1">
-                {viewer.favorites
-                  .filter((f) => f.note)
-                  .map((f) => (
-                    <div
-                      key={f.id}
-                      className="flex items-start gap-2 text-xs"
-                    >
-                      <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-                        {f.photoId.slice(0, 8)}
-                      </span>
-                      <span className="text-muted-foreground italic">
-                        &ldquo;{f.note}&rdquo;
-                      </span>
-                    </div>
-                  ))}
+              <div className="flex items-center gap-5">
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                  <Heart className="h-3 w-3" />
+                  {viewer.count}
+                </span>
+                {/* <Link href={``} className="text-xs text-muted-foreground">
+                  <ExternalLink className="h-3 w-3" />
+                </Link> */}
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>

@@ -31,7 +31,7 @@ export interface AdminUserDetail extends AdminUser {
   banExpires: string | null;
   storageReserved: string;
   overageBytes: string;
-  payments: AdminPayment[];
+  subscriptions: AdminSubscription[];
 }
 
 export interface AdminGallery {
@@ -82,13 +82,17 @@ export interface AdminStorageUser {
   overageBytes: string;
 }
 
-export interface AdminPayment {
-  id: number;
-  plan: string;
+export interface AdminSubscription {
+  id: string;
+  source: "LEMON_SQUEEZY" | "MANUAL";
   status: string;
-  amount_cents: number;
-  planStartedAt: string | null;
-  planExpiresAt: string | null;
+  storageTierGb: number;
+  priceCents: number;
+  currency: string;
+  currentPeriodStart: string | null;
+  currentPeriodEnd: string | null;
+  cancelledAt: string | null;
+  endsAt: string | null;
   createdAt: string;
   user?: {
     id: string;
@@ -97,12 +101,13 @@ export interface AdminPayment {
   };
 }
 
-export interface AdminPaymentsOverview {
+export interface AdminSubscriptionsOverview {
   totalRevenue: number;
   activeCount: number;
   cancelledCount: number;
   expiredCount: number;
-  payments: AdminPayment[];
+  pastDueCount: number;
+  subscriptions: AdminSubscription[];
 }
 
 export interface ServiceHealth {
@@ -139,6 +144,30 @@ export interface TimeSeriesPoint {
 
 export interface PaginatedResponse<T> {
   data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
+
+export interface AdminManualRequest {
+  id: string;
+  storageTierGb: number;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  adminNotes: string | null;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  expiresAt: string | null;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    plan: string;
+  };
+}
+
+export interface AdminManualRequestsResponse {
+  requests: AdminManualRequest[];
   total: number;
   page: number;
   pageSize: number;

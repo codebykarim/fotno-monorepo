@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import * as DashboardController from "../controllers/DashboardController";
 import isAuth from "../middleware/isAuth";
+import isActiveSubscriber from "../middleware/isActiveSubscriber";
 import { MethodInfo } from "../interfaces";
 import { init } from "../utils/methods";
 
@@ -21,6 +22,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.createGalleryController,
     authFunction: isAuth,
+    middlewares: [isActiveSubscriber],
   },
   "get-gallery": {
     httpMethod: "GET",
@@ -46,6 +48,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.presignPhotoUploadController,
     authFunction: isAuth,
+    middlewares: [isActiveSubscriber],
   },
   "get-photo-upload-sessions": {
     httpMethod: "GET",
@@ -61,6 +64,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.confirmPhotoUploadController,
     authFunction: isAuth,
+    middlewares: [isActiveSubscriber],
   },
   "create-album": {
     httpMethod: "POST",
@@ -136,6 +140,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.gdriveStartImportController,
     authFunction: isAuth,
+    middlewares: [isActiveSubscriber],
   },
   "gdrive-import-status": {
     httpMethod: "GET",
@@ -186,6 +191,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.gphotosStartImportController,
     authFunction: isAuth,
+    middlewares: [isActiveSubscriber],
   },
   "list-gallery-favorites": {
     httpMethod: "GET",

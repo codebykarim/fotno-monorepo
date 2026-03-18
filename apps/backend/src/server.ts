@@ -55,7 +55,16 @@ app.get("/api/auth/reset-password/:token", (req: Request, res: Response) => {
 app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(urlencoded({ extended: true }));
-app.use(json());
+app.use(
+  json({
+    verify: (req: any, _res, buf) => {
+      // Capture raw body for webhook signature verification
+      if (req.url?.includes("/billing/webhook")) {
+        req.rawBody = buf;
+      }
+    },
+  }),
+);
 
 app.set("trust proxy", true);
 

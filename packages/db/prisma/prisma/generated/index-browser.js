@@ -125,13 +125,13 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   plan: 'plan',
+  trialEndsAt: 'trialEndsAt',
   storageUsed: 'storageUsed',
   storageLimit: 'storageLimit',
   storageReserved: 'storageReserved',
   overageBytes: 'overageBytes',
   overageResetAt: 'overageResetAt',
-  stripeCustomerId: 'stripeCustomerId',
-  stripeSubId: 'stripeSubId',
+  lsCustomerId: 'lsCustomerId',
   warningEmailSent80: 'warningEmailSent80',
   warningEmailSent95: 'warningEmailSent95',
   emailVerified: 'emailVerified',
@@ -183,20 +183,37 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PaymentScalarFieldEnum = {
+exports.Prisma.SubscriptionScalarFieldEnum = {
   id: 'id',
-  planId: 'planId',
-  plan: 'plan',
-  planExpiresAt: 'planExpiresAt',
-  planStartedAt: 'planStartedAt',
-  amount_cents: 'amount_cents',
-  transactionId: 'transactionId',
-  initial_transaction: 'initial_transaction',
-  subscriptionId: 'subscriptionId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  userId: 'userId',
+  source: 'source',
   status: 'status',
-  userId: 'userId'
+  storageTierGb: 'storageTierGb',
+  priceCents: 'priceCents',
+  currency: 'currency',
+  lsSubscriptionId: 'lsSubscriptionId',
+  lsVariantId: 'lsVariantId',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  cancelledAt: 'cancelledAt',
+  endsAt: 'endsAt',
+  approvedBy: 'approvedBy',
+  adminNotes: 'adminNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ManualPlanRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  storageTierGb: 'storageTierGb',
+  status: 'status',
+  adminNotes: 'adminNotes',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.UserOnboardingScalarFieldEnum = {
@@ -429,23 +446,27 @@ exports.Prisma.JsonNullValueFilter = {
   AnyNull: Prisma.AnyNull
 };
 exports.Plan = exports.$Enums.Plan = {
-  FREE: 'FREE',
-  STARTER: 'STARTER',
-  PROFESSIONAL: 'PROFESSIONAL',
-  STUDIO: 'STUDIO',
-  ENTERPRISE: 'ENTERPRISE'
+  TRIAL: 'TRIAL',
+  PRO: 'PRO',
+  EXPIRED: 'EXPIRED'
 };
 
-exports.PlanType = exports.$Enums.PlanType = {
-  BEGGINER: 'BEGGINER',
-  PRO: 'PRO',
-  STUDIO: 'STUDIO'
+exports.SubscriptionSource = exports.$Enums.SubscriptionSource = {
+  LEMON_SQUEEZY: 'LEMON_SQUEEZY',
+  MANUAL: 'MANUAL'
 };
 
 exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   ACTIVE: 'ACTIVE',
   CANCELLED: 'CANCELLED',
-  EXPIRED: 'EXPIRED'
+  EXPIRED: 'EXPIRED',
+  PAST_DUE: 'PAST_DUE'
+};
+
+exports.ManualPlanRequestStatus = exports.$Enums.ManualPlanRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
 };
 
 exports.UserType = exports.$Enums.UserType = {
@@ -501,7 +522,8 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Payment: 'Payment',
+  Subscription: 'Subscription',
+  ManualPlanRequest: 'ManualPlanRequest',
   UserOnboarding: 'UserOnboarding',
   Gallery: 'Gallery',
   Photo: 'Photo',

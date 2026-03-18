@@ -2,6 +2,7 @@ import { db, toIsoOrNull } from "./_shared";
 
 export const getPaymentsOverview = async (
   status: string,
+  source: string,
   page: number,
   pageSize: number
 ) => {
@@ -9,37 +10,46 @@ export const getPaymentsOverview = async (
   if (status && status !== "all") {
     where.status = status;
   }
+  if (source && source !== "all") {
+    where.source = source;
+  }
 
-  const [payments, total, activeCount, cancelledCount, expiredCount, revenueAgg] =
+  const [subscriptions, total, activeCount, cancelledCount, expiredCount, pastDueCount, revenueAgg] =
     await Promise.all([
-      db.payment.findMany({
+      db.subscription.findMany({
         where,
         include: { user: { select: { id: true, name: true, email: true } } },
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
-      db.payment.count({ where }),
-      db.payment.count({ where: { status: "ACTIVE" } }),
-      db.payment.count({ where: { status: "CANCELLED" } }),
-      db.payment.count({ where: { status: "EXPIRED" } }),
-      db.payment.aggregate({ _sum: { amount_cents: true } }),
+      db.subscription.count({ where }),
+      db.subscription.count({ where: { status: "ACTIVE" } }),
+      db.subscription.count({ where: { status: "CANCELLED" } }),
+      db.subscription.count({ where: { status: "EXPIRED" } }),
+      db.subscription.count({ where: { status: "PAST_DUE" } }),
+      db.subscription.aggregate({ _sum: { priceCents: true } }),
     ]);
 
   return {
-    totalRevenue: revenueAgg._sum.amount_cents ?? 0,
+    totalRevenue: revenueAgg._sum.priceCents ?? 0,
     activeCount,
     cancelledCount,
     expiredCount,
-    payments: payments.map((p: any) => ({
-      id: p.id,
-      plan: p.plan,
-      status: p.status,
-      amount_cents: p.amount_cents,
-      planStartedAt: toIsoOrNull(p.planStartedAt),
-      planExpiresAt: toIsoOrNull(p.planExpiresAt),
-      createdAt: p.createdAt.toISOString(),
-      user: p.user,
+    pastDueCount,
+    subscriptions: subscriptions.map((s: any) => ({
+      id: s.id,
+      source: s.source,
+      status: s.status,
+      storageTierGb: s.storageTierGb,
+      priceCents: s.priceCents,
+      currency: s.currency,
+      currentPeriodStart: toIsoOrNull(s.currentPeriodStart),
+      currentPeriodEnd: toIsoOrNull(s.currentPeriodEnd),
+      cancelledAt: toIsoOrNull(s.cancelledAt),
+      endsAt: toIsoOrNull(s.endsAt),
+      createdAt: s.createdAt.toISOString(),
+      user: s.user,
     })),
     total,
     page,

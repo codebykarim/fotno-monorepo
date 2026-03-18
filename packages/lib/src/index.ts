@@ -1,8 +1,12 @@
 export {
-  PLAN_STORAGE_LIMITS,
+  STORAGE_TIERS,
+  STORAGE_TIER_LIMITS,
+  TRIAL_STORAGE_LIMIT,
   OVERAGE_PRICE_PER_GB_CENTS,
   WARNING_THRESHOLD_80,
   WARNING_THRESHOLD_95,
+  ONE_GB_BYTES,
+  ONE_MB_BYTES,
 } from './constants/storage.js'
 
 export { sendStorageWarningEmail, type StorageWarningLevel } from './email.js'

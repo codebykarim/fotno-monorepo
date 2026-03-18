@@ -138,11 +138,10 @@ export function AnalyticsPage() {
                   <div
                     className={cn(
                       "h-3 w-3 rounded-sm",
-                      p.plan === "FREE" ? "bg-zinc-400" :
-                      p.plan === "STARTER" ? "bg-blue-500" :
-                      p.plan === "PROFESSIONAL" ? "bg-violet-500" :
-                      p.plan === "STUDIO" ? "bg-amber-500" :
-                      "bg-emerald-500"
+                      p.plan === "TRIAL" ? "bg-blue-500" :
+                      p.plan === "PRO" ? "bg-emerald-500" :
+                      p.plan === "EXPIRED" ? "bg-zinc-400" :
+                      "bg-zinc-400"
                     )}
                   />
                   <span className="text-sm">{p.plan}</span>

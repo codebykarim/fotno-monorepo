@@ -9,7 +9,7 @@ import { formatBytes, formatDate } from "@/lib/format";
 import type { AdminUser, AdminUserDetail, PaginatedResponse } from "@/lib/types/admin";
 import { toast } from "sonner";
 
-const PLANS = ["all", "FREE", "STARTER", "PROFESSIONAL", "STUDIO", "ENTERPRISE"];
+const PLANS = ["all", "TRIAL", "PRO", "EXPIRED"];
 
 export function UsersPage() {
   const [search, setSearch] = useState("");
@@ -252,17 +252,20 @@ function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => v
           </div>
         </div>
 
-        {data.payments.length > 0 && (
+        {data.subscriptions.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-2">Payment History</h4>
+            <h4 className="text-sm font-medium text-muted-foreground mb-2">Subscriptions</h4>
             <div className="space-y-2">
-              {data.payments.map((p) => (
-                <div key={p.id} className="flex items-center justify-between text-sm rounded-lg border border-border p-2">
-                  <div>
-                    <StatusBadge status={p.status} />
-                    <span className="ml-2">{p.plan}</span>
+              {data.subscriptions.map((s) => (
+                <div key={s.id} className="flex items-center justify-between text-sm rounded-lg border border-border p-2">
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={s.status} />
+                    <span>{s.storageTierGb >= 1000 ? `${s.storageTierGb / 1000} TB` : `${s.storageTierGb} GB`}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {s.source === "LEMON_SQUEEZY" ? "LS" : "Manual"}
+                    </span>
                   </div>
-                  <span className="font-medium">${(p.amount_cents / 100).toFixed(2)}</span>
+                  <span className="font-medium">${(s.priceCents / 100).toFixed(2)}/mo</span>
                 </div>
               ))}
             </div>

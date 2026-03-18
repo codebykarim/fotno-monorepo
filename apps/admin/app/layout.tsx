@@ -17,6 +17,7 @@ import {
   CreditCard,
   Activity,
   BarChart3,
+  ClipboardList,
 } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,7 +28,8 @@ const navItems = [
   { href: "/galleries", label: "Galleries", icon: Image },
   { href: "/clients", label: "Clients", icon: UserCheck },
   { href: "/storage", label: "Storage", icon: HardDrive },
-  { href: "/payments", label: "Payments", icon: CreditCard },
+  { href: "/payments", label: "Subscriptions", icon: CreditCard },
+  { href: "/manual-requests", label: "Manual Requests", icon: ClipboardList },
   { href: "/services", label: "Services", icon: Activity },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];

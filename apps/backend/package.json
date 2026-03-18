@@ -40,6 +40,7 @@
     "@aws-sdk/client-s3": "^3.888.0",
     "@aws-sdk/s3-request-presigner": "^3.888.0",
     "@hapi/boom": "^10.0.1",
+    "@lemonsqueezy/lemonsqueezy.js": "^4.0.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@supabase/supabase-js": "^2.39.3",
     "@types/body-parser": "^1.19.5",

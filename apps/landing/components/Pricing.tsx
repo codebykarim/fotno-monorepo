@@ -29,68 +29,29 @@ function CheckIcon({
   );
 }
 
-function Plan({
-  name,
-  price,
-  description,
-  href,
-  features,
-  featured = false,
-}: {
-  name: string;
-  price: string;
-  description: string;
-  href: string;
-  features: Array<string>;
-  featured?: boolean;
-}) {
-  return (
-    <section
-      className={cn(
-        "flex flex-col rounded-3xl px-6 sm:px-8 transition-all duration-300",
-        featured
-          ? "order-first bg-primary py-8 lg:order-none shadow-xl shadow-primary/20 scale-[1.02]"
-          : "bg-foreground lg:py-8 hover:-translate-y-1"
-      )}
-    >
-      <h3 className="mt-5 text-lg font-semibold text-background">{name}</h3>
-      <p
-        className={cn(
-          "mt-2 text-base",
-          featured ? "text-primary-foreground/80" : "text-background/50"
-        )}
-      >
-        {description}
-      </p>
-      <p className="order-first text-5xl font-light tracking-tight text-background">
-        {price}
-      </p>
-      <ul
-        role="list"
-        className={cn(
-          "order-last mt-10 flex flex-col gap-y-3 text-sm",
-          featured ? "text-primary-foreground" : "text-background/70"
-        )}
-      >
-        {features.map((feature) => (
-          <li key={feature} className="flex">
-            <CheckIcon className={featured ? "text-primary-foreground" : "text-background/50"} />
-            <span className="ml-4">{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <Button
-        href={href}
-        variant={featured ? "solid" : "outline"}
-        color="white"
-        className="mt-8"
-        aria-label={`Get started with the ${name} plan for ${price}`}
-      >
-        Get started
-      </Button>
-    </section>
-  );
-}
+const TIERS = [
+  { storage: "50 GB", price: "$5", popular: false },
+  { storage: "100 GB", price: "$9", popular: false },
+  { storage: "250 GB", price: "$19", popular: true },
+  { storage: "500 GB", price: "$35", popular: false },
+  { storage: "1 TB", price: "$59", popular: false },
+  { storage: "2 TB", price: "$99", popular: false },
+] as const;
+
+const FEATURES = [
+  "Unlimited galleries",
+  "Unlimited clients",
+  "AI-powered captions",
+  "Client favorites & selections",
+  "Download tracking & analytics",
+  "Password-protected galleries",
+  "Custom gallery slugs",
+  "Bulk upload with auto-retry",
+  "Google Drive & Google Photos import",
+  "Slideshow & social sharing",
+];
+
+const signupUrl = process.env.NEXT_PUBLIC_AUTH_URL;
 
 export function Pricing() {
   return (
@@ -102,58 +63,98 @@ export function Pricing() {
       <Container>
         <div className="md:text-center">
           <h2 className="text-3xl tracking-tight text-background sm:text-4xl font-semibold">
-            Simple pricing, for every photographer.
+            One plan. Pick your storage.
           </h2>
           <p className="mt-4 text-lg text-background/50">
-            No hidden fees or surprise charges. Pick the plan that matches your
-            workload and scale when you're ready.
+            Every feature is included at every tier — only storage differs.
+            Start with a 14-day free trial, no card required.
           </p>
         </div>
-        <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
-          <Plan
-            name="Beginner"
-            price="EGP 500"
-            description="For solo shooters just getting started with client delivery."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=beginner`}
-            features={[
-              "Up to 5 galleries",
-              "10 GB storage",
-              "Password-protected galleries",
-              "Client favorites",
-              "Custom gallery slugs",
-            ]}
-          />
-          <Plan
-            featured
-            name="Professional"
-            price="EGP 1,100"
-            description="For working photographers who deliver regularly."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=pro`}
-            features={[
-              "Unlimited galleries",
-              "30 GB storage",
-              "Everything in Beginner",
-              "Bulk upload with auto-retry",
-              "Priority processing",
-              "Client management dashboard",
-              "Download tracking",
-            ]}
-          />
-          <Plan
-            name="Studio"
-            price="EGP 1,500"
-            description="For studios and high-volume professionals."
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=studio`}
-            features={[
-              "Unlimited galleries",
-              "100 GB storage",
-              "Everything in Professional",
-              "Team member access",
-              "Custom branding",
-              "API access",
-              "Priority support",
-            ]}
-          />
+
+        {/* Storage tier grid */}
+        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {TIERS.map((tier) => (
+            <a
+              key={tier.storage}
+              href={`${signupUrl}/account`}
+              className={cn(
+                "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300 hover:-translate-y-1",
+                tier.popular
+                  ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
+                  : "bg-foreground border border-background/10 hover:border-background/20"
+              )}
+            >
+              {tier.popular && (
+                <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
+                  Popular
+                </span>
+              )}
+              <span
+                className={cn(
+                  "text-3xl font-light tracking-tight",
+                  tier.popular ? "text-primary-foreground" : "text-background"
+                )}
+              >
+                {tier.price}
+              </span>
+              <span
+                className={cn(
+                  "mt-1 text-sm",
+                  tier.popular ? "text-primary-foreground/70" : "text-background/50"
+                )}
+              >
+                /month
+              </span>
+              <span
+                className={cn(
+                  "mt-3 text-base font-semibold",
+                  tier.popular ? "text-primary-foreground" : "text-background"
+                )}
+              >
+                {tier.storage}
+              </span>
+            </a>
+          ))}
+        </div>
+
+        {/* Trial badge */}
+        <div className="mt-10 flex justify-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-background/10 bg-foreground px-5 py-2 text-sm text-background/70">
+            <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            14-day free trial — 5 GB storage, all features included
+          </span>
+        </div>
+
+        {/* Features list */}
+        <div className="mx-auto mt-16 max-w-3xl">
+          <h3 className="text-center text-lg font-semibold text-background">
+            Everything included with Fotno Pro
+          </h3>
+          <ul
+            role="list"
+            className="mt-8 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-background/70 sm:grid-cols-2"
+          >
+            {FEATURES.map((feature) => (
+              <li key={feature} className="flex">
+                <CheckIcon className="text-primary" />
+                <span className="ml-4">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 flex justify-center">
+          <Button
+            href={`${signupUrl}/account`}
+            variant="solid"
+            color="white"
+            aria-label="Start your free trial"
+          >
+            Start free trial
+          </Button>
         </div>
       </Container>
     </section>

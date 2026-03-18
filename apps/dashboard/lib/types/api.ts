@@ -77,3 +77,55 @@ export type StorageEventsResponse = {
   offset: number;
   events: StorageEventItem[];
 };
+
+export type UserAccessStatus =
+  | "trial"
+  | "active"
+  | "past_due"
+  | "cancelled_grace"
+  | "expired";
+
+export type SubscriptionResponse = {
+  access: {
+    status: UserAccessStatus;
+    canUpload: boolean;
+    canCreateGallery: boolean;
+    storageLimitBytes: string;
+    trialDaysRemaining?: number;
+    subscription?: {
+      id: string;
+      source: string;
+      status: string;
+      storageTierGb: number;
+      currentPeriodEnd: string | null;
+      cancelledAt: string | null;
+      endsAt: string | null;
+    };
+  };
+  subscription: {
+    id: string;
+    source: string;
+    status: string;
+    storageTierGb: number;
+    priceCents: number;
+    currency: string;
+    currentPeriodStart: string | null;
+    currentPeriodEnd: string | null;
+    cancelledAt: string | null;
+    endsAt: string | null;
+  } | null;
+};
+
+export type PlanTier = {
+  gb: number;
+  priceCents: number;
+  label: string;
+};
+
+export type ManualPlanRequestResponse = {
+  id: string;
+  storageTierGb: number;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  adminNotes: string | null;
+  createdAt: string;
+} | null;

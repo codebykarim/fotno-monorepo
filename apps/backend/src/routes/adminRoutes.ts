@@ -62,9 +62,9 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.getUserStorageController,
     authFunction: isAdmin,
   },
-  "user-payments": {
+  "user-subscriptions": {
     httpMethod: "GET",
-    controllerFunction: AdminController.getUserPaymentsController,
+    controllerFunction: AdminController.getUserSubscriptionsController,
     authFunction: isAdmin,
   },
   "service-health": {
@@ -80,6 +80,21 @@ const adminMethods: { [key: string]: MethodInfo } = {
   "payments-overview": {
     httpMethod: "GET",
     controllerFunction: AdminController.getPaymentsOverviewController,
+    authFunction: isAdmin,
+  },
+  "list-manual-requests": {
+    httpMethod: "GET",
+    controllerFunction: AdminController.listManualRequestsController,
+    authFunction: isAdmin,
+  },
+  "approve-manual-request": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.approveManualRequestController,
+    authFunction: isAdmin,
+  },
+  "reject-manual-request": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.rejectManualRequestController,
     authFunction: isAdmin,
   },
 };
@@ -100,12 +115,15 @@ adminRoutes.post("/admin/users/:id/unban", handleMethod("unban-user"));
 adminRoutes.post("/admin/users/:id/role", handleMethod("set-role"));
 adminRoutes.post("/admin/users/:id/impersonate", handleMethod("impersonate-user"));
 adminRoutes.get("/admin/users/:id/storage", handleMethod("user-storage"));
-adminRoutes.get("/admin/users/:id/payments", handleMethod("user-payments"));
+adminRoutes.get("/admin/users/:id/subscriptions", handleMethod("user-subscriptions"));
 adminRoutes.get("/admin/galleries", handleMethod("list-galleries"));
 adminRoutes.get("/admin/clients", handleMethod("list-clients"));
 adminRoutes.get("/admin/storage", handleMethod("storage-overview"));
 adminRoutes.get("/admin/payments", handleMethod("payments-overview"));
 adminRoutes.get("/admin/services/health", handleMethod("service-health"));
 adminRoutes.get("/admin/analytics", handleMethod("analytics"));
+adminRoutes.get("/admin/manual-requests", handleMethod("list-manual-requests"));
+adminRoutes.post("/admin/manual-requests/:id/approve", handleMethod("approve-manual-request"));
+adminRoutes.post("/admin/manual-requests/:id/reject", handleMethod("reject-manual-request"));
 
 export default adminRoutes;

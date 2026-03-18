@@ -1,18 +1,22 @@
 import { db, toIsoOrNull } from "./_shared";
 
-export const getUserPayments = async (userId: string) => {
-  const payments = await db.payment.findMany({
+export const getUserSubscriptions = async (userId: string) => {
+  const subscriptions = await db.subscription.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
 
-  return payments.map((p: any) => ({
-    id: p.id,
-    plan: p.plan,
-    status: p.status,
-    amount_cents: p.amount_cents,
-    planStartedAt: toIsoOrNull(p.planStartedAt),
-    planExpiresAt: toIsoOrNull(p.planExpiresAt),
-    createdAt: p.createdAt.toISOString(),
+  return subscriptions.map((s: any) => ({
+    id: s.id,
+    source: s.source,
+    status: s.status,
+    storageTierGb: s.storageTierGb,
+    priceCents: s.priceCents,
+    currency: s.currency,
+    currentPeriodStart: toIsoOrNull(s.currentPeriodStart),
+    currentPeriodEnd: toIsoOrNull(s.currentPeriodEnd),
+    cancelledAt: toIsoOrNull(s.cancelledAt),
+    endsAt: toIsoOrNull(s.endsAt),
+    createdAt: s.createdAt.toISOString(),
   }));
 };

@@ -39,8 +39,8 @@ export const getAnalytics = async (period: string) => {
       ORDER BY date
     `,
     db.$queryRaw`
-      SELECT DATE_TRUNC('month', "createdAt") as month, SUM("amount_cents")::int as total_cents
-      FROM "payment"
+      SELECT DATE_TRUNC('month', "createdAt") as month, SUM("priceCents")::int as total_cents
+      FROM "subscription"
       WHERE "createdAt" >= ${since}
       GROUP BY DATE_TRUNC('month', "createdAt")
       ORDER BY month
@@ -53,14 +53,14 @@ export const getAnalytics = async (period: string) => {
       GROUP BY DATE("createdAt")
       ORDER BY date
     `,
-    db.payment.aggregate({ _sum: { amount_cents: true } }),
-    db.payment.count({ where: { status: "ACTIVE" } }),
+    db.subscription.aggregate({ _sum: { priceCents: true } }),
+    db.subscription.count({ where: { status: "ACTIVE" } }),
     db.user.count(),
     db.gallery.count(),
     db.photo.count(),
   ]);
 
-  const totalRevenueValue = totalRevenue._sum.amount_cents ?? 0;
+  const totalRevenueValue = totalRevenue._sum.priceCents ?? 0;
   const mrr = activeSubCount > 0
     ? Math.round(totalRevenueValue / Math.max(1, Math.ceil(days / 30)))
     : 0;

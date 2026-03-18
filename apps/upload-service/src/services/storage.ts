@@ -1,5 +1,5 @@
 import { prisma } from '@workspace/db'
-import { PLAN_STORAGE_LIMITS } from '../constants/storage'
+import { TRIAL_STORAGE_LIMIT } from '../constants/storage'
 import { env } from '../constants/env'
 import type { StorageSummary } from '../interfaces/index'
 import { sendStorageWarningEmail } from '../utils/email'
@@ -20,7 +20,7 @@ function resolveStorageLimit(plan: string, storageLimit: bigint): bigint {
   if (storageLimit > 0n) {
     return storageLimit
   }
-  return PLAN_STORAGE_LIMITS[plan] ?? PLAN_STORAGE_LIMITS.FREE
+  return TRIAL_STORAGE_LIMIT
 }
 
 class StorageService {
@@ -47,8 +47,9 @@ class StorageService {
     const limit = resolveStorageLimit(user.plan, clampNonNegative(user.storageLimit))
     const overageBytes = clampNonNegative(user.overageBytes)
     const percentage = limit > 0n ? Number((used * 100n) / limit) : 0
-    const isPaidPlan = user.plan !== 'FREE'
-    const canUpload = isPaidPlan ? true : used < limit
+    const isPaidPlan = user.plan === 'PRO'
+    const isActive = user.plan !== 'EXPIRED'
+    const canUpload = isActive ? (isPaidPlan ? true : used < limit) : false
 
     return {
       used,

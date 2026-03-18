@@ -1,5 +1,10 @@
 import { type Request, type Response } from "express";
 import * as AdminService from "../services/AdminServices";
+import {
+  listManualPlanRequests,
+  approveManualPlanRequest,
+  rejectManualPlanRequest,
+} from "../services/SubscriptionServices/manualPlan";
 
 export const getOverviewController = async (_req: Request, res: Response) => {
   const overview = await AdminService.getAdminOverview();
@@ -80,8 +85,8 @@ export const getUserStorageController = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-export const getUserPaymentsController = async (req: Request, res: Response) => {
-  const result = await AdminService.getUserPayments(req.params.id);
+export const getUserSubscriptionsController = async (req: Request, res: Response) => {
+  const result = await AdminService.getUserSubscriptions(req.params.id);
   return res.status(200).json(result);
 };
 
@@ -98,9 +103,48 @@ export const getAnalyticsController = async (req: Request, res: Response) => {
 
 export const getPaymentsOverviewController = async (req: Request, res: Response) => {
   const status = String(req.query.status ?? "all");
+  const source = String(req.query.source ?? "all");
   const page = Math.max(1, Number(req.query.page) || 1);
   const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 50));
 
-  const result = await AdminService.getPaymentsOverview(status, page, pageSize);
+  const result = await AdminService.getPaymentsOverview(status, source, page, pageSize);
   return res.status(200).json(result);
+};
+
+export const listManualRequestsController = async (req: Request, res: Response) => {
+  const status = String(req.query.status ?? "all");
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 50));
+
+  const result = await listManualPlanRequests({ status, page, pageSize });
+  return res.status(200).json(result);
+};
+
+export const approveManualRequestController = async (req: Request, res: Response) => {
+  const requestId = req.params.id;
+  const adminUserId = req.user?.id;
+  const { expiresAt, adminNotes } = req.body;
+
+  if (!adminUserId) return res.status(401).json({ error: "Unauthorized" });
+  if (!expiresAt) return res.status(400).json({ error: "expiresAt is required" });
+
+  await approveManualPlanRequest({
+    requestId,
+    adminUserId,
+    expiresAt: new Date(expiresAt),
+    adminNotes,
+  });
+
+  return res.status(200).json({ success: true });
+};
+
+export const rejectManualRequestController = async (req: Request, res: Response) => {
+  const requestId = req.params.id;
+  const adminUserId = req.user?.id;
+  const { adminNotes } = req.body;
+
+  if (!adminUserId) return res.status(401).json({ error: "Unauthorized" });
+
+  await rejectManualPlanRequest({ requestId, adminUserId, adminNotes });
+  return res.status(200).json({ success: true });
 };

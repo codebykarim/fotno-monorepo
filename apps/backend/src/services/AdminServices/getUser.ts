@@ -5,7 +5,7 @@ export const getUser = async (userId: string) => {
     where: { id: userId },
     include: {
       _count: { select: { galleries: true } },
-      payment: {
+      subscriptions: {
         orderBy: { createdAt: "desc" },
         take: 20,
       },
@@ -32,14 +32,18 @@ export const getUser = async (userId: string) => {
     overageBytes: bigIntToString(user.overageBytes),
     galleryCount: user._count.galleries,
     createdAt: user.createdAt.toISOString(),
-    payments: user.payment.map((p: any) => ({
-      id: p.id,
-      plan: p.plan,
-      status: p.status,
-      amount_cents: p.amount_cents,
-      planStartedAt: toIsoOrNull(p.planStartedAt),
-      planExpiresAt: toIsoOrNull(p.planExpiresAt),
-      createdAt: p.createdAt.toISOString(),
+    subscriptions: user.subscriptions.map((s: any) => ({
+      id: s.id,
+      source: s.source,
+      status: s.status,
+      storageTierGb: s.storageTierGb,
+      priceCents: s.priceCents,
+      currency: s.currency,
+      currentPeriodStart: toIsoOrNull(s.currentPeriodStart),
+      currentPeriodEnd: toIsoOrNull(s.currentPeriodEnd),
+      cancelledAt: toIsoOrNull(s.cancelledAt),
+      endsAt: toIsoOrNull(s.endsAt),
+      createdAt: s.createdAt.toISOString(),
     })),
   };
 };

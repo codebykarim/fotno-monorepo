@@ -5,6 +5,6 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const res = await backendJsonFetch(`/api/admin/users/${id}/payments`);
+  const res = await backendJsonFetch(`/api/admin/users/${id}/subscriptions`);
   return Response.json(await res.json(), { status: res.status });
 }

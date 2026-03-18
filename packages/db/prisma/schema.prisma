@@ -9,23 +9,23 @@ datasource db {
 }
 
 model User {
-  id                 String           @id @unique @default(uuid())
+  id                 String              @id @unique @default(uuid())
   name               String
   email              String
-  plan               Plan             @default(FREE)
-  storageUsed        BigInt           @default(0)
-  storageLimit       BigInt           @default(0)
-  storageReserved    BigInt           @default(0)
-  overageBytes       BigInt           @default(0)
+  plan               Plan                @default(TRIAL)
+  trialEndsAt        DateTime?
+  storageUsed        BigInt              @default(0)
+  storageLimit       BigInt              @default(0)
+  storageReserved    BigInt              @default(0)
+  overageBytes       BigInt              @default(0)
   overageResetAt     DateTime?
-  stripeCustomerId   String?          @unique
-  stripeSubId        String?          @unique
-  warningEmailSent80 Boolean          @default(false)
-  warningEmailSent95 Boolean          @default(false)
+  lsCustomerId       String?             @unique
+  warningEmailSent80 Boolean             @default(false)
+  warningEmailSent95 Boolean             @default(false)
   emailVerified      Boolean
   image              String?
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now()) @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now()) @updatedAt
   role               String?
   banned             Boolean?
   banReason          String?
@@ -34,7 +34,8 @@ model User {
   finishOnboarding   Boolean?
   sessions           Session[]
   accounts           Account[]
-  payment            Payment[]
+  subscriptions      Subscription[]
+  manualPlanRequests ManualPlanRequest[]
   userOnboarding     UserOnboarding?
   galleries          Gallery[]
   clients            Client[]
@@ -46,11 +47,9 @@ model User {
 }
 
 enum Plan {
-  FREE
-  STARTER
-  PROFESSIONAL
-  STUDIO
-  ENTERPRISE
+  TRIAL
+  PRO
+  EXPIRED
 }
 
 model Session {
@@ -99,35 +98,64 @@ model Verification {
   @@map("verification")
 }
 
-enum PlanType {
-  BEGGINER
-  PRO
-  STUDIO
-}
-
 enum SubscriptionStatus {
   ACTIVE
   CANCELLED
   EXPIRED
+  PAST_DUE
 }
 
-model Payment {
-  id                  Int                @id @unique @default(autoincrement())
-  planId              Int
-  plan                PlanType
-  planExpiresAt       DateTime?
-  planStartedAt       DateTime?
-  amount_cents        Int
-  transactionId       Int                @unique
-  initial_transaction Int
-  subscriptionId      Int                @unique
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @default(now()) @updatedAt
-  status              SubscriptionStatus
-  userId              String
-  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum SubscriptionSource {
+  LEMON_SQUEEZY
+  MANUAL
+}
 
-  @@map("payment")
+model Subscription {
+  id                 String             @id @default(uuid())
+  userId             String
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source             SubscriptionSource
+  status             SubscriptionStatus @default(ACTIVE)
+  storageTierGb      Int
+  priceCents         Int
+  currency           String             @default("USD")
+  lsSubscriptionId   String?            @unique
+  lsVariantId        String?
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelledAt        DateTime?
+  endsAt             DateTime?
+  approvedBy         String?
+  adminNotes         String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @default(now()) @updatedAt
+
+  @@index([userId])
+  @@map("subscription")
+}
+
+enum ManualPlanRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ManualPlanRequest {
+  id            String                  @id @default(uuid())
+  userId        String
+  user          User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storageTierGb Int
+  status        ManualPlanRequestStatus @default(PENDING)
+  adminNotes    String?
+  reviewedBy    String?
+  reviewedAt    DateTime?
+  expiresAt     DateTime?
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("manual_plan_request")
 }
 
 enum UserType {

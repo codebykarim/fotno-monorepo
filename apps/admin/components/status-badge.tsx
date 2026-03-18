@@ -24,11 +24,17 @@ const statusColors: Record<string, string> = {
   user: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-400",
   banned: "bg-red-500/15 text-red-700 dark:text-red-400",
   // Plans
-  FREE: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-400",
-  STARTER: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
-  PROFESSIONAL: "bg-violet-500/15 text-violet-700 dark:text-violet-400",
-  STUDIO: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
-  ENTERPRISE: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  TRIAL: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+  PRO: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  // Subscription status
+  PAST_DUE: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  // Manual request status
+  PENDING: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+  APPROVED: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  REJECTED: "bg-red-500/15 text-red-700 dark:text-red-400",
+  // Subscription source
+  LEMON_SQUEEZY: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
+  MANUAL: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-400",
 };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {

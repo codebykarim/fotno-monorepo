@@ -9,7 +9,7 @@ export { listAllGalleries } from "./listAllGalleries";
 export { listAllClients } from "./listAllClients";
 export { getStorageOverview } from "./getStorageOverview";
 export { getUserStorage } from "./getUserStorage";
-export { getUserPayments } from "./getUserPayments";
+export { getUserSubscriptions } from "./getUserPayments";
 export { getServiceHealth } from "./getServiceHealth";
 export { getAnalytics } from "./getAnalytics";
 export { getPaymentsOverview } from "./getPaymentsOverview";

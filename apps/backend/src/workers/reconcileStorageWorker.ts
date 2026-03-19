@@ -1,7 +1,7 @@
 import "../bootstrap";
 import type { Job } from "bull";
 import { prisma } from "@workspace/db";
-import { ONE_MB_BYTES, TRIAL_STORAGE_LIMIT } from "../constants/storage";
+import { ONE_MB_BYTES } from "../constants/storage";
 import { scheduleDailyStorageReconciliation, storageQueue } from "../queues/storageQueue";
 
 const toBigInt = (value: unknown): bigint => {
@@ -62,7 +62,7 @@ const startWorker = async () => {
           continue;
         }
 
-        const storageLimit = toBigInt(user.storageLimit) > 0n ? toBigInt(user.storageLimit) : TRIAL_STORAGE_LIMIT;
+        const storageLimit = toBigInt(user.storageLimit);
         const overageBytes = actualUsed > storageLimit ? actualUsed - storageLimit : 0n;
 
         await (prisma as any).$transaction(async (tx: any) => {

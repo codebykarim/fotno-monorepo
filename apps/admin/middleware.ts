@@ -11,11 +11,19 @@ type AdminSession = {
 };
 
 export async function middleware(request: NextRequest) {
+  // Skip auth check for login page
+  if (request.nextUrl.pathname === "/login") {
+    return NextResponse.next();
+  }
+
   try {
+    // Use the admin app's own auth proxy (same domain/port = same cookies)
+    const adminBaseUrl = request.nextUrl.origin; // e.g. http://localhost:3004
+
     const { data: session } = await betterFetch<AdminSession>(
       "/api/auth/get-session",
       {
-        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        baseURL: adminBaseUrl,
         headers: {
           cookie: request.headers.get("cookie") || "",
         },
@@ -23,23 +31,17 @@ export async function middleware(request: NextRequest) {
     );
 
     if (!session?.user) {
-      return NextResponse.redirect(
-        process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
-      );
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     if (session.user.role !== "admin") {
-      return NextResponse.redirect(
-        process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"
-      );
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     return NextResponse.next();
   } catch (error) {
     console.error("Admin middleware error:", error);
-    return NextResponse.redirect(
-      process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
-    );
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 

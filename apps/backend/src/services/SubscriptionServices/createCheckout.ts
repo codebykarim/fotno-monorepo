@@ -5,10 +5,12 @@ import AppError from "../../errors/AppError";
 export const createCheckout = async ({
   userId,
   email,
+  name,
   storageTierGb,
 }: {
   userId: string;
   email: string;
+  name?: string;
   storageTierGb: number;
 }): Promise<{ checkoutUrl: string }> => {
   const storeId = process.env.LEMONSQUEEZY_STORE_ID;
@@ -24,6 +26,7 @@ export const createCheckout = async ({
   const { data, error } = await lsCreateCheckout(storeId, tier.lsVariantId, {
     checkoutData: {
       email,
+      ...(name ? { name } : {}),
       custom: {
         user_id: userId,
       },

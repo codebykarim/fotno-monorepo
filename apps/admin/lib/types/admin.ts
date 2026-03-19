@@ -149,26 +149,3 @@ export interface PaginatedResponse<T> {
   pageSize: number;
 }
 
-export interface AdminManualRequest {
-  id: string;
-  storageTierGb: number;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  adminNotes: string | null;
-  reviewedBy: string | null;
-  reviewedAt: string | null;
-  expiresAt: string | null;
-  createdAt: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    plan: string;
-  };
-}
-
-export interface AdminManualRequestsResponse {
-  requests: AdminManualRequest[];
-  total: number;
-  page: number;
-  pageSize: number;
-}

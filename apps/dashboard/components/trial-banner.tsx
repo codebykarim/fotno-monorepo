@@ -16,21 +16,17 @@ export function TrialBanner() {
 
   if (dismissed || !data) return null;
 
-  const { status, trialDaysRemaining } = data.access;
+  const { status } = data.access;
 
-  if (status === "trial" && trialDaysRemaining !== undefined && trialDaysRemaining <= 3) {
+  if (status === "no_subscription") {
     return (
-      <div className="flex items-center justify-between gap-4 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2">
+      <div className="flex items-center justify-between gap-4 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 mb-4">
         <p className="text-sm text-amber-800 dark:text-amber-300">
-          Your free trial ends in{" "}
-          <strong>
-            {trialDaysRemaining} day{trialDaysRemaining !== 1 ? "s" : ""}
-          </strong>
-          .{" "}
-          <Link href="/billing" className="underline hover:no-underline">
-            Subscribe now
+          You don't have an active plan.{" "}
+          <Link href="/billing" className="underline hover:no-underline font-medium">
+            Choose a plan
           </Link>{" "}
-          to keep your access.
+          to start uploading and creating galleries.
         </p>
         <button
           onClick={() => setDismissed(true)}
@@ -42,15 +38,15 @@ export function TrialBanner() {
     );
   }
 
-  if (status === "expired") {
+  if (status === "past_due") {
     return (
-      <div className="flex items-center justify-between gap-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2">
+      <div className="flex items-center justify-between gap-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 mb-4">
         <p className="text-sm text-red-800 dark:text-red-300">
-          Your trial has ended. Uploads and gallery creation are disabled.{" "}
-          <Link href="/billing" className="underline hover:no-underline">
-            Subscribe to continue
-          </Link>
-          .
+          Your last payment failed. Please{" "}
+          <Link href="/billing" className="underline hover:no-underline font-medium">
+            update your payment method
+          </Link>{" "}
+          to keep your access.
         </p>
       </div>
     );

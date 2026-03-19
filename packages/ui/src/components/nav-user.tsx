@@ -1,15 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
   CreditCard,
-  DatabaseIcon,
   LogOut,
   PlusIcon,
   Sparkles,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   Avatar,
@@ -33,8 +31,33 @@ import {
 } from "@workspace/lib/auth/auth-client";
 import { Button } from "@workspace/ui/components/button";
 
+type StorageSummary = {
+  used: string;
+  limit: string;
+  percentage: number;
+};
+
+const formatGb = (bytes: string): string => {
+  const parsed = Number(bytes);
+  if (!Number.isFinite(parsed)) return "0 GB";
+  return `${(parsed / 1024 ** 3).toFixed(1)} GB`;
+};
+
 export function NavUser() {
   const session = useSession().data as ExtendedSession;
+  const router = useRouter();
+  const [storage, setStorage] = useState<StorageSummary | null>(null);
+
+  useEffect(() => {
+    if (session?.user.subscribed) {
+      fetch("/api/storage/summary")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (data) setStorage(data);
+        })
+        .catch(() => {});
+    }
+  }, [session?.user.subscribed]);
 
   const logout = async () => {
     await signOut({
@@ -92,17 +115,27 @@ export function NavUser() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="focus:bg-transparent bg-background">
+          <DropdownMenuItem
+            className={session?.user.subscribed ? "focus:bg-transparent bg-background" : "cursor-pointer"}
+            onClick={() => {
+              if (!session?.user.subscribed) router.push("/billing");
+            }}
+          >
             {session?.user.subscribed ? (
               <div className="flex items-center justify-between w-full">
                 <div>
                   <p className="text-xs font-semibold text-primary">Storage</p>
                   <p className="text-sm font-medium text-foreground">
-                    0 GB of 30 GB used
+                    {storage
+                      ? `${formatGb(storage.used)} of ${formatGb(storage.limit)} used`
+                      : "Loading..."}
                   </p>
                 </div>
                 <div
-                  onClick={() => {}}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push("/billing");
+                  }}
                   className="rounded-full border-2 border-secondary p-0.5 cursor-pointer"
                 >
                   <PlusIcon className="h-4 w-4 text-foreground" />
@@ -117,20 +150,12 @@ export function NavUser() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => router.push("/billing")}>
             <CreditCard />
             Billing
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
-          </DropdownMenuItem>
-        </DropdownMenuGroup> */}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => void logout()}>
           <LogOut />

@@ -1,19 +1,17 @@
 import { prisma } from "@workspace/db";
-import { TRIAL_STORAGE_LIMIT, STORAGE_TIER_LIMITS } from "../../constants/storage";
+import { STORAGE_TIER_LIMITS } from "../../constants/storage";
 
 export type UserAccessStatus =
-  | "trial"
   | "active"
   | "past_due"
   | "cancelled_grace"
-  | "expired";
+  | "no_subscription";
 
 export type UserAccess = {
   status: UserAccessStatus;
   canUpload: boolean;
   canCreateGallery: boolean;
   storageLimitBytes: bigint;
-  trialDaysRemaining?: number;
   subscription?: {
     id: string;
     source: string;
@@ -33,18 +31,12 @@ export const resolveUserAccess = async (
     select: {
       id: true,
       plan: true,
-      trialEndsAt: true,
       storageLimit: true,
     },
   });
 
   if (!user) {
-    return {
-      status: "expired",
-      canUpload: false,
-      canCreateGallery: false,
-      storageLimitBytes: 0n,
-    };
+    return buildNoSubscriptionAccess();
   }
 
   // Check for active subscription first
@@ -58,19 +50,17 @@ export const resolveUserAccess = async (
 
   // Active subscription
   if (subscription && subscription.status === "ACTIVE") {
-    // Check if manual subscription has expired
+    // Check if subscription has expired (based on endsAt)
     if (
-      subscription.source === "MANUAL" &&
       subscription.endsAt &&
       new Date(subscription.endsAt) < new Date()
     ) {
       await expireSubscription(userId, subscription.id);
-      return buildExpiredAccess();
+      return buildNoSubscriptionAccess();
     }
 
     const storageLimitBytes =
-      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ??
-      TRIAL_STORAGE_LIMIT;
+      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
 
     return {
       status: "active",
@@ -94,8 +84,7 @@ export const resolveUserAccess = async (
     const periodEnd = subscription.currentPeriodEnd || subscription.endsAt;
     if (periodEnd && new Date(periodEnd) > new Date()) {
       const storageLimitBytes =
-        STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ??
-        TRIAL_STORAGE_LIMIT;
+        STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
 
       return {
         status: "cancelled_grace",
@@ -115,14 +104,13 @@ export const resolveUserAccess = async (
     }
     // Grace period over
     await expireSubscription(userId, subscription.id);
-    return buildExpiredAccess();
+    return buildNoSubscriptionAccess();
   }
 
   // Past due subscription
   if (subscription && subscription.status === "PAST_DUE") {
     const storageLimitBytes =
-      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ??
-      TRIAL_STORAGE_LIMIT;
+      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
 
     return {
       status: "past_due",
@@ -141,38 +129,13 @@ export const resolveUserAccess = async (
     };
   }
 
-  // No active subscription — check trial
-  if (user.plan === "TRIAL" && user.trialEndsAt) {
-    const now = new Date();
-    const trialEnd = new Date(user.trialEndsAt);
-
-    if (trialEnd > now) {
-      const trialDaysRemaining = Math.ceil(
-        (trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-      );
-
-      return {
-        status: "trial",
-        canUpload: true,
-        canCreateGallery: true,
-        storageLimitBytes: TRIAL_STORAGE_LIMIT,
-        trialDaysRemaining,
-      };
-    }
-
-    // Trial has expired — lazily update user plan
-    await (prisma as any).user.update({
-      where: { id: userId },
-      data: { plan: "EXPIRED" },
-    });
-  }
-
-  return buildExpiredAccess();
+  // No active subscription — user must choose a plan
+  return buildNoSubscriptionAccess();
 };
 
-function buildExpiredAccess(): UserAccess {
+function buildNoSubscriptionAccess(): UserAccess {
   return {
-    status: "expired",
+    status: "no_subscription",
     canUpload: false,
     canCreateGallery: false,
     storageLimitBytes: 0n,

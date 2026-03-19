@@ -3,7 +3,6 @@ import { sendMail } from "./utils/sendMail";
 import { admin, emailOTP, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@workspace/db";
-import { TRIAL_STORAGE_LIMIT } from "./constants/storage";
 
 const hasGoogleOAuth =
   Boolean(process.env.GOOGLE_CLIENT_ID) &&
@@ -24,12 +23,11 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
+          // New users start without a subscription — they must choose a plan
           await (prisma as any).user.update({
             where: { id: user.id },
             data: {
               plan: "TRIAL",
-              trialEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-              storageLimit: TRIAL_STORAGE_LIMIT,
             },
           });
         },

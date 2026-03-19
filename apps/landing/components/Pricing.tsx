@@ -29,14 +29,20 @@ function CheckIcon({
   );
 }
 
-const TIERS = [
-  { storage: "50 GB", price: "$5", popular: false },
-  { storage: "100 GB", price: "$9", popular: false },
-  { storage: "250 GB", price: "$19", popular: true },
-  { storage: "500 GB", price: "$35", popular: false },
-  { storage: "1 TB", price: "$59", popular: false },
-  { storage: "2 TB", price: "$99", popular: false },
-] as const;
+type PlanTier = {
+  gb: number;
+  priceCents: number;
+  label: string;
+};
+
+const FALLBACK_TIERS: PlanTier[] = [
+  { gb: 50, priceCents: 500, label: "50 GB" },
+  { gb: 100, priceCents: 900, label: "100 GB" },
+  { gb: 250, priceCents: 1900, label: "250 GB" },
+  { gb: 500, priceCents: 3500, label: "500 GB" },
+  { gb: 1000, priceCents: 5900, label: "1 TB" },
+  { gb: 2000, priceCents: 9900, label: "2 TB" },
+];
 
 const FEATURES = [
   "Unlimited galleries",
@@ -51,9 +57,33 @@ const FEATURES = [
   "Slideshow & social sharing",
 ];
 
+const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`;
+
+async function fetchPlans(): Promise<PlanTier[]> {
+  const backendUrl =
+    process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
+  if (!backendUrl) return FALLBACK_TIERS;
+
+  try {
+    const res = await fetch(`${backendUrl}/api/billing/plans`, {
+      next: { revalidate: 300 }, // ISR: revalidate every 5 minutes
+    });
+    if (!res.ok) return FALLBACK_TIERS;
+    const data = await res.json();
+    // The backend wraps in a `data` field via controllerReturn
+    const plans: PlanTier[] = Array.isArray(data) ? data : data?.data;
+    if (!Array.isArray(plans) || plans.length === 0) return FALLBACK_TIERS;
+    return plans;
+  } catch {
+    return FALLBACK_TIERS;
+  }
+}
+
 const signupUrl = process.env.NEXT_PUBLIC_AUTH_URL;
 
-export function Pricing() {
+export async function Pricing() {
+  const plans = await fetchPlans();
+
   return (
     <section
       id="pricing"
@@ -67,64 +97,63 @@ export function Pricing() {
           </h2>
           <p className="mt-4 text-lg text-background/50">
             Every feature is included at every tier — only storage differs.
-            Start with a 14-day free trial, no card required.
+            Pick the plan that fits your workflow.
           </p>
         </div>
 
         {/* Storage tier grid */}
         <div className="mx-auto mt-16 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {TIERS.map((tier) => (
-            <a
-              key={tier.storage}
-              href={`${signupUrl}/account`}
-              className={cn(
-                "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300 hover:-translate-y-1",
-                tier.popular
-                  ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
-                  : "bg-foreground border border-background/10 hover:border-background/20"
-              )}
-            >
-              {tier.popular && (
-                <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
-                  Popular
+          {plans.map((tier) => {
+            const isPopular = tier.gb === 250;
+            return (
+              <a
+                key={tier.gb}
+                href={`${signupUrl}/account`}
+                className={cn(
+                  "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300 hover:-translate-y-1",
+                  isPopular
+                    ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
+                    : "bg-foreground border border-background/10 hover:border-background/20",
+                )}
+              >
+                {isPopular && (
+                  <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
+                    Popular
+                  </span>
+                )}
+                <span
+                  className={cn(
+                    "text-3xl font-light tracking-tight",
+                    isPopular
+                      ? "text-primary-foreground"
+                      : "text-background",
+                  )}
+                >
+                  {formatPrice(tier.priceCents)}
                 </span>
-              )}
-              <span
-                className={cn(
-                  "text-3xl font-light tracking-tight",
-                  tier.popular ? "text-primary-foreground" : "text-background"
-                )}
-              >
-                {tier.price}
-              </span>
-              <span
-                className={cn(
-                  "mt-1 text-sm",
-                  tier.popular ? "text-primary-foreground/70" : "text-background/50"
-                )}
-              >
-                /month
-              </span>
-              <span
-                className={cn(
-                  "mt-3 text-base font-semibold",
-                  tier.popular ? "text-primary-foreground" : "text-background"
-                )}
-              >
-                {tier.storage}
-              </span>
-            </a>
-          ))}
-        </div>
-
-        {/* Trial badge */}
-        <div className="mt-10 flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-background/10 bg-foreground px-5 py-2 text-sm text-background/70">
-            <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            14-day free trial — 5 GB storage, all features included
-          </span>
+                <span
+                  className={cn(
+                    "mt-1 text-sm",
+                    isPopular
+                      ? "text-primary-foreground/70"
+                      : "text-background/50",
+                  )}
+                >
+                  /month
+                </span>
+                <span
+                  className={cn(
+                    "mt-3 text-base font-semibold",
+                    isPopular
+                      ? "text-primary-foreground"
+                      : "text-background",
+                  )}
+                >
+                  {tier.label}
+                </span>
+              </a>
+            );
+          })}
         </div>
 
         {/* Features list */}
@@ -151,9 +180,9 @@ export function Pricing() {
             href={`${signupUrl}/account`}
             variant="solid"
             color="white"
-            aria-label="Start your free trial"
+            aria-label="Get started"
           >
-            Start free trial
+            Get started
           </Button>
         </div>
       </Container>

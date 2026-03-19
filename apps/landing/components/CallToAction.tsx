@@ -25,14 +25,14 @@ export function CallToAction() {
           </h2>
           <p className="mt-4 text-lg tracking-tight text-primary-foreground/80">
             Join hundreds of photographers who've upgraded their delivery
-            workflow. Your first month is on us.
+            workflow. Sign up and choose a plan to get started.
           </p>
           <Button
             href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
             color="white"
             className="mt-10"
           >
-            Get 1 month free
+            Get started
           </Button>
         </div>
       </Container>

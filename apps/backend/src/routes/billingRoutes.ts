@@ -36,16 +36,6 @@ const billingMethods: { [key: string]: MethodInfo } = {
     controllerFunction: BillingController.getPortalUrlController,
     authFunction: isAuth,
   },
-  "manual-request": {
-    httpMethod: "POST",
-    controllerFunction: BillingController.createManualRequestController,
-    authFunction: isAuth,
-  },
-  "get-manual-request": {
-    httpMethod: "GET",
-    controllerFunction: BillingController.getManualRequestController,
-    authFunction: isAuth,
-  },
   webhook: {
     httpMethod: "POST",
     controllerFunction: BillingController.webhookController,

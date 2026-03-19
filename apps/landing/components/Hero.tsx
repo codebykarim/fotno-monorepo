@@ -56,7 +56,7 @@ export function Hero() {
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
         <Button href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
-          Get 1 month free
+          Get started
         </Button>
         <Button
           href="#features"

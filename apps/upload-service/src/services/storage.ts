@@ -1,5 +1,4 @@
 import { prisma } from '@workspace/db'
-import { TRIAL_STORAGE_LIMIT } from '../constants/storage'
 import { env } from '../constants/env'
 import type { StorageSummary } from '../interfaces/index'
 import { sendStorageWarningEmail } from '../utils/email'
@@ -20,7 +19,7 @@ function resolveStorageLimit(plan: string, storageLimit: bigint): bigint {
   if (storageLimit > 0n) {
     return storageLimit
   }
-  return TRIAL_STORAGE_LIMIT
+  return 0n
 }
 
 class StorageService {

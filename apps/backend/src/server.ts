@@ -33,7 +33,7 @@ app.use(
       "https://gallery.fotno.com",
     ], // Remove any undefined values
     optionsSuccessStatus: 200,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   }),

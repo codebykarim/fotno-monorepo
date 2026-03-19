@@ -197,21 +197,6 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   currentPeriodEnd: 'currentPeriodEnd',
   cancelledAt: 'cancelledAt',
   endsAt: 'endsAt',
-  approvedBy: 'approvedBy',
-  adminNotes: 'adminNotes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ManualPlanRequestScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  storageTierGb: 'storageTierGb',
-  status: 'status',
-  adminNotes: 'adminNotes',
-  reviewedBy: 'reviewedBy',
-  reviewedAt: 'reviewedAt',
-  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -452,8 +437,7 @@ exports.Plan = exports.$Enums.Plan = {
 };
 
 exports.SubscriptionSource = exports.$Enums.SubscriptionSource = {
-  LEMON_SQUEEZY: 'LEMON_SQUEEZY',
-  MANUAL: 'MANUAL'
+  LEMON_SQUEEZY: 'LEMON_SQUEEZY'
 };
 
 exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
@@ -461,12 +445,6 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   CANCELLED: 'CANCELLED',
   EXPIRED: 'EXPIRED',
   PAST_DUE: 'PAST_DUE'
-};
-
-exports.ManualPlanRequestStatus = exports.$Enums.ManualPlanRequestStatus = {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
 };
 
 exports.UserType = exports.$Enums.UserType = {
@@ -523,7 +501,6 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Subscription: 'Subscription',
-  ManualPlanRequest: 'ManualPlanRequest',
   UserOnboarding: 'UserOnboarding',
   Gallery: 'Gallery',
   Photo: 'Photo',

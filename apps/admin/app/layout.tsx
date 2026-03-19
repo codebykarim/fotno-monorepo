@@ -17,7 +17,6 @@ import {
   CreditCard,
   Activity,
   BarChart3,
-  ClipboardList,
 } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +28,6 @@ const navItems = [
   { href: "/clients", label: "Clients", icon: UserCheck },
   { href: "/storage", label: "Storage", icon: HardDrive },
   { href: "/payments", label: "Subscriptions", icon: CreditCard },
-  { href: "/manual-requests", label: "Manual Requests", icon: ClipboardList },
   { href: "/services", label: "Services", icon: Activity },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];
@@ -40,6 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isLoginPage = pathname === "/login";
 
   return (
     <html
@@ -54,46 +53,50 @@ export default function RootLayout({
         className={cn(inter.className, "bg-background text-foreground")}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="flex min-h-screen">
-            {/* Sidebar */}
-            <aside className="fixed inset-y-0 left-0 z-30 w-56 border-r border-border bg-card">
-              <div className="flex h-14 items-center border-b border-border px-4">
-                <span className="text-sm font-semibold tracking-tight">
-                  FOTNO <span className="text-muted-foreground font-normal">Admin</span>
-                </span>
-              </div>
-              <nav className="flex flex-col gap-1 p-2">
-                {navItems.map((item) => {
-                  const isActive =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname.startsWith(item.href);
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                        isActive
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </nav>
-            </aside>
+          {isLoginPage ? (
+            children
+          ) : (
+            <div className="flex min-h-screen">
+              {/* Sidebar */}
+              <aside className="fixed inset-y-0 left-0 z-30 w-56 border-r border-border bg-card">
+                <div className="flex h-14 items-center border-b border-border px-4">
+                  <span className="text-sm font-semibold tracking-tight">
+                    FOTNO <span className="text-muted-foreground font-normal">Admin</span>
+                  </span>
+                </div>
+                <nav className="flex flex-col gap-1 p-2">
+                  {navItems.map((item) => {
+                    const isActive =
+                      item.href === "/"
+                        ? pathname === "/"
+                        : pathname.startsWith(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                          isActive
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </aside>
 
-            {/* Main content */}
-            <main className="flex-1 pl-56">
-              <div className="p-6 lg:p-8">
-                {children}
-              </div>
-            </main>
-          </div>
+              {/* Main content */}
+              <main className="flex-1 pl-56">
+                <div className="p-6 lg:p-8">
+                  {children}
+                </div>
+              </main>
+            </div>
+          )}
           <Toaster richColors position="bottom-center" />
         </ThemeProvider>
       </body>

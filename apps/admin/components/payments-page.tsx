@@ -35,7 +35,7 @@ export function PaymentsPage() {
   }).toString();
 
   const { data, isLoading } = useSWR<AdminSubscriptionsOverview & { total: number; page: number; pageSize: number }>(
-    `/api/admin/payments?${queryParams}`,
+    `/api/payments?${queryParams}`,
     jsonFetcher,
     { refreshInterval: 60000 }
   );

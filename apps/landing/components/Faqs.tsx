@@ -43,14 +43,14 @@ const faqs = [
         "All photos are stored on enterprise-grade cloud infrastructure with encryption at rest. Gallery passwords are hashed, and all traffic is served over HTTPS.",
     },
     {
-      question: "Can I try Fotno before paying?",
+      question: "How do I get started?",
       answer:
-        "Absolutely. Every new account gets a 1-month free trial on the Professional plan. No credit card required.",
+        "Sign up for a free account, choose the storage plan that fits your needs, and start uploading photos right away.",
     },
     {
       question: "How do I get support?",
       answer:
-        "Email us at support@fotno.com. Studio plan customers get priority support with faster response times.",
+        "Email us at support@fotno.com. All customers receive the same responsive support.",
     },
   ],
 ];

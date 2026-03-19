@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { prisma } from "@workspace/db";
-import { TRIAL_STORAGE_LIMIT } from "../../constants/storage";
 
 export const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -23,7 +22,7 @@ export const resolvePlanLimit = (plan: unknown, storageLimit?: bigint): bigint =
   if (storageLimit && storageLimit > 0n) {
     return storageLimit;
   }
-  return TRIAL_STORAGE_LIMIT;
+  return 0n;
 };
 
 export const nonNegative = (value: bigint): bigint => (value < 0n ? 0n : value);

@@ -19,8 +19,6 @@ export const STORAGE_TIER_LIMITS: Record<number, bigint> = {
   2000: BigInt(2000) * ONE_GB_BYTES,
 };
 
-export const TRIAL_STORAGE_LIMIT = BigInt(5) * ONE_GB_BYTES;
-
 export const OVERAGE_PRICE_PER_GB_CENTS = 10;
 export const WARNING_THRESHOLD_80 = 0.8;
 export const WARNING_THRESHOLD_95 = 0.95;

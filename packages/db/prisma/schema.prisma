@@ -35,7 +35,6 @@ model User {
   sessions           Session[]
   accounts           Account[]
   subscriptions      Subscription[]
-  manualPlanRequests ManualPlanRequest[]
   userOnboarding     UserOnboarding?
   galleries          Gallery[]
   clients            Client[]
@@ -107,7 +106,6 @@ enum SubscriptionStatus {
 
 enum SubscriptionSource {
   LEMON_SQUEEZY
-  MANUAL
 }
 
 model Subscription {
@@ -125,8 +123,6 @@ model Subscription {
   currentPeriodEnd   DateTime?
   cancelledAt        DateTime?
   endsAt             DateTime?
-  approvedBy         String?
-  adminNotes         String?
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @default(now()) @updatedAt
 
@@ -134,29 +130,6 @@ model Subscription {
   @@map("subscription")
 }
 
-enum ManualPlanRequestStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-model ManualPlanRequest {
-  id            String                  @id @default(uuid())
-  userId        String
-  user          User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  storageTierGb Int
-  status        ManualPlanRequestStatus @default(PENDING)
-  adminNotes    String?
-  reviewedBy    String?
-  reviewedAt    DateTime?
-  expiresAt     DateTime?
-  createdAt     DateTime                @default(now())
-  updatedAt     DateTime                @default(now()) @updatedAt
-
-  @@index([userId])
-  @@index([status])
-  @@map("manual_plan_request")
-}
 
 enum UserType {
   SOLO

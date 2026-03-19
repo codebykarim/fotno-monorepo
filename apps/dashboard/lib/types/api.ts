@@ -79,11 +79,10 @@ export type StorageEventsResponse = {
 };
 
 export type UserAccessStatus =
-  | "trial"
   | "active"
   | "past_due"
   | "cancelled_grace"
-  | "expired";
+  | "no_subscription";
 
 export type SubscriptionResponse = {
   access: {
@@ -91,7 +90,6 @@ export type SubscriptionResponse = {
     canUpload: boolean;
     canCreateGallery: boolean;
     storageLimitBytes: string;
-    trialDaysRemaining?: number;
     subscription?: {
       id: string;
       source: string;
@@ -122,10 +120,3 @@ export type PlanTier = {
   label: string;
 };
 
-export type ManualPlanRequestResponse = {
-  id: string;
-  storageTierGb: number;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  adminNotes: string | null;
-  createdAt: string;
-} | null;

@@ -19,4 +19,3 @@ export const STORAGE_TIER_LIMITS: Record<number, bigint> = {
   2000: BigInt(2000) * ONE_GB_BYTES,
 };
 
-export const TRIAL_STORAGE_LIMIT = BigInt(5) * ONE_GB_BYTES;

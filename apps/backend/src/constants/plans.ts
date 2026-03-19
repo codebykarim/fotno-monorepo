@@ -45,4 +45,3 @@ export const findTierByVariantId = (variantId: string): StorageTier | undefined 
 export const findTierByGb = (gb: number): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.gb === gb);
 
-export const TRIAL_DAYS = 14;

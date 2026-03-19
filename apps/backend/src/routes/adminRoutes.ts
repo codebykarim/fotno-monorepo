@@ -82,21 +82,6 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.getPaymentsOverviewController,
     authFunction: isAdmin,
   },
-  "list-manual-requests": {
-    httpMethod: "GET",
-    controllerFunction: AdminController.listManualRequestsController,
-    authFunction: isAdmin,
-  },
-  "approve-manual-request": {
-    httpMethod: "POST",
-    controllerFunction: AdminController.approveManualRequestController,
-    authFunction: isAdmin,
-  },
-  "reject-manual-request": {
-    httpMethod: "POST",
-    controllerFunction: AdminController.rejectManualRequestController,
-    authFunction: isAdmin,
-  },
 };
 
 const mappedMethods = init(adminMethods);
@@ -122,8 +107,5 @@ adminRoutes.get("/admin/storage", handleMethod("storage-overview"));
 adminRoutes.get("/admin/payments", handleMethod("payments-overview"));
 adminRoutes.get("/admin/services/health", handleMethod("service-health"));
 adminRoutes.get("/admin/analytics", handleMethod("analytics"));
-adminRoutes.get("/admin/manual-requests", handleMethod("list-manual-requests"));
-adminRoutes.post("/admin/manual-requests/:id/approve", handleMethod("approve-manual-request"));
-adminRoutes.post("/admin/manual-requests/:id/reject", handleMethod("reject-manual-request"));
 
 export default adminRoutes;

@@ -1,93 +1,169 @@
 "use client";
+
 import { LayoutGroup, motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { TextRotate } from "@workspace/ui/components/text-rotate";
 
+const stats = [
+  { value: "10K+", label: "Photos delivered" },
+  { value: "99.9%", label: "Uptime" },
+  { value: "4.9/5", label: "User rating" },
+];
+
 export function Hero() {
   return (
-    <Container className="pt-20 pb-16 text-center lg:pt-32">
-      <div className="mx-auto w-full max-w-4xl text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-medium flex flex-col sm:flex-row flex-wrap items-center justify-center bg-background text-foreground p-6 sm:p-12 md:p-16 lg:p-20">
-        <LayoutGroup>
-          <motion.h1
-            className="flex flex-wrap justify-center text-center sm:text-left whitespace-pre-wrap sm:whitespace-pre"
-            layout
-          >
-            <motion.span
-              className="pt-0.5 sm:pt-1 md:pt-2"
-              layout
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
-            >
-              FOTNO makes it easy to{" "}
-            </motion.span>
-            <TextRotate
-              texts={[
-                " Share ",
-                " Store ",
-                " Showcase ",
-                " Deliver ",
-                " Connect ",
-              ]}
-              mainClassName="text-primary-foreground px-2 sm:px-2 md:px-3 bg-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg mx-1"
-              staggerFrom={"last"}
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-120%" }}
-              staggerDuration={0.025}
-              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
-              rotationInterval={2000}
-            />
-            <motion.span
-              className="pt-0.5 sm:pt-1 md:pt-2"
-              layout
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
-            >
-              {" "}
-              for Photographers.
-            </motion.span>
-          </motion.h1>
-        </LayoutGroup>
+    <div className="relative isolate overflow-hidden bg-background">
+      {/* Gradient mesh background */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div
+          className="absolute -top-1/2 left-1/2 h-[200%] w-[200%] -translate-x-1/2 opacity-40 dark:opacity-20"
+          style={{
+            background: `
+              radial-gradient(ellipse 50% 80% at 20% 40%, oklch(0.78 0.14 65 / 0.3) 0%, transparent 100%),
+              radial-gradient(ellipse 50% 80% at 80% 50%, oklch(0.65 0.12 50 / 0.2) 0%, transparent 100%),
+              radial-gradient(ellipse 40% 60% at 50% 90%, oklch(0.72 0.10 80 / 0.15) 0%, transparent 100%)
+            `,
+          }}
+        />
       </div>
-      <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-muted-foreground">
-        The all-in-one platform for photographers. Upload, organize, and deliver
-        stunning galleries to your clients -- with password protection, favorites,
-        and a seamless experience they'll love.
-      </p>
-      <div className="mt-10 flex justify-center gap-x-6">
-        <Button href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
-          Get started
-        </Button>
-        <Button
-          href="#features"
-          variant="outline"
-          color="main"
+
+      <Container className="relative pb-20 pt-20 sm:pb-32 sm:pt-32 lg:pb-40 lg:pt-44">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-center"
         >
-          <svg
-            aria-hidden="true"
-            className="h-3 w-3 flex-none fill-primary group-active:fill-current"
-          >
-            <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
-          </svg>
-          <span className="ml-3">See features</span>
-        </Button>
-      </div>
-      <div className="mt-36 lg:mt-44">
-        <p className="text-base text-muted-foreground">
-          Trusted by photographers who care about their craft
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-x-8 text-muted-foreground/60">
-          <span className="text-lg font-semibold tracking-tight">Wedding</span>
-          <span className="text-border">|</span>
-          <span className="text-lg font-semibold tracking-tight">Portrait</span>
-          <span className="text-border">|</span>
-          <span className="text-lg font-semibold tracking-tight">Product</span>
-          <span className="text-border">|</span>
-          <span className="text-lg font-semibold tracking-tight">Event</span>
-          <span className="text-border">|</span>
-          <span className="text-lg font-semibold tracking-tight">Fashion</span>
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-border/80 bg-background/60 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/80 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            Built for professional photographers
+          </div>
+        </motion.div>
+
+        {/* Headline with rotating text */}
+        <div className="mx-auto mt-10 w-full max-w-5xl text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <LayoutGroup>
+            <motion.h1
+              className="flex flex-wrap items-center justify-center text-center"
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              <motion.span
+                className="pt-0.5 sm:pt-1 md:pt-2"
+                layout
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              >
+                The best way to{" "}
+              </motion.span>
+              <TextRotate
+                texts={[
+                  " Share ",
+                  " Deliver ",
+                  " Showcase ",
+                  " Protect ",
+                  " Store ",
+                ]}
+                mainClassName="text-primary-foreground px-2 sm:px-3 md:px-4 bg-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-xl mx-1 sm:mx-2"
+                staggerFrom={"last"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                rotationInterval={2500}
+              />
+              <motion.span
+                className="pt-0.5 sm:pt-1 md:pt-2"
+                layout
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              >
+                {" "}
+                your photography.
+              </motion.span>
+            </motion.h1>
+          </LayoutGroup>
         </div>
-      </div>
-    </Container>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mx-auto mt-8 max-w-2xl text-center text-lg leading-relaxed text-muted-foreground sm:text-xl"
+        >
+          Upload, organize, and deliver stunning password-protected galleries.
+          Your clients pick favorites in real-time — no zip files, no clunky
+          links.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-5"
+        >
+          <Button
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
+            className="w-full px-8 py-3 text-base sm:w-auto"
+          >
+            Start free trial
+          </Button>
+          <Button
+            href="#features"
+            variant="outline"
+            color="main"
+            className="w-full px-8 py-3 text-base sm:w-auto"
+          >
+            <span>See features</span>
+            <svg
+              className="ml-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+              />
+            </svg>
+          </Button>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mx-auto mt-20 max-w-lg sm:mt-24"
+        >
+          <div className="flex items-center justify-center divide-x divide-border">
+            {stats.map((stat) => (
+              <div key={stat.label} className="px-5 text-center sm:px-8">
+                <div className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  {stat.value}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </Container>
+    </div>
   );
 }

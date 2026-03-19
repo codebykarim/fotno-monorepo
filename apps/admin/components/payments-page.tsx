@@ -11,12 +11,10 @@ import type { AdminSubscriptionsOverview, AdminSubscription } from "@/lib/types/
 import { DollarSign, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
 
 const STORAGE_TIER_LABELS: Record<number, string> = {
-  50: "50 GB",
-  100: "100 GB",
-  250: "250 GB",
-  500: "500 GB",
-  1000: "1 TB",
-  2000: "2 TB",
+  20: "Starter (20 GB)",
+  100: "Professional (100 GB)",
+  500: "Business (500 GB)",
+  [-1]: "Unlimited",
 };
 
 const STATUS_OPTIONS = ["all", "ACTIVE", "CANCELLED", "EXPIRED", "PAST_DUE"];

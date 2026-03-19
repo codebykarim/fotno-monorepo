@@ -12,8 +12,6 @@ import { cn } from "@workspace/ui/lib/utils";
 
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
-import { Logo } from "@/components/Logo";
-import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/components/icons";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { useSession } from "@workspace/lib/auth/auth-client";
@@ -26,7 +24,11 @@ function MobileNavLink({
   children: React.ReactNode;
 }) {
   return (
-    <PopoverButton as={Link} href={href} className="block w-full p-2">
+    <PopoverButton
+      as={Link}
+      href={href}
+      className="block w-full rounded-xl p-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+    >
       {children}
     </PopoverButton>
   );
@@ -49,7 +51,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
         d="M2 2L12 12M12 2L2 12"
         className={cn(
           "origin-center transition",
-          !open && "scale-90 opacity-0"
+          !open && "scale-90 opacity-0",
         )}
       />
     </svg>
@@ -71,16 +73,17 @@ function MobileNavigation({
       </PopoverButton>
       <PopoverBackdrop
         transition
-        className="fixed inset-0 bg-foreground/30 duration-150 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in"
+        className="fixed inset-0 bg-foreground/30 backdrop-blur-sm duration-150 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in"
       />
       <PopoverPanel
         transition
-        className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-background p-4 text-lg tracking-tight text-foreground ring-1 shadow-xl ring-background/5 data-closed:scale-95 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in"
+        className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-background/95 backdrop-blur-xl p-4 text-lg tracking-tight text-foreground ring-1 shadow-xl ring-border/50 data-closed:scale-95 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in"
       >
         <MobileNavLink href="#features">Features</MobileNavLink>
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#pricing">Pricing</MobileNavLink>
-        <hr className="m-2 border-primary/40" />
+        <MobileNavLink href="#faq">FAQ</MobileNavLink>
+        <hr className="m-2 border-border" />
         {isUserLoggedIn ? (
           <MobileNavLink
             href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`}
@@ -88,7 +91,9 @@ function MobileNavigation({
             My Dashboard
           </MobileNavLink>
         ) : (
-          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
+          <MobileNavLink
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
+          >
             Get started
           </MobileNavLink>
         )}
@@ -97,11 +102,19 @@ function MobileNavigation({
   );
 }
 
+const navLinks = [
+  { label: "Features", href: "#features" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
+
 const AUTH_TIMEOUT_MS = 1500;
 
 export function Header() {
   const { data: session, isPending } = useSession();
   const [ready, setReady] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (!isPending) {
@@ -112,31 +125,49 @@ export function Header() {
     return () => clearTimeout(timer);
   }, [isPending]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="py-10 bg-background">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "border-b border-border/50 bg-background/80 py-4 backdrop-blur-xl"
+          : "bg-transparent py-6",
+      )}
+    >
       <Container>
-        <nav className="relative z-50 flex justify-between">
+        <nav className="relative z-50 flex items-center justify-between">
           <div className="flex items-center md:gap-x-12">
-            <Link href="#" aria-label="Home">
-              <div className="flex items-center justify-center gap-2">
-                <Icons.logo className="h-8 w-auto text-primary" />
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-                  FOTNO
-                </h1>
+            <Link href="#" aria-label="Home" className="group">
+              <div className="flex items-center gap-2">
+                <Icons.logo className="h-7 w-auto text-primary transition-transform duration-300 group-hover:scale-110" />
+                <span className="text-xl font-bold tracking-tight">FOTNO</span>
               </div>
             </Link>
-            <div className="hidden md:flex md:gap-x-6">
-              <NavLink href="#features">Features</NavLink>
-              <NavLink href="#testimonials">Testimonials</NavLink>
-              <NavLink href="#pricing">Pricing</NavLink>
+            <div className="hidden md:flex md:gap-x-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
-          <div className="flex items-center gap-x-5 md:gap-x-8">
+          <div className="flex items-center gap-x-4">
             <ThemeToggle />
             <div
               className={cn(
-                "hidden md:block transition-opacity duration-300",
-                ready ? "opacity-100" : "opacity-0"
+                "hidden transition-opacity duration-300 md:block",
+                ready ? "opacity-100" : "opacity-0",
               )}
             >
               {session?.user ? (
@@ -151,23 +182,18 @@ export function Header() {
                   href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
                   color="main"
                 >
-                  <span>
-                    Get started{" "}
-                    <span className="hidden lg:inline">today</span>
-                  </span>
+                  Get started
                 </Button>
               )}
             </div>
 
             <div
               className={cn(
-                "-mr-1 md:hidden transition-opacity duration-300",
-                ready ? "opacity-100" : "opacity-0"
+                "-mr-1 transition-opacity duration-300 md:hidden",
+                ready ? "opacity-100" : "opacity-0",
               )}
             >
-              <MobileNavigation
-                isUserLoggedIn={!!session?.user}
-              />
+              <MobileNavigation isUserLoggedIn={!!session?.user} />
             </div>
           </div>
         </nav>

@@ -1,38 +1,68 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
-import { NavLink } from "@/components/NavLink";
 import { Icons } from "@workspace/ui/components/icons";
+
+const footerLinks = {
+  Product: [
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Testimonials", href: "#testimonials" },
+  ],
+  Company: [
+    { label: "About", href: "#" },
+    { label: "Blog", href: "#" },
+  ],
+  Support: [
+    { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "mailto:support@fotno.com" },
+  ],
+};
 
 export function Footer() {
   return (
-    <footer className="bg-foreground">
+    <footer className="border-t border-background/10 bg-foreground">
       <Container>
-        <div className="py-16">
-          <div className="flex items-center justify-center gap-2">
-            <Icons.logo className="h-8 w-auto text-primary" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-background bg-clip-text text-transparent">
-              FOTNO
-            </span>
-          </div>
-          <nav className="mt-10 text-sm" aria-label="quick links">
-            <div className="-my-1 flex justify-center gap-x-6">
-              <Link href="#features" className="text-background/60 hover:text-background transition-colors">
-                Features
-              </Link>
-              <Link href="#testimonials" className="text-background/60 hover:text-background transition-colors">
-                Testimonials
-              </Link>
-              <Link href="#pricing" className="text-background/60 hover:text-background transition-colors">
-                Pricing
-              </Link>
+        <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Brand column */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-2">
+              <Icons.logo className="h-7 w-auto text-primary" />
+              <span className="text-xl font-bold text-background">FOTNO</span>
             </div>
-          </nav>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/40">
+              The modern photography delivery platform. Upload, organize, and
+              deliver stunning galleries to your clients.
+            </p>
+          </div>
+
+          {/* Link columns */}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-background/60">
+                {title}
+              </h3>
+              <ul className="mt-4 space-y-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-background/40 transition-colors hover:text-background"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col items-center border-t border-background/10 py-10 sm:flex-row-reverse sm:justify-between">
+
+        {/* Bottom bar */}
+        <div className="flex flex-col items-center gap-4 border-t border-background/10 py-8 sm:flex-row-reverse sm:justify-between">
           <div className="flex gap-x-6">
             <Link href="#" className="group" aria-label="Fotno on X">
               <svg
-                className="h-6 w-6 fill-background/40 group-hover:fill-background/70 transition-colors"
+                className="h-5 w-5 fill-background/40 transition-colors group-hover:fill-background/70"
                 aria-hidden="true"
                 viewBox="0 0 24 24"
               >
@@ -41,7 +71,7 @@ export function Footer() {
             </Link>
             <Link href="#" className="group" aria-label="Fotno on GitHub">
               <svg
-                className="h-6 w-6 fill-background/40 group-hover:fill-background/70 transition-colors"
+                className="h-5 w-5 fill-background/40 transition-colors group-hover:fill-background/70"
                 aria-hidden="true"
                 viewBox="0 0 24 24"
               >
@@ -49,9 +79,8 @@ export function Footer() {
               </svg>
             </Link>
           </div>
-          <p className="mt-6 text-sm text-background/40 sm:mt-0">
-            Copyright &copy; {new Date().getFullYear()} FOTNO. All rights
-            reserved.
+          <p className="text-sm text-background/30">
+            &copy; {new Date().getFullYear()} FOTNO. All rights reserved.
           </p>
         </div>
       </Container>

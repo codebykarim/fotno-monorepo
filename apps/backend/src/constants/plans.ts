@@ -1,39 +1,27 @@
 export const STORAGE_TIERS = [
   {
-    gb: 50,
-    priceCents: 500,
-    label: "50 GB",
-    lsVariantId: process.env.LS_VARIANT_50GB || "",
+    gb: 20,
+    priceCents: 900,
+    label: "Starter",
+    lsVariantId: process.env.LS_VARIANT_STARTER || "",
   },
   {
     gb: 100,
-    priceCents: 900,
-    label: "100 GB",
-    lsVariantId: process.env.LS_VARIANT_100GB || "",
-  },
-  {
-    gb: 250,
     priceCents: 1900,
-    label: "250 GB",
-    lsVariantId: process.env.LS_VARIANT_250GB || "",
+    label: "Professional",
+    lsVariantId: process.env.LS_VARIANT_PROFESSIONAL || "",
   },
   {
     gb: 500,
     priceCents: 3500,
-    label: "500 GB",
-    lsVariantId: process.env.LS_VARIANT_500GB || "",
+    label: "Business",
+    lsVariantId: process.env.LS_VARIANT_BUSINESS || "",
   },
   {
-    gb: 1000,
-    priceCents: 5900,
-    label: "1 TB",
-    lsVariantId: process.env.LS_VARIANT_1TB || "",
-  },
-  {
-    gb: 2000,
-    priceCents: 9900,
-    label: "2 TB",
-    lsVariantId: process.env.LS_VARIANT_2TB || "",
+    gb: -1,
+    priceCents: 4900,
+    label: "Unlimited",
+    lsVariantId: process.env.LS_VARIANT_UNLIMITED || "",
   },
 ] as const;
 
@@ -44,4 +32,3 @@ export const findTierByVariantId = (variantId: string): StorageTier | undefined 
 
 export const findTierByGb = (gb: number): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.gb === gb);
-

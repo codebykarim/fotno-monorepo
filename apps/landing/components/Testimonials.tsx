@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "motion/react";
 import { Container } from "@/components/Container";
 import avatarImage1 from "@/images/avatars/avatar-1.png";
 import avatarImage2 from "@/images/avatars/avatar-2.png";
@@ -10,7 +13,7 @@ const testimonials = [
   [
     {
       content:
-        "Fotno completely changed how I deliver to clients. The password-protected galleries look so professional -- my clients think I built a custom site for them.",
+        "Fotno completely changed how I deliver to clients. The password-protected galleries look so professional — my clients think I built a custom site for them.",
       author: {
         name: "Sarah Mitchell",
         role: "Wedding Photographer",
@@ -69,11 +72,19 @@ const testimonials = [
   ],
 ];
 
-function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
+function StarRating() {
   return (
-    <svg aria-hidden="true" width={105} height={78} {...props}>
-      <path d="M25.086 77.292c-4.821 0-9.115-1.205-12.882-3.616-3.767-2.561-6.78-6.102-9.04-10.622C1.054 58.534 0 53.411 0 47.686c0-5.273.904-10.396 2.712-15.368 1.959-4.972 4.746-9.567 8.362-13.786a59.042 59.042 0 0 1 12.43-11.3C28.325 3.917 33.599 1.507 39.324 0l11.074 13.786c-6.479 2.561-11.677 5.951-15.594 10.17-3.767 4.219-5.65 7.835-5.65 10.848 0 1.356.377 2.863 1.13 4.52.904 1.507 2.637 3.089 5.198 4.746 3.767 2.41 6.328 4.972 7.684 7.684 1.507 2.561 2.26 5.5 2.26 8.814 0 5.123-1.959 9.19-5.876 12.204-3.767 3.013-8.588 4.52-14.464 4.52Zm54.24 0c-4.821 0-9.115-1.205-12.882-3.616-3.767-2.561-6.78-6.102-9.04-10.622-2.11-4.52-3.164-9.643-3.164-15.368 0-5.273.904-10.396 2.712-15.368 1.959-4.972 4.746-9.567 8.362-13.786a59.042 59.042 0 0 1 12.43-11.3C82.565 3.917 87.839 1.507 93.564 0l11.074 13.786c-6.479 2.561-11.677 5.951-15.594 10.17-3.767 4.219-5.65 7.835-5.65 10.848 0 1.356.377 2.863 1.13 4.52.904 1.507 2.637 3.089 5.198 4.746 3.767 2.41 6.328 4.972 7.684 7.684 1.507 2.561 2.26 5.5 2.26 8.814 0 5.123-1.959 9.19-5.876 12.204-3.767 3.013-8.588 4.52-14.464 4.52Z" />
-    </svg>
+    <div className="flex gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg
+          key={i}
+          className="h-4 w-4 fill-primary text-primary"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
   );
 }
 
@@ -82,18 +93,28 @@ export function Testimonials() {
     <section
       id="testimonials"
       aria-label="What our customers are saying"
-      className="bg-muted py-20 sm:py-32"
+      className="relative overflow-hidden bg-muted py-24 sm:py-32"
     >
       <Container>
-        <div className="mx-auto max-w-2xl md:text-center">
-          <h2 className="text-3xl tracking-tight text-foreground sm:text-4xl font-semibold">
-            Loved by photographers.
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            Testimonials
+          </p>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            Loved by photographers
           </h2>
-          <p className="mt-4 text-lg tracking-tight text-muted-foreground">
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             Hear from real photographers who upgraded their delivery workflow
             with Fotno.
           </p>
-        </div>
+        </motion.div>
+
         <ul
           role="list"
           className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
@@ -102,35 +123,46 @@ export function Testimonials() {
             <li key={columnIndex}>
               <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
                 {column.map((testimonial, testimonialIndex) => (
-                  <li key={testimonialIndex}>
-                    <figure className="relative rounded-2xl bg-card p-6 shadow-sm border border-border/50">
-                      <QuoteIcon className="absolute top-6 left-6 fill-primary/10" />
+                  <motion.li
+                    key={testimonialIndex}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: columnIndex * 0.1 + testimonialIndex * 0.05,
+                    }}
+                  >
+                    <figure className="group relative rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all duration-300 hover:border-border hover:shadow-md">
+                      <div className="mb-4">
+                        <StarRating />
+                      </div>
                       <blockquote className="relative">
-                        <p className="text-lg tracking-tight text-foreground">
-                          {testimonial.content}
+                        <p className="text-base leading-relaxed text-foreground">
+                          &ldquo;{testimonial.content}&rdquo;
                         </p>
                       </blockquote>
-                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-border/50 pt-6">
+                      <figcaption className="relative mt-6 flex items-center gap-4 border-t border-border/50 pt-6">
+                        <div className="overflow-hidden rounded-full bg-muted ring-2 ring-border/50">
+                          <Image
+                            className="h-12 w-12 object-cover"
+                            src={testimonial.author.image}
+                            alt=""
+                            width={48}
+                            height={48}
+                          />
+                        </div>
                         <div>
-                          <div className="text-base font-semibold text-foreground">
+                          <div className="text-sm font-semibold text-foreground">
                             {testimonial.author.name}
                           </div>
-                          <div className="mt-1 text-sm text-muted-foreground">
+                          <div className="mt-0.5 text-sm text-muted-foreground">
                             {testimonial.author.role}
                           </div>
                         </div>
-                        <div className="overflow-hidden rounded-full bg-muted">
-                          <Image
-                            className="h-14 w-14 object-cover"
-                            src={testimonial.author.image}
-                            alt=""
-                            width={56}
-                            height={56}
-                          />
-                        </div>
                       </figcaption>
                     </figure>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </li>

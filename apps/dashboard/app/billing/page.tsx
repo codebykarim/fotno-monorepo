@@ -29,6 +29,12 @@ const FEATURES = [
 
 const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`;
 
+const formatStorage = (gb: number) => {
+  if (gb === -1) return "Unlimited";
+  if (gb >= 1000) return `${gb / 1000} TB`;
+  return `${gb} GB`;
+};
+
 function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -149,9 +155,9 @@ export default function BillingPage() {
                     : "Active"}
                 </span>
                 <span className="text-sm font-medium">
-                  Fotno Pro &mdash;{" "}
                   {plans?.find((t) => t.gb === subscription?.storageTierGb)
-                    ?.label ?? `${subscription?.storageTierGb} GB`}
+                    ?.label ?? "Fotno Pro"}{" "}
+                  &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   {formatPrice(subscription?.priceCents ?? 0)}/mo
@@ -210,8 +216,8 @@ export default function BillingPage() {
         </p>
 
         {!plans ? (
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {Array.from({ length: 6 }).map((_, i) => (
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
                 className="h-44 animate-pulse rounded-2xl bg-muted"
@@ -219,7 +225,7 @@ export default function BillingPage() {
             ))}
           </div>
         ) : (
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {plans.map((tier) => {
               const isCurrent =
                 subscription?.storageTierGb === tier.gb &&
@@ -228,7 +234,7 @@ export default function BillingPage() {
               const hasSubscription =
                 access?.status === "active" ||
                 access?.status === "cancelled_grace";
-              const isPopular = tier.gb === 250 && !hasSubscription;
+              const isPopular = (tier.label === "Professional" || tier.gb === 100) && !hasSubscription;
               const isLoading = loading === tier.gb;
 
               return (
@@ -277,13 +283,23 @@ export default function BillingPage() {
 
                   <span
                     className={cn(
-                      "mt-3 text-base font-semibold",
+                      "mt-2 text-xs font-medium",
+                      isCurrent || isPopular
+                        ? "text-primary-foreground/80"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {tier.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "mt-1 text-base font-semibold",
                       isCurrent || isPopular
                         ? "text-primary-foreground"
                         : "text-foreground",
                     )}
                   >
-                    {tier.label}
+                    {formatStorage(tier.gb)}
                   </span>
 
                   <div className="mt-4 w-full">

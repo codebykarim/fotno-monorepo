@@ -9,7 +9,7 @@ function CheckIcon({
   return (
     <svg
       aria-hidden="true"
-      className={cn("h-6 w-6 flex-none fill-current stroke-current", className)}
+      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
       {...props}
     >
       <path
@@ -36,12 +36,10 @@ type PlanTier = {
 };
 
 const FALLBACK_TIERS: PlanTier[] = [
-  { gb: 50, priceCents: 500, label: "50 GB" },
-  { gb: 100, priceCents: 900, label: "100 GB" },
-  { gb: 250, priceCents: 1900, label: "250 GB" },
-  { gb: 500, priceCents: 3500, label: "500 GB" },
-  { gb: 1000, priceCents: 5900, label: "1 TB" },
-  { gb: 2000, priceCents: 9900, label: "2 TB" },
+  { gb: 20, priceCents: 900, label: "Starter" },
+  { gb: 100, priceCents: 1900, label: "Professional" },
+  { gb: 500, priceCents: 3500, label: "Business" },
+  { gb: -1, priceCents: 4900, label: "Unlimited" },
 ];
 
 const FEATURES = [
@@ -59,6 +57,12 @@ const FEATURES = [
 
 const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`;
 
+const formatStorage = (gb: number) => {
+  if (gb === -1) return "Unlimited";
+  if (gb >= 1000) return `${gb / 1000} TB`;
+  return `${gb} GB`;
+};
+
 async function fetchPlans(): Promise<PlanTier[]> {
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
@@ -66,11 +70,10 @@ async function fetchPlans(): Promise<PlanTier[]> {
 
   try {
     const res = await fetch(`${backendUrl}/api/billing/plans`, {
-      next: { revalidate: 300 }, // ISR: revalidate every 5 minutes
+      next: { revalidate: 300 },
     });
     if (!res.ok) return FALLBACK_TIERS;
     const data = await res.json();
-    // The backend wraps in a `data` field via controllerReturn
     const plans: PlanTier[] = Array.isArray(data) ? data : data?.data;
     if (!Array.isArray(plans) || plans.length === 0) return FALLBACK_TIERS;
     return plans;
@@ -88,45 +91,65 @@ export async function Pricing() {
     <section
       id="pricing"
       aria-label="Pricing"
-      className="bg-foreground py-20 sm:py-32"
+      className="relative overflow-hidden bg-foreground py-24 sm:py-32"
     >
-      <Container>
-        <div className="md:text-center">
-          <h2 className="text-3xl tracking-tight text-background sm:text-4xl font-semibold">
+      {/* Decorative gradient */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-96 w-[140%] -translate-x-1/2 opacity-20 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, oklch(0.78 0.14 65 / 0.2) 0%, transparent 70%)",
+        }}
+      />
+
+      <Container className="relative">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            Pricing
+          </p>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-background sm:text-4xl lg:text-5xl">
             One plan. Pick your storage.
           </h2>
           <p className="mt-4 text-lg text-background/50">
-            Every feature is included at every tier — only storage differs.
-            Pick the plan that fits your workflow.
+            Every feature is included at every tier — only storage differs. Pick
+            the plan that fits your workflow.
           </p>
         </div>
 
         {/* Storage tier grid */}
-        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-4 lg:grid-cols-4">
           {plans.map((tier) => {
-            const isPopular = tier.gb === 250;
+            const isPopular = tier.label === "Professional" || tier.gb === 100;
             return (
               <a
                 key={tier.gb}
                 href={`${signupUrl}/account`}
                 className={cn(
-                  "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300 hover:-translate-y-1",
+                  "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
                   isPopular
                     ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
-                    : "bg-foreground border border-background/10 hover:border-background/20",
+                    : "border border-background/10 bg-background/5 hover:border-background/20 hover:bg-background/10",
                 )}
               >
                 {isPopular && (
                   <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
-                    Popular
+                    Most popular
                   </span>
                 )}
                 <span
                   className={cn(
-                    "text-3xl font-light tracking-tight",
+                    "text-base font-semibold",
                     isPopular
                       ? "text-primary-foreground"
-                      : "text-background",
+                      : "text-background/70",
+                  )}
+                >
+                  {tier.label}
+                </span>
+                <span
+                  className={cn(
+                    "mt-3 text-4xl font-light tracking-tight",
+                    isPopular ? "text-primary-foreground" : "text-background",
                   )}
                 >
                   {formatPrice(tier.priceCents)}
@@ -143,13 +166,13 @@ export async function Pricing() {
                 </span>
                 <span
                   className={cn(
-                    "mt-3 text-base font-semibold",
+                    "mt-4 text-sm font-medium",
                     isPopular
-                      ? "text-primary-foreground"
-                      : "text-background",
+                      ? "text-primary-foreground/90"
+                      : "text-background/60",
                   )}
                 >
-                  {tier.label}
+                  {formatStorage(tier.gb)} storage
                 </span>
               </a>
             );
@@ -159,14 +182,14 @@ export async function Pricing() {
         {/* Features list */}
         <div className="mx-auto mt-16 max-w-3xl">
           <h3 className="text-center text-lg font-semibold text-background">
-            Everything included with Fotno Pro
+            Everything included with every plan
           </h3>
           <ul
             role="list"
             className="mt-8 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-background/70 sm:grid-cols-2"
           >
             {FEATURES.map((feature) => (
-              <li key={feature} className="flex">
+              <li key={feature} className="flex items-center">
                 <CheckIcon className="text-primary" />
                 <span className="ml-4">{feature}</span>
               </li>
@@ -181,6 +204,7 @@ export async function Pricing() {
             variant="solid"
             color="white"
             aria-label="Get started"
+            className="px-8 py-3 text-base"
           >
             Get started
           </Button>

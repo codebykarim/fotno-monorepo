@@ -89,8 +89,12 @@ export const fetchPlans = async (): Promise<PlanInfo[]> => {
       }
     }
 
-    // Sort by GB so the order is deterministic
-    plans.sort((a, b) => a.gb - b.gb);
+    // Sort by GB so the order is deterministic (-1 = unlimited goes last)
+    plans.sort((a, b) => {
+      const aSort = a.gb === -1 ? Infinity : a.gb;
+      const bSort = b.gb === -1 ? Infinity : b.gb;
+      return aSort - bSort;
+    });
 
     // Cache the result
     cachedPlans = plans;

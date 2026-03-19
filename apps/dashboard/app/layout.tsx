@@ -45,8 +45,18 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <Header main="DASHBOARD" />
-            <main className="flex-1 p-4 lg:p-8">
-              <div className="dashboard-glass dashboard-enter mx-auto max-w-screen-xl min-h-full rounded-2xl p-6 lg:p-8">
+            <main className="relative flex-1 overflow-hidden p-4 lg:p-8">
+              <div
+                className="pointer-events-none absolute -top-40 -right-40 h-96 w-96 rounded-full opacity-15 blur-3xl"
+                style={{ background: "oklch(0.78 0.14 65 / 0.2)" }}
+                aria-hidden="true"
+              />
+              <div
+                className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full opacity-10 blur-3xl"
+                style={{ background: "oklch(0.65 0.12 50 / 0.15)" }}
+                aria-hidden="true"
+              />
+              <div className="dashboard-glass relative mx-auto max-w-screen-xl min-h-full rounded-2xl p-6 lg:p-8">
                 <TrialBanner />
                 {children}
               </div>

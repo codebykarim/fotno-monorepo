@@ -129,8 +129,9 @@
 
 .dashboard-glass {
   border: 1px solid var(--border);
-  background: var(--card);
+  background: linear-gradient(to bottom, oklch(from var(--card) l c h / 0.95), var(--card));
   box-shadow: 0 4px 24px -12px oklch(0.30 0.01 50 / 0.08);
+  backdrop-filter: blur(12px);
 }
 
 .dark .dashboard-glass {

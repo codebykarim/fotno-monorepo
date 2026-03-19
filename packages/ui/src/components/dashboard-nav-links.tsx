@@ -13,7 +13,7 @@ export function DashboardNavLinks({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center gap-1">
+    <nav className="hidden md:flex items-center gap-1">
       {items.map((item) => {
         const isActive =
           item.href === "/"

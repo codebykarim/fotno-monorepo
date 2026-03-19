@@ -3,6 +3,7 @@ import { NavUser } from "@workspace/ui/components/nav-user";
 import { Icons } from "@workspace/ui/components/icons";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { DashboardNavLinks } from "@workspace/ui/components/dashboard-nav-links";
+import { DashboardMobileNav } from "@workspace/ui/components/dashboard-mobile-nav";
 import Link from "next/link";
 
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
@@ -21,8 +22,12 @@ const dashboardNavItems = [
 
 const Header = async ({ main }: Props) => {
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between h-14 px-5 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="flex items-center gap-5">
+    <header className="sticky top-0 z-40 flex items-center justify-between h-14 px-5 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <div className="flex items-center gap-3 md:gap-5">
+        {main === "DASHBOARD" && (
+          <DashboardMobileNav items={dashboardNavItems} />
+        )}
+
         <Link
           href={`${process.env.NEXT_PUBLIC_LANDING_URL ?? "/"}`}
           aria-label="Home"

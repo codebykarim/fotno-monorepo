@@ -41,7 +41,7 @@ export function GalleryCard({ gallery, onDelete }: Props) {
   const urls = gallery.previewPhotoUrls ?? [];
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/25">
+    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/5 hover:border-primary/25">
       <Link href={`/galleries/${gallery.id}`} className="block">
         <div className="relative aspect-[4/3] bg-muted overflow-hidden">
           {urls.length > 0 ? (

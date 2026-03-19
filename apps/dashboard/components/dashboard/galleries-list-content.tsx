@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import useSWR, { mutate as mutateCache } from "swr";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { ArrowUpDown, Download, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
@@ -18,6 +19,7 @@ import { ListGalleriesResponse } from "@/lib/types/api";
 import { GalleryCard } from "@/components/dashboard/gallery-card";
 import { GalleryCardSkeleton } from "@/components/dashboard/gallery-card-skeleton";
 import { cn } from "@workspace/ui/lib/utils";
+import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 
 const STATUS_OPTIONS = ["all", "draft", "published"] as const;
 type StatusFilter = (typeof STATUS_OPTIONS)[number];
@@ -71,7 +73,12 @@ export function GalleriesListContent() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+      <motion.div
+        className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        initial={fadeInUp.initial}
+        animate={fadeInUp.animate}
+        transition={fadeInUp.transition}
+      >
         <div>
           <h1 className="dashboard-title text-2xl font-semibold tracking-tight">
             Galleries
@@ -84,19 +91,26 @@ export function GalleriesListContent() {
           <Button variant="outline" size="sm" asChild>
             <Link href="/galleries/import">
               <Download className="mr-1.5 h-4 w-4" />
-              Import Photos
+              <span className="hidden sm:inline">Import Photos</span>
+              <span className="sm:hidden">Import</span>
             </Link>
           </Button>
           <Button asChild size="sm">
             <Link href="/galleries/new">
               <Plus className="mr-1.5 h-4 w-4" />
-              New Gallery
+              <span className="hidden sm:inline">New Gallery</span>
+              <span className="sm:hidden">New</span>
             </Link>
           </Button>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <motion.div
+        className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+      >
         <div className="relative max-w-xs flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -150,12 +164,19 @@ export function GalleriesListContent() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <motion.div
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
         {isLoading &&
           Array.from({ length: 6 }).map((_, index) => (
-            <GalleryCardSkeleton key={index} />
+            <motion.div key={index} variants={staggerItem}>
+              <GalleryCardSkeleton />
+            </motion.div>
           ))}
 
         {!isLoading && data?.galleries.length === 0 && (
@@ -165,13 +186,14 @@ export function GalleriesListContent() {
         )}
 
         {data?.galleries.map((gallery) => (
-          <GalleryCard
-            key={gallery.id}
-            gallery={gallery}
-            onDelete={handleDelete}
-          />
+          <motion.div key={gallery.id} variants={staggerItem}>
+            <GalleryCard
+              gallery={gallery}
+              onDelete={handleDelete}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import useSWR from "swr";
+import { motion } from "motion/react";
 import { jsonFetcher, apiRequest } from "@/lib/api/client";
 import {
   Card,
@@ -13,6 +14,7 @@ import { Button } from "@workspace/ui/components/button";
 import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
 import type { SubscriptionResponse, PlanTier } from "@/lib/types/api";
+import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 
 const FEATURES = [
   "Unlimited galleries",
@@ -128,86 +130,107 @@ export default function BillingPage() {
   return (
     <div className="space-y-10">
       {/* Page header */}
-      <div>
+      <motion.div
+        initial={fadeInUp.initial}
+        animate={fadeInUp.animate}
+        transition={fadeInUp.transition}
+      >
         <h1 className="dashboard-title text-3xl font-semibold tracking-tight">
           Billing
         </h1>
         <p className="mt-1 text-muted-foreground">
           Manage your subscription and storage plan.
         </p>
-      </div>
+      </motion.div>
 
       {/* ── Current Status ─────────────────────────────────────── */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Current Plan</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {!access ? (
-            <p className="text-sm text-muted-foreground">Loading...</p>
-          ) : access.status === "active" ||
-            access.status === "cancelled_grace" ? (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
-                  {access.status === "cancelled_grace"
-                    ? "Cancelling"
-                    : "Active"}
-                </span>
-                <span className="text-sm font-medium">
-                  {plans?.find((t) => t.gb === subscription?.storageTierGb)
-                    ?.label ?? "Fotno Pro"}{" "}
-                  &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {formatPrice(subscription?.priceCents ?? 0)}/mo
-                </span>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <Card className="border-border/50">
+          <CardHeader>
+            <CardTitle>Current Plan</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {!access ? (
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            ) : access.status === "active" ||
+              access.status === "cancelled_grace" ? (
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                    {access.status === "cancelled_grace"
+                      ? "Cancelling"
+                      : "Active"}
+                  </span>
+                  <span className="text-sm font-medium">
+                    {plans?.find((t) => t.gb === subscription?.storageTierGb)
+                      ?.label ?? "Fotno Pro"}{" "}
+                    &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {formatPrice(subscription?.priceCents ?? 0)}/mo
+                  </span>
+                </div>
+                {subscription?.currentPeriodEnd && (
+                  <p className="text-sm text-muted-foreground">
+                    {access.status === "cancelled_grace"
+                      ? "Access until"
+                      : "Renews on"}{" "}
+                    {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+                  </p>
+                )}
+                {access.status !== "cancelled_grace" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCancel}
+                    disabled={cancelLoading}
+                  >
+                    {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                  </Button>
+                )}
               </div>
-              {subscription?.currentPeriodEnd && (
-                <p className="text-sm text-muted-foreground">
-                  {access.status === "cancelled_grace"
-                    ? "Access until"
-                    : "Renews on"}{" "}
-                  {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+            ) : access.status === "past_due" ? (
+              <div className="space-y-2">
+                <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+                  Payment Failed
+                </span>
+                <p className="text-sm">
+                  Your last payment failed. Please update your payment method to
+                  keep your subscription active.
                 </p>
-              )}
-              {access.status !== "cancelled_grace" && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleCancel}
-                  disabled={cancelLoading}
-                >
-                  {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
-                </Button>
-              )}
-            </div>
-          ) : access.status === "past_due" ? (
-            <div className="space-y-2">
-              <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
-                Payment Failed
-              </span>
-              <p className="text-sm">
-                Your last payment failed. Please update your payment method to
-                keep your subscription active.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <span className="inline-flex items-center rounded-full bg-zinc-500/15 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:text-zinc-400">
-                No Plan
-              </span>
-              <p className="text-sm">
-                Choose a plan below to start uploading photos and creating
-                galleries.
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <span className="inline-flex items-center rounded-full bg-zinc-500/15 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:text-zinc-400">
+                  No Plan
+                </span>
+                <p className="text-sm">
+                  Choose a plan below to start uploading photos and creating
+                  galleries.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* ── Storage Tiers — Landing-page style grid ────────────── */}
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative"
+      >
+        <div
+          className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full opacity-15 blur-3xl"
+          style={{ background: "oklch(0.78 0.14 65 / 0.25)" }}
+          aria-hidden="true"
+        />
+
         <h2 className="text-xl font-semibold tracking-tight">
           {access?.status === "active" ? "Change Plan" : "Choose Your Plan"}
         </h2>
@@ -216,7 +239,7 @@ export default function BillingPage() {
         </p>
 
         {!plans ? (
-          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
@@ -225,7 +248,12 @@ export default function BillingPage() {
             ))}
           </div>
         ) : (
-          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <motion.div
+            className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
             {plans.map((tier) => {
               const isCurrent =
                 subscription?.storageTierGb === tier.gb &&
@@ -238,115 +266,120 @@ export default function BillingPage() {
               const isLoading = loading === tier.gb;
 
               return (
-                <div
-                  key={tier.gb}
-                  className={cn(
-                    "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300",
-                    isCurrent
-                      ? "bg-primary shadow-lg shadow-primary/20 ring-2 ring-primary"
-                      : isPopular
-                        ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
-                        : "bg-card border border-border/50 hover:border-border hover:-translate-y-1",
-                  )}
-                >
-                  {isCurrent && (
-                    <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm border border-border">
-                      Current
+                <motion.div key={tier.gb} variants={staggerItem}>
+                  <div
+                    className={cn(
+                      "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300",
+                      isCurrent
+                        ? "bg-primary shadow-lg shadow-primary/20 ring-2 ring-primary"
+                        : isPopular
+                          ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
+                          : "bg-card border border-border/50 hover:border-primary/20 hover:-translate-y-1",
+                    )}
+                  >
+                    {isCurrent && (
+                      <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm border border-border">
+                        Current
+                      </span>
+                    )}
+                    {isPopular && !isCurrent && (
+                      <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm">
+                        Popular
+                      </span>
+                    )}
+
+                    <span
+                      className={cn(
+                        "text-3xl font-light tracking-tight",
+                        isCurrent || isPopular
+                          ? "text-primary-foreground"
+                          : "text-foreground",
+                      )}
+                    >
+                      {formatPrice(tier.priceCents)}
                     </span>
-                  )}
-                  {isPopular && !isCurrent && (
-                    <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm">
-                      Popular
+                    <span
+                      className={cn(
+                        "mt-1 text-sm",
+                        isCurrent || isPopular
+                          ? "text-primary-foreground/70"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      /month
                     </span>
-                  )}
 
-                  <span
-                    className={cn(
-                      "text-3xl font-light tracking-tight",
-                      isCurrent || isPopular
-                        ? "text-primary-foreground"
-                        : "text-foreground",
-                    )}
-                  >
-                    {formatPrice(tier.priceCents)}
-                  </span>
-                  <span
-                    className={cn(
-                      "mt-1 text-sm",
-                      isCurrent || isPopular
-                        ? "text-primary-foreground/70"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    /month
-                  </span>
+                    <span
+                      className={cn(
+                        "mt-2 text-xs font-medium",
+                        isCurrent || isPopular
+                          ? "text-primary-foreground/80"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      {tier.label}
+                    </span>
+                    <span
+                      className={cn(
+                        "mt-1 text-base font-semibold",
+                        isCurrent || isPopular
+                          ? "text-primary-foreground"
+                          : "text-foreground",
+                      )}
+                    >
+                      {formatStorage(tier.gb)}
+                    </span>
 
-                  <span
-                    className={cn(
-                      "mt-2 text-xs font-medium",
-                      isCurrent || isPopular
-                        ? "text-primary-foreground/80"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {tier.label}
-                  </span>
-                  <span
-                    className={cn(
-                      "mt-1 text-base font-semibold",
-                      isCurrent || isPopular
-                        ? "text-primary-foreground"
-                        : "text-foreground",
-                    )}
-                  >
-                    {formatStorage(tier.gb)}
-                  </span>
-
-                  <div className="mt-4 w-full">
-                    {isCurrent ? (
-                      <Button
-                        disabled
-                        size="sm"
-                        variant="secondary"
-                        className="w-full text-xs"
-                      >
-                        Current Plan
-                      </Button>
-                    ) : access?.status === "active" ? (
-                      <Button
-                        size="sm"
-                        className="w-full text-xs"
-                        variant={isPopular ? "secondary" : "default"}
-                        onClick={() => handleChangeTier(tier.gb)}
-                        disabled={isLoading}
-                      >
-                        {isLoading
-                          ? "..."
-                          : tier.gb > (subscription?.storageTierGb ?? 0)
-                            ? "Upgrade"
-                            : "Downgrade"}
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant={isPopular ? "secondary" : "outline"}
-                        className="w-full text-xs"
-                        onClick={() => handleCheckout(tier)}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "..." : "Subscribe"}
-                      </Button>
-                    )}
+                    <div className="mt-4 w-full">
+                      {isCurrent ? (
+                        <Button
+                          disabled
+                          size="sm"
+                          variant="secondary"
+                          className="w-full text-xs"
+                        >
+                          Current Plan
+                        </Button>
+                      ) : access?.status === "active" ? (
+                        <Button
+                          size="sm"
+                          className="w-full text-xs"
+                          variant={isPopular ? "secondary" : "default"}
+                          onClick={() => handleChangeTier(tier.gb)}
+                          disabled={isLoading}
+                        >
+                          {isLoading
+                            ? "..."
+                            : tier.gb > (subscription?.storageTierGb ?? 0)
+                              ? "Upgrade"
+                              : "Downgrade"}
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant={isPopular ? "secondary" : "outline"}
+                          className="w-full text-xs"
+                          onClick={() => handleCheckout(tier)}
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "..." : "Subscribe"}
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* ── Features list ──────────────────────────────────────── */}
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         <h3 className="text-center text-lg font-semibold text-foreground">
           Everything included with Fotno Pro
         </h3>
@@ -354,14 +387,20 @@ export default function BillingPage() {
           role="list"
           className="mt-6 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-muted-foreground sm:grid-cols-2 max-w-3xl mx-auto"
         >
-          {FEATURES.map((feature) => (
-            <li key={feature} className="flex items-center">
+          {FEATURES.map((feature, index) => (
+            <motion.li
+              key={feature}
+              className="flex items-center"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 + index * 0.04 }}
+            >
               <CheckIcon className="text-primary" />
               <span className="ml-3">{feature}</span>
-            </li>
+            </motion.li>
           ))}
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }

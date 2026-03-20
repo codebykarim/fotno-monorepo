@@ -2,12 +2,14 @@ import crypto from "crypto";
 import { prisma } from "@workspace/db";
 import { findTierByVariantId, STORAGE_TIERS } from "../../constants/plans";
 import { STORAGE_TIER_LIMITS } from "../../constants/storage";
+import { getRegionalPricing } from "../../constants/regional-pricing";
 
 type WebhookEvent = {
   meta: {
     event_name: string;
     custom_data?: {
       user_id?: string;
+      country_code?: string;
     };
   };
   data: {
@@ -64,13 +66,14 @@ export const handleWebhookEvent = async (event: WebhookEvent): Promise<void> => 
   const variantId = String(attrs.variant_id);
   const lsCustomerId = String(attrs.customer_id);
   const userId = event.meta.custom_data?.user_id;
+  const countryCode = event.meta.custom_data?.country_code;
 
-  console.log(`[Webhook] Event: ${eventName} | SubscriptionID: ${lsSubscriptionId} | VariantID: ${variantId} | CustomerID: ${lsCustomerId} | UserID: ${userId ?? "MISSING"} | Status: ${attrs.status} | Email: ${attrs.user_email ?? "N/A"}`);
+  console.log(`[Webhook] Event: ${eventName} | SubscriptionID: ${lsSubscriptionId} | VariantID: ${variantId} | CustomerID: ${lsCustomerId} | UserID: ${userId ?? "MISSING"} | Country: ${countryCode ?? "N/A"} | Status: ${attrs.status} | Email: ${attrs.user_email ?? "N/A"}`);
 
   try {
     switch (eventName) {
       case "subscription_created":
-        await handleSubscriptionCreated(lsSubscriptionId, variantId, lsCustomerId, userId, attrs);
+        await handleSubscriptionCreated(lsSubscriptionId, variantId, lsCustomerId, userId, attrs, countryCode);
         break;
       case "subscription_updated":
         await handleSubscriptionUpdated(lsSubscriptionId, variantId, lsCustomerId, attrs);
@@ -107,6 +110,7 @@ async function handleSubscriptionCreated(
   lsCustomerId: string,
   userId: string | undefined,
   attrs: WebhookEvent["data"]["attributes"],
+  countryCode?: string,
 ): Promise<void> {
   // Idempotency: check if subscription already exists
   const existing = await (prisma as any).subscription.findUnique({
@@ -165,12 +169,15 @@ async function handleSubscriptionCreated(
       STORAGE_TIERS.map(t => ({ gb: t.gb, variantId: t.lsVariantId }))
     )}`);
   }
-  const storageTierGb = tier?.gb ?? 50;
+  const globalTierGb = tier?.gb ?? 50;
+  // Apply regional storage override (e.g. Egypt Business: 500 GB → 250 GB)
+  const regional = getRegionalPricing(countryCode);
+  const storageTierGb = regional?.tierStorageOverrides?.[globalTierGb] ?? globalTierGb;
   // Use the actual price from the LS subscription (may be PPP-adjusted via customPrice)
   const priceCents = attrs.first_subscription_item?.price ?? tier?.priceCents ?? 500;
   const storageLimit = STORAGE_TIER_LIMITS[storageTierGb] ?? 0n;
 
-  console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB, price=${priceCents}cents, storageLimit=${storageLimit}`);
+  console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB${countryCode ? ` (region: ${countryCode}, global: ${globalTierGb}GB)` : ""}, price=${priceCents}cents, storageLimit=${storageLimit}`);
 
   try {
     await (prisma as any).$transaction([

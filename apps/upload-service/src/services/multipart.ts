@@ -75,6 +75,7 @@ class MultipartService {
           Bucket: this.bucket,
           Key: key,
           ContentType: mimeType,
+          StorageClass: 'INTELLIGENT_TIERING',
         }),
       )
 
@@ -272,6 +273,7 @@ class MultipartService {
           Body: buffer,
           ContentType: mimeType,
           CacheControl: 'public, max-age=31536000, immutable',
+          StorageClass: 'INTELLIGENT_TIERING',
         }),
       )
     } catch (error) {

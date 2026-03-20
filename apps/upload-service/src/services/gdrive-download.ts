@@ -60,6 +60,7 @@ export async function downloadDriveFileToR2(
       Body: buffer,
       ContentType: mimeType,
       CacheControl: 'public, max-age=31536000, immutable',
+      StorageClass: 'INTELLIGENT_TIERING',
     }),
   )
 

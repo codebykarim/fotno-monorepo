@@ -91,7 +91,8 @@ export const processPhotoWorker = new Worker<ProcessPhotoJobData>(
     )
 
     // Ingest to image-search-service for embedding (with retries)
-    const publicUrl = env.AWS_S3_PUBLIC_URL || env.AWS_S3_ENDPOINT || ''
+    const cfDomain = process.env.CLOUDFRONT_DOMAIN
+    const publicUrl = cfDomain ? `https://${cfDomain}` : (env.AWS_S3_PUBLIC_URL || env.AWS_S3_ENDPOINT || '')
     const storageUrl = `${publicUrl}/${result.preview.s3Key}`
     const ingestPayload = JSON.stringify({
       photoId,

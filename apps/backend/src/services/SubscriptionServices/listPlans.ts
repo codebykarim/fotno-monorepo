@@ -39,6 +39,8 @@ const buildVariantMap = (): Map<string, StorageTier> => {
 
 /**
  * Apply regional pricing overrides to a list of base USD plans.
+ * Tiers not present in `tierPrices` are excluded for this region.
+ * Tiers with `tierStorageOverrides` get their displayed gb value changed.
  */
 function applyRegionalPricing(
   plans: PlanInfo[],
@@ -47,14 +49,17 @@ function applyRegionalPricing(
   const regional = getRegionalPricing(countryCode);
   if (!regional) return plans;
 
-  return plans.map((plan) => ({
-    ...plan,
-    localPriceCents: regional.tierPrices[plan.gb] ?? undefined,
-    pppPriceCents: Math.round(plan.priceCents * regional.pppMultiplier),
-    currency: regional.currency,
-    symbol: regional.symbol,
-    locale: regional.locale,
-  }));
+  return plans
+    .filter((plan) => plan.gb in regional.tierPrices)
+    .map((plan) => ({
+      ...plan,
+      gb: regional.tierStorageOverrides?.[plan.gb] ?? plan.gb,
+      localPriceCents: regional.tierPrices[plan.gb] ?? undefined,
+      pppPriceCents: Math.round(plan.priceCents * regional.pppMultiplier),
+      currency: regional.currency,
+      symbol: regional.symbol,
+      locale: regional.locale,
+    }));
 }
 
 /**

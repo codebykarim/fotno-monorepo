@@ -8,12 +8,13 @@ export const STORAGE_TIERS = [
   { gb: -1, priceCents: 4900, label: "Unlimited" },
 ] as const;
 
-// -1 = unlimited (use a very large value: 100 TB)
-const UNLIMITED_BYTES = BigInt(100) * BigInt(1000) * ONE_GB_BYTES;
+// -1 = unlimited (internal soft cap: 3 TB — marketed as "Unlimited")
+const UNLIMITED_BYTES = BigInt(3) * BigInt(1000) * ONE_GB_BYTES;
 
 export const STORAGE_TIER_LIMITS: Record<number, bigint> = {
   20: BigInt(20) * ONE_GB_BYTES,
   100: BigInt(100) * ONE_GB_BYTES,
+  250: BigInt(250) * ONE_GB_BYTES,
   500: BigInt(500) * ONE_GB_BYTES,
   [-1]: UNLIMITED_BYTES,
 };

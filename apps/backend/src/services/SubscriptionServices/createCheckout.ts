@@ -39,6 +39,7 @@ export const createCheckout = async ({
       ...(name ? { name } : {}),
       custom: {
         user_id: userId,
+        ...(countryCode ? { country_code: countryCode } : {}),
       },
     },
     productOptions: {

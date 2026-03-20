@@ -3,7 +3,8 @@ import {
   GetObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { getSignedUrl as getS3SignedUrl } from "@aws-sdk/s3-request-presigner";
+import { getSignedUrl as getCfSignedUrl } from "@aws-sdk/cloudfront-signer";
 
 const endpoint = process.env.AWS_S3_ENDPOINT ?? process.env.R2_ENDPOINT;
 const isR2Endpoint = typeof endpoint === "string" && endpoint.includes("r2.cloudflarestorage.com");
@@ -38,24 +39,46 @@ const s3Client = new S3Client({
   },
 });
 
+// ── CloudFront configuration ─────────────────────────────────────
+const cfDomain = process.env.CLOUDFRONT_DOMAIN;
+const cfKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
+const cfPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY?.replace(/\\n/g, "\n");
+const useCloudFront = Boolean(cfDomain && cfKeyPairId && cfPrivateKey);
+
 /**
- * Generates a presigned URL for downloading an S3/R2 object. Used to serve photos to the client
- * without exposing storage credentials. URLs expire after the given number of seconds.
+ * Generates a signed URL for downloading an object.
+ *
+ * When CloudFront is configured (CLOUDFRONT_DOMAIN, CLOUDFRONT_KEY_PAIR_ID,
+ * CLOUDFRONT_PRIVATE_KEY), returns a CloudFront signed URL — served from CDN
+ * edge with zero S3 egress cost.
+ *
+ * Falls back to S3 presigned URLs when CloudFront is not configured.
  */
 export const getPresignedDownloadUrl = async (
   key: string,
   expiresIn = 300,
 ): Promise<string> => {
+  if (useCloudFront) {
+    const url = `https://${cfDomain}/${key}`;
+    const dateLessThan = new Date(Date.now() + expiresIn * 1000).toISOString();
+    return getCfSignedUrl({
+      url,
+      keyPairId: cfKeyPairId!,
+      privateKey: cfPrivateKey!,
+      dateLessThan,
+    });
+  }
+
   const command = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
   });
 
-  return getSignedUrl(s3Client, command, { expiresIn });
+  return getS3SignedUrl(s3Client, command, { expiresIn });
 };
 
 /**
- * Deletes an object from S3/R2 by key. Used by the cleanup worker when a user deletes a photo
+ * Deletes an object from S3 by key. Used by the cleanup worker when a user deletes a photo
  * or gallery to remove the original file, thumbnail, and preview.
  */
 export const deleteS3Object = async (key: string): Promise<void> => {

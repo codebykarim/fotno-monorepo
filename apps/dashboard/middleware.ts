@@ -29,8 +29,22 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Allow access to protected routes for authenticated users
-    return NextResponse.next();
+    // Detect visitor country for regional pricing
+    const response = NextResponse.next();
+    const country =
+      request.headers.get("cf-ipcountry") ||
+      request.headers.get("x-vercel-ip-country") ||
+      null;
+
+    if (country && !request.cookies.get("user_country")) {
+      response.cookies.set("user_country", country, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+        sameSite: "lax",
+      });
+    }
+
+    return response;
   } catch (error) {
     // In case of any unexpected errors, redirect to auth
     console.error("Middleware error:", error);

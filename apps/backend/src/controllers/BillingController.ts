@@ -12,9 +12,24 @@ import {
   handleWebhookEvent,
 } from "../services/SubscriptionServices/handleWebhook";
 import { prisma } from "@workspace/db";
+import { detectCountryFromIP } from "../utils/detectCountry";
+
+/**
+ * Resolve country code from: explicit query/body param → CF header → IP geolocation.
+ */
+async function resolveCountry(req: Request, explicit?: string | null): Promise<string | null> {
+  if (explicit) return explicit;
+  const fromHeader =
+    (req.headers["cf-ipcountry"] as string) ||
+    (req.headers["x-vercel-ip-country"] as string) ||
+    null;
+  if (fromHeader) return fromHeader;
+  return detectCountryFromIP(req.ip);
+}
 
 export const listPlansController = async (req: Request, res: Response) => {
-  const plans = await fetchPlans();
+  const country = await resolveCountry(req, (req.query.country as string) || null);
+  const plans = await fetchPlans(country);
   return controllerReturn(plans, req, res);
 };
 
@@ -44,7 +59,7 @@ export const createCheckoutController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  const { storageTierGb } = req.body;
+  const { storageTierGb, countryCode } = req.body;
   if (!storageTierGb) throw new AppError("storageTierGb is required", 400);
 
   const user = await (prisma as any).user.findUnique({
@@ -54,11 +69,14 @@ export const createCheckoutController = async (
 
   if (!user) throw new AppError("User not found", 404);
 
+  const resolvedCountry = await resolveCountry(req, countryCode);
+
   const result = await createCheckout({
     userId,
     email: user.email,
     name: user.name || undefined,
     storageTierGb,
+    countryCode: resolvedCountry || undefined,
   });
 
   return controllerReturn(result, req, res);

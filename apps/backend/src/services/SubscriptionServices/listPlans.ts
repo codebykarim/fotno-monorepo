@@ -1,10 +1,21 @@
 import { listVariants } from "@lemonsqueezy/lemonsqueezy.js";
 import { STORAGE_TIERS, type StorageTier } from "../../constants/plans";
+import { getRegionalPricing } from "../../constants/regional-pricing";
 
 export type PlanInfo = {
   gb: number;
   priceCents: number;
   label: string;
+  /** Price in local currency minor units (only when regional pricing applies) */
+  localPriceCents?: number;
+  /** PPP-adjusted USD price in cents (what LS will charge) */
+  pppPriceCents?: number;
+  /** ISO 4217 currency code */
+  currency?: string;
+  /** Display symbol */
+  symbol?: string;
+  /** BCP 47 locale for Intl.NumberFormat */
+  locale?: string;
 };
 
 // ── In-memory cache (10 min TTL) ────────────────────────────────
@@ -27,11 +38,41 @@ const buildVariantMap = (): Map<string, StorageTier> => {
 };
 
 /**
+ * Apply regional pricing overrides to a list of base USD plans.
+ */
+function applyRegionalPricing(
+  plans: PlanInfo[],
+  countryCode: string | null | undefined,
+): PlanInfo[] {
+  const regional = getRegionalPricing(countryCode);
+  if (!regional) return plans;
+
+  return plans.map((plan) => ({
+    ...plan,
+    localPriceCents: regional.tierPrices[plan.gb] ?? undefined,
+    pppPriceCents: Math.round(plan.priceCents * regional.pppMultiplier),
+    currency: regional.currency,
+    symbol: regional.symbol,
+    locale: regional.locale,
+  }));
+}
+
+/**
  * Fetch pricing from the Lemon Squeezy API and merge it with the
  * known storage tiers.  Falls back to the hardcoded STORAGE_TIERS
  * when the API is unreachable or the key is not configured.
+ *
+ * When `countryCode` is provided and regional pricing exists, each
+ * plan is augmented with local currency prices and PPP info.
  */
-export const fetchPlans = async (): Promise<PlanInfo[]> => {
+export const fetchPlans = async (
+  countryCode?: string | null,
+): Promise<PlanInfo[]> => {
+  const basePlans = await fetchBasePlans();
+  return applyRegionalPricing(basePlans, countryCode);
+};
+
+async function fetchBasePlans(): Promise<PlanInfo[]> {
   // Return cached data if still fresh
   if (cachedPlans && Date.now() < cacheExpiresAt) {
     return cachedPlans;
@@ -105,7 +146,7 @@ export const fetchPlans = async (): Promise<PlanInfo[]> => {
     console.warn("[listPlans] Failed to fetch from Lemon Squeezy, using fallback:", err);
     return fallbackPlans();
   }
-};
+}
 
 function fallbackPlans(): PlanInfo[] {
   return STORAGE_TIERS.map(({ gb, priceCents, label }) => ({

@@ -166,7 +166,8 @@ async function handleSubscriptionCreated(
     )}`);
   }
   const storageTierGb = tier?.gb ?? 50;
-  const priceCents = tier?.priceCents ?? 500;
+  // Use the actual price from the LS subscription (may be PPP-adjusted via customPrice)
+  const priceCents = attrs.first_subscription_item?.price ?? tier?.priceCents ?? 500;
   const storageLimit = STORAGE_TIER_LIMITS[storageTierGb] ?? 0n;
 
   console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB, price=${priceCents}cents, storageLimit=${storageLimit}`);

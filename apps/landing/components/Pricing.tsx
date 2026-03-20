@@ -1,3 +1,4 @@
+import { cookies, headers } from "next/headers";
 import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
@@ -33,6 +34,10 @@ type PlanTier = {
   gb: number;
   priceCents: number;
   label: string;
+  localPriceCents?: number;
+  currency?: string;
+  symbol?: string;
+  locale?: string;
 };
 
 const FALLBACK_TIERS: PlanTier[] = [
@@ -55,7 +60,21 @@ const FEATURES = [
   "Slideshow & social sharing",
 ];
 
-const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`;
+const formatTierPrice = (tier: PlanTier) => {
+  const cents = tier.localPriceCents ?? tier.priceCents;
+  const currency = tier.currency ?? "USD";
+  const locale = tier.locale ?? "en-US";
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    }).format(cents / 100);
+  } catch {
+    return `$${(tier.priceCents / 100).toFixed(0)}`;
+  }
+};
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
@@ -63,13 +82,16 @@ const formatStorage = (gb: number) => {
   return `${gb} GB`;
 };
 
-async function fetchPlans(): Promise<PlanTier[]> {
+async function fetchPlans(country?: string): Promise<PlanTier[]> {
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
   if (!backendUrl) return FALLBACK_TIERS;
 
   try {
-    const res = await fetch(`${backendUrl}/api/billing/plans`, {
+    const url = country
+      ? `${backendUrl}/api/billing/plans?country=${encodeURIComponent(country)}`
+      : `${backendUrl}/api/billing/plans`;
+    const res = await fetch(url, {
       next: { revalidate: 300 },
     });
     if (!res.ok) return FALLBACK_TIERS;
@@ -85,7 +107,14 @@ async function fetchPlans(): Promise<PlanTier[]> {
 const signupUrl = process.env.NEXT_PUBLIC_AUTH_URL;
 
 export async function Pricing() {
-  const plans = await fetchPlans();
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const country =
+    cookieStore.get("user_country")?.value ||
+    headerStore.get("cf-ipcountry") ||
+    headerStore.get("x-vercel-ip-country") ||
+    undefined;
+  const plans = await fetchPlans(country);
 
   return (
     <section
@@ -152,7 +181,7 @@ export async function Pricing() {
                     isPopular ? "text-primary-foreground" : "text-background",
                   )}
                 >
-                  {formatPrice(tier.priceCents)}
+                  {formatTierPrice(tier)}
                 </span>
                 <span
                   className={cn(

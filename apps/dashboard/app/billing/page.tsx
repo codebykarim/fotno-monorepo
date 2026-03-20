@@ -29,7 +29,29 @@ const FEATURES = [
   "Slideshow & social sharing",
 ];
 
-const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`;
+const formatPrice = (
+  cents: number,
+  currency = "USD",
+  locale = "en-US",
+) => {
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    }).format(cents / 100);
+  } catch {
+    return `$${(cents / 100).toFixed(0)}`;
+  }
+};
+
+const formatTierPrice = (tier: PlanTier) =>
+  formatPrice(
+    tier.localPriceCents ?? tier.priceCents,
+    tier.currency ?? "USD",
+    tier.locale ?? "en-US",
+  );
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
@@ -171,7 +193,15 @@ export default function BillingPage() {
                     &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    {formatPrice(subscription?.priceCents ?? 0)}/mo
+                    {(() => {
+                      const currentTier = plans?.find(
+                        (t) => t.gb === subscription?.storageTierGb,
+                      );
+                      return currentTier
+                        ? formatTierPrice(currentTier)
+                        : formatPrice(subscription?.priceCents ?? 0);
+                    })()}
+                    /mo
                   </span>
                 </div>
                 {subscription?.currentPeriodEnd && (
@@ -296,7 +326,7 @@ export default function BillingPage() {
                           : "text-foreground",
                       )}
                     >
-                      {formatPrice(tier.priceCents)}
+                      {formatTierPrice(tier)}
                     </span>
                     <span
                       className={cn(

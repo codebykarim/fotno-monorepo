@@ -118,5 +118,15 @@ export type PlanTier = {
   gb: number;
   priceCents: number;
   label: string;
+  /** Price in local currency minor units (only present for regional pricing) */
+  localPriceCents?: number;
+  /** PPP-adjusted USD price in cents (what LS will charge) */
+  pppPriceCents?: number;
+  /** ISO 4217 currency code, e.g. "EGP" */
+  currency?: string;
+  /** Display symbol */
+  symbol?: string;
+  /** BCP 47 locale for Intl.NumberFormat */
+  locale?: string;
 };
 

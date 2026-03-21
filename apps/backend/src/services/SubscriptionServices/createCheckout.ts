@@ -1,5 +1,5 @@
 import { lsCreateCheckout } from "./lemonSqueezy";
-import { findTierByGb } from "../../constants/plans";
+import { findTierByGb, PLAN_FEATURES } from "../../constants/plans";
 import { getRegionalPricing } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 
@@ -32,6 +32,9 @@ export const createCheckout = async ({
     ? Math.round(tier.priceCents * regional.pppMultiplier)
     : undefined;
 
+  const storageGb = regional?.tierStorageOverrides?.[tier.gb] ?? tier.gb;
+  const storageLabel = storageGb === -1 ? "Unlimited storage" : `${storageGb} GB storage`;
+
   const { data, error } = await lsCreateCheckout(storeId, tier.lsVariantId, {
     ...(customPrice ? { customPrice } : {}),
     checkoutData: {
@@ -43,6 +46,9 @@ export const createCheckout = async ({
       },
     },
     productOptions: {
+      enabledVariants: [Number(tier.lsVariantId)],
+      name: `Fotno Pro — ${storageLabel}`,
+      description: PLAN_FEATURES.join(" · "),
       redirectUrl: `${process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com"}/billing?checkout=success`,
     },
   });

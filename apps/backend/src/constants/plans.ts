@@ -27,6 +27,19 @@ export const STORAGE_TIERS = [
 
 export type StorageTier = (typeof STORAGE_TIERS)[number];
 
+export const PLAN_FEATURES = [
+  "Unlimited galleries",
+  "Unlimited clients",
+  "AI-powered captions",
+  "Client favorites & selections",
+  "Download tracking & analytics",
+  "Password-protected galleries",
+  "Custom gallery slugs",
+  "Bulk upload with auto-retry",
+  "Google Drive & Google Photos import",
+  "Slideshow & social sharing",
+];
+
 export const findTierByVariantId = (variantId: string): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.lsVariantId === variantId);
 

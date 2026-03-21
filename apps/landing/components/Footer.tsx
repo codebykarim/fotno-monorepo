@@ -4,17 +4,17 @@ import { Icons } from "@workspace/ui/components/icons";
 
 const footerLinks = {
   Product: [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Testimonials", href: "#testimonials" },
+    { label: "Photo Gallery Features", href: "#features" },
+    { label: "Pricing Plans", href: "#pricing" },
+    { label: "Photographer Testimonials", href: "#testimonials" },
   ],
   Company: [
-    { label: "About", href: "#" },
+    { label: "About FOTNO", href: "#" },
     { label: "Blog", href: "#" },
   ],
   Support: [
     { label: "FAQ", href: "#faq" },
-    { label: "Contact", href: "mailto:support@fotno.com" },
+    { label: "Contact Us", href: "mailto:support@fotno.com" },
   ],
 };
 
@@ -30,8 +30,10 @@ export function Footer() {
               <span className="text-xl font-bold text-background">FOTNO</span>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/40">
-              The modern photography delivery platform. Upload, organize, and
-              deliver stunning galleries to your clients.
+              FOTNO (also known as Photno &amp; Photnoo) is the modern photo
+              gallery delivery platform. Create password-protected client
+              galleries, online proofing, and AI-powered captions for
+              professional photographers.
             </p>
           </div>
 
@@ -55,6 +57,22 @@ export function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* SEO content section */}
+        <div className="border-t border-background/10 py-8">
+          <p className="text-xs leading-relaxed text-background/25">
+            FOTNO is a professional photo gallery and photo delivery platform
+            built for wedding photographers, event photographers, portrait
+            photographers, and photography studios. Create stunning
+            password-protected online photo galleries, enable client proofing
+            and favorites, bulk upload photos with drag-and-drop, and leverage
+            AI-powered captions. FOTNO is the best alternative to Pixieset,
+            ShootProof, Pic-Time, CloudSpot, SmugMug, Zenfolio, and Pass
+            Gallery. Also available at photno.com and photnoo.com. Share
+            photos with clients, deliver photos online, and manage your
+            photography business — all in one platform.
+          </p>
         </div>
 
         {/* Bottom bar */}

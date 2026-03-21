@@ -9,12 +9,39 @@ import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const GALLERY_URL = process.env.NEXT_PUBLIC_GALLERY_URL ?? "https://gallery.fotno.com";
+
 export const metadata: Metadata = {
-  title: "FOTNO Gallery",
-  description: "Client-facing photo galleries by FOTNO.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_GALLERY_URL ?? "https://gallery.fotno.com"
-  ),
+  metadataBase: new URL(GALLERY_URL),
+  title: {
+    default: "FOTNO Gallery — Secure Photo Galleries for Clients",
+    template: "%s | FOTNO Gallery",
+  },
+  description:
+    "View your private, password-protected photo gallery. Browse, favorite, and download your photos in a beautiful gallery experience by FOTNO (Photno / Photnoo).",
+  keywords: [
+    "fotno gallery", "photno gallery", "photnoo gallery",
+    "client photo gallery", "private photo gallery", "password protected gallery",
+    "online photo gallery", "photo proofing gallery", "photo delivery gallery",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: GALLERY_URL,
+    siteName: "FOTNO Gallery",
+    title: "FOTNO Gallery — Secure Photo Galleries for Clients",
+    description:
+      "View your private, password-protected photo gallery. Browse, favorite, and download your photos in a beautiful gallery experience.",
+  },
+  twitter: {
+    card: "summary",
+    title: "FOTNO Gallery",
+    description: "Secure, beautiful photo galleries by FOTNO.",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

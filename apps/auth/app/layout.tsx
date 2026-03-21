@@ -10,9 +10,27 @@ import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FOTNO - Authentication",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_AUTH_URL ?? "https://auth.fotno.com"),
+  title: {
+    default: "Sign In — FOTNO Photo Gallery Platform",
+    template: "%s | FOTNO",
+  },
   description:
-    "Prepare to experience photography like never before. Our new website is on its way, bringing you breathtaking visuals and unforgettable moments.",
+    "Sign in or create your FOTNO account. Start delivering stunning photo galleries to your clients in minutes. Free trial available.",
+  keywords: [
+    "fotno login", "fotno sign up", "photno login", "photnoo sign up",
+    "photographer sign up", "photo gallery sign up",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "FOTNO",
+    title: "Sign In — FOTNO Photo Gallery Platform",
+    description: "Sign in or create your FOTNO account. Start delivering stunning photo galleries to your clients.",
+  },
 };
 
 export default function RootLayout({

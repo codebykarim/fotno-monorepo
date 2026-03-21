@@ -15,9 +15,17 @@ import { TrialBanner } from "@/components/trial-banner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FOTNO Photographer Dashboard",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://app.fotno.com"),
+  title: {
+    default: "FOTNO Dashboard — Manage Your Photo Galleries",
+    template: "%s | FOTNO Dashboard",
+  },
   description:
-    "Photographer command center for galleries, clients, and sharing workflows.",
+    "Your FOTNO photographer command center. Manage galleries, clients, uploads, favorites, and sharing workflows all in one place.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function RootLayout({

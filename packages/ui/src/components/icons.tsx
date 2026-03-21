@@ -25,18 +25,19 @@ const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
-      viewBox="0 0 24 24"
+      viewBox="0 0 40 40"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       {...props}
     >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M9 7h6" />
-      <path d="M9 7v10" />
-      <path d="M9 12h4" />
+      {/* Camera viewfinder brackets */}
+      <path d="M4 13V5a1 1 0 0 1 1-1h8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M27 4h8a1 1 0 0 1 1 1v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M36 27v8a1 1 0 0 1-1 1h-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M13 36H5a1 1 0 0 1-1-1v-8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Stylized F letterform */}
+      <path d="M15 11h11a1 1 0 0 1 0 2H18v5h7a1 1 0 0 1 0 2h-7v8a1 1 0 0 1-2 0V12a1 1 0 0 1 1-1z" fill="currentColor"/>
+      {/* Focus point */}
+      <circle cx="30" cy="30" r="1.5" fill="currentColor" opacity="0.4"/>
     </svg>
   ),
   booking: (props: LucideProps) => (

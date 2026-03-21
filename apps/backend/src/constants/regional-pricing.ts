@@ -20,6 +20,11 @@ const REGIONAL_CACHE_TTL_MS = 5 * 60 * 1000;
  * Returns cached data within the 5-minute TTL window.
  * Falls back to the hardcoded REGIONAL_PRICING if the DB query fails.
  */
+export function invalidateRegionalCache(): void {
+  _regionalCache = null;
+  _regionalCacheExpiresAt = 0;
+}
+
 export async function fetchRegionalPricingFromDB(
   countryCode: string | null | undefined,
 ): Promise<RegionalPricing | null> {

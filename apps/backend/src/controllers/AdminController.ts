@@ -2,6 +2,7 @@ import { type Request, type Response } from "express";
 import * as AdminService from "../services/AdminServices";
 import { prisma } from "@workspace/db";
 import AppError from "../errors/AppError";
+import { invalidatePricingCaches } from "../services/SubscriptionServices/listPlans";
 
 export const getOverviewController = async (_req: Request, res: Response) => {
   const overview = await AdminService.getAdminOverview();
@@ -142,6 +143,7 @@ export const createPricingTierController = async (req: Request, res: Response) =
     },
   });
 
+  invalidatePricingCaches();
   return res.status(201).json(tier);
 };
 
@@ -166,6 +168,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
     },
   });
 
+  invalidatePricingCaches();
   return res.status(200).json(tier);
 };
 
@@ -182,6 +185,7 @@ export const deletePricingTierController = async (req: Request, res: Response) =
     data: { active: false },
   });
 
+  invalidatePricingCaches();
   return res.status(200).json(tier);
 };
 
@@ -214,6 +218,7 @@ export const createRegionalPricingController = async (req: Request, res: Respons
     include: { tierOverrides: true },
   });
 
+  invalidatePricingCaches();
   return res.status(201).json(region);
 };
 
@@ -265,6 +270,7 @@ export const updateRegionalPricingController = async (req: Request, res: Respons
     });
   });
 
+  invalidatePricingCaches();
   return res.status(200).json(region);
 };
 
@@ -282,5 +288,6 @@ export const deleteRegionalPricingController = async (req: Request, res: Respons
     include: { tierOverrides: true },
   });
 
+  invalidatePricingCaches();
   return res.status(200).json(region);
 };

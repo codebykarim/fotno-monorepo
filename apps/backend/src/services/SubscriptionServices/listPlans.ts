@@ -1,7 +1,8 @@
-import { fetchTiersFromDB, PLAN_FEATURES } from "../../constants/plans";
+import { fetchTiersFromDB, PLAN_FEATURES, invalidateTierCache } from "../../constants/plans";
 import {
   getRegionalPricing,
   fetchRegionalPricingFromDB,
+  invalidateRegionalCache,
 } from "../../constants/regional-pricing";
 
 export type PlanInfo = {
@@ -70,6 +71,14 @@ async function applyRegionalPricing(
  * When `countryCode` is provided and regional pricing exists, each
  * plan is augmented with local currency prices and PPP info.
  */
+/** Invalidate all pricing caches (tiers, regional, and plans). */
+export function invalidatePricingCaches(): void {
+  invalidateTierCache();
+  invalidateRegionalCache();
+  cachedPlans = null;
+  cacheExpiresAt = 0;
+}
+
 export const fetchPlans = async (
   countryCode?: string | null,
 ): Promise<PlansResponse> => {

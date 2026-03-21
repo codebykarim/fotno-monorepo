@@ -20,6 +20,11 @@ const TIER_CACHE_TTL_MS = 5 * 60 * 1000;
  * Returns cached data within the 5-minute TTL window.
  * Falls back to the hardcoded STORAGE_TIERS if the DB query fails.
  */
+export function invalidateTierCache(): void {
+  _tierCache = null;
+  _tierCacheExpiresAt = 0;
+}
+
 export async function fetchTiersFromDB(): Promise<DBTier[]> {
   if (_tierCache && Date.now() < _tierCacheExpiresAt) {
     return _tierCache;

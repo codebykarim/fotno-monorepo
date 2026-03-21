@@ -143,7 +143,7 @@ export async function Pricing() {
         </div>
 
         {/* Storage tier grid */}
-        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
           {plans.map((tier) => {
             const isPopular = tier.label === "Professional" || tier.gb === 100;
             return (

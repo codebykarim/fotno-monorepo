@@ -264,7 +264,7 @@ export default function BillingPage() {
         </p>
 
         {!plans ? (
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
@@ -274,7 +274,7 @@ export default function BillingPage() {
           </div>
         ) : (
           <motion.div
-            className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]"
             variants={staggerContainer}
             initial="hidden"
             animate="show"

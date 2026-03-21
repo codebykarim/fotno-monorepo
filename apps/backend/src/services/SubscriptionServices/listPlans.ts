@@ -1,6 +1,6 @@
 import { listVariants } from "@lemonsqueezy/lemonsqueezy.js";
-import { STORAGE_TIERS, type StorageTier } from "../../constants/plans";
-import { getRegionalPricing } from "../../constants/regional-pricing";
+import { fetchTiersFromDB } from "../../constants/plans";
+import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 
 export type PlanInfo = {
   gb: number;
@@ -24,16 +24,24 @@ let cacheExpiresAt = 0;
 const CACHE_TTL_MS = 10 * 60 * 1000;
 
 /**
- * Build a variantId → StorageTier lookup from the STORAGE_TIERS constant.
- * Only tiers with a configured lsVariantId are included.
+ * Build a variantId → tier lookup.
+ * Tries DB-backed tiers first, falls back to hardcoded STORAGE_TIERS.
  */
-const buildVariantMap = (): Map<string, StorageTier> => {
-  const map = new Map<string, StorageTier>();
-  for (const tier of STORAGE_TIERS) {
+const buildVariantMap = async (): Promise<Map<string, { gb: number; priceCents: number; label: string; lsVariantId: string }>> => {
+  const map = new Map<string, { gb: number; priceCents: number; label: string; lsVariantId: string }>();
+
+  const dbTiers = await fetchTiersFromDB();
+  for (const tier of dbTiers) {
     if (tier.lsVariantId) {
-      map.set(tier.lsVariantId, tier);
+      map.set(tier.lsVariantId, {
+        gb: tier.gb,
+        priceCents: tier.priceCents,
+        label: tier.label,
+        lsVariantId: tier.lsVariantId,
+      });
     }
   }
+
   return map;
 };
 
@@ -41,12 +49,16 @@ const buildVariantMap = (): Map<string, StorageTier> => {
  * Apply regional pricing overrides to a list of base USD plans.
  * Tiers not present in `tierPrices` are excluded for this region.
  * Tiers with `tierStorageOverrides` get their displayed gb value changed.
+ *
+ * Tries DB-backed regional pricing first, falls back to hardcoded constants.
  */
-function applyRegionalPricing(
+async function applyRegionalPricing(
   plans: PlanInfo[],
   countryCode: string | null | undefined,
-): PlanInfo[] {
-  const regional = getRegionalPricing(countryCode);
+): Promise<PlanInfo[]> {
+  // Try DB first, fall back to hardcoded
+  const regional =
+    (await fetchRegionalPricingFromDB(countryCode)) ?? getRegionalPricing(countryCode);
   if (!regional) return plans;
 
   return plans
@@ -55,7 +67,7 @@ function applyRegionalPricing(
       ...plan,
       gb: regional.tierStorageOverrides?.[plan.gb] ?? plan.gb,
       localPriceCents: regional.tierPrices[plan.gb] ?? undefined,
-      pppPriceCents: Math.round(plan.priceCents * regional.pppMultiplier),
+      pppPriceCents: regional.tierCheckoutCents?.[plan.gb] ?? Math.round(plan.priceCents * regional.pppMultiplier),
       currency: regional.currency,
       symbol: regional.symbol,
       locale: regional.locale,
@@ -83,13 +95,13 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
     return cachedPlans;
   }
 
-  // If the API key isn't set we can't call LS — return hardcoded tiers
+  // If the API key isn't set we can't call LS — return DB-backed tiers
   if (!process.env.LEMONSQUEEZY_API_KEY) {
     return fallbackPlans();
   }
 
   try {
-    const variantMap = buildVariantMap();
+    const variantMap = await buildVariantMap();
     const variantIds = [...variantMap.keys()];
 
     if (variantIds.length === 0) {
@@ -124,8 +136,9 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
       });
     }
 
-    // If some tiers are missing from the API response, fill them from constants
-    for (const tier of STORAGE_TIERS) {
+    // If some tiers are missing from the API response, fill them from DB / constants
+    const dbTiers = await fetchTiersFromDB();
+    for (const tier of dbTiers) {
       if (!plans.find((p) => p.gb === tier.gb)) {
         plans.push({
           gb: tier.gb,
@@ -153,8 +166,9 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
   }
 }
 
-function fallbackPlans(): PlanInfo[] {
-  return STORAGE_TIERS.map(({ gb, priceCents, label }) => ({
+async function fallbackPlans(): Promise<PlanInfo[]> {
+  const dbTiers = await fetchTiersFromDB();
+  return dbTiers.map(({ gb, priceCents, label }) => ({
     gb,
     priceCents,
     label,

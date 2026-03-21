@@ -1,5 +1,7 @@
 import { type Request, type Response } from "express";
 import * as AdminService from "../services/AdminServices";
+import { prisma } from "@workspace/db";
+import AppError from "../errors/AppError";
 
 export const getOverviewController = async (_req: Request, res: Response) => {
   const overview = await AdminService.getAdminOverview();
@@ -104,4 +106,181 @@ export const getPaymentsOverviewController = async (req: Request, res: Response)
 
   const result = await AdminService.getPaymentsOverview(status, source, page, pageSize);
   return res.status(200).json(result);
+};
+
+// ── Pricing Management ─────────────────────────────────────────
+
+export const getPricingConfigController = async (_req: Request, res: Response) => {
+  const [tiers, regions] = await Promise.all([
+    (prisma as any).pricingTier.findMany({
+      orderBy: { sortOrder: "asc" },
+    }),
+    (prisma as any).regionalPricing.findMany({
+      include: { tierOverrides: true },
+      orderBy: { countryCode: "asc" },
+    }),
+  ]);
+
+  return res.status(200).json({ tiers, regions });
+};
+
+export const createPricingTierController = async (req: Request, res: Response) => {
+  const { gb, label, priceCents, lsVariantId, sortOrder, active } = req.body;
+
+  if (gb === undefined || !label || priceCents === undefined) {
+    throw new AppError("gb, label, and priceCents are required", 400);
+  }
+
+  const tier = await (prisma as any).pricingTier.create({
+    data: {
+      gb: Number(gb),
+      label,
+      priceCents: Number(priceCents),
+      lsVariantId: lsVariantId ?? null,
+      sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
+      active: active !== undefined ? Boolean(active) : true,
+    },
+  });
+
+  return res.status(201).json(tier);
+};
+
+export const updatePricingTierController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { gb, label, priceCents, lsVariantId, sortOrder, active } = req.body;
+
+  const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
+  if (!existing) {
+    throw new AppError("Pricing tier not found", 404);
+  }
+
+  const tier = await (prisma as any).pricingTier.update({
+    where: { id },
+    data: {
+      ...(gb !== undefined && { gb: Number(gb) }),
+      ...(label !== undefined && { label }),
+      ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
+      ...(lsVariantId !== undefined && { lsVariantId }),
+      ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
+      ...(active !== undefined && { active: Boolean(active) }),
+    },
+  });
+
+  return res.status(200).json(tier);
+};
+
+export const deletePricingTierController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
+  if (!existing) {
+    throw new AppError("Pricing tier not found", 404);
+  }
+
+  const tier = await (prisma as any).pricingTier.update({
+    where: { id },
+    data: { active: false },
+  });
+
+  return res.status(200).json(tier);
+};
+
+export const createRegionalPricingController = async (req: Request, res: Response) => {
+  const { countryCode, currency, symbol, locale, pppMultiplier, active, tierOverrides } = req.body;
+
+  if (!countryCode || !currency || !symbol || !locale || pppMultiplier === undefined) {
+    throw new AppError("countryCode, currency, symbol, locale, and pppMultiplier are required", 400);
+  }
+
+  const region = await (prisma as any).regionalPricing.create({
+    data: {
+      countryCode: countryCode.toUpperCase(),
+      currency,
+      symbol,
+      locale,
+      pppMultiplier: Number(pppMultiplier),
+      active: active !== undefined ? Boolean(active) : true,
+      ...(tierOverrides?.length && {
+        tierOverrides: {
+          create: tierOverrides.map((o: any) => ({
+            tierGb: Number(o.tierGb),
+            localPriceCents: Number(o.localPriceCents),
+            checkoutCents: o.checkoutCents != null ? Number(o.checkoutCents) : null,
+            storageOverrideGb: o.storageOverrideGb != null ? Number(o.storageOverrideGb) : null,
+          })),
+        },
+      }),
+    },
+    include: { tierOverrides: true },
+  });
+
+  return res.status(201).json(region);
+};
+
+export const updateRegionalPricingController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { countryCode, currency, symbol, locale, pppMultiplier, active, tierOverrides } = req.body;
+
+  const existing = await (prisma as any).regionalPricing.findUnique({ where: { id } });
+  if (!existing) {
+    throw new AppError("Regional pricing config not found", 404);
+  }
+
+  const region = await (prisma as any).$transaction(async (tx: any) => {
+    // Update the regional pricing record
+    const updated = await tx.regionalPricing.update({
+      where: { id },
+      data: {
+        ...(countryCode !== undefined && { countryCode: countryCode.toUpperCase() }),
+        ...(currency !== undefined && { currency }),
+        ...(symbol !== undefined && { symbol }),
+        ...(locale !== undefined && { locale }),
+        ...(pppMultiplier !== undefined && { pppMultiplier: Number(pppMultiplier) }),
+        ...(active !== undefined && { active: Boolean(active) }),
+      },
+    });
+
+    // Replace tier overrides if provided
+    if (tierOverrides !== undefined) {
+      await tx.regionalTierOverride.deleteMany({
+        where: { regionalPricingId: id },
+      });
+
+      if (tierOverrides.length > 0) {
+        await tx.regionalTierOverride.createMany({
+          data: tierOverrides.map((o: any) => ({
+            regionalPricingId: id,
+            tierGb: Number(o.tierGb),
+            localPriceCents: Number(o.localPriceCents),
+            checkoutCents: o.checkoutCents != null ? Number(o.checkoutCents) : null,
+            storageOverrideGb: o.storageOverrideGb != null ? Number(o.storageOverrideGb) : null,
+          })),
+        });
+      }
+    }
+
+    return tx.regionalPricing.findUnique({
+      where: { id },
+      include: { tierOverrides: true },
+    });
+  });
+
+  return res.status(200).json(region);
+};
+
+export const deleteRegionalPricingController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const existing = await (prisma as any).regionalPricing.findUnique({ where: { id } });
+  if (!existing) {
+    throw new AppError("Regional pricing config not found", 404);
+  }
+
+  const region = await (prisma as any).regionalPricing.update({
+    where: { id },
+    data: { active: false },
+    include: { tierOverrides: true },
+  });
+
+  return res.status(200).json(region);
 };

@@ -82,6 +82,41 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.getPaymentsOverviewController,
     authFunction: isAdmin,
   },
+  "get-pricing": {
+    httpMethod: "GET",
+    controllerFunction: AdminController.getPricingConfigController,
+    authFunction: isAdmin,
+  },
+  "create-pricing-tier": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.createPricingTierController,
+    authFunction: isAdmin,
+  },
+  "update-pricing-tier": {
+    httpMethod: "PUT",
+    controllerFunction: AdminController.updatePricingTierController,
+    authFunction: isAdmin,
+  },
+  "delete-pricing-tier": {
+    httpMethod: "DELETE",
+    controllerFunction: AdminController.deletePricingTierController,
+    authFunction: isAdmin,
+  },
+  "create-regional-pricing": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.createRegionalPricingController,
+    authFunction: isAdmin,
+  },
+  "update-regional-pricing": {
+    httpMethod: "PUT",
+    controllerFunction: AdminController.updateRegionalPricingController,
+    authFunction: isAdmin,
+  },
+  "delete-regional-pricing": {
+    httpMethod: "DELETE",
+    controllerFunction: AdminController.deleteRegionalPricingController,
+    authFunction: isAdmin,
+  },
 };
 
 const mappedMethods = init(adminMethods);
@@ -107,5 +142,14 @@ adminRoutes.get("/admin/storage", handleMethod("storage-overview"));
 adminRoutes.get("/admin/payments", handleMethod("payments-overview"));
 adminRoutes.get("/admin/services/health", handleMethod("service-health"));
 adminRoutes.get("/admin/analytics", handleMethod("analytics"));
+
+// Pricing management
+adminRoutes.get("/admin/pricing", handleMethod("get-pricing"));
+adminRoutes.post("/admin/pricing/tiers", handleMethod("create-pricing-tier"));
+adminRoutes.put("/admin/pricing/tiers/:id", handleMethod("update-pricing-tier"));
+adminRoutes.delete("/admin/pricing/tiers/:id", handleMethod("delete-pricing-tier"));
+adminRoutes.post("/admin/pricing/regions", handleMethod("create-regional-pricing"));
+adminRoutes.put("/admin/pricing/regions/:id", handleMethod("update-regional-pricing"));
+adminRoutes.delete("/admin/pricing/regions/:id", handleMethod("delete-regional-pricing"));
 
 export default adminRoutes;

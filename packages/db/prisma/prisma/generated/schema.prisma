@@ -448,6 +448,53 @@ model DriveImportJob {
   @@map("drive_import_job")
 }
 
+// ── Pricing Config (admin-managed) ──────────────────────────────
+
+model PricingTier {
+  id          String   @id @default(uuid())
+  gb          Int      @unique // -1 for unlimited
+  label       String
+  priceCents  Int // base USD price
+  lsVariantId String?
+  sortOrder   Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  @@map("pricing_tier")
+}
+
+model RegionalPricing {
+  id            String                 @id @default(uuid())
+  countryCode   String                 @unique // ISO 3166-1 alpha-2
+  currency      String // ISO 4217
+  symbol        String
+  locale        String // BCP 47
+  pppMultiplier Float
+  active        Boolean                @default(true)
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @default(now()) @updatedAt
+  tierOverrides RegionalTierOverride[]
+
+  @@map("regional_pricing")
+}
+
+model RegionalTierOverride {
+  id                String          @id @default(uuid())
+  regionalPricingId String
+  regionalPricing   RegionalPricing @relation(fields: [regionalPricingId], references: [id], onDelete: Cascade)
+  tierGb            Int // matches PricingTier.gb
+  localPriceCents   Int // display price in local currency minor units
+  checkoutCents     Int? // override LS checkout price in USD cents
+  storageOverrideGb Int? // optional storage override
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @default(now()) @updatedAt
+
+  @@unique([regionalPricingId, tierGb])
+  @@index([regionalPricingId])
+  @@map("regional_tier_override")
+}
+
 model DriveImportItem {
   id              String                @id @default(uuid())
   jobId           String

@@ -389,6 +389,41 @@ exports.Prisma.DriveImportJobScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PricingTierScalarFieldEnum = {
+  id: 'id',
+  gb: 'gb',
+  label: 'label',
+  priceCents: 'priceCents',
+  lsVariantId: 'lsVariantId',
+  sortOrder: 'sortOrder',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RegionalPricingScalarFieldEnum = {
+  id: 'id',
+  countryCode: 'countryCode',
+  currency: 'currency',
+  symbol: 'symbol',
+  locale: 'locale',
+  pppMultiplier: 'pppMultiplier',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RegionalTierOverrideScalarFieldEnum = {
+  id: 'id',
+  regionalPricingId: 'regionalPricingId',
+  tierGb: 'tierGb',
+  localPriceCents: 'localPriceCents',
+  checkoutCents: 'checkoutCents',
+  storageOverrideGb: 'storageOverrideGb',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.DriveImportItemScalarFieldEnum = {
   id: 'id',
   jobId: 'jobId',
@@ -515,6 +550,9 @@ exports.Prisma.ModelName = {
   FavoriteShare: 'FavoriteShare',
   DownloadEvent: 'DownloadEvent',
   DriveImportJob: 'DriveImportJob',
+  PricingTier: 'PricingTier',
+  RegionalPricing: 'RegionalPricing',
+  RegionalTierOverride: 'RegionalTierOverride',
   DriveImportItem: 'DriveImportItem'
 };
 

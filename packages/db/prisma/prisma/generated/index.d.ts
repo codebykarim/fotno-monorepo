@@ -109,6 +109,21 @@ export type DownloadEvent = $Result.DefaultSelection<Prisma.$DownloadEventPayloa
  */
 export type DriveImportJob = $Result.DefaultSelection<Prisma.$DriveImportJobPayload>
 /**
+ * Model PricingTier
+ * 
+ */
+export type PricingTier = $Result.DefaultSelection<Prisma.$PricingTierPayload>
+/**
+ * Model RegionalPricing
+ * 
+ */
+export type RegionalPricing = $Result.DefaultSelection<Prisma.$RegionalPricingPayload>
+/**
+ * Model RegionalTierOverride
+ * 
+ */
+export type RegionalTierOverride = $Result.DefaultSelection<Prisma.$RegionalTierOverridePayload>
+/**
  * Model DriveImportItem
  * 
  */
@@ -564,6 +579,36 @@ export class PrismaClient<
     * ```
     */
   get driveImportJob(): Prisma.DriveImportJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pricingTier`: Exposes CRUD operations for the **PricingTier** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PricingTiers
+    * const pricingTiers = await prisma.pricingTier.findMany()
+    * ```
+    */
+  get pricingTier(): Prisma.PricingTierDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.regionalPricing`: Exposes CRUD operations for the **RegionalPricing** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RegionalPricings
+    * const regionalPricings = await prisma.regionalPricing.findMany()
+    * ```
+    */
+  get regionalPricing(): Prisma.RegionalPricingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.regionalTierOverride`: Exposes CRUD operations for the **RegionalTierOverride** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RegionalTierOverrides
+    * const regionalTierOverrides = await prisma.regionalTierOverride.findMany()
+    * ```
+    */
+  get regionalTierOverride(): Prisma.RegionalTierOverrideDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.driveImportItem`: Exposes CRUD operations for the **DriveImportItem** model.
@@ -1027,6 +1072,9 @@ export namespace Prisma {
     FavoriteShare: 'FavoriteShare',
     DownloadEvent: 'DownloadEvent',
     DriveImportJob: 'DriveImportJob',
+    PricingTier: 'PricingTier',
+    RegionalPricing: 'RegionalPricing',
+    RegionalTierOverride: 'RegionalTierOverride',
     DriveImportItem: 'DriveImportItem'
   };
 
@@ -1043,7 +1091,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "driveImportItem"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2453,6 +2501,228 @@ export namespace Prisma {
           }
         }
       }
+      PricingTier: {
+        payload: Prisma.$PricingTierPayload<ExtArgs>
+        fields: Prisma.PricingTierFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PricingTierFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PricingTierFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          findFirst: {
+            args: Prisma.PricingTierFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PricingTierFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          findMany: {
+            args: Prisma.PricingTierFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          create: {
+            args: Prisma.PricingTierCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          createMany: {
+            args: Prisma.PricingTierCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PricingTierCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          delete: {
+            args: Prisma.PricingTierDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          update: {
+            args: Prisma.PricingTierUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          deleteMany: {
+            args: Prisma.PricingTierDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PricingTierUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PricingTierUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          upsert: {
+            args: Prisma.PricingTierUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          aggregate: {
+            args: Prisma.PricingTierAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePricingTier>
+          }
+          groupBy: {
+            args: Prisma.PricingTierGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PricingTierGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PricingTierCountArgs<ExtArgs>
+            result: $Utils.Optional<PricingTierCountAggregateOutputType> | number
+          }
+        }
+      }
+      RegionalPricing: {
+        payload: Prisma.$RegionalPricingPayload<ExtArgs>
+        fields: Prisma.RegionalPricingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RegionalPricingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RegionalPricingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          findFirst: {
+            args: Prisma.RegionalPricingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RegionalPricingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          findMany: {
+            args: Prisma.RegionalPricingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>[]
+          }
+          create: {
+            args: Prisma.RegionalPricingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          createMany: {
+            args: Prisma.RegionalPricingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RegionalPricingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>[]
+          }
+          delete: {
+            args: Prisma.RegionalPricingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          update: {
+            args: Prisma.RegionalPricingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          deleteMany: {
+            args: Prisma.RegionalPricingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RegionalPricingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RegionalPricingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>[]
+          }
+          upsert: {
+            args: Prisma.RegionalPricingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalPricingPayload>
+          }
+          aggregate: {
+            args: Prisma.RegionalPricingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRegionalPricing>
+          }
+          groupBy: {
+            args: Prisma.RegionalPricingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RegionalPricingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RegionalPricingCountArgs<ExtArgs>
+            result: $Utils.Optional<RegionalPricingCountAggregateOutputType> | number
+          }
+        }
+      }
+      RegionalTierOverride: {
+        payload: Prisma.$RegionalTierOverridePayload<ExtArgs>
+        fields: Prisma.RegionalTierOverrideFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RegionalTierOverrideFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RegionalTierOverrideFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          findFirst: {
+            args: Prisma.RegionalTierOverrideFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RegionalTierOverrideFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          findMany: {
+            args: Prisma.RegionalTierOverrideFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>[]
+          }
+          create: {
+            args: Prisma.RegionalTierOverrideCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          createMany: {
+            args: Prisma.RegionalTierOverrideCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RegionalTierOverrideCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>[]
+          }
+          delete: {
+            args: Prisma.RegionalTierOverrideDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          update: {
+            args: Prisma.RegionalTierOverrideUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          deleteMany: {
+            args: Prisma.RegionalTierOverrideDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RegionalTierOverrideUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RegionalTierOverrideUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>[]
+          }
+          upsert: {
+            args: Prisma.RegionalTierOverrideUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegionalTierOverridePayload>
+          }
+          aggregate: {
+            args: Prisma.RegionalTierOverrideAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRegionalTierOverride>
+          }
+          groupBy: {
+            args: Prisma.RegionalTierOverrideGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RegionalTierOverrideGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RegionalTierOverrideCountArgs<ExtArgs>
+            result: $Utils.Optional<RegionalTierOverrideCountAggregateOutputType> | number
+          }
+        }
+      }
       DriveImportItem: {
         payload: Prisma.$DriveImportItemPayload<ExtArgs>
         fields: Prisma.DriveImportItemFieldRefs
@@ -2654,6 +2924,9 @@ export namespace Prisma {
     favoriteShare?: FavoriteShareOmit
     downloadEvent?: DownloadEventOmit
     driveImportJob?: DriveImportJobOmit
+    pricingTier?: PricingTierOmit
+    regionalPricing?: RegionalPricingOmit
+    regionalTierOverride?: RegionalTierOverrideOmit
     driveImportItem?: DriveImportItemOmit
   }
 
@@ -3088,6 +3361,37 @@ export namespace Prisma {
    */
   export type DriveImportJobCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DriveImportItemWhereInput
+  }
+
+
+  /**
+   * Count Type RegionalPricingCountOutputType
+   */
+
+  export type RegionalPricingCountOutputType = {
+    tierOverrides: number
+  }
+
+  export type RegionalPricingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tierOverrides?: boolean | RegionalPricingCountOutputTypeCountTierOverridesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RegionalPricingCountOutputType without action
+   */
+  export type RegionalPricingCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricingCountOutputType
+     */
+    select?: RegionalPricingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RegionalPricingCountOutputType without action
+   */
+  export type RegionalPricingCountOutputTypeCountTierOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegionalTierOverrideWhereInput
   }
 
 
@@ -25862,6 +26166,3409 @@ export namespace Prisma {
 
 
   /**
+   * Model PricingTier
+   */
+
+  export type AggregatePricingTier = {
+    _count: PricingTierCountAggregateOutputType | null
+    _avg: PricingTierAvgAggregateOutputType | null
+    _sum: PricingTierSumAggregateOutputType | null
+    _min: PricingTierMinAggregateOutputType | null
+    _max: PricingTierMaxAggregateOutputType | null
+  }
+
+  export type PricingTierAvgAggregateOutputType = {
+    gb: number | null
+    priceCents: number | null
+    sortOrder: number | null
+  }
+
+  export type PricingTierSumAggregateOutputType = {
+    gb: number | null
+    priceCents: number | null
+    sortOrder: number | null
+  }
+
+  export type PricingTierMinAggregateOutputType = {
+    id: string | null
+    gb: number | null
+    label: string | null
+    priceCents: number | null
+    lsVariantId: string | null
+    sortOrder: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PricingTierMaxAggregateOutputType = {
+    id: string | null
+    gb: number | null
+    label: string | null
+    priceCents: number | null
+    lsVariantId: string | null
+    sortOrder: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PricingTierCountAggregateOutputType = {
+    id: number
+    gb: number
+    label: number
+    priceCents: number
+    lsVariantId: number
+    sortOrder: number
+    active: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PricingTierAvgAggregateInputType = {
+    gb?: true
+    priceCents?: true
+    sortOrder?: true
+  }
+
+  export type PricingTierSumAggregateInputType = {
+    gb?: true
+    priceCents?: true
+    sortOrder?: true
+  }
+
+  export type PricingTierMinAggregateInputType = {
+    id?: true
+    gb?: true
+    label?: true
+    priceCents?: true
+    lsVariantId?: true
+    sortOrder?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PricingTierMaxAggregateInputType = {
+    id?: true
+    gb?: true
+    label?: true
+    priceCents?: true
+    lsVariantId?: true
+    sortOrder?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PricingTierCountAggregateInputType = {
+    id?: true
+    gb?: true
+    label?: true
+    priceCents?: true
+    lsVariantId?: true
+    sortOrder?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PricingTierAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PricingTier to aggregate.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PricingTiers
+    **/
+    _count?: true | PricingTierCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PricingTierAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PricingTierSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PricingTierMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PricingTierMaxAggregateInputType
+  }
+
+  export type GetPricingTierAggregateType<T extends PricingTierAggregateArgs> = {
+        [P in keyof T & keyof AggregatePricingTier]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePricingTier[P]>
+      : GetScalarType<T[P], AggregatePricingTier[P]>
+  }
+
+
+
+
+  export type PricingTierGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PricingTierWhereInput
+    orderBy?: PricingTierOrderByWithAggregationInput | PricingTierOrderByWithAggregationInput[]
+    by: PricingTierScalarFieldEnum[] | PricingTierScalarFieldEnum
+    having?: PricingTierScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PricingTierCountAggregateInputType | true
+    _avg?: PricingTierAvgAggregateInputType
+    _sum?: PricingTierSumAggregateInputType
+    _min?: PricingTierMinAggregateInputType
+    _max?: PricingTierMaxAggregateInputType
+  }
+
+  export type PricingTierGroupByOutputType = {
+    id: string
+    gb: number
+    label: string
+    priceCents: number
+    lsVariantId: string | null
+    sortOrder: number
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: PricingTierCountAggregateOutputType | null
+    _avg: PricingTierAvgAggregateOutputType | null
+    _sum: PricingTierSumAggregateOutputType | null
+    _min: PricingTierMinAggregateOutputType | null
+    _max: PricingTierMaxAggregateOutputType | null
+  }
+
+  type GetPricingTierGroupByPayload<T extends PricingTierGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PricingTierGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PricingTierGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PricingTierGroupByOutputType[P]>
+            : GetScalarType<T[P], PricingTierGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PricingTierSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gb?: boolean
+    label?: boolean
+    priceCents?: boolean
+    lsVariantId?: boolean
+    sortOrder?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gb?: boolean
+    label?: boolean
+    priceCents?: boolean
+    lsVariantId?: boolean
+    sortOrder?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    gb?: boolean
+    label?: boolean
+    priceCents?: boolean
+    lsVariantId?: boolean
+    sortOrder?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectScalar = {
+    id?: boolean
+    gb?: boolean
+    label?: boolean
+    priceCents?: boolean
+    lsVariantId?: boolean
+    sortOrder?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "lsVariantId" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
+
+  export type $PricingTierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PricingTier"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      gb: number
+      label: string
+      priceCents: number
+      lsVariantId: string | null
+      sortOrder: number
+      active: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["pricingTier"]>
+    composites: {}
+  }
+
+  type PricingTierGetPayload<S extends boolean | null | undefined | PricingTierDefaultArgs> = $Result.GetResult<Prisma.$PricingTierPayload, S>
+
+  type PricingTierCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PricingTierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PricingTierCountAggregateInputType | true
+    }
+
+  export interface PricingTierDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PricingTier'], meta: { name: 'PricingTier' } }
+    /**
+     * Find zero or one PricingTier that matches the filter.
+     * @param {PricingTierFindUniqueArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PricingTierFindUniqueArgs>(args: SelectSubset<T, PricingTierFindUniqueArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PricingTier that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PricingTierFindUniqueOrThrowArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PricingTierFindUniqueOrThrowArgs>(args: SelectSubset<T, PricingTierFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PricingTier that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindFirstArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PricingTierFindFirstArgs>(args?: SelectSubset<T, PricingTierFindFirstArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PricingTier that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindFirstOrThrowArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PricingTierFindFirstOrThrowArgs>(args?: SelectSubset<T, PricingTierFindFirstOrThrowArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PricingTiers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PricingTiers
+     * const pricingTiers = await prisma.pricingTier.findMany()
+     * 
+     * // Get first 10 PricingTiers
+     * const pricingTiers = await prisma.pricingTier.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PricingTierFindManyArgs>(args?: SelectSubset<T, PricingTierFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PricingTier.
+     * @param {PricingTierCreateArgs} args - Arguments to create a PricingTier.
+     * @example
+     * // Create one PricingTier
+     * const PricingTier = await prisma.pricingTier.create({
+     *   data: {
+     *     // ... data to create a PricingTier
+     *   }
+     * })
+     * 
+     */
+    create<T extends PricingTierCreateArgs>(args: SelectSubset<T, PricingTierCreateArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PricingTiers.
+     * @param {PricingTierCreateManyArgs} args - Arguments to create many PricingTiers.
+     * @example
+     * // Create many PricingTiers
+     * const pricingTier = await prisma.pricingTier.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PricingTierCreateManyArgs>(args?: SelectSubset<T, PricingTierCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PricingTiers and returns the data saved in the database.
+     * @param {PricingTierCreateManyAndReturnArgs} args - Arguments to create many PricingTiers.
+     * @example
+     * // Create many PricingTiers
+     * const pricingTier = await prisma.pricingTier.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PricingTiers and only return the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PricingTierCreateManyAndReturnArgs>(args?: SelectSubset<T, PricingTierCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PricingTier.
+     * @param {PricingTierDeleteArgs} args - Arguments to delete one PricingTier.
+     * @example
+     * // Delete one PricingTier
+     * const PricingTier = await prisma.pricingTier.delete({
+     *   where: {
+     *     // ... filter to delete one PricingTier
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PricingTierDeleteArgs>(args: SelectSubset<T, PricingTierDeleteArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PricingTier.
+     * @param {PricingTierUpdateArgs} args - Arguments to update one PricingTier.
+     * @example
+     * // Update one PricingTier
+     * const pricingTier = await prisma.pricingTier.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PricingTierUpdateArgs>(args: SelectSubset<T, PricingTierUpdateArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PricingTiers.
+     * @param {PricingTierDeleteManyArgs} args - Arguments to filter PricingTiers to delete.
+     * @example
+     * // Delete a few PricingTiers
+     * const { count } = await prisma.pricingTier.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PricingTierDeleteManyArgs>(args?: SelectSubset<T, PricingTierDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PricingTiers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PricingTiers
+     * const pricingTier = await prisma.pricingTier.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PricingTierUpdateManyArgs>(args: SelectSubset<T, PricingTierUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PricingTiers and returns the data updated in the database.
+     * @param {PricingTierUpdateManyAndReturnArgs} args - Arguments to update many PricingTiers.
+     * @example
+     * // Update many PricingTiers
+     * const pricingTier = await prisma.pricingTier.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PricingTiers and only return the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PricingTierUpdateManyAndReturnArgs>(args: SelectSubset<T, PricingTierUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PricingTier.
+     * @param {PricingTierUpsertArgs} args - Arguments to update or create a PricingTier.
+     * @example
+     * // Update or create a PricingTier
+     * const pricingTier = await prisma.pricingTier.upsert({
+     *   create: {
+     *     // ... data to create a PricingTier
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PricingTier we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PricingTierUpsertArgs>(args: SelectSubset<T, PricingTierUpsertArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PricingTiers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierCountArgs} args - Arguments to filter PricingTiers to count.
+     * @example
+     * // Count the number of PricingTiers
+     * const count = await prisma.pricingTier.count({
+     *   where: {
+     *     // ... the filter for the PricingTiers we want to count
+     *   }
+     * })
+    **/
+    count<T extends PricingTierCountArgs>(
+      args?: Subset<T, PricingTierCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PricingTierCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PricingTier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PricingTierAggregateArgs>(args: Subset<T, PricingTierAggregateArgs>): Prisma.PrismaPromise<GetPricingTierAggregateType<T>>
+
+    /**
+     * Group by PricingTier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PricingTierGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PricingTierGroupByArgs['orderBy'] }
+        : { orderBy?: PricingTierGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PricingTierGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPricingTierGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PricingTier model
+   */
+  readonly fields: PricingTierFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PricingTier.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PricingTierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PricingTier model
+   */
+  interface PricingTierFieldRefs {
+    readonly id: FieldRef<"PricingTier", 'String'>
+    readonly gb: FieldRef<"PricingTier", 'Int'>
+    readonly label: FieldRef<"PricingTier", 'String'>
+    readonly priceCents: FieldRef<"PricingTier", 'Int'>
+    readonly lsVariantId: FieldRef<"PricingTier", 'String'>
+    readonly sortOrder: FieldRef<"PricingTier", 'Int'>
+    readonly active: FieldRef<"PricingTier", 'Boolean'>
+    readonly createdAt: FieldRef<"PricingTier", 'DateTime'>
+    readonly updatedAt: FieldRef<"PricingTier", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PricingTier findUnique
+   */
+  export type PricingTierFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier findUniqueOrThrow
+   */
+  export type PricingTierFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier findFirst
+   */
+  export type PricingTierFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PricingTiers.
+     */
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier findFirstOrThrow
+   */
+  export type PricingTierFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PricingTiers.
+     */
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier findMany
+   */
+  export type PricingTierFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter, which PricingTiers to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PricingTiers.
+     */
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier create
+   */
+  export type PricingTierCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PricingTier.
+     */
+    data: XOR<PricingTierCreateInput, PricingTierUncheckedCreateInput>
+  }
+
+  /**
+   * PricingTier createMany
+   */
+  export type PricingTierCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PricingTiers.
+     */
+    data: PricingTierCreateManyInput | PricingTierCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PricingTier createManyAndReturn
+   */
+  export type PricingTierCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data used to create many PricingTiers.
+     */
+    data: PricingTierCreateManyInput | PricingTierCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PricingTier update
+   */
+  export type PricingTierUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PricingTier.
+     */
+    data: XOR<PricingTierUpdateInput, PricingTierUncheckedUpdateInput>
+    /**
+     * Choose, which PricingTier to update.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier updateMany
+   */
+  export type PricingTierUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PricingTiers.
+     */
+    data: XOR<PricingTierUpdateManyMutationInput, PricingTierUncheckedUpdateManyInput>
+    /**
+     * Filter which PricingTiers to update
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PricingTier updateManyAndReturn
+   */
+  export type PricingTierUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data used to update PricingTiers.
+     */
+    data: XOR<PricingTierUpdateManyMutationInput, PricingTierUncheckedUpdateManyInput>
+    /**
+     * Filter which PricingTiers to update
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PricingTier upsert
+   */
+  export type PricingTierUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PricingTier to update in case it exists.
+     */
+    where: PricingTierWhereUniqueInput
+    /**
+     * In case the PricingTier found by the `where` argument doesn't exist, create a new PricingTier with this data.
+     */
+    create: XOR<PricingTierCreateInput, PricingTierUncheckedCreateInput>
+    /**
+     * In case the PricingTier was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PricingTierUpdateInput, PricingTierUncheckedUpdateInput>
+  }
+
+  /**
+   * PricingTier delete
+   */
+  export type PricingTierDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Filter which PricingTier to delete.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier deleteMany
+   */
+  export type PricingTierDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PricingTiers to delete
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PricingTier without action
+   */
+  export type PricingTierDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RegionalPricing
+   */
+
+  export type AggregateRegionalPricing = {
+    _count: RegionalPricingCountAggregateOutputType | null
+    _avg: RegionalPricingAvgAggregateOutputType | null
+    _sum: RegionalPricingSumAggregateOutputType | null
+    _min: RegionalPricingMinAggregateOutputType | null
+    _max: RegionalPricingMaxAggregateOutputType | null
+  }
+
+  export type RegionalPricingAvgAggregateOutputType = {
+    pppMultiplier: number | null
+  }
+
+  export type RegionalPricingSumAggregateOutputType = {
+    pppMultiplier: number | null
+  }
+
+  export type RegionalPricingMinAggregateOutputType = {
+    id: string | null
+    countryCode: string | null
+    currency: string | null
+    symbol: string | null
+    locale: string | null
+    pppMultiplier: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RegionalPricingMaxAggregateOutputType = {
+    id: string | null
+    countryCode: string | null
+    currency: string | null
+    symbol: string | null
+    locale: string | null
+    pppMultiplier: number | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RegionalPricingCountAggregateOutputType = {
+    id: number
+    countryCode: number
+    currency: number
+    symbol: number
+    locale: number
+    pppMultiplier: number
+    active: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RegionalPricingAvgAggregateInputType = {
+    pppMultiplier?: true
+  }
+
+  export type RegionalPricingSumAggregateInputType = {
+    pppMultiplier?: true
+  }
+
+  export type RegionalPricingMinAggregateInputType = {
+    id?: true
+    countryCode?: true
+    currency?: true
+    symbol?: true
+    locale?: true
+    pppMultiplier?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RegionalPricingMaxAggregateInputType = {
+    id?: true
+    countryCode?: true
+    currency?: true
+    symbol?: true
+    locale?: true
+    pppMultiplier?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RegionalPricingCountAggregateInputType = {
+    id?: true
+    countryCode?: true
+    currency?: true
+    symbol?: true
+    locale?: true
+    pppMultiplier?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RegionalPricingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegionalPricing to aggregate.
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalPricings to fetch.
+     */
+    orderBy?: RegionalPricingOrderByWithRelationInput | RegionalPricingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RegionalPricingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalPricings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalPricings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RegionalPricings
+    **/
+    _count?: true | RegionalPricingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RegionalPricingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RegionalPricingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RegionalPricingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RegionalPricingMaxAggregateInputType
+  }
+
+  export type GetRegionalPricingAggregateType<T extends RegionalPricingAggregateArgs> = {
+        [P in keyof T & keyof AggregateRegionalPricing]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRegionalPricing[P]>
+      : GetScalarType<T[P], AggregateRegionalPricing[P]>
+  }
+
+
+
+
+  export type RegionalPricingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegionalPricingWhereInput
+    orderBy?: RegionalPricingOrderByWithAggregationInput | RegionalPricingOrderByWithAggregationInput[]
+    by: RegionalPricingScalarFieldEnum[] | RegionalPricingScalarFieldEnum
+    having?: RegionalPricingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RegionalPricingCountAggregateInputType | true
+    _avg?: RegionalPricingAvgAggregateInputType
+    _sum?: RegionalPricingSumAggregateInputType
+    _min?: RegionalPricingMinAggregateInputType
+    _max?: RegionalPricingMaxAggregateInputType
+  }
+
+  export type RegionalPricingGroupByOutputType = {
+    id: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: RegionalPricingCountAggregateOutputType | null
+    _avg: RegionalPricingAvgAggregateOutputType | null
+    _sum: RegionalPricingSumAggregateOutputType | null
+    _min: RegionalPricingMinAggregateOutputType | null
+    _max: RegionalPricingMaxAggregateOutputType | null
+  }
+
+  type GetRegionalPricingGroupByPayload<T extends RegionalPricingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RegionalPricingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RegionalPricingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RegionalPricingGroupByOutputType[P]>
+            : GetScalarType<T[P], RegionalPricingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RegionalPricingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    countryCode?: boolean
+    currency?: boolean
+    symbol?: boolean
+    locale?: boolean
+    pppMultiplier?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tierOverrides?: boolean | RegionalPricing$tierOverridesArgs<ExtArgs>
+    _count?: boolean | RegionalPricingCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regionalPricing"]>
+
+  export type RegionalPricingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    countryCode?: boolean
+    currency?: boolean
+    symbol?: boolean
+    locale?: boolean
+    pppMultiplier?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["regionalPricing"]>
+
+  export type RegionalPricingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    countryCode?: boolean
+    currency?: boolean
+    symbol?: boolean
+    locale?: boolean
+    pppMultiplier?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["regionalPricing"]>
+
+  export type RegionalPricingSelectScalar = {
+    id?: boolean
+    countryCode?: boolean
+    currency?: boolean
+    symbol?: boolean
+    locale?: boolean
+    pppMultiplier?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RegionalPricingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "countryCode" | "currency" | "symbol" | "locale" | "pppMultiplier" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["regionalPricing"]>
+  export type RegionalPricingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tierOverrides?: boolean | RegionalPricing$tierOverridesArgs<ExtArgs>
+    _count?: boolean | RegionalPricingCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RegionalPricingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RegionalPricingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RegionalPricingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RegionalPricing"
+    objects: {
+      tierOverrides: Prisma.$RegionalTierOverridePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      countryCode: string
+      currency: string
+      symbol: string
+      locale: string
+      pppMultiplier: number
+      active: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["regionalPricing"]>
+    composites: {}
+  }
+
+  type RegionalPricingGetPayload<S extends boolean | null | undefined | RegionalPricingDefaultArgs> = $Result.GetResult<Prisma.$RegionalPricingPayload, S>
+
+  type RegionalPricingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RegionalPricingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RegionalPricingCountAggregateInputType | true
+    }
+
+  export interface RegionalPricingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RegionalPricing'], meta: { name: 'RegionalPricing' } }
+    /**
+     * Find zero or one RegionalPricing that matches the filter.
+     * @param {RegionalPricingFindUniqueArgs} args - Arguments to find a RegionalPricing
+     * @example
+     * // Get one RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RegionalPricingFindUniqueArgs>(args: SelectSubset<T, RegionalPricingFindUniqueArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RegionalPricing that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RegionalPricingFindUniqueOrThrowArgs} args - Arguments to find a RegionalPricing
+     * @example
+     * // Get one RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RegionalPricingFindUniqueOrThrowArgs>(args: SelectSubset<T, RegionalPricingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegionalPricing that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingFindFirstArgs} args - Arguments to find a RegionalPricing
+     * @example
+     * // Get one RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RegionalPricingFindFirstArgs>(args?: SelectSubset<T, RegionalPricingFindFirstArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegionalPricing that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingFindFirstOrThrowArgs} args - Arguments to find a RegionalPricing
+     * @example
+     * // Get one RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RegionalPricingFindFirstOrThrowArgs>(args?: SelectSubset<T, RegionalPricingFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RegionalPricings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RegionalPricings
+     * const regionalPricings = await prisma.regionalPricing.findMany()
+     * 
+     * // Get first 10 RegionalPricings
+     * const regionalPricings = await prisma.regionalPricing.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const regionalPricingWithIdOnly = await prisma.regionalPricing.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RegionalPricingFindManyArgs>(args?: SelectSubset<T, RegionalPricingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RegionalPricing.
+     * @param {RegionalPricingCreateArgs} args - Arguments to create a RegionalPricing.
+     * @example
+     * // Create one RegionalPricing
+     * const RegionalPricing = await prisma.regionalPricing.create({
+     *   data: {
+     *     // ... data to create a RegionalPricing
+     *   }
+     * })
+     * 
+     */
+    create<T extends RegionalPricingCreateArgs>(args: SelectSubset<T, RegionalPricingCreateArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RegionalPricings.
+     * @param {RegionalPricingCreateManyArgs} args - Arguments to create many RegionalPricings.
+     * @example
+     * // Create many RegionalPricings
+     * const regionalPricing = await prisma.regionalPricing.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RegionalPricingCreateManyArgs>(args?: SelectSubset<T, RegionalPricingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RegionalPricings and returns the data saved in the database.
+     * @param {RegionalPricingCreateManyAndReturnArgs} args - Arguments to create many RegionalPricings.
+     * @example
+     * // Create many RegionalPricings
+     * const regionalPricing = await prisma.regionalPricing.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RegionalPricings and only return the `id`
+     * const regionalPricingWithIdOnly = await prisma.regionalPricing.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RegionalPricingCreateManyAndReturnArgs>(args?: SelectSubset<T, RegionalPricingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RegionalPricing.
+     * @param {RegionalPricingDeleteArgs} args - Arguments to delete one RegionalPricing.
+     * @example
+     * // Delete one RegionalPricing
+     * const RegionalPricing = await prisma.regionalPricing.delete({
+     *   where: {
+     *     // ... filter to delete one RegionalPricing
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RegionalPricingDeleteArgs>(args: SelectSubset<T, RegionalPricingDeleteArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RegionalPricing.
+     * @param {RegionalPricingUpdateArgs} args - Arguments to update one RegionalPricing.
+     * @example
+     * // Update one RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RegionalPricingUpdateArgs>(args: SelectSubset<T, RegionalPricingUpdateArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RegionalPricings.
+     * @param {RegionalPricingDeleteManyArgs} args - Arguments to filter RegionalPricings to delete.
+     * @example
+     * // Delete a few RegionalPricings
+     * const { count } = await prisma.regionalPricing.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RegionalPricingDeleteManyArgs>(args?: SelectSubset<T, RegionalPricingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegionalPricings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RegionalPricings
+     * const regionalPricing = await prisma.regionalPricing.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RegionalPricingUpdateManyArgs>(args: SelectSubset<T, RegionalPricingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegionalPricings and returns the data updated in the database.
+     * @param {RegionalPricingUpdateManyAndReturnArgs} args - Arguments to update many RegionalPricings.
+     * @example
+     * // Update many RegionalPricings
+     * const regionalPricing = await prisma.regionalPricing.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RegionalPricings and only return the `id`
+     * const regionalPricingWithIdOnly = await prisma.regionalPricing.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RegionalPricingUpdateManyAndReturnArgs>(args: SelectSubset<T, RegionalPricingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RegionalPricing.
+     * @param {RegionalPricingUpsertArgs} args - Arguments to update or create a RegionalPricing.
+     * @example
+     * // Update or create a RegionalPricing
+     * const regionalPricing = await prisma.regionalPricing.upsert({
+     *   create: {
+     *     // ... data to create a RegionalPricing
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RegionalPricing we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RegionalPricingUpsertArgs>(args: SelectSubset<T, RegionalPricingUpsertArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RegionalPricings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingCountArgs} args - Arguments to filter RegionalPricings to count.
+     * @example
+     * // Count the number of RegionalPricings
+     * const count = await prisma.regionalPricing.count({
+     *   where: {
+     *     // ... the filter for the RegionalPricings we want to count
+     *   }
+     * })
+    **/
+    count<T extends RegionalPricingCountArgs>(
+      args?: Subset<T, RegionalPricingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RegionalPricingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RegionalPricing.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RegionalPricingAggregateArgs>(args: Subset<T, RegionalPricingAggregateArgs>): Prisma.PrismaPromise<GetRegionalPricingAggregateType<T>>
+
+    /**
+     * Group by RegionalPricing.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalPricingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RegionalPricingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RegionalPricingGroupByArgs['orderBy'] }
+        : { orderBy?: RegionalPricingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RegionalPricingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegionalPricingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RegionalPricing model
+   */
+  readonly fields: RegionalPricingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RegionalPricing.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RegionalPricingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tierOverrides<T extends RegionalPricing$tierOverridesArgs<ExtArgs> = {}>(args?: Subset<T, RegionalPricing$tierOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RegionalPricing model
+   */
+  interface RegionalPricingFieldRefs {
+    readonly id: FieldRef<"RegionalPricing", 'String'>
+    readonly countryCode: FieldRef<"RegionalPricing", 'String'>
+    readonly currency: FieldRef<"RegionalPricing", 'String'>
+    readonly symbol: FieldRef<"RegionalPricing", 'String'>
+    readonly locale: FieldRef<"RegionalPricing", 'String'>
+    readonly pppMultiplier: FieldRef<"RegionalPricing", 'Float'>
+    readonly active: FieldRef<"RegionalPricing", 'Boolean'>
+    readonly createdAt: FieldRef<"RegionalPricing", 'DateTime'>
+    readonly updatedAt: FieldRef<"RegionalPricing", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RegionalPricing findUnique
+   */
+  export type RegionalPricingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalPricing to fetch.
+     */
+    where: RegionalPricingWhereUniqueInput
+  }
+
+  /**
+   * RegionalPricing findUniqueOrThrow
+   */
+  export type RegionalPricingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalPricing to fetch.
+     */
+    where: RegionalPricingWhereUniqueInput
+  }
+
+  /**
+   * RegionalPricing findFirst
+   */
+  export type RegionalPricingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalPricing to fetch.
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalPricings to fetch.
+     */
+    orderBy?: RegionalPricingOrderByWithRelationInput | RegionalPricingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegionalPricings.
+     */
+    cursor?: RegionalPricingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalPricings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalPricings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalPricings.
+     */
+    distinct?: RegionalPricingScalarFieldEnum | RegionalPricingScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalPricing findFirstOrThrow
+   */
+  export type RegionalPricingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalPricing to fetch.
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalPricings to fetch.
+     */
+    orderBy?: RegionalPricingOrderByWithRelationInput | RegionalPricingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegionalPricings.
+     */
+    cursor?: RegionalPricingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalPricings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalPricings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalPricings.
+     */
+    distinct?: RegionalPricingScalarFieldEnum | RegionalPricingScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalPricing findMany
+   */
+  export type RegionalPricingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalPricings to fetch.
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalPricings to fetch.
+     */
+    orderBy?: RegionalPricingOrderByWithRelationInput | RegionalPricingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RegionalPricings.
+     */
+    cursor?: RegionalPricingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalPricings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalPricings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalPricings.
+     */
+    distinct?: RegionalPricingScalarFieldEnum | RegionalPricingScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalPricing create
+   */
+  export type RegionalPricingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RegionalPricing.
+     */
+    data: XOR<RegionalPricingCreateInput, RegionalPricingUncheckedCreateInput>
+  }
+
+  /**
+   * RegionalPricing createMany
+   */
+  export type RegionalPricingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RegionalPricings.
+     */
+    data: RegionalPricingCreateManyInput | RegionalPricingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RegionalPricing createManyAndReturn
+   */
+  export type RegionalPricingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * The data used to create many RegionalPricings.
+     */
+    data: RegionalPricingCreateManyInput | RegionalPricingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RegionalPricing update
+   */
+  export type RegionalPricingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RegionalPricing.
+     */
+    data: XOR<RegionalPricingUpdateInput, RegionalPricingUncheckedUpdateInput>
+    /**
+     * Choose, which RegionalPricing to update.
+     */
+    where: RegionalPricingWhereUniqueInput
+  }
+
+  /**
+   * RegionalPricing updateMany
+   */
+  export type RegionalPricingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RegionalPricings.
+     */
+    data: XOR<RegionalPricingUpdateManyMutationInput, RegionalPricingUncheckedUpdateManyInput>
+    /**
+     * Filter which RegionalPricings to update
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * Limit how many RegionalPricings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegionalPricing updateManyAndReturn
+   */
+  export type RegionalPricingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * The data used to update RegionalPricings.
+     */
+    data: XOR<RegionalPricingUpdateManyMutationInput, RegionalPricingUncheckedUpdateManyInput>
+    /**
+     * Filter which RegionalPricings to update
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * Limit how many RegionalPricings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegionalPricing upsert
+   */
+  export type RegionalPricingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RegionalPricing to update in case it exists.
+     */
+    where: RegionalPricingWhereUniqueInput
+    /**
+     * In case the RegionalPricing found by the `where` argument doesn't exist, create a new RegionalPricing with this data.
+     */
+    create: XOR<RegionalPricingCreateInput, RegionalPricingUncheckedCreateInput>
+    /**
+     * In case the RegionalPricing was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RegionalPricingUpdateInput, RegionalPricingUncheckedUpdateInput>
+  }
+
+  /**
+   * RegionalPricing delete
+   */
+  export type RegionalPricingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+    /**
+     * Filter which RegionalPricing to delete.
+     */
+    where: RegionalPricingWhereUniqueInput
+  }
+
+  /**
+   * RegionalPricing deleteMany
+   */
+  export type RegionalPricingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegionalPricings to delete
+     */
+    where?: RegionalPricingWhereInput
+    /**
+     * Limit how many RegionalPricings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegionalPricing.tierOverrides
+   */
+  export type RegionalPricing$tierOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    where?: RegionalTierOverrideWhereInput
+    orderBy?: RegionalTierOverrideOrderByWithRelationInput | RegionalTierOverrideOrderByWithRelationInput[]
+    cursor?: RegionalTierOverrideWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegionalTierOverrideScalarFieldEnum | RegionalTierOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalPricing without action
+   */
+  export type RegionalPricingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalPricing
+     */
+    select?: RegionalPricingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalPricing
+     */
+    omit?: RegionalPricingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalPricingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RegionalTierOverride
+   */
+
+  export type AggregateRegionalTierOverride = {
+    _count: RegionalTierOverrideCountAggregateOutputType | null
+    _avg: RegionalTierOverrideAvgAggregateOutputType | null
+    _sum: RegionalTierOverrideSumAggregateOutputType | null
+    _min: RegionalTierOverrideMinAggregateOutputType | null
+    _max: RegionalTierOverrideMaxAggregateOutputType | null
+  }
+
+  export type RegionalTierOverrideAvgAggregateOutputType = {
+    tierGb: number | null
+    localPriceCents: number | null
+    checkoutCents: number | null
+    storageOverrideGb: number | null
+  }
+
+  export type RegionalTierOverrideSumAggregateOutputType = {
+    tierGb: number | null
+    localPriceCents: number | null
+    checkoutCents: number | null
+    storageOverrideGb: number | null
+  }
+
+  export type RegionalTierOverrideMinAggregateOutputType = {
+    id: string | null
+    regionalPricingId: string | null
+    tierGb: number | null
+    localPriceCents: number | null
+    checkoutCents: number | null
+    storageOverrideGb: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RegionalTierOverrideMaxAggregateOutputType = {
+    id: string | null
+    regionalPricingId: string | null
+    tierGb: number | null
+    localPriceCents: number | null
+    checkoutCents: number | null
+    storageOverrideGb: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RegionalTierOverrideCountAggregateOutputType = {
+    id: number
+    regionalPricingId: number
+    tierGb: number
+    localPriceCents: number
+    checkoutCents: number
+    storageOverrideGb: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RegionalTierOverrideAvgAggregateInputType = {
+    tierGb?: true
+    localPriceCents?: true
+    checkoutCents?: true
+    storageOverrideGb?: true
+  }
+
+  export type RegionalTierOverrideSumAggregateInputType = {
+    tierGb?: true
+    localPriceCents?: true
+    checkoutCents?: true
+    storageOverrideGb?: true
+  }
+
+  export type RegionalTierOverrideMinAggregateInputType = {
+    id?: true
+    regionalPricingId?: true
+    tierGb?: true
+    localPriceCents?: true
+    checkoutCents?: true
+    storageOverrideGb?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RegionalTierOverrideMaxAggregateInputType = {
+    id?: true
+    regionalPricingId?: true
+    tierGb?: true
+    localPriceCents?: true
+    checkoutCents?: true
+    storageOverrideGb?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RegionalTierOverrideCountAggregateInputType = {
+    id?: true
+    regionalPricingId?: true
+    tierGb?: true
+    localPriceCents?: true
+    checkoutCents?: true
+    storageOverrideGb?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RegionalTierOverrideAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegionalTierOverride to aggregate.
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalTierOverrides to fetch.
+     */
+    orderBy?: RegionalTierOverrideOrderByWithRelationInput | RegionalTierOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RegionalTierOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalTierOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalTierOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RegionalTierOverrides
+    **/
+    _count?: true | RegionalTierOverrideCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RegionalTierOverrideAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RegionalTierOverrideSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RegionalTierOverrideMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RegionalTierOverrideMaxAggregateInputType
+  }
+
+  export type GetRegionalTierOverrideAggregateType<T extends RegionalTierOverrideAggregateArgs> = {
+        [P in keyof T & keyof AggregateRegionalTierOverride]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRegionalTierOverride[P]>
+      : GetScalarType<T[P], AggregateRegionalTierOverride[P]>
+  }
+
+
+
+
+  export type RegionalTierOverrideGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegionalTierOverrideWhereInput
+    orderBy?: RegionalTierOverrideOrderByWithAggregationInput | RegionalTierOverrideOrderByWithAggregationInput[]
+    by: RegionalTierOverrideScalarFieldEnum[] | RegionalTierOverrideScalarFieldEnum
+    having?: RegionalTierOverrideScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RegionalTierOverrideCountAggregateInputType | true
+    _avg?: RegionalTierOverrideAvgAggregateInputType
+    _sum?: RegionalTierOverrideSumAggregateInputType
+    _min?: RegionalTierOverrideMinAggregateInputType
+    _max?: RegionalTierOverrideMaxAggregateInputType
+  }
+
+  export type RegionalTierOverrideGroupByOutputType = {
+    id: string
+    regionalPricingId: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents: number | null
+    storageOverrideGb: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RegionalTierOverrideCountAggregateOutputType | null
+    _avg: RegionalTierOverrideAvgAggregateOutputType | null
+    _sum: RegionalTierOverrideSumAggregateOutputType | null
+    _min: RegionalTierOverrideMinAggregateOutputType | null
+    _max: RegionalTierOverrideMaxAggregateOutputType | null
+  }
+
+  type GetRegionalTierOverrideGroupByPayload<T extends RegionalTierOverrideGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RegionalTierOverrideGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RegionalTierOverrideGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RegionalTierOverrideGroupByOutputType[P]>
+            : GetScalarType<T[P], RegionalTierOverrideGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RegionalTierOverrideSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    regionalPricingId?: boolean
+    tierGb?: boolean
+    localPriceCents?: boolean
+    checkoutCents?: boolean
+    storageOverrideGb?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regionalTierOverride"]>
+
+  export type RegionalTierOverrideSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    regionalPricingId?: boolean
+    tierGb?: boolean
+    localPriceCents?: boolean
+    checkoutCents?: boolean
+    storageOverrideGb?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regionalTierOverride"]>
+
+  export type RegionalTierOverrideSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    regionalPricingId?: boolean
+    tierGb?: boolean
+    localPriceCents?: boolean
+    checkoutCents?: boolean
+    storageOverrideGb?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regionalTierOverride"]>
+
+  export type RegionalTierOverrideSelectScalar = {
+    id?: boolean
+    regionalPricingId?: boolean
+    tierGb?: boolean
+    localPriceCents?: boolean
+    checkoutCents?: boolean
+    storageOverrideGb?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RegionalTierOverrideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "regionalPricingId" | "tierGb" | "localPriceCents" | "checkoutCents" | "storageOverrideGb" | "createdAt" | "updatedAt", ExtArgs["result"]["regionalTierOverride"]>
+  export type RegionalTierOverrideInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }
+  export type RegionalTierOverrideIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }
+  export type RegionalTierOverrideIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    regionalPricing?: boolean | RegionalPricingDefaultArgs<ExtArgs>
+  }
+
+  export type $RegionalTierOverridePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RegionalTierOverride"
+    objects: {
+      regionalPricing: Prisma.$RegionalPricingPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      regionalPricingId: string
+      tierGb: number
+      localPriceCents: number
+      checkoutCents: number | null
+      storageOverrideGb: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["regionalTierOverride"]>
+    composites: {}
+  }
+
+  type RegionalTierOverrideGetPayload<S extends boolean | null | undefined | RegionalTierOverrideDefaultArgs> = $Result.GetResult<Prisma.$RegionalTierOverridePayload, S>
+
+  type RegionalTierOverrideCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RegionalTierOverrideFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RegionalTierOverrideCountAggregateInputType | true
+    }
+
+  export interface RegionalTierOverrideDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RegionalTierOverride'], meta: { name: 'RegionalTierOverride' } }
+    /**
+     * Find zero or one RegionalTierOverride that matches the filter.
+     * @param {RegionalTierOverrideFindUniqueArgs} args - Arguments to find a RegionalTierOverride
+     * @example
+     * // Get one RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RegionalTierOverrideFindUniqueArgs>(args: SelectSubset<T, RegionalTierOverrideFindUniqueArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RegionalTierOverride that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RegionalTierOverrideFindUniqueOrThrowArgs} args - Arguments to find a RegionalTierOverride
+     * @example
+     * // Get one RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RegionalTierOverrideFindUniqueOrThrowArgs>(args: SelectSubset<T, RegionalTierOverrideFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegionalTierOverride that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideFindFirstArgs} args - Arguments to find a RegionalTierOverride
+     * @example
+     * // Get one RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RegionalTierOverrideFindFirstArgs>(args?: SelectSubset<T, RegionalTierOverrideFindFirstArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegionalTierOverride that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideFindFirstOrThrowArgs} args - Arguments to find a RegionalTierOverride
+     * @example
+     * // Get one RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RegionalTierOverrideFindFirstOrThrowArgs>(args?: SelectSubset<T, RegionalTierOverrideFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RegionalTierOverrides that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RegionalTierOverrides
+     * const regionalTierOverrides = await prisma.regionalTierOverride.findMany()
+     * 
+     * // Get first 10 RegionalTierOverrides
+     * const regionalTierOverrides = await prisma.regionalTierOverride.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const regionalTierOverrideWithIdOnly = await prisma.regionalTierOverride.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RegionalTierOverrideFindManyArgs>(args?: SelectSubset<T, RegionalTierOverrideFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RegionalTierOverride.
+     * @param {RegionalTierOverrideCreateArgs} args - Arguments to create a RegionalTierOverride.
+     * @example
+     * // Create one RegionalTierOverride
+     * const RegionalTierOverride = await prisma.regionalTierOverride.create({
+     *   data: {
+     *     // ... data to create a RegionalTierOverride
+     *   }
+     * })
+     * 
+     */
+    create<T extends RegionalTierOverrideCreateArgs>(args: SelectSubset<T, RegionalTierOverrideCreateArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RegionalTierOverrides.
+     * @param {RegionalTierOverrideCreateManyArgs} args - Arguments to create many RegionalTierOverrides.
+     * @example
+     * // Create many RegionalTierOverrides
+     * const regionalTierOverride = await prisma.regionalTierOverride.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RegionalTierOverrideCreateManyArgs>(args?: SelectSubset<T, RegionalTierOverrideCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RegionalTierOverrides and returns the data saved in the database.
+     * @param {RegionalTierOverrideCreateManyAndReturnArgs} args - Arguments to create many RegionalTierOverrides.
+     * @example
+     * // Create many RegionalTierOverrides
+     * const regionalTierOverride = await prisma.regionalTierOverride.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RegionalTierOverrides and only return the `id`
+     * const regionalTierOverrideWithIdOnly = await prisma.regionalTierOverride.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RegionalTierOverrideCreateManyAndReturnArgs>(args?: SelectSubset<T, RegionalTierOverrideCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RegionalTierOverride.
+     * @param {RegionalTierOverrideDeleteArgs} args - Arguments to delete one RegionalTierOverride.
+     * @example
+     * // Delete one RegionalTierOverride
+     * const RegionalTierOverride = await prisma.regionalTierOverride.delete({
+     *   where: {
+     *     // ... filter to delete one RegionalTierOverride
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RegionalTierOverrideDeleteArgs>(args: SelectSubset<T, RegionalTierOverrideDeleteArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RegionalTierOverride.
+     * @param {RegionalTierOverrideUpdateArgs} args - Arguments to update one RegionalTierOverride.
+     * @example
+     * // Update one RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RegionalTierOverrideUpdateArgs>(args: SelectSubset<T, RegionalTierOverrideUpdateArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RegionalTierOverrides.
+     * @param {RegionalTierOverrideDeleteManyArgs} args - Arguments to filter RegionalTierOverrides to delete.
+     * @example
+     * // Delete a few RegionalTierOverrides
+     * const { count } = await prisma.regionalTierOverride.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RegionalTierOverrideDeleteManyArgs>(args?: SelectSubset<T, RegionalTierOverrideDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegionalTierOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RegionalTierOverrides
+     * const regionalTierOverride = await prisma.regionalTierOverride.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RegionalTierOverrideUpdateManyArgs>(args: SelectSubset<T, RegionalTierOverrideUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegionalTierOverrides and returns the data updated in the database.
+     * @param {RegionalTierOverrideUpdateManyAndReturnArgs} args - Arguments to update many RegionalTierOverrides.
+     * @example
+     * // Update many RegionalTierOverrides
+     * const regionalTierOverride = await prisma.regionalTierOverride.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RegionalTierOverrides and only return the `id`
+     * const regionalTierOverrideWithIdOnly = await prisma.regionalTierOverride.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RegionalTierOverrideUpdateManyAndReturnArgs>(args: SelectSubset<T, RegionalTierOverrideUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RegionalTierOverride.
+     * @param {RegionalTierOverrideUpsertArgs} args - Arguments to update or create a RegionalTierOverride.
+     * @example
+     * // Update or create a RegionalTierOverride
+     * const regionalTierOverride = await prisma.regionalTierOverride.upsert({
+     *   create: {
+     *     // ... data to create a RegionalTierOverride
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RegionalTierOverride we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RegionalTierOverrideUpsertArgs>(args: SelectSubset<T, RegionalTierOverrideUpsertArgs<ExtArgs>>): Prisma__RegionalTierOverrideClient<$Result.GetResult<Prisma.$RegionalTierOverridePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RegionalTierOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideCountArgs} args - Arguments to filter RegionalTierOverrides to count.
+     * @example
+     * // Count the number of RegionalTierOverrides
+     * const count = await prisma.regionalTierOverride.count({
+     *   where: {
+     *     // ... the filter for the RegionalTierOverrides we want to count
+     *   }
+     * })
+    **/
+    count<T extends RegionalTierOverrideCountArgs>(
+      args?: Subset<T, RegionalTierOverrideCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RegionalTierOverrideCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RegionalTierOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RegionalTierOverrideAggregateArgs>(args: Subset<T, RegionalTierOverrideAggregateArgs>): Prisma.PrismaPromise<GetRegionalTierOverrideAggregateType<T>>
+
+    /**
+     * Group by RegionalTierOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegionalTierOverrideGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RegionalTierOverrideGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RegionalTierOverrideGroupByArgs['orderBy'] }
+        : { orderBy?: RegionalTierOverrideGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RegionalTierOverrideGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegionalTierOverrideGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RegionalTierOverride model
+   */
+  readonly fields: RegionalTierOverrideFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RegionalTierOverride.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RegionalTierOverrideClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    regionalPricing<T extends RegionalPricingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegionalPricingDefaultArgs<ExtArgs>>): Prisma__RegionalPricingClient<$Result.GetResult<Prisma.$RegionalPricingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RegionalTierOverride model
+   */
+  interface RegionalTierOverrideFieldRefs {
+    readonly id: FieldRef<"RegionalTierOverride", 'String'>
+    readonly regionalPricingId: FieldRef<"RegionalTierOverride", 'String'>
+    readonly tierGb: FieldRef<"RegionalTierOverride", 'Int'>
+    readonly localPriceCents: FieldRef<"RegionalTierOverride", 'Int'>
+    readonly checkoutCents: FieldRef<"RegionalTierOverride", 'Int'>
+    readonly storageOverrideGb: FieldRef<"RegionalTierOverride", 'Int'>
+    readonly createdAt: FieldRef<"RegionalTierOverride", 'DateTime'>
+    readonly updatedAt: FieldRef<"RegionalTierOverride", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RegionalTierOverride findUnique
+   */
+  export type RegionalTierOverrideFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalTierOverride to fetch.
+     */
+    where: RegionalTierOverrideWhereUniqueInput
+  }
+
+  /**
+   * RegionalTierOverride findUniqueOrThrow
+   */
+  export type RegionalTierOverrideFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalTierOverride to fetch.
+     */
+    where: RegionalTierOverrideWhereUniqueInput
+  }
+
+  /**
+   * RegionalTierOverride findFirst
+   */
+  export type RegionalTierOverrideFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalTierOverride to fetch.
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalTierOverrides to fetch.
+     */
+    orderBy?: RegionalTierOverrideOrderByWithRelationInput | RegionalTierOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegionalTierOverrides.
+     */
+    cursor?: RegionalTierOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalTierOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalTierOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalTierOverrides.
+     */
+    distinct?: RegionalTierOverrideScalarFieldEnum | RegionalTierOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalTierOverride findFirstOrThrow
+   */
+  export type RegionalTierOverrideFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalTierOverride to fetch.
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalTierOverrides to fetch.
+     */
+    orderBy?: RegionalTierOverrideOrderByWithRelationInput | RegionalTierOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegionalTierOverrides.
+     */
+    cursor?: RegionalTierOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalTierOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalTierOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalTierOverrides.
+     */
+    distinct?: RegionalTierOverrideScalarFieldEnum | RegionalTierOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalTierOverride findMany
+   */
+  export type RegionalTierOverrideFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which RegionalTierOverrides to fetch.
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegionalTierOverrides to fetch.
+     */
+    orderBy?: RegionalTierOverrideOrderByWithRelationInput | RegionalTierOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RegionalTierOverrides.
+     */
+    cursor?: RegionalTierOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegionalTierOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegionalTierOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegionalTierOverrides.
+     */
+    distinct?: RegionalTierOverrideScalarFieldEnum | RegionalTierOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * RegionalTierOverride create
+   */
+  export type RegionalTierOverrideCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RegionalTierOverride.
+     */
+    data: XOR<RegionalTierOverrideCreateInput, RegionalTierOverrideUncheckedCreateInput>
+  }
+
+  /**
+   * RegionalTierOverride createMany
+   */
+  export type RegionalTierOverrideCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RegionalTierOverrides.
+     */
+    data: RegionalTierOverrideCreateManyInput | RegionalTierOverrideCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RegionalTierOverride createManyAndReturn
+   */
+  export type RegionalTierOverrideCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to create many RegionalTierOverrides.
+     */
+    data: RegionalTierOverrideCreateManyInput | RegionalTierOverrideCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegionalTierOverride update
+   */
+  export type RegionalTierOverrideUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RegionalTierOverride.
+     */
+    data: XOR<RegionalTierOverrideUpdateInput, RegionalTierOverrideUncheckedUpdateInput>
+    /**
+     * Choose, which RegionalTierOverride to update.
+     */
+    where: RegionalTierOverrideWhereUniqueInput
+  }
+
+  /**
+   * RegionalTierOverride updateMany
+   */
+  export type RegionalTierOverrideUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RegionalTierOverrides.
+     */
+    data: XOR<RegionalTierOverrideUpdateManyMutationInput, RegionalTierOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which RegionalTierOverrides to update
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * Limit how many RegionalTierOverrides to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegionalTierOverride updateManyAndReturn
+   */
+  export type RegionalTierOverrideUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to update RegionalTierOverrides.
+     */
+    data: XOR<RegionalTierOverrideUpdateManyMutationInput, RegionalTierOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which RegionalTierOverrides to update
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * Limit how many RegionalTierOverrides to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegionalTierOverride upsert
+   */
+  export type RegionalTierOverrideUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RegionalTierOverride to update in case it exists.
+     */
+    where: RegionalTierOverrideWhereUniqueInput
+    /**
+     * In case the RegionalTierOverride found by the `where` argument doesn't exist, create a new RegionalTierOverride with this data.
+     */
+    create: XOR<RegionalTierOverrideCreateInput, RegionalTierOverrideUncheckedCreateInput>
+    /**
+     * In case the RegionalTierOverride was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RegionalTierOverrideUpdateInput, RegionalTierOverrideUncheckedUpdateInput>
+  }
+
+  /**
+   * RegionalTierOverride delete
+   */
+  export type RegionalTierOverrideDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+    /**
+     * Filter which RegionalTierOverride to delete.
+     */
+    where: RegionalTierOverrideWhereUniqueInput
+  }
+
+  /**
+   * RegionalTierOverride deleteMany
+   */
+  export type RegionalTierOverrideDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegionalTierOverrides to delete
+     */
+    where?: RegionalTierOverrideWhereInput
+    /**
+     * Limit how many RegionalTierOverrides to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegionalTierOverride without action
+   */
+  export type RegionalTierOverrideDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegionalTierOverride
+     */
+    select?: RegionalTierOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegionalTierOverride
+     */
+    omit?: RegionalTierOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegionalTierOverrideInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model DriveImportItem
    */
 
@@ -27423,6 +31130,50 @@ export namespace Prisma {
   export type DriveImportJobScalarFieldEnum = (typeof DriveImportJobScalarFieldEnum)[keyof typeof DriveImportJobScalarFieldEnum]
 
 
+  export const PricingTierScalarFieldEnum: {
+    id: 'id',
+    gb: 'gb',
+    label: 'label',
+    priceCents: 'priceCents',
+    lsVariantId: 'lsVariantId',
+    sortOrder: 'sortOrder',
+    active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PricingTierScalarFieldEnum = (typeof PricingTierScalarFieldEnum)[keyof typeof PricingTierScalarFieldEnum]
+
+
+  export const RegionalPricingScalarFieldEnum: {
+    id: 'id',
+    countryCode: 'countryCode',
+    currency: 'currency',
+    symbol: 'symbol',
+    locale: 'locale',
+    pppMultiplier: 'pppMultiplier',
+    active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RegionalPricingScalarFieldEnum = (typeof RegionalPricingScalarFieldEnum)[keyof typeof RegionalPricingScalarFieldEnum]
+
+
+  export const RegionalTierOverrideScalarFieldEnum: {
+    id: 'id',
+    regionalPricingId: 'regionalPricingId',
+    tierGb: 'tierGb',
+    localPriceCents: 'localPriceCents',
+    checkoutCents: 'checkoutCents',
+    storageOverrideGb: 'storageOverrideGb',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RegionalTierOverrideScalarFieldEnum = (typeof RegionalTierOverrideScalarFieldEnum)[keyof typeof RegionalTierOverrideScalarFieldEnum]
+
+
   export const DriveImportItemScalarFieldEnum: {
     id: 'id',
     jobId: 'jobId',
@@ -27692,20 +31443,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DriveImportItemStatus'
-   */
-  export type EnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'DriveImportItemStatus[]'
-   */
-  export type ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -27716,6 +31453,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportItemStatus'
+   */
+  export type EnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DriveImportItemStatus[]'
+   */
+  export type ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus[]'>
     
   /**
    * Deep Input Types
@@ -29459,6 +33210,230 @@ export namespace Prisma {
     completedAt?: DateTimeNullableWithAggregatesFilter<"DriveImportJob"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DriveImportJob"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DriveImportJob"> | Date | string
+  }
+
+  export type PricingTierWhereInput = {
+    AND?: PricingTierWhereInput | PricingTierWhereInput[]
+    OR?: PricingTierWhereInput[]
+    NOT?: PricingTierWhereInput | PricingTierWhereInput[]
+    id?: StringFilter<"PricingTier"> | string
+    gb?: IntFilter<"PricingTier"> | number
+    label?: StringFilter<"PricingTier"> | string
+    priceCents?: IntFilter<"PricingTier"> | number
+    lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    sortOrder?: IntFilter<"PricingTier"> | number
+    active?: BoolFilter<"PricingTier"> | boolean
+    createdAt?: DateTimeFilter<"PricingTier"> | Date | string
+    updatedAt?: DateTimeFilter<"PricingTier"> | Date | string
+  }
+
+  export type PricingTierOrderByWithRelationInput = {
+    id?: SortOrder
+    gb?: SortOrder
+    label?: SortOrder
+    priceCents?: SortOrder
+    lsVariantId?: SortOrderInput | SortOrder
+    sortOrder?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PricingTierWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    gb?: number
+    AND?: PricingTierWhereInput | PricingTierWhereInput[]
+    OR?: PricingTierWhereInput[]
+    NOT?: PricingTierWhereInput | PricingTierWhereInput[]
+    label?: StringFilter<"PricingTier"> | string
+    priceCents?: IntFilter<"PricingTier"> | number
+    lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    sortOrder?: IntFilter<"PricingTier"> | number
+    active?: BoolFilter<"PricingTier"> | boolean
+    createdAt?: DateTimeFilter<"PricingTier"> | Date | string
+    updatedAt?: DateTimeFilter<"PricingTier"> | Date | string
+  }, "id" | "gb">
+
+  export type PricingTierOrderByWithAggregationInput = {
+    id?: SortOrder
+    gb?: SortOrder
+    label?: SortOrder
+    priceCents?: SortOrder
+    lsVariantId?: SortOrderInput | SortOrder
+    sortOrder?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PricingTierCountOrderByAggregateInput
+    _avg?: PricingTierAvgOrderByAggregateInput
+    _max?: PricingTierMaxOrderByAggregateInput
+    _min?: PricingTierMinOrderByAggregateInput
+    _sum?: PricingTierSumOrderByAggregateInput
+  }
+
+  export type PricingTierScalarWhereWithAggregatesInput = {
+    AND?: PricingTierScalarWhereWithAggregatesInput | PricingTierScalarWhereWithAggregatesInput[]
+    OR?: PricingTierScalarWhereWithAggregatesInput[]
+    NOT?: PricingTierScalarWhereWithAggregatesInput | PricingTierScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PricingTier"> | string
+    gb?: IntWithAggregatesFilter<"PricingTier"> | number
+    label?: StringWithAggregatesFilter<"PricingTier"> | string
+    priceCents?: IntWithAggregatesFilter<"PricingTier"> | number
+    lsVariantId?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
+    sortOrder?: IntWithAggregatesFilter<"PricingTier"> | number
+    active?: BoolWithAggregatesFilter<"PricingTier"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PricingTier"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PricingTier"> | Date | string
+  }
+
+  export type RegionalPricingWhereInput = {
+    AND?: RegionalPricingWhereInput | RegionalPricingWhereInput[]
+    OR?: RegionalPricingWhereInput[]
+    NOT?: RegionalPricingWhereInput | RegionalPricingWhereInput[]
+    id?: StringFilter<"RegionalPricing"> | string
+    countryCode?: StringFilter<"RegionalPricing"> | string
+    currency?: StringFilter<"RegionalPricing"> | string
+    symbol?: StringFilter<"RegionalPricing"> | string
+    locale?: StringFilter<"RegionalPricing"> | string
+    pppMultiplier?: FloatFilter<"RegionalPricing"> | number
+    active?: BoolFilter<"RegionalPricing"> | boolean
+    createdAt?: DateTimeFilter<"RegionalPricing"> | Date | string
+    updatedAt?: DateTimeFilter<"RegionalPricing"> | Date | string
+    tierOverrides?: RegionalTierOverrideListRelationFilter
+  }
+
+  export type RegionalPricingOrderByWithRelationInput = {
+    id?: SortOrder
+    countryCode?: SortOrder
+    currency?: SortOrder
+    symbol?: SortOrder
+    locale?: SortOrder
+    pppMultiplier?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    tierOverrides?: RegionalTierOverrideOrderByRelationAggregateInput
+  }
+
+  export type RegionalPricingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    countryCode?: string
+    AND?: RegionalPricingWhereInput | RegionalPricingWhereInput[]
+    OR?: RegionalPricingWhereInput[]
+    NOT?: RegionalPricingWhereInput | RegionalPricingWhereInput[]
+    currency?: StringFilter<"RegionalPricing"> | string
+    symbol?: StringFilter<"RegionalPricing"> | string
+    locale?: StringFilter<"RegionalPricing"> | string
+    pppMultiplier?: FloatFilter<"RegionalPricing"> | number
+    active?: BoolFilter<"RegionalPricing"> | boolean
+    createdAt?: DateTimeFilter<"RegionalPricing"> | Date | string
+    updatedAt?: DateTimeFilter<"RegionalPricing"> | Date | string
+    tierOverrides?: RegionalTierOverrideListRelationFilter
+  }, "id" | "countryCode">
+
+  export type RegionalPricingOrderByWithAggregationInput = {
+    id?: SortOrder
+    countryCode?: SortOrder
+    currency?: SortOrder
+    symbol?: SortOrder
+    locale?: SortOrder
+    pppMultiplier?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RegionalPricingCountOrderByAggregateInput
+    _avg?: RegionalPricingAvgOrderByAggregateInput
+    _max?: RegionalPricingMaxOrderByAggregateInput
+    _min?: RegionalPricingMinOrderByAggregateInput
+    _sum?: RegionalPricingSumOrderByAggregateInput
+  }
+
+  export type RegionalPricingScalarWhereWithAggregatesInput = {
+    AND?: RegionalPricingScalarWhereWithAggregatesInput | RegionalPricingScalarWhereWithAggregatesInput[]
+    OR?: RegionalPricingScalarWhereWithAggregatesInput[]
+    NOT?: RegionalPricingScalarWhereWithAggregatesInput | RegionalPricingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RegionalPricing"> | string
+    countryCode?: StringWithAggregatesFilter<"RegionalPricing"> | string
+    currency?: StringWithAggregatesFilter<"RegionalPricing"> | string
+    symbol?: StringWithAggregatesFilter<"RegionalPricing"> | string
+    locale?: StringWithAggregatesFilter<"RegionalPricing"> | string
+    pppMultiplier?: FloatWithAggregatesFilter<"RegionalPricing"> | number
+    active?: BoolWithAggregatesFilter<"RegionalPricing"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"RegionalPricing"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RegionalPricing"> | Date | string
+  }
+
+  export type RegionalTierOverrideWhereInput = {
+    AND?: RegionalTierOverrideWhereInput | RegionalTierOverrideWhereInput[]
+    OR?: RegionalTierOverrideWhereInput[]
+    NOT?: RegionalTierOverrideWhereInput | RegionalTierOverrideWhereInput[]
+    id?: StringFilter<"RegionalTierOverride"> | string
+    regionalPricingId?: StringFilter<"RegionalTierOverride"> | string
+    tierGb?: IntFilter<"RegionalTierOverride"> | number
+    localPriceCents?: IntFilter<"RegionalTierOverride"> | number
+    checkoutCents?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    storageOverrideGb?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    createdAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+    updatedAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+    regionalPricing?: XOR<RegionalPricingScalarRelationFilter, RegionalPricingWhereInput>
+  }
+
+  export type RegionalTierOverrideOrderByWithRelationInput = {
+    id?: SortOrder
+    regionalPricingId?: SortOrder
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrderInput | SortOrder
+    storageOverrideGb?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    regionalPricing?: RegionalPricingOrderByWithRelationInput
+  }
+
+  export type RegionalTierOverrideWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    regionalPricingId_tierGb?: RegionalTierOverrideRegionalPricingIdTierGbCompoundUniqueInput
+    AND?: RegionalTierOverrideWhereInput | RegionalTierOverrideWhereInput[]
+    OR?: RegionalTierOverrideWhereInput[]
+    NOT?: RegionalTierOverrideWhereInput | RegionalTierOverrideWhereInput[]
+    regionalPricingId?: StringFilter<"RegionalTierOverride"> | string
+    tierGb?: IntFilter<"RegionalTierOverride"> | number
+    localPriceCents?: IntFilter<"RegionalTierOverride"> | number
+    checkoutCents?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    storageOverrideGb?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    createdAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+    updatedAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+    regionalPricing?: XOR<RegionalPricingScalarRelationFilter, RegionalPricingWhereInput>
+  }, "id" | "regionalPricingId_tierGb">
+
+  export type RegionalTierOverrideOrderByWithAggregationInput = {
+    id?: SortOrder
+    regionalPricingId?: SortOrder
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrderInput | SortOrder
+    storageOverrideGb?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RegionalTierOverrideCountOrderByAggregateInput
+    _avg?: RegionalTierOverrideAvgOrderByAggregateInput
+    _max?: RegionalTierOverrideMaxOrderByAggregateInput
+    _min?: RegionalTierOverrideMinOrderByAggregateInput
+    _sum?: RegionalTierOverrideSumOrderByAggregateInput
+  }
+
+  export type RegionalTierOverrideScalarWhereWithAggregatesInput = {
+    AND?: RegionalTierOverrideScalarWhereWithAggregatesInput | RegionalTierOverrideScalarWhereWithAggregatesInput[]
+    OR?: RegionalTierOverrideScalarWhereWithAggregatesInput[]
+    NOT?: RegionalTierOverrideScalarWhereWithAggregatesInput | RegionalTierOverrideScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RegionalTierOverride"> | string
+    regionalPricingId?: StringWithAggregatesFilter<"RegionalTierOverride"> | string
+    tierGb?: IntWithAggregatesFilter<"RegionalTierOverride"> | number
+    localPriceCents?: IntWithAggregatesFilter<"RegionalTierOverride"> | number
+    checkoutCents?: IntNullableWithAggregatesFilter<"RegionalTierOverride"> | number | null
+    storageOverrideGb?: IntNullableWithAggregatesFilter<"RegionalTierOverride"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"RegionalTierOverride"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RegionalTierOverride"> | Date | string
   }
 
   export type DriveImportItemWhereInput = {
@@ -31523,6 +35498,254 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PricingTierCreateInput = {
+    id?: string
+    gb: number
+    label: string
+    priceCents: number
+    lsVariantId?: string | null
+    sortOrder?: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PricingTierUncheckedCreateInput = {
+    id?: string
+    gb: number
+    label: string
+    priceCents: number
+    lsVariantId?: string | null
+    sortOrder?: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PricingTierUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PricingTierUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PricingTierCreateManyInput = {
+    id?: string
+    gb: number
+    label: string
+    priceCents: number
+    lsVariantId?: string | null
+    sortOrder?: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PricingTierUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PricingTierUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalPricingCreateInput = {
+    id?: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tierOverrides?: RegionalTierOverrideCreateNestedManyWithoutRegionalPricingInput
+  }
+
+  export type RegionalPricingUncheckedCreateInput = {
+    id?: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tierOverrides?: RegionalTierOverrideUncheckedCreateNestedManyWithoutRegionalPricingInput
+  }
+
+  export type RegionalPricingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tierOverrides?: RegionalTierOverrideUpdateManyWithoutRegionalPricingNestedInput
+  }
+
+  export type RegionalPricingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tierOverrides?: RegionalTierOverrideUncheckedUpdateManyWithoutRegionalPricingNestedInput
+  }
+
+  export type RegionalPricingCreateManyInput = {
+    id?: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalPricingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalPricingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideCreateInput = {
+    id?: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    regionalPricing: RegionalPricingCreateNestedOneWithoutTierOverridesInput
+  }
+
+  export type RegionalTierOverrideUncheckedCreateInput = {
+    id?: string
+    regionalPricingId: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalTierOverrideUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    regionalPricing?: RegionalPricingUpdateOneRequiredWithoutTierOverridesNestedInput
+  }
+
+  export type RegionalTierOverrideUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    regionalPricingId?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideCreateManyInput = {
+    id?: string
+    regionalPricingId: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalTierOverrideUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    regionalPricingId?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DriveImportItemCreateInput = {
     id?: string
     driveFolderId: string
@@ -33209,6 +37432,192 @@ export namespace Prisma {
     _max?: NestedEnumDriveImportStatusFilter<$PrismaModel>
   }
 
+  export type PricingTierCountOrderByAggregateInput = {
+    id?: SortOrder
+    gb?: SortOrder
+    label?: SortOrder
+    priceCents?: SortOrder
+    lsVariantId?: SortOrder
+    sortOrder?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PricingTierAvgOrderByAggregateInput = {
+    gb?: SortOrder
+    priceCents?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type PricingTierMaxOrderByAggregateInput = {
+    id?: SortOrder
+    gb?: SortOrder
+    label?: SortOrder
+    priceCents?: SortOrder
+    lsVariantId?: SortOrder
+    sortOrder?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PricingTierMinOrderByAggregateInput = {
+    id?: SortOrder
+    gb?: SortOrder
+    label?: SortOrder
+    priceCents?: SortOrder
+    lsVariantId?: SortOrder
+    sortOrder?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PricingTierSumOrderByAggregateInput = {
+    gb?: SortOrder
+    priceCents?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type RegionalTierOverrideListRelationFilter = {
+    every?: RegionalTierOverrideWhereInput
+    some?: RegionalTierOverrideWhereInput
+    none?: RegionalTierOverrideWhereInput
+  }
+
+  export type RegionalTierOverrideOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RegionalPricingCountOrderByAggregateInput = {
+    id?: SortOrder
+    countryCode?: SortOrder
+    currency?: SortOrder
+    symbol?: SortOrder
+    locale?: SortOrder
+    pppMultiplier?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalPricingAvgOrderByAggregateInput = {
+    pppMultiplier?: SortOrder
+  }
+
+  export type RegionalPricingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    countryCode?: SortOrder
+    currency?: SortOrder
+    symbol?: SortOrder
+    locale?: SortOrder
+    pppMultiplier?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalPricingMinOrderByAggregateInput = {
+    id?: SortOrder
+    countryCode?: SortOrder
+    currency?: SortOrder
+    symbol?: SortOrder
+    locale?: SortOrder
+    pppMultiplier?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalPricingSumOrderByAggregateInput = {
+    pppMultiplier?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type RegionalPricingScalarRelationFilter = {
+    is?: RegionalPricingWhereInput
+    isNot?: RegionalPricingWhereInput
+  }
+
+  export type RegionalTierOverrideRegionalPricingIdTierGbCompoundUniqueInput = {
+    regionalPricingId: string
+    tierGb: number
+  }
+
+  export type RegionalTierOverrideCountOrderByAggregateInput = {
+    id?: SortOrder
+    regionalPricingId?: SortOrder
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrder
+    storageOverrideGb?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalTierOverrideAvgOrderByAggregateInput = {
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrder
+    storageOverrideGb?: SortOrder
+  }
+
+  export type RegionalTierOverrideMaxOrderByAggregateInput = {
+    id?: SortOrder
+    regionalPricingId?: SortOrder
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrder
+    storageOverrideGb?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalTierOverrideMinOrderByAggregateInput = {
+    id?: SortOrder
+    regionalPricingId?: SortOrder
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrder
+    storageOverrideGb?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RegionalTierOverrideSumOrderByAggregateInput = {
+    tierGb?: SortOrder
+    localPriceCents?: SortOrder
+    checkoutCents?: SortOrder
+    storageOverrideGb?: SortOrder
+  }
+
   export type EnumDriveImportItemStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DriveImportItemStatus | EnumDriveImportItemStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DriveImportItemStatus[] | ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel>
@@ -34768,6 +39177,70 @@ export namespace Prisma {
     deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
   }
 
+  export type RegionalTierOverrideCreateNestedManyWithoutRegionalPricingInput = {
+    create?: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput> | RegionalTierOverrideCreateWithoutRegionalPricingInput[] | RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput[]
+    connectOrCreate?: RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput | RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput[]
+    createMany?: RegionalTierOverrideCreateManyRegionalPricingInputEnvelope
+    connect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+  }
+
+  export type RegionalTierOverrideUncheckedCreateNestedManyWithoutRegionalPricingInput = {
+    create?: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput> | RegionalTierOverrideCreateWithoutRegionalPricingInput[] | RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput[]
+    connectOrCreate?: RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput | RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput[]
+    createMany?: RegionalTierOverrideCreateManyRegionalPricingInputEnvelope
+    connect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type RegionalTierOverrideUpdateManyWithoutRegionalPricingNestedInput = {
+    create?: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput> | RegionalTierOverrideCreateWithoutRegionalPricingInput[] | RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput[]
+    connectOrCreate?: RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput | RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput[]
+    upsert?: RegionalTierOverrideUpsertWithWhereUniqueWithoutRegionalPricingInput | RegionalTierOverrideUpsertWithWhereUniqueWithoutRegionalPricingInput[]
+    createMany?: RegionalTierOverrideCreateManyRegionalPricingInputEnvelope
+    set?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    disconnect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    delete?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    connect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    update?: RegionalTierOverrideUpdateWithWhereUniqueWithoutRegionalPricingInput | RegionalTierOverrideUpdateWithWhereUniqueWithoutRegionalPricingInput[]
+    updateMany?: RegionalTierOverrideUpdateManyWithWhereWithoutRegionalPricingInput | RegionalTierOverrideUpdateManyWithWhereWithoutRegionalPricingInput[]
+    deleteMany?: RegionalTierOverrideScalarWhereInput | RegionalTierOverrideScalarWhereInput[]
+  }
+
+  export type RegionalTierOverrideUncheckedUpdateManyWithoutRegionalPricingNestedInput = {
+    create?: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput> | RegionalTierOverrideCreateWithoutRegionalPricingInput[] | RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput[]
+    connectOrCreate?: RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput | RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput[]
+    upsert?: RegionalTierOverrideUpsertWithWhereUniqueWithoutRegionalPricingInput | RegionalTierOverrideUpsertWithWhereUniqueWithoutRegionalPricingInput[]
+    createMany?: RegionalTierOverrideCreateManyRegionalPricingInputEnvelope
+    set?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    disconnect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    delete?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    connect?: RegionalTierOverrideWhereUniqueInput | RegionalTierOverrideWhereUniqueInput[]
+    update?: RegionalTierOverrideUpdateWithWhereUniqueWithoutRegionalPricingInput | RegionalTierOverrideUpdateWithWhereUniqueWithoutRegionalPricingInput[]
+    updateMany?: RegionalTierOverrideUpdateManyWithWhereWithoutRegionalPricingInput | RegionalTierOverrideUpdateManyWithWhereWithoutRegionalPricingInput[]
+    deleteMany?: RegionalTierOverrideScalarWhereInput | RegionalTierOverrideScalarWhereInput[]
+  }
+
+  export type RegionalPricingCreateNestedOneWithoutTierOverridesInput = {
+    create?: XOR<RegionalPricingCreateWithoutTierOverridesInput, RegionalPricingUncheckedCreateWithoutTierOverridesInput>
+    connectOrCreate?: RegionalPricingCreateOrConnectWithoutTierOverridesInput
+    connect?: RegionalPricingWhereUniqueInput
+  }
+
+  export type RegionalPricingUpdateOneRequiredWithoutTierOverridesNestedInput = {
+    create?: XOR<RegionalPricingCreateWithoutTierOverridesInput, RegionalPricingUncheckedCreateWithoutTierOverridesInput>
+    connectOrCreate?: RegionalPricingCreateOrConnectWithoutTierOverridesInput
+    upsert?: RegionalPricingUpsertWithoutTierOverridesInput
+    connect?: RegionalPricingWhereUniqueInput
+    update?: XOR<XOR<RegionalPricingUpdateToOneWithWhereWithoutTierOverridesInput, RegionalPricingUpdateWithoutTierOverridesInput>, RegionalPricingUncheckedUpdateWithoutTierOverridesInput>
+  }
+
   export type DriveImportJobCreateNestedOneWithoutItemsInput = {
     create?: XOR<DriveImportJobCreateWithoutItemsInput, DriveImportJobUncheckedCreateWithoutItemsInput>
     connectOrCreate?: DriveImportJobCreateOrConnectWithoutItemsInput
@@ -35215,6 +39688,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDriveImportStatusFilter<$PrismaModel>
     _max?: NestedEnumDriveImportStatusFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedEnumDriveImportItemStatusFilter<$PrismaModel = never> = {
@@ -40188,6 +44677,130 @@ export namespace Prisma {
     data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyWithoutJobInput>
   }
 
+  export type RegionalTierOverrideCreateWithoutRegionalPricingInput = {
+    id?: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput = {
+    id?: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalTierOverrideCreateOrConnectWithoutRegionalPricingInput = {
+    where: RegionalTierOverrideWhereUniqueInput
+    create: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput>
+  }
+
+  export type RegionalTierOverrideCreateManyRegionalPricingInputEnvelope = {
+    data: RegionalTierOverrideCreateManyRegionalPricingInput | RegionalTierOverrideCreateManyRegionalPricingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RegionalTierOverrideUpsertWithWhereUniqueWithoutRegionalPricingInput = {
+    where: RegionalTierOverrideWhereUniqueInput
+    update: XOR<RegionalTierOverrideUpdateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedUpdateWithoutRegionalPricingInput>
+    create: XOR<RegionalTierOverrideCreateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedCreateWithoutRegionalPricingInput>
+  }
+
+  export type RegionalTierOverrideUpdateWithWhereUniqueWithoutRegionalPricingInput = {
+    where: RegionalTierOverrideWhereUniqueInput
+    data: XOR<RegionalTierOverrideUpdateWithoutRegionalPricingInput, RegionalTierOverrideUncheckedUpdateWithoutRegionalPricingInput>
+  }
+
+  export type RegionalTierOverrideUpdateManyWithWhereWithoutRegionalPricingInput = {
+    where: RegionalTierOverrideScalarWhereInput
+    data: XOR<RegionalTierOverrideUpdateManyMutationInput, RegionalTierOverrideUncheckedUpdateManyWithoutRegionalPricingInput>
+  }
+
+  export type RegionalTierOverrideScalarWhereInput = {
+    AND?: RegionalTierOverrideScalarWhereInput | RegionalTierOverrideScalarWhereInput[]
+    OR?: RegionalTierOverrideScalarWhereInput[]
+    NOT?: RegionalTierOverrideScalarWhereInput | RegionalTierOverrideScalarWhereInput[]
+    id?: StringFilter<"RegionalTierOverride"> | string
+    regionalPricingId?: StringFilter<"RegionalTierOverride"> | string
+    tierGb?: IntFilter<"RegionalTierOverride"> | number
+    localPriceCents?: IntFilter<"RegionalTierOverride"> | number
+    checkoutCents?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    storageOverrideGb?: IntNullableFilter<"RegionalTierOverride"> | number | null
+    createdAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+    updatedAt?: DateTimeFilter<"RegionalTierOverride"> | Date | string
+  }
+
+  export type RegionalPricingCreateWithoutTierOverridesInput = {
+    id?: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalPricingUncheckedCreateWithoutTierOverridesInput = {
+    id?: string
+    countryCode: string
+    currency: string
+    symbol: string
+    locale: string
+    pppMultiplier: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalPricingCreateOrConnectWithoutTierOverridesInput = {
+    where: RegionalPricingWhereUniqueInput
+    create: XOR<RegionalPricingCreateWithoutTierOverridesInput, RegionalPricingUncheckedCreateWithoutTierOverridesInput>
+  }
+
+  export type RegionalPricingUpsertWithoutTierOverridesInput = {
+    update: XOR<RegionalPricingUpdateWithoutTierOverridesInput, RegionalPricingUncheckedUpdateWithoutTierOverridesInput>
+    create: XOR<RegionalPricingCreateWithoutTierOverridesInput, RegionalPricingUncheckedCreateWithoutTierOverridesInput>
+    where?: RegionalPricingWhereInput
+  }
+
+  export type RegionalPricingUpdateToOneWithWhereWithoutTierOverridesInput = {
+    where?: RegionalPricingWhereInput
+    data: XOR<RegionalPricingUpdateWithoutTierOverridesInput, RegionalPricingUncheckedUpdateWithoutTierOverridesInput>
+  }
+
+  export type RegionalPricingUpdateWithoutTierOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalPricingUncheckedUpdateWithoutTierOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    locale?: StringFieldUpdateOperationsInput | string
+    pppMultiplier?: FloatFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DriveImportJobCreateWithoutItemsInput = {
     id?: string
     source?: $Enums.ImportSource
@@ -41702,6 +46315,46 @@ export namespace Prisma {
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDriveImportItemStatusFieldUpdateOperationsInput | $Enums.DriveImportItemStatus
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideCreateManyRegionalPricingInput = {
+    id?: string
+    tierGb: number
+    localPriceCents: number
+    checkoutCents?: number | null
+    storageOverrideGb?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RegionalTierOverrideUpdateWithoutRegionalPricingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideUncheckedUpdateWithoutRegionalPricingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegionalTierOverrideUncheckedUpdateManyWithoutRegionalPricingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierGb?: IntFieldUpdateOperationsInput | number
+    localPriceCents?: IntFieldUpdateOperationsInput | number
+    checkoutCents?: NullableIntFieldUpdateOperationsInput | number | null
+    storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

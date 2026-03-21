@@ -1,3 +1,68 @@
+import { prisma } from "@workspace/db";
+
+// ── DB-backed tier cache (5 min TTL) ───────────────────────────
+type DBTier = {
+  id: string;
+  gb: number;
+  label: string;
+  priceCents: number;
+  lsVariantId: string | null;
+  sortOrder: number;
+  active: boolean;
+};
+
+let _tierCache: DBTier[] | null = null;
+let _tierCacheExpiresAt = 0;
+const TIER_CACHE_TTL_MS = 5 * 60 * 1000;
+
+/**
+ * Fetch active pricing tiers from the database.
+ * Returns cached data within the 5-minute TTL window.
+ * Falls back to the hardcoded STORAGE_TIERS if the DB query fails.
+ */
+export async function fetchTiersFromDB(): Promise<DBTier[]> {
+  if (_tierCache && Date.now() < _tierCacheExpiresAt) {
+    return _tierCache;
+  }
+
+  try {
+    const tiers: DBTier[] = await (prisma as any).pricingTier.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    });
+
+    if (tiers.length === 0) {
+      // DB has no rows yet — fall back to constants
+      return STORAGE_TIERS.map((t) => ({
+        id: "",
+        gb: t.gb,
+        label: t.label,
+        priceCents: t.priceCents,
+        lsVariantId: t.lsVariantId || null,
+        sortOrder: 0,
+        active: true,
+      }));
+    }
+
+    _tierCache = tiers;
+    _tierCacheExpiresAt = Date.now() + TIER_CACHE_TTL_MS;
+    return tiers;
+  } catch (err) {
+    console.warn("[fetchTiersFromDB] DB query failed, using hardcoded fallback:", err);
+    return STORAGE_TIERS.map((t) => ({
+      id: "",
+      gb: t.gb,
+      label: t.label,
+      priceCents: t.priceCents,
+      lsVariantId: t.lsVariantId || null,
+      sortOrder: 0,
+      active: true,
+    }));
+  }
+}
+
+// ── Hardcoded fallback tiers ───────────────────────────────────
+
 export const STORAGE_TIERS = [
   {
     gb: 20,

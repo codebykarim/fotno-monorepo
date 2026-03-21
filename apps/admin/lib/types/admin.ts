@@ -149,3 +149,39 @@ export interface PaginatedResponse<T> {
   pageSize: number;
 }
 
+export interface PricingTier {
+  id: string;
+  gb: number;
+  label: string;
+  priceCents: number;
+  lsVariantId: string | null;
+  sortOrder: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TierOverride {
+  id: string;
+  tierGb: number;
+  localPriceCents: number;
+  checkoutCents: number | null;
+  storageOverrideGb: number | null;
+}
+
+export interface RegionalPricing {
+  id: string;
+  countryCode: string;
+  currency: string;
+  symbol: string;
+  locale: string;
+  pppMultiplier: number;
+  active: boolean;
+  tierOverrides: TierOverride[];
+}
+
+export interface PricingData {
+  tiers: PricingTier[];
+  regions: RegionalPricing[];
+}
+

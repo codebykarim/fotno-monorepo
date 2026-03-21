@@ -11,6 +11,7 @@ import {
   verifyWebhookSignature,
   handleWebhookEvent,
 } from "../services/SubscriptionServices/handleWebhook";
+import { lsGetSubscription, lsGetCustomer } from "../services/SubscriptionServices/lemonSqueezy";
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
 
@@ -146,16 +147,24 @@ export const getPortalUrlController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
+  // Try subscription portal URL first, fall back to customer portal
+  const subscription = await getActiveSubscription(userId);
+  if (subscription?.lsSubscriptionId) {
+    const { data } = await lsGetSubscription(subscription.lsSubscriptionId);
+    const portalUrl = (data?.data?.attributes as any)?.urls?.customer_portal;
+    if (portalUrl) return controllerReturn({ portalUrl }, req, res);
+  }
+
+  // Fallback: get portal URL from customer record
   const user = await (prisma as any).user.findUnique({
     where: { id: userId },
     select: { lsCustomerId: true },
   });
-
-  if (!user?.lsCustomerId) {
-    throw new AppError("No billing account found", 404);
+  if (user?.lsCustomerId) {
+    const { data } = await lsGetCustomer(user.lsCustomerId);
+    const portalUrl = (data?.data?.attributes as any)?.urls?.customer_portal;
+    if (portalUrl) return controllerReturn({ portalUrl }, req, res);
   }
 
-  // Lemon Squeezy customer portal URL
-  const portalUrl = `https://app.lemonsqueezy.com/my-orders`;
-  return controllerReturn({ portalUrl }, req, res);
+  throw new AppError("Billing portal not available. Please contact support.", 404);
 };

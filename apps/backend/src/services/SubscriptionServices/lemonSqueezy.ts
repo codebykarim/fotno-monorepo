@@ -4,6 +4,7 @@ import {
   cancelSubscription as lsCancelSubscription,
   getSubscription as lsGetSubscription,
   updateSubscription as lsUpdateSubscription,
+  getCustomer as lsGetCustomer,
 } from "@lemonsqueezy/lemonsqueezy.js";
 
 const apiKey = process.env.LEMONSQUEEZY_API_KEY;
@@ -17,4 +18,5 @@ export {
   lsCancelSubscription,
   lsGetSubscription,
   lsUpdateSubscription,
+  lsGetCustomer,
 };

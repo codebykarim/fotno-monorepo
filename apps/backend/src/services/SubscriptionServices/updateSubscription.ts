@@ -32,7 +32,8 @@ export const changeTier = async ({
     throw new AppError("Already on this tier", 400);
   }
 
-  const isUpgrade = newStorageTierGb > subscription.storageTierGb;
+  const normalizeGb = (gb: number) => (gb === -1 ? Infinity : gb);
+  const isUpgrade = normalizeGb(newStorageTierGb) > normalizeGb(subscription.storageTierGb);
 
   if (
     subscription.source === "LEMON_SQUEEZY" &&

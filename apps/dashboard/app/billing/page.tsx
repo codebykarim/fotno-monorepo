@@ -1,6 +1,13 @@
 "use client";
 
-import { useState } from "react";
+declare global {
+  interface Window {
+    createLemonSqueezy?: () => void;
+    LemonSqueezy?: { Url?: { Open?: (url: string) => void } };
+  }
+}
+
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { motion } from "motion/react";
 import { jsonFetcher, apiRequest } from "@/lib/api/client";
@@ -15,6 +22,7 @@ import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
 import type { SubscriptionResponse, PlanTier } from "@/lib/types/api";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
+import { useRouter } from "next/navigation";
 
 const FEATURES = [
   "Unlimited galleries",
@@ -87,11 +95,17 @@ export default function BillingPage() {
     { revalidateOnFocus: true },
   );
 
+  const router = useRouter();
+
   const [loading, setLoading] = useState<number | null>(null);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [access, setAccess] = useState(billing?.access);
+  const [subscription, setSubscription] = useState(billing?.subscription);
 
-  const access = billing?.access;
-  const subscription = billing?.subscription;
+  useEffect(() => {
+    setAccess(billing?.access);
+    setSubscription(billing?.subscription);
+  }, [billing]);
 
   const handleCheckout = async (tier: PlanTier) => {
     setLoading(tier.gb);
@@ -103,7 +117,8 @@ export default function BillingPage() {
           body: JSON.stringify({ storageTierGb: tier.gb }),
         },
       );
-      window.location.href = result.checkoutUrl;
+      window.createLemonSqueezy?.();
+      window.LemonSqueezy?.Url?.Open?.(result.checkoutUrl);
     } catch {
       toast.error("Failed to start checkout. Please try again.");
     } finally {
@@ -135,12 +150,27 @@ export default function BillingPage() {
       });
       toast.success("Plan updated successfully!");
       await mutate();
+      router.refresh();
     } catch {
       toast.error("Failed to change plan.");
     } finally {
       setLoading(null);
     }
   };
+
+  const handleManageBilling = async () => {
+    try {
+      const result = await apiRequest<{ portalUrl: string }>(
+        "/api/billing/portal",
+        { method: "POST" },
+      );
+      window.open(result.portalUrl, "_blank");
+    } catch {
+      toast.error("Failed to open billing portal.");
+    }
+  };
+
+  console.log(access?.subscription?.storageTierGb, subscription?.storageTierGb);
 
   return (
     <div className="space-y-10">
@@ -172,14 +202,29 @@ export default function BillingPage() {
             {!access ? (
               <p className="text-sm text-muted-foreground">Loading...</p>
             ) : access.status === "active" ||
+              access.status === "trialing" ||
               access.status === "cancelled_grace" ? (
-              <div className="space-y-2">
+              <div className="space-y-2 flex items-center justify-between">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
-                    {access.status === "cancelled_grace"
-                      ? "Cancelling"
-                      : "Active"}
-                  </span>
+                  {access.status === "trialing" ? (
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        access.trialDaysLeft !== undefined &&
+                        access.trialDaysLeft <= 1
+                          ? "bg-red-500/15 text-red-700 dark:text-red-400"
+                          : "bg-blue-500/15 text-blue-700 dark:text-blue-400"
+                      }`}
+                    >
+                      Free Trial — {access.trialDaysLeft} day
+                      {access.trialDaysLeft === 1 ? "" : "s"} left
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                      {access.status === "cancelled_grace"
+                        ? "Cancelling"
+                        : "Active"}
+                    </span>
+                  )}
                   <span className="text-sm font-medium">
                     {plans?.find((t) => t.gb === subscription?.storageTierGb)
                       ?.label ?? "Fotno Pro"}{" "}
@@ -207,16 +252,25 @@ export default function BillingPage() {
                     ).toLocaleDateString()}
                   </p>
                 )}
-                {access.status !== "cancelled_grace" && (
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={handleCancel}
-                    disabled={cancelLoading}
+                    onClick={handleManageBilling}
                   >
-                    {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                    Manage Billing
                   </Button>
-                )}
+                  {access.status !== "cancelled_grace" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancel}
+                      disabled={cancelLoading}
+                    >
+                      {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                    </Button>
+                  )}
+                </div>
               </div>
             ) : access.status === "past_due" ? (
               <div className="space-y-2">
@@ -283,9 +337,11 @@ export default function BillingPage() {
               const isCurrent =
                 subscription?.storageTierGb === tier.gb &&
                 (access?.status === "active" ||
+                  access?.status === "trialing" ||
                   access?.status === "cancelled_grace");
               const hasSubscription =
                 access?.status === "active" ||
+                access?.status === "trialing" ||
                 access?.status === "cancelled_grace";
               const isPopular =
                 (tier.label === "Professional" || tier.gb === 100) &&
@@ -367,7 +423,8 @@ export default function BillingPage() {
                         >
                           Current Plan
                         </Button>
-                      ) : access?.status === "active" ? (
+                      ) : access?.status === "active" ||
+                        access?.status === "trialing" ? (
                         <Button
                           size="sm"
                           className="w-full text-xs"
@@ -377,7 +434,10 @@ export default function BillingPage() {
                         >
                           {isLoading
                             ? "..."
-                            : tier.gb > (subscription?.storageTierGb ?? 0)
+                            : (tier.gb === -1 ? Infinity : tier.gb) >
+                                (subscription?.storageTierGb === -1
+                                  ? Infinity
+                                  : (subscription?.storageTierGb ?? 0))
                               ? "Upgrade"
                               : "Downgrade"}
                         </Button>

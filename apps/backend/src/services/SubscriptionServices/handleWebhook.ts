@@ -29,6 +29,7 @@ type WebhookEvent = {
       created_at: string;
       updated_at: string;
       cancelled: boolean;
+      trial_ends_at: string | null;
       first_subscription_item?: {
         price: number;
       };
@@ -201,6 +202,7 @@ async function handleSubscriptionCreated(
           subscribed: true,
           storageLimit,
           lsCustomerId,
+          ...(attrs.trial_ends_at ? { trialEndsAt: new Date(attrs.trial_ends_at) } : {}),
         },
       }),
     ]);

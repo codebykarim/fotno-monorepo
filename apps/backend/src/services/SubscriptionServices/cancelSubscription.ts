@@ -17,16 +17,42 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
 
   if (subscription.source === "LEMON_SQUEEZY" && subscription.lsSubscriptionId) {
     const { error } = await lsCancelSubscription(subscription.lsSubscriptionId);
-    if (error) {
+    if (error && !error.message?.includes("Not Found")) {
       throw new AppError(`Failed to cancel subscription: ${error.message}`, 500);
     }
   }
 
-  await (prisma as any).subscription.update({
-    where: { id: subscription.id },
-    data: {
-      status: "CANCELLED",
-      cancelledAt: new Date(),
-    },
+  // If user is in free trial, cancel immediately with no grace period
+  const user = await (prisma as any).user.findUnique({
+    where: { id: userId },
+    select: { trialEndsAt: true },
   });
+  const TRIAL_DAYS = 14;
+  const subscriptionAgeDays = subscription.createdAt
+    ? (Date.now() - new Date(subscription.createdAt).getTime()) / (1000 * 60 * 60 * 24)
+    : Infinity;
+  const isTrialing =
+    (user?.trialEndsAt && new Date(user.trialEndsAt) > new Date()) ||
+    subscriptionAgeDays <= TRIAL_DAYS;
+
+  if (isTrialing) {
+    await (prisma as any).$transaction([
+      (prisma as any).subscription.update({
+        where: { id: subscription.id },
+        data: { status: "EXPIRED", cancelledAt: new Date() },
+      }),
+      (prisma as any).user.update({
+        where: { id: userId },
+        data: { plan: "TRIAL", subscribed: false, trialEndsAt: null, storageLimit: 0n },
+      }),
+    ]);
+  } else {
+    await (prisma as any).subscription.update({
+      where: { id: subscription.id },
+      data: {
+        status: "CANCELLED",
+        cancelledAt: new Date(),
+      },
+    });
+  }
 };

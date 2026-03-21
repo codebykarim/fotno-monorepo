@@ -21,13 +21,19 @@ export const createCheckout = async ({
     throw new AppError("Payment system not configured", 500);
   }
 
-  const tier = findTierByGb(storageTierGb);
+  // Apply PPP-adjusted price for regional users
+  const regional = getRegionalPricing(countryCode);
+
+  // Direct lookup first; if it fails, check if the gb value is a regional override
+  let tier = findTierByGb(storageTierGb);
+  if (!tier && regional?.tierStorageOverrides) {
+    const originalGb = Object.entries(regional.tierStorageOverrides)
+      .find(([, overridden]) => overridden === storageTierGb)?.[0];
+    if (originalGb) tier = findTierByGb(Number(originalGb));
+  }
   if (!tier || !tier.lsVariantId) {
     throw new AppError("Invalid storage tier", 400);
   }
-
-  // Apply PPP-adjusted price for regional users
-  const regional = getRegionalPricing(countryCode);
   const customPrice = regional
     ? Math.round(tier.priceCents * regional.pppMultiplier)
     : undefined;
@@ -45,10 +51,12 @@ export const createCheckout = async ({
         ...(countryCode ? { country_code: countryCode } : {}),
       },
     },
+    checkoutOptions: {
+      embed: true,
+    },
     productOptions: {
       enabledVariants: [Number(tier.lsVariantId)],
       name: `Fotno Pro — ${storageLabel}`,
-      description: PLAN_FEATURES.join(" · "),
       redirectUrl: `${process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com"}/billing?checkout=success`,
     },
   });

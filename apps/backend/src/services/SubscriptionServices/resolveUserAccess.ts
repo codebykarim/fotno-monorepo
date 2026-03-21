@@ -3,6 +3,7 @@ import { STORAGE_TIER_LIMITS } from "../../constants/storage";
 
 export type UserAccessStatus =
   | "active"
+  | "trialing"
   | "past_due"
   | "cancelled_grace"
   | "no_subscription";
@@ -12,6 +13,8 @@ export type UserAccess = {
   canUpload: boolean;
   canCreateGallery: boolean;
   storageLimitBytes: bigint;
+  trialEndsAt?: Date | null;
+  trialDaysLeft?: number;
   subscription?: {
     id: string;
     source: string;
@@ -32,6 +35,7 @@ export const resolveUserAccess = async (
       id: true,
       plan: true,
       storageLimit: true,
+      trialEndsAt: true,
     },
   });
 
@@ -62,11 +66,27 @@ export const resolveUserAccess = async (
     const storageLimitBytes =
       STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
 
+    const TRIAL_DAYS = 14;
+    let trialEndsAt = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    // Fallback: if trialEndsAt was never set, infer from subscription creation date
+    if (!trialEndsAt && subscription.createdAt) {
+      const inferredEnd = new Date(subscription.createdAt);
+      inferredEnd.setDate(inferredEnd.getDate() + TRIAL_DAYS);
+      if (inferredEnd > new Date()) {
+        trialEndsAt = inferredEnd;
+      }
+    }
+    const isTrialing = trialEndsAt !== null && trialEndsAt > new Date();
+    const trialDaysLeft = isTrialing
+      ? Math.ceil((trialEndsAt!.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+      : undefined;
+
     return {
-      status: "active",
+      status: isTrialing ? "trialing" : "active",
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
+      ...(isTrialing ? { trialEndsAt, trialDaysLeft } : {}),
       subscription: {
         id: subscription.id,
         source: subscription.source,

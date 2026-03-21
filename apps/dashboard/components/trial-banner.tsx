@@ -17,10 +17,34 @@ export function TrialBanner() {
 
   if (!data) return null;
 
-  const { status } = data.access;
+  const { status, trialDaysLeft } = data.access;
+  const isTrialUrgent = status === "trialing" && trialDaysLeft !== undefined && trialDaysLeft <= 1;
 
   return (
     <AnimatePresence>
+      {status === "trialing" && trialDaysLeft !== undefined && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+          transition={{ duration: 0.4 }}
+          className={`flex items-center justify-between gap-4 rounded-lg border backdrop-blur-sm px-4 py-2 mb-4 ${
+            isTrialUrgent
+              ? "border-red-500/30 bg-red-500/10"
+              : "border-blue-500/30 bg-blue-500/10"
+          }`}
+        >
+          <p className={`text-sm ${isTrialUrgent ? "text-red-800 dark:text-red-300" : "text-blue-800 dark:text-blue-300"}`}>
+            {isTrialUrgent
+              ? "Your free trial ends today! "
+              : `Free trial — ${trialDaysLeft} day${trialDaysLeft === 1 ? "" : "s"} remaining. `}
+            <Link href="/billing" className="underline hover:no-underline font-medium">
+              {isTrialUrgent ? "Upgrade now" : "View plan"}
+            </Link>
+          </p>
+        </motion.div>
+      )}
+
       {!dismissed && status === "no_subscription" && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}

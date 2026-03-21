@@ -80,6 +80,7 @@ export type StorageEventsResponse = {
 
 export type UserAccessStatus =
   | "active"
+  | "trialing"
   | "past_due"
   | "cancelled_grace"
   | "no_subscription";
@@ -90,6 +91,8 @@ export type SubscriptionResponse = {
     canUpload: boolean;
     canCreateGallery: boolean;
     storageLimitBytes: string;
+    trialEndsAt?: string | null;
+    trialDaysLeft?: number;
     subscription?: {
       id: string;
       source: string;

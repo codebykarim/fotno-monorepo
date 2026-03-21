@@ -1,6 +1,7 @@
 import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
@@ -64,6 +65,7 @@ export default async function RootLayout({
           </div>
           <Toaster richColors position="bottom-center" />
         </ThemeProvider>
+        <Script src="https://app.lemonsqueezy.com/js/lemon.js" strategy="afterInteractive" />
       </body>
     </html>
   );

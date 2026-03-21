@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn, signOut } from "@workspace/lib/auth/auth-client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -16,34 +17,22 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/sign-in/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
+      const { data, error: signInError } = await signIn.email({
+        email,
+        password,
       });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        setError(data?.message || "Invalid credentials");
+      if (signInError) {
+        setError(signInError.message || "Invalid credentials");
         setLoading(false);
         return;
       }
 
       // Check if the user is actually an admin
-      const sessionRes = await fetch("/api/auth/get-session", {
-        credentials: "include",
-      });
-
-      if (!sessionRes.ok) {
-        setError("Failed to verify session");
-        setLoading(false);
-        return;
-      }
-
-      const session = await sessionRes.json();
-
-      if (session?.user?.role !== "admin") {
+      const user = data?.user as Record<string, unknown> | undefined;
+      if (user?.role !== "admin") {
+        // Sign out non-admin users immediately
+        await signOut();
         setError("Access denied. Admin role required.");
         setLoading(false);
         return;

@@ -17,13 +17,12 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    // Use the admin app's own auth proxy (same domain/port = same cookies)
-    const adminBaseUrl = request.nextUrl.origin; // e.g. http://localhost:3004
-
+    // Call the backend directly (cookies are shared via crossSubDomainCookies)
     const { data: session } = await betterFetch<AdminSession>(
       "/api/auth/get-session",
       {
-        baseURL: adminBaseUrl,
+        baseURL:
+          process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL,
         headers: {
           cookie: request.headers.get("cookie") || "",
         },

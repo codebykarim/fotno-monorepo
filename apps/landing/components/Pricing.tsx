@@ -101,13 +101,17 @@ async function fetchPlans(
     });
     if (!res.ok)
       return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
-    const data: PlansResponse = await res.json();
-    if (!Array.isArray(data?.tiers) || data.tiers.length === 0)
+    const data = await res.json();
+    // Handle both formats: new { tiers, features } and legacy PlanTier[]
+    const tiers: PlanTier[] = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.tiers)
+        ? data.tiers
+        : [];
+    const features: string[] = data?.features ?? FALLBACK_FEATURES;
+    if (tiers.length === 0)
       return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
-    return {
-      tiers: data.tiers,
-      features: data.features ?? FALLBACK_FEATURES,
-    };
+    return { tiers, features };
   } catch {
     return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
   }

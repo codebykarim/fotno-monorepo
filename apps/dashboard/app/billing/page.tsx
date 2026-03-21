@@ -88,9 +88,12 @@ function CheckIcon({ className }: { className?: string }) {
 }
 
 export default function BillingPage() {
-  const { data: plansData } = useSWR<PlansResponse>("/api/billing/plans", jsonFetcher);
-  const plans = plansData?.tiers;
-  const features = plansData?.features ?? FALLBACK_FEATURES;
+  // Handle both formats: new { tiers, features } and legacy PlanTier[]
+  const { data: plansData } = useSWR<PlansResponse | PlanTier[]>("/api/billing/plans", jsonFetcher);
+  const plans = Array.isArray(plansData)
+    ? plansData
+    : plansData?.tiers;
+  const features = (Array.isArray(plansData) ? null : plansData?.features) ?? FALLBACK_FEATURES;
   const { data: billing, mutate } = useSWR<SubscriptionResponse>(
     "/api/billing/subscription",
     jsonFetcher,

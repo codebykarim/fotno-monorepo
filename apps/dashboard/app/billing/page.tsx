@@ -29,11 +29,7 @@ const FEATURES = [
   "Slideshow & social sharing",
 ];
 
-const formatPrice = (
-  cents: number,
-  currency = "USD",
-  locale = "en-US",
-) => {
+const formatPrice = (cents: number, currency = "USD", locale = "en-US") => {
   try {
     return new Intl.NumberFormat(locale, {
       style: "currency",
@@ -63,10 +59,7 @@ function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
-      className={cn(
-        "h-5 w-5 flex-none fill-current stroke-current",
-        className,
-      )}
+      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
       viewBox="0 0 24 24"
     >
       <path
@@ -209,7 +202,9 @@ export default function BillingPage() {
                     {access.status === "cancelled_grace"
                       ? "Access until"
                       : "Renews on"}{" "}
-                    {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+                    {new Date(
+                      subscription.currentPeriodEnd,
+                    ).toLocaleDateString()}
                   </p>
                 )}
                 {access.status !== "cancelled_grace" && (
@@ -292,7 +287,9 @@ export default function BillingPage() {
               const hasSubscription =
                 access?.status === "active" ||
                 access?.status === "cancelled_grace";
-              const isPopular = (tier.label === "Professional" || tier.gb === 100) && !hasSubscription;
+              const isPopular =
+                (tier.label === "Professional" || tier.gb === 100) &&
+                !hasSubscription;
               const isLoading = loading === tier.gb;
 
               return (

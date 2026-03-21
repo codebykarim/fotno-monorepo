@@ -37,6 +37,11 @@ type PlanTier = {
   locale?: string;
 };
 
+type PlansResponse = {
+  tiers: PlanTier[];
+  features: string[];
+};
+
 const FALLBACK_TIERS: PlanTier[] = [
   { gb: 20, priceCents: 900, label: "Starter" },
   { gb: 100, priceCents: 1900, label: "Professional" },
@@ -44,7 +49,7 @@ const FALLBACK_TIERS: PlanTier[] = [
   { gb: -1, priceCents: 4900, label: "Unlimited" },
 ];
 
-const FEATURES = [
+const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
   "AI-powered captions",
@@ -79,10 +84,13 @@ const formatStorage = (gb: number) => {
   return `${gb} GB`;
 };
 
-async function fetchPlans(country?: string): Promise<PlanTier[]> {
+async function fetchPlans(
+  country?: string,
+): Promise<{ tiers: PlanTier[]; features: string[] }> {
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
-  if (!backendUrl) return FALLBACK_TIERS;
+  if (!backendUrl)
+    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
 
   try {
     const url = country
@@ -91,13 +99,17 @@ async function fetchPlans(country?: string): Promise<PlanTier[]> {
     const res = await fetch(url, {
       next: { revalidate: 300 },
     });
-    if (!res.ok) return FALLBACK_TIERS;
-    const data = await res.json();
-    const plans: PlanTier[] = Array.isArray(data) ? data : data?.data;
-    if (!Array.isArray(plans) || plans.length === 0) return FALLBACK_TIERS;
-    return plans;
+    if (!res.ok)
+      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
+    const data: PlansResponse = await res.json();
+    if (!Array.isArray(data?.tiers) || data.tiers.length === 0)
+      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
+    return {
+      tiers: data.tiers,
+      features: data.features ?? FALLBACK_FEATURES,
+    };
   } catch {
-    return FALLBACK_TIERS;
+    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
   }
 }
 
@@ -111,7 +123,7 @@ export async function Pricing() {
     headerStore.get("cf-ipcountry") ||
     headerStore.get("x-vercel-ip-country") ||
     undefined;
-  const plans = await fetchPlans(country);
+  const { tiers: plans, features } = await fetchPlans(country);
 
   return (
     <section
@@ -214,7 +226,7 @@ export async function Pricing() {
             role="list"
             className="mt-8 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-background/70 sm:grid-cols-2"
           >
-            {FEATURES.map((feature) => (
+            {features.map((feature) => (
               <li key={feature} className="flex items-center">
                 <CheckIcon className="text-primary" />
                 <span className="ml-4">{feature}</span>

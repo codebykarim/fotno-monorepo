@@ -20,11 +20,11 @@ import {
 import { Button } from "@workspace/ui/components/button";
 import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
-import type { SubscriptionResponse, PlanTier } from "@/lib/types/api";
+import type { SubscriptionResponse, PlansResponse, PlanTier } from "@/lib/types/api";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 import { useRouter } from "next/navigation";
 
-const FEATURES = [
+const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
   "AI-powered captions",
@@ -88,7 +88,9 @@ function CheckIcon({ className }: { className?: string }) {
 }
 
 export default function BillingPage() {
-  const { data: plans } = useSWR<PlanTier[]>("/api/billing/plans", jsonFetcher);
+  const { data: plansData } = useSWR<PlansResponse>("/api/billing/plans", jsonFetcher);
+  const plans = plansData?.tiers;
+  const features = plansData?.features ?? FALLBACK_FEATURES;
   const { data: billing, mutate } = useSWR<SubscriptionResponse>(
     "/api/billing/subscription",
     jsonFetcher,
@@ -474,7 +476,7 @@ export default function BillingPage() {
           role="list"
           className="mt-6 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-muted-foreground sm:grid-cols-2 max-w-3xl mx-auto"
         >
-          {FEATURES.map((feature, index) => (
+          {features.map((feature, index) => (
             <motion.li
               key={feature}
               className="flex items-center"

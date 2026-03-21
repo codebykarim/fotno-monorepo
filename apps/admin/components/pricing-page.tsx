@@ -40,7 +40,7 @@ export function PricingPage() {
   const { data, isLoading, mutate } = useSWR<PricingData>(
     "/api/pricing",
     jsonFetcher,
-    { refreshInterval: 60000 }
+    { refreshInterval: 60000, revalidateOnFocus: false },
   );
 
   return (
@@ -118,7 +118,7 @@ function TiersSection({
         toast.error(e.message);
       }
     },
-    [mutate]
+    [mutate],
   );
 
   const columns: Column<PricingTier>[] = [
@@ -156,9 +156,7 @@ function TiersSection({
     {
       key: "active",
       header: "Status",
-      render: (t) => (
-        <StatusBadge status={t.active ? "ACTIVE" : "EXPIRED"} />
-      ),
+      render: (t) => <StatusBadge status={t.active ? "ACTIVE" : "EXPIRED"} />,
     },
     {
       key: "actions",
@@ -198,10 +196,7 @@ function TiersSection({
       <DataTable columns={columns} data={tiers} isLoading={isLoading} />
 
       {showAddTier && (
-        <TierDialog
-          onClose={() => setShowAddTier(false)}
-          onSaved={mutate}
-        />
+        <TierDialog onClose={() => setShowAddTier(false)} onSaved={mutate} />
       )}
 
       {editingTier && (
@@ -232,11 +227,11 @@ function TierDialog({
   const [gb, setGb] = useState(tier?.gb?.toString() ?? "");
   const [label, setLabel] = useState(tier?.label ?? "");
   const [priceCents, setPriceCents] = useState(
-    tier?.priceCents?.toString() ?? ""
+    tier?.priceCents?.toString() ?? "",
   );
   const [lsVariantId, setLsVariantId] = useState(tier?.lsVariantId ?? "");
   const [sortOrder, setSortOrder] = useState(
-    tier?.sortOrder?.toString() ?? "0"
+    tier?.sortOrder?.toString() ?? "0",
   );
   const [active, setActive] = useState(tier?.active ?? true);
   const [saving, setSaving] = useState(false);
@@ -357,7 +352,7 @@ function RegionsSection({
   mutate: () => void;
 }) {
   const [editingRegion, setEditingRegion] = useState<RegionalPricing | null>(
-    null
+    null,
   );
   const [showAddRegion, setShowAddRegion] = useState(false);
 
@@ -374,7 +369,7 @@ function RegionsSection({
         toast.error(e.message);
       }
     },
-    [mutate]
+    [mutate],
   );
 
   if (isLoading) {
@@ -475,8 +470,7 @@ function RegionCard({
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               {region.currency} ({region.symbol}) &middot; PPP{" "}
-              {region.pppMultiplier.toFixed(2)} &middot; Locale:{" "}
-              {region.locale}
+              {region.pppMultiplier.toFixed(2)} &middot; Locale: {region.locale}
             </p>
           </div>
         </div>
@@ -585,7 +579,7 @@ function RegionDialog({
   const [symbol, setSymbol] = useState(region?.symbol ?? "");
   const [locale, setLocale] = useState(region?.locale ?? "");
   const [pppMultiplier, setPppMultiplier] = useState(
-    region?.pppMultiplier?.toString() ?? ""
+    region?.pppMultiplier?.toString() ?? "",
   );
   const [active, setActive] = useState(region?.active ?? true);
   const [overrides, setOverrides] = useState<OverrideRow[]>(
@@ -594,21 +588,26 @@ function RegionDialog({
       localPriceCents: ov.localPriceCents.toString(),
       checkoutCents: ov.checkoutCents?.toString() ?? "",
       storageOverrideGb: ov.storageOverrideGb?.toString() ?? "",
-    })) ?? []
+    })) ?? [],
   );
   const [saving, setSaving] = useState(false);
 
   const addOverrideRow = () => {
     setOverrides([
       ...overrides,
-      { tierGb: "", localPriceCents: "", checkoutCents: "", storageOverrideGb: "" },
+      {
+        tierGb: "",
+        localPriceCents: "",
+        checkoutCents: "",
+        storageOverrideGb: "",
+      },
     ]);
   };
 
   const updateOverride = (
     index: number,
     field: keyof OverrideRow,
-    value: string
+    value: string,
   ) => {
     const updated = [...overrides];
     updated[index] = { ...updated[index], [field]: value } as OverrideRow;
@@ -627,7 +626,9 @@ function RegionDialog({
         .map((o) => ({
           tierGb: Number(o.tierGb),
           localPriceCents: Number(o.localPriceCents),
-          ...(o.checkoutCents ? { checkoutCents: Number(o.checkoutCents) } : {}),
+          ...(o.checkoutCents
+            ? { checkoutCents: Number(o.checkoutCents) }
+            : {}),
           ...(o.storageOverrideGb
             ? { storageOverrideGb: Number(o.storageOverrideGb) }
             : {}),
@@ -753,7 +754,9 @@ function RegionDialog({
                   )}
                   <select
                     value={ov.tierGb}
-                    onChange={(e) => updateOverride(i, "tierGb", e.target.value)}
+                    onChange={(e) =>
+                      updateOverride(i, "tierGb", e.target.value)
+                    }
                     className="h-9 w-full rounded-lg border border-border bg-background px-2 text-sm"
                   >
                     <option value="">Select tier</option>

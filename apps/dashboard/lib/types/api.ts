@@ -133,3 +133,8 @@ export type PlanTier = {
   locale?: string;
 };
 
+export type PlansResponse = {
+  tiers: PlanTier[];
+  features: string[];
+};
+

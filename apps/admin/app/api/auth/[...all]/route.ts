@@ -39,14 +39,15 @@ async function handler(request: NextRequest) {
 
   const res = await fetch(backendUrl, init);
 
-  // Create response and forward set-cookie headers from backend
+  // Create response and forward headers from backend
   const responseHeaders = new Headers();
-  res.headers.forEach((value, key) => {
-    // Forward all set-cookie headers so session works on admin domain
-    if (key.toLowerCase() === "set-cookie" || key.toLowerCase() === "content-type") {
-      responseHeaders.append(key, value);
-    }
-  });
+  const ct = res.headers.get("content-type");
+  if (ct) responseHeaders.set("content-type", ct);
+  // Use getSetCookie() to preserve individual Set-Cookie headers
+  // (Headers.forEach merges them into one comma-separated value which breaks cookies)
+  for (const cookie of res.headers.getSetCookie()) {
+    responseHeaders.append("set-cookie", cookie);
+  }
 
   const body = await res.arrayBuffer();
   return new Response(body, {

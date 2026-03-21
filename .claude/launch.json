@@ -14,6 +14,20 @@
       "runtimeArgs": ["nx", "dev", "dashboard"],
       "port": 3001,
       "autoPort": false
+    },
+    {
+      "name": "auth",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "dev", "auth"],
+      "port": 3002,
+      "autoPort": false
+    },
+    {
+      "name": "admin",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "dev", "admin"],
+      "port": 3004,
+      "autoPort": false
     }
   ]
 }

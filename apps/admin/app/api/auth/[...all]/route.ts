@@ -22,6 +22,8 @@ async function handler(request: NextRequest) {
   if (cookie) headers.set("cookie", cookie);
   const contentType = request.headers.get("content-type");
   if (contentType) headers.set("content-type", contentType);
+  const origin = request.headers.get("origin");
+  if (origin) headers.set("origin", origin);
   headers.set("accept", "application/json");
 
   const init: RequestInit = {

@@ -30,8 +30,10 @@ import {
 import { Icons } from "@workspace/ui/components/icons";
 import {
   forgetPassword,
+  getSession,
   sendVerificationOTP,
   signIn,
+  signOut,
   signUp,
 } from "@workspace/lib/auth/auth-client";
 
@@ -164,6 +166,18 @@ export function UnifiedAuthForm({
     router.push(dashboardUrl);
   };
 
+  const checkNotAdminThenRedirect = async (): Promise<boolean> => {
+    const { data: session } = await getSession();
+    if ((session?.user as any)?.role === "admin") {
+      await signOut();
+      toast.error("Admin accounts cannot sign in here. Use the admin panel.");
+      setIsLoading(false);
+      return false;
+    }
+    redirectToDashboard();
+    return true;
+  };
+
   const setFieldErrors = (
     result: z.SafeParseError<unknown>,
     fields: Array<keyof AuthFormData>,
@@ -274,8 +288,9 @@ export function UnifiedAuthForm({
 
       toast.promise(result, {
         loading: "Logging you in...",
-        success: () => {
-          redirectToDashboard();
+        success: async () => {
+          const allowed = await checkNotAdminThenRedirect();
+          if (!allowed) return "Access denied";
           return "Welcome back";
         },
         error: (error: { message: string }) => {
@@ -356,8 +371,9 @@ export function UnifiedAuthForm({
 
       toast.promise(result, {
         loading: "Verifying your code...",
-        success: () => {
-          redirectToDashboard();
+        success: async () => {
+          const allowed = await checkNotAdminThenRedirect();
+          if (!allowed) return "Access denied";
           return "Signed in successfully";
         },
         error: (error: { message: string }) => {

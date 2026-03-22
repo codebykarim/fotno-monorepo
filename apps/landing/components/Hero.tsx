@@ -102,11 +102,9 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mx-auto mt-8 max-w-2xl text-center text-lg leading-relaxed text-muted-foreground sm:text-xl"
         >
-
           FOTNO is the modern photo gallery delivery platform for photographers.
           Upload, organize, and deliver stunning password-protected galleries.
-          Your clients pick favorites in real-time — no zip files, no clunky
-          links.
+          Your clients pick favorites in real-time, no clunky links.
         </motion.p>
 
         {/* CTAs */}

@@ -35,8 +35,6 @@ class MultipartService {
   constructor() {
     const clientConfig: S3ClientConfig = {
       region: env.AWS_REGION,
-      ...(env.AWS_S3_ENDPOINT ? { endpoint: env.AWS_S3_ENDPOINT } : {}),
-      forcePathStyle: Boolean(env.AWS_S3_ENDPOINT),
       requestChecksumCalculation: 'WHEN_REQUIRED',
       responseChecksumValidation: 'WHEN_REQUIRED',
     }

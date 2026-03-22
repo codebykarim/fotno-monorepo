@@ -26,7 +26,7 @@ const features: Feature[] = [
   {
     title: "Stunning galleries",
     description:
-      "Create beautiful, responsive photo galleries for every session. Clients experience their photos in a premium lightbox — no clunky downloads or zip files.",
+      "Create beautiful, responsive photo galleries for every session. Clients experience their photos in a premium lightbox.",
     icon: Images,
     className: "md:col-span-2",
   },
@@ -128,10 +128,7 @@ export function PrimaryFeatures() {
                 )}
               >
                 <div className="mb-5 inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 p-3 ring-1 ring-inset ring-primary/10 transition-shadow duration-300 group-hover:ring-primary/25">
-                  <Icon
-                    className="h-6 w-6 text-primary"
-                    strokeWidth={1.5}
-                  />
+                  <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-lg font-semibold text-background">
                   {feature.title}

@@ -9,8 +9,6 @@ const PICKER_API = 'https://photospicker.googleapis.com/v1'
 function getS3Client(): S3Client {
   const config: S3ClientConfig = {
     region: env.AWS_REGION,
-    ...(env.AWS_S3_ENDPOINT ? { endpoint: env.AWS_S3_ENDPOINT } : {}),
-    forcePathStyle: Boolean(env.AWS_S3_ENDPOINT),
     requestChecksumCalculation: 'WHEN_REQUIRED',
     responseChecksumValidation: 'WHEN_REQUIRED',
   }

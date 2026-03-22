@@ -13,14 +13,10 @@ const EnvSchema = z.object({
   UPLOAD_SERVICE_PORT: z.string().optional(),
   /** Shared secret for signing JWTs when the backend calls this service. Must match backend. */
   JWT_SECRET: z.string().min(1),
-  /** AWS region for S3/R2 (e.g. us-east-1). Use "auto" for Cloudflare R2. */
+  /** AWS region for S3 (e.g. us-east-1). */
   AWS_REGION: AwsRegionSchema,
-  /** S3/R2 bucket name where originals, thumbnails, and previews are stored. */
+  /** S3 bucket name where originals, thumbnails, and previews are stored. */
   AWS_S3_BUCKET: z.string().min(1),
-  /** Custom S3-compatible endpoint (e.g. R2). Omitted when using real AWS S3. */
-  AWS_S3_ENDPOINT: z.string().url().optional(),
-  /** Cloudflare R2 endpoint URL. Alternative to AWS_S3_ENDPOINT. */
-  R2_ENDPOINT: z.string().url().optional(),
   /** AWS/R2 access key ID. Optional if using instance/role credentials. */
   AWS_ACCESS_KEY_ID: z.string().min(1).optional(),
   /** AWS/R2 secret access key. Optional if using instance/role credentials. */
@@ -44,8 +40,8 @@ const EnvSchema = z.object({
   PRESIGNED_URL_TTL_SEC: z.coerce.number().int().min(60).default(7200),
   /** Base URL of the image-search-service for ingesting processed photos. */
   IMAGE_SEARCH_SERVICE_URL: z.string().url().default('http://localhost:4002'),
-  /** Public base URL for S3/R2 objects (used to build storageUrl for search ingest). */
-  AWS_S3_PUBLIC_URL: z.string().optional(),
+  /** CloudFront distribution domain (e.g. d1234abcdef8.cloudfront.net). */
+  CLOUDFRONT_DOMAIN: z.string().min(1).optional(),
   /** Google OAuth client ID for Drive token refresh in the import worker. */
   GOOGLE_CLIENT_ID: z.string().optional(),
   /** Google OAuth client secret for Drive token refresh in the import worker. */
@@ -54,16 +50,4 @@ const EnvSchema = z.object({
 
 const parsedEnv = EnvSchema.parse(process.env)
 
-const resolvedS3Endpoint = parsedEnv.AWS_S3_ENDPOINT ?? parsedEnv.R2_ENDPOINT
-const looksLikeAwsRegion = /^[a-z]{2}-[a-z]+-\d+$/.test(parsedEnv.AWS_REGION)
-
-if (!resolvedS3Endpoint && !looksLikeAwsRegion) {
-  throw new Error(
-    'AWS_S3_ENDPOINT (or R2_ENDPOINT) is required when AWS_REGION is not a standard AWS region.',
-  )
-}
-
-export const env = {
-  ...parsedEnv,
-  AWS_S3_ENDPOINT: resolvedS3Endpoint,
-}
+export const env = parsedEnv

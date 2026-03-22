@@ -4,8 +4,6 @@ import { env } from '../constants/env'
 
 const s3Client = new S3Client({
   region: env.AWS_REGION,
-  endpoint: env.AWS_S3_ENDPOINT,
-  forcePathStyle: true,
   credentials: {
     accessKeyId: env.AWS_ACCESS_KEY_ID,
     secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
@@ -14,7 +12,7 @@ const s3Client = new S3Client({
 
 /**
  * Extracts the S3 key from a full storage URL.
- * e.g. "https://xxx.r2.cloudflarestorage.com/previews/gallery/photo.webp" -> "previews/gallery/photo.webp"
+ * e.g. "https://d1234.cloudfront.net/previews/gallery/photo.webp" -> "previews/gallery/photo.webp"
  */
 function extractKeyFromUrl(storageUrl: string): string {
   const url = new URL(storageUrl)
@@ -23,7 +21,7 @@ function extractKeyFromUrl(storageUrl: string): string {
 
 /**
  * Generates a presigned download URL for the given storage URL.
- * The SigLIP service uses this to fetch images from R2 without needing credentials.
+ * The SigLIP service uses this to fetch images from S3 without needing credentials.
  */
 export async function getPresignedUrl(storageUrl: string, expiresIn = 300): Promise<string> {
   const key = extractKeyFromUrl(storageUrl)

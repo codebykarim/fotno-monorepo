@@ -41,12 +41,14 @@ JWT_SECRET=<generate-a-strong-secret>
 BETTER_AUTH_SECRET=<generate-a-strong-secret>
 BETTER_AUTH_URL=https://api.fotno.com
 
-# ── S3 / Cloudflare R2 ──
+# ── AWS S3 + CloudFront ──
 AWS_ACCESS_KEY_ID=<your-key>
 AWS_SECRET_ACCESS_KEY=<your-secret>
-AWS_REGION=auto
-AWS_S3_ENDPOINT=<your-r2-endpoint>
+AWS_REGION=<your-region>
 AWS_S3_BUCKET=<your-bucket>
+CLOUDFRONT_DOMAIN=<your-cloudfront-domain>
+CLOUDFRONT_KEY_PAIR_ID=<your-key-pair-id>
+CLOUDFRONT_PRIVATE_KEY=<your-private-key>
 
 # ── Email ──
 RESEND_API_KEY=<your-key>

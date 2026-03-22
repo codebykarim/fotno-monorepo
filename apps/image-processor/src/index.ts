@@ -46,7 +46,8 @@ const ingestPhotoToSearchService = async (
   tags?: string[],
 ): Promise<void> => {
   try {
-    const previewUrl = `${process.env.AWS_S3_PUBLIC_URL || ""}/${previewKey}`;
+    const cfDomain = process.env.CLOUDFRONT_DOMAIN;
+    const previewUrl = cfDomain ? `https://${cfDomain}/${previewKey}` : `/${previewKey}`;
 
     const response = await fetch(`${IMAGE_SEARCH_SERVICE_URL}/ingest-photo`, {
       method: "POST",

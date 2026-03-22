@@ -412,20 +412,12 @@ AWS_REGION=us-east-1
 AWS_S3_BUCKET=fotno-photos
 AWS_ACCESS_KEY_ID=AKIA...your-key...
 AWS_SECRET_ACCESS_KEY=your-secret-key
-# Remove: AWS_S3_ENDPOINT (no longer needed, was for R2)
-# Remove: R2_ENDPOINT (no longer needed)
 
 # CloudFront domain for storageUrl construction
 CLOUDFRONT_DOMAIN=d1234abcdef8.cloudfront.net
 ```
 
-### Variables to REMOVE (R2-specific)
-
-```env
-# Delete these from all services:
-AWS_S3_ENDPOINT=https://xxx.r2.cloudflarestorage.com
-R2_ENDPOINT=https://xxx.r2.cloudflarestorage.com
-```
+> **Note:** `AWS_S3_ENDPOINT`, `R2_ENDPOINT`, and `AWS_S3_PUBLIC_URL` have been fully removed from the codebase. All public URLs now go through CloudFront.
 
 ---
 

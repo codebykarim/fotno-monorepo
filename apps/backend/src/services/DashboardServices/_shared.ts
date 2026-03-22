@@ -28,15 +28,14 @@ export const toDateOnly = (value: string | null): string | null => {
 };
 
 export const buildStorageObjectUrl = (key: string): string => {
-  const endpoint = (process.env.AWS_S3_ENDPOINT ?? process.env.R2_ENDPOINT ?? "").replace(/\/$/, "");
-  const bucket = process.env.AWS_S3_BUCKET ?? "";
+  const cfDomain = process.env.CLOUDFRONT_DOMAIN;
   const safeKey = key
     .split("/")
     .map((part) => encodeURIComponent(part))
     .join("/");
 
-  if (endpoint && bucket) {
-    return `${endpoint}/${bucket}/${safeKey}`;
+  if (cfDomain) {
+    return `https://${cfDomain}/${safeKey}`;
   }
 
   return `/${safeKey}`;

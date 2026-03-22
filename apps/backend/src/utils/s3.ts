@@ -27,10 +27,20 @@ const s3Client = new S3Client({
   },
 });
 
+/** PEM from .env is often one line with a space after BEGIN / before END; OpenSSL requires newlines. */
+function normalizePemPrivateKey(raw: string): string {
+  let s = raw.replace(/\\n/g, "\n").trim();
+  s = s.replace(/(-----BEGIN [A-Z ]+-----)\s+(?=\S)/, "$1\n");
+  s = s.replace(/\s+(-----END [A-Z ]+-----)/, "\n$1");
+  return s;
+}
+
 // ── CloudFront configuration ─────────────────────────────────────
 const cfDomain = process.env.CLOUDFRONT_DOMAIN;
 const cfKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
-const cfPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY?.replace(/\\n/g, "\n");
+const cfPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY
+  ? normalizePemPrivateKey(process.env.CLOUDFRONT_PRIVATE_KEY)
+  : undefined;
 const useCloudFront = Boolean(cfDomain && cfKeyPairId && cfPrivateKey);
 
 /**
@@ -49,6 +59,7 @@ export const getPresignedDownloadUrl = async (
   if (useCloudFront) {
     const url = `https://${cfDomain}/${key}`;
     const dateLessThan = new Date(Date.now() + expiresIn * 1000).toISOString();
+
     return getCfSignedUrl({
       url,
       keyPairId: cfKeyPairId!,

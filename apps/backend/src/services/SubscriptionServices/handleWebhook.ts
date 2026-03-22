@@ -306,7 +306,7 @@ async function handleSubscriptionUpdated(
         priceCents: tier.priceCents,
         lsVariantId: variantId,
         lsSubscriptionId,
-        currentPeriodEnd: attrs.renews_at ? new Date(attrs.renews_at) : null,
+        ...(attrs.renews_at ? { currentPeriodEnd: new Date(attrs.renews_at) } : {}),
         status: attrs.cancelled ? "CANCELLED" : "ACTIVE",
       },
     }),
@@ -418,7 +418,7 @@ async function handlePaymentSuccess(
       data: {
         status: "ACTIVE",
         lsSubscriptionId,
-        currentPeriodEnd: attrs.renews_at ? new Date(attrs.renews_at) : null,
+        ...(attrs.renews_at ? { currentPeriodEnd: new Date(attrs.renews_at) } : {}),
       },
     }),
     (prisma as any).user.update({
@@ -449,7 +449,7 @@ async function handleSubscriptionResumed(
         lsSubscriptionId,
         cancelledAt: null,
         endsAt: null,
-        currentPeriodEnd: attrs.renews_at ? new Date(attrs.renews_at) : null,
+        ...(attrs.renews_at ? { currentPeriodEnd: new Date(attrs.renews_at) } : {}),
       },
     }),
     (prisma as any).user.update({

@@ -1,6 +1,7 @@
 import { type Request, type Response } from "express";
 import AppError from "../errors/AppError";
 import * as DashboardService from "../services/DashboardServices";
+import { withDetailedSpan, incrementMetric } from "../utils/datadog";
 
 const asStatusCode = (value: unknown, fallback: number): number =>
   typeof value === "number" && Number.isFinite(value) ? value : fallback;
@@ -21,25 +22,55 @@ export const getOverviewController = async (req: Request, res: Response) => {
 
 export const listGalleriesController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const galleries = await DashboardService.listGalleries(
-    userId,
-    String(req.query.q ?? ""),
-    String(req.query.status ?? "all"),
-    String(req.query.sort ?? "newest"),
+  const galleries = await withDetailedSpan(
+    "gallery.list",
+    {
+      "usr.id": userId,
+      "gallery.filter.status": String(req.query.status ?? "all"),
+      "gallery.filter.sort": String(req.query.sort ?? "newest"),
+      "gallery.filter.query": String(req.query.q ?? ""),
+    },
+    async (span) => {
+      const result = await DashboardService.listGalleries(
+        userId,
+        String(req.query.q ?? ""),
+        String(req.query.status ?? "all"),
+        String(req.query.sort ?? "newest"),
+      );
+      span.setTag("gallery.count", result.length);
+      return result;
+    },
   );
 
+  incrementMetric("gallery.list", 1, [`user:${userId}`]);
   return res.status(200).json({ galleries });
 };
 
 export const createGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.createGallery(userId, req.body);
+  const result = await withDetailedSpan(
+    "gallery.create",
+    {
+      "usr.id": userId,
+      "gallery.title": req.body?.title,
+    },
+    async (span) => {
+      const r = await DashboardService.createGallery(userId, req.body);
+      if ("gallery" in r) {
+        span.setTag("gallery.id", r.gallery?.id);
+      }
+      return r;
+    },
+  );
+
   if ("error" in result) {
+    incrementMetric("gallery.create.error", 1, [`user:${userId}`]);
     return res
       .status(asStatusCode(result.status, 400))
       .json({ error: result.error });
   }
 
+  incrementMetric("gallery.create.success", 1, [`user:${userId}`]);
   return res
     .status(asStatusCode(result.status, 201))
     .json({ gallery: result.gallery });
@@ -47,7 +78,19 @@ export const createGalleryController = async (req: Request, res: Response) => {
 
 export const getGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.getGallery(userId, req.params.id);
+  const galleryId = req.params.id;
+  const result = await withDetailedSpan(
+    "gallery.get",
+    { "usr.id": userId, "gallery.id": galleryId },
+    async (span) => {
+      const r = await DashboardService.getGallery(userId, galleryId);
+      if (r) {
+        span.setTag("gallery.photo_count", (r as any).gallery?.photos?.length ?? 0);
+        span.setTag("gallery.album_count", (r as any).gallery?.albums?.length ?? 0);
+      }
+      return r;
+    },
+  );
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
   }
@@ -57,25 +100,39 @@ export const getGalleryController = async (req: Request, res: Response) => {
 
 export const updateGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.updateGallery(
-    userId,
-    req.params.id,
-    req.body,
+  const galleryId = req.params.id;
+  const updatedFields = Object.keys(req.body || {});
+  const result = await withDetailedSpan(
+    "gallery.update",
+    {
+      "usr.id": userId,
+      "gallery.id": galleryId,
+      "gallery.updated_fields": updatedFields.join(","),
+      "gallery.is_publishing": req.body?.isPublished !== undefined,
+    },
+    async () => DashboardService.updateGallery(userId, galleryId, req.body),
   );
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
   }
 
+  incrementMetric("gallery.update", 1, [`user:${userId}`]);
   return res.status(200).json(result);
 };
 
 export const deleteGalleryController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const deleted = await DashboardService.deleteGallery(userId, req.params.id);
+  const galleryId = req.params.id;
+  const deleted = await withDetailedSpan(
+    "gallery.delete",
+    { "usr.id": userId, "gallery.id": galleryId },
+    async () => DashboardService.deleteGallery(userId, galleryId),
+  );
   if (!deleted) {
     return res.status(404).json({ error: "Gallery not found" });
   }
 
+  incrementMetric("gallery.delete", 1, [`user:${userId}`]);
   return res.status(200).json({ success: true, cleanupEnqueued: true });
 };
 
@@ -102,12 +159,19 @@ export const presignPhotoUploadController = async (
   res: Response,
 ) => {
   const userId = getUserId(req);
-  const result = await DashboardService.presignPhotoUpload(
-    userId,
-    req.params.id,
-    req.body,
+  const result = await withDetailedSpan(
+    "photo.presign_upload",
+    {
+      "usr.id": userId,
+      "gallery.id": req.params.id,
+      "photo.filename": req.body?.fileName,
+      "photo.content_type": req.body?.contentType,
+      "photo.size_bytes": req.body?.fileSize,
+    },
+    async () => DashboardService.presignPhotoUpload(userId, req.params.id, req.body),
   );
   if ("error" in result) {
+    incrementMetric("photo.upload.error", 1, [`user:${userId}`]);
     return res
       .status(asStatusCode(result.status, 400))
       .json({ error: result.error });
@@ -161,17 +225,33 @@ export const confirmPhotoUploadController = async (
   res: Response,
 ) => {
   const userId = getUserId(req);
-  const result = await DashboardService.confirmPhotoUpload(
-    userId,
-    req.params.id,
-    req.body?.photoId ?? req.body?.uploadId,
+  const result = await withDetailedSpan(
+    "photo.confirm_upload",
+    {
+      "usr.id": userId,
+      "gallery.id": req.params.id,
+      "photo.id": req.body?.photoId ?? req.body?.uploadId,
+    },
+    async (span) => {
+      const r = await DashboardService.confirmPhotoUpload(
+        userId,
+        req.params.id,
+        req.body?.photoId ?? req.body?.uploadId,
+      );
+      if ("photo" in r) {
+        span.setTag("photo.confirmed_id", r.photo?.id);
+      }
+      return r;
+    },
   );
   if ("error" in result) {
+    incrementMetric("photo.confirm.error", 1, [`user:${userId}`]);
     return res
       .status(asStatusCode(result.status, 400))
       .json({ error: result.error });
   }
 
+  incrementMetric("photo.upload.success", 1, [`user:${userId}`]);
   return res
     .status(asStatusCode(result.status, 201))
     .json({ photo: result.photo });
@@ -179,17 +259,31 @@ export const confirmPhotoUploadController = async (
 
 export const createAlbumController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.createAlbum(
-    userId,
-    req.params.id,
-    req.body,
+  const galleryId = req.params.id;
+  const result = await withDetailedSpan(
+    "album.create",
+    {
+      "usr.id": userId,
+      "gallery.id": galleryId,
+      "album.title": req.body?.title,
+      "album.photo_count": Array.isArray(req.body?.photoIds) ? req.body.photoIds.length : 0,
+    },
+    async (span) => {
+      const r = await DashboardService.createAlbum(userId, galleryId, req.body);
+      if ("album" in r) {
+        span.setTag("album.id", r.album?.id);
+      }
+      return r;
+    },
   );
   if ("error" in result) {
+    incrementMetric("album.create.error", 1, [`user:${userId}`]);
     return res
       .status(asStatusCode(result.status, 400))
       .json({ error: result.error });
   }
 
+  incrementMetric("album.create.success", 1, [`user:${userId}`]);
   return res
     .status(asStatusCode(result.status, 201))
     .json({ album: result.album });
@@ -197,30 +291,40 @@ export const createAlbumController = async (req: Request, res: Response) => {
 
 export const updateAlbumController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const result = await DashboardService.updateAlbum(
-    userId,
-    req.params.id,
-    req.params.albumId,
-    req.body,
+  const result = await withDetailedSpan(
+    "album.update",
+    {
+      "usr.id": userId,
+      "gallery.id": req.params.id,
+      "album.id": req.params.albumId,
+      "album.updated_fields": Object.keys(req.body || {}).join(","),
+    },
+    async () => DashboardService.updateAlbum(userId, req.params.id, req.params.albumId, req.body),
   );
   if (!result) {
     return res.status(404).json({ error: "Album not found" });
   }
 
+  incrementMetric("album.update", 1, [`user:${userId}`]);
   return res.status(200).json(result);
 };
 
 export const deleteAlbumController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const deleted = await DashboardService.deleteAlbum(
-    userId,
-    req.params.id,
-    req.params.albumId,
+  const deleted = await withDetailedSpan(
+    "album.delete",
+    {
+      "usr.id": userId,
+      "gallery.id": req.params.id,
+      "album.id": req.params.albumId,
+    },
+    async () => DashboardService.deleteAlbum(userId, req.params.id, req.params.albumId),
   );
   if (!deleted) {
     return res.status(404).json({ error: "Album not found" });
   }
 
+  incrementMetric("album.delete", 1, [`user:${userId}`]);
   return res.status(200).json({ success: true });
 };
 
@@ -260,11 +364,17 @@ export const updatePhotoController = async (req: Request, res: Response) => {
 
 export const deletePhotoController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
-  const deleted = await DashboardService.deletePhoto(userId, req.params.id);
+  const photoId = req.params.id;
+  const deleted = await withDetailedSpan(
+    "photo.delete",
+    { "usr.id": userId, "photo.id": photoId },
+    async () => DashboardService.deletePhoto(userId, photoId),
+  );
   if (!deleted) {
     return res.status(404).json({ error: "Photo not found" });
   }
 
+  incrementMetric("photo.delete", 1, [`user:${userId}`]);
   return res.status(200).json({ success: true });
 };
 
@@ -531,9 +641,16 @@ export const listGalleryFavoritesController = async (
   res: Response,
 ) => {
   const userId = getUserId(req);
-  const result = await DashboardService.listGalleryFavorites(
-    userId,
-    req.params.id,
+  const result = await withDetailedSpan(
+    "gallery.list_favorites",
+    { "usr.id": userId, "gallery.id": req.params.id },
+    async (span) => {
+      const r = await DashboardService.listGalleryFavorites(userId, req.params.id);
+      if (r) {
+        span.setTag("gallery.favorites_total", (r as any).total ?? 0);
+      }
+      return r;
+    },
   );
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });
@@ -550,11 +667,21 @@ export const getDownloadActivityController = async (
   const userId = getUserId(req);
   const limit = Math.min(Number(req.query.limit) || 50, 200);
   const offset = Number(req.query.offset) || 0;
-  const result = await DashboardService.getDownloadActivity(
-    userId,
-    req.params.id,
-    limit,
-    offset,
+  const result = await withDetailedSpan(
+    "gallery.download_activity",
+    {
+      "usr.id": userId,
+      "gallery.id": req.params.id,
+      "pagination.limit": limit,
+      "pagination.offset": offset,
+    },
+    async (span) => {
+      const r = await DashboardService.getDownloadActivity(userId, req.params.id, limit, offset);
+      if (r && Array.isArray(r.events)) {
+        span.setTag("download.event_count", r.events.length);
+      }
+      return r;
+    },
   );
   if (!result) {
     return res.status(404).json({ error: "Gallery not found" });

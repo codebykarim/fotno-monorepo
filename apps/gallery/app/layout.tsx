@@ -6,6 +6,7 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
 import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
+import { DatadogInit } from "@/components/datadog-init";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "bg-background text-foreground antialiased")}>
+        <DatadogInit />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="fixed top-4 right-4 z-50">
             <ThemeToggle />

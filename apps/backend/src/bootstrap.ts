@@ -1,3 +1,4 @@
+import "./datadog"; // Must be first import for APM auto-instrumentation
 import "./polyfills/slowBuffer";
 import dotenv from "dotenv";
 import path from "path";

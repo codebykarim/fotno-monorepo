@@ -152,13 +152,14 @@ async function handleSubscriptionCreated(
   }
 
   if (!user) {
-    console.error(
+    const msg =
       `[Webhook] subscription_created FAILED: could not resolve user. ` +
       `user_id=${userId ?? "MISSING"}, lsCustomerId=${lsCustomerId}, email=${attrs.user_email ?? "N/A"}, ` +
-      `lsSubscriptionId=${lsSubscriptionId}, variantId=${variantId}, status=${attrs.status}`,
-    );
+      `lsSubscriptionId=${lsSubscriptionId}, variantId=${variantId}, status=${attrs.status}`;
+    console.error(msg);
     console.error(`[Webhook] subscription_created full attrs:`, JSON.stringify(attrs));
-    return;
+    // Throw so Sentry captures it and LS retries the webhook
+    throw new Error(msg);
   }
 
   const resolvedUserId: string = user.id;

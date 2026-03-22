@@ -172,9 +172,8 @@ export const webhookController = async (req: Request, res: Response) => {
       operation: "subscription.webhook",
       data: { rawBodyLength: rawBody.length },
     });
-    // Still return 200 to prevent Lemon Squeezy from retrying,
-    // but log the error for debugging
-    return res.status(200).json({ received: true, error: "Processing failed - logged for review" });
+    // Return 500 so Lemon Squeezy retries the webhook
+    return res.status(500).json({ error: "Processing failed" });
   }
 };
 

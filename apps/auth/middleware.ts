@@ -6,7 +6,12 @@ const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL; // https://dashboar
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const publicPaths = new Set(["/account", "/onboarding", "/reset-password"]);
+  const publicPaths = new Set([
+    "/account",
+    "/onboarding",
+    "/reset-password",
+    "/add-account",
+  ]);
 
   // Redirect root to login
   if (pathname === "/") {
@@ -30,7 +35,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (session?.user && publicPaths.has(pathname)) {
+  // (except /add-account — multi-session: sign in while already signed in)
+  if (session?.user && publicPaths.has(pathname) && pathname !== "/add-account") {
     return NextResponse.redirect(
       DASHBOARD_URL || "https://dashboard.fotno.com"
     );

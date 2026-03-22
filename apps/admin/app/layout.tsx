@@ -19,6 +19,7 @@ import {
   BarChart3,
   Tags,
 } from "lucide-react";
+import { NavUser } from "@workspace/ui/components/nav-user";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,9 +52,7 @@ export default function RootLayout({
       <head>
         <title>FOTNO Admin</title>
       </head>
-      <body
-        className={cn(inter.className, "bg-background text-foreground")}
-      >
+      <body className={cn(inter.className, "bg-background text-foreground")}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {isLoginPage ? (
             children
@@ -63,7 +62,10 @@ export default function RootLayout({
               <aside className="fixed inset-y-0 left-0 z-30 w-56 border-r border-border bg-card">
                 <div className="flex h-14 items-center border-b border-border px-4">
                   <span className="text-sm font-semibold tracking-tight">
-                    FOTNO <span className="text-muted-foreground font-normal">Admin</span>
+                    FOTNO{" "}
+                    <span className="text-muted-foreground font-normal">
+                      Admin
+                    </span>
                   </span>
                 </div>
                 <nav className="flex flex-col gap-1 p-2">
@@ -80,7 +82,7 @@ export default function RootLayout({
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                           isActive
                             ? "bg-primary/10 text-primary font-medium"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground",
                         )}
                       >
                         <item.icon className="h-4 w-4" />
@@ -93,10 +95,15 @@ export default function RootLayout({
 
               {/* Main content */}
               <main className="flex-1 pl-56">
-                <div className="p-6 lg:p-8">
-                  {children}
-                </div>
+                <div className="p-6 lg:p-8">{children}</div>
               </main>
+              <div className="fixed top-4 right-4">
+                <NavUser
+                  whenSwitchRedirectTo={
+                    process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"
+                  }
+                />
+              </div>
             </div>
           )}
           <Toaster richColors position="bottom-center" />

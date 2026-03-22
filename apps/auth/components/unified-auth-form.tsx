@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentProps, useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -83,12 +83,17 @@ const otpSchema = z.object({
 
 const OTP_RESEND_SECONDS = 60;
 
+const DEFAULT_DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || "/";
+
 export function UnifiedAuthForm({
   className,
   resetEmail,
+  addAccountMode = false,
   ...props
 }: ComponentProps<"div"> & {
   resetEmail?: string | string[] | undefined;
+  /** Multi-session: sign in with another account while already signed in */
+  addAccountMode?: boolean;
 }) {
   const [authMode, setAuthMode] = useState<AuthMode>("email");
   const [isLoading, setIsLoading] = useState(false);
@@ -100,6 +105,32 @@ export function UnifiedAuthForm({
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan");
+
+  const postAuthRedirectUrl = useMemo(() => {
+    const raw = searchParams.get("callbackURL");
+    if (!raw) return DEFAULT_DASHBOARD_URL;
+    try {
+      if (raw.startsWith("/") && !raw.startsWith("//")) {
+        const base = DEFAULT_DASHBOARD_URL.startsWith("http")
+          ? DEFAULT_DASHBOARD_URL
+          : "http://localhost:3001";
+        return new URL(
+          raw,
+          base.endsWith("/") ? base : `${base}/`,
+        ).toString();
+      }
+      const parsed = new URL(raw);
+      const baseOrigin = new URL(
+        DEFAULT_DASHBOARD_URL.startsWith("http")
+          ? DEFAULT_DASHBOARD_URL
+          : "http://localhost:3001",
+      ).origin;
+      if (parsed.origin === baseOrigin) return raw;
+    } catch {
+      /* ignore invalid callback */
+    }
+    return DEFAULT_DASHBOARD_URL;
+  }, [searchParams]);
 
   const form = useForm<AuthFormData>({
     defaultValues: {
@@ -142,7 +173,6 @@ export function UnifiedAuthForm({
     return () => clearInterval(timer);
   }, [otpCountdown]);
 
-  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "/";
   const getErrorMessage = (error: unknown, fallback: string): string => {
     if (
       typeof error === "object" &&
@@ -158,12 +188,12 @@ export function UnifiedAuthForm({
   };
 
   const redirectToDashboard = () => {
-    if (dashboardUrl.startsWith("http")) {
-      window.location.href = dashboardUrl;
+    if (postAuthRedirectUrl.startsWith("http")) {
+      window.location.href = postAuthRedirectUrl;
       return;
     }
 
-    router.push(dashboardUrl);
+    router.push(postAuthRedirectUrl);
   };
 
   const checkNotAdminThenRedirect = async (): Promise<boolean> => {
@@ -275,7 +305,7 @@ export function UnifiedAuthForm({
           {
             email: parsed.data.email,
             password: parsed.data.password,
-            callbackURL: "/",
+            callbackURL: postAuthRedirectUrl,
             rememberMe: true,
           },
           {
@@ -318,7 +348,7 @@ export function UnifiedAuthForm({
             name: parsed.data.name,
             subscribed: false,
             finishOnboarding: false,
-            callbackURL: "/",
+            callbackURL: postAuthRedirectUrl,
           },
           {
             onSuccess: (data: any) => resolve({ email: data.data?.user.email }),
@@ -421,7 +451,7 @@ export function UnifiedAuthForm({
     try {
       const response = await signIn.social({
         provider,
-        callbackURL: dashboardUrl,
+        callbackURL: postAuthRedirectUrl,
       });
 
       if (response.error) {
@@ -448,16 +478,20 @@ export function UnifiedAuthForm({
   };
 
   const titleByMode: Record<AuthMode, string> = {
-    email: "Photographer Sign In",
+    email: addAccountMode
+      ? "Log in to another account"
+      : "Photographer Sign In",
     login: "Welcome back",
     register: "Create your photographer account",
     otp: "Enter verification code",
   };
 
   const subtitleByMode: Record<AuthMode, string> = {
-    email: plan
-      ? `Plan selected: ${plan}. Continue to set up your workspace.`
-      : "Use email, social login, or one-time code.",
+    email: addAccountMode
+      ? "You stay signed in to your current account. Use a different email or social login."
+      : plan
+        ? `Plan selected: ${plan}. Continue to set up your workspace.`
+        : "Use email, social login, or one-time code.",
     login: `Sign in to continue with ${form.getValues("email")}.`,
     register: `Finish setup for ${form.getValues("email")}.`,
     otp: `We sent a 6-digit code to ${form.getValues("email")}.`,

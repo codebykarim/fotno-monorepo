@@ -1,6 +1,12 @@
 "use client";
 
-import { type ComponentProps, useEffect, useMemo, useState } from "react";
+import {
+  type ComponentProps,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -85,7 +91,7 @@ const OTP_RESEND_SECONDS = 60;
 
 const DEFAULT_DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || "/";
 
-export function UnifiedAuthForm({
+function UnifiedAuthFormComponent({
   className,
   resetEmail,
   addAccountMode = false,
@@ -114,10 +120,7 @@ export function UnifiedAuthForm({
         const base = DEFAULT_DASHBOARD_URL.startsWith("http")
           ? DEFAULT_DASHBOARD_URL
           : "http://localhost:3001";
-        return new URL(
-          raw,
-          base.endsWith("/") ? base : `${base}/`,
-        ).toString();
+        return new URL(raw, base.endsWith("/") ? base : `${base}/`).toString();
       }
       const parsed = new URL(raw);
       const baseOrigin = new URL(
@@ -856,5 +859,28 @@ export function UnifiedAuthForm({
         </aside>
       </div>
     </div>
+  );
+}
+
+export function UnifiedAuthForm({
+  className,
+  resetEmail,
+  addAccountMode = false,
+  ...props
+}: ComponentProps<"div"> & {
+  resetEmail?: string | string[] | undefined;
+  /** Multi-session: sign in with another account while already signed in */
+  addAccountMode?: boolean;
+}) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {" "}
+      <UnifiedAuthFormComponent
+        className={className}
+        resetEmail={resetEmail}
+        addAccountMode={addAccountMode}
+        {...props}
+      />
+    </Suspense>
   );
 }

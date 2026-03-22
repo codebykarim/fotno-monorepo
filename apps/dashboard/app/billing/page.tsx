@@ -20,7 +20,11 @@ import {
 import { Button } from "@workspace/ui/components/button";
 import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
-import type { SubscriptionResponse, PlansResponse, PlanTier } from "@/lib/types/api";
+import type {
+  SubscriptionResponse,
+  PlansResponse,
+  PlanTier,
+} from "@/lib/types/api";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 import { useRouter } from "next/navigation";
 
@@ -89,11 +93,14 @@ function CheckIcon({ className }: { className?: string }) {
 
 export default function BillingPage() {
   // Handle both formats: new { tiers, features } and legacy PlanTier[]
-  const { data: plansData } = useSWR<PlansResponse | PlanTier[]>("/api/billing/plans", jsonFetcher);
-  const plans = Array.isArray(plansData)
-    ? plansData
-    : plansData?.tiers;
-  const features = (Array.isArray(plansData) ? null : plansData?.features) ?? FALLBACK_FEATURES;
+  const { data: plansData } = useSWR<PlansResponse | PlanTier[]>(
+    "/api/billing/plans",
+    jsonFetcher,
+  );
+  const plans = Array.isArray(plansData) ? plansData : plansData?.tiers;
+  const features =
+    (Array.isArray(plansData) ? null : plansData?.features) ??
+    FALLBACK_FEATURES;
   const { data: billing, mutate } = useSWR<SubscriptionResponse>(
     "/api/billing/subscription",
     jsonFetcher,
@@ -209,7 +216,7 @@ export default function BillingPage() {
             ) : access.status === "active" ||
               access.status === "trialing" ||
               access.status === "cancelled_grace" ? (
-              <div className="space-y-2 flex items-center justify-between">
+              <div className="space-y-2 flex flex-col md:flex-row items-center justify-between">
                 <div className="flex flex-wrap items-center gap-2">
                   {access.status === "trialing" ? (
                     <span

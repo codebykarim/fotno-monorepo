@@ -12,3 +12,6 @@ dotenv.config({
     process.env.NODE_ENV === "test" ? ".env.test" : ".env"
   ),
 });
+
+// Sentry must init after env vars are loaded (needs SENTRY_DSN)
+import "./sentry";

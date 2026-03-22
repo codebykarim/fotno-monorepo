@@ -14,6 +14,7 @@ import {
 import { lsGetSubscription, lsGetCustomer } from "../services/SubscriptionServices/lemonSqueezy";
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
+import { withSpan, captureWithContext, addBreadcrumb } from "../utils/sentry";
 
 /**
  * Resolve country code from: explicit query/body param → CF header → IP geolocation.
@@ -41,10 +42,21 @@ export const getSubscriptionController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  const access = await resolveUserAccess(userId);
-  const subscription = await getActiveSubscription(userId);
+  const { access, subscription } = await withSpan(
+    "subscription.get",
+    { userId },
+    async () => {
+      const acc = await resolveUserAccess(userId);
+      const sub = await getActiveSubscription(userId);
+      addBreadcrumb("subscription", "resolved user access", {
+        status: acc.status,
+        canUpload: acc.canUpload,
+        trialDaysLeft: acc.trialDaysLeft,
+      });
+      return { access: acc, subscription: sub };
+    },
+  );
 
-  // Convert BigInt to string for JSON serialization
   const serializedAccess = {
     ...access,
     storageLimitBytes: access.storageLimitBytes.toString(),
@@ -63,22 +75,32 @@ export const createCheckoutController = async (
   const { storageTierGb, countryCode } = req.body;
   if (!storageTierGb) throw new AppError("storageTierGb is required", 400);
 
-  const user = await (prisma as any).user.findUnique({
-    where: { id: userId },
-    select: { email: true, name: true },
-  });
+  const result = await withSpan(
+    "subscription.checkout",
+    { userId, tierGb: storageTierGb, countryCode },
+    async () => {
+      const user = await (prisma as any).user.findUnique({
+        where: { id: userId },
+        select: { email: true, name: true },
+      });
 
-  if (!user) throw new AppError("User not found", 404);
+      if (!user) throw new AppError("User not found", 404);
 
-  const resolvedCountry = await resolveCountry(req, countryCode);
+      const resolvedCountry = await resolveCountry(req, countryCode);
+      addBreadcrumb("subscription", "creating checkout", {
+        tierGb: storageTierGb,
+        country: resolvedCountry ?? "unknown",
+      });
 
-  const result = await createCheckout({
-    userId,
-    email: user.email,
-    name: user.name || undefined,
-    storageTierGb,
-    countryCode: resolvedCountry || undefined,
-  });
+      return createCheckout({
+        userId,
+        email: user.email,
+        name: user.name || undefined,
+        storageTierGb,
+        countryCode: resolvedCountry || undefined,
+      });
+    },
+  );
 
   return controllerReturn(result, req, res);
 };
@@ -90,7 +112,10 @@ export const cancelSubscriptionController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  await cancelSubscription(userId);
+  await withSpan("subscription.cancel", { userId }, async () => {
+    addBreadcrumb("subscription", "cancelling subscription", { userId });
+    await cancelSubscription(userId);
+  });
   return controllerReturn({ success: true }, req, res);
 };
 
@@ -102,7 +127,10 @@ export const changeTierController = async (req: Request, res: Response) => {
   if (!newStorageTierGb)
     throw new AppError("newStorageTierGb is required", 400);
 
-  await changeTier({ userId, newStorageTierGb });
+  await withSpan("subscription.change_tier", { userId, newTierGb: newStorageTierGb }, async () => {
+    addBreadcrumb("subscription", "changing tier", { userId, newTierGb: newStorageTierGb });
+    await changeTier({ userId, newStorageTierGb });
+  });
   return controllerReturn({ success: true }, req, res);
 };
 
@@ -129,11 +157,21 @@ export const webhookController = async (req: Request, res: Response) => {
 
   try {
     const event = JSON.parse(rawBody.toString());
-    console.log(`[Webhook] Processing event: ${event?.meta?.event_name}`);
-    await handleWebhookEvent(event);
+    const eventName = event?.meta?.event_name || "unknown";
+    console.log(`[Webhook] Processing event: ${eventName}`);
+
+    await withSpan(
+      "subscription.webhook",
+      { eventName, lsSubscriptionId: event?.data?.id, userId: event?.meta?.custom_data?.user_id },
+      () => handleWebhookEvent(event),
+    );
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error("[Webhook] Error processing webhook event:", error);
+    captureWithContext(error, {
+      operation: "subscription.webhook",
+      data: { rawBodyLength: rawBody.length },
+    });
     // Still return 200 to prevent Lemon Squeezy from retrying,
     // but log the error for debugging
     return res.status(200).json({ received: true, error: "Processing failed - logged for review" });

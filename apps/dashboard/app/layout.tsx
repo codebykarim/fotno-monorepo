@@ -15,7 +15,9 @@ import { TrialBanner } from "@/components/trial-banner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://app.fotno.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://app.fotno.com",
+  ),
   title: {
     default: "FOTNO Dashboard — Manage Your Photo Galleries",
     template: "%s | FOTNO Dashboard",
@@ -45,12 +47,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn("scroll-smooth antialiased focus:scroll-auto")}
     >
-      <body
-        className={cn(
-          inter.className,
-          "bg-background text-foreground",
-        )}
-      >
+      <body className={cn(inter.className, "bg-background text-foreground")}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <Header main="DASHBOARD" />
@@ -73,7 +70,10 @@ export default async function RootLayout({
           </div>
           <Toaster richColors position="bottom-center" />
         </ThemeProvider>
-        <Script src="https://app.lemonsqueezy.com/js/lemon.js" strategy="afterInteractive" />
+        <Script
+          src="https://app.lemonsqueezy.com/js/lemon.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

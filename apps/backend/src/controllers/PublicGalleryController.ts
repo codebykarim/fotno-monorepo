@@ -1,11 +1,17 @@
 import { Request, Response } from "express";
 import * as PublicGalleryServices from "../services/PublicGalleryServices";
+import { withSpan, captureWithContext } from "../utils/sentry";
 
 const asStatusCode = (value: unknown, fallback: number): number =>
   typeof value === "number" && Number.isFinite(value) ? value : fallback;
 
 export const getPublicGalleryController = async (req: Request, res: Response) => {
-  const gallery = await PublicGalleryServices.getPublicGallery(req.params.shareToken);
+  const shareToken = req.params.shareToken;
+  const gallery = await withSpan(
+    "public_gallery.view",
+    { shareToken, viewerIp: req.ip },
+    () => PublicGalleryServices.getPublicGallery(shareToken),
+  );
   if (!gallery) {
     return res.status(404).json({ error: "Gallery not found" });
   }
@@ -17,11 +23,13 @@ export const getPublicGalleryController = async (req: Request, res: Response) =>
 };
 
 export const unlockPublicGalleryController = async (req: Request, res: Response) => {
+  const shareToken = req.params.shareToken;
   const password =
     typeof req.body?.password === "string" ? req.body.password : "";
-  const result = await PublicGalleryServices.unlockPublicGallery(
-    req.params.shareToken,
-    password,
+  const result = await withSpan(
+    "public_gallery.unlock",
+    { shareToken, viewerIp: req.ip },
+    () => PublicGalleryServices.unlockPublicGallery(shareToken, password),
   );
 
   if ("error" in result) {
@@ -175,9 +183,10 @@ export const addFavoriteController = async (req: Request, res: Response) => {
       .json({ error: "photoId and viewerId are required" });
   }
 
-  const result = await PublicGalleryServices.addFavorite(
-    req.params.shareToken,
-    { photoId, viewerId, viewerName: viewerName || "", note },
+  const result = await withSpan(
+    "public_gallery.add_favorite",
+    { shareToken: req.params.shareToken, photoId, viewerId },
+    () => PublicGalleryServices.addFavorite(req.params.shareToken, { photoId, viewerId, viewerName: viewerName || "", note }),
   );
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -253,9 +262,10 @@ export const createFavoriteShareController = async (
       .json({ error: "viewerId and viewerName are required" });
   }
 
-  const result = await PublicGalleryServices.createFavoriteShare(
-    req.params.shareToken,
-    { viewerId, viewerName },
+  const result = await withSpan(
+    "public_gallery.create_favorite_share",
+    { shareToken: req.params.shareToken, viewerId, viewerName },
+    () => PublicGalleryServices.createFavoriteShare(req.params.shareToken, { viewerId, viewerName }),
   );
   if ("error" in result) {
     return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
@@ -277,15 +287,23 @@ export const getSharedFavoritesController = async (
 };
 
 export const trackDownloadController = async (req: Request, res: Response) => {
-  const result = await PublicGalleryServices.trackDownload(
-    req.params.shareToken,
+  const downloadType = req.body?.type || "single";
+  const result = await withSpan(
+    "public_gallery.track_download",
     {
+      shareToken: req.params.shareToken,
       photoId: req.body?.photoId,
       viewerId: req.body?.viewerId,
-      viewerName: req.body?.viewerName,
-      viewerIp: req.ip,
-      type: req.body?.type || "single",
+      downloadType,
     },
+    () =>
+      PublicGalleryServices.trackDownload(req.params.shareToken, {
+        photoId: req.body?.photoId,
+        viewerId: req.body?.viewerId,
+        viewerName: req.body?.viewerName,
+        viewerIp: req.ip,
+        type: downloadType,
+      }),
   );
   if ("error" in result) {
     const body: Record<string, unknown> = { error: result.error };

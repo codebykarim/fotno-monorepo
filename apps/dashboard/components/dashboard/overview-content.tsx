@@ -178,7 +178,9 @@ export function OverviewContent() {
         >
           <Card className="border-border/50 bg-card shadow-sm h-full">
             <CardHeader className="flex flex-row items-center justify-between border-b border-border/40 pb-4">
-              <CardTitle className="text-lg font-medium">Activity Log</CardTitle>
+              <CardTitle className="text-lg font-medium">
+                Activity Log
+              </CardTitle>
               <Badge
                 variant="outline"
                 className="gap-1.5 rounded-full px-3 py-1 bg-primary/8 text-xs font-normal border-primary/30"
@@ -201,7 +203,9 @@ export function OverviewContent() {
                 )}
 
                 {!isLoading && data?.recentActivity.length === 0 && (
-                  <p className="text-sm text-muted-foreground">No activity yet.</p>
+                  <p className="text-sm text-muted-foreground">
+                    No activity yet.
+                  </p>
                 )}
 
                 {data?.recentActivity.map((item, index) => {
@@ -270,14 +274,19 @@ export function OverviewContent() {
               <div>
                 <div className="flex items-center justify-between text-sm mb-2.5">
                   <span className="text-muted-foreground">
-                    {summary?.formatted.used || "0 GB"} of {summary?.formatted.limit || "0 GB"}
+                    {summary?.formatted.used || "0 GB"} of{" "}
+                    {summary?.formatted.limit || "0 GB"}
                   </span>
                   <span className="font-medium">{storagePercent}%</span>
                 </div>
                 <div className="h-2.5 overflow-hidden rounded-full bg-muted">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
-                      is95 ? "bg-destructive" : is80 ? "bg-primary/70" : "bg-primary"
+                      is95
+                        ? "bg-destructive"
+                        : is80
+                          ? "bg-primary/70"
+                          : "bg-primary"
                     }`}
                     style={{ width: `${storagePercent}%` }}
                   />
@@ -307,12 +316,16 @@ export function OverviewContent() {
           {/* Recent Storage Events */}
           <Card className="border-border/50 bg-card shadow-sm">
             <CardHeader className="border-b border-border/40 pb-4">
-              <CardTitle className="text-base font-medium">Recent Events</CardTitle>
+              <CardTitle className="text-base font-medium">
+                Recent Events
+              </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
               <div className="space-y-2">
                 {(events?.events ?? []).length === 0 && (
-                  <p className="text-sm text-muted-foreground">No storage events yet.</p>
+                  <p className="text-sm text-muted-foreground">
+                    No storage events yet.
+                  </p>
                 )}
 
                 {(events?.events ?? []).map((event) => (
@@ -328,7 +341,9 @@ export function OverviewContent() {
                     </div>
                     <p
                       className={`shrink-0 ml-3 font-medium ${
-                        Number(event.delta) < 0 ? "text-emerald-600" : "text-foreground"
+                        Number(event.delta) < 0
+                          ? "text-emerald-600"
+                          : "text-foreground"
                       }`}
                     >
                       {Number(event.delta) < 0 ? "-" : "+"}

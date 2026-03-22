@@ -11,6 +11,7 @@ import { auth } from "./auth";
 import path from "path";
 import { ZodError } from "zod";
 import { startCleanupWorker } from "./workers/cleanupPhotoWorker";
+import Sentry from "./sentry";
 
 const app = express();
 
@@ -68,7 +69,18 @@ app.use(
 
 app.set("trust proxy", true);
 
+// Sentry: tag each request with user context
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  if (req.user?.id) {
+    Sentry.setUser({ id: req.user.id });
+  }
+  next();
+});
+
 app.use(routes);
+
+// Sentry error handler — must be before our custom error handler
+Sentry.setupExpressErrorHandler(app);
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   const errorMeta: ErrorMeta = {
@@ -86,7 +98,14 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {
     errorMeta.code = err.statusCode;
     errorMeta.key = err.message;
-    // LogError(errorMeta);
+
+    // Only send 5xx AppErrors to Sentry (not expected 4xx)
+    if (err.statusCode >= 500) {
+      Sentry.captureException(err, {
+        tags: { route: req.route?.path || req.url },
+        extra: { userId: req.user?.id },
+      });
+    }
 
     return res.status(err.statusCode).json({ error: err.message });
   }
@@ -102,6 +121,12 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   errorMeta.code = 500;
   errorMeta.message = error.message;
 
+  // Capture all unhandled 500s in Sentry with full context
+  Sentry.captureException(error, {
+    tags: { route: req.route?.path || req.url },
+    extra: { userId: req.user?.id, url: req.url },
+  });
+
   console.log(errorMeta);
 
   return res.status(500).json({ error: errorMeta.key });
@@ -114,6 +139,7 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/favicon.ico", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../favicon.ico"));
 });
+
 
 const port = process.env.PORT ?? 8000;
 

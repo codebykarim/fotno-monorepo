@@ -11,6 +11,7 @@
   "dependencies": {
     "@better-fetch/fetch": "^1.1.12",
     "@hookform/resolvers": "^4.1.0",
+    "@sentry/nextjs": "^10.45.0",
     "@tailwindcss/postcss": "^4.0.8",
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",

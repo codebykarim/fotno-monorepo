@@ -11,7 +11,6 @@ import { getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
 import { TrialBanner } from "@/components/trial-banner";
-import { DatadogInit } from "@/components/datadog-init";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -52,7 +51,6 @@ export default async function RootLayout({
           "bg-background text-foreground",
         )}
       >
-        <DatadogInit />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <Header main="DASHBOARD" />

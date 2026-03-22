@@ -11,7 +11,6 @@ import { auth } from "./auth";
 import path from "path";
 import { ZodError } from "zod";
 import { startCleanupWorker } from "./workers/cleanupPhotoWorker";
-import { tagActiveSpan, incrementMetric } from "./utils/datadog";
 
 const app = express();
 
@@ -69,14 +68,6 @@ app.use(
 
 app.set("trust proxy", true);
 
-// Datadog: tag every request span with user ID and route info
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  if (req.user?.id) {
-    tagActiveSpan({ "usr.id": req.user.id });
-  }
-  next();
-});
-
 app.use(routes);
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
@@ -95,33 +86,12 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof AppError) {
     errorMeta.code = err.statusCode;
     errorMeta.key = err.message;
-
-    // Datadog: tag span with AppError details (lightweight)
-    tagActiveSpan({
-      "error": true,
-      "error.type": "AppError",
-      "error.message": err.message,
-      "http.status_code": err.statusCode,
-    });
-    incrementMetric("api.error", 1, [
-      `status:${err.statusCode}`,
-      `route:${req.route?.path || req.url}`,
-    ]);
+    // LogError(errorMeta);
 
     return res.status(err.statusCode).json({ error: err.message });
   }
 
   if (err instanceof ZodError) {
-    tagActiveSpan({
-      "error": true,
-      "error.type": "ZodError",
-      "error.message": "Invalid request body",
-      "http.status_code": 400,
-    });
-    incrementMetric("api.validation_error", 1, [
-      `route:${req.route?.path || req.url}`,
-    ]);
-
     return res.status(400).json({
       error: "Invalid request body",
       issues: err.issues,
@@ -131,18 +101,6 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   const error = err instanceof Error ? err : new Error("Unknown error");
   errorMeta.code = 500;
   errorMeta.message = error.message;
-
-  // Datadog: tag span with full 500 error details
-  tagActiveSpan({
-    "error": true,
-    "error.type": error.constructor.name,
-    "error.message": error.message,
-    "error.stack": error.stack ?? "",
-    "http.status_code": 500,
-  });
-  incrementMetric("api.server_error", 1, [
-    `route:${req.route?.path || req.url}`,
-  ]);
 
   console.log(errorMeta);
 

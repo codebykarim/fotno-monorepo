@@ -24,6 +24,12 @@ export async function middleware(request: NextRequest) {
       );
     }
 
+    if ((session?.user as any)?.role === "admin") {
+      return NextResponse.redirect(
+        process.env.NEXT_PUBLIC_ADMIN_URL || "https://admin.fotno.com"
+      );
+    }
+
     // Allow access to payment-callback route without subscription check
     if (pathname === "/payment-callback") {
       return NextResponse.next();

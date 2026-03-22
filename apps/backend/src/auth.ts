@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { sendMail } from "./utils/sendMail";
-import { admin, emailOTP, openAPI } from "better-auth/plugins";
+import { admin, emailOTP, multiSession, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@workspace/db";
 
@@ -82,6 +82,7 @@ export const auth = betterAuth({
       },
     }),
     openAPI(),
+    multiSession(), 
   ],
   user: {
     deleteUser: {

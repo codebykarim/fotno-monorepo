@@ -26,14 +26,7 @@ const allApps = [
     title: "WEBSITE",
     icon: LayoutDashboardIcon,
     description: "Create your own specialty website",
-    href: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/`,
-    disabled: true,
-  },
-  {
-    title: "MANAGER",
-    icon: UsersIcon,
-    description: "Manage your clients and projects",
-    href: `${process.env.NEXT_PUBLIC_STUDIO_URL}/`,
+    href: `${process.env.NEXT_PUBLIC_LANDING_URL}/`,
     disabled: true,
   },
   {

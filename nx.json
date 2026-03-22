@@ -10,17 +10,13 @@
         "env": "NEXT_PUBLIC_GALLERY_URL"
       },
       {
-        "env": "NEXT_PUBLIC_WEBSITE_URL"
+        "env": "NEXT_PUBLIC_LANDING_URL"
       },
-      {
-        "env": "NEXT_PUBLIC_STUDIO_URL"
-      },
+   
       {
         "env": "NEXT_PUBLIC_DASHBOARD_URL"
-      },
-      {
-        "env": "NEXT_PUBLIC_LANDING_URL"
       }
+     
     ],
     "default": ["{projectRoot}/**/*", "sharedGlobals"]
   },

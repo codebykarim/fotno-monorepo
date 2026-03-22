@@ -1,4 +1,4 @@
-import { inferAdditionalFields } from "better-auth/client/plugins";
+import { inferAdditionalFields, multiSessionClient } from "better-auth/client/plugins";
 import { emailOTPClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
@@ -24,6 +24,7 @@ const authClient = createAuthClient({
       },
     }),
     emailOTPClient(),
+    multiSessionClient()
   ],
 });
 
@@ -36,6 +37,7 @@ export const {
   forgetPassword,
   resetPassword,
   linkSocial,
+  multiSession,
 } = authClient;
 
 export const sendVerificationOTP = authClient.emailOtp.sendVerificationOtp;

@@ -58,11 +58,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
   );
 }
 
-function MobileNavigation({
-  isUserLoggedIn,
-}: {
-  isUserLoggedIn: boolean;
-}) {
+function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
   return (
     <Popover>
       <PopoverButton
@@ -91,9 +87,7 @@ function MobileNavigation({
             My Dashboard
           </MobileNavLink>
         ) : (
-          <MobileNavLink
-            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
-          >
+          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
             Get started
           </MobileNavLink>
         )}
@@ -103,10 +97,10 @@ function MobileNavigation({
 }
 
 const navLinks = [
-  { label: "Features", href: "#features" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Features", href: "/#features" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 const AUTH_TIMEOUT_MS = 1500;
@@ -144,7 +138,7 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex items-center justify-between">
           <div className="flex items-center md:gap-x-12">
-            <Link href="#" aria-label="Home" className="group">
+            <Link href="/" aria-label="Home" className="group">
               <div className="flex items-center gap-2">
                 <Icons.logo className="h-7 w-auto text-primary transition-transform duration-300 group-hover:scale-110" />
                 <span className="text-xl font-bold tracking-tight">FOTNO</span>

@@ -4,17 +4,19 @@ import { Icons } from "@workspace/ui/components/icons";
 
 const footerLinks = {
   Product: [
-    { label: "Photo Gallery Features", href: "#features" },
-    { label: "Pricing Plans", href: "#pricing" },
-    { label: "Photographer Testimonials", href: "#testimonials" },
+    { label: "Photo Gallery Features", href: "/#features" },
+    { label: "Pricing Plans", href: "/#pricing" },
+    { label: "Photographer Testimonials", href: "/#testimonials" },
   ],
   Company: [
-    { label: "About FOTNO", href: "#" },
-    { label: "Blog", href: "#" },
+    { label: "About FOTNO", href: "/" },
+    { label: "Blog", href: "/" },
   ],
   Support: [
-    { label: "FAQ", href: "#faq" },
+    { label: "FAQ", href: "/#faq" },
     { label: "Contact Us", href: "mailto:support@fotno.com" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms and Conditions", href: "/terms-and-conditions" },
   ],
 };
 
@@ -69,9 +71,9 @@ export function Footer() {
             and favorites, bulk upload photos with drag-and-drop, and leverage
             AI-powered captions. FOTNO is the best alternative to Pixieset,
             ShootProof, Pic-Time, CloudSpot, SmugMug, Zenfolio, and Pass
-            Gallery. Also available at photno.com and photnoo.com. Share
-            photos with clients, deliver photos online, and manage your
-            photography business — all in one platform.
+            Gallery. Also available at photno.com and photnoo.com. Share photos
+            with clients, deliver photos online, and manage your photography
+            business — all in one platform.
           </p>
         </div>
 

@@ -369,10 +369,20 @@ export default function PhotoLightboxClient({
     });
   }, [getPanLimits, zoom]);
 
-  const handleWheelZoom = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const delta = event.deltaY < 0 ? 0.15 : -0.15;
-    setZoomClamped(zoom + delta, { x: event.clientX, y: event.clientY });
+  const ZOOM_STEPS = [MIN_ZOOM, 2, MAX_ZOOM];
+  const DRAG_THRESHOLD = 5;
+  const wasDragRef = useRef(false);
+
+  const handleImageClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    if (wasDragRef.current) return;
+    const focus = { x: event.clientX, y: event.clientY };
+    const nextStep = ZOOM_STEPS.find((s) => s > zoom);
+    if (nextStep) {
+      setZoomClamped(nextStep, focus);
+    } else {
+      setZoomClamped(MIN_ZOOM);
+    }
   };
 
   const distanceBetweenTouches = (touches: React.TouchList): number => {
@@ -443,10 +453,11 @@ export default function PhotoLightboxClient({
       event.preventDefault();
       const deltaX = touch.clientX - panStartRef.current.startX;
       const deltaY = touch.clientY - panStartRef.current.startY;
-      setPanClamped(
+      const { x, y } = clampAndStorePan(
         panStartRef.current.originX + deltaX,
         panStartRef.current.originY + deltaY,
       );
+      applyTransformDirect(x, y);
     }
   };
 
@@ -470,41 +481,73 @@ export default function PhotoLightboxClient({
     }
 
     if (event.touches.length === 0) {
+      if (isDragging) {
+        setPan({ ...panRef.current });
+      }
       panStartRef.current = null;
       setIsDragging(false);
     }
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || zoom <= MIN_ZOOM) {
-      return;
-    }
+    if (event.button !== 0) return;
 
     event.preventDefault();
-    setIsDragging(true);
+    wasDragRef.current = false;
     panStartRef.current = {
       startX: event.clientX,
       startY: event.clientY,
       originX: panRef.current.x,
       originY: panRef.current.y,
     };
+    if (zoom > MIN_ZOOM) {
+      setIsDragging(true);
+    }
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !panStartRef.current || zoom <= MIN_ZOOM) {
-      return;
-    }
+  const applyTransformDirect = useCallback(
+    (x: number, y: number) => {
+      const img = imageViewportRef.current?.querySelector("img");
+      if (img) {
+        img.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${zoom})`;
+      }
+    },
+    [zoom],
+  );
 
-    event.preventDefault();
+  const clampAndStorePan = useCallback(
+    (rawX: number, rawY: number) => {
+      const { maxX, maxY } = getPanLimits(zoom);
+      const x = Math.max(-maxX, Math.min(maxX, rawX));
+      const y = Math.max(-maxY, Math.min(maxY, rawY));
+      panRef.current = { x, y };
+      return { x, y };
+    },
+    [getPanLimits, zoom],
+  );
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!panStartRef.current || zoom <= MIN_ZOOM) return;
+
     const deltaX = event.clientX - panStartRef.current.startX;
     const deltaY = event.clientY - panStartRef.current.startY;
-    setPanClamped(
+    if (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD) {
+      wasDragRef.current = true;
+    }
+    if (!isDragging) return;
+
+    event.preventDefault();
+    const { x, y } = clampAndStorePan(
       panStartRef.current.originX + deltaX,
       panStartRef.current.originY + deltaY,
     );
+    applyTransformDirect(x, y);
   };
 
   const stopMouseDrag = () => {
+    if (isDragging) {
+      setPan({ ...panRef.current });
+    }
     panStartRef.current = null;
     setIsDragging(false);
   };
@@ -571,9 +614,9 @@ export default function PhotoLightboxClient({
         <div
           ref={imageViewportRef}
           className={`relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/30 ${
-            zoom > MIN_ZOOM ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+            zoom >= MAX_ZOOM ? (isDragging ? "cursor-grabbing" : "cursor-zoom-out") : isDragging ? "cursor-grabbing" : "cursor-zoom-in"
           }`}
-          onWheel={handleWheelZoom}
+          onClick={handleImageClick}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={stopMouseDrag}
@@ -594,11 +637,12 @@ export default function PhotoLightboxClient({
             blurDataURL={currentPhoto.blurDataUrl}
             draggable={false}
             onContextMenu={(event) => event.preventDefault()}
-            className="h-auto max-h-[76vh] w-full object-contain transition-transform duration-150"
+            className="h-auto max-h-[76vh] w-full object-contain"
             style={{
               transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
               transformOrigin: "center center",
-              transition: isDragging ? "none" : undefined,
+              transition: isDragging ? "none" : "transform 150ms ease-out",
+              willChange: "transform",
             }}
             sizes="100vw"
           />

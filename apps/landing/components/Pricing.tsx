@@ -93,7 +93,7 @@ const formatTierPrice = (tier: PlanTier) => {
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
-  if (gb === 0) return "1 GB";
+  if (gb === 0) return "Free";
   if (gb >= 1000) return `${gb / 1000} TB`;
   return `${gb} GB`;
 };
@@ -104,7 +104,11 @@ async function fetchPlans(
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
   if (!backendUrl)
-    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
+    return {
+      tiers: FALLBACK_TIERS,
+      features: FALLBACK_FEATURES,
+      freeFeatures: FALLBACK_FREE_FEATURES,
+    };
 
   try {
     const url = country
@@ -114,7 +118,11 @@ async function fetchPlans(
       next: { revalidate: 300 },
     });
     if (!res.ok)
-      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
+      return {
+        tiers: FALLBACK_TIERS,
+        features: FALLBACK_FEATURES,
+        freeFeatures: FALLBACK_FREE_FEATURES,
+      };
     const data = await res.json();
     // Handle both formats: new { tiers, features } and legacy PlanTier[]
     const tiers: PlanTier[] = Array.isArray(data)
@@ -125,10 +133,18 @@ async function fetchPlans(
     const features: string[] = data?.features ?? FALLBACK_FEATURES;
     const freeFeatures: string[] = data?.freeFeatures ?? FALLBACK_FREE_FEATURES;
     if (tiers.length === 0)
-      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
+      return {
+        tiers: FALLBACK_TIERS,
+        features: FALLBACK_FEATURES,
+        freeFeatures: FALLBACK_FREE_FEATURES,
+      };
     return { tiers, features, freeFeatures };
   } catch {
-    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
+    return {
+      tiers: FALLBACK_TIERS,
+      features: FALLBACK_FEATURES,
+      freeFeatures: FALLBACK_FREE_FEATURES,
+    };
   }
 }
 
@@ -187,7 +203,11 @@ export async function Pricing() {
                 Get started for free
               </h3>
               <p className="mt-2 text-background/50">
-                {formatStorage(freeTier.gb)} storage &middot; {freeTier.galleryLimit ?? 2} galleries &middot; All core features
+                {formatStorage(freeTier.gb)} storage &middot;{" "}
+                {freeTier.galleryLimit === 1
+                  ? "1 gallery"
+                  : `${freeTier.galleryLimit} galleries`}{" "}
+                &middot; All core features
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 {freeFeatures.map((feature) => (

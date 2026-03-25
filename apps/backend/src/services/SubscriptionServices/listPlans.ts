@@ -1,4 +1,4 @@
-import { fetchTiersFromDB, PLAN_FEATURES, FREE_PLAN_FEATURES, invalidateTierCache } from "../../constants/plans";
+import { fetchTiersFromDB, PLAN_FEATURES, buildFreeFeatures, invalidateTierCache } from "../../constants/plans";
 import {
   getRegionalPricing,
   fetchRegionalPricingFromDB,
@@ -92,7 +92,11 @@ export const fetchPlans = async (
 ): Promise<PlansResponse> => {
   const basePlans = await fetchBasePlans();
   const tiers = await applyRegionalPricing(basePlans, countryCode);
-  return { tiers, features: PLAN_FEATURES, freeFeatures: FREE_PLAN_FEATURES };
+  const freeTier = tiers.find((t) => t.priceCents === 0);
+  const freeFeatures = freeTier
+    ? buildFreeFeatures({ gb: freeTier.gb, galleryLimit: freeTier.galleryLimit ?? null })
+    : buildFreeFeatures({ gb: 1, galleryLimit: 2 });
+  return { tiers, features: PLAN_FEATURES, freeFeatures };
 };
 
 async function fetchBasePlans(): Promise<PlanInfo[]> {

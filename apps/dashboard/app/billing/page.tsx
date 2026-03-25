@@ -65,8 +65,16 @@ const formatTierPrice = (tier: PlanTier) => {
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
-  if (gb === 0) return "1 GB";
+  if (gb === 0) return "Free";
   if (gb >= 1000) return `${gb / 1000} TB`;
+  return `${gb} GB`;
+};
+
+/** Convert storageLimitBytes (string from API) to human-readable GB */
+const formatBytes = (bytes: string | undefined) => {
+  if (!bytes || bytes === "0") return "0 GB";
+  const gb = Number(BigInt(bytes) / BigInt(1024 ** 3));
+  if (gb >= 1000) return `${(gb / 1000).toFixed(0)} TB`;
   return `${gb} GB`;
 };
 
@@ -228,7 +236,7 @@ export default function BillingPage() {
                     Free Plan
                   </span>
                   <span className="text-sm font-medium">
-                    1 GB storage &mdash; {access.galleryCount ?? 0}/{access.galleryLimit ?? 2} galleries
+                    {formatBytes(access.storageLimitBytes)} storage &mdash; {access.galleryCount ?? 0}/{access.galleryLimit ?? 2} galleries
                   </span>
                 </div>
                 {!access.canUpload && (

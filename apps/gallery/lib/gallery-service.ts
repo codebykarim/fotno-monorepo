@@ -18,6 +18,9 @@ type BackendPhoto = {
   width?: number | null;
   height?: number | null;
   order?: number | null;
+  blurDataUrl?: string | null;
+  thumbnailUrl?: string | null;
+  previewUrl?: string | null;
 };
 
 type BackendGallery = {
@@ -95,18 +98,25 @@ type DashboardGalleryResponse = {
 const normalizePhoto = (
   photo: BackendPhoto,
   shareToken: string,
-): PublicPhoto => ({
-  id: photo.id,
-  originalFilename: photo.originalFilename || `${photo.id}.jpg`,
-  aiCaption: photo.aiCaption ?? null,
-  width: photo.width ?? null,
-  height: photo.height ?? null,
-  order: photo.order ?? 0,
-  blurDataUrl: TRANSPARENT_BLUR,
-  thumbnailSrc: `/api/photos/${photo.id}/proxy?variant=thumbnail&shareToken=${encodeURIComponent(shareToken)}`,
-  previewSrc: `/api/photos/${photo.id}/proxy?variant=preview&shareToken=${encodeURIComponent(shareToken)}`,
-  originalSrc: null,
-});
+): PublicPhoto => {
+  // Use direct signed CloudFront/S3 URLs when the backend provides them.
+  // Falls back to the proxy route for older backend responses.
+  const proxyThumb = `/api/photos/${photo.id}/proxy?variant=thumbnail&shareToken=${encodeURIComponent(shareToken)}`;
+  const proxyPreview = `/api/photos/${photo.id}/proxy?variant=preview&shareToken=${encodeURIComponent(shareToken)}`;
+
+  return {
+    id: photo.id,
+    originalFilename: photo.originalFilename || `${photo.id}.jpg`,
+    aiCaption: photo.aiCaption ?? null,
+    width: photo.width ?? null,
+    height: photo.height ?? null,
+    order: photo.order ?? 0,
+    blurDataUrl: photo.blurDataUrl ?? TRANSPARENT_BLUR,
+    thumbnailSrc: photo.thumbnailUrl ?? proxyThumb,
+    previewSrc: photo.previewUrl ?? proxyPreview,
+    originalSrc: null,
+  };
+};
 
 const normalizeGallery = (input: BackendGallery): PublicGallery => {
   const photographerName =

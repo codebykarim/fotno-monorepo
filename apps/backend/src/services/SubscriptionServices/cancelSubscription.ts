@@ -1,5 +1,6 @@
 import { prisma } from "@workspace/db";
 import { lsCancelSubscription } from "./lemonSqueezy";
+import { getFreeTierLimits } from "../../constants/plans";
 import AppError from "../../errors/AppError";
 
 export const cancelSubscription = async (userId: string): Promise<void> => {
@@ -36,7 +37,7 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
     subscriptionAgeDays <= TRIAL_DAYS;
 
   if (isTrialing) {
-    const ONE_GB = BigInt(1073741824);
+    const freeLimits = await getFreeTierLimits();
     await (prisma as any).$transaction(async (tx: any) => {
       await tx.subscription.update({
         where: { id: subscription.id },
@@ -48,19 +49,19 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
           plan: "FREE",
           subscribed: false,
           trialEndsAt: null,
-          storageLimit: ONE_GB,
-          galleryLimit: 2,
+          storageLimit: freeLimits.storageLimitBytes,
+          galleryLimit: freeLimits.galleryLimit,
           downgradedAt: new Date(),
         },
       });
-      // Auto-draft galleries beyond the 2-gallery limit
+      // Auto-draft galleries beyond the free tier gallery limit
       const publishedGalleries = await tx.gallery.findMany({
         where: { userId, isPublished: true },
         orderBy: { updatedAt: "desc" },
         select: { id: true },
       });
-      if (publishedGalleries.length > 2) {
-        const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+      if (publishedGalleries.length > freeLimits.galleryLimit) {
+        const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
         await tx.gallery.updateMany({
           where: { id: { in: toDraft } },
           data: { isPublished: false },

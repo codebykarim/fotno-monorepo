@@ -42,8 +42,11 @@ class ImageService {
       }
     }
 
-    const thumbnail = await this.compressWebpUnderBudget(workingBuffer, THUMBNAIL_MAX_BYTES)
-    const preview = await this.compressWebpUnderBudget(workingBuffer, PREVIEW_MAX_BYTES)
+    const [thumbnail, preview, blurDataUrl] = await Promise.all([
+      this.compressWebpUnderBudget(workingBuffer, THUMBNAIL_MAX_BYTES),
+      this.compressWebpUnderBudget(workingBuffer, PREVIEW_MAX_BYTES),
+      this.generateBlurDataUrl(workingBuffer),
+    ])
 
     const thumbnailKey = multipartService.buildThumbnailKey(galleryId, photoId)
     const previewKey = multipartService.buildPreviewKey(galleryId, photoId)
@@ -66,6 +69,7 @@ class ImageService {
         width: preview.width,
         height: preview.height,
       },
+      blurDataUrl,
     }
   }
 
@@ -111,6 +115,15 @@ class ImageService {
     }
 
     throw Errors.PROCESSING_FAILED('Could not compress image within budget')
+  }
+
+  /** Generates a tiny base64-encoded WebP data URL (≈300-500 chars) used as a blur placeholder. */
+  private async generateBlurDataUrl(input: Buffer): Promise<string> {
+    const tiny = await sharp(input)
+      .resize(16, undefined, { fit: 'inside' })
+      .webp({ quality: 20 })
+      .toBuffer()
+    return `data:image/webp;base64,${tiny.toString('base64')}`
   }
 
   /** Returns true if the MIME type is a RAW camera format that needs embedded-preview extraction. */

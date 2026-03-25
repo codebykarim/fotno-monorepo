@@ -3,6 +3,7 @@ import * as AdminService from "../services/AdminServices";
 import { prisma } from "@workspace/db";
 import AppError from "../errors/AppError";
 import { invalidatePricingCaches } from "../services/SubscriptionServices/listPlans";
+import { storageTierToBytes } from "../constants/storage";
 
 export const getOverviewController = async (_req: Request, res: Response) => {
   const overview = await AdminService.getAdminOverview();
@@ -171,6 +172,21 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   });
 
   invalidatePricingCaches();
+
+  // Cascade: if this is the free tier, update all FREE users' limits
+  if (tier.priceCents === 0) {
+    const newStorageLimit = storageTierToBytes(tier.gb);
+    const newGalleryLimit = tier.galleryLimit;
+    await (prisma as any).user.updateMany({
+      where: { plan: "FREE" },
+      data: {
+        storageLimit: newStorageLimit,
+        galleryLimit: newGalleryLimit,
+      },
+    });
+    console.log(`[Admin] Cascaded free tier update to all FREE users: ${tier.gb} GB, galleryLimit=${newGalleryLimit}`);
+  }
+
   return res.status(200).json(tier);
 };
 

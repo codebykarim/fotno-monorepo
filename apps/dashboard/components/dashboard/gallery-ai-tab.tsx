@@ -16,8 +16,10 @@ import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Progress } from "@workspace/ui/components/progress";
-import { apiRequest } from "@/lib/api/client";
+import useSWR from "swr";
+import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
+import { GetGalleryPhotosResponse, Photo } from "@/lib/types/gallery";
 import { cn } from "@workspace/ui/lib/utils";
 
 interface AiStatus {
@@ -31,15 +33,21 @@ interface AiStatus {
 
 type Props = {
   galleryId: string;
-  photos: GetGalleryResponse["gallery"]["photos"];
   aiContext: string | null;
   mutate: () => Promise<GetGalleryResponse | undefined>;
 };
 
-export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
+export function GalleryAiTab({ galleryId, aiContext, mutate }: Props) {
+  const { data: photosData } = useSWR<GetGalleryPhotosResponse>(
+    `/api/galleries/${galleryId}/photos?limit=200&offset=0`,
+    jsonFetcher,
+    { revalidateOnFocus: false },
+  );
+  const photos: Photo[] = photosData?.photos ?? [];
   // Status polling
   const [status, setStatus] = useState<AiStatus | null>(null);
   const [statusError, setStatusError] = useState(false);
+  const [aiDisabled, setAiDisabled] = useState(false);
 
   // Context editing
   const [contextDraft, setContextDraft] = useState(aiContext ?? "");
@@ -60,10 +68,17 @@ export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
 
   const fetchStatus = useCallback(async () => {
     try {
-      const res = await apiRequest<AiStatus>(
-        `/api/galleries/${galleryId}/ai/status`,
-      );
-      setStatus(res);
+      const res = await fetch(`/api/galleries/${galleryId}/ai/status`);
+      if (res.status === 503) {
+        setAiDisabled(true);
+        return;
+      }
+      if (!res.ok) {
+        setStatusError(true);
+        return;
+      }
+      const data = (await res.json()) as AiStatus;
+      setStatus(data);
       setStatusError(false);
     } catch {
       setStatusError(true);
@@ -72,6 +87,7 @@ export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
 
   // Poll status every 5 seconds while not ready
   useEffect(() => {
+    if (aiDisabled) return;
     void fetchStatus();
     const interval = setInterval(() => {
       if (!status?.ready) {
@@ -79,7 +95,7 @@ export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
       }
     }, 5000);
     return () => clearInterval(interval);
-  }, [fetchStatus, status?.ready]);
+  }, [fetchStatus, status?.ready, aiDisabled]);
 
   // Sync context draft when aiContext prop changes
   useEffect(() => {
@@ -200,6 +216,21 @@ export function GalleryAiTab({ galleryId, photos, aiContext, mutate }: Props) {
   const suggestedPhotos = photos.filter((p) =>
     suggestedPhotoIds.includes(p.id),
   );
+
+  // AI disabled
+  if (aiDisabled) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-sm text-center space-y-2">
+          <BrainCircuit className="mx-auto h-8 w-8 text-muted-foreground" />
+          <p className="text-sm font-medium">AI features are disabled</p>
+          <p className="text-sm text-muted-foreground">
+            Set <code className="text-xs bg-muted px-1 py-0.5 rounded">AI_ENABLED=true</code> to enable AI-powered search and album generation.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // State A: Not ready (still processing)
   if (status && !status.ready) {

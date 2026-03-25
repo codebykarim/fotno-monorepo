@@ -3,6 +3,7 @@ import { sendMail } from "./utils/sendMail";
 import { admin, emailOTP, multiSession, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@workspace/db";
+import { getFreeTierLimits } from "./constants/plans";
 
 const hasGoogleOAuth =
   Boolean(process.env.GOOGLE_CLIENT_ID) &&
@@ -23,13 +24,14 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          // New users start on the Free tier (1 GB, 2 galleries)
+          // New users start on the Free tier — limits read from PricingTier DB
+          const freeLimits = await getFreeTierLimits();
           await (prisma as any).user.update({
             where: { id: user.id },
             data: {
               plan: "FREE",
-              storageLimit: BigInt(1073741824), // 1 GB
-              galleryLimit: 2,
+              storageLimit: freeLimits.storageLimitBytes,
+              galleryLimit: freeLimits.galleryLimit,
             },
           });
         },

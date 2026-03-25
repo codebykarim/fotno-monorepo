@@ -7,7 +7,7 @@ export type Photo = {
   thumbnailUrl: string | null;
   previewUrl: string | null;
   originalUrl: string | null;
-  blurDataUrl: string;
+  blurDataUrl: string | null;
   order: number;
   width: number;
   height: number;
@@ -61,8 +61,15 @@ export type Album = {
 };
 
 export type GalleryWithPhotos = Gallery & {
-  photos: Photo[];
+  photoCount: number;
   albums: Album[];
+};
+
+export type GetGalleryPhotosResponse = {
+  photos: Photo[];
+  total: number;
+  limit: number;
+  offset: number;
 };
 
 export type Client = {

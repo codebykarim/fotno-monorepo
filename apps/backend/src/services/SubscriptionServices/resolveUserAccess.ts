@@ -1,7 +1,6 @@
 import { prisma } from "@workspace/db";
-import { STORAGE_TIER_LIMITS } from "../../constants/storage";
-
-const ONE_GB = BigInt(1073741824);
+import { storageTierToBytes } from "../../constants/storage";
+import { getFreeTierLimits } from "../../constants/plans";
 
 export type UserAccessStatus =
   | "free"
@@ -50,11 +49,12 @@ export const resolveUserAccess = async (
     return buildNoSubscriptionAccess();
   }
 
-  // Free tier: no subscription needed
+  // Free tier: read limits from PricingTier (single source of truth)
   if (user.plan === "FREE") {
-    const storageLimitBytes = user.storageLimit > 0n ? user.storageLimit : ONE_GB;
+    const freeLimits = await getFreeTierLimits();
+    const storageLimitBytes = freeLimits.storageLimitBytes;
     const overStorageLimit = user.storageUsed > storageLimitBytes;
-    const galleryLimit = user.galleryLimit ?? 2;
+    const galleryLimit = freeLimits.galleryLimit;
     const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
 
     return {
@@ -88,7 +88,7 @@ export const resolveUserAccess = async (
     }
 
     const storageLimitBytes =
-      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
+      storageTierToBytes(subscription.storageTierGb as number);
 
     const TRIAL_DAYS = 14;
     let trialEndsAt = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
@@ -129,7 +129,7 @@ export const resolveUserAccess = async (
     const periodEnd = subscription.currentPeriodEnd || subscription.endsAt;
     if (periodEnd && new Date(periodEnd) > new Date()) {
       const storageLimitBytes =
-        STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
+        storageTierToBytes(subscription.storageTierGb as number);
 
       return {
         status: "cancelled_grace",
@@ -156,7 +156,7 @@ export const resolveUserAccess = async (
   // Past due subscription
   if (subscription && subscription.status === "PAST_DUE") {
     const storageLimitBytes =
-      STORAGE_TIER_LIMITS[subscription.storageTierGb as number] ?? 0n;
+      storageTierToBytes(subscription.storageTierGb as number);
 
     return {
       status: "past_due",
@@ -194,9 +194,10 @@ function buildNoSubscriptionAccess(): UserAccess {
  * Used as the return value after expireSubscription() downgrades the user.
  */
 async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
-  const galleryLimit = 2;
+  const freeLimits = await getFreeTierLimits();
+  const galleryLimit = freeLimits.galleryLimit;
   const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
-  const storageLimitBytes = ONE_GB;
+  const storageLimitBytes = freeLimits.storageLimitBytes;
   const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
 
   return {
@@ -213,6 +214,8 @@ async function expireSubscription(
   userId: string,
   subscriptionId: string,
 ): Promise<void> {
+  const freeLimits = await getFreeTierLimits();
+
   await (prisma as any).$transaction(async (tx: any) => {
     // Expire the subscription record
     await tx.subscription.update({
@@ -226,21 +229,21 @@ async function expireSubscription(
       data: {
         plan: "FREE",
         subscribed: false,
-        storageLimit: ONE_GB,
-        galleryLimit: 2,
+        storageLimit: freeLimits.storageLimitBytes,
+        galleryLimit: freeLimits.galleryLimit,
         downgradedAt: new Date(),
       },
     });
 
-    // Auto-draft galleries beyond the 2-gallery limit
+    // Auto-draft galleries beyond the free tier gallery limit
     const publishedGalleries = await tx.gallery.findMany({
       where: { userId, isPublished: true },
       orderBy: { updatedAt: "desc" },
       select: { id: true },
     });
 
-    if (publishedGalleries.length > 2) {
-      const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+    if (publishedGalleries.length > freeLimits.galleryLimit) {
+      const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
       await tx.gallery.updateMany({
         where: { id: { in: toDraft } },
         data: { isPublished: false },

@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { prisma } from "@workspace/db";
-import { findTierByVariantId, STORAGE_TIERS } from "../../constants/plans";
-import { STORAGE_TIER_LIMITS } from "../../constants/storage";
+import { findTierByVariantId, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
+import { storageTierToBytes } from "../../constants/storage";
 import { getRegionalPricing } from "../../constants/regional-pricing";
 
 type WebhookEvent = {
@@ -177,7 +177,7 @@ async function handleSubscriptionCreated(
   const storageTierGb = regional?.tierStorageOverrides?.[globalTierGb] ?? globalTierGb;
   // Use the actual price from the LS subscription (may be PPP-adjusted via customPrice)
   const priceCents = attrs.first_subscription_item?.price ?? tier?.priceCents ?? 500;
-  const storageLimit = STORAGE_TIER_LIMITS[storageTierGb] ?? 0n;
+  const storageLimit = storageTierToBytes(storageTierGb);
 
   console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB${countryCode ? ` (region: ${countryCode}, global: ${globalTierGb}GB)` : ""}, price=${priceCents}cents, storageLimit=${storageLimit}`);
 
@@ -294,7 +294,7 @@ async function handleSubscriptionUpdated(
     return;
   }
 
-  const storageLimit = STORAGE_TIER_LIMITS[tier.gb] ?? 0n;
+  const storageLimit = storageTierToBytes(tier.gb);
 
   console.log(
     `[Webhook] subscription_updated: userId=${subscription.userId}, newTier=${tier.gb}GB, ` +
@@ -352,7 +352,7 @@ async function handleSubscriptionExpired(
   const subscription = await findSubscriptionWithFallback(lsSubscriptionId, lsCustomerId, "subscription_expired");
   if (!subscription) return;
 
-  const ONE_GB = BigInt(1073741824);
+  const freeLimits = await getFreeTierLimits();
   console.log(`[Webhook] subscription_expired: userId=${subscription.userId}`);
 
   await (prisma as any).$transaction(async (tx: any) => {
@@ -365,19 +365,19 @@ async function handleSubscriptionExpired(
       data: {
         plan: "FREE",
         subscribed: false,
-        storageLimit: ONE_GB,
-        galleryLimit: 2,
+        storageLimit: freeLimits.storageLimitBytes,
+        galleryLimit: freeLimits.galleryLimit,
         downgradedAt: new Date(),
       },
     });
-    // Auto-draft galleries beyond the 2-gallery limit
+    // Auto-draft galleries beyond the free tier gallery limit
     const publishedGalleries = await tx.gallery.findMany({
       where: { userId: subscription.userId, isPublished: true },
       orderBy: { updatedAt: "desc" },
       select: { id: true },
     });
-    if (publishedGalleries.length > 2) {
-      const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+    if (publishedGalleries.length > freeLimits.galleryLimit) {
+      const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
       await tx.gallery.updateMany({
         where: { id: { in: toDraft } },
         data: { isPublished: false },

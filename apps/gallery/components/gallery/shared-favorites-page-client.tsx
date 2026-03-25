@@ -276,11 +276,21 @@ export default function SharedFavoritesPageClient({
       <main className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-8 md:py-10">
         <section className="min-w-0">
           <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
-            {photos.map((photo, index) => (
+            {photos.map((photo, index) => {
+              const imgSrc = withFavoriteShareToken(photo.thumbnailSrc);
+              const w = photo.width ?? 4;
+              const h = photo.height ?? 3;
+
+              return (
               <article
                 key={photo.id}
-                className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-foreground md:mb-4"
-                style={{ contentVisibility: "auto" }}
+                className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-muted md:mb-4"
+                style={{
+                  contentVisibility: "auto",
+                  aspectRatio: `${w} / ${h}`,
+                  backgroundImage: photo.blurDataUrl ? `url(${photo.blurDataUrl})` : undefined,
+                  backgroundSize: "cover",
+                }}
               >
                 <button
                   type="button"
@@ -291,18 +301,26 @@ export default function SharedFavoritesPageClient({
                   }}
                   className="block w-full"
                 >
-                  <Image
-                    src={withFavoriteShareToken(photo.thumbnailSrc)}
+                  <img
+                    src={imgSrc}
                     alt={photo.aiCaption ?? photo.originalFilename}
-                    width={photo.width ?? 1200}
-                    height={photo.height ?? 900}
-                    sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
-                    placeholder="blur"
-                    blurDataURL={photo.blurDataUrl}
+                    width={w}
+                    height={h}
+                    loading={index < 8 ? "eager" : "lazy"}
+                    decoding="async"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      const attempt = Number(img.dataset.retry ?? "0");
+                      if (attempt < 2) {
+                        img.dataset.retry = String(attempt + 1);
+                        setTimeout(() => {
+                          img.src = imgSrc;
+                        }, 1000 * (attempt + 1));
+                      }
+                    }}
                     className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                    priority={index < 8}
                   />
                 </button>
 
@@ -317,7 +335,8 @@ export default function SharedFavoritesPageClient({
                   </div>
                 )}
               </article>
-            ))}
+              );
+            })}
           </div>
         </section>
       </main>

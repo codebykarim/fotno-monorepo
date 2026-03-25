@@ -4,8 +4,10 @@ export const IMAGE_POLICY = {
 } as const;
 
 export const PROTECTED_IMAGE_HEADERS: Record<string, string> = {
-  "Cache-Control": "private, no-store, max-age=0",
+  // Thumbnails/previews are immutable generated files — cache aggressively.
+  // The URL itself contains the photoId so content changes mean a new URL.
+  "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
   "X-Content-Type-Options": "nosniff",
-  "Cross-Origin-Resource-Policy": "same-origin",
+  "Cross-Origin-Resource-Policy": "cross-origin",
   "Referrer-Policy": "no-referrer",
 };

@@ -1,9 +1,7 @@
 import { db } from "./_shared";
 
-const IMAGE_SEARCH_SERVICE_URL =
-  process.env.IMAGE_SEARCH_SERVICE_URL ;
-
-  console.log(IMAGE_SEARCH_SERVICE_URL)
+const IMAGE_SEARCH_SERVICE_URL = process.env.IMAGE_SEARCH_SERVICE_URL;
+const AI_ENABLED = process.env.AI_ENABLED !== 'false';
 
 interface SuggestAlbumResponse {
   photoIds: string[];
@@ -17,6 +15,10 @@ export const suggestAlbum = async (
   galleryId: string,
   prompt: string,
 ) => {
+  if (!AI_ENABLED) {
+    return { error: "AI features are disabled", status: 503 as const };
+  }
+
   const gallery = await db.gallery.findFirst({
     where: { id: galleryId, userId },
     select: { id: true, aiContext: true, title: true },

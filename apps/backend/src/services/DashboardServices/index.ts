@@ -3,6 +3,7 @@ export { getOverview } from "./getOverview";
 export { listGalleries } from "./listGalleries";
 export { createGallery } from "./createGallery";
 export { getGallery } from "./getGallery";
+export { getGalleryPhotos } from "./getGalleryPhotos";
 export { updateGallery } from "./updateGallery";
 export { deleteGallery } from "./deleteGallery";
 export { reorderGalleryPhotos } from "./reorderGalleryPhotos";

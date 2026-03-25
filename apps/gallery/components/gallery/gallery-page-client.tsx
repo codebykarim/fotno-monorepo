@@ -1606,10 +1606,20 @@ export default function GalleryPageClient({
     });
   }, [activePhoto, getPanLimits, zoom]);
 
-  const handleModalWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const delta = event.deltaY < 0 ? 0.15 : -0.15;
-    setZoomClamped(zoom + delta, { x: event.clientX, y: event.clientY });
+  const ZOOM_STEPS = [MIN_ZOOM, 2, MAX_ZOOM];
+  const DRAG_THRESHOLD = 5;
+  const wasDragRef = useRef(false);
+
+  const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    if (wasDragRef.current) return;
+    const focus = { x: event.clientX, y: event.clientY };
+    const nextStep = ZOOM_STEPS.find((s) => s > zoom);
+    if (nextStep) {
+      setZoomClamped(nextStep, focus);
+    } else {
+      setZoomClamped(MIN_ZOOM);
+    }
   };
 
   const distanceBetweenTouches = (touches: React.TouchList): number => {
@@ -1620,6 +1630,27 @@ export default function GalleryPageClient({
     const dy = touches[0]!.clientY - touches[1]!.clientY;
     return Math.hypot(dx, dy);
   };
+
+  const applyTransformDirect = useCallback(
+    (x: number, y: number) => {
+      const img = modalViewportRef.current?.querySelector("img");
+      if (img) {
+        img.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${zoom})`;
+      }
+    },
+    [zoom],
+  );
+
+  const clampAndStorePan = useCallback(
+    (rawX: number, rawY: number) => {
+      const { maxX, maxY } = getPanLimits(zoom);
+      const x = Math.max(-maxX, Math.min(maxX, rawX));
+      const y = Math.max(-maxY, Math.min(maxY, rawY));
+      panRef.current = { x, y };
+      return { x, y };
+    },
+    [getPanLimits, zoom],
+  );
 
   const handleModalTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     if (event.touches.length === 2) {
@@ -1680,10 +1711,11 @@ export default function GalleryPageClient({
       event.preventDefault();
       const deltaX = touch.clientX - panStartRef.current.startX;
       const deltaY = touch.clientY - panStartRef.current.startY;
-      setPanClamped(
+      const { x, y } = clampAndStorePan(
         panStartRef.current.originX + deltaX,
         panStartRef.current.originY + deltaY,
       );
+      applyTransformDirect(x, y);
     }
   };
 
@@ -1707,41 +1739,52 @@ export default function GalleryPageClient({
     }
 
     if (event.touches.length === 0) {
+      if (isDragging) {
+        setPan({ ...panRef.current });
+      }
       panStartRef.current = null;
       setIsDragging(false);
     }
   };
 
   const handleModalMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || zoom <= MIN_ZOOM) {
-      return;
-    }
+    if (event.button !== 0) return;
 
     event.preventDefault();
-    setIsDragging(true);
+    wasDragRef.current = false;
     panStartRef.current = {
       startX: event.clientX,
       startY: event.clientY,
       originX: panRef.current.x,
       originY: panRef.current.y,
     };
+    if (zoom > MIN_ZOOM) {
+      setIsDragging(true);
+    }
   };
 
   const handleModalMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !panStartRef.current || zoom <= MIN_ZOOM) {
-      return;
-    }
+    if (!panStartRef.current || zoom <= MIN_ZOOM) return;
 
-    event.preventDefault();
     const deltaX = event.clientX - panStartRef.current.startX;
     const deltaY = event.clientY - panStartRef.current.startY;
-    setPanClamped(
+    if (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD) {
+      wasDragRef.current = true;
+    }
+    if (!isDragging) return;
+
+    event.preventDefault();
+    const { x, y } = clampAndStorePan(
       panStartRef.current.originX + deltaX,
       panStartRef.current.originY + deltaY,
     );
+    applyTransformDirect(x, y);
   };
 
   const stopModalMouseDrag = () => {
+    if (isDragging) {
+      setPan({ ...panRef.current });
+    }
     panStartRef.current = null;
     setIsDragging(false);
   };
@@ -2056,12 +2099,19 @@ export default function GalleryPageClient({
               {visiblePhotos.map((photo, index) => {
                 const imageSrc = withOptionalToken(photo.thumbnailSrc);
                 const loved = favorites.includes(photo.id);
+                const w = photo.width ?? 4;
+                const h = photo.height ?? 3;
 
                 return (
                   <article
                     key={photo.id}
-                    className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-foreground md:mb-4"
-                    style={{ contentVisibility: "auto" }}
+                    className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-muted md:mb-4"
+                    style={{
+                      contentVisibility: "auto",
+                      aspectRatio: `${w} / ${h}`,
+                      backgroundImage: photo.blurDataUrl ? `url(${photo.blurDataUrl})` : undefined,
+                      backgroundSize: "cover",
+                    }}
                   >
                     <button
                       type="button"
@@ -2073,18 +2123,26 @@ export default function GalleryPageClient({
                       }}
                       className="block w-full"
                     >
-                      <Image
+                      <img
                         src={imageSrc}
                         alt={photo.aiCaption ?? photo.originalFilename}
-                        width={photo.width ?? 1200}
-                        height={photo.height ?? 900}
-                        sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
-                        placeholder="blur"
-                        blurDataURL={photo.blurDataUrl}
+                        width={w}
+                        height={h}
+                        loading={index < 8 ? "eager" : "lazy"}
+                        decoding="async"
                         draggable={false}
                         onContextMenu={(event) => event.preventDefault()}
+                        onError={(e) => {
+                          const img = e.currentTarget;
+                          const attempt = Number(img.dataset.retry ?? "0");
+                          if (attempt < 2) {
+                            img.dataset.retry = String(attempt + 1);
+                            setTimeout(() => {
+                              img.src = imageSrc;
+                            }, 1000 * (attempt + 1));
+                          }
+                        }}
                         className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                        priority={index < 8}
                       />
                     </button>
 
@@ -2204,13 +2262,15 @@ export default function GalleryPageClient({
             <div
               ref={modalViewportRef}
               className={`relative flex h-full max-h-[85vh] w-full max-w-6xl items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/60 ${
-                zoom > MIN_ZOOM
+                zoom >= MAX_ZOOM
                   ? isDragging
                     ? "cursor-grabbing"
-                    : "cursor-grab"
-                  : "cursor-zoom-in"
+                    : "cursor-zoom-out"
+                  : isDragging
+                    ? "cursor-grabbing"
+                    : "cursor-zoom-in"
               }`}
-              onWheel={handleModalWheel}
+              onClick={handleModalClick}
               onMouseDown={handleModalMouseDown}
               onMouseMove={handleModalMouseMove}
               onMouseUp={stopModalMouseDrag}
@@ -2228,11 +2288,12 @@ export default function GalleryPageClient({
                 height={activePhoto.height ?? 1200}
                 sizes="90vw"
                 draggable={false}
-                className="max-h-[85vh] w-auto object-contain transition-transform duration-150"
+                className="max-h-[85vh] w-auto object-contain"
                 style={{
                   transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
                   transformOrigin: "center center",
-                  transition: isDragging ? "none" : undefined,
+                  transition: isDragging ? "none" : "transform 150ms ease-out",
+                  willChange: "transform",
                 }}
                 onContextMenu={(event) => event.preventDefault()}
                 priority

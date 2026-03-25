@@ -5,6 +5,7 @@ import { multipartService } from "../../upload-service/src/services/multipart";
 
 const IMAGE_SEARCH_SERVICE_URL =
   process.env.IMAGE_SEARCH_SERVICE_URL || "http://localhost:4002";
+const AI_ENABLED = process.env.AI_ENABLED !== 'false';
 
 type CompressionOptions = {
   targetWidth: number;
@@ -292,14 +293,16 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
     );
 
     // Ingest to image search service for embedding
-    void ingestPhotoToSearchService(
-      photo.id,
-      photo.gallery.userId,
-      photo.galleryId,
-      previewKey,
-      photo.aiCaption,
-      photo.aiTags,
-    );
+    if (AI_ENABLED) {
+      void ingestPhotoToSearchService(
+        photo.id,
+        photo.gallery.userId,
+        photo.galleryId,
+        previewKey,
+        photo.aiCaption,
+        photo.aiTags,
+      );
+    }
 
     console.log(
       `[image-processor] completed photoId=${photo.id} previewBytes=${previewBuffer.length} thumbnailBytes=${thumbnailBuffer.length} durationMs=${Date.now() - startedAt}`,

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR, { mutate as mutateCache } from "swr";
+import useSWRInfinite from "swr/infinite";
 import { useDropzone } from "react-dropzone";
 import { QRCodeSVG } from "qrcode.react";
 import {
@@ -59,11 +60,13 @@ import {
 } from "@workspace/ui/components/dropdown-menu";
 import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
+import { GetGalleryPhotosResponse } from "@/lib/types/gallery";
 import {
   useGalleryUiStore,
   type UploadQueueItem,
 } from "@/lib/stores/gallery-ui-store";
 import { cn } from "@workspace/ui/lib/utils";
+import { withRetry } from "@/lib/utils/retry";
 import { GalleryAiTab } from "./gallery-ai-tab";
 import { GallerySettings } from "./gallery-settings/settings-layout";
 
@@ -84,6 +87,7 @@ type Props = {
 };
 
 const EMPTY_SELECTION: string[] = [];
+const PHOTOS_PAGE_SIZE = 50;
 const MAX_CONCURRENT_FILES = 4;
 const MAX_CONCURRENT_CHUNKS = 3;
 const DEFAULT_CHUNK_SIZE_BYTES = 10 * 1024 * 1024;
@@ -312,8 +316,8 @@ export function GalleryDetailContent({
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <Images className="h-3 w-3" />
-            {data.gallery.photos.length} photo
-            {data.gallery.photos.length !== 1 ? "s" : ""}
+            {data.gallery.photoCount} photo
+            {data.gallery.photoCount !== 1 ? "s" : ""}
           </span>
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <FolderKanban className="h-3 w-3" />
@@ -365,26 +369,17 @@ export function GalleryDetailContent({
       {activeTab === "photos" && (
         <PhotosTab
           galleryId={galleryId}
+          photoCount={data.gallery.photoCount}
           mutate={mutate}
-          photos={data.gallery.photos}
         />
       )}
       {activeTab === "albums" && (
         <AlbumsTab
           galleryId={galleryId}
           albums={data.gallery.albums}
-          photos={data.gallery.photos}
           mutate={mutate}
         />
       )}
-      {/* {activeTab === "ai" && (
-        <GalleryAiTab
-          galleryId={galleryId}
-          photos={data.gallery.photos}
-          aiContext={data.gallery.aiContext}
-          mutate={mutate}
-        />
-      )} */}
       {activeTab === "settings" && (
         <GallerySettings galleryId={galleryId} data={data} mutate={mutate} />
       )}
@@ -437,11 +432,56 @@ export function getGalleryShareLink(slug: string) {
 
 type PhotosTabProps = {
   galleryId: string;
-  photos: GetGalleryResponse["gallery"]["photos"];
+  photoCount: number;
   mutate: () => Promise<GetGalleryResponse | undefined>;
 };
 
-export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
+export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: PhotosTabProps) {
+  const getKey = useCallback(
+    (pageIndex: number, previousPageData: GetGalleryPhotosResponse | null) => {
+      if (previousPageData && previousPageData.photos.length === 0) return null;
+      return `/api/galleries/${galleryId}/photos?limit=${PHOTOS_PAGE_SIZE}&offset=${pageIndex * PHOTOS_PAGE_SIZE}`;
+    },
+    [galleryId],
+  );
+  const {
+    data: pages,
+    size,
+    setSize,
+    isValidating,
+    mutate: mutatePhotos,
+  } = useSWRInfinite<GetGalleryPhotosResponse>(getKey, jsonFetcher, {
+    revalidateOnFocus: false,
+    revalidateFirstPage: false,
+  });
+  const photos = useMemo(
+    () => (pages ? pages.flatMap((p) => p.photos) : []),
+    [pages],
+  );
+  const hasMore = photos.length < photoCount;
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // IntersectionObserver to load more photos on scroll
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && hasMore && !isValidating) {
+          setSize((s) => s + 1);
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, isValidating, setSize]);
+
+  // Refresh photos when gallery-level mutate triggers (e.g. after upload)
+  const mutate = useCallback(async () => {
+    const [galleryResult] = await Promise.all([mutateGallery(), mutatePhotos()]);
+    return galleryResult;
+  }, [mutateGallery, mutatePhotos]);
   const selected = useGalleryUiStore(
     (state) => state.selectedByGallery[galleryId] ?? EMPTY_SELECTION,
   );
@@ -784,19 +824,21 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             confirmUrl: `/api/galleries/${galleryId}/photos/confirm`,
           };
         } else {
-          presigned = await withAbortSignal((signal) =>
-            apiRequest<PresignResponse>(
-              `/api/galleries/${galleryId}/photos/presign`,
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  fileName: file.name,
-                  fileType: file.type,
-                  size: file.size,
-                  checksum,
-                }),
-                signal,
-              },
+          presigned = await withRetry(() =>
+            withAbortSignal((signal) =>
+              apiRequest<PresignResponse>(
+                `/api/galleries/${galleryId}/photos/presign`,
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    fileName: file.name,
+                    fileType: file.type,
+                    size: file.size,
+                    checksum,
+                  }),
+                  signal,
+                },
+              ),
             ),
           );
         }
@@ -863,20 +905,41 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             );
           const end = Math.min(start + chunkSizeBytes, file.size);
           const chunk = file.slice(start, end);
-          const uploadResponse = await withAbortSignal((signal) =>
-            fetch(url, {
-              method: "PUT",
-              body: chunk,
-              headers: {
-                "Content-Type": file.type || "application/octet-stream",
+          const uploadResponse = await withRetry(
+            async () => {
+              const res = await withAbortSignal((signal) =>
+                fetch(url, {
+                  method: "PUT",
+                  body: chunk,
+                  headers: {
+                    "Content-Type": file.type || "application/octet-stream",
+                  },
+                  signal,
+                }),
+              );
+              if (!res.ok) {
+                const err = new Error(
+                  `Upload failed with status ${res.status}`,
+                ) as Error & { status: number };
+                err.status = res.status;
+                throw err;
+              }
+              return res;
+            },
+            {
+              onRetry: (attempt) => {
+                upsertQueueItem({
+                  id: tempId,
+                  galleryId,
+                  fileName: file.name,
+                  progress: Math.min(85, 20 + Math.floor((completedPartsCount / totalParts) * 65)),
+                  status: "uploading",
+                  photoId: presigned.photoId,
+                  errorMessage: `Retrying chunk ${partNumber}/${totalParts} (attempt ${attempt + 1}/3)...`,
+                });
               },
-              signal,
-            }),
+            },
           );
-          if (!uploadResponse.ok)
-            throw new Error(
-              `Upload failed with status ${uploadResponse.status}`,
-            );
           const etag =
             uploadResponse.headers.get("etag") ??
             uploadResponse.headers.get("ETag");
@@ -884,16 +947,18 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             throw new Error(
               "Upload succeeded but response did not include an ETag header",
             );
-          await withAbortSignal((signal) =>
-            apiRequest(partCompleteUrl, {
-              method: "PATCH",
-              body: JSON.stringify({
-                photoId: presigned.photoId,
-                partNumber,
-                etag,
+          await withRetry(() =>
+            withAbortSignal((signal) =>
+              apiRequest(partCompleteUrl, {
+                method: "PATCH",
+                body: JSON.stringify({
+                  photoId: presigned.photoId,
+                  partNumber,
+                  etag,
+                }),
+                signal,
               }),
-              signal,
-            }),
+            ),
           );
           completedPartsCount += 1;
           updateUploadProgress();
@@ -927,12 +992,14 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
           errorMessage: undefined,
         });
 
-        await withAbortSignal((signal) =>
-          apiRequest(presigned.confirmUrl, {
-            method: "POST",
-            body: JSON.stringify({ photoId: presigned.photoId }),
-            signal,
-          }),
+        await withRetry(() =>
+          withAbortSignal((signal) =>
+            apiRequest(presigned.confirmUrl, {
+              method: "POST",
+              body: JSON.stringify({ photoId: presigned.photoId }),
+              signal,
+            }),
+          ),
         );
 
         upsertQueueItem({
@@ -1290,7 +1357,7 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
             <span className="text-sm text-muted-foreground">
               {selected.length > 0
                 ? `${selected.length} selected`
-                : `${photos.length} photos`}
+                : `${photoCount} photos`}
             </span>
             {selected.length > 0 && (
               <Button
@@ -1439,7 +1506,7 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
                   sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
                   placeholder="blur"
                   blurDataURL={
-                    "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+                    photo.blurDataUrl || "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
                   }
                   draggable={false}
                   onContextMenu={(event) => event.preventDefault()}
@@ -1509,6 +1576,15 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
         })}
       </div>
 
+      {/* Infinite scroll sentinel */}
+      {hasMore && (
+        <div ref={sentinelRef} className="flex items-center justify-center py-6">
+          {isValidating && (
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          )}
+        </div>
+      )}
+
       {/* Single photo delete dialog */}
       <Dialog
         open={!!photoToDelete}
@@ -1545,14 +1621,19 @@ export function PhotosTab({ galleryId, photos, mutate }: PhotosTabProps) {
 export function AlbumsTab({
   galleryId,
   albums,
-  photos,
   mutate,
 }: {
   galleryId: string;
   albums: GetGalleryResponse["gallery"]["albums"];
-  photos: GetGalleryResponse["gallery"]["photos"];
   mutate: () => Promise<GetGalleryResponse | undefined>;
 }) {
+  // Fetch enough photos to render album covers (first 200 should cover most galleries)
+  const { data: photosData } = useSWR<GetGalleryPhotosResponse>(
+    `/api/galleries/${galleryId}/photos?limit=200&offset=0`,
+    jsonFetcher,
+    { revalidateOnFocus: false },
+  );
+  const photos = photosData?.photos ?? [];
   const photoMap = useMemo(
     () => new Map(photos.map((photo) => [photo.id, photo])),
     [photos],
@@ -1633,7 +1714,7 @@ export function AlbumsTab({
         {albums.map((album) => {
           const albumPhotos = album.photoIds
             .map((id) => photoMap.get(id))
-            .filter(Boolean) as GetGalleryResponse["gallery"]["photos"];
+            .filter(Boolean) as typeof photos;
           const heroPhoto = albumPhotos[0];
           const heroUrl =
             heroPhoto?.thumbnailUrl ?? heroPhoto?.previewUrl ?? heroPhoto?.url;

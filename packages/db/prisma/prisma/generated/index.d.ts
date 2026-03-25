@@ -12394,6 +12394,7 @@ export namespace Prisma {
     faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
+    blurDataUrl: string | null
     status: string | null
     processedAt: Date | null
     createdAt: Date | null
@@ -12420,6 +12421,7 @@ export namespace Prisma {
     faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
+    blurDataUrl: string | null
     status: string | null
     processedAt: Date | null
     createdAt: Date | null
@@ -12447,6 +12449,7 @@ export namespace Prisma {
     faceCount: number
     thumbnailKey: number
     previewKey: number
+    blurDataUrl: number
     status: number
     processedAt: number
     createdAt: number
@@ -12497,6 +12500,7 @@ export namespace Prisma {
     faceCount?: true
     thumbnailKey?: true
     previewKey?: true
+    blurDataUrl?: true
     status?: true
     processedAt?: true
     createdAt?: true
@@ -12523,6 +12527,7 @@ export namespace Prisma {
     faceCount?: true
     thumbnailKey?: true
     previewKey?: true
+    blurDataUrl?: true
     status?: true
     processedAt?: true
     createdAt?: true
@@ -12550,6 +12555,7 @@ export namespace Prisma {
     faceCount?: true
     thumbnailKey?: true
     previewKey?: true
+    blurDataUrl?: true
     status?: true
     processedAt?: true
     createdAt?: true
@@ -12664,6 +12670,7 @@ export namespace Prisma {
     faceCount: number
     thumbnailKey: string | null
     previewKey: string | null
+    blurDataUrl: string | null
     status: string
     processedAt: Date | null
     createdAt: Date
@@ -12710,6 +12717,7 @@ export namespace Prisma {
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
+    blurDataUrl?: boolean
     status?: boolean
     processedAt?: boolean
     createdAt?: boolean
@@ -12744,6 +12752,7 @@ export namespace Prisma {
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
+    blurDataUrl?: boolean
     status?: boolean
     processedAt?: boolean
     createdAt?: boolean
@@ -12772,6 +12781,7 @@ export namespace Prisma {
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
+    blurDataUrl?: boolean
     status?: boolean
     processedAt?: boolean
     createdAt?: boolean
@@ -12800,12 +12810,13 @@ export namespace Prisma {
     faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
+    blurDataUrl?: boolean
     status?: boolean
     processedAt?: boolean
     createdAt?: boolean
   }
 
-  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "checksum" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "status" | "processedAt" | "createdAt", ExtArgs["result"]["photo"]>
+  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "checksum" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "blurDataUrl" | "status" | "processedAt" | "createdAt", ExtArgs["result"]["photo"]>
   export type PhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
@@ -12854,6 +12865,7 @@ export namespace Prisma {
       faceCount: number
       thumbnailKey: string | null
       previewKey: string | null
+      blurDataUrl: string | null
       status: string
       processedAt: Date | null
       createdAt: Date
@@ -13307,6 +13319,7 @@ export namespace Prisma {
     readonly faceCount: FieldRef<"Photo", 'Int'>
     readonly thumbnailKey: FieldRef<"Photo", 'String'>
     readonly previewKey: FieldRef<"Photo", 'String'>
+    readonly blurDataUrl: FieldRef<"Photo", 'String'>
     readonly status: FieldRef<"Photo", 'String'>
     readonly processedAt: FieldRef<"Photo", 'DateTime'>
     readonly createdAt: FieldRef<"Photo", 'DateTime'>
@@ -31024,6 +31037,7 @@ export namespace Prisma {
     faceCount: 'faceCount',
     thumbnailKey: 'thumbnailKey',
     previewKey: 'previewKey',
+    blurDataUrl: 'blurDataUrl',
     status: 'status',
     processedAt: 'processedAt',
     createdAt: 'createdAt'
@@ -32353,6 +32367,7 @@ export namespace Prisma {
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
+    blurDataUrl?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
     processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
@@ -32386,6 +32401,7 @@ export namespace Prisma {
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
+    blurDataUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -32422,6 +32438,7 @@ export namespace Prisma {
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
+    blurDataUrl?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
     processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
@@ -32455,6 +32472,7 @@ export namespace Prisma {
     faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
+    blurDataUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -32490,6 +32508,7 @@ export namespace Prisma {
     faceCount?: IntWithAggregatesFilter<"Photo"> | number
     thumbnailKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     previewKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
+    blurDataUrl?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     status?: StringWithAggregatesFilter<"Photo"> | string
     processedAt?: DateTimeNullableWithAggregatesFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Photo"> | Date | string
@@ -34586,6 +34605,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -34619,6 +34639,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -34650,6 +34671,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34683,6 +34705,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34715,6 +34738,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -34741,6 +34765,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34768,6 +34793,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36929,6 +36955,7 @@ export namespace Prisma {
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
+    blurDataUrl?: SortOrder
     status?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
@@ -36966,6 +36993,7 @@ export namespace Prisma {
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
+    blurDataUrl?: SortOrder
     status?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
@@ -36992,6 +37020,7 @@ export namespace Prisma {
     faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
+    blurDataUrl?: SortOrder
     status?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
@@ -41156,6 +41185,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -41188,6 +41218,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -41223,6 +41254,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -41254,6 +41286,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -41601,6 +41634,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41633,6 +41667,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41683,6 +41718,7 @@ export namespace Prisma {
     faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
+    blurDataUrl?: StringNullableFilter<"Photo"> | string | null
     status?: StringFilter<"Photo"> | string
     processedAt?: DateTimeNullableFilter<"Photo"> | Date | string | null
     createdAt?: DateTimeFilter<"Photo"> | Date | string
@@ -42414,6 +42450,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -42446,6 +42483,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -42492,6 +42530,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42524,6 +42563,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43369,6 +43409,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -43401,6 +43442,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -43476,6 +43518,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43508,6 +43551,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43623,6 +43667,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -43655,6 +43700,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -43863,6 +43909,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43895,6 +43942,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44065,6 +44113,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -44097,6 +44146,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -44234,6 +44284,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44266,6 +44317,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45690,6 +45742,7 @@ export namespace Prisma {
     faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
+    blurDataUrl?: string | null
     status?: string
     processedAt?: Date | string | null
     createdAt?: Date | string
@@ -45786,6 +45839,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45817,6 +45871,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45848,6 +45903,7 @@ export namespace Prisma {
     faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
+    blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

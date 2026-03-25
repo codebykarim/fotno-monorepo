@@ -23,11 +23,19 @@
       "autoPort": false
     },
     {
+      "name": "gallery",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "dev", "gallery"],
+      "port": 3003,
+      "autoPort": false
+    },
+    {
       "name": "admin",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "dev", "admin"],
       "port": 3004,
       "autoPort": false
     }
-  ]
+  ],
+  "autoVerify": false
 }

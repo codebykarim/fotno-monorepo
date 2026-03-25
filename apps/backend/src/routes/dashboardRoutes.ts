@@ -39,6 +39,11 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.deleteGalleryController,
     authFunction: isAuth,
   },
+  "get-gallery-photos": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getGalleryPhotosController,
+    authFunction: isAuth,
+  },
   "reorder-gallery-photos": {
     httpMethod: "PATCH",
     controllerFunction: DashboardController.reorderGalleryPhotosController,
@@ -227,6 +232,10 @@ dashboardRoutes.delete(
   handleMethod("delete-gallery"),
 );
 
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/photos",
+  handleMethod("get-gallery-photos"),
+);
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/photos/reorder",
   handleMethod("reorder-gallery-photos"),

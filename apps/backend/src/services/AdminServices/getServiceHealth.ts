@@ -39,13 +39,28 @@ const checkEndpoint = async (
 };
 
 export const getServiceHealth = async () => {
-  const services = await Promise.allSettled([
+  const aiEnabled = process.env.AI_ENABLED !== 'false';
+
+  const checks: Promise<ServiceHealthResult>[] = [
     checkEndpoint("Backend API", `${process.env.NEXT_PUBLIC_API_URL}/`),
     checkEndpoint("Upload Service", `${process.env.UPLOAD_SERVICE_URL}/health`),
-    checkEndpoint("Image Search", `${process.env.IMAGE_SEARCH_SERVICE_URL}/health`),
-    checkEndpoint("SigLIP", `${process.env.SIGLIP_SERVICE_URL}/health`),
-    checkEndpoint("Qwen2-VL", `${process.env.QWEN_SERVICE_URL}/health`),
-  ]);
+  ];
+
+  if (aiEnabled) {
+    checks.push(
+      checkEndpoint("Image Search", `${process.env.IMAGE_SEARCH_SERVICE_URL}/health`),
+      checkEndpoint("SigLIP", `${process.env.SIGLIP_SERVICE_URL}/health`),
+      checkEndpoint("Qwen2-VL", `${process.env.QWEN_SERVICE_URL}/health`),
+    );
+  } else {
+    checks.push(
+      Promise.resolve({ name: "Image Search", status: "down" as const, responseTime: 0, details: { disabled: true } }),
+      Promise.resolve({ name: "SigLIP", status: "down" as const, responseTime: 0, details: { disabled: true } }),
+      Promise.resolve({ name: "Qwen2-VL", status: "down" as const, responseTime: 0, details: { disabled: true } }),
+    );
+  }
+
+  const services = await Promise.allSettled(checks);
 
   const results: ServiceHealthResult[] = services.map((s) =>
     s.status === "fulfilled"

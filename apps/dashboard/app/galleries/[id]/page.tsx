@@ -24,7 +24,7 @@ export default function GalleryPhotosPage() {
     <PhotosTab
       galleryId={galleryId}
       mutate={mutate}
-      photos={data.gallery.photos}
+      photoCount={data.gallery.photoCount}
     />
   );
 }

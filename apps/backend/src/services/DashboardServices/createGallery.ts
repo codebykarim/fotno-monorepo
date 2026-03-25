@@ -1,16 +1,21 @@
 import { db, slugify, toDateOnly, toIsoOrNull } from "./_shared";
+import { getFreeTierLimits } from "../../constants/plans";
 
 export const createGallery = async (userId: string, body: any) => {
   // Check gallery limit
   const user = await db.user.findUnique({
     where: { id: userId },
-    select: { galleryLimit: true },
+    select: { plan: true, galleryLimit: true },
   });
-  if (user?.galleryLimit != null) {
+  // For FREE users, always read gallery limit from the PricingTier table
+  const effectiveGalleryLimit = user?.plan === "FREE"
+    ? (await getFreeTierLimits()).galleryLimit
+    : user?.galleryLimit ?? null;
+  if (effectiveGalleryLimit != null) {
     const galleryCount = await db.gallery.count({ where: { userId } });
-    if (galleryCount >= user.galleryLimit) {
+    if (galleryCount >= effectiveGalleryLimit) {
       return {
-        error: `Gallery limit reached (${user.galleryLimit}). Upgrade your plan to create more galleries.`,
+        error: `Gallery limit reached (${effectiveGalleryLimit}). Upgrade your plan to create more galleries.`,
         status: 403 as const,
       };
     }

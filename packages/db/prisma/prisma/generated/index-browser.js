@@ -271,6 +271,7 @@ exports.Prisma.PhotoScalarFieldEnum = {
   faceCount: 'faceCount',
   thumbnailKey: 'thumbnailKey',
   previewKey: 'previewKey',
+  blurDataUrl: 'blurDataUrl',
   status: 'status',
   processedAt: 'processedAt',
   createdAt: 'createdAt'

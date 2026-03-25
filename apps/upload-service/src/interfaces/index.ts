@@ -81,6 +81,7 @@ export interface StorageSummary {
 export interface ProcessingResult {
   thumbnail: { s3Key: string; size: bigint; width: number; height: number }
   preview: { s3Key: string; size: bigint; width: number; height: number }
+  blurDataUrl: string
 }
 
 export interface StorageGuardDecision {

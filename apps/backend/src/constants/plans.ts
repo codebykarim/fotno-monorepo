@@ -1,4 +1,5 @@
 import { prisma } from "@workspace/db";
+import { storageTierToBytes } from "./storage";
 
 // ── DB-backed tier cache (5 min TTL) ───────────────────────────
 type DBTier = {
@@ -119,6 +120,21 @@ export const PLAN_FEATURES = [
   "Slideshow & social sharing",
 ];
 
+/** Build free-tier feature list dynamically from actual tier data */
+export function buildFreeFeatures(freeTier: { gb: number; galleryLimit: number | null }): string[] {
+  const storage = freeTier.gb <= 0 ? "1 GB" : `${freeTier.gb} GB`;
+  const galleries = freeTier.galleryLimit ?? 2;
+  return [
+    `${storage} storage`,
+    `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
+    "AI-powered captions",
+    "Client favorites & selections",
+    "Download tracking & analytics",
+    "Password-protected galleries",
+  ];
+}
+
+/** @deprecated Use buildFreeFeatures() with actual tier data */
 export const FREE_PLAN_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
@@ -127,6 +143,23 @@ export const FREE_PLAN_FEATURES = [
   "Download tracking & analytics",
   "Password-protected galleries",
 ];
+
+/**
+ * Get the current free tier limits from DB (cached).
+ * Used by resolveUserAccess, createGallery, auth signup, etc.
+ */
+export async function getFreeTierLimits(): Promise<{ storageLimitBytes: bigint; galleryLimit: number; gb: number }> {
+  const tiers = await fetchTiersFromDB();
+  const freeTier = tiers.find((t) => t.priceCents === 0);
+  if (freeTier) {
+    return {
+      storageLimitBytes: storageTierToBytes(freeTier.gb),
+      galleryLimit: freeTier.galleryLimit ?? 2,
+      gb: freeTier.gb,
+    };
+  }
+  return { storageLimitBytes: BigInt(1073741824), galleryLimit: 2, gb: 1 };
+}
 
 export const findTierByVariantId = (variantId: string): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.lsVariantId === variantId);

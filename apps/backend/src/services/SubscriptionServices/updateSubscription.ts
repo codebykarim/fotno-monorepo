@@ -1,7 +1,7 @@
 import { prisma } from "@workspace/db";
 import { lsUpdateSubscription, lsGetSubscription } from "./lemonSqueezy";
 import { findTierByGb } from "../../constants/plans";
-import { STORAGE_TIER_LIMITS } from "../../constants/storage";
+import { storageTierToBytes } from "../../constants/storage";
 import AppError from "../../errors/AppError";
 
 /**
@@ -225,7 +225,7 @@ export const changeTier = async ({
 
   // For upgrades, apply immediately
   if (isUpgrade) {
-    const newLimit = STORAGE_TIER_LIMITS[newStorageTierGb];
+    const newLimit = storageTierToBytes(newStorageTierGb);
     await (prisma as any).$transaction([
       (prisma as any).subscription.update({
         where: { id: subscription.id },

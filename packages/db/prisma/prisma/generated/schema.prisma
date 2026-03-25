@@ -243,6 +243,7 @@ model Photo {
   faceCount        Int               @default(0)
   thumbnailKey     String?
   previewKey       String?
+  blurDataUrl      String?
   status           String            @default("pending")
   processedAt      DateTime?
   createdAt        DateTime          @default(now())

@@ -275,8 +275,8 @@ export function GalleryDetailHeader() {
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <Images className="h-3 w-3" />
-            {data.gallery.photos.length} photo
-            {data.gallery.photos.length !== 1 ? "s" : ""}
+            {data.gallery.photoCount} photo
+            {data.gallery.photoCount !== 1 ? "s" : ""}
           </span>
           <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
             <FolderKanban className="h-3 w-3" />

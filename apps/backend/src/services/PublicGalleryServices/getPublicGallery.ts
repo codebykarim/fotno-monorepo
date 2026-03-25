@@ -1,4 +1,8 @@
 import { publishedGalleryWhere, db } from "./_shared";
+import { getPresignedDownloadUrl } from "../../utils/s3";
+
+/** Signed URL TTL for gallery view – 1 hour gives plenty of browsing time. */
+const GALLERY_VIEW_URL_TTL = 3600;
 
 export const getPublicGallery = async (shareToken: string) => {
   const gallery = await db.gallery.findFirst({
@@ -33,6 +37,7 @@ export const getPublicGallery = async (shareToken: string) => {
         },
       },
       photos: {
+        where: { status: "processed" },
         orderBy: { order: "asc" },
         select: {
           id: true,
@@ -41,6 +46,10 @@ export const getPublicGallery = async (shareToken: string) => {
           width: true,
           height: true,
           order: true,
+          thumbnailKey: true,
+          previewKey: true,
+          blurDataUrl: true,
+          s3Key: true,
         },
       },
       albums: {
@@ -67,6 +76,33 @@ export const getPublicGallery = async (shareToken: string) => {
   if (gallery.expiresAt && new Date(gallery.expiresAt) < new Date()) {
     return { expired: true };
   }
+
+  // Generate signed CloudFront/S3 URLs for thumbnails and previews in parallel.
+  // This is fast (just crypto signing, no network calls) and eliminates the
+  // need for the gallery app to proxy every single image through its own server.
+  const photosWithUrls = await Promise.all(
+    gallery.photos.map(async (photo: any) => {
+      const thumbnailKey = photo.thumbnailKey ?? photo.previewKey ?? photo.s3Key;
+      const previewKey = photo.previewKey ?? photo.thumbnailKey ?? photo.s3Key;
+
+      const [thumbnailUrl, previewUrl] = await Promise.all([
+        getPresignedDownloadUrl(thumbnailKey, GALLERY_VIEW_URL_TTL),
+        getPresignedDownloadUrl(previewKey, GALLERY_VIEW_URL_TTL),
+      ]);
+
+      return {
+        id: photo.id,
+        originalFilename: photo.originalFilename,
+        aiCaption: photo.aiCaption,
+        width: photo.width,
+        height: photo.height,
+        order: photo.order,
+        blurDataUrl: photo.blurDataUrl,
+        thumbnailUrl,
+        previewUrl,
+      };
+    }),
+  );
 
   return {
     id: gallery.id,
@@ -95,7 +131,7 @@ export const getPublicGallery = async (shareToken: string) => {
       favoritesEnabled: gallery.favoritesEnabled,
       favoriteNotesEnabled: gallery.favoriteNotesEnabled,
     },
-    photos: gallery.photos,
+    photos: photosWithUrls,
     albums: gallery.albums.map((album: any) => ({
       id: album.id,
       title: album.title,

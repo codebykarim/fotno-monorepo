@@ -21,7 +21,6 @@ export default function GalleryAlbumsPage() {
     <AlbumsTab
       galleryId={galleryId}
       albums={data.gallery.albums}
-      photos={data.gallery.photos}
       mutate={mutate}
     />
   );

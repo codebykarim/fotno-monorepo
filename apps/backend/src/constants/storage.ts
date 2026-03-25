@@ -12,6 +12,7 @@ export const STORAGE_TIERS = [
 const UNLIMITED_BYTES = BigInt(3) * BigInt(1000) * ONE_GB_BYTES;
 
 export const STORAGE_TIER_LIMITS: Record<number, bigint> = {
+  0: BigInt(1) * ONE_GB_BYTES, // Free tier: 1 GB
   20: BigInt(20) * ONE_GB_BYTES,
   100: BigInt(100) * ONE_GB_BYTES,
   250: BigInt(250) * ONE_GB_BYTES,

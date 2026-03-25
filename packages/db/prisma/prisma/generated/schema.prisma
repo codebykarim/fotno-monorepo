@@ -12,10 +12,12 @@ model User {
   id                 String           @id @unique @default(uuid())
   name               String
   email              String
-  plan               Plan             @default(TRIAL)
+  plan               Plan             @default(FREE)
   trialEndsAt        DateTime?
   storageUsed        BigInt           @default(0)
-  storageLimit       BigInt           @default(0)
+  storageLimit       BigInt           @default(1073741824) // 1 GB
+  galleryLimit       Int? // null = unlimited
+  downgradedAt       DateTime? // tracks subscription expiry for 90-day retention
   storageReserved    BigInt           @default(0)
   overageBytes       BigInt           @default(0)
   overageResetAt     DateTime?
@@ -46,6 +48,7 @@ model User {
 }
 
 enum Plan {
+  FREE
   TRIAL
   PRO
   EXPIRED
@@ -451,15 +454,16 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id          String   @id @default(uuid())
-  gb          Int      @unique // -1 for unlimited
-  label       String
-  priceCents  Int // base USD price
-  lsVariantId String?
-  sortOrder   Int      @default(0)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  id           String   @id @default(uuid())
+  gb           Int      @unique // -1 for unlimited, 0 for free
+  label        String
+  priceCents   Int // base USD price
+  lsVariantId  String?
+  galleryLimit Int? // null = unlimited
+  sortOrder    Int      @default(0)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
 
   @@map("pricing_tier")
 }

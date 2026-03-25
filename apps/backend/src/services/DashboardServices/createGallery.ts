@@ -1,6 +1,21 @@
 import { db, slugify, toDateOnly, toIsoOrNull } from "./_shared";
 
 export const createGallery = async (userId: string, body: any) => {
+  // Check gallery limit
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { galleryLimit: true },
+  });
+  if (user?.galleryLimit != null) {
+    const galleryCount = await db.gallery.count({ where: { userId } });
+    if (galleryCount >= user.galleryLimit) {
+      return {
+        error: `Gallery limit reached (${user.galleryLimit}). Upgrade your plan to create more galleries.`,
+        status: 403 as const,
+      };
+    }
+  }
+
   const title = String(body?.title ?? "").trim();
   if (!title) {
     return { error: "title is required", status: 400 as const };

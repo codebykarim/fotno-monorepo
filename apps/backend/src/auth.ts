@@ -23,11 +23,13 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          // New users start without a subscription — they must choose a plan
+          // New users start on the Free tier (1 GB, 2 galleries)
           await (prisma as any).user.update({
             where: { id: user.id },
             data: {
-              plan: "TRIAL",
+              plan: "FREE",
+              storageLimit: BigInt(1073741824), // 1 GB
+              galleryLimit: 2,
             },
           });
         },

@@ -1,4 +1,4 @@
-import { fetchTiersFromDB, PLAN_FEATURES, invalidateTierCache } from "../../constants/plans";
+import { fetchTiersFromDB, PLAN_FEATURES, FREE_PLAN_FEATURES, invalidateTierCache } from "../../constants/plans";
 import {
   getRegionalPricing,
   fetchRegionalPricingFromDB,
@@ -9,6 +9,7 @@ export type PlanInfo = {
   gb: number;
   priceCents: number;
   label: string;
+  galleryLimit?: number | null;
   /** Price in local currency minor units (only when regional pricing applies) */
   localPriceCents?: number;
   /** PPP-adjusted USD price in cents (what LS will charge) */
@@ -24,6 +25,7 @@ export type PlanInfo = {
 export type PlansResponse = {
   tiers: PlanInfo[];
   features: string[];
+  freeFeatures: string[];
 };
 
 // ── In-memory cache (5 min TTL) ────────────────────────────────
@@ -35,6 +37,7 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
  * Apply regional pricing overrides to a list of base USD plans.
  * Tiers not present in `tierPrices` are excluded for this region.
  * Tiers with `tierStorageOverrides` get their displayed gb value changed.
+ * Free tiers (priceCents=0) are always preserved regardless of regional config.
  *
  * Tries DB-backed regional pricing first, falls back to hardcoded constants.
  */
@@ -48,7 +51,10 @@ async function applyRegionalPricing(
     getRegionalPricing(countryCode);
   if (!regional) return plans;
 
-  return plans
+  // Always keep free tiers; only filter paid tiers by regional config
+  const freeTiers = plans.filter((p) => p.priceCents === 0);
+  const paidTiers = plans
+    .filter((p) => p.priceCents > 0)
     .filter((plan) => plan.gb in regional.tierPrices)
     .map((plan) => ({
       ...plan,
@@ -61,6 +67,8 @@ async function applyRegionalPricing(
       symbol: regional.symbol,
       locale: regional.locale,
     }));
+
+  return [...freeTiers, ...paidTiers];
 }
 
 /**
@@ -84,7 +92,7 @@ export const fetchPlans = async (
 ): Promise<PlansResponse> => {
   const basePlans = await fetchBasePlans();
   const tiers = await applyRegionalPricing(basePlans, countryCode);
-  return { tiers, features: PLAN_FEATURES };
+  return { tiers, features: PLAN_FEATURES, freeFeatures: FREE_PLAN_FEATURES };
 };
 
 async function fetchBasePlans(): Promise<PlanInfo[]> {
@@ -94,10 +102,11 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
   }
 
   const dbTiers = await fetchTiersFromDB();
-  const plans: PlanInfo[] = dbTiers.map(({ gb, priceCents, label }) => ({
+  const plans: PlanInfo[] = dbTiers.map(({ gb, priceCents, label, galleryLimit }) => ({
     gb,
     priceCents,
     label,
+    galleryLimit: galleryLimit ?? null,
   }));
 
   // Sort by GB so the order is deterministic (-1 = unlimited goes last)

@@ -31,6 +31,7 @@ type PlanTier = {
   gb: number;
   priceCents: number;
   label: string;
+  galleryLimit?: number | null;
   localPriceCents?: number;
   currency?: string;
   symbol?: string;
@@ -40,9 +41,11 @@ type PlanTier = {
 type PlansResponse = {
   tiers: PlanTier[];
   features: string[];
+  freeFeatures: string[];
 };
 
 const FALLBACK_TIERS: PlanTier[] = [
+  { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2 },
   { gb: 20, priceCents: 900, label: "Starter" },
   { gb: 100, priceCents: 1900, label: "Professional" },
   { gb: 500, priceCents: 3500, label: "Business" },
@@ -62,7 +65,17 @@ const FALLBACK_FEATURES = [
   "Slideshow & social sharing",
 ];
 
+const FALLBACK_FREE_FEATURES = [
+  "1 GB storage",
+  "Up to 2 galleries",
+  "AI-powered captions",
+  "Client favorites & selections",
+  "Download tracking & analytics",
+  "Password-protected galleries",
+];
+
 const formatTierPrice = (tier: PlanTier) => {
+  if (tier.priceCents === 0) return "Free";
   const cents = tier.localPriceCents ?? tier.priceCents;
   const currency = tier.currency ?? "USD";
   const locale = tier.locale ?? "en-US";
@@ -80,17 +93,18 @@ const formatTierPrice = (tier: PlanTier) => {
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
+  if (gb === 0) return "1 GB";
   if (gb >= 1000) return `${gb / 1000} TB`;
   return `${gb} GB`;
 };
 
 async function fetchPlans(
   country?: string,
-): Promise<{ tiers: PlanTier[]; features: string[] }> {
+): Promise<{ tiers: PlanTier[]; features: string[]; freeFeatures: string[] }> {
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
   if (!backendUrl)
-    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
+    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
 
   try {
     const url = country
@@ -100,7 +114,7 @@ async function fetchPlans(
       next: { revalidate: 300 },
     });
     if (!res.ok)
-      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
+      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
     const data = await res.json();
     // Handle both formats: new { tiers, features } and legacy PlanTier[]
     const tiers: PlanTier[] = Array.isArray(data)
@@ -109,11 +123,12 @@ async function fetchPlans(
         ? data.tiers
         : [];
     const features: string[] = data?.features ?? FALLBACK_FEATURES;
+    const freeFeatures: string[] = data?.freeFeatures ?? FALLBACK_FREE_FEATURES;
     if (tiers.length === 0)
-      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
-    return { tiers, features };
+      return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
+    return { tiers, features, freeFeatures };
   } catch {
-    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES };
+    return { tiers: FALLBACK_TIERS, features: FALLBACK_FEATURES, freeFeatures: FALLBACK_FREE_FEATURES };
   }
 }
 
@@ -127,7 +142,10 @@ export async function Pricing() {
     headerStore.get("cf-ipcountry") ||
     headerStore.get("x-vercel-ip-country") ||
     undefined;
-  const { tiers: plans, features } = await fetchPlans(country);
+  const { tiers: allPlans, features, freeFeatures } = await fetchPlans(country);
+
+  const paidPlans = allPlans.filter((t) => t.priceCents > 0);
+  const freeTier = allPlans.find((t) => t.priceCents === 0);
 
   return (
     <section
@@ -150,7 +168,7 @@ export async function Pricing() {
             Pricing
           </p>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-background sm:text-4xl lg:text-5xl">
-            One plan. Pick your storage.
+            Start free. Scale when ready.
           </h2>
           <p className="mt-4 text-lg text-background/50">
             Every feature is included at every tier — only storage differs. Pick
@@ -158,9 +176,53 @@ export async function Pricing() {
           </p>
         </div>
 
-        {/* Storage tier grid */}
-        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
-          {plans.map((tier) => {
+        {/* ── Free tier callout ──────────────────────────────────── */}
+        {freeTier && (
+          <div className="mx-auto mt-16 max-w-2xl">
+            <div className="rounded-2xl border border-background/10 bg-background/5 px-8 py-8 text-center">
+              <span className="inline-flex items-center rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary">
+                Free forever
+              </span>
+              <h3 className="mt-4 text-2xl font-bold text-background">
+                Get started for free
+              </h3>
+              <p className="mt-2 text-background/50">
+                {formatStorage(freeTier.gb)} storage &middot; {freeTier.galleryLimit ?? 2} galleries &middot; All core features
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                {freeFeatures.map((feature) => (
+                  <span
+                    key={feature}
+                    className="inline-flex items-center gap-1.5 text-sm text-background/70"
+                  >
+                    <CheckIcon className="text-primary" />
+                    {feature}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-6">
+                <Button
+                  href={`${signupUrl}/account`}
+                  variant="solid"
+                  color="white"
+                  aria-label="Get started free"
+                  className="px-8 py-3 text-base"
+                >
+                  Get started free
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Paid storage tier grid ────────────────────────────── */}
+        <div className="mx-auto mt-12 text-center">
+          <p className="text-sm font-medium text-background/40 uppercase tracking-wider">
+            Need more storage?
+          </p>
+        </div>
+        <div className="mx-auto mt-6 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+          {paidPlans.map((tier) => {
             const isPopular = tier.label === "Professional" || tier.gb === 100;
             return (
               <a

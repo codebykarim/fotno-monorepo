@@ -1,7 +1,10 @@
 import { prisma } from "@workspace/db";
 import { STORAGE_TIER_LIMITS } from "../../constants/storage";
 
+const ONE_GB = BigInt(1073741824);
+
 export type UserAccessStatus =
+  | "free"
   | "active"
   | "trialing"
   | "past_due"
@@ -13,6 +16,8 @@ export type UserAccess = {
   canUpload: boolean;
   canCreateGallery: boolean;
   storageLimitBytes: bigint;
+  galleryLimit?: number | null;
+  galleryCount?: number;
   trialEndsAt?: Date | null;
   trialDaysLeft?: number;
   subscription?: {
@@ -35,12 +40,31 @@ export const resolveUserAccess = async (
       id: true,
       plan: true,
       storageLimit: true,
+      storageUsed: true,
+      galleryLimit: true,
       trialEndsAt: true,
     },
   });
 
   if (!user) {
     return buildNoSubscriptionAccess();
+  }
+
+  // Free tier: no subscription needed
+  if (user.plan === "FREE") {
+    const storageLimitBytes = user.storageLimit > 0n ? user.storageLimit : ONE_GB;
+    const overStorageLimit = user.storageUsed > storageLimitBytes;
+    const galleryLimit = user.galleryLimit ?? 2;
+    const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
+
+    return {
+      status: "free",
+      canUpload: !overStorageLimit,
+      canCreateGallery: galleryCount < galleryLimit,
+      storageLimitBytes,
+      galleryLimit,
+      galleryCount,
+    };
   }
 
   // Check for active subscription first
@@ -60,7 +84,7 @@ export const resolveUserAccess = async (
       new Date(subscription.endsAt) < new Date()
     ) {
       await expireSubscription(userId, subscription.id);
-      return buildNoSubscriptionAccess();
+      return buildFreeAccess(userId, user);
     }
 
     const storageLimitBytes =
@@ -86,6 +110,7 @@ export const resolveUserAccess = async (
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
+      galleryLimit: null,
       ...(isTrialing ? { trialEndsAt, trialDaysLeft } : {}),
       subscription: {
         id: subscription.id,
@@ -111,6 +136,7 @@ export const resolveUserAccess = async (
         canUpload: true,
         canCreateGallery: true,
         storageLimitBytes,
+        galleryLimit: null,
         subscription: {
           id: subscription.id,
           source: subscription.source,
@@ -124,7 +150,7 @@ export const resolveUserAccess = async (
     }
     // Grace period over
     await expireSubscription(userId, subscription.id);
-    return buildNoSubscriptionAccess();
+    return buildFreeAccess(userId, user);
   }
 
   // Past due subscription
@@ -137,6 +163,7 @@ export const resolveUserAccess = async (
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
+      galleryLimit: null,
       subscription: {
         id: subscription.id,
         source: subscription.source,
@@ -149,7 +176,7 @@ export const resolveUserAccess = async (
     };
   }
 
-  // No active subscription — user must choose a plan
+  // No active subscription — return no_subscription for legacy TRIAL/EXPIRED users
   return buildNoSubscriptionAccess();
 };
 
@@ -162,18 +189,62 @@ function buildNoSubscriptionAccess(): UserAccess {
   };
 }
 
+/**
+ * Build free tier access after a subscription expires.
+ * Used as the return value after expireSubscription() downgrades the user.
+ */
+async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
+  const galleryLimit = 2;
+  const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
+  const storageLimitBytes = ONE_GB;
+  const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
+
+  return {
+    status: "free",
+    canUpload: !overStorageLimit,
+    canCreateGallery: galleryCount < galleryLimit,
+    storageLimitBytes,
+    galleryLimit,
+    galleryCount,
+  };
+}
+
 async function expireSubscription(
   userId: string,
   subscriptionId: string,
 ): Promise<void> {
-  await (prisma as any).$transaction([
-    (prisma as any).subscription.update({
+  await (prisma as any).$transaction(async (tx: any) => {
+    // Expire the subscription record
+    await tx.subscription.update({
       where: { id: subscriptionId },
       data: { status: "EXPIRED" },
-    }),
-    (prisma as any).user.update({
+    });
+
+    // Downgrade user to Free tier
+    await tx.user.update({
       where: { id: userId },
-      data: { plan: "EXPIRED", subscribed: false },
-    }),
-  ]);
+      data: {
+        plan: "FREE",
+        subscribed: false,
+        storageLimit: ONE_GB,
+        galleryLimit: 2,
+        downgradedAt: new Date(),
+      },
+    });
+
+    // Auto-draft galleries beyond the 2-gallery limit
+    const publishedGalleries = await tx.gallery.findMany({
+      where: { userId, isPublished: true },
+      orderBy: { updatedAt: "desc" },
+      select: { id: true },
+    });
+
+    if (publishedGalleries.length > 2) {
+      const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+      await tx.gallery.updateMany({
+        where: { id: { in: toDraft } },
+        data: { isPublished: false },
+      });
+    }
+  });
 }

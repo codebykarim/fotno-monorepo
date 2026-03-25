@@ -36,16 +36,37 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
     subscriptionAgeDays <= TRIAL_DAYS;
 
   if (isTrialing) {
-    await (prisma as any).$transaction([
-      (prisma as any).subscription.update({
+    const ONE_GB = BigInt(1073741824);
+    await (prisma as any).$transaction(async (tx: any) => {
+      await tx.subscription.update({
         where: { id: subscription.id },
         data: { status: "EXPIRED", cancelledAt: new Date() },
-      }),
-      (prisma as any).user.update({
+      });
+      await tx.user.update({
         where: { id: userId },
-        data: { plan: "TRIAL", subscribed: false, trialEndsAt: null, storageLimit: 0n },
-      }),
-    ]);
+        data: {
+          plan: "FREE",
+          subscribed: false,
+          trialEndsAt: null,
+          storageLimit: ONE_GB,
+          galleryLimit: 2,
+          downgradedAt: new Date(),
+        },
+      });
+      // Auto-draft galleries beyond the 2-gallery limit
+      const publishedGalleries = await tx.gallery.findMany({
+        where: { userId, isPublished: true },
+        orderBy: { updatedAt: "desc" },
+        select: { id: true },
+      });
+      if (publishedGalleries.length > 2) {
+        const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+        await tx.gallery.updateMany({
+          where: { id: { in: toDraft } },
+          data: { isPublished: false },
+        });
+      }
+    });
   } else {
     await (prisma as any).subscription.update({
       where: { id: subscription.id },

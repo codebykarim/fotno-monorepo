@@ -79,6 +79,7 @@ export type StorageEventsResponse = {
 };
 
 export type UserAccessStatus =
+  | "free"
   | "active"
   | "trialing"
   | "past_due"
@@ -91,6 +92,8 @@ export type SubscriptionResponse = {
     canUpload: boolean;
     canCreateGallery: boolean;
     storageLimitBytes: string;
+    galleryLimit?: number | null;
+    galleryCount?: number;
     trialEndsAt?: string | null;
     trialDaysLeft?: number;
     subscription?: {
@@ -121,6 +124,7 @@ export type PlanTier = {
   gb: number;
   priceCents: number;
   label: string;
+  galleryLimit?: number | null;
   /** Price in local currency minor units (only present for regional pricing) */
   localPriceCents?: number;
   /** PPP-adjusted USD price in cents (what LS will charge) */
@@ -136,5 +140,6 @@ export type PlanTier = {
 export type PlansResponse = {
   tiers: PlanTier[];
   features: string[];
+  freeFeatures: string[];
 };
 

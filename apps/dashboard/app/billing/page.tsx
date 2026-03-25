@@ -54,15 +54,18 @@ const formatPrice = (cents: number, currency = "USD", locale = "en-US") => {
   }
 };
 
-const formatTierPrice = (tier: PlanTier) =>
-  formatPrice(
+const formatTierPrice = (tier: PlanTier) => {
+  if (tier.priceCents === 0) return "Free";
+  return formatPrice(
     tier.localPriceCents ?? tier.priceCents,
     tier.currency ?? "USD",
     tier.locale ?? "en-US",
   );
+};
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
+  if (gb === 0) return "1 GB";
   if (gb >= 1000) return `${gb / 1000} TB`;
   return `${gb} GB`;
 };
@@ -98,6 +101,7 @@ export default function BillingPage() {
     jsonFetcher,
   );
   const plans = Array.isArray(plansData) ? plansData : plansData?.tiers;
+  const paidPlans = plans?.filter((t) => t.priceCents > 0);
   const features =
     (Array.isArray(plansData) ? null : plansData?.features) ??
     FALLBACK_FEATURES;
@@ -182,7 +186,11 @@ export default function BillingPage() {
     }
   };
 
-  console.log(access?.subscription?.storageTierGb, subscription?.storageTierGb);
+  const isFree = access?.status === "free";
+  const hasSubscription =
+    access?.status === "active" ||
+    access?.status === "trialing" ||
+    access?.status === "cancelled_grace";
 
   return (
     <div className="space-y-10">
@@ -213,6 +221,31 @@ export default function BillingPage() {
           <CardContent>
             {!access ? (
               <p className="text-sm text-muted-foreground">Loading...</p>
+            ) : isFree ? (
+              <div className="space-y-2 flex flex-col md:flex-row items-center justify-between">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                    Free Plan
+                  </span>
+                  <span className="text-sm font-medium">
+                    1 GB storage &mdash; {access.galleryCount ?? 0}/{access.galleryLimit ?? 2} galleries
+                  </span>
+                </div>
+                {!access.canUpload && (
+                  <p className="text-sm text-amber-600 dark:text-amber-400">
+                    You&apos;re over your storage limit. Upgrade or remove files to upload again.
+                  </p>
+                )}
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    document.getElementById("paid-plans")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Upgrade
+                </Button>
+              </div>
             ) : access.status === "active" ||
               access.status === "trialing" ||
               access.status === "cancelled_grace" ? (
@@ -238,13 +271,13 @@ export default function BillingPage() {
                     </span>
                   )}
                   <span className="text-sm font-medium">
-                    {plans?.find((t) => t.gb === subscription?.storageTierGb)
+                    {paidPlans?.find((t) => t.gb === subscription?.storageTierGb)
                       ?.label ?? "Fotno Pro"}{" "}
                     &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
                   </span>
                   <span className="text-sm text-muted-foreground">
                     {(() => {
-                      const currentTier = plans?.find(
+                      const currentTier = paidPlans?.find(
                         (t) => t.gb === subscription?.storageTierGb,
                       );
                       return currentTier
@@ -309,8 +342,9 @@ export default function BillingPage() {
         </Card>
       </motion.div>
 
-      {/* ── Storage Tiers — Landing-page style grid ────────────── */}
+      {/* ── Storage Tiers — Paid plans grid ────────────────────── */}
       <motion.div
+        id="paid-plans"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -323,13 +357,13 @@ export default function BillingPage() {
         />
 
         <h2 className="text-xl font-semibold tracking-tight">
-          {access?.status === "active" ? "Change Plan" : "Choose Your Plan"}
+          {hasSubscription ? "Change Plan" : "Upgrade to Pro"}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Every feature is included at every tier — only storage differs.
+          Every feature is included at every tier — only storage differs. Unlimited galleries.
         </p>
 
-        {!plans ? (
+        {!paidPlans ? (
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
@@ -345,16 +379,9 @@ export default function BillingPage() {
             initial="hidden"
             animate="show"
           >
-            {plans.map((tier) => {
+            {paidPlans.map((tier) => {
               const isCurrent =
-                subscription?.storageTierGb === tier.gb &&
-                (access?.status === "active" ||
-                  access?.status === "trialing" ||
-                  access?.status === "cancelled_grace");
-              const hasSubscription =
-                access?.status === "active" ||
-                access?.status === "trialing" ||
-                access?.status === "cancelled_grace";
+                subscription?.storageTierGb === tier.gb && hasSubscription;
               const isPopular =
                 (tier.label === "Professional" || tier.gb === 100) &&
                 !hasSubscription;
@@ -435,8 +462,7 @@ export default function BillingPage() {
                         >
                           Current Plan
                         </Button>
-                      ) : access?.status === "active" ||
-                        access?.status === "trialing" ? (
+                      ) : hasSubscription ? (
                         <Button
                           size="sm"
                           className="w-full text-xs"
@@ -461,7 +487,7 @@ export default function BillingPage() {
                           onClick={() => handleCheckout(tier)}
                           disabled={isLoading}
                         >
-                          {isLoading ? "..." : "Subscribe"}
+                          {isLoading ? "..." : "Upgrade"}
                         </Button>
                       )}
                     </div>

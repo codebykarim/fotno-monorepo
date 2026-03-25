@@ -140,6 +140,15 @@ function TiersSection({
       ),
     },
     {
+      key: "galleryLimit",
+      header: "Gallery Limit",
+      render: (t) => (
+        <span className="text-sm">
+          {t.galleryLimit != null ? t.galleryLimit : "Unlimited"}
+        </span>
+      ),
+    },
+    {
       key: "lsVariantId",
       header: "LS Variant ID",
       render: (t) => (
@@ -230,6 +239,9 @@ function TierDialog({
     tier?.priceCents?.toString() ?? "",
   );
   const [lsVariantId, setLsVariantId] = useState(tier?.lsVariantId ?? "");
+  const [galleryLimit, setGalleryLimit] = useState(
+    tier?.galleryLimit?.toString() ?? "",
+  );
   const [sortOrder, setSortOrder] = useState(
     tier?.sortOrder?.toString() ?? "0",
   );
@@ -243,6 +255,7 @@ function TierDialog({
         gb: Number(gb),
         label,
         priceCents: Number(priceCents),
+        galleryLimit: galleryLimit.trim() ? Number(galleryLimit) : null,
         sortOrder: Number(sortOrder),
         active,
       };
@@ -300,12 +313,21 @@ function TierDialog({
               type="number"
             />
           </div>
-          <FieldInput
-            label="LemonSqueezy Variant ID"
-            value={lsVariantId}
-            onChange={setLsVariantId}
-            placeholder="Optional"
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <FieldInput
+              label="Gallery Limit"
+              value={galleryLimit}
+              onChange={setGalleryLimit}
+              type="number"
+              placeholder="Empty = unlimited"
+            />
+            <FieldInput
+              label="LemonSqueezy Variant ID"
+              value={lsVariantId}
+              onChange={setLsVariantId}
+              placeholder="Optional"
+            />
+          </div>
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -325,7 +347,7 @@ function TierDialog({
           </button>
           <button
             onClick={handleSubmit}
-            disabled={saving || !gb || !label || !priceCents}
+            disabled={saving || gb === "" || !label || priceCents === ""}
             className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {saving ? "Saving..." : isEdit ? "Update" : "Create"}

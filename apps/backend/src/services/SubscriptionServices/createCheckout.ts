@@ -16,6 +16,10 @@ export const createCheckout = async ({
   storageTierGb: number;
   countryCode?: string;
 }): Promise<{ checkoutUrl: string }> => {
+  if (storageTierGb === 0) {
+    throw new AppError("Cannot create a checkout for the free tier", 400);
+  }
+
   const storeId = process.env.LEMONSQUEEZY_STORE_ID;
   if (!storeId) {
     throw new AppError("Payment system not configured", 500);

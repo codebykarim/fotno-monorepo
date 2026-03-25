@@ -128,6 +128,8 @@ exports.Prisma.UserScalarFieldEnum = {
   trialEndsAt: 'trialEndsAt',
   storageUsed: 'storageUsed',
   storageLimit: 'storageLimit',
+  galleryLimit: 'galleryLimit',
+  downgradedAt: 'downgradedAt',
   storageReserved: 'storageReserved',
   overageBytes: 'overageBytes',
   overageResetAt: 'overageResetAt',
@@ -395,6 +397,7 @@ exports.Prisma.PricingTierScalarFieldEnum = {
   label: 'label',
   priceCents: 'priceCents',
   lsVariantId: 'lsVariantId',
+  galleryLimit: 'galleryLimit',
   sortOrder: 'sortOrder',
   active: 'active',
   createdAt: 'createdAt',
@@ -466,6 +469,7 @@ exports.Prisma.JsonNullValueFilter = {
   AnyNull: Prisma.AnyNull
 };
 exports.Plan = exports.$Enums.Plan = {
+  FREE: 'FREE',
   TRIAL: 'TRIAL',
   PRO: 'PRO',
   EXPIRED: 'EXPIRED'

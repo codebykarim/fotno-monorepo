@@ -7,6 +7,7 @@ type DBTier = {
   label: string;
   priceCents: number;
   lsVariantId: string | null;
+  galleryLimit: number | null;
   sortOrder: number;
   active: boolean;
 };
@@ -44,6 +45,7 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
         label: t.label,
         priceCents: t.priceCents,
         lsVariantId: t.lsVariantId || null,
+        galleryLimit: t.gb === 0 ? 2 : null,
         sortOrder: 0,
         active: true,
       }));
@@ -60,6 +62,7 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
       label: t.label,
       priceCents: t.priceCents,
       lsVariantId: t.lsVariantId || null,
+      galleryLimit: t.gb === 0 ? 2 : null,
       sortOrder: 0,
       active: true,
     }));
@@ -69,6 +72,12 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
 // ── Hardcoded fallback tiers ───────────────────────────────────
 
 export const STORAGE_TIERS = [
+  {
+    gb: 0,
+    priceCents: 0,
+    label: "Free",
+    lsVariantId: "",
+  },
   {
     gb: 20,
     priceCents: 900,
@@ -108,6 +117,15 @@ export const PLAN_FEATURES = [
   "Bulk upload with auto-retry",
   "Google Drive & Google Photos import",
   "Slideshow & social sharing",
+];
+
+export const FREE_PLAN_FEATURES = [
+  "1 GB storage",
+  "Up to 2 galleries",
+  "AI-powered captions",
+  "Client favorites & selections",
+  "Download tracking & analytics",
+  "Password-protected galleries",
 ];
 
 export const findTierByVariantId = (variantId: string): StorageTier | undefined =>

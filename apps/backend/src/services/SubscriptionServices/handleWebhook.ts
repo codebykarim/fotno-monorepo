@@ -203,6 +203,8 @@ async function handleSubscriptionCreated(
           subscribed: true,
           storageLimit,
           lsCustomerId,
+          galleryLimit: null,
+          downgradedAt: null,
           ...(attrs.trial_ends_at ? { trialEndsAt: new Date(attrs.trial_ends_at) } : {}),
         },
       }),
@@ -350,19 +352,40 @@ async function handleSubscriptionExpired(
   const subscription = await findSubscriptionWithFallback(lsSubscriptionId, lsCustomerId, "subscription_expired");
   if (!subscription) return;
 
+  const ONE_GB = BigInt(1073741824);
   console.log(`[Webhook] subscription_expired: userId=${subscription.userId}`);
 
-  await (prisma as any).$transaction([
-    (prisma as any).subscription.update({
+  await (prisma as any).$transaction(async (tx: any) => {
+    await tx.subscription.update({
       where: { id: subscription.id },
       data: { status: "EXPIRED", lsSubscriptionId },
-    }),
-    (prisma as any).user.update({
+    });
+    await tx.user.update({
       where: { id: subscription.userId },
-      data: { plan: "EXPIRED", subscribed: false },
-    }),
-  ]);
-  console.log(`[Webhook] subscription_expired: completed for userId=${subscription.userId}`);
+      data: {
+        plan: "FREE",
+        subscribed: false,
+        storageLimit: ONE_GB,
+        galleryLimit: 2,
+        downgradedAt: new Date(),
+      },
+    });
+    // Auto-draft galleries beyond the 2-gallery limit
+    const publishedGalleries = await tx.gallery.findMany({
+      where: { userId: subscription.userId, isPublished: true },
+      orderBy: { updatedAt: "desc" },
+      select: { id: true },
+    });
+    if (publishedGalleries.length > 2) {
+      const toDraft = publishedGalleries.slice(2).map((g: any) => g.id);
+      await tx.gallery.updateMany({
+        where: { id: { in: toDraft } },
+        data: { isPublished: false },
+      });
+      console.log(`[Webhook] subscription_expired: auto-drafted ${toDraft.length} galleries for userId=${subscription.userId}`);
+    }
+  });
+  console.log(`[Webhook] subscription_expired: downgraded to FREE for userId=${subscription.userId}`);
 }
 
 async function handlePaymentFailed(
@@ -424,7 +447,7 @@ async function handlePaymentSuccess(
     }),
     (prisma as any).user.update({
       where: { id: subscription.userId },
-      data: { plan: "PRO", subscribed: true },
+      data: { plan: "PRO", subscribed: true, galleryLimit: null, downgradedAt: null },
     }),
   ]);
   console.log(`[Webhook] subscription_payment_success: completed for userId=${subscription.userId}`);
@@ -455,7 +478,7 @@ async function handleSubscriptionResumed(
     }),
     (prisma as any).user.update({
       where: { id: subscription.userId },
-      data: { plan: "PRO", subscribed: true },
+      data: { plan: "PRO", subscribed: true, galleryLimit: null, downgradedAt: null },
     }),
   ]);
   console.log(`[Webhook] subscription_resumed: completed for userId=${subscription.userId}`);

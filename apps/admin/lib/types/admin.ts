@@ -155,6 +155,7 @@ export interface PricingTier {
   label: string;
   priceCents: number;
   lsVariantId: string | null;
+  galleryLimit: number | null;
   sortOrder: number;
   active: boolean;
   createdAt: string;

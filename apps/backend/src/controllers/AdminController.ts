@@ -126,7 +126,7 @@ export const getPricingConfigController = async (_req: Request, res: Response) =
 };
 
 export const createPricingTierController = async (req: Request, res: Response) => {
-  const { gb, label, priceCents, lsVariantId, sortOrder, active } = req.body;
+  const { gb, label, priceCents, lsVariantId, sortOrder, active, galleryLimit } = req.body;
 
   if (gb === undefined || !label || priceCents === undefined) {
     throw new AppError("gb, label, and priceCents are required", 400);
@@ -138,6 +138,7 @@ export const createPricingTierController = async (req: Request, res: Response) =
       label,
       priceCents: Number(priceCents),
       lsVariantId: lsVariantId ?? null,
+      galleryLimit: galleryLimit !== undefined && galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null,
       sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
       active: active !== undefined ? Boolean(active) : true,
     },
@@ -149,7 +150,7 @@ export const createPricingTierController = async (req: Request, res: Response) =
 
 export const updatePricingTierController = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { gb, label, priceCents, lsVariantId, sortOrder, active } = req.body;
+  const { gb, label, priceCents, lsVariantId, sortOrder, active, galleryLimit } = req.body;
 
   const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
   if (!existing) {
@@ -163,6 +164,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
       ...(label !== undefined && { label }),
       ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
       ...(lsVariantId !== undefined && { lsVariantId }),
+      ...(galleryLimit !== undefined && { galleryLimit: galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null }),
       ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
       ...(active !== undefined && { active: Boolean(active) }),
     },

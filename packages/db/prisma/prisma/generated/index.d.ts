@@ -134,6 +134,7 @@ export type DriveImportItem = $Result.DefaultSelection<Prisma.$DriveImportItemPa
  */
 export namespace $Enums {
   export const Plan: {
+  FREE: 'FREE',
   TRIAL: 'TRIAL',
   PRO: 'PRO',
   EXPIRED: 'EXPIRED'
@@ -3414,6 +3415,7 @@ export namespace Prisma {
   export type UserAvgAggregateOutputType = {
     storageUsed: number | null
     storageLimit: number | null
+    galleryLimit: number | null
     storageReserved: number | null
     overageBytes: number | null
   }
@@ -3421,6 +3423,7 @@ export namespace Prisma {
   export type UserSumAggregateOutputType = {
     storageUsed: bigint | null
     storageLimit: bigint | null
+    galleryLimit: number | null
     storageReserved: bigint | null
     overageBytes: bigint | null
   }
@@ -3433,6 +3436,8 @@ export namespace Prisma {
     trialEndsAt: Date | null
     storageUsed: bigint | null
     storageLimit: bigint | null
+    galleryLimit: number | null
+    downgradedAt: Date | null
     storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
@@ -3459,6 +3464,8 @@ export namespace Prisma {
     trialEndsAt: Date | null
     storageUsed: bigint | null
     storageLimit: bigint | null
+    galleryLimit: number | null
+    downgradedAt: Date | null
     storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
@@ -3485,6 +3492,8 @@ export namespace Prisma {
     trialEndsAt: number
     storageUsed: number
     storageLimit: number
+    galleryLimit: number
+    downgradedAt: number
     storageReserved: number
     overageBytes: number
     overageResetAt: number
@@ -3508,6 +3517,7 @@ export namespace Prisma {
   export type UserAvgAggregateInputType = {
     storageUsed?: true
     storageLimit?: true
+    galleryLimit?: true
     storageReserved?: true
     overageBytes?: true
   }
@@ -3515,6 +3525,7 @@ export namespace Prisma {
   export type UserSumAggregateInputType = {
     storageUsed?: true
     storageLimit?: true
+    galleryLimit?: true
     storageReserved?: true
     overageBytes?: true
   }
@@ -3527,6 +3538,8 @@ export namespace Prisma {
     trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
+    galleryLimit?: true
+    downgradedAt?: true
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
@@ -3553,6 +3566,8 @@ export namespace Prisma {
     trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
+    galleryLimit?: true
+    downgradedAt?: true
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
@@ -3579,6 +3594,8 @@ export namespace Prisma {
     trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
+    galleryLimit?: true
+    downgradedAt?: true
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
@@ -3692,6 +3709,8 @@ export namespace Prisma {
     trialEndsAt: Date | null
     storageUsed: bigint
     storageLimit: bigint
+    galleryLimit: number | null
+    downgradedAt: Date | null
     storageReserved: bigint
     overageBytes: bigint
     overageResetAt: Date | null
@@ -3737,6 +3756,8 @@ export namespace Prisma {
     trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    galleryLimit?: boolean
+    downgradedAt?: boolean
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
@@ -3772,6 +3793,8 @@ export namespace Prisma {
     trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    galleryLimit?: boolean
+    downgradedAt?: boolean
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
@@ -3798,6 +3821,8 @@ export namespace Prisma {
     trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    galleryLimit?: boolean
+    downgradedAt?: boolean
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
@@ -3824,6 +3849,8 @@ export namespace Prisma {
     trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
+    galleryLimit?: boolean
+    downgradedAt?: boolean
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
@@ -3842,7 +3869,7 @@ export namespace Prisma {
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "trialEndsAt" | "storageUsed" | "storageLimit" | "storageReserved" | "overageBytes" | "overageResetAt" | "lsCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "trialEndsAt" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "lsCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -3877,6 +3904,8 @@ export namespace Prisma {
       trialEndsAt: Date | null
       storageUsed: bigint
       storageLimit: bigint
+      galleryLimit: number | null
+      downgradedAt: Date | null
       storageReserved: bigint
       overageBytes: bigint
       overageResetAt: Date | null
@@ -4331,6 +4360,8 @@ export namespace Prisma {
     readonly trialEndsAt: FieldRef<"User", 'DateTime'>
     readonly storageUsed: FieldRef<"User", 'BigInt'>
     readonly storageLimit: FieldRef<"User", 'BigInt'>
+    readonly galleryLimit: FieldRef<"User", 'Int'>
+    readonly downgradedAt: FieldRef<"User", 'DateTime'>
     readonly storageReserved: FieldRef<"User", 'BigInt'>
     readonly overageBytes: FieldRef<"User", 'BigInt'>
     readonly overageResetAt: FieldRef<"User", 'DateTime'>
@@ -26180,12 +26211,14 @@ export namespace Prisma {
   export type PricingTierAvgAggregateOutputType = {
     gb: number | null
     priceCents: number | null
+    galleryLimit: number | null
     sortOrder: number | null
   }
 
   export type PricingTierSumAggregateOutputType = {
     gb: number | null
     priceCents: number | null
+    galleryLimit: number | null
     sortOrder: number | null
   }
 
@@ -26195,6 +26228,7 @@ export namespace Prisma {
     label: string | null
     priceCents: number | null
     lsVariantId: string | null
+    galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
     createdAt: Date | null
@@ -26207,6 +26241,7 @@ export namespace Prisma {
     label: string | null
     priceCents: number | null
     lsVariantId: string | null
+    galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
     createdAt: Date | null
@@ -26219,6 +26254,7 @@ export namespace Prisma {
     label: number
     priceCents: number
     lsVariantId: number
+    galleryLimit: number
     sortOrder: number
     active: number
     createdAt: number
@@ -26230,12 +26266,14 @@ export namespace Prisma {
   export type PricingTierAvgAggregateInputType = {
     gb?: true
     priceCents?: true
+    galleryLimit?: true
     sortOrder?: true
   }
 
   export type PricingTierSumAggregateInputType = {
     gb?: true
     priceCents?: true
+    galleryLimit?: true
     sortOrder?: true
   }
 
@@ -26245,6 +26283,7 @@ export namespace Prisma {
     label?: true
     priceCents?: true
     lsVariantId?: true
+    galleryLimit?: true
     sortOrder?: true
     active?: true
     createdAt?: true
@@ -26257,6 +26296,7 @@ export namespace Prisma {
     label?: true
     priceCents?: true
     lsVariantId?: true
+    galleryLimit?: true
     sortOrder?: true
     active?: true
     createdAt?: true
@@ -26269,6 +26309,7 @@ export namespace Prisma {
     label?: true
     priceCents?: true
     lsVariantId?: true
+    galleryLimit?: true
     sortOrder?: true
     active?: true
     createdAt?: true
@@ -26368,6 +26409,7 @@ export namespace Prisma {
     label: string
     priceCents: number
     lsVariantId: string | null
+    galleryLimit: number | null
     sortOrder: number
     active: boolean
     createdAt: Date
@@ -26399,6 +26441,7 @@ export namespace Prisma {
     label?: boolean
     priceCents?: boolean
     lsVariantId?: boolean
+    galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
     createdAt?: boolean
@@ -26411,6 +26454,7 @@ export namespace Prisma {
     label?: boolean
     priceCents?: boolean
     lsVariantId?: boolean
+    galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
     createdAt?: boolean
@@ -26423,6 +26467,7 @@ export namespace Prisma {
     label?: boolean
     priceCents?: boolean
     lsVariantId?: boolean
+    galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
     createdAt?: boolean
@@ -26435,13 +26480,14 @@ export namespace Prisma {
     label?: boolean
     priceCents?: boolean
     lsVariantId?: boolean
+    galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "lsVariantId" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
+  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "lsVariantId" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
 
   export type $PricingTierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PricingTier"
@@ -26452,6 +26498,7 @@ export namespace Prisma {
       label: string
       priceCents: number
       lsVariantId: string | null
+      galleryLimit: number | null
       sortOrder: number
       active: boolean
       createdAt: Date
@@ -26884,6 +26931,7 @@ export namespace Prisma {
     readonly label: FieldRef<"PricingTier", 'String'>
     readonly priceCents: FieldRef<"PricingTier", 'Int'>
     readonly lsVariantId: FieldRef<"PricingTier", 'String'>
+    readonly galleryLimit: FieldRef<"PricingTier", 'Int'>
     readonly sortOrder: FieldRef<"PricingTier", 'Int'>
     readonly active: FieldRef<"PricingTier", 'Boolean'>
     readonly createdAt: FieldRef<"PricingTier", 'DateTime'>
@@ -30812,6 +30860,8 @@ export namespace Prisma {
     trialEndsAt: 'trialEndsAt',
     storageUsed: 'storageUsed',
     storageLimit: 'storageLimit',
+    galleryLimit: 'galleryLimit',
+    downgradedAt: 'downgradedAt',
     storageReserved: 'storageReserved',
     overageBytes: 'overageBytes',
     overageResetAt: 'overageResetAt',
@@ -31136,6 +31186,7 @@ export namespace Prisma {
     label: 'label',
     priceCents: 'priceCents',
     lsVariantId: 'lsVariantId',
+    galleryLimit: 'galleryLimit',
     sortOrder: 'sortOrder',
     active: 'active',
     createdAt: 'createdAt',
@@ -31296,6 +31347,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -31327,20 +31392,6 @@ export namespace Prisma {
    * Reference to a field of type 'SubscriptionStatus[]'
    */
   export type ListEnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -31484,6 +31535,8 @@ export namespace Prisma {
     trialEndsAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
+    galleryLimit?: IntNullableFilter<"User"> | number | null
+    downgradedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageReserved?: BigIntFilter<"User"> | bigint | number
     overageBytes?: BigIntFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -31518,6 +31571,8 @@ export namespace Prisma {
     trialEndsAt?: SortOrderInput | SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrderInput | SortOrder
+    downgradedAt?: SortOrderInput | SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
@@ -31556,6 +31611,8 @@ export namespace Prisma {
     trialEndsAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
+    galleryLimit?: IntNullableFilter<"User"> | number | null
+    downgradedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageReserved?: BigIntFilter<"User"> | bigint | number
     overageBytes?: BigIntFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -31589,6 +31646,8 @@ export namespace Prisma {
     trialEndsAt?: SortOrderInput | SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrderInput | SortOrder
+    downgradedAt?: SortOrderInput | SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
@@ -31623,6 +31682,8 @@ export namespace Prisma {
     trialEndsAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     storageUsed?: BigIntWithAggregatesFilter<"User"> | bigint | number
     storageLimit?: BigIntWithAggregatesFilter<"User"> | bigint | number
+    galleryLimit?: IntNullableWithAggregatesFilter<"User"> | number | null
+    downgradedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     storageReserved?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageBytes?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -33221,6 +33282,7 @@ export namespace Prisma {
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
     lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
     createdAt?: DateTimeFilter<"PricingTier"> | Date | string
@@ -33233,6 +33295,7 @@ export namespace Prisma {
     label?: SortOrder
     priceCents?: SortOrder
     lsVariantId?: SortOrderInput | SortOrder
+    galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -33248,6 +33311,7 @@ export namespace Prisma {
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
     lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
     createdAt?: DateTimeFilter<"PricingTier"> | Date | string
@@ -33260,6 +33324,7 @@ export namespace Prisma {
     label?: SortOrder
     priceCents?: SortOrder
     lsVariantId?: SortOrderInput | SortOrder
+    galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -33280,6 +33345,7 @@ export namespace Prisma {
     label?: StringWithAggregatesFilter<"PricingTier"> | string
     priceCents?: IntWithAggregatesFilter<"PricingTier"> | number
     lsVariantId?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
+    galleryLimit?: IntNullableWithAggregatesFilter<"PricingTier"> | number | null
     sortOrder?: IntWithAggregatesFilter<"PricingTier"> | number
     active?: BoolWithAggregatesFilter<"PricingTier"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"PricingTier"> | Date | string
@@ -33549,6 +33615,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -33583,6 +33651,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -33617,6 +33687,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33651,6 +33723,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33685,6 +33759,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -33711,6 +33787,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33737,6 +33815,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35504,6 +35584,7 @@ export namespace Prisma {
     label: string
     priceCents: number
     lsVariantId?: string | null
+    galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
     createdAt?: Date | string
@@ -35516,6 +35597,7 @@ export namespace Prisma {
     label: string
     priceCents: number
     lsVariantId?: string | null
+    galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
     createdAt?: Date | string
@@ -35528,6 +35610,7 @@ export namespace Prisma {
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
     lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35540,6 +35623,7 @@ export namespace Prisma {
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
     lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35552,6 +35636,7 @@ export namespace Prisma {
     label: string
     priceCents: number
     lsVariantId?: string | null
+    galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
     createdAt?: Date | string
@@ -35564,6 +35649,7 @@ export namespace Prisma {
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
     lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35576,6 +35662,7 @@ export namespace Prisma {
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
     lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35907,6 +35994,17 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -36031,6 +36129,8 @@ export namespace Prisma {
     trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrder
+    downgradedAt?: SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
@@ -36052,6 +36152,7 @@ export namespace Prisma {
   export type UserAvgOrderByAggregateInput = {
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
   }
@@ -36064,6 +36165,8 @@ export namespace Prisma {
     trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrder
+    downgradedAt?: SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
@@ -36090,6 +36193,8 @@ export namespace Prisma {
     trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrder
+    downgradedAt?: SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
@@ -36111,6 +36216,7 @@ export namespace Prisma {
   export type UserSumOrderByAggregateInput = {
     storageUsed?: SortOrder
     storageLimit?: SortOrder
+    galleryLimit?: SortOrder
     storageReserved?: SortOrder
     overageBytes?: SortOrder
   }
@@ -36171,6 +36277,22 @@ export namespace Prisma {
     _sum?: NestedBigIntFilter<$PrismaModel>
     _min?: NestedBigIntFilter<$PrismaModel>
     _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -36566,17 +36688,6 @@ export namespace Prisma {
     _max?: NestedEnumContactMethodNullableFilter<$PrismaModel>
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type PhotoNullableScalarRelationFilter = {
     is?: PhotoWhereInput | null
     isNot?: PhotoWhereInput | null
@@ -36774,22 +36885,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type GalleryScalarRelationFilter = {
@@ -37438,6 +37533,7 @@ export namespace Prisma {
     label?: SortOrder
     priceCents?: SortOrder
     lsVariantId?: SortOrder
+    galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -37447,6 +37543,7 @@ export namespace Prisma {
   export type PricingTierAvgOrderByAggregateInput = {
     gb?: SortOrder
     priceCents?: SortOrder
+    galleryLimit?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -37456,6 +37553,7 @@ export namespace Prisma {
     label?: SortOrder
     priceCents?: SortOrder
     lsVariantId?: SortOrder
+    galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -37468,6 +37566,7 @@ export namespace Prisma {
     label?: SortOrder
     priceCents?: SortOrder
     lsVariantId?: SortOrder
+    galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -37477,6 +37576,7 @@ export namespace Prisma {
   export type PricingTierSumOrderByAggregateInput = {
     gb?: SortOrder
     priceCents?: SortOrder
+    galleryLimit?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -37827,6 +37927,14 @@ export namespace Prisma {
     decrement?: bigint | number
     multiply?: bigint | number
     divide?: bigint | number
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -38285,14 +38393,6 @@ export namespace Prisma {
   export type GalleryUpdatecategoryTagsInput = {
     set?: string[]
     push?: string | string[]
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutGalleriesNestedInput = {
@@ -39316,6 +39416,17 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -39403,17 +39514,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -39439,6 +39539,33 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -39587,33 +39714,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumContactMethodNullableFilter<$PrismaModel>
     _max?: NestedEnumContactMethodNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumUploadSessionStatusFilter<$PrismaModel = never> = {
@@ -40344,6 +40444,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40377,6 +40479,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40426,6 +40530,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40459,6 +40565,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40492,6 +40600,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40525,6 +40635,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40574,6 +40686,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40607,6 +40721,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40640,6 +40756,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40673,6 +40791,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40722,6 +40842,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40755,6 +40877,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40788,6 +40912,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40821,6 +40947,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40870,6 +40998,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40903,6 +41033,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40936,6 +41068,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -40969,6 +41103,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -41371,6 +41507,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -41404,6 +41542,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42401,6 +42541,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -42434,6 +42576,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -42483,6 +42627,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42516,6 +42662,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42549,6 +42697,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -42582,6 +42732,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -42651,6 +42803,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42684,6 +42838,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44479,6 +44635,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -44512,6 +44670,8 @@ export namespace Prisma {
     trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
@@ -44603,6 +44763,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44636,6 +44798,8 @@ export namespace Prisma {
     trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

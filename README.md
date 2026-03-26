@@ -15,4 +15,7 @@ pnpm --filter @workspace/db exec prisma db push
 
 # Reset database
 pnpm --filter @workspace/db exec prisma migrate reset
+
+# Seed
+pnpm --filter @workspace/db db:seed
 ```

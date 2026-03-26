@@ -57,18 +57,3 @@ CREATE UNIQUE INDEX "regional_tier_override_regionalPricingId_tierGb_key" ON "re
 -- AddForeignKey
 ALTER TABLE "regional_tier_override" ADD CONSTRAINT "regional_tier_override_regionalPricingId_fkey" FOREIGN KEY ("regionalPricingId") REFERENCES "regional_pricing"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Seed initial data from hardcoded constants
-INSERT INTO "pricing_tier" ("id", "gb", "label", "priceCents", "lsVariantId", "sortOrder") VALUES
-  (gen_random_uuid()::text, 0, 'Free', 0, NULL, -1),
-  (gen_random_uuid()::text, 20, 'Starter', 900, '1416642', 0),
-  (gen_random_uuid()::text, 100, 'Professional', 1900, '1421277', 1),
-  (gen_random_uuid()::text, 500, 'Business', 3500, '1421278', 2),
-  (gen_random_uuid()::text, -1, 'Unlimited', 4900, '1421279', 3);
-
-INSERT INTO "regional_pricing" ("id", "countryCode", "currency", "symbol", "locale", "pppMultiplier") VALUES
-  ('eg-regional', 'EG', 'EGP', 'EGP', 'en-EG', 0.33);
-
-INSERT INTO "regional_tier_override" ("id", "regionalPricingId", "tierGb", "localPriceCents", "checkoutCents") VALUES
-  (gen_random_uuid()::text, 'eg-regional', 20, 15000, 300),
-  (gen_random_uuid()::text, 'eg-regional', 100, 30000, 627),
-  (gen_random_uuid()::text, 'eg-regional', 500, 110000, 2200);

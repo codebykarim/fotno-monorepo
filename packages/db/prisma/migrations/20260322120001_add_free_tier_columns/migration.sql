@@ -1,0 +1,10 @@
+-- AlterTable: User
+ALTER TABLE "user" ADD COLUMN IF NOT EXISTS "galleryLimit" INTEGER,
+ADD COLUMN IF NOT EXISTS "downgradedAt" TIMESTAMP(3);
+
+ALTER TABLE "user" ALTER COLUMN "plan" SET DEFAULT 'FREE';
+ALTER TABLE "user" ALTER COLUMN "storageLimit" SET DEFAULT 1073741824;
+
+-- AlterTable: PricingTier
+ALTER TABLE "pricing_tier" ADD COLUMN IF NOT EXISTS "galleryLimit" INTEGER;
+

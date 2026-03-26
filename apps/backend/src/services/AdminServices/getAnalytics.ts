@@ -4,6 +4,9 @@ export const getAnalytics = async (period: string) => {
   const days = period === "7d" ? 7 : period === "30d" ? 30 : period === "90d" ? 90 : 365;
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
+  const notAdmin = { role: { not: "admin" } };
+  const userNotAdmin = { user: notAdmin };
+
   const [
     userSignups,
     galleryCreations,
@@ -21,43 +24,53 @@ export const getAnalytics = async (period: string) => {
       SELECT DATE("createdAt") as date, COUNT(*)::int as count
       FROM "user"
       WHERE "createdAt" >= ${since}
+        AND "role" IS DISTINCT FROM 'admin'
       GROUP BY DATE("createdAt")
       ORDER BY date
     `,
     db.$queryRaw`
-      SELECT DATE("createdAt") as date, COUNT(*)::int as count
-      FROM "gallery"
-      WHERE "createdAt" >= ${since}
-      GROUP BY DATE("createdAt")
+      SELECT DATE(g."createdAt") as date, COUNT(*)::int as count
+      FROM "gallery" g
+      JOIN "user" u ON g."userId" = u."id"
+      WHERE g."createdAt" >= ${since}
+        AND u."role" IS DISTINCT FROM 'admin'
+      GROUP BY DATE(g."createdAt")
       ORDER BY date
     `,
     db.$queryRaw`
-      SELECT DATE("createdAt") as date, COUNT(*)::int as count, SUM("totalSize") as bytes
-      FROM "photo"
-      WHERE "createdAt" >= ${since}
-      GROUP BY DATE("createdAt")
+      SELECT DATE(p."createdAt") as date, COUNT(*)::int as count, SUM(p."totalSize") as bytes
+      FROM "photo" p
+      JOIN "gallery" g ON p."galleryId" = g."id"
+      JOIN "user" u ON g."userId" = u."id"
+      WHERE p."createdAt" >= ${since}
+        AND u."role" IS DISTINCT FROM 'admin'
+      GROUP BY DATE(p."createdAt")
       ORDER BY date
     `,
     db.$queryRaw`
-      SELECT DATE_TRUNC('month', "createdAt") as month, SUM("priceCents")::int as total_cents
-      FROM "subscription"
-      WHERE "createdAt" >= ${since}
-      GROUP BY DATE_TRUNC('month', "createdAt")
+      SELECT DATE_TRUNC('month', s."createdAt") as month, SUM(s."priceCents")::int as total_cents
+      FROM "subscription" s
+      JOIN "user" u ON s."userId" = u."id"
+      WHERE s."createdAt" >= ${since}
+        AND u."role" IS DISTINCT FROM 'admin'
+      GROUP BY DATE_TRUNC('month', s."createdAt")
       ORDER BY month
     `,
-    db.user.groupBy({ by: ["plan"], _count: { plan: true } }),
+    db.user.groupBy({ by: ["plan"], _count: { plan: true }, where: notAdmin }),
     db.$queryRaw`
-      SELECT DATE("createdAt") as date, SUM("delta") as delta
-      FROM "storage_event"
-      WHERE "createdAt" >= ${since}
-      GROUP BY DATE("createdAt")
+      SELECT DATE(se."createdAt") as date, SUM(se."delta") as delta
+      FROM "storage_event" se
+      JOIN "user" u ON se."userId" = u."id"
+      WHERE se."createdAt" >= ${since}
+        AND u."role" IS DISTINCT FROM 'admin'
+      GROUP BY DATE(se."createdAt")
       ORDER BY date
     `,
-    db.subscription.aggregate({ _sum: { priceCents: true } }),
-    db.subscription.count({ where: { status: "ACTIVE" } }),
-    db.user.count(),
-    db.gallery.count(),
-    db.photo.count(),
+    db.subscription.aggregate({ _sum: { priceCents: true }, where: userNotAdmin }),
+    db.subscription.count({ where: { status: "ACTIVE", ...userNotAdmin } }),
+    db.user.count({ where: notAdmin }),
+    db.gallery.count({ where: userNotAdmin }),
+    db.photo.count({ where: { gallery: userNotAdmin } }),
   ]);
 
   const totalRevenueValue = totalRevenue._sum.priceCents ?? 0;

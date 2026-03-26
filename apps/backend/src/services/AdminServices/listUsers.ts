@@ -6,7 +6,7 @@ export const listUsers = async (
   page: number,
   pageSize: number
 ) => {
-  const where: any = {};
+  const where: any = { role: { not: "admin" } };
 
   if (search) {
     where.AND = [

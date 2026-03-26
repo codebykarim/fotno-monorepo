@@ -7,7 +7,7 @@ if (!secretKey) {
 }
 
 export const stripe = secretKey
-  ? new Stripe(secretKey, { apiVersion: "2025-04-30.basil" })
+  ? new Stripe(secretKey, { apiVersion: "2026-03-25.dahlia" as any })
   : (null as unknown as Stripe);
 
 export { Stripe };

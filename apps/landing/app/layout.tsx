@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { ThemeProvider } from "@workspace/ui/components/theme-provider";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -158,6 +159,11 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <Script
+          src="/api/script.js"
+          data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

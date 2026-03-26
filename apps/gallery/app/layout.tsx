@@ -6,6 +6,7 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Toaster } from "@workspace/ui/components/sonner";
 import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -69,6 +70,11 @@ export default function RootLayout({
           {children}
           <Toaster richColors position="bottom-center" />
         </ThemeProvider>
+        <Script
+          src="/api/script.js"
+          data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

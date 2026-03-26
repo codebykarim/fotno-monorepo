@@ -8,7 +8,6 @@ export interface PhotographerProfile {
 export interface PublicPhoto {
   id: string;
   originalFilename: string;
-  aiCaption: string | null;
   width: number | null;
   height: number | null;
   order: number;

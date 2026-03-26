@@ -24,23 +24,7 @@ pnpm db:generate
 # 3. Run all database migrations against main DB (DIRECT_URL)
 pnpm db:deploy
 
-# 4. Set up the Python SigLIP service (uses a virtual environment)
-cd apps/siglip-service
-python3 -m venv .venv        # one-time: create venv
-source .venv/bin/activate    # activate it (use each time you open a new terminal)
-pip install -r requirements.txt
-cd ../..
-
-# 5. Set up the Python Qwen2-VL captioning service (uses a virtual environment)
-cd apps/qwen-ai-service
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cd ../..
 ```
-
-> The pgvector DB (`DATABASE_URL`, port 5466) migration runs automatically via
-> `packages/db/prisma/migrations/20260302000000_add_image_search_pgvector/migration.sql`
 > when you run `pnpm db:deploy`.
 
 ---
@@ -67,67 +51,7 @@ redis-cli ping
 
 ---
 
-### Step 2 — SigLIP Inference Service (Python)
-
-```bash
-cd apps/siglip-service
-source .venv/bin/activate   # activate the venv (created during first-time setup)
-python main.py
-```
-
-- Runs on port **8001**
-- First start downloads `google/siglip-so400m-patch14-384` (~1.7 GB) — this is a one-time download
-- Device auto-detected: CUDA > MPS > CPU
-
-Validate:
-```bash
-curl http://localhost:8001/health
-# Expected: {"status":"ok","model":"google/siglip-so400m-patch14-384","device":"cpu|mps|cuda"}
-```
-
----
-
-### Step 3 — Qwen2-VL Captioning Service (Python)
-
-```bash
-cd apps/qwen-ai-service
-source .venv/bin/activate   # activate the venv (created during first-time setup)
-python main.py
-```
-
-- Runs on port **8002**
-- First start downloads the Qwen2-VL model — size depends on `MODEL_SIZE` env var:
-  - `2b` (~4 GB), `7b` (~16 GB), `72b` (~150 GB)
-- Device auto-detected: CUDA > MPS > CPU
-
-Validate:
-```bash
-curl http://localhost:8002/health
-# Expected: {"status":"healthy","model":"Qwen/Qwen2-VL-2B-Instruct","model_size":"2b","device":"cpu|mps|cuda"}
-```
-
----
-
-### Step 4 — Image Search Service
-
-```bash
-cd apps/image-search-service
-pnpm dev
-```
-
-- Runs on port **4002**
-- Connects to pgvector DB (`DATABASE_URL`, port 5466)
-- Connects to Redis for the embedding job queue
-
-Validate:
-```bash
-curl http://localhost:4002/health
-# Expected: {"status":"ok","db":"connected","siglip":"reachable"}
-```
-
----
-
-### Step 5 — Upload Service
+### Step 2 — Upload Service
 
 ```bash
 cd apps/upload-service
@@ -146,7 +70,7 @@ curl http://localhost:3010/health
 
 ---
 
-### Step 6 — Image Processor
+### Step 3 — Image Processor
 
 ```bash
 pnpm dev:image-processor
@@ -166,7 +90,7 @@ Validate (check logs):
 
 ---
 
-### Step 7 — Backend API
+### Step 4 — Backend API
 
 ```bash
 cd apps/backend
@@ -186,7 +110,7 @@ curl http://localhost:8000/
 
 ---
 
-### Step 8 — Frontend Apps
+### Step 5 — Frontend Apps
 
 Run all frontends at once from the root:
 ```bash
@@ -216,11 +140,8 @@ Open **6 terminals** and run:
 | Terminal | Command |
 |---|---|
 | 1 | `redis-server` |
-| 2 | `cd apps/siglip-service && source .venv/bin/activate && python main.py` |
-| 3 | `cd apps/qwen-ai-service && source .venv/bin/activate && python main.py` |
-| 4 | `pnpm dev` (starts all Node services + frontends via Nx) |
-| 5 | `cd apps/image-search-service && pnpm dev` |
-| 6 | `cd apps/upload-service && pnpm dev` |
+| 2 | `pnpm dev` (starts all Node services + frontends via Nx) |
+| 3 | `cd apps/upload-service && pnpm dev` |
 
 > Note: `pnpm dev` at root starts backend, image-processor, and all Next.js apps.
 > Image-search-service and upload-service need to be started separately.
@@ -236,12 +157,8 @@ Open **6 terminals** and run:
 | Auth | 3002 |
 | Gallery | 3003 |
 | Upload Service | 3010 |
-| Image Search Service | 4002 |
 | Backend API | 8000 |
-| SigLIP Service (Python) | 8001 |
-| Qwen2-VL Service (Python) | 8002 |
 | Main Postgres DB | 5433 |
-| PgVector Postgres DB | 5466 |
 | Redis | 6379 |
 
 ---
@@ -312,7 +229,6 @@ Watch the image-processor logs:
 [image-processor] Processing photo <photoId>...
 [image-processor] Uploaded thumbnail → thumbnails/<photoId>.webp
 [image-processor] Uploaded preview   → previews/<photoId>.webp
-[image-processor] Ingesting photo into image-search-service...
 [image-processor] Done — photo <photoId> processed in 2.3s
 ```
 
@@ -388,10 +304,7 @@ pnpm kill
 # Kills ports 3000, 3001, 3002, 3003, 8000
 
 # Kill remaining services manually if needed
-lsof -ti:4002 | xargs kill  # image-search-service
 lsof -ti:3010 | xargs kill  # upload-service
-lsof -ti:8001 | xargs kill  # siglip-service
-lsof -ti:8002 | xargs kill  # qwen-ai-service
 ```
 
 ---
@@ -424,11 +337,3 @@ pnpm kill
 ### Image processor not picking up photos
 - Check `NODE_ENV` is set
 - Check `DIRECT_URL` is pointing to main DB (port 5433)
-- Check `IMAGE_SEARCH_SERVICE_URL=http://localhost:4002` in `.env`
-- Verify image-search-service is running before image-processor
-
-### `DATABASE_URL` vs `DIRECT_URL` confusion
-| Variable | DB | Port | Used by |
-|---|---|---|---|
-| `DIRECT_URL` | Main Postgres | 5433 | Prisma (packages/db), backend, image-processor |
-| `DATABASE_URL` | PgVector Postgres | 5466 | image-search-service |

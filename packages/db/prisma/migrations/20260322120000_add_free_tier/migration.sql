@@ -11,5 +11,8 @@ ALTER TABLE "user" ALTER COLUMN "storageLimit" SET DEFAULT 1073741824;
 -- AlterTable: PricingTier
 ALTER TABLE "pricing_tier" ADD COLUMN "galleryLimit" INTEGER;
 
+-- Set gallery limit for free tier (1 gallery)
+UPDATE "pricing_tier" SET "galleryLimit" = 1 WHERE "gb" = 0;
+
 -- Comment: gb=0 for free tier, -1 for unlimited
 COMMENT ON COLUMN "pricing_tier"."gb" IS '-1 for unlimited, 0 for free';

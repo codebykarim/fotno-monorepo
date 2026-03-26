@@ -6,10 +6,6 @@ import { multipartService } from "../../upload-service/src/services/multipart";
 // Disable sharp cache to reduce memory usage with many unique images
 sharp.cache(false);
 
-const IMAGE_SEARCH_SERVICE_URL =
-  process.env.IMAGE_SEARCH_SERVICE_URL || "http://localhost:4002";
-const AI_ENABLED = process.env.AI_ENABLED !== 'false';
-
 type CompressionOptions = {
   targetWidth: number;
   minWidth: number;
@@ -22,8 +18,6 @@ type ProcessingPhoto = {
   id: string;
   s3Key: string;
   galleryId: string;
-  aiCaption: string | null;
-  aiTags: string[];
   gallery: {
     userId: string;
   };
@@ -56,49 +50,6 @@ const withTimeout = <T>(promise: Promise<T>, ms: number, label: string): Promise
       (err) => { clearTimeout(timer); reject(err); },
     );
   });
-
-const ingestPhotoToSearchService = async (
-  photoId: string,
-  userId: string,
-  galleryId: string,
-  previewKey: string,
-  caption?: string | null,
-  tags?: string[],
-): Promise<void> => {
-  try {
-    const cfDomain = process.env.CLOUDFRONT_DOMAIN;
-    const previewUrl = cfDomain ? `https://${cfDomain}/${previewKey}` : `/${previewKey}`;
-
-    const response = await fetch(`${IMAGE_SEARCH_SERVICE_URL}/ingest-photo`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        photoId,
-        userId,
-        galleryId,
-        storageUrl: previewUrl,
-        caption: caption ?? undefined,
-        tags: tags ?? [],
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      console.warn(
-        `[image-processor] failed to ingest photo to search service photoId=${photoId} error=${error}`,
-      );
-    } else {
-      console.log(
-        `[image-processor] ingested to search service photoId=${photoId}`,
-      );
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    console.warn(
-      `[image-processor] search service ingest failed photoId=${photoId} error=${message}`,
-    );
-  }
-};
 
 const addProcessingStorage = async (
   userId: string,
@@ -217,8 +168,6 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
       id: true,
       s3Key: true,
       galleryId: true,
-      aiCaption: true,
-      aiTags: true,
       gallery: {
         select: {
           userId: true,
@@ -339,18 +288,6 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       BigInt(thumbnailBuffer.length + previewBuffer.length),
       photo.id,
     );
-
-    // Ingest to image search service for embedding
-    if (AI_ENABLED) {
-      void ingestPhotoToSearchService(
-        photo.id,
-        photo.gallery.userId,
-        photo.galleryId,
-        previewKey,
-        photo.aiCaption,
-        photo.aiTags,
-      );
-    }
 
     console.log(
       `[image-processor] completed photoId=${photo.id} previewBytes=${previewBuffer.length} thumbnailBytes=${thumbnailBuffer.length} durationMs=${Date.now() - startedAt}`,

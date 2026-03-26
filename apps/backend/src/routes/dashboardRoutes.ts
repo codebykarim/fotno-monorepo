@@ -106,16 +106,6 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.deletePhotoController,
     authFunction: isAuth,
   },
-  "suggest-album": {
-    httpMethod: "POST",
-    controllerFunction: DashboardController.suggestAlbumController,
-    authFunction: isAuth,
-  },
-  "gallery-ai-status": {
-    httpMethod: "GET",
-    controllerFunction: DashboardController.getGalleryAiStatusController,
-    authFunction: isAuth,
-  },
   "gdrive-auth-status": {
     httpMethod: "GET",
     controllerFunction: DashboardController.gdriveAuthStatusController,
@@ -271,14 +261,6 @@ dashboardRoutes.post(
 dashboardRoutes.post(
   "/dashboard/galleries/:id/albums",
   handleMethod("create-album"),
-);
-dashboardRoutes.post(
-  "/dashboard/galleries/:id/ai/suggest-album",
-  handleMethod("suggest-album"),
-);
-dashboardRoutes.get(
-  "/dashboard/galleries/:id/ai/status",
-  handleMethod("gallery-ai-status"),
 );
 dashboardRoutes.patch(
   "/dashboard/galleries/:id/albums/:albumId",

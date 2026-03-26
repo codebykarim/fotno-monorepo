@@ -73,15 +73,9 @@
 
 | Item | Cost | Covers |
 |------|------|--------|
-| Server (Coolify) | $150/month | PostgreSQL, pgvector, Redis, backend, workers, SigLIP, Qwen2-VL |
+| Server (Coolify) | $150/month | PostgreSQL, Redis, backend, workers |
 | CloudFront Pro | $15/month | CDN for all photo delivery |
 | **Total fixed** | **$165/month** | |
-
-### E. AI Processing
-
-- Self-hosted SigLIP + Qwen2-VL — included in $150 server cost
-- No per-request cost today
-- Future: AI credits system (not yet implemented)
 
 ---
 

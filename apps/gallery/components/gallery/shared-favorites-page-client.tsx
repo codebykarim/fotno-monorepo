@@ -303,7 +303,7 @@ export default function SharedFavoritesPageClient({
                 >
                   <img
                     src={imgSrc}
-                    alt={photo.aiCaption ?? photo.originalFilename}
+                    alt={photo.originalFilename}
                     width={w}
                     height={h}
                     loading={index < 8 ? "eager" : "lazy"}
@@ -409,7 +409,7 @@ export default function SharedFavoritesPageClient({
             >
               <Image
                 src={withFavoriteShareToken(activePhoto.previewSrc)}
-                alt={activePhoto.aiCaption ?? activePhoto.originalFilename}
+                alt={activePhoto.originalFilename}
                 width={activePhoto.width ?? 1600}
                 height={activePhoto.height ?? 1200}
                 sizes="90vw"
@@ -455,7 +455,7 @@ export default function SharedFavoritesPageClient({
             <Image
               key={slideshowPhoto.id}
               src={withFavoriteShareToken(slideshowPhoto.previewSrc)}
-              alt={slideshowPhoto.aiCaption ?? slideshowPhoto.originalFilename}
+              alt={slideshowPhoto.originalFilename}
               width={slideshowPhoto.width ?? 1600}
               height={slideshowPhoto.height ?? 1200}
               sizes="100vw"

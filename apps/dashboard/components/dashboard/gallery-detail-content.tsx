@@ -27,7 +27,6 @@ import {
   Loader2,
   FolderKanban,
   Album,
-  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
@@ -67,7 +66,6 @@ import {
 } from "@/lib/stores/gallery-ui-store";
 import { cn } from "@workspace/ui/lib/utils";
 import { withRetry } from "@/lib/utils/retry";
-import { GalleryAiTab } from "./gallery-ai-tab";
 import { GallerySettings } from "./gallery-settings/settings-layout";
 
 const tabs = ["photos", "albums", "settings", "share"] as const;
@@ -76,7 +74,6 @@ type Tab = (typeof tabs)[number];
 const TAB_META: Record<Tab, { label: string; icon: typeof Images }> = {
   photos: { label: "Photos", icon: Grid2x2 },
   albums: { label: "Albums", icon: Album },
-  // ai: { label: "AI", icon: Wand2 },
   settings: { label: "Settings", icon: Settings2 },
   share: { label: "Share", icon: Share2 },
 };

@@ -28,7 +28,6 @@ export type Gallery = {
   createdAt: string;
   updatedAt: string;
   coverPhotoId: string | null;
-  aiContext: string | null;
   // General settings
   categoryTags: string[];
   expiresAt: string | null;

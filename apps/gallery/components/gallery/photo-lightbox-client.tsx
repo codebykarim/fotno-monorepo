@@ -629,7 +629,7 @@ export default function PhotoLightboxClient({
         >
           <Image
             src={previewSrc}
-            alt={currentPhoto.aiCaption ?? currentPhoto.originalFilename}
+            alt={currentPhoto.originalFilename}
             width={1200}
             height={800}
             priority
@@ -660,13 +660,7 @@ export default function PhotoLightboxClient({
         ) : null}
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 pb-10 text-center md:px-8">
-        {currentPhoto.aiCaption ? (
-          <p className="text-sm leading-relaxed text-white/70">{currentPhoto.aiCaption}</p>
-        ) : (
-          <p className="text-sm text-white/40">No caption available for this photo.</p>
-        )}
-      </div>
+      <div className="mx-auto max-w-3xl px-4 pb-10 text-center md:px-8" />
     </div>
   );
 }

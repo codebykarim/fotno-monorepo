@@ -37,9 +37,7 @@ services:
       - NEXT_PUBLIC_DASHBOARD_URL=${NEXT_PUBLIC_DASHBOARD_URL}
       - NEXT_PUBLIC_GALLERY_URL=${NEXT_PUBLIC_GALLERY_URL}
       - NEXT_PUBLIC_LANDING_URL=${NEXT_PUBLIC_LANDING_URL}
-      - IMAGE_SEARCH_SERVICE_URL=${IMAGE_SEARCH_SERVICE_URL}
       - UPLOAD_SERVICE_URL=${UPLOAD_SERVICE_URL}
-      - AI_ENABLED=${AI_ENABLED:-true}
       - PHOTO_WORKER_IN_API=${PHOTO_WORKER_IN_API}
       - GOOGLE_OAUTH_CALLBACK_URL=${GOOGLE_OAUTH_CALLBACK_URL}
       - SENTRY_DSN_BACKEND=${SENTRY_DSN_BACKEND}
@@ -73,8 +71,6 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - JWT_SECRET=${JWT_SECRET}
-      - IMAGE_SEARCH_SERVICE_URL=${IMAGE_SEARCH_SERVICE_URL}
-      - AI_ENABLED=${AI_ENABLED:-true}
     expose:
       - "4001"
 
@@ -95,9 +91,7 @@ services:
       - CLOUDFRONT_DOMAIN=${CLOUDFRONT_DOMAIN}
       - CLOUDFRONT_KEY_PAIR_ID=${CLOUDFRONT_KEY_PAIR_ID}
       - CLOUDFRONT_PRIVATE_KEY=${CLOUDFRONT_PRIVATE_KEY}
-      - IMAGE_SEARCH_SERVICE_URL=${IMAGE_SEARCH_SERVICE_URL}
       - UPLOAD_SERVICE_URL=${UPLOAD_SERVICE_URL}
-      - AI_ENABLED=${AI_ENABLED:-true}
       - IMAGE_PROCESSOR_BATCH_SIZE=${IMAGE_PROCESSOR_BATCH_SIZE}
       - IMAGE_PROCESSOR_POLL_MS=${IMAGE_PROCESSOR_POLL_MS}
       - IMAGE_PROCESSOR_RETRY_FAILED=${IMAGE_PROCESSOR_RETRY_FAILED}
@@ -109,67 +103,6 @@ services:
       - UPLOAD_SESSION_TTL_HRS=${UPLOAD_SESSION_TTL_HRS}
     healthcheck:
       disable: true
-
-  image-search-service:
-    platform: linux/amd64
-    profiles: [ai]
-    build:
-      context: .
-      dockerfile: apps/image-search-service/Dockerfile
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - PORT=4002
-      - AWS_REGION=${AWS_REGION}
-      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - JWT_SECRET=${JWT_SECRET}
-      - SIGLIP_SERVICE_URL=${SIGLIP_SERVICE_URL}
-      - QWEN_SERVICE_URL=${QWEN_SERVICE_URL}
-      - EMBEDDING_BATCH_SIZE=${EMBEDDING_BATCH_SIZE}
-      - EMBEDDING_WORKER_CONCURRENCY=${EMBEDDING_WORKER_CONCURRENCY}
-      - CAPTIONING_BATCH_SIZE=${CAPTIONING_BATCH_SIZE}
-      - CAPTIONING_ENABLED=${CAPTIONING_ENABLED}
-      - CAPTIONING_WORKER_CONCURRENCY=${CAPTIONING_WORKER_CONCURRENCY}
-      - CAPTION_CLUSTER_THRESHOLD=${CAPTION_CLUSTER_THRESHOLD}
-      - CAPTION_LIBRARY_SIMILARITY_THRESHOLD=${CAPTION_LIBRARY_SIMILARITY_THRESHOLD}
-    expose:
-      - "4002"
-
-  # ──────────────────────────────────────────────
-  # AI Services
-  # ──────────────────────────────────────────────
-  siglip-service:
-    platform: linux/amd64
-    profiles: [ai]
-    build:
-      context: ./apps/siglip-service
-      dockerfile: Dockerfile
-    environment:
-      - PORT=8001
-      - MAX_BATCH_SIZE=16
-    expose:
-      - "8001"
-    volumes:
-      - huggingface-cache-siglip:/root/.cache/huggingface
-
-  qwen-ai-service:
-    platform: linux/amd64
-    profiles: [ai]
-    build:
-      context: ./apps/qwen-ai-service
-      dockerfile: Dockerfile
-    environment:
-      - QWEN_SERVICE_PORT=8002
-      - MODEL_SIZE=${MODEL_SIZE}
-      - MAX_BATCH_SIZE=8
-    expose:
-      - "8002"
-    volumes:
-      - huggingface-cache-qwen:/root/.cache/huggingface
 
   # ──────────────────────────────────────────────
   # Frontend Apps (Next.js)
@@ -282,6 +215,3 @@ services:
     expose:
       - "3004"
 
-volumes:
-  huggingface-cache-siglip:
-  huggingface-cache-qwen:

@@ -74,7 +74,6 @@ const seedPhotos: Photo[] = [
 ];
 
 const galleryDefaults = {
-  aiContext: null,
   categoryTags: [] as string[],
   expiresAt: null,
   slideshowEnabled: true,

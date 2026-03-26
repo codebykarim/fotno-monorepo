@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: PhotoPageProps): Promise<Meta
 
     return {
       title: current ? `${gallery.title} • Photo` : `${gallery.title} | FOTNO Gallery`,
-      description: current?.aiCaption ?? `Photo from ${gallery.title}`,
+      description: `Photo from ${gallery.title}`,
       openGraph: {
         title: gallery.title,
-        description: current?.aiCaption ?? `Photo by ${gallery.photographer.name}`,
+        description: `Photo by ${gallery.photographer.name}`,
         images: current?.previewSrc
           ? [
               {

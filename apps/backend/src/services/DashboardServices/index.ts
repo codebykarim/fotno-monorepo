@@ -18,8 +18,6 @@ export { listClients } from "./listClients";
 export { updateClient } from "./updateClient";
 export { updatePhotoLoved } from "./updatePhotoLoved";
 export { deletePhoto } from "./deletePhoto";
-export { suggestAlbum } from "./suggestAlbum";
-export { getGalleryAiStatus } from "./getGalleryAiStatus";
 export { gdriveAuthStatus } from "./gdriveAuthStatus";
 export { gdriveDisconnect } from "./gdriveDisconnect";
 export { gdriveFolders } from "./gdriveFolders";

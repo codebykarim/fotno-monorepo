@@ -31,10 +31,6 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
   if (typeof body?.deadline === "string" || body?.deadline === null) {
     data.deadline = body?.deadline ? toIsoOrNull(body.deadline) : null;
   }
-  if (typeof body?.aiContext === "string" || body?.aiContext === null) {
-    data.aiContext = body.aiContext;
-  }
-
   // General settings
   if (Array.isArray(body?.categoryTags)) {
     data.categoryTags = body.categoryTags.filter((t: unknown) => typeof t === "string");
@@ -114,7 +110,6 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
       createdAt: updated.createdAt.toISOString(),
       updatedAt: updated.updatedAt.toISOString(),
       coverPhotoId: updated.coverPhotoId ?? null,
-      aiContext: updated.aiContext ?? null,
       // General settings
       categoryTags: updated.categoryTags,
       expiresAt: updated.expiresAt ? updated.expiresAt.toISOString() : null,

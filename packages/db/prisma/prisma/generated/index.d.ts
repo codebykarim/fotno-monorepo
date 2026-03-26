@@ -10694,7 +10694,6 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
-    aiContext: string | null
     isPublished: boolean | null
     expiresAt: Date | null
     slideshowEnabled: boolean | null
@@ -10726,7 +10725,6 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string | null
-    aiContext: string | null
     isPublished: boolean | null
     expiresAt: Date | null
     slideshowEnabled: boolean | null
@@ -10758,7 +10756,6 @@ export namespace Prisma {
     coverPhotoId: number
     passwordHash: number
     shareToken: number
-    aiContext: number
     isPublished: number
     categoryTags: number
     expiresAt: number
@@ -10805,7 +10802,6 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
-    aiContext?: true
     isPublished?: true
     expiresAt?: true
     slideshowEnabled?: true
@@ -10837,7 +10833,6 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
-    aiContext?: true
     isPublished?: true
     expiresAt?: true
     slideshowEnabled?: true
@@ -10869,7 +10864,6 @@ export namespace Prisma {
     coverPhotoId?: true
     passwordHash?: true
     shareToken?: true
-    aiContext?: true
     isPublished?: true
     categoryTags?: true
     expiresAt?: true
@@ -10989,7 +10983,6 @@ export namespace Prisma {
     coverPhotoId: string | null
     passwordHash: string | null
     shareToken: string
-    aiContext: string | null
     isPublished: boolean
     categoryTags: string[]
     expiresAt: Date | null
@@ -11041,7 +11034,6 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
-    aiContext?: boolean
     isPublished?: boolean
     categoryTags?: boolean
     expiresAt?: boolean
@@ -11085,7 +11077,6 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
-    aiContext?: boolean
     isPublished?: boolean
     categoryTags?: boolean
     expiresAt?: boolean
@@ -11120,7 +11111,6 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
-    aiContext?: boolean
     isPublished?: boolean
     categoryTags?: boolean
     expiresAt?: boolean
@@ -11155,7 +11145,6 @@ export namespace Prisma {
     coverPhotoId?: boolean
     passwordHash?: boolean
     shareToken?: boolean
-    aiContext?: boolean
     isPublished?: boolean
     categoryTags?: boolean
     expiresAt?: boolean
@@ -11178,7 +11167,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "aiContext" | "isPublished" | "categoryTags" | "expiresAt" | "slideshowEnabled" | "socialSharingEnabled" | "emailRegistration" | "language" | "downloadEnabled" | "downloadPin" | "downloadSizeOriginal" | "downloadSizeHighRes" | "downloadSizeWeb" | "downloadWebMaxPx" | "downloadHighResMaxPx" | "downloadLimit" | "downloadContactsOnly" | "favoritesEnabled" | "favoriteNotesEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "categoryTags" | "expiresAt" | "slideshowEnabled" | "socialSharingEnabled" | "emailRegistration" | "language" | "downloadEnabled" | "downloadPin" | "downloadSizeOriginal" | "downloadSizeHighRes" | "downloadSizeWeb" | "downloadWebMaxPx" | "downloadHighResMaxPx" | "downloadLimit" | "downloadContactsOnly" | "favoritesEnabled" | "favoriteNotesEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
@@ -11225,7 +11214,6 @@ export namespace Prisma {
       coverPhotoId: string | null
       passwordHash: string | null
       shareToken: string
-      aiContext: string | null
       isPublished: boolean
       categoryTags: string[]
       expiresAt: Date | null
@@ -11688,7 +11676,6 @@ export namespace Prisma {
     readonly coverPhotoId: FieldRef<"Gallery", 'String'>
     readonly passwordHash: FieldRef<"Gallery", 'String'>
     readonly shareToken: FieldRef<"Gallery", 'String'>
-    readonly aiContext: FieldRef<"Gallery", 'String'>
     readonly isPublished: FieldRef<"Gallery", 'Boolean'>
     readonly categoryTags: FieldRef<"Gallery", 'String[]'>
     readonly expiresAt: FieldRef<"Gallery", 'DateTime'>
@@ -12359,7 +12346,6 @@ export namespace Prisma {
     width: number | null
     height: number | null
     order: number | null
-    faceCount: number | null
   }
 
   export type PhotoSumAggregateOutputType = {
@@ -12370,7 +12356,6 @@ export namespace Prisma {
     width: number | null
     height: number | null
     order: number | null
-    faceCount: number | null
   }
 
   export type PhotoMinAggregateOutputType = {
@@ -12390,8 +12375,6 @@ export namespace Prisma {
     order: number | null
     isCulled: boolean | null
     loved: boolean | null
-    aiCaption: string | null
-    faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
     blurDataUrl: string | null
@@ -12417,8 +12400,6 @@ export namespace Prisma {
     order: number | null
     isCulled: boolean | null
     loved: boolean | null
-    aiCaption: string | null
-    faceCount: number | null
     thumbnailKey: string | null
     previewKey: string | null
     blurDataUrl: string | null
@@ -12444,9 +12425,6 @@ export namespace Prisma {
     order: number
     isCulled: number
     loved: number
-    aiCaption: number
-    aiTags: number
-    faceCount: number
     thumbnailKey: number
     previewKey: number
     blurDataUrl: number
@@ -12465,7 +12443,6 @@ export namespace Prisma {
     width?: true
     height?: true
     order?: true
-    faceCount?: true
   }
 
   export type PhotoSumAggregateInputType = {
@@ -12476,7 +12453,6 @@ export namespace Prisma {
     width?: true
     height?: true
     order?: true
-    faceCount?: true
   }
 
   export type PhotoMinAggregateInputType = {
@@ -12496,8 +12472,6 @@ export namespace Prisma {
     order?: true
     isCulled?: true
     loved?: true
-    aiCaption?: true
-    faceCount?: true
     thumbnailKey?: true
     previewKey?: true
     blurDataUrl?: true
@@ -12523,8 +12497,6 @@ export namespace Prisma {
     order?: true
     isCulled?: true
     loved?: true
-    aiCaption?: true
-    faceCount?: true
     thumbnailKey?: true
     previewKey?: true
     blurDataUrl?: true
@@ -12550,9 +12522,6 @@ export namespace Prisma {
     order?: true
     isCulled?: true
     loved?: true
-    aiCaption?: true
-    aiTags?: true
-    faceCount?: true
     thumbnailKey?: true
     previewKey?: true
     blurDataUrl?: true
@@ -12665,9 +12634,6 @@ export namespace Prisma {
     order: number
     isCulled: boolean
     loved: boolean
-    aiCaption: string | null
-    aiTags: string[]
-    faceCount: number
     thumbnailKey: string | null
     previewKey: string | null
     blurDataUrl: string | null
@@ -12712,9 +12678,6 @@ export namespace Prisma {
     order?: boolean
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: boolean
-    aiTags?: boolean
-    faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
     blurDataUrl?: boolean
@@ -12747,9 +12710,6 @@ export namespace Prisma {
     order?: boolean
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: boolean
-    aiTags?: boolean
-    faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
     blurDataUrl?: boolean
@@ -12776,9 +12736,6 @@ export namespace Prisma {
     order?: boolean
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: boolean
-    aiTags?: boolean
-    faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
     blurDataUrl?: boolean
@@ -12805,9 +12762,6 @@ export namespace Prisma {
     order?: boolean
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: boolean
-    aiTags?: boolean
-    faceCount?: boolean
     thumbnailKey?: boolean
     previewKey?: boolean
     blurDataUrl?: boolean
@@ -12816,7 +12770,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "checksum" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "aiCaption" | "aiTags" | "faceCount" | "thumbnailKey" | "previewKey" | "blurDataUrl" | "status" | "processedAt" | "createdAt", ExtArgs["result"]["photo"]>
+  export type PhotoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "checksum" | "s3Key" | "s3Bucket" | "originalFilename" | "originalSize" | "thumbnailSize" | "previewSize" | "totalSize" | "width" | "height" | "mimeType" | "order" | "isCulled" | "loved" | "thumbnailKey" | "previewKey" | "blurDataUrl" | "status" | "processedAt" | "createdAt", ExtArgs["result"]["photo"]>
   export type PhotoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gallery?: boolean | GalleryDefaultArgs<ExtArgs>
     usedAsCoverIn?: boolean | Photo$usedAsCoverInArgs<ExtArgs>
@@ -12860,9 +12814,6 @@ export namespace Prisma {
       order: number
       isCulled: boolean
       loved: boolean
-      aiCaption: string | null
-      aiTags: string[]
-      faceCount: number
       thumbnailKey: string | null
       previewKey: string | null
       blurDataUrl: string | null
@@ -13314,9 +13265,6 @@ export namespace Prisma {
     readonly order: FieldRef<"Photo", 'Int'>
     readonly isCulled: FieldRef<"Photo", 'Boolean'>
     readonly loved: FieldRef<"Photo", 'Boolean'>
-    readonly aiCaption: FieldRef<"Photo", 'String'>
-    readonly aiTags: FieldRef<"Photo", 'String[]'>
-    readonly faceCount: FieldRef<"Photo", 'Int'>
     readonly thumbnailKey: FieldRef<"Photo", 'String'>
     readonly previewKey: FieldRef<"Photo", 'String'>
     readonly blurDataUrl: FieldRef<"Photo", 'String'>
@@ -30989,7 +30937,6 @@ export namespace Prisma {
     coverPhotoId: 'coverPhotoId',
     passwordHash: 'passwordHash',
     shareToken: 'shareToken',
-    aiContext: 'aiContext',
     isPublished: 'isPublished',
     categoryTags: 'categoryTags',
     expiresAt: 'expiresAt',
@@ -31032,9 +30979,6 @@ export namespace Prisma {
     order: 'order',
     isCulled: 'isCulled',
     loved: 'loved',
-    aiCaption: 'aiCaption',
-    aiTags: 'aiTags',
-    faceCount: 'faceCount',
     thumbnailKey: 'thumbnailKey',
     previewKey: 'previewKey',
     blurDataUrl: 'blurDataUrl',
@@ -32145,7 +32089,6 @@ export namespace Prisma {
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
-    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     categoryTags?: StringNullableListFilter<"Gallery">
     expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
@@ -32188,7 +32131,6 @@ export namespace Prisma {
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
-    aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
     categoryTags?: SortOrder
     expiresAt?: SortOrderInput | SortOrder
@@ -32235,7 +32177,6 @@ export namespace Prisma {
     deadline?: DateTimeNullableFilter<"Gallery"> | Date | string | null
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
-    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     categoryTags?: StringNullableListFilter<"Gallery">
     expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
@@ -32278,7 +32219,6 @@ export namespace Prisma {
     coverPhotoId?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     shareToken?: SortOrder
-    aiContext?: SortOrderInput | SortOrder
     isPublished?: SortOrder
     categoryTags?: SortOrder
     expiresAt?: SortOrderInput | SortOrder
@@ -32319,7 +32259,6 @@ export namespace Prisma {
     coverPhotoId?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     shareToken?: StringWithAggregatesFilter<"Gallery"> | string
-    aiContext?: StringNullableWithAggregatesFilter<"Gallery"> | string | null
     isPublished?: BoolWithAggregatesFilter<"Gallery"> | boolean
     categoryTags?: StringNullableListFilter<"Gallery">
     expiresAt?: DateTimeNullableWithAggregatesFilter<"Gallery"> | Date | string | null
@@ -32362,9 +32301,6 @@ export namespace Prisma {
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
-    aiCaption?: StringNullableFilter<"Photo"> | string | null
-    aiTags?: StringNullableListFilter<"Photo">
-    faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     blurDataUrl?: StringNullableFilter<"Photo"> | string | null
@@ -32396,9 +32332,6 @@ export namespace Prisma {
     order?: SortOrder
     isCulled?: SortOrder
     loved?: SortOrder
-    aiCaption?: SortOrderInput | SortOrder
-    aiTags?: SortOrder
-    faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
     blurDataUrl?: SortOrderInput | SortOrder
@@ -32433,9 +32366,6 @@ export namespace Prisma {
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
-    aiCaption?: StringNullableFilter<"Photo"> | string | null
-    aiTags?: StringNullableListFilter<"Photo">
-    faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     blurDataUrl?: StringNullableFilter<"Photo"> | string | null
@@ -32467,9 +32397,6 @@ export namespace Prisma {
     order?: SortOrder
     isCulled?: SortOrder
     loved?: SortOrder
-    aiCaption?: SortOrderInput | SortOrder
-    aiTags?: SortOrder
-    faceCount?: SortOrder
     thumbnailKey?: SortOrderInput | SortOrder
     previewKey?: SortOrderInput | SortOrder
     blurDataUrl?: SortOrderInput | SortOrder
@@ -32503,9 +32430,6 @@ export namespace Prisma {
     order?: IntWithAggregatesFilter<"Photo"> | number
     isCulled?: BoolWithAggregatesFilter<"Photo"> | boolean
     loved?: BoolWithAggregatesFilter<"Photo"> | boolean
-    aiCaption?: StringNullableWithAggregatesFilter<"Photo"> | string | null
-    aiTags?: StringNullableListFilter<"Photo">
-    faceCount?: IntWithAggregatesFilter<"Photo"> | number
     thumbnailKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     previewKey?: StringNullableWithAggregatesFilter<"Photo"> | string | null
     blurDataUrl?: StringNullableWithAggregatesFilter<"Photo"> | string | null
@@ -34331,7 +34255,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -34374,7 +34297,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -34413,7 +34335,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34456,7 +34377,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34497,7 +34417,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -34528,7 +34447,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34561,7 +34479,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34600,9 +34517,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -34634,9 +34548,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -34666,9 +34577,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34700,9 +34608,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34733,9 +34638,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -34760,9 +34662,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34788,9 +34687,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36814,7 +36710,6 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
-    aiContext?: SortOrder
     isPublished?: SortOrder
     categoryTags?: SortOrder
     expiresAt?: SortOrder
@@ -36853,7 +36748,6 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
-    aiContext?: SortOrder
     isPublished?: SortOrder
     expiresAt?: SortOrder
     slideshowEnabled?: SortOrder
@@ -36885,7 +36779,6 @@ export namespace Prisma {
     coverPhotoId?: SortOrder
     passwordHash?: SortOrder
     shareToken?: SortOrder
-    aiContext?: SortOrder
     isPublished?: SortOrder
     expiresAt?: SortOrder
     slideshowEnabled?: SortOrder
@@ -36950,9 +36843,6 @@ export namespace Prisma {
     order?: SortOrder
     isCulled?: SortOrder
     loved?: SortOrder
-    aiCaption?: SortOrder
-    aiTags?: SortOrder
-    faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     blurDataUrl?: SortOrder
@@ -36969,7 +36859,6 @@ export namespace Prisma {
     width?: SortOrder
     height?: SortOrder
     order?: SortOrder
-    faceCount?: SortOrder
   }
 
   export type PhotoMaxOrderByAggregateInput = {
@@ -36989,8 +36878,6 @@ export namespace Prisma {
     order?: SortOrder
     isCulled?: SortOrder
     loved?: SortOrder
-    aiCaption?: SortOrder
-    faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     blurDataUrl?: SortOrder
@@ -37016,8 +36903,6 @@ export namespace Prisma {
     order?: SortOrder
     isCulled?: SortOrder
     loved?: SortOrder
-    aiCaption?: SortOrder
-    faceCount?: SortOrder
     thumbnailKey?: SortOrder
     previewKey?: SortOrder
     blurDataUrl?: SortOrder
@@ -37034,7 +36919,6 @@ export namespace Prisma {
     width?: SortOrder
     height?: SortOrder
     order?: SortOrder
-    faceCount?: SortOrder
   }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -38666,10 +38550,6 @@ export namespace Prisma {
     deleteMany?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
   }
 
-  export type PhotoCreateaiTagsInput = {
-    set: string[]
-  }
-
   export type GalleryCreateNestedOneWithoutPhotosInput = {
     create?: XOR<GalleryCreateWithoutPhotosInput, GalleryUncheckedCreateWithoutPhotosInput>
     connectOrCreate?: GalleryCreateOrConnectWithoutPhotosInput
@@ -38742,11 +38622,6 @@ export namespace Prisma {
     connectOrCreate?: GalleryFavoriteCreateOrConnectWithoutPhotoInput | GalleryFavoriteCreateOrConnectWithoutPhotoInput[]
     createMany?: GalleryFavoriteCreateManyPhotoInputEnvelope
     connect?: GalleryFavoriteWhereUniqueInput | GalleryFavoriteWhereUniqueInput[]
-  }
-
-  export type PhotoUpdateaiTagsInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type GalleryUpdateOneRequiredWithoutPhotosNestedInput = {
@@ -40004,7 +39879,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -40045,7 +39919,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -40350,7 +40223,6 @@ export namespace Prisma {
     coverPhotoId?: StringNullableFilter<"Gallery"> | string | null
     passwordHash?: StringNullableFilter<"Gallery"> | string | null
     shareToken?: StringFilter<"Gallery"> | string
-    aiContext?: StringNullableFilter<"Gallery"> | string | null
     isPublished?: BoolFilter<"Gallery"> | boolean
     categoryTags?: StringNullableListFilter<"Gallery">
     expiresAt?: DateTimeNullableFilter<"Gallery"> | Date | string | null
@@ -41180,9 +41052,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -41213,9 +41082,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -41249,9 +41115,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -41281,9 +41144,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -41629,9 +41489,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41662,9 +41519,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41713,9 +41567,6 @@ export namespace Prisma {
     order?: IntFilter<"Photo"> | number
     isCulled?: BoolFilter<"Photo"> | boolean
     loved?: BoolFilter<"Photo"> | boolean
-    aiCaption?: StringNullableFilter<"Photo"> | string | null
-    aiTags?: StringNullableListFilter<"Photo">
-    faceCount?: IntFilter<"Photo"> | number
     thumbnailKey?: StringNullableFilter<"Photo"> | string | null
     previewKey?: StringNullableFilter<"Photo"> | string | null
     blurDataUrl?: StringNullableFilter<"Photo"> | string | null
@@ -41942,7 +41793,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -41984,7 +41834,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -42027,7 +41876,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -42068,7 +41916,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -42247,7 +42094,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42289,7 +42135,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42445,9 +42290,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -42478,9 +42320,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -42525,9 +42364,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42558,9 +42394,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42929,7 +42762,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -42971,7 +42803,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -43050,7 +42881,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43092,7 +42922,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43161,7 +42990,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -43203,7 +43031,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -43277,7 +43104,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43319,7 +43145,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43404,9 +43229,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -43437,9 +43259,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -43513,9 +43332,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43546,9 +43362,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43569,7 +43382,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -43611,7 +43423,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -43662,9 +43473,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -43695,9 +43503,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -43805,7 +43610,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43847,7 +43651,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43904,9 +43707,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43937,9 +43737,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44015,7 +43812,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44057,7 +43853,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44108,9 +43903,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -44141,9 +43933,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -44180,7 +43969,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44222,7 +44010,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44279,9 +44066,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44312,9 +44096,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44335,7 +44116,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44377,7 +44157,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44431,7 +44210,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44473,7 +44251,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44511,7 +44288,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44553,7 +44329,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -44607,7 +44382,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44649,7 +44423,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45062,7 +44835,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -45104,7 +44876,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -45201,7 +44972,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45243,7 +45013,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45325,7 +45094,6 @@ export namespace Prisma {
     coverPhotoId?: string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -45517,7 +45285,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45558,7 +45325,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45598,7 +45364,6 @@ export namespace Prisma {
     coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45737,9 +45502,6 @@ export namespace Prisma {
     order?: number
     isCulled?: boolean
     loved?: boolean
-    aiCaption?: string | null
-    aiTags?: PhotoCreateaiTagsInput | string[]
-    faceCount?: number
     thumbnailKey?: string | null
     previewKey?: string | null
     blurDataUrl?: string | null
@@ -45834,9 +45596,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45866,9 +45625,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45898,9 +45654,6 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     isCulled?: BoolFieldUpdateOperationsInput | boolean
     loved?: BoolFieldUpdateOperationsInput | boolean
-    aiCaption?: NullableStringFieldUpdateOperationsInput | string | null
-    aiTags?: PhotoUpdateaiTagsInput | string[]
-    faceCount?: IntFieldUpdateOperationsInput | number
     thumbnailKey?: NullableStringFieldUpdateOperationsInput | string | null
     previewKey?: NullableStringFieldUpdateOperationsInput | string | null
     blurDataUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46132,7 +45885,6 @@ export namespace Prisma {
     deadline?: Date | string | null
     passwordHash?: string | null
     shareToken?: string
-    aiContext?: string | null
     isPublished?: boolean
     categoryTags?: GalleryCreatecategoryTagsInput | string[]
     expiresAt?: Date | string | null
@@ -46191,7 +45943,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46232,7 +45983,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46272,7 +46022,6 @@ export namespace Prisma {
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     shareToken?: StringFieldUpdateOperationsInput | string
-    aiContext?: NullableStringFieldUpdateOperationsInput | string | null
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     categoryTags?: GalleryUpdatecategoryTagsInput | string[]
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

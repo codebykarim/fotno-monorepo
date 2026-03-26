@@ -42,7 +42,6 @@ export const getPublicGallery = async (shareToken: string) => {
         select: {
           id: true,
           originalFilename: true,
-          aiCaption: true,
           width: true,
           height: true,
           order: true,
@@ -93,7 +92,6 @@ export const getPublicGallery = async (shareToken: string) => {
       return {
         id: photo.id,
         originalFilename: photo.originalFilename,
-        aiCaption: photo.aiCaption,
         width: photo.width,
         height: photo.height,
         order: photo.order,

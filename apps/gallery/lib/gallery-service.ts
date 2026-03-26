@@ -14,7 +14,6 @@ const TRANSPARENT_BLUR =
 type BackendPhoto = {
   id: string;
   originalFilename: string;
-  aiCaption?: string | null;
   width?: number | null;
   height?: number | null;
   order?: number | null;
@@ -107,7 +106,6 @@ const normalizePhoto = (
   return {
     id: photo.id,
     originalFilename: photo.originalFilename || `${photo.id}.jpg`,
-    aiCaption: photo.aiCaption ?? null,
     width: photo.width ?? null,
     height: photo.height ?? null,
     order: photo.order ?? 0,
@@ -215,7 +213,6 @@ const loadGalleryFromDashboardMock = async (
     .map((photo) => ({
       id: photo.id,
       originalFilename: `${photo.id}.jpg`,
-      aiCaption: null,
       width: photo.width ?? null,
       height: photo.height ?? null,
       order: photo.order ?? 0,
@@ -375,7 +372,6 @@ export const getSharedFavorites = async (
     (p: any) => ({
       id: p.id,
       originalFilename: p.originalFilename || `${p.id}.jpg`,
-      aiCaption: p.aiCaption ?? null,
       width: p.width ?? null,
       height: p.height ?? null,
       order: p.order ?? 0,

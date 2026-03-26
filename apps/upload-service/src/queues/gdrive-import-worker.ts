@@ -164,7 +164,6 @@ async function processItem(
       mimeType,
       originalSize,
       status: 'uploaded',
-      aiTags: [],
       order,
     },
   })

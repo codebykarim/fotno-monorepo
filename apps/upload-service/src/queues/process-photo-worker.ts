@@ -91,46 +91,6 @@ export const processPhotoWorker = new Worker<ProcessPhotoJobData>(
       result.preview.size,
     )
 
-    // Ingest to image-search-service for embedding (with retries)
-    if (env.AI_ENABLED) {
-      const cfDomain = env.CLOUDFRONT_DOMAIN
-      const publicUrl = cfDomain ? `https://${cfDomain}` : ''
-      const storageUrl = `${publicUrl}/${result.preview.s3Key}`
-      const ingestPayload = JSON.stringify({
-        photoId,
-        userId,
-        galleryId: existing.galleryId,
-        storageUrl,
-        tags: [],
-      })
-
-      let ingested = false
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const res = await fetch(`${env.IMAGE_SEARCH_SERVICE_URL}/ingest-photo`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: ingestPayload,
-          })
-          if (res.ok) {
-            log.info({ photoId }, 'Ingested to search service')
-            ingested = true
-            break
-          }
-          log.warn({ photoId, status: res.status, attempt }, 'Search ingest returned non-OK')
-        } catch (err: any) {
-          log.warn({ photoId, err: err.message, attempt }, 'Search ingest request failed')
-        }
-        if (attempt < 3) {
-          await new Promise((r) => setTimeout(r, 1000 * attempt))
-        }
-      }
-
-      if (!ingested) {
-        log.error({ photoId }, 'Search ingest failed after 3 attempts — photo is processed but not searchable')
-      }
-    }
-
     log.info(
       {
         thumbnailSize: result.thumbnail.size.toString(),

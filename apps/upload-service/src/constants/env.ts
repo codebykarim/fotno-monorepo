@@ -38,13 +38,6 @@ const EnvSchema = z.object({
   UPLOAD_SESSION_TTL_HRS: z.coerce.number().min(1).default(24),
   /** Validity of presigned upload URLs in seconds. Client must complete upload before this expires. Default 7200 (2h). */
   PRESIGNED_URL_TTL_SEC: z.coerce.number().int().min(60).default(7200),
-  /** Base URL of the image-search-service for ingesting processed photos. */
-  IMAGE_SEARCH_SERVICE_URL: z.string().url().default('http://localhost:4002'),
-  /** Set to 'false' to disable all AI features (image-search ingestion, embeddings, captioning). */
-  AI_ENABLED: z
-    .string()
-    .default('true')
-    .transform((v) => v !== 'false'),
   /** CloudFront distribution domain (e.g. d1234abcdef8.cloudfront.net). */
   CLOUDFRONT_DOMAIN: z.string().min(1).optional(),
   /** Google OAuth client ID for Drive token refresh in the import worker. */

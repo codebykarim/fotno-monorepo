@@ -2,14 +2,14 @@
 
 ## Overview
 
-All 11 services are deployed as a single Docker Compose stack in Coolify.
-Internal services communicate by service name (e.g. `http://siglip-service:8001`).
-Databases (PostgreSQL, pgvector, Redis) are provisioned separately in Coolify.
+All 8 services are deployed as a single Docker Compose stack in Coolify.
+Internal services communicate by service name.
+Databases (PostgreSQL, Redis) are provisioned separately in Coolify.
 
 ## Step 1: Delete Existing Individual Apps
 
 In Coolify, delete all the individual Application resources you created earlier.
-Keep your 3 database resources (fotno-database, fotno-pgvector, fotno-redis).
+Keep your database resources (fotno-database, fotno-redis).
 
 ## Step 2: Create Docker Compose Service
 
@@ -29,9 +29,6 @@ add all your variables. These are injected into every service via `env_file: .en
 # ── Main Database (your fotno-database in Coolify) ──
 DATABASE_URL=postgresql://user:pass@fotno-database:5432/fotno
 DIRECT_URL=postgresql://user:pass@fotno-database:5432/fotno
-
-# ── pgvector Database (your fotno-pgvector in Coolify) ──
-IMAGE_SEARCH_DATABASE_URL=postgresql://user:pass@fotno-pgvector:5432/fotno_search
 
 # ── Redis (your fotno-redis in Coolify) ──
 REDIS_URL=redis://fotno-redis:6379
@@ -53,9 +50,6 @@ CLOUDFRONT_PRIVATE_KEY=<your-private-key>
 # ── Email ──
 RESEND_API_KEY=<your-key>
 
-# ── AI / OpenAI (optional, for search tagging) ──
-OPENAI_API_KEY=<your-key>
-
 # ── Frontend URLs (NEXT_PUBLIC_* are baked at build time) ──
 NEXT_PUBLIC_API_URL=https://api.fotno.com
 NEXT_PUBLIC_AUTH_URL=https://auth.fotno.com
@@ -67,10 +61,7 @@ NEXT_PUBLIC_LANDING_URL=https://fotno.com
 BACKEND_API_URL=http://backend:8000
 
 # ── Internal service URLs ──
-IMAGE_SEARCH_SERVICE_URL=http://image-search-service:4002
 UPLOAD_SERVICE_URL=http://upload-service:4001
-SIGLIP_SERVICE_URL=http://siglip-service:8001
-QWEN_SERVICE_URL=http://qwen-ai-service:8002
 
 # ── Gallery session (server-side secret for password-protected galleries) ──
 GALLERY_SESSION_SECRET=<generate-a-strong-secret>
@@ -88,7 +79,7 @@ PAYMOB_PUBLIC_KEY=<if-using-paymob>
 ```
 
 > **Important:** Use the Coolify internal hostnames for your databases
-> (e.g. `fotno-database`, `fotno-pgvector`, `fotno-redis`).
+> (e.g. `fotno-database`, `fotno-redis`).
 > Check each database resource in Coolify for its internal hostname.
 
 ## Step 4: Configure Domains
@@ -106,19 +97,13 @@ In Coolify, for each service that needs a public domain, set the domain in the c
 | `admin` | `admin.fotno.com` | 3004 |
 
 **Do NOT assign domains** to internal-only services:
-- `image-search-service` (port 4002)
 - `image-processor` (no HTTP port)
-- `siglip-service` (port 8001)
-- `qwen-ai-service` (port 8002)
 
 ## Step 5: Deploy
 
-Click **Deploy**. Coolify will build all 11 services and start them.
+Click **Deploy**. Coolify will build all 8 services and start them.
 
-First deployment will be slow (~10-15 min) because:
-- pnpm installs all dependencies
-- AI models download on first start (~1.7GB SigLIP, ~4GB Qwen)
-
+First deployment will be slow (~10-15 min) because pnpm installs all dependencies.
 Subsequent deployments are faster thanks to Docker layer caching.
 
 ## Database Migrations
@@ -135,21 +120,10 @@ If you need to run migrations manually (e.g. troubleshooting), exec into the bac
 cd /app/packages/db && npx prisma migrate deploy
 ```
 
-### pgvector database
-
-Runs automatically on every startup of `image-search-service` (idempotent).
-
 ## Networking
 
 Docker Compose creates a shared network. Internal service URLs are hardcoded
-in `docker-compose.yml` via `environment:` overrides:
-
-```
-backend        → http://image-search-service:4002
-image-processor → http://image-search-service:4002
-image-search   → http://siglip-service:8001
-image-search   → http://qwen-ai-service:8002
-```
+in `docker-compose.yml` via `environment:` overrides.
 
 Databases are reached via their Coolify internal hostnames set in the env vars.
 
@@ -160,27 +134,18 @@ Databases are reached via their Coolify internal hostnames set in the env vars.
 | backend | 512MB | API + cleanup worker |
 | upload-service | 512MB | Chunked uploads + Sharp |
 | image-processor | 512MB | Sharp image processing |
-| image-search-service | 256MB | Search orchestration |
-| siglip-service | 2.5GB | SigLIP model in memory |
-| qwen-ai-service | 5GB | Qwen 2b model in memory |
 | landing | 128MB | Static Next.js |
 | dashboard | 256MB | SSR Next.js |
 | auth | 128MB | Auth pages |
 | gallery | 256MB | SSR galleries |
 | admin | 128MB | Admin panel |
 
-**Total:** ~10GB RAM, 4 CPU cores
+**Total:** ~2.5GB RAM, 4 CPU cores
 
 ## Troubleshooting
 
 ### "frozen lockfile" build error
 Run `pnpm install` locally and commit `pnpm-lock.yaml`.
-
-### AI services OOM
-Increase RAM in Coolify resource limits. SigLIP needs ~2.5GB, Qwen 2b needs ~5GB.
-
-### Image processor not picking up photos
-Check that `IMAGE_SEARCH_SERVICE_URL` resolves (test from container terminal).
 
 ### Database connection refused
 Ensure databases and compose services are on the same Docker network.

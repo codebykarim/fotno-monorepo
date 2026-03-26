@@ -37,7 +37,6 @@ export const getGallery = async (userId: string, galleryId: string) => {
       createdAt: gallery.createdAt.toISOString(),
       updatedAt: gallery.updatedAt.toISOString(),
       coverPhotoId: gallery.coverPhotoId ?? null,
-      aiContext: gallery.aiContext ?? null,
       // General settings
       categoryTags: gallery.categoryTags,
       expiresAt: gallery.expiresAt ? gallery.expiresAt.toISOString() : null,

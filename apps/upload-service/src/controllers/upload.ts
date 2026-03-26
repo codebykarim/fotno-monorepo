@@ -446,7 +446,6 @@ export class UploadController {
             originalSize: BigInt(file.size),
             checksum: file.checksum,
             status: 'pending',
-            aiTags: [],
             order,
           },
         })

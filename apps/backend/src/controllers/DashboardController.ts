@@ -292,40 +292,6 @@ export const deletePhotoController = async (req: Request, res: Response) => {
   return res.status(200).json({ success: true });
 };
 
-export const getGalleryAiStatusController = async (
-  req: Request,
-  res: Response,
-) => {
-  const userId = getUserId(req);
-  const result = await DashboardService.getGalleryAiStatus(
-    userId,
-    req.params.id,
-  );
-  if ("error" in result) {
-    return res
-      .status(asStatusCode(result.status, 400))
-      .json({ error: result.error });
-  }
-
-  return res.status(200).json(result);
-};
-
-export const suggestAlbumController = async (req: Request, res: Response) => {
-  const userId = getUserId(req);
-  const result = await DashboardService.suggestAlbum(
-    userId,
-    req.params.id,
-    req.body?.prompt,
-  );
-  if ("error" in result) {
-    return res
-      .status(asStatusCode(result.status, 400))
-      .json({ error: result.error });
-  }
-
-  return res.status(200).json(result);
-};
-
 // ─── Google Drive Import ────────────────────────────────────────────────────
 
 export const gdriveAuthStatusController = async (

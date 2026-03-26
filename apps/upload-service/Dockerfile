@@ -23,7 +23,6 @@ COPY apps/auth/package.json apps/auth/
 COPY apps/gallery/package.json apps/gallery/
 COPY apps/admin/package.json apps/admin/
 COPY apps/upload-service/package.json apps/upload-service/
-COPY apps/image-search-service/package.json apps/image-search-service/
 COPY apps/image-processor/package.json apps/image-processor/
 
 # Install dependencies (DIRECT_URL needed by prisma generate postinstall, dummy value for build)

@@ -2125,7 +2125,7 @@ export default function GalleryPageClient({
                     >
                       <img
                         src={imageSrc}
-                        alt={photo.aiCaption ?? photo.originalFilename}
+                        alt={photo.originalFilename}
                         width={w}
                         height={h}
                         loading={index < 8 ? "eager" : "lazy"}
@@ -2283,7 +2283,7 @@ export default function GalleryPageClient({
             >
               <Image
                 src={withOptionalToken(activePhoto.previewSrc)}
-                alt={activePhoto.aiCaption ?? activePhoto.originalFilename}
+                alt={activePhoto.originalFilename}
                 width={activePhoto.width ?? 1600}
                 height={activePhoto.height ?? 1200}
                 sizes="90vw"
@@ -2332,7 +2332,7 @@ export default function GalleryPageClient({
             <Image
               key={slideshowPhoto.id}
               src={withOptionalToken(slideshowPhoto.previewSrc)}
-              alt={slideshowPhoto.aiCaption ?? slideshowPhoto.originalFilename}
+              alt={slideshowPhoto.originalFilename}
               width={slideshowPhoto.width ?? 1600}
               height={slideshowPhoto.height ?? 1200}
               sizes="100vw"
@@ -2761,7 +2761,7 @@ export default function GalleryPageClient({
                         key={photo.id}
                         type="button"
                         onClick={() => setCommentPhotoId(photo.id)}
-                        title={photo.aiCaption ?? `Image #${index + 1}`}
+                        title={`Image #${index + 1}`}
                         className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition ${
                           selected
                             ? "border-primary ring-2 ring-primary/30"
@@ -2770,7 +2770,7 @@ export default function GalleryPageClient({
                       >
                         <Image
                           src={withOptionalToken(photo.thumbnailSrc)}
-                          alt={photo.aiCaption ?? `Image #${index + 1}`}
+                          alt={`Image #${index + 1}`}
                           fill
                           sizes="56px"
                           className="object-cover"

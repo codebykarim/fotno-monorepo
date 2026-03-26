@@ -47,7 +47,6 @@ export const getSharedFavorites = async (favoriteShareToken: string) => {
         select: {
           id: true,
           originalFilename: true,
-          aiCaption: true,
           width: true,
           height: true,
           order: true,
@@ -62,7 +61,6 @@ export const getSharedFavorites = async (favoriteShareToken: string) => {
     .map((f: any) => ({
       id: f.photo.id,
       originalFilename: f.photo.originalFilename,
-      aiCaption: f.photo.aiCaption,
       width: f.photo.width,
       height: f.photo.height,
       order: f.photo.order ?? 0,

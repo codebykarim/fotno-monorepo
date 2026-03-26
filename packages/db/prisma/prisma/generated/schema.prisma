@@ -178,7 +178,6 @@ model Gallery {
   coverPhoto   Photo?    @relation("GalleryCoverPhoto", fields: [coverPhotoId], references: [id], onDelete: SetNull)
   passwordHash String?
   shareToken   String    @unique @default(uuid())
-  aiContext    String?
   isPublished  Boolean   @default(false)
 
   // General settings
@@ -238,9 +237,6 @@ model Photo {
   order            Int               @default(0)
   isCulled         Boolean           @default(false)
   loved            Boolean           @default(false)
-  aiCaption        String?
-  aiTags           String[]
-  faceCount        Int               @default(0)
   thumbnailKey     String?
   previewKey       String?
   blurDataUrl      String?

@@ -4,7 +4,11 @@ export const getGallery = async (userId: string, galleryId: string) => {
   const gallery = await db.gallery.findFirst({
     where: { id: galleryId, userId },
     include: {
-      _count: { select: { photos: true } },
+      _count: {
+        select: {
+          photos: { where: { status: "processed" } },
+        },
+      },
       albums: {
         include: { photos: true },
         orderBy: { createdAt: "asc" },

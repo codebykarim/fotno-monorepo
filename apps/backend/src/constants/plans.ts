@@ -110,7 +110,7 @@ export type StorageTier = (typeof STORAGE_TIERS)[number];
 export const PLAN_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
-  "AI-powered captions",
+  // "AI-powered captions",
   "Client favorites & selections",
   "Download tracking & analytics",
   "Password-protected galleries",
@@ -127,7 +127,7 @@ export function buildFreeFeatures(freeTier: { gb: number; galleryLimit: number |
   return [
     `${storage} storage`,
     `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
-    "AI-powered captions",
+    // "AI-powered captions",
     "Client favorites & selections",
     "Download tracking & analytics",
     "Password-protected galleries",
@@ -138,7 +138,7 @@ export function buildFreeFeatures(freeTier: { gb: number; galleryLimit: number |
 export const FREE_PLAN_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
-  "AI-powered captions",
+  // "AI-powered captions",
   "Client favorites & selections",
   "Download tracking & analytics",
   "Password-protected galleries",

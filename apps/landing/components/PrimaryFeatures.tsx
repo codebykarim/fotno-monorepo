@@ -48,11 +48,17 @@ const features: Feature[] = [
       "Drag-and-drop hundreds of photos at once. Chunked multipart uploads with automatic retries so nothing gets lost.",
     icon: Upload,
   },
+  // {
+  //   title: "AI-powered captions",
+  //   description:
+  //     "Automatically generate intelligent captions for your photos using AI. Save hours of manual work on every gallery.",
+  //   icon: Sparkles,
+  // },
   {
-    title: "AI-powered captions",
+    title: "Dark mode everywhere",
     description:
-      "Automatically generate intelligent captions for your photos using AI. Save hours of manual work on every gallery.",
-    icon: Sparkles,
+      "Every surface supports light and dark mode. Galleries adapt to your client's preference automatically.",
+    icon: Palette,
   },
   {
     title: "Custom delivery links",
@@ -66,12 +72,6 @@ const features: Feature[] = [
     description:
       "Import directly from Google Drive or Google Photos. No need to download and re-upload — just connect and go.",
     icon: Camera,
-  },
-  {
-    title: "Dark mode everywhere",
-    description:
-      "Every surface supports light and dark mode. Galleries adapt to your client's preference automatically.",
-    icon: Palette,
   },
 ];
 

@@ -125,7 +125,7 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
     input.photographer?.logoUrl ?? input.user?.image ?? null;
   const photos = (input.photos ?? [])
     .map((photo) => normalizePhoto(photo, input.shareToken))
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
 
   return {
     id: input.id,
@@ -224,7 +224,7 @@ const loadGalleryFromDashboardMock = async (
       previewSrc: photo.previewUrl ?? photo.thumbnailUrl ?? photo.url,
       originalSrc: photo.originalUrl ?? null,
     }))
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
 
   return {
     gallery: {

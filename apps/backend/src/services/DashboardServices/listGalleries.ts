@@ -60,7 +60,7 @@ export const listGalleries = async (
 
   return Promise.all(
     filtered.map(async (gallery: any) => {
-      const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order);
+      const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
       const firstPhoto = orderedPhotos[0] ?? null;
       const coverPhoto = gallery.coverPhotoId
         ? orderedPhotos.find((photo: any) => photo.id === gallery.coverPhotoId) ?? firstPhoto

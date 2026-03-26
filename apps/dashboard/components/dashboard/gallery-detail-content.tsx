@@ -453,6 +453,8 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
   } = useSWRInfinite<GetGalleryPhotosResponse>(getKey, jsonFetcher, {
     revalidateOnFocus: false,
     revalidateFirstPage: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
   });
   const photos = useMemo(
     () => (pages ? pages.flatMap((p) => p.photos) : []),
@@ -1512,6 +1514,7 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
                   onContextMenu={(event) => event.preventDefault()}
                   className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                   priority={index < 8}
+                  unoptimized
                 />
 
                 {/* Checkbox overlay */}

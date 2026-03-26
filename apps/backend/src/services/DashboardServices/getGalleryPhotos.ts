@@ -23,14 +23,16 @@ export const getGalleryPhotos = async (
     return null;
   }
 
+  const photoWhere = { galleryId, status: "processed" };
+
   const [photos, total] = await Promise.all([
     db.photo.findMany({
-      where: { galleryId },
-      orderBy: { order: "asc" },
+      where: photoWhere,
+      orderBy: [{ order: "asc" }, { createdAt: "asc" }, { id: "asc" }],
       skip: safeOffset,
       take: safeLimit,
     }),
-    db.photo.count({ where: { galleryId } }),
+    db.photo.count({ where: photoWhere }),
   ]);
 
   const photosWithUrls = await Promise.all(

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | FOTNO",
   },
   description:
-    "FOTNO (Photno / Photnoo) is the modern photo gallery delivery platform for professional photographers. Create stunning password-protected client galleries, online proofing, client favorites, bulk uploads, and AI-powered captions. The best Pixieset, ShootProof & Pic-Time alternative.",
+    "FOTNO (Photno / Photnoo) is the modern photo gallery delivery platform for professional photographers. Create stunning password-protected client galleries, online proofing, client favorites, bulk uploads. The best Pixieset, ShootProof & Pic-Time alternative.",
   keywords: [
     // Brand keywords
     "fotno",

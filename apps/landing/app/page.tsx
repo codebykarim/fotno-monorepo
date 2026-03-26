@@ -18,9 +18,14 @@ const jsonLd = {
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "FOTNO",
-      alternateName: ["Photno", "Photnoo", "Fotno Gallery", "FOTNO Photo Gallery"],
+      alternateName: [
+        "Photno",
+        "Photnoo",
+        "Fotno Gallery",
+        "FOTNO Photo Gallery",
+      ],
       description:
-        "The modern photo gallery delivery platform for professional photographers. Create stunning password-protected client galleries with online proofing and AI-powered captions.",
+        "The modern photo gallery delivery platform for professional photographers. Create stunning password-protected client galleries with online proofing.",
       publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: {
         "@type": "SearchAction",
@@ -46,10 +51,7 @@ const jsonLd = {
         email: "support@fotno.com",
         contactType: "customer support",
       },
-      sameAs: [
-        "https://photno.com",
-        "https://photnoo.com",
-      ],
+      sameAs: ["https://photno.com", "https://photnoo.com"],
     },
     {
       "@type": "SoftwareApplication",
@@ -60,7 +62,7 @@ const jsonLd = {
       operatingSystem: "Web",
       url: SITE_URL,
       description:
-        "Professional photo gallery delivery platform. Upload, organize, and deliver stunning password-protected galleries to clients. Features include online proofing, client favorites, bulk uploads, AI-powered captions, Google Drive import, and custom delivery links.",
+        "Professional photo gallery delivery platform. Upload, organize, and deliver stunning password-protected galleries to clients. Features include online proofing, client favorites, bulk uploads, Google Drive import, and custom delivery links.",
       offers: {
         "@type": "AggregateOffer",
         lowPrice: "9",

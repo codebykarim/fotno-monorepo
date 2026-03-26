@@ -31,7 +31,7 @@ import { useRouter } from "next/navigation";
 const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
-  "AI-powered captions",
+  // "AI-powered captions",
   "Client favorites & selections",
   "Download tracking & analytics",
   "Password-protected galleries",
@@ -236,19 +236,24 @@ export default function BillingPage() {
                     Free Plan
                   </span>
                   <span className="text-sm font-medium">
-                    {formatBytes(access.storageLimitBytes)} storage &mdash; {access.galleryCount ?? 0}/{access.galleryLimit ?? 2} galleries
+                    {formatBytes(access.storageLimitBytes)} storage &mdash;{" "}
+                    {access.galleryCount ?? 0}/{access.galleryLimit ?? 2}{" "}
+                    galleries
                   </span>
                 </div>
                 {!access.canUpload && (
                   <p className="text-sm text-amber-600 dark:text-amber-400">
-                    You&apos;re over your storage limit. Upgrade or remove files to upload again.
+                    You&apos;re over your storage limit. Upgrade or remove files
+                    to upload again.
                   </p>
                 )}
                 <Button
                   variant="default"
                   size="sm"
                   onClick={() => {
-                    document.getElementById("paid-plans")?.scrollIntoView({ behavior: "smooth" });
+                    document
+                      .getElementById("paid-plans")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
                   Upgrade
@@ -279,8 +284,9 @@ export default function BillingPage() {
                     </span>
                   )}
                   <span className="text-sm font-medium">
-                    {paidPlans?.find((t) => t.gb === subscription?.storageTierGb)
-                      ?.label ?? "Fotno Pro"}{" "}
+                    {paidPlans?.find(
+                      (t) => t.gb === subscription?.storageTierGb,
+                    )?.label ?? "Fotno Pro"}{" "}
                     &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
                   </span>
                   <span className="text-sm text-muted-foreground">
@@ -368,7 +374,8 @@ export default function BillingPage() {
           {hasSubscription ? "Change Plan" : "Upgrade to Pro"}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Every feature is included at every tier — only storage differs. Unlimited galleries.
+          Every feature is included at every tier — only storage differs.
+          Unlimited galleries.
         </p>
 
         {!paidPlans ? (

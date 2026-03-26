@@ -55,7 +55,7 @@ const FALLBACK_TIERS: PlanTier[] = [
 const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
-  "AI-powered captions",
+  // "AI-powered captions",
   "Client favorites & selections",
   "Download tracking & analytics",
   "Password-protected galleries",
@@ -68,7 +68,7 @@ const FALLBACK_FEATURES = [
 const FALLBACK_FREE_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
-  "AI-powered captions",
+  // "AI-powered captions",
   "Client favorites & selections",
   "Download tracking & analytics",
   "Password-protected galleries",

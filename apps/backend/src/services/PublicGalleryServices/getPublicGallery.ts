@@ -38,7 +38,7 @@ export const getPublicGallery = async (shareToken: string) => {
       },
       photos: {
         where: { status: "processed" },
-        orderBy: { order: "asc" },
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }, { id: "asc" }],
         select: {
           id: true,
           originalFilename: true,

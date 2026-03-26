@@ -190,9 +190,6 @@ importers:
       '@hapi/boom':
         specifier: ^10.0.1
         version: 10.0.1
-      '@lemonsqueezy/lemonsqueezy.js':
-        specifier: ^4.0.0
-        version: 4.0.0
       '@prisma/adapter-pg':
         specifier: ^7.5.0
         version: 7.5.0
@@ -301,6 +298,9 @@ importers:
       resend:
         specifier: ^4.1.2
         version: 4.1.2(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      stripe:
+        specifier: ^17.7.0
+        version: 17.7.0
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -3259,10 +3259,6 @@ packages:
 
   '@leichtgewicht/ip-codec@2.0.5':
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
-
-  '@lemonsqueezy/lemonsqueezy.js@4.0.0':
-    resolution: {integrity: sha512-xcY1/lDrY7CpIF98WKiL1ElsfoVhddP7FT0fw7ssOzrFqQsr44HgolKrQZxd9SywsCPn12OTOUieqDIokI3mFg==}
-    engines: {node: '>=20'}
 
   '@levischuck/tiny-cbor@0.2.11':
     resolution: {integrity: sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow==}
@@ -13143,6 +13139,10 @@ packages:
     resolution: {integrity: sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==}
     engines: {node: '>=14.16'}
 
+  stripe@17.7.0:
+    resolution: {integrity: sha512-aT2BU9KkizY9SATf14WhhYVv2uOapBWX0OFWF4xvcj1mPaNotlSc2CsxpS4DS46ZueSppmCF5BX1sNYBtwBvfw==}
+    engines: {node: '>=12.*'}
+
   strnum@1.1.1:
     resolution: {integrity: sha512-O7aCHfYCamLCctjAiaucmE+fHf2DYHkus2OKCn4Wv03sykfFtgeECn505X6K4mPl8CRNd/qurC9guq+ynoN4pw==}
 
@@ -17202,8 +17202,6 @@ snapshots:
       tslib: 2.8.1
 
   '@leichtgewicht/ip-codec@2.0.5': {}
-
-  '@lemonsqueezy/lemonsqueezy.js@4.0.0': {}
 
   '@levischuck/tiny-cbor@0.2.11': {}
 
@@ -29471,6 +29469,11 @@ snapshots:
   strip-json-comments@3.1.1: {}
 
   strip-json-comments@5.0.3: {}
+
+  stripe@17.7.0:
+    dependencies:
+      '@types/node': 22.12.0
+      qs: 6.15.0
 
   strnum@1.1.1:
     optional: true

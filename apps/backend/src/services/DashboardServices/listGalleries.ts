@@ -11,6 +11,8 @@ export const listGalleries = async (
   const status = statusRaw || "all";
   const sort = sortRaw || "newest";
 
+  const PREVIEW_GRID_LIMIT = 4;
+
   const galleries = await db.gallery.findMany({
     where: {
       userId,
@@ -21,10 +23,17 @@ export const listGalleries = async (
           : {}),
     },
     include: {
+      _count: {
+        select: {
+          photos: { where: { status: "processed" } },
+        },
+      },
       photos: {
+        where: { status: "processed" },
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }, { id: "asc" }],
+        take: PREVIEW_GRID_LIMIT,
         select: {
           id: true,
-          order: true,
           s3Key: true,
           thumbnailKey: true,
           previewKey: true,
@@ -56,23 +65,21 @@ export const listGalleries = async (
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
-  const PREVIEW_GRID_LIMIT = 12;
-
   return Promise.all(
     filtered.map(async (gallery: any) => {
-      const orderedPhotos = [...gallery.photos].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
-      const firstPhoto = orderedPhotos[0] ?? null;
+      const photos = gallery.photos;
+      const firstPhoto = photos[0] ?? null;
       const coverPhoto = gallery.coverPhotoId
-        ? orderedPhotos.find((photo: any) => photo.id === gallery.coverPhotoId) ?? firstPhoto
+        ? photos.find((p: any) => p.id === gallery.coverPhotoId) ?? firstPhoto
         : firstPhoto;
       const coverPhotoId = coverPhoto?.id ?? null;
+
       const coverPhotoObjectKey = coverPhoto
         ? coverPhoto.thumbnailKey ?? coverPhoto.previewKey ?? coverPhoto.s3Key
         : null;
 
-      const previewPhotos = orderedPhotos.slice(0, PREVIEW_GRID_LIMIT);
       const previewPhotoUrls = await Promise.all(
-        previewPhotos.map((photo: any) => {
+        photos.map((photo: any) => {
           const key = photo.thumbnailKey ?? photo.previewKey ?? photo.s3Key;
           return key ? getPresignedDownloadUrl(key, 3600) : null;
         }),
@@ -93,7 +100,7 @@ export const listGalleries = async (
         updatedAt: gallery.updatedAt.toISOString(),
         coverPhotoId,
         status: gallery.isPublished ? "published" : "draft",
-        photoCount: orderedPhotos.length,
+        photoCount: gallery._count.photos,
         coverPhotoUrl: coverPhotoObjectKey
           ? await getPresignedDownloadUrl(coverPhotoObjectKey, 3600)
           : null,

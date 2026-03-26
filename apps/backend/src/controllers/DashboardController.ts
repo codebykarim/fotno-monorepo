@@ -585,3 +585,35 @@ export const getDownloadActivityController = async (
   }
   return res.status(200).json(result);
 };
+
+// ─── Photo Processing Status ───────────────────────────────────────────────
+
+export const getGalleryProcessingStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.getGalleryProcessingStatus(
+    userId,
+    req.params.id,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};
+
+export const retryFailedPhotosController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.retryFailedPhotos(
+    userId,
+    req.params.id,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};

@@ -3,6 +3,9 @@ import sharp from "sharp";
 import { prisma } from "@workspace/db";
 import { multipartService } from "../../upload-service/src/services/multipart";
 
+// Disable sharp cache to reduce memory usage with many unique images
+sharp.cache(false);
+
 const IMAGE_SEARCH_SERVICE_URL =
   process.env.IMAGE_SEARCH_SERVICE_URL || "http://localhost:4002";
 const AI_ENABLED = process.env.AI_ENABLED !== 'false';
@@ -34,9 +37,25 @@ const RETRY_FAILED = process.env.IMAGE_PROCESSOR_RETRY_FAILED === "true";
 const PROCESSING_STALE_MS = Number(
   process.env.IMAGE_PROCESSOR_STALE_MS ?? 120_000,
 );
+// Per-photo timeout (default 60 seconds) — prevents hung sharp operations
+const PHOTO_TIMEOUT_MS = Number(
+  process.env.IMAGE_PROCESSOR_PHOTO_TIMEOUT_MS ?? 60_000,
+);
 
 const sleep = async (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+const withTimeout = <T>(promise: Promise<T>, ms: number, label: string): Promise<T> =>
+  new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error(`Timeout after ${ms}ms: ${label}`)),
+      ms,
+    );
+    promise.then(
+      (val) => { clearTimeout(timer); resolve(val); },
+      (err) => { clearTimeout(timer); reject(err); },
+    );
+  });
 
 const ingestPhotoToSearchService = async (
   photoId: string,
@@ -130,7 +149,7 @@ const compressWebpUnderBudget = async (
   let lastResult: Buffer | null = null;
 
   for (let attempt = 0; attempt < 20; attempt += 1) {
-    const candidate = await sharp(sourceBuffer)
+    const candidate = await sharp(sourceBuffer, { failOnError: false })
       .resize({
         width,
         fit: "inside",
@@ -177,17 +196,18 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
     ? ["uploaded", "failed"]
     : ["uploaded"];
 
+  // Fresh uploads: need processing (missing preview/thumbnail)
+  // Stale "processing": something went wrong, reclaim regardless of key state
   const candidates = await (prisma as any).photo.findMany({
     where: {
-      AND: [
+      OR: [
         {
-          OR: [
-            { status: { in: claimableStatuses } },
-            { status: "processing", createdAt: { lt: staleBefore } },
-          ],
+          status: { in: claimableStatuses },
+          OR: [{ previewKey: null }, { thumbnailKey: null }],
         },
         {
-          OR: [{ previewKey: null }, { thumbnailKey: null }],
+          status: "processing",
+          createdAt: { lt: staleBefore },
         },
       ],
     },
@@ -207,6 +227,12 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
     },
   });
 
+  if (candidates.length > 0) {
+    console.log(
+      `[image-processor] found ${candidates.length} candidate(s) to process`,
+    );
+  }
+
   const claimed: ProcessingPhoto[] = [];
 
   for (const candidate of candidates) {
@@ -214,7 +240,7 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
       where: {
         id: candidate.id,
         OR: [
-          { status: { in: claimableStatuses } },
+          { status: { in: claimableStatuses }, OR: [{ previewKey: null }, { thumbnailKey: null }] },
           { status: "processing", createdAt: { lt: staleBefore } },
         ],
       },
@@ -236,8 +262,22 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
   console.log(`[image-processor] started photoId=${photo.id}`);
 
   try {
-    const originalBuffer = await multipartService.downloadToBuffer(photo.s3Key);
-    const metadata = await sharp(originalBuffer).metadata();
+    const originalBuffer = await withTimeout(
+      multipartService.downloadToBuffer(photo.s3Key),
+      PHOTO_TIMEOUT_MS,
+      `download ${photo.id}`,
+    );
+
+    // Validate the image is readable before doing heavy work
+    const metadata = await withTimeout(
+      sharp(originalBuffer, { failOnError: false }).metadata(),
+      15_000,
+      `metadata ${photo.id}`,
+    );
+
+    if (!metadata.format) {
+      throw new Error("Unrecognizable image format");
+    }
 
     const thumbnailKey = `thumbnails/${photo.id}.webp`;
     const previewKey = `previews/${photo.id}.webp`;
@@ -249,21 +289,29 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       Math.max(480, Math.floor(originalWidth / 3)),
     );
 
-    const thumbnailBuffer = await compressWebpUnderBudget(originalBuffer, {
-      targetWidth: thumbnailTargetWidth,
-      minWidth: 320,
-      maxBytes: THUMBNAIL_MAX_BYTES,
-      initialQuality: 84,
-      minQuality: 50,
-    });
+    const thumbnailBuffer = await withTimeout(
+      compressWebpUnderBudget(originalBuffer, {
+        targetWidth: thumbnailTargetWidth,
+        minWidth: 320,
+        maxBytes: THUMBNAIL_MAX_BYTES,
+        initialQuality: 84,
+        minQuality: 50,
+      }),
+      PHOTO_TIMEOUT_MS,
+      `thumbnail ${photo.id}`,
+    );
 
-    const previewBuffer = await compressWebpUnderBudget(originalBuffer, {
-      targetWidth: previewTargetWidth,
-      minWidth: 960,
-      maxBytes: PREVIEW_MAX_BYTES,
-      initialQuality: 86,
-      minQuality: 54,
-    });
+    const previewBuffer = await withTimeout(
+      compressWebpUnderBudget(originalBuffer, {
+        targetWidth: previewTargetWidth,
+        minWidth: 960,
+        maxBytes: PREVIEW_MAX_BYTES,
+        initialQuality: 86,
+        minQuality: 54,
+      }),
+      PHOTO_TIMEOUT_MS,
+      `preview ${photo.id}`,
+    );
 
     await Promise.all([
       multipartService.uploadBuffer(thumbnailKey, thumbnailBuffer, "image/webp"),
@@ -308,15 +356,21 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       `[image-processor] completed photoId=${photo.id} previewBytes=${previewBuffer.length} thumbnailBytes=${thumbnailBuffer.length} durationMs=${Date.now() - startedAt}`,
     );
   } catch (error) {
-    await (prisma as any).photo.update({
-      where: { id: photo.id },
-      data: { status: "failed" },
-    });
-
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(
       `[image-processor] failed photoId=${photo.id} durationMs=${Date.now() - startedAt} error=${message}`,
     );
+
+    try {
+      await (prisma as any).photo.update({
+        where: { id: photo.id },
+        data: { status: "failed" },
+      });
+    } catch (dbError) {
+      console.error(
+        `[image-processor] failed to mark photo as failed photoId=${photo.id}`,
+      );
+    }
   }
 };
 
@@ -326,6 +380,23 @@ const start = async (): Promise<void> => {
   );
 
   let running = true;
+  // Track currently processing photo IDs so we can mark them failed on crash
+  let activePhotoIds: string[] = [];
+
+  const markActiveAsFailed = async () => {
+    if (activePhotoIds.length === 0) return;
+    try {
+      await (prisma as any).photo.updateMany({
+        where: { id: { in: activePhotoIds } },
+        data: { status: "failed" },
+      });
+      console.log(
+        `[image-processor] marked ${activePhotoIds.length} active photos as failed on shutdown`,
+      );
+    } catch {
+      // DB might be unreachable during crash
+    }
+  };
 
   const stop = async (signal: string) => {
     if (!running) {
@@ -333,6 +404,7 @@ const start = async (): Promise<void> => {
     }
     running = false;
     console.log(`[image-processor] stopping signal=${signal}`);
+    await markActiveAsFailed();
     await prisma.$disconnect();
     process.exit(0);
   };
@@ -345,6 +417,20 @@ const start = async (): Promise<void> => {
     void stop("SIGTERM");
   });
 
+  // Catch unhandled errors — mark active photos as failed so they don't stay stuck
+  process.on("uncaughtException", async (err) => {
+    console.error(`[image-processor] uncaughtException: ${err.message}`);
+    await markActiveAsFailed();
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+
+  process.on("unhandledRejection", (reason) => {
+    console.error(
+      `[image-processor] unhandledRejection: ${reason instanceof Error ? reason.message : reason}`,
+    );
+  });
+
   while (running) {
     try {
       const batch = await claimNextBatch();
@@ -354,15 +440,22 @@ const start = async (): Promise<void> => {
         continue;
       }
 
+      activePhotoIds = batch.map((p) => p.id);
+
       for (const photo of batch) {
         if (!running) {
           break;
         }
         await processPhoto(photo);
+        // Remove from active list after completion (success or caught failure)
+        activePhotoIds = activePhotoIds.filter((id) => id !== photo.id);
       }
+
+      activePhotoIds = [];
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(`[image-processor] loop error=${message}`);
+      activePhotoIds = [];
       await sleep(POLL_INTERVAL_MS);
     }
   }

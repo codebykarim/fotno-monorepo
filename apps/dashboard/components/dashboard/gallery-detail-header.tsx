@@ -86,9 +86,17 @@ function getGalleryShareLink(slug: string) {
 }
 
 export function GalleryDetailHeader() {
-  const { galleryId, data, mutate, isLoading } = useGalleryDetail();
+  const { galleryId, data, mutate, isLoading, processingStatus } =
+    useGalleryDetail();
   const pathname = usePathname();
   const [publishSaving, setPublishSaving] = useState(false);
+
+  // Disable publish only when photos are actively being processed
+  // (not stuck, not just failed — real work happening)
+  const isActivelyProcessing = processingStatus
+    ? !processingStatus.done &&
+      processingStatus.inProgress > processingStatus.stuck
+    : false;
 
   const basePath = `/galleries/${galleryId}`;
 
@@ -152,11 +160,18 @@ export function GalleryDetailHeader() {
 
           <div className="flex items-center gap-2 shrink-0">
             {/* Publish toggle */}
-            <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
+            <div
+              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5"
+              title={
+                isActivelyProcessing
+                  ? "Photos are still processing"
+                  : undefined
+              }
+            >
               <Switch
                 checked={data.gallery.isPublished}
                 onCheckedChange={togglePublish}
-                disabled={publishSaving}
+                disabled={publishSaving || (isActivelyProcessing && !data.gallery.isPublished)}
               />
               <span
                 className={cn(
@@ -166,7 +181,11 @@ export function GalleryDetailHeader() {
                     : "text-muted-foreground",
                 )}
               >
-                {data.gallery.isPublished ? "Published" : "Draft"}
+                {isActivelyProcessing && !data.gallery.isPublished
+                  ? "Processing..."
+                  : data.gallery.isPublished
+                    ? "Published"
+                    : "Draft"}
               </span>
             </div>
 

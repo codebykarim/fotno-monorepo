@@ -208,6 +208,17 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.getDownloadActivityController,
     authFunction: isAuth,
   },
+  "gallery-processing-status": {
+    httpMethod: "GET",
+    controllerFunction:
+      DashboardController.getGalleryProcessingStatusController,
+    authFunction: isAuth,
+  },
+  "retry-failed-photos": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.retryFailedPhotosController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -360,6 +371,16 @@ dashboardRoutes.get(
 dashboardRoutes.get(
   "/dashboard/galleries/:id/download-activity",
   handleMethod("get-download-activity"),
+);
+
+// ─── Photo Processing Status ──────────────────────────────────────────────
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/photos/processing-status",
+  handleMethod("gallery-processing-status"),
+);
+dashboardRoutes.post(
+  "/dashboard/galleries/:id/photos/retry-failed",
+  handleMethod("retry-failed-photos"),
 );
 
 export default dashboardRoutes;

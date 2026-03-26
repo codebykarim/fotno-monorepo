@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR, { mutate as mutateCache } from "swr";
 import useSWRInfinite from "swr/infinite";
@@ -1490,31 +1490,26 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
             <div
               key={photo.id}
               className={cn(
-                "group relative mb-3 overflow-hidden rounded-xl transition-all break-inside-avoid",
+                "group relative mb-3 overflow-hidden rounded-xl break-inside-avoid",
                 isSelected
                   ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                  : "hover:shadow-md",
+                  : "",
               )}
             >
               <div
                 className="relative bg-muted cursor-pointer"
                 onClick={() => toggleSelected(galleryId, photo.id)}
               >
-                <Image
+                <img
                   src={photo.thumbnailUrl ?? photo.previewUrl ?? photo.url}
                   alt="Gallery photo"
                   width={photo.width ?? 1200}
                   height={photo.height ?? 900}
-                  sizes="(max-width: 768px) 50vw, (max-width: 1300px) 33vw, 25vw"
-                  placeholder="blur"
-                  blurDataURL={
-                    photo.blurDataUrl || "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-                  }
+                  decoding="async"
+                  loading={index < 8 ? "eager" : "lazy"}
                   draggable={false}
                   onContextMenu={(event) => event.preventDefault()}
-                  className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                  priority={index < 8}
-                  unoptimized
+                  className="h-auto w-full object-cover"
                 />
 
                 {/* Checkbox overlay */}
@@ -1726,17 +1721,17 @@ export function AlbumsTab({
           return (
             <div
               key={album.id}
-              className="group overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all hover:shadow-md"
+              className="group overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm"
             >
               {/* Hero image */}
               <div className="relative aspect-[16/10] bg-muted overflow-hidden">
                 {heroUrl ? (
-                  <Image
+                  <img
                     src={heroUrl}
                     alt={album.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    unoptimized
+                    decoding="async"
+                    loading="lazy"
+                    className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center">
@@ -1761,14 +1756,15 @@ export function AlbumsTab({
                     const thumb =
                       photo.thumbnailUrl ?? photo.previewUrl ?? photo.url;
                     return (
-                      <Image
+                      <img
                         key={photo.id}
                         src={thumb}
                         alt=""
                         width={36}
                         height={36}
+                        decoding="async"
+                        loading="lazy"
                         className="h-9 w-9 rounded-md border border-border/40 object-cover"
-                        unoptimized
                       />
                     );
                   })}

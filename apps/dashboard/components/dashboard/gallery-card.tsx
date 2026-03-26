@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Images, MoreHorizontal } from "lucide-react";
@@ -30,7 +29,7 @@ type Props = {
   onDelete: (id: string) => Promise<void>;
 };
 
-const GRID_SLOTS = 12;
+const GRID_SLOTS = 4;
 
 export function GalleryCard({ gallery, onDelete }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -41,23 +40,22 @@ export function GalleryCard({ gallery, onDelete }: Props) {
   const urls = gallery.previewPhotoUrls ?? [];
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/5 hover:border-primary/25">
+    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-sm transition-colors duration-200 hover:border-primary/25">
       <Link href={`/galleries/${gallery.id}`} className="block">
         <div className="relative aspect-[4/3] bg-muted overflow-hidden">
           {urls.length > 0 ? (
-            <div className="grid h-full w-full grid-cols-4 grid-rows-3 gap-px bg-border/30">
+            <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-px bg-border/30">
               {Array.from({ length: GRID_SLOTS }).map((_, i) => {
                 const url = urls[i];
                 return (
-                  <div key={i} className="relative overflow-hidden bg-muted">
+                  <div key={i} className="bg-muted">
                     {url ? (
-                      <Image
+                      <img
                         src={url}
                         alt=""
-                        fill
-                        sizes="(max-width: 768px) 25vw, 10vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                        unoptimized
+                        decoding="async"
+                        loading="lazy"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
                       <div className="h-full w-full bg-muted/60" />
@@ -72,8 +70,6 @@ export function GalleryCard({ gallery, onDelete }: Props) {
               <span className="text-xs">No photos yet</span>
             </div>
           )}
-
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       </Link>
 

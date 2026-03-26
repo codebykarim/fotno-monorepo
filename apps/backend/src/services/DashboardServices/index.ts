@@ -37,3 +37,5 @@ export { gphotosStartImport } from "./gphotosStartImport";
 export { gphotosDisconnect } from "./gphotosDisconnect";
 export { listGalleryFavorites } from "./listGalleryFavorites";
 export { getDownloadActivity } from "./getDownloadActivity";
+export { getGalleryProcessingStatus } from "./getGalleryProcessingStatus";
+export { retryFailedPhotos } from "./retryFailedPhotos";

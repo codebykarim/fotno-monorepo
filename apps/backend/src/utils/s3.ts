@@ -43,6 +43,47 @@ const cfPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY
   : undefined;
 const useCloudFront = Boolean(cfDomain && cfKeyPairId && cfPrivateKey);
 
+// ── Signed URL cache ─────────────────────────────────────────────
+// CloudFront signing is CPU-heavy (RSA per URL). Cache results to avoid
+// re-signing the same key repeatedly. Entries expire at half the URL
+// lifetime so the browser always has a valid URL.
+const signedUrlCache = new Map<string, { url: string; expiresAt: number }>();
+const CACHE_MAX_SIZE = 5000;
+
+function getCachedOrSign(key: string, expiresIn: number): string {
+  const cacheKey = `${key}:${expiresIn}`;
+  const cached = signedUrlCache.get(cacheKey);
+  const now = Date.now();
+
+  if (cached && cached.expiresAt > now) {
+    return cached.url;
+  }
+
+  const url = `https://${cfDomain}/${key}`;
+  const dateLessThan = new Date(now + expiresIn * 1000).toISOString();
+
+  const signedUrl = getCfSignedUrl({
+    url,
+    keyPairId: cfKeyPairId!,
+    privateKey: cfPrivateKey!,
+    dateLessThan,
+  });
+
+  // Evict oldest entries when cache is full
+  if (signedUrlCache.size >= CACHE_MAX_SIZE) {
+    const firstKey = signedUrlCache.keys().next().value;
+    if (firstKey) signedUrlCache.delete(firstKey);
+  }
+
+  // Cache for half the expiry time so URLs are still valid when served
+  signedUrlCache.set(cacheKey, {
+    url: signedUrl,
+    expiresAt: now + (expiresIn * 1000) / 2,
+  });
+
+  return signedUrl;
+}
+
 /**
  * Generates a signed URL for downloading an object.
  *
@@ -57,15 +98,7 @@ export const getPresignedDownloadUrl = async (
   expiresIn = 300,
 ): Promise<string> => {
   if (useCloudFront) {
-    const url = `https://${cfDomain}/${key}`;
-    const dateLessThan = new Date(Date.now() + expiresIn * 1000).toISOString();
-
-    return getCfSignedUrl({
-      url,
-      keyPairId: cfKeyPairId!,
-      privateKey: cfPrivateKey!,
-      dateLessThan,
-    });
+    return getCachedOrSign(key, expiresIn);
   }
 
   const command = new GetObjectCommand({

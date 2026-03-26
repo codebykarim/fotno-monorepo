@@ -88,6 +88,22 @@ export type Activity = {
   severity?: "info" | "success" | "warning";
 };
 
+export type FailedPhoto = {
+  id: string;
+  originalFilename: string;
+  url: string;
+};
+
+export type PhotoProcessingStatus = {
+  total: number;
+  processed: number;
+  failed: number;
+  inProgress: number;
+  stuck: number;
+  done: boolean;
+  failedPhotos: FailedPhoto[];
+};
+
 export type UploadTicket = {
   uploadId: string;
   galleryId: string;

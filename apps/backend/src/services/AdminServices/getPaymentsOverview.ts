@@ -6,7 +6,7 @@ export const getPaymentsOverview = async (
   page: number,
   pageSize: number
 ) => {
-  const where: any = {};
+  const where: any = { user: { role: { not: "admin" } } };
   if (status && status !== "all") {
     where.status = status;
   }
@@ -24,11 +24,11 @@ export const getPaymentsOverview = async (
         take: pageSize,
       }),
       db.subscription.count({ where }),
-      db.subscription.count({ where: { status: "ACTIVE" } }),
-      db.subscription.count({ where: { status: "CANCELLED" } }),
-      db.subscription.count({ where: { status: "EXPIRED" } }),
-      db.subscription.count({ where: { status: "PAST_DUE" } }),
-      db.subscription.aggregate({ _sum: { priceCents: true } }),
+      db.subscription.count({ where: { status: "ACTIVE", user: { role: { not: "admin" } } } }),
+      db.subscription.count({ where: { status: "CANCELLED", user: { role: { not: "admin" } } } }),
+      db.subscription.count({ where: { status: "EXPIRED", user: { role: { not: "admin" } } } }),
+      db.subscription.count({ where: { status: "PAST_DUE", user: { role: { not: "admin" } } } }),
+      db.subscription.aggregate({ _sum: { priceCents: true }, where: { user: { role: { not: "admin" } } } }),
     ]);
 
   return {

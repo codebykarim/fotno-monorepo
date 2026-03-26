@@ -36,9 +36,9 @@ export function StoragePage() {
         <h2 className="text-sm font-medium text-muted-foreground mb-4">Top Users by Storage</h2>
         <div className="space-y-3">
           {topUsers.map((u) => {
-            const maxBytes = Number(topUsers[0]?.storageUsed ?? "1");
             const userBytes = Number(u.storageUsed);
-            const barWidth = maxBytes > 0 ? (userBytes / maxBytes) * 100 : 0;
+            const limitBytes = Number(u.storageLimit || "1");
+            const barWidth = limitBytes > 0 ? (userBytes / limitBytes) * 100 : 0;
 
             return (
               <div key={u.id} className="flex items-center gap-3">

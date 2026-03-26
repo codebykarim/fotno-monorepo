@@ -2,6 +2,7 @@ import { db, bigIntToString } from "./_shared";
 
 export const getStorageOverview = async () => {
   const users = await db.user.findMany({
+    where: { role: { not: "admin" } },
     select: {
       id: true,
       name: true,

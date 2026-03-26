@@ -6,7 +6,7 @@ export const listAllGalleries = async (
   page: number,
   pageSize: number
 ) => {
-  const where: any = {};
+  const where: any = { user: { role: { not: "admin" } } };
 
   if (search) {
     where.OR = [

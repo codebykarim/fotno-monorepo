@@ -53,7 +53,7 @@ async function main() {
 
   // ── Pricing Tiers ──────────────────────────────────────────
   const tiers = [
-    { gb: 0, label: "Free", priceCents: 0, stripePriceId: null, galleryLimit: 1, sortOrder: -1 },
+    { gb: 5, label: "Free", priceCents: 0, stripePriceId: null, galleryLimit: 2, sortOrder: -1 },
     { gb: 20, label: "Starter", priceCents: 900, stripePriceId: "price_1TFHmpEuz1yMNGtKut0HynEw", galleryLimit: null, sortOrder: 0 },
     { gb: 100, label: "Professional", priceCents: 1900, stripePriceId: "price_1TFHmqEuz1yMNGtKe4qRgNLA", galleryLimit: null, sortOrder: 1 },
     { gb: 500, label: "Business", priceCents: 3500, stripePriceId: "price_1TFHmpEuz1yMNGtKwAobBwIU", galleryLimit: null, sortOrder: 2 },

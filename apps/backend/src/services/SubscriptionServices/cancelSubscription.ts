@@ -1,5 +1,5 @@
 import { prisma } from "@workspace/db";
-import { lsCancelSubscription } from "./lemonSqueezy";
+import { stripe } from "./stripe";
 import { getFreeTierLimits } from "../../constants/plans";
 import AppError from "../../errors/AppError";
 
@@ -16,10 +16,16 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
     throw new AppError("No active subscription found", 404);
   }
 
-  if (subscription.source === "LEMON_SQUEEZY" && subscription.lsSubscriptionId) {
-    const { error } = await lsCancelSubscription(subscription.lsSubscriptionId);
-    if (error && !error.message?.includes("Not Found")) {
-      throw new AppError(`Failed to cancel subscription: ${error.message}`, 500);
+  if (subscription.source === "STRIPE" && subscription.stripeSubscriptionId) {
+    try {
+      // Cancel at period end — Stripe will fire customer.subscription.updated webhook
+      await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+        cancel_at_period_end: true,
+      });
+    } catch (err: any) {
+      if (err.statusCode !== 404) {
+        throw new AppError(`Failed to cancel subscription: ${err.message}`, 500);
+      }
     }
   }
 
@@ -37,6 +43,15 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
     subscriptionAgeDays <= TRIAL_DAYS;
 
   if (isTrialing) {
+    // Immediately cancel on Stripe as well (not just at period end)
+    if (subscription.source === "STRIPE" && subscription.stripeSubscriptionId) {
+      try {
+        await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
+      } catch {
+        // Already cancelled above, ignore
+      }
+    }
+
     const freeLimits = await getFreeTierLimits();
     await (prisma as any).$transaction(async (tx: any) => {
       await tx.subscription.update({

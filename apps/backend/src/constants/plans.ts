@@ -7,7 +7,7 @@ type DBTier = {
   gb: number;
   label: string;
   priceCents: number;
-  lsVariantId: string | null;
+  stripePriceId: string | null;
   galleryLimit: number | null;
   sortOrder: number;
   active: boolean;
@@ -45,7 +45,7 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
         gb: t.gb,
         label: t.label,
         priceCents: t.priceCents,
-        lsVariantId: t.lsVariantId || null,
+        stripePriceId: t.stripePriceId || null,
         galleryLimit: t.gb === 0 ? 2 : null,
         sortOrder: 0,
         active: true,
@@ -62,7 +62,7 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
       gb: t.gb,
       label: t.label,
       priceCents: t.priceCents,
-      lsVariantId: t.lsVariantId || null,
+      stripePriceId: t.stripePriceId || null,
       galleryLimit: t.gb === 0 ? 2 : null,
       sortOrder: 0,
       active: true,
@@ -77,31 +77,31 @@ export const STORAGE_TIERS = [
     gb: 0,
     priceCents: 0,
     label: "Free",
-    lsVariantId: "",
+    stripePriceId: "",
   },
   {
     gb: 20,
     priceCents: 900,
     label: "Starter",
-    lsVariantId: process.env.LS_VARIANT_STARTER || "",
+    stripePriceId: process.env.STRIPE_PRICE_STARTER || "",
   },
   {
     gb: 100,
     priceCents: 1900,
     label: "Professional",
-    lsVariantId: process.env.LS_VARIANT_PROFESSIONAL || "",
+    stripePriceId: process.env.STRIPE_PRICE_PROFESSIONAL || "",
   },
   {
     gb: 500,
     priceCents: 3500,
     label: "Business",
-    lsVariantId: process.env.LS_VARIANT_BUSINESS || "",
+    stripePriceId: process.env.STRIPE_PRICE_BUSINESS || "",
   },
   {
     gb: -1,
     priceCents: 4900,
     label: "Unlimited",
-    lsVariantId: process.env.LS_VARIANT_UNLIMITED || "",
+    stripePriceId: process.env.STRIPE_PRICE_UNLIMITED || "",
   },
 ] as const;
 
@@ -161,8 +161,8 @@ export async function getFreeTierLimits(): Promise<{ storageLimitBytes: bigint; 
   return { storageLimitBytes: BigInt(1073741824), galleryLimit: 2, gb: 1 };
 }
 
-export const findTierByVariantId = (variantId: string): StorageTier | undefined =>
-  STORAGE_TIERS.find((t) => t.lsVariantId === variantId);
+export const findTierByPriceId = (priceId: string): StorageTier | undefined =>
+  STORAGE_TIERS.find((t) => t.stripePriceId === priceId);
 
 export const findTierByGb = (gb: number): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.gb === gb);

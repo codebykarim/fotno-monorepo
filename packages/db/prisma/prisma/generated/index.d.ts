@@ -154,7 +154,7 @@ export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof Subscr
 
 
 export const SubscriptionSource: {
-  LEMON_SQUEEZY: 'LEMON_SQUEEZY'
+  STRIPE: 'STRIPE'
 };
 
 export type SubscriptionSource = (typeof SubscriptionSource)[keyof typeof SubscriptionSource]
@@ -3441,7 +3441,7 @@ export namespace Prisma {
     storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
-    lsCustomerId: string | null
+    stripeCustomerId: string | null
     warningEmailSent80: boolean | null
     warningEmailSent95: boolean | null
     emailVerified: boolean | null
@@ -3469,7 +3469,7 @@ export namespace Prisma {
     storageReserved: bigint | null
     overageBytes: bigint | null
     overageResetAt: Date | null
-    lsCustomerId: string | null
+    stripeCustomerId: string | null
     warningEmailSent80: boolean | null
     warningEmailSent95: boolean | null
     emailVerified: boolean | null
@@ -3497,7 +3497,7 @@ export namespace Prisma {
     storageReserved: number
     overageBytes: number
     overageResetAt: number
-    lsCustomerId: number
+    stripeCustomerId: number
     warningEmailSent80: number
     warningEmailSent95: number
     emailVerified: number
@@ -3543,7 +3543,7 @@ export namespace Prisma {
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
-    lsCustomerId?: true
+    stripeCustomerId?: true
     warningEmailSent80?: true
     warningEmailSent95?: true
     emailVerified?: true
@@ -3571,7 +3571,7 @@ export namespace Prisma {
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
-    lsCustomerId?: true
+    stripeCustomerId?: true
     warningEmailSent80?: true
     warningEmailSent95?: true
     emailVerified?: true
@@ -3599,7 +3599,7 @@ export namespace Prisma {
     storageReserved?: true
     overageBytes?: true
     overageResetAt?: true
-    lsCustomerId?: true
+    stripeCustomerId?: true
     warningEmailSent80?: true
     warningEmailSent95?: true
     emailVerified?: true
@@ -3714,7 +3714,7 @@ export namespace Prisma {
     storageReserved: bigint
     overageBytes: bigint
     overageResetAt: Date | null
-    lsCustomerId: string | null
+    stripeCustomerId: string | null
     warningEmailSent80: boolean
     warningEmailSent95: boolean
     emailVerified: boolean
@@ -3761,7 +3761,7 @@ export namespace Prisma {
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
-    lsCustomerId?: boolean
+    stripeCustomerId?: boolean
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified?: boolean
@@ -3798,7 +3798,7 @@ export namespace Prisma {
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
-    lsCustomerId?: boolean
+    stripeCustomerId?: boolean
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified?: boolean
@@ -3826,7 +3826,7 @@ export namespace Prisma {
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
-    lsCustomerId?: boolean
+    stripeCustomerId?: boolean
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified?: boolean
@@ -3854,7 +3854,7 @@ export namespace Prisma {
     storageReserved?: boolean
     overageBytes?: boolean
     overageResetAt?: boolean
-    lsCustomerId?: boolean
+    stripeCustomerId?: boolean
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified?: boolean
@@ -3869,7 +3869,7 @@ export namespace Prisma {
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "trialEndsAt" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "lsCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "trialEndsAt" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -3909,7 +3909,7 @@ export namespace Prisma {
       storageReserved: bigint
       overageBytes: bigint
       overageResetAt: Date | null
-      lsCustomerId: string | null
+      stripeCustomerId: string | null
       warningEmailSent80: boolean
       warningEmailSent95: boolean
       emailVerified: boolean
@@ -4365,7 +4365,7 @@ export namespace Prisma {
     readonly storageReserved: FieldRef<"User", 'BigInt'>
     readonly overageBytes: FieldRef<"User", 'BigInt'>
     readonly overageResetAt: FieldRef<"User", 'DateTime'>
-    readonly lsCustomerId: FieldRef<"User", 'String'>
+    readonly stripeCustomerId: FieldRef<"User", 'String'>
     readonly warningEmailSent80: FieldRef<"User", 'Boolean'>
     readonly warningEmailSent95: FieldRef<"User", 'Boolean'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
@@ -8301,8 +8301,8 @@ export namespace Prisma {
     storageTierGb: number | null
     priceCents: number | null
     currency: string | null
-    lsSubscriptionId: string | null
-    lsVariantId: string | null
+    stripeSubscriptionId: string | null
+    stripePriceId: string | null
     currentPeriodStart: Date | null
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
@@ -8319,8 +8319,8 @@ export namespace Prisma {
     storageTierGb: number | null
     priceCents: number | null
     currency: string | null
-    lsSubscriptionId: string | null
-    lsVariantId: string | null
+    stripeSubscriptionId: string | null
+    stripePriceId: string | null
     currentPeriodStart: Date | null
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
@@ -8337,8 +8337,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency: number
-    lsSubscriptionId: number
-    lsVariantId: number
+    stripeSubscriptionId: number
+    stripePriceId: number
     currentPeriodStart: number
     currentPeriodEnd: number
     cancelledAt: number
@@ -8367,8 +8367,8 @@ export namespace Prisma {
     storageTierGb?: true
     priceCents?: true
     currency?: true
-    lsSubscriptionId?: true
-    lsVariantId?: true
+    stripeSubscriptionId?: true
+    stripePriceId?: true
     currentPeriodStart?: true
     currentPeriodEnd?: true
     cancelledAt?: true
@@ -8385,8 +8385,8 @@ export namespace Prisma {
     storageTierGb?: true
     priceCents?: true
     currency?: true
-    lsSubscriptionId?: true
-    lsVariantId?: true
+    stripeSubscriptionId?: true
+    stripePriceId?: true
     currentPeriodStart?: true
     currentPeriodEnd?: true
     cancelledAt?: true
@@ -8403,8 +8403,8 @@ export namespace Prisma {
     storageTierGb?: true
     priceCents?: true
     currency?: true
-    lsSubscriptionId?: true
-    lsVariantId?: true
+    stripeSubscriptionId?: true
+    stripePriceId?: true
     currentPeriodStart?: true
     currentPeriodEnd?: true
     cancelledAt?: true
@@ -8508,8 +8508,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency: string
-    lsSubscriptionId: string | null
-    lsVariantId: string | null
+    stripeSubscriptionId: string | null
+    stripePriceId: string | null
     currentPeriodStart: Date | null
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
@@ -8545,8 +8545,8 @@ export namespace Prisma {
     storageTierGb?: boolean
     priceCents?: boolean
     currency?: boolean
-    lsSubscriptionId?: boolean
-    lsVariantId?: boolean
+    stripeSubscriptionId?: boolean
+    stripePriceId?: boolean
     currentPeriodStart?: boolean
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
@@ -8564,8 +8564,8 @@ export namespace Prisma {
     storageTierGb?: boolean
     priceCents?: boolean
     currency?: boolean
-    lsSubscriptionId?: boolean
-    lsVariantId?: boolean
+    stripeSubscriptionId?: boolean
+    stripePriceId?: boolean
     currentPeriodStart?: boolean
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
@@ -8583,8 +8583,8 @@ export namespace Prisma {
     storageTierGb?: boolean
     priceCents?: boolean
     currency?: boolean
-    lsSubscriptionId?: boolean
-    lsVariantId?: boolean
+    stripeSubscriptionId?: boolean
+    stripePriceId?: boolean
     currentPeriodStart?: boolean
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
@@ -8602,8 +8602,8 @@ export namespace Prisma {
     storageTierGb?: boolean
     priceCents?: boolean
     currency?: boolean
-    lsSubscriptionId?: boolean
-    lsVariantId?: boolean
+    stripeSubscriptionId?: boolean
+    stripePriceId?: boolean
     currentPeriodStart?: boolean
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
@@ -8612,7 +8612,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "status" | "storageTierGb" | "priceCents" | "currency" | "lsSubscriptionId" | "lsVariantId" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "endsAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "status" | "storageTierGb" | "priceCents" | "currency" | "stripeSubscriptionId" | "stripePriceId" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "endsAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -8636,8 +8636,8 @@ export namespace Prisma {
       storageTierGb: number
       priceCents: number
       currency: string
-      lsSubscriptionId: string | null
-      lsVariantId: string | null
+      stripeSubscriptionId: string | null
+      stripePriceId: string | null
       currentPeriodStart: Date | null
       currentPeriodEnd: Date | null
       cancelledAt: Date | null
@@ -9075,8 +9075,8 @@ export namespace Prisma {
     readonly storageTierGb: FieldRef<"Subscription", 'Int'>
     readonly priceCents: FieldRef<"Subscription", 'Int'>
     readonly currency: FieldRef<"Subscription", 'String'>
-    readonly lsSubscriptionId: FieldRef<"Subscription", 'String'>
-    readonly lsVariantId: FieldRef<"Subscription", 'String'>
+    readonly stripeSubscriptionId: FieldRef<"Subscription", 'String'>
+    readonly stripePriceId: FieldRef<"Subscription", 'String'>
     readonly currentPeriodStart: FieldRef<"Subscription", 'DateTime'>
     readonly currentPeriodEnd: FieldRef<"Subscription", 'DateTime'>
     readonly cancelledAt: FieldRef<"Subscription", 'DateTime'>
@@ -26188,7 +26188,7 @@ export namespace Prisma {
     gb: number | null
     label: string | null
     priceCents: number | null
-    lsVariantId: string | null
+    stripePriceId: string | null
     galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
@@ -26201,7 +26201,7 @@ export namespace Prisma {
     gb: number | null
     label: string | null
     priceCents: number | null
-    lsVariantId: string | null
+    stripePriceId: string | null
     galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
@@ -26214,7 +26214,7 @@ export namespace Prisma {
     gb: number
     label: number
     priceCents: number
-    lsVariantId: number
+    stripePriceId: number
     galleryLimit: number
     sortOrder: number
     active: number
@@ -26243,7 +26243,7 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
-    lsVariantId?: true
+    stripePriceId?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26256,7 +26256,7 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
-    lsVariantId?: true
+    stripePriceId?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26269,7 +26269,7 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
-    lsVariantId?: true
+    stripePriceId?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26369,7 +26369,7 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
-    lsVariantId: string | null
+    stripePriceId: string | null
     galleryLimit: number | null
     sortOrder: number
     active: boolean
@@ -26401,7 +26401,7 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
-    lsVariantId?: boolean
+    stripePriceId?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26414,7 +26414,7 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
-    lsVariantId?: boolean
+    stripePriceId?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26427,7 +26427,7 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
-    lsVariantId?: boolean
+    stripePriceId?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26440,7 +26440,7 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
-    lsVariantId?: boolean
+    stripePriceId?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26448,7 +26448,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "lsVariantId" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
+  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "stripePriceId" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
 
   export type $PricingTierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PricingTier"
@@ -26458,7 +26458,7 @@ export namespace Prisma {
       gb: number
       label: string
       priceCents: number
-      lsVariantId: string | null
+      stripePriceId: string | null
       galleryLimit: number | null
       sortOrder: number
       active: boolean
@@ -26891,7 +26891,7 @@ export namespace Prisma {
     readonly gb: FieldRef<"PricingTier", 'Int'>
     readonly label: FieldRef<"PricingTier", 'String'>
     readonly priceCents: FieldRef<"PricingTier", 'Int'>
-    readonly lsVariantId: FieldRef<"PricingTier", 'String'>
+    readonly stripePriceId: FieldRef<"PricingTier", 'String'>
     readonly galleryLimit: FieldRef<"PricingTier", 'Int'>
     readonly sortOrder: FieldRef<"PricingTier", 'Int'>
     readonly active: FieldRef<"PricingTier", 'Boolean'>
@@ -30826,7 +30826,7 @@ export namespace Prisma {
     storageReserved: 'storageReserved',
     overageBytes: 'overageBytes',
     overageResetAt: 'overageResetAt',
-    lsCustomerId: 'lsCustomerId',
+    stripeCustomerId: 'stripeCustomerId',
     warningEmailSent80: 'warningEmailSent80',
     warningEmailSent95: 'warningEmailSent95',
     emailVerified: 'emailVerified',
@@ -30898,8 +30898,8 @@ export namespace Prisma {
     storageTierGb: 'storageTierGb',
     priceCents: 'priceCents',
     currency: 'currency',
-    lsSubscriptionId: 'lsSubscriptionId',
-    lsVariantId: 'lsVariantId',
+    stripeSubscriptionId: 'stripeSubscriptionId',
+    stripePriceId: 'stripePriceId',
     currentPeriodStart: 'currentPeriodStart',
     currentPeriodEnd: 'currentPeriodEnd',
     cancelledAt: 'cancelledAt',
@@ -31143,7 +31143,7 @@ export namespace Prisma {
     gb: 'gb',
     label: 'label',
     priceCents: 'priceCents',
-    lsVariantId: 'lsVariantId',
+    stripePriceId: 'stripePriceId',
     galleryLimit: 'galleryLimit',
     sortOrder: 'sortOrder',
     active: 'active',
@@ -31498,7 +31498,7 @@ export namespace Prisma {
     storageReserved?: BigIntFilter<"User"> | bigint | number
     overageBytes?: BigIntFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    lsCustomerId?: StringNullableFilter<"User"> | string | null
+    stripeCustomerId?: StringNullableFilter<"User"> | string | null
     warningEmailSent80?: BoolFilter<"User"> | boolean
     warningEmailSent95?: BoolFilter<"User"> | boolean
     emailVerified?: BoolFilter<"User"> | boolean
@@ -31534,7 +31534,7 @@ export namespace Prisma {
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
-    lsCustomerId?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
     warningEmailSent80?: SortOrder
     warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
@@ -31560,7 +31560,7 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
-    lsCustomerId?: string
+    stripeCustomerId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -31594,7 +31594,7 @@ export namespace Prisma {
     clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
-  }, "id" | "id" | "lsCustomerId" | "email">
+  }, "id" | "id" | "stripeCustomerId" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -31609,7 +31609,7 @@ export namespace Prisma {
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrderInput | SortOrder
-    lsCustomerId?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
     warningEmailSent80?: SortOrder
     warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
@@ -31645,7 +31645,7 @@ export namespace Prisma {
     storageReserved?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageBytes?: BigIntWithAggregatesFilter<"User"> | bigint | number
     overageResetAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    lsCustomerId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    stripeCustomerId?: StringNullableWithAggregatesFilter<"User"> | string | null
     warningEmailSent80?: BoolWithAggregatesFilter<"User"> | boolean
     warningEmailSent95?: BoolWithAggregatesFilter<"User"> | boolean
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
@@ -31898,8 +31898,8 @@ export namespace Prisma {
     storageTierGb?: IntFilter<"Subscription"> | number
     priceCents?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
-    lsSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
-    lsVariantId?: StringNullableFilter<"Subscription"> | string | null
+    stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
+    stripePriceId?: StringNullableFilter<"Subscription"> | string | null
     currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -31917,8 +31917,8 @@ export namespace Prisma {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
-    lsSubscriptionId?: SortOrderInput | SortOrder
-    lsVariantId?: SortOrderInput | SortOrder
+    stripeSubscriptionId?: SortOrderInput | SortOrder
+    stripePriceId?: SortOrderInput | SortOrder
     currentPeriodStart?: SortOrderInput | SortOrder
     currentPeriodEnd?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
@@ -31930,7 +31930,7 @@ export namespace Prisma {
 
   export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    lsSubscriptionId?: string
+    stripeSubscriptionId?: string
     AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
     OR?: SubscriptionWhereInput[]
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
@@ -31940,7 +31940,7 @@ export namespace Prisma {
     storageTierGb?: IntFilter<"Subscription"> | number
     priceCents?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
-    lsVariantId?: StringNullableFilter<"Subscription"> | string | null
+    stripePriceId?: StringNullableFilter<"Subscription"> | string | null
     currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -31948,7 +31948,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "lsSubscriptionId">
+  }, "id" | "stripeSubscriptionId">
 
   export type SubscriptionOrderByWithAggregationInput = {
     id?: SortOrder
@@ -31958,8 +31958,8 @@ export namespace Prisma {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
-    lsSubscriptionId?: SortOrderInput | SortOrder
-    lsVariantId?: SortOrderInput | SortOrder
+    stripeSubscriptionId?: SortOrderInput | SortOrder
+    stripePriceId?: SortOrderInput | SortOrder
     currentPeriodStart?: SortOrderInput | SortOrder
     currentPeriodEnd?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
@@ -31984,8 +31984,8 @@ export namespace Prisma {
     storageTierGb?: IntWithAggregatesFilter<"Subscription"> | number
     priceCents?: IntWithAggregatesFilter<"Subscription"> | number
     currency?: StringWithAggregatesFilter<"Subscription"> | string
-    lsSubscriptionId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
-    lsVariantId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    stripeSubscriptionId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    stripePriceId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     currentPeriodStart?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     currentPeriodEnd?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
@@ -33224,7 +33224,7 @@ export namespace Prisma {
     gb?: IntFilter<"PricingTier"> | number
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
-    lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    stripePriceId?: StringNullableFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
@@ -33237,7 +33237,7 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
-    lsVariantId?: SortOrderInput | SortOrder
+    stripePriceId?: SortOrderInput | SortOrder
     galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -33253,7 +33253,7 @@ export namespace Prisma {
     NOT?: PricingTierWhereInput | PricingTierWhereInput[]
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
-    lsVariantId?: StringNullableFilter<"PricingTier"> | string | null
+    stripePriceId?: StringNullableFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
@@ -33266,7 +33266,7 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
-    lsVariantId?: SortOrderInput | SortOrder
+    stripePriceId?: SortOrderInput | SortOrder
     galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -33287,7 +33287,7 @@ export namespace Prisma {
     gb?: IntWithAggregatesFilter<"PricingTier"> | number
     label?: StringWithAggregatesFilter<"PricingTier"> | string
     priceCents?: IntWithAggregatesFilter<"PricingTier"> | number
-    lsVariantId?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
+    stripePriceId?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableWithAggregatesFilter<"PricingTier"> | number | null
     sortOrder?: IntWithAggregatesFilter<"PricingTier"> | number
     active?: BoolWithAggregatesFilter<"PricingTier"> | boolean
@@ -33563,7 +33563,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -33599,7 +33599,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -33635,7 +33635,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -33671,7 +33671,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -33707,7 +33707,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -33735,7 +33735,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -33763,7 +33763,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -34042,8 +34042,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -34061,8 +34061,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -34078,8 +34078,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34097,8 +34097,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34115,8 +34115,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -34132,8 +34132,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34150,8 +34150,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35505,7 +35505,7 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
-    lsVariantId?: string | null
+    stripePriceId?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -35518,7 +35518,7 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
-    lsVariantId?: string | null
+    stripePriceId?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -35531,7 +35531,7 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -35544,7 +35544,7 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -35557,7 +35557,7 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
-    lsVariantId?: string | null
+    stripePriceId?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -35570,7 +35570,7 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -35583,7 +35583,7 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -36056,7 +36056,7 @@ export namespace Prisma {
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
-    lsCustomerId?: SortOrder
+    stripeCustomerId?: SortOrder
     warningEmailSent80?: SortOrder
     warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
@@ -36092,7 +36092,7 @@ export namespace Prisma {
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
-    lsCustomerId?: SortOrder
+    stripeCustomerId?: SortOrder
     warningEmailSent80?: SortOrder
     warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
@@ -36120,7 +36120,7 @@ export namespace Prisma {
     storageReserved?: SortOrder
     overageBytes?: SortOrder
     overageResetAt?: SortOrder
-    lsCustomerId?: SortOrder
+    stripeCustomerId?: SortOrder
     warningEmailSent80?: SortOrder
     warningEmailSent95?: SortOrder
     emailVerified?: SortOrder
@@ -36414,8 +36414,8 @@ export namespace Prisma {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
-    lsSubscriptionId?: SortOrder
-    lsVariantId?: SortOrder
+    stripeSubscriptionId?: SortOrder
+    stripePriceId?: SortOrder
     currentPeriodStart?: SortOrder
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
@@ -36437,8 +36437,8 @@ export namespace Prisma {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
-    lsSubscriptionId?: SortOrder
-    lsVariantId?: SortOrder
+    stripeSubscriptionId?: SortOrder
+    stripePriceId?: SortOrder
     currentPeriodStart?: SortOrder
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
@@ -36455,8 +36455,8 @@ export namespace Prisma {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
-    lsSubscriptionId?: SortOrder
-    lsVariantId?: SortOrder
+    stripeSubscriptionId?: SortOrder
+    stripePriceId?: SortOrder
     currentPeriodStart?: SortOrder
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
@@ -37445,7 +37445,7 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
-    lsVariantId?: SortOrder
+    stripePriceId?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -37465,7 +37465,7 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
-    lsVariantId?: SortOrder
+    stripePriceId?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -37478,7 +37478,7 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
-    lsVariantId?: SortOrder
+    stripePriceId?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -39806,8 +39806,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -39823,8 +39823,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -40150,8 +40150,8 @@ export namespace Prisma {
     storageTierGb?: IntFilter<"Subscription"> | number
     priceCents?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
-    lsSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
-    lsVariantId?: StringNullableFilter<"Subscription"> | string | null
+    stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
+    stripePriceId?: StringNullableFilter<"Subscription"> | string | null
     currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -40350,7 +40350,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40385,7 +40385,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40436,7 +40436,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40471,7 +40471,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40506,7 +40506,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40541,7 +40541,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40592,7 +40592,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40627,7 +40627,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40662,7 +40662,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40697,7 +40697,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40748,7 +40748,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40783,7 +40783,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40818,7 +40818,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40853,7 +40853,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -40904,7 +40904,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40939,7 +40939,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -40974,7 +40974,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -41009,7 +41009,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -41405,7 +41405,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -41440,7 +41440,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -42419,7 +42419,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -42454,7 +42454,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -42505,7 +42505,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -42540,7 +42540,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -42575,7 +42575,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -42610,7 +42610,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -42681,7 +42681,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -42716,7 +42716,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -44465,7 +44465,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -44500,7 +44500,7 @@ export namespace Prisma {
     storageReserved?: bigint | number
     overageBytes?: bigint | number
     overageResetAt?: Date | string | null
-    lsCustomerId?: string | null
+    stripeCustomerId?: string | null
     warningEmailSent80?: boolean
     warningEmailSent95?: boolean
     emailVerified: boolean
@@ -44593,7 +44593,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -44628,7 +44628,7 @@ export namespace Prisma {
     storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
     overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
     overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lsCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
     warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -45075,8 +45075,8 @@ export namespace Prisma {
     storageTierGb: number
     priceCents: number
     currency?: string
-    lsSubscriptionId?: string | null
-    lsVariantId?: string | null
+    stripeSubscriptionId?: string | null
+    stripePriceId?: string | null
     currentPeriodStart?: Date | string | null
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
@@ -45233,8 +45233,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45250,8 +45250,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45267,8 +45267,8 @@ export namespace Prisma {
     storageTierGb?: IntFieldUpdateOperationsInput | number
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
-    lsSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    lsVariantId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

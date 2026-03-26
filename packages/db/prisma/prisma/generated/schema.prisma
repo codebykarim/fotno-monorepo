@@ -21,7 +21,7 @@ model User {
   storageReserved    BigInt           @default(0)
   overageBytes       BigInt           @default(0)
   overageResetAt     DateTime?
-  lsCustomerId       String?          @unique
+  stripeCustomerId   String?          @unique
   warningEmailSent80 Boolean          @default(false)
   warningEmailSent95 Boolean          @default(false)
   emailVerified      Boolean
@@ -108,26 +108,26 @@ enum SubscriptionStatus {
 }
 
 enum SubscriptionSource {
-  LEMON_SQUEEZY
+  STRIPE
 }
 
 model Subscription {
-  id                 String             @id @default(uuid())
-  userId             String
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  source             SubscriptionSource
-  status             SubscriptionStatus @default(ACTIVE)
-  storageTierGb      Int
-  priceCents         Int
-  currency           String             @default("USD")
-  lsSubscriptionId   String?            @unique
-  lsVariantId        String?
-  currentPeriodStart DateTime?
-  currentPeriodEnd   DateTime?
-  cancelledAt        DateTime?
-  endsAt             DateTime?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @default(now()) @updatedAt
+  id                   String             @id @default(uuid())
+  userId               String
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source               SubscriptionSource
+  status               SubscriptionStatus @default(ACTIVE)
+  storageTierGb        Int
+  priceCents           Int
+  currency             String             @default("USD")
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelledAt          DateTime?
+  endsAt               DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @default(now()) @updatedAt
 
   @@index([userId])
   @@map("subscription")
@@ -451,16 +451,16 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id           String   @id @default(uuid())
-  gb           Int      @unique // -1 for unlimited, 0 for free
-  label        String
-  priceCents   Int // base USD price
-  lsVariantId  String?
-  galleryLimit Int? // null = unlimited
-  sortOrder    Int      @default(0)
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  id            String   @id @default(uuid())
+  gb            Int      @unique // -1 for unlimited, 0 for free
+  label         String
+  priceCents    Int // base USD price
+  stripePriceId String?
+  galleryLimit  Int? // null = unlimited
+  sortOrder     Int      @default(0)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
 
   @@map("pricing_tier")
 }
@@ -486,7 +486,7 @@ model RegionalTierOverride {
   regionalPricing   RegionalPricing @relation(fields: [regionalPricingId], references: [id], onDelete: Cascade)
   tierGb            Int // matches PricingTier.gb
   localPriceCents   Int // display price in local currency minor units
-  checkoutCents     Int? // override LS checkout price in USD cents
+  checkoutCents     Int? // override checkout price in USD cents
   storageOverrideGb Int? // optional storage override
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt

@@ -12,7 +12,7 @@ export type PlanInfo = {
   galleryLimit?: number | null;
   /** Price in local currency minor units (only when regional pricing applies) */
   localPriceCents?: number;
-  /** PPP-adjusted USD price in cents (what LS will charge) */
+  /** PPP-adjusted USD price in cents (what Stripe will charge) */
   pppPriceCents?: number;
   /** ISO 4217 currency code */
   currency?: string;
@@ -74,7 +74,7 @@ async function applyRegionalPricing(
 /**
  * Fetch pricing tiers from the database (with hardcoded fallback).
  * The DB `PricingTier` table is the single source of truth for
- * display prices — the Lemon Squeezy API is only used at checkout time.
+ * display prices — the Stripe API is only used at checkout time.
  *
  * When `countryCode` is provided and regional pricing exists, each
  * plan is augmented with local currency prices and PPP info.

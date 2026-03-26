@@ -133,7 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
   storageReserved: 'storageReserved',
   overageBytes: 'overageBytes',
   overageResetAt: 'overageResetAt',
-  lsCustomerId: 'lsCustomerId',
+  stripeCustomerId: 'stripeCustomerId',
   warningEmailSent80: 'warningEmailSent80',
   warningEmailSent95: 'warningEmailSent95',
   emailVerified: 'emailVerified',
@@ -193,8 +193,8 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   storageTierGb: 'storageTierGb',
   priceCents: 'priceCents',
   currency: 'currency',
-  lsSubscriptionId: 'lsSubscriptionId',
-  lsVariantId: 'lsVariantId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripePriceId: 'stripePriceId',
   currentPeriodStart: 'currentPeriodStart',
   currentPeriodEnd: 'currentPeriodEnd',
   cancelledAt: 'cancelledAt',
@@ -393,7 +393,7 @@ exports.Prisma.PricingTierScalarFieldEnum = {
   gb: 'gb',
   label: 'label',
   priceCents: 'priceCents',
-  lsVariantId: 'lsVariantId',
+  stripePriceId: 'stripePriceId',
   galleryLimit: 'galleryLimit',
   sortOrder: 'sortOrder',
   active: 'active',
@@ -473,7 +473,7 @@ exports.Plan = exports.$Enums.Plan = {
 };
 
 exports.SubscriptionSource = exports.$Enums.SubscriptionSource = {
-  LEMON_SQUEEZY: 'LEMON_SQUEEZY'
+  STRIPE: 'STRIPE'
 };
 
 exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {

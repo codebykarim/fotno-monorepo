@@ -18,7 +18,7 @@ const STORAGE_TIER_LABELS: Record<number, string> = {
 };
 
 const STATUS_OPTIONS = ["all", "ACTIVE", "CANCELLED", "EXPIRED", "PAST_DUE"];
-const SOURCE_OPTIONS = ["all", "LEMON_SQUEEZY", "MANUAL"];
+const SOURCE_OPTIONS = ["all", "STRIPE", "MANUAL"];
 
 export function PaymentsPage() {
   const [status, setStatus] = useState("all");
@@ -54,7 +54,7 @@ export function PaymentsPage() {
       header: "Source",
       render: (s) => (
         <span className="text-xs font-medium">
-          {s.source === "LEMON_SQUEEZY" ? "Lemon Squeezy" : "Manual"}
+          {s.source === "STRIPE" ? "Stripe" : "Manual"}
         </span>
       ),
     },
@@ -153,7 +153,7 @@ export function PaymentsPage() {
             >
               {SOURCE_OPTIONS.map((s) => (
                 <option key={s} value={s}>
-                  {s === "all" ? "All Sources" : s === "LEMON_SQUEEZY" ? "Lemon Squeezy" : "Manual"}
+                  {s === "all" ? "All Sources" : s === "STRIPE" ? "Stripe" : "Manual"}
                 </option>
               ))}
             </select>

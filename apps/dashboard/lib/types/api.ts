@@ -127,7 +127,7 @@ export type PlanTier = {
   galleryLimit?: number | null;
   /** Price in local currency minor units (only present for regional pricing) */
   localPriceCents?: number;
-  /** PPP-adjusted USD price in cents (what LS will charge) */
+  /** PPP-adjusted USD price in cents (what Stripe will charge) */
   pppPriceCents?: number;
   /** ISO 4217 currency code, e.g. "EGP" */
   currency?: string;

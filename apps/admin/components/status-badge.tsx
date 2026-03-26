@@ -33,7 +33,7 @@ const statusColors: Record<string, string> = {
   APPROVED: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
   REJECTED: "bg-red-500/15 text-red-700 dark:text-red-400",
   // Subscription source
-  LEMON_SQUEEZY: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
+  STRIPE: "bg-purple-500/15 text-purple-700 dark:text-purple-400",
   MANUAL: "bg-zinc-500/15 text-zinc-700 dark:text-zinc-400",
 };
 

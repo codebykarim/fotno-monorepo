@@ -262,7 +262,7 @@ function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => v
                     <StatusBadge status={s.status} />
                     <span>{s.storageTierGb >= 1000 ? `${s.storageTierGb / 1000} TB` : `${s.storageTierGb} GB`}</span>
                     <span className="text-xs text-muted-foreground">
-                      {s.source === "LEMON_SQUEEZY" ? "LS" : "Manual"}
+                      {s.source === "STRIPE" ? "Stripe" : "Manual"}
                     </span>
                   </div>
                   <span className="font-medium">${(s.priceCents / 100).toFixed(2)}/mo</span>

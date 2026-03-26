@@ -1,12 +1,5 @@
 "use client";
 
-declare global {
-  interface Window {
-    createLemonSqueezy?: () => void;
-    LemonSqueezy?: { Url?: { Open?: (url: string) => void } };
-  }
-}
-
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { motion } from "motion/react";
@@ -141,8 +134,7 @@ export default function BillingPage() {
           body: JSON.stringify({ storageTierGb: tier.gb }),
         },
       );
-      window.createLemonSqueezy?.();
-      window.LemonSqueezy?.Url?.Open?.(result.checkoutUrl);
+      window.location.href = result.checkoutUrl;
     } catch {
       toast.error("Failed to start checkout. Please try again.");
     } finally {

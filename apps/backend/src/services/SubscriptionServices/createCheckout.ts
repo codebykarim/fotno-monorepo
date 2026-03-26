@@ -1,5 +1,5 @@
-import { lsCreateCheckout } from "./lemonSqueezy";
-import { findTierByGb, fetchTiersFromDB, PLAN_FEATURES } from "../../constants/plans";
+import { stripe } from "./stripe";
+import { findTierByGb, fetchTiersFromDB } from "../../constants/plans";
 import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 
@@ -20,8 +20,7 @@ export const createCheckout = async ({
     throw new AppError("Cannot create a checkout for the free tier", 400);
   }
 
-  const storeId = process.env.LEMONSQUEEZY_STORE_ID;
-  if (!storeId) {
+  if (!stripe) {
     throw new AppError("Payment system not configured", 500);
   }
 
@@ -40,46 +39,41 @@ export const createCheckout = async ({
       .find(([, overridden]) => overridden === storageTierGb)?.[0];
     if (originalGb) tier = findDbTier(Number(originalGb)) ?? findTierByGb(Number(originalGb));
   }
-  if (!tier || !tier.lsVariantId) {
+  if (!tier || !tier.stripePriceId) {
     throw new AppError("Invalid storage tier", 400);
   }
-  const customPrice = regional
-    ? (regional.tierCheckoutCents?.[tier.gb] ?? Math.round(tier.priceCents * regional.pppMultiplier))
-    : undefined;
 
   const storageGb = regional?.tierStorageOverrides?.[tier.gb] ?? tier.gb;
   const storageLabel = storageGb === -1 ? "Unlimited storage" : `${storageGb} GB storage`;
+  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
 
-  const { data, error } = await lsCreateCheckout(storeId, tier.lsVariantId, {
-    ...(customPrice ? { customPrice } : {}),
-    checkoutData: {
-      email,
-      billingAddress: {
-        ...(countryCode ? { country: countryCode as any } : {}),
+  const session = await stripe.checkout.sessions.create({
+    mode: "subscription",
+    customer_email: email,
+    line_items: [
+      {
+        price: tier.stripePriceId,
+        quantity: 1,
       },
-      ...(name ? { name } : {}),
-      custom: {
+    ],
+    metadata: {
+      user_id: userId,
+      ...(countryCode ? { country_code: countryCode } : {}),
+    },
+    subscription_data: {
+      metadata: {
         user_id: userId,
         ...(countryCode ? { country_code: countryCode } : {}),
       },
     },
-    checkoutOptions: {
-      embed: true,
-    },
-    productOptions: {
-      enabledVariants: [Number(tier.lsVariantId)],
-      name: `Fotno Pro — ${storageLabel}`,
-      redirectUrl: `${process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com"}/billing?checkout=success`,
-    },
+    success_url: `${dashboardUrl}/billing?checkout=success`,
+    cancel_url: `${dashboardUrl}/billing`,
+    allow_promotion_codes: true,
   });
 
-  if (error || !data) {
-    throw new AppError(
-      `Failed to create checkout: ${error?.message || "Unknown error"}`,
-      500,
-    );
+  if (!session.url) {
+    throw new AppError("Failed to create checkout session", 500);
   }
 
-  const checkoutUrl = data.data.attributes.url;
-  return { checkoutUrl };
+  return { checkoutUrl: session.url };
 };

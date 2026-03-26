@@ -11,7 +11,7 @@ import {
   verifyWebhookSignature,
   handleWebhookEvent,
 } from "../services/SubscriptionServices/handleWebhook";
-import { lsGetSubscription, lsGetCustomer } from "../services/SubscriptionServices/lemonSqueezy";
+import { stripe } from "../services/SubscriptionServices/stripe";
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
 import { withSpan, captureWithContext, addBreadcrumb } from "../utils/sentry";
@@ -137,10 +137,10 @@ export const changeTierController = async (req: Request, res: Response) => {
 export const webhookController = async (req: Request, res: Response) => {
   console.log("[Webhook] Received webhook request");
 
-  const signature = req.headers["x-signature"] as string;
+  const signature = req.headers["stripe-signature"] as string;
 
   if (!signature) {
-    console.error("[Webhook] Missing x-signature header");
+    console.error("[Webhook] Missing stripe-signature header");
     return res.status(401).json({ error: "Missing signature" });
   }
 
@@ -150,19 +150,18 @@ export const webhookController = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Missing raw body" });
   }
 
-  if (!verifyWebhookSignature(rawBody, signature)) {
+  const event = verifyWebhookSignature(rawBody, signature);
+  if (!event) {
     console.error("[Webhook] Signature verification failed");
     return res.status(401).json({ error: "Invalid signature" });
   }
 
   try {
-    const event = JSON.parse(rawBody.toString());
-    const eventName = event?.meta?.event_name || "unknown";
-    console.log(`[Webhook] Processing event: ${eventName}`);
+    console.log(`[Webhook] Processing event: ${event.type}`);
 
     await withSpan(
       "subscription.webhook",
-      { eventName, lsSubscriptionId: event?.data?.id, userId: event?.meta?.custom_data?.user_id },
+      { eventType: event.type, eventId: event.id },
       () => handleWebhookEvent(event),
     );
     return res.status(200).json({ received: true });
@@ -170,9 +169,9 @@ export const webhookController = async (req: Request, res: Response) => {
     console.error("[Webhook] Error processing webhook event:", error);
     captureWithContext(error, {
       operation: "subscription.webhook",
-      data: { rawBodyLength: rawBody.length },
+      data: { eventType: event.type, eventId: event.id },
     });
-    // Return 500 so Lemon Squeezy retries the webhook
+    // Return 500 so Stripe retries the webhook
     return res.status(500).json({ error: "Processing failed" });
   }
 };
@@ -184,24 +183,21 @@ export const getPortalUrlController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  // Try subscription portal URL first, fall back to customer portal
-  const subscription = await getActiveSubscription(userId);
-  if (subscription?.lsSubscriptionId) {
-    const { data } = await lsGetSubscription(subscription.lsSubscriptionId);
-    const portalUrl = (data?.data?.attributes as any)?.urls?.customer_portal;
-    if (portalUrl) return controllerReturn({ portalUrl }, req, res);
-  }
-
-  // Fallback: get portal URL from customer record
   const user = await (prisma as any).user.findUnique({
     where: { id: userId },
-    select: { lsCustomerId: true },
+    select: { stripeCustomerId: true },
   });
-  if (user?.lsCustomerId) {
-    const { data } = await lsGetCustomer(user.lsCustomerId);
-    const portalUrl = (data?.data?.attributes as any)?.urls?.customer_portal;
-    if (portalUrl) return controllerReturn({ portalUrl }, req, res);
+
+  if (!user?.stripeCustomerId) {
+    throw new AppError("Billing portal not available. Please contact support.", 404);
   }
 
-  throw new AppError("Billing portal not available. Please contact support.", 404);
+  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: user.stripeCustomerId,
+    return_url: `${dashboardUrl}/billing`,
+  });
+
+  return controllerReturn({ portalUrl: portalSession.url }, req, res);
 };

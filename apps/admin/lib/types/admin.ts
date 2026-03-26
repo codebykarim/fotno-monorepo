@@ -84,7 +84,7 @@ export interface AdminStorageUser {
 
 export interface AdminSubscription {
   id: string;
-  source: "LEMON_SQUEEZY" | "MANUAL";
+  source: "STRIPE" | "MANUAL";
   status: string;
   storageTierGb: number;
   priceCents: number;
@@ -154,7 +154,7 @@ export interface PricingTier {
   gb: number;
   label: string;
   priceCents: number;
-  lsVariantId: string | null;
+  stripePriceId: string | null;
   galleryLimit: number | null;
   sortOrder: number;
   active: boolean;

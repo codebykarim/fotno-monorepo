@@ -99,12 +99,12 @@ export type RegionalPricing = {
    * from this region (e.g. omit -1 to hide the Unlimited tier).
    */
   tierPrices: Record<number, number>;
-  /** Fallback multiplier applied to USD priceCents for LS checkout (used when tierCheckoutCents is missing for a tier) */
+  /** Fallback multiplier applied to USD priceCents for Stripe checkout (used when tierCheckoutCents is missing for a tier) */
   pppMultiplier: number;
   /**
-   * Per-tier USD checkout prices in cents for Lemon Squeezy.
+   * Per-tier USD checkout prices in cents for Stripe.
    * Overrides `pppMultiplier` for individual tiers.
-   * Key = global gb value, Value = USD cents LS will charge.
+   * Key = global gb value, Value = USD cents Stripe will charge.
    */
   tierCheckoutCents?: Record<number, number>;
   /**
@@ -117,8 +117,8 @@ export type RegionalPricing = {
 /**
  * Regional pricing overrides keyed by ISO 3166-1 alpha-2 country code.
  *
- * To add a new country, add one entry here. No Lemon Squeezy dashboard
- * changes needed — the `pppMultiplier` is applied via LS `customPrice`
+ * To add a new country, add one entry here. No Stripe dashboard
+ * changes needed — the `pppMultiplier` is applied via Stripe `customPrice`
  * at checkout time.
  */
 export const REGIONAL_PRICING: Record<string, RegionalPricing> = {

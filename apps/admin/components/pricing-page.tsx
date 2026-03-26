@@ -149,11 +149,11 @@ function TiersSection({
       ),
     },
     {
-      key: "lsVariantId",
-      header: "LS Variant ID",
+      key: "stripePriceId",
+      header: "Stripe Price ID",
       render: (t) => (
         <span className="text-xs text-muted-foreground font-mono">
-          {t.lsVariantId ?? "—"}
+          {t.stripePriceId ?? "—"}
         </span>
       ),
     },
@@ -238,7 +238,7 @@ function TierDialog({
   const [priceCents, setPriceCents] = useState(
     tier?.priceCents?.toString() ?? "",
   );
-  const [lsVariantId, setLsVariantId] = useState(tier?.lsVariantId ?? "");
+  const [stripePriceId, setLsVariantId] = useState(tier?.stripePriceId ?? "");
   const [galleryLimit, setGalleryLimit] = useState(
     tier?.galleryLimit?.toString() ?? "",
   );
@@ -259,7 +259,7 @@ function TierDialog({
         sortOrder: Number(sortOrder),
         active,
       };
-      if (lsVariantId.trim()) body.lsVariantId = lsVariantId.trim();
+      if (stripePriceId.trim()) body.stripePriceId = stripePriceId.trim();
 
       if (isEdit) {
         await apiRequest(`/api/pricing/tiers/${tier!.id}`, {
@@ -322,8 +322,8 @@ function TierDialog({
               placeholder="Empty = unlimited"
             />
             <FieldInput
-              label="LemonSqueezy Variant ID"
-              value={lsVariantId}
+              label="Stripe Price ID"
+              value={stripePriceId}
               onChange={setLsVariantId}
               placeholder="Optional"
             />

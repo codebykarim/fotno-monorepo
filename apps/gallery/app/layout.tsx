@@ -72,8 +72,8 @@ export default function RootLayout({
         </ThemeProvider>
         <Script
           src="/api/script.js"
-          data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
-          strategy="afterInteractive"
+          data-site-id={process.env.NEXT_PUBLIC_GALLERY_RYBBIT_SITE_ID}
+          defer
         />
       </body>
     </html>

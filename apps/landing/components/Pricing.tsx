@@ -3,6 +3,17 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 
+// Declare rybbit on window for TypeScript if you're using it
+declare global {
+  interface Window {
+    rybbit?: {
+      event: (eventName: string, eventData?: Record<string, any>) => void;
+      pageview: () => void;
+      // Add other methods if you use them
+    };
+  }
+}
+
 function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -223,6 +234,17 @@ export async function Pricing() {
               <div className="mt-6">
                 <Button
                   href={`${signupUrl}/account`}
+                  onClick={() => {
+                    if (
+                      typeof window !== "undefined" &&
+                      window.rybbit &&
+                      typeof window.rybbit.event === "function"
+                    ) {
+                      window.rybbit.event("free_tier_clicked");
+                    } else {
+                      console.warn("Rybbit tracking not available.");
+                    }
+                  }}
                   variant="solid"
                   color="white"
                   aria-label="Get started free"
@@ -248,6 +270,19 @@ export async function Pricing() {
               <a
                 key={tier.gb}
                 href={`${signupUrl}/account`}
+                onClick={() => {
+                  if (
+                    typeof window !== "undefined" &&
+                    window.rybbit &&
+                    typeof window.rybbit.event === "function"
+                  ) {
+                    window.rybbit.event("subscribe_to_plan", {
+                      plan: tier.label,
+                    });
+                  } else {
+                    console.warn("Rybbit tracking not available.");
+                  }
+                }}
                 className={cn(
                   "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
                   isPopular

@@ -2,6 +2,7 @@ import { cookies, headers } from "next/headers";
 import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
+import TrackRybbitButton from "./TrackRybbitButton";
 
 // Declare rybbit on window for TypeScript if you're using it
 declare global {
@@ -232,26 +233,20 @@ export async function Pricing() {
                 ))}
               </div>
               <div className="mt-6">
-                <Button
-                  href={`${signupUrl}/account`}
-                  onClick={() => {
-                    if (
-                      typeof window !== "undefined" &&
-                      window.rybbit &&
-                      typeof window.rybbit.event === "function"
-                    ) {
-                      window.rybbit.event("free_tier_clicked");
-                    } else {
-                      console.warn("Rybbit tracking not available.");
-                    }
-                  }}
-                  variant="solid"
-                  color="white"
-                  aria-label="Get started free"
-                  className="px-8 py-3 text-base"
+                <TrackRybbitButton
+                  eventName="free_tier_clicked"
+                  eventData={{ plan: freeTier.label }}
                 >
-                  Get started free
-                </Button>
+                  <Button
+                    href={`${signupUrl}/account`}
+                    variant="solid"
+                    color="white"
+                    aria-label="Get started free"
+                    className="px-8 py-3 text-base"
+                  >
+                    Get started free
+                  </Button>
+                </TrackRybbitButton>
               </div>
             </div>
           </div>
@@ -267,73 +262,66 @@ export async function Pricing() {
           {paidPlans.map((tier) => {
             const isPopular = tier.label === "Professional" || tier.gb === 100;
             return (
-              <a
+              <TrackRybbitButton
+                eventName="subscribe_to_plan"
+                eventData={{ plan: tier.label }}
                 key={tier.gb}
-                href={`${signupUrl}/account`}
-                onClick={() => {
-                  if (
-                    typeof window !== "undefined" &&
-                    window.rybbit &&
-                    typeof window.rybbit.event === "function"
-                  ) {
-                    window.rybbit.event("subscribe_to_plan", {
-                      plan: tier.label,
-                    });
-                  } else {
-                    console.warn("Rybbit tracking not available.");
-                  }
-                }}
-                className={cn(
-                  "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
-                  isPopular
-                    ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
-                    : "border border-background/10 bg-background/5 hover:border-background/20 hover:bg-background/10",
-                )}
               >
-                {isPopular && (
-                  <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
-                    Most popular
+                <a
+                  key={tier.gb}
+                  href={`${signupUrl}/account`}
+                  className={cn(
+                    "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
+                    isPopular
+                      ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
+                      : "border border-background/10 bg-background/5 hover:border-background/20 hover:bg-background/10",
+                  )}
+                >
+                  {isPopular && (
+                    <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
+                      Most popular
+                    </span>
+                  )}
+                  <span
+                    className={cn(
+                      "text-base font-semibold",
+                      isPopular
+                        ? "text-primary-foreground"
+                        : "text-background/70",
+                    )}
+                  >
+                    {tier.label}
                   </span>
-                )}
-                <span
-                  className={cn(
-                    "text-base font-semibold",
-                    isPopular
-                      ? "text-primary-foreground"
-                      : "text-background/70",
-                  )}
-                >
-                  {tier.label}
-                </span>
-                <span
-                  className={cn(
-                    "mt-3 text-4xl font-light tracking-tight",
-                    isPopular ? "text-primary-foreground" : "text-background",
-                  )}
-                >
-                  {formatTierPrice(tier)}
-                </span>
-                <span
-                  className={cn(
-                    "mt-1 text-sm",
-                    isPopular
-                      ? "text-primary-foreground/70"
-                      : "text-background/50",
-                  )}
-                >
-                  /month
-                </span>
-                <span
-                  className={cn(
-                    "mt-4 text-sm font-medium",
-                    isPopular
-                      ? "text-primary-foreground/90"
-                      : "text-background/60",
-                  )}
-                >
-                  {formatStorage(tier.gb)} storage
-                </span>
-              </a>
+                  <span
+                    className={cn(
+                      "mt-3 text-4xl font-light tracking-tight",
+                      isPopular ? "text-primary-foreground" : "text-background",
+                    )}
+                  >
+                    {formatTierPrice(tier)}
+                  </span>
+                  <span
+                    className={cn(
+                      "mt-1 text-sm",
+                      isPopular
+                        ? "text-primary-foreground/70"
+                        : "text-background/50",
+                    )}
+                  >
+                    /month
+                  </span>
+                  <span
+                    className={cn(
+                      "mt-4 text-sm font-medium",
+                      isPopular
+                        ? "text-primary-foreground/90"
+                        : "text-background/60",
+                    )}
+                  >
+                    {formatStorage(tier.gb)} storage
+                  </span>
+                </a>
+              </TrackRybbitButton>
             );
           })}
         </div>

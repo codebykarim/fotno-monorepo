@@ -1,8 +1,61 @@
 import { prisma } from "@workspace/db";
 import { stripe, Stripe } from "./stripe";
-import { findTierByPriceId, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
+import { findTierByPriceId, fetchTiersFromDB, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
 import { storageTierToBytes } from "../../constants/storage";
 import { getRegionalPricing } from "../../constants/regional-pricing";
+
+/**
+ * Extract billing period dates from a Stripe subscription.
+ * Newer Stripe API versions (2024+) removed current_period_start/end
+ * from subscriptions — fall back to the latest invoice period.
+ */
+async function extractBillingPeriod(
+  sub: Stripe.Subscription,
+): Promise<{ start: Date; end: Date }> {
+  // Try legacy fields first (present in older API versions)
+  const rawStart = (sub as any).current_period_start;
+  const rawEnd = (sub as any).current_period_end;
+  if (typeof rawStart === "number" && typeof rawEnd === "number") {
+    return { start: new Date(rawStart * 1000), end: new Date(rawEnd * 1000) };
+  }
+
+  // Fetch latest invoice for billing period
+  const invoiceRef = sub.latest_invoice;
+  const invoiceId =
+    typeof invoiceRef === "string"
+      ? invoiceRef
+      : (invoiceRef as Stripe.Invoice | null)?.id;
+
+  if (invoiceId) {
+    try {
+      const invoice = await stripe.invoices.retrieve(invoiceId);
+      const ps = (invoice as any).period_start;
+      const pe = (invoice as any).period_end;
+      if (typeof ps === "number" && typeof pe === "number") {
+        return { start: new Date(ps * 1000), end: new Date(pe * 1000) };
+      }
+      // Try invoice line items as a further fallback
+      const line = invoice.lines?.data?.[0];
+      if (line?.period?.start && line?.period?.end) {
+        return {
+          start: new Date(line.period.start * 1000),
+          end: new Date(line.period.end * 1000),
+        };
+      }
+    } catch (err) {
+      console.warn("[extractBillingPeriod] Failed to retrieve invoice:", err);
+    }
+  }
+
+  // Ultimate fallback: subscription start + 30 days
+  const createdTs = (sub as any).created;
+  const startMs = typeof createdTs === "number" ? createdTs * 1000 : Date.now();
+  console.warn(`[extractBillingPeriod] Using fallback period for subscription ${sub.id}`);
+  return {
+    start: new Date(startMs),
+    end: new Date(startMs + 30 * 24 * 60 * 60 * 1000),
+  };
+}
 
 export const verifyWebhookSignature = (
   rawBody: Buffer,
@@ -115,18 +168,24 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   const resolvedUserId: string = user.id;
   console.log(`[Webhook] checkout.session.completed: user resolved via ${resolvedBy} -> userId=${resolvedUserId}`);
 
+  // Resolve tier: prefer metadata (always set for new checkouts), then price ID lookup
+  const tierGbFromMeta = session.metadata?.tier_gb ? Number(session.metadata.tier_gb) : null;
   const tier = findTierByPriceId(stripePriceId);
-  if (!tier) {
+  if (!tier && !tierGbFromMeta) {
     console.warn(`[Webhook] No tier found for priceId=${stripePriceId}. Configured prices: ${JSON.stringify(
       STORAGE_TIERS.map(t => ({ gb: t.gb, priceId: t.stripePriceId }))
     )}`);
   }
-  const globalTierGb = tier?.gb ?? 50;
+  const globalTierGb = tierGbFromMeta ?? tier?.gb ?? 50;
   const regional = getRegionalPricing(countryCode);
   const storageTierGb = regional?.tierStorageOverrides?.[globalTierGb] ?? globalTierGb;
   const storageLimit = storageTierToBytes(storageTierGb);
 
   const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000) : null;
+
+  // Extract billing period (handles newer Stripe API versions where
+  // current_period_start/end have been removed from subscriptions)
+  const period = await extractBillingPeriod(sub);
 
   console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB, price=${priceCents}cents`);
 
@@ -141,8 +200,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
           priceCents,
           stripeSubscriptionId,
           stripePriceId,
-          currentPeriodStart: new Date(sub.current_period_start * 1000),
-          currentPeriodEnd: new Date(sub.current_period_end * 1000),
+          currentPeriodStart: period.start,
+          currentPeriodEnd: period.end,
         },
       }),
       (prisma as any).user.update({
@@ -215,16 +274,19 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
   if (!item) return;
 
   const stripePriceId = item.price.id;
+  const priceCents = item.price.unit_amount ?? 0;
   const subscription = await findSubscriptionWithFallback(stripeSubscriptionId, stripeCustomerId, "customer.subscription.updated");
   if (!subscription) return;
 
+  // Resolve tier: try metadata, then price ID lookup, then fall back to existing subscription data
+  const tierGbFromMeta = (sub as any).metadata?.tier_gb ? Number((sub as any).metadata.tier_gb) : null;
   const tier = findTierByPriceId(stripePriceId);
-  if (!tier) {
-    console.warn(`[Webhook] customer.subscription.updated: no tier for priceId=${stripePriceId}`);
-    return;
+  const tierGb = tierGbFromMeta ?? tier?.gb ?? subscription.storageTierGb;
+  if (!tier && !tierGbFromMeta) {
+    console.warn(`[Webhook] customer.subscription.updated: no tier for priceId=${stripePriceId}, using existing storageTierGb=${subscription.storageTierGb}`);
   }
 
-  const storageLimit = storageTierToBytes(tier.gb);
+  const storageLimit = storageTierToBytes(tierGb);
   const isCancelled = sub.cancel_at_period_end;
   const status = sub.status === "active"
     ? (isCancelled ? "CANCELLED" : "ACTIVE")
@@ -232,19 +294,21 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
       ? "PAST_DUE"
       : "ACTIVE";
 
-  console.log(`[Webhook] customer.subscription.updated: userId=${subscription.userId}, newTier=${tier.gb}GB, status=${status}`);
+  const period = await extractBillingPeriod(sub);
+
+  console.log(`[Webhook] customer.subscription.updated: userId=${subscription.userId}, newTier=${tierGb}GB, status=${status}`);
 
   await (prisma as any).$transaction([
     (prisma as any).subscription.update({
       where: { id: subscription.id },
       data: {
-        storageTierGb: tier.gb,
-        priceCents: tier.priceCents,
+        storageTierGb: tierGb,
+        priceCents,
         stripePriceId,
         stripeSubscriptionId,
-        currentPeriodEnd: new Date(sub.current_period_end * 1000),
+        currentPeriodEnd: period.end,
         status,
-        ...(isCancelled ? { cancelledAt: new Date(), endsAt: new Date(sub.current_period_end * 1000) } : { cancelledAt: null, endsAt: null }),
+        ...(isCancelled ? { cancelledAt: new Date(), endsAt: period.end } : { cancelledAt: null, endsAt: null }),
       },
     }),
     (prisma as any).user.update({
@@ -309,6 +373,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
 
   // Fetch updated period from Stripe
   const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+  const period = await extractBillingPeriod(sub);
 
   await (prisma as any).$transaction([
     (prisma as any).subscription.update({
@@ -316,7 +381,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
       data: {
         status: "ACTIVE",
         stripeSubscriptionId,
-        currentPeriodEnd: new Date(sub.current_period_end * 1000),
+        currentPeriodEnd: period.end,
       },
     }),
     (prisma as any).user.update({

@@ -47,28 +47,50 @@ export const createCheckout = async ({
   const storageLabel = storageGb === -1 ? "Unlimited storage" : `${storageGb} GB storage`;
   const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    customer_email: email,
-    line_items: [
+  // Determine line item: use dynamic price for regional pricing, or fixed price ID
+  const regionalCheckoutCents = regional?.tierCheckoutCents?.[tier.gb];
+  let lineItems: any[];
+
+  if (regionalCheckoutCents && tier.stripePriceId) {
+    // Regional pricing: use price_data with the PPP-adjusted amount
+    const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
+    lineItems = [
+      {
+        price_data: {
+          currency: "usd",
+          unit_amount: regionalCheckoutCents,
+          recurring: { interval: "month" as const },
+          product: existingPrice.product as string,
+        },
+        quantity: 1,
+      },
+    ];
+  } else {
+    lineItems = [
       {
         price: tier.stripePriceId,
         quantity: 1,
       },
-    ],
-    metadata: {
-      user_id: userId,
-      ...(countryCode ? { country_code: countryCode } : {}),
-    },
+    ];
+  }
+
+  const sharedMetadata = {
+    user_id: userId,
+    tier_gb: String(tier.gb),
+    ...(countryCode ? { country_code: countryCode } : {}),
+  };
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "subscription",
+    customer_email: email,
+    line_items: lineItems,
+    metadata: sharedMetadata,
     subscription_data: {
-      metadata: {
-        user_id: userId,
-        ...(countryCode ? { country_code: countryCode } : {}),
-      },
+      metadata: sharedMetadata,
     },
     success_url: `${dashboardUrl}/billing?checkout=success`,
     cancel_url: `${dashboardUrl}/billing`,
-    allow_promotion_codes: true,
+    allow_promotion_codes: !regionalCheckoutCents, // disable promo codes when using dynamic pricing
   });
 
   if (!session.url) {

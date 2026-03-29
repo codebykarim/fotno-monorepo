@@ -6,12 +6,16 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Load .env
-for (const p of [resolve(process.cwd(), ".env"), resolve(process.cwd(), "../../.env")]) {
+for (const p of [
+  resolve(process.cwd(), ".env"),
+  resolve(process.cwd(), "../../.env"),
+]) {
   if (existsSync(p)) loadEnv({ path: p });
 }
 
 const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DIRECT_URL or DATABASE_URL is required");
+if (!connectionString)
+  throw new Error("DIRECT_URL or DATABASE_URL is required");
 
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
@@ -21,7 +25,9 @@ async function main() {
 
   // ── Admin User ──────────────────────────────────────────────
   const adminEmail = "karim@fotno.com";
-  const existingAdmin = await prisma.user.findFirst({ where: { email: adminEmail } });
+  const existingAdmin = await prisma.user.findFirst({
+    where: { email: adminEmail },
+  });
 
   if (!existingAdmin) {
     const hashedPassword = await hashPassword("Karim@123");
@@ -53,11 +59,46 @@ async function main() {
 
   // ── Pricing Tiers ──────────────────────────────────────────
   const tiers = [
-    { gb: 5, label: "Free", priceCents: 0, stripePriceId: null, galleryLimit: 2, sortOrder: -1 },
-    { gb: 20, label: "Starter", priceCents: 900, stripePriceId: "price_1TGIupEuz1yMNGtK1ggZxCv4", galleryLimit: null, sortOrder: 0 },
-    { gb: 100, label: "Professional", priceCents: 1900, stripePriceId: "price_1TGIupEuz1yMNGtKzsV8bjyD", galleryLimit: null, sortOrder: 1 },
-    { gb: 500, label: "Business", priceCents: 3500, stripePriceId: "price_1TGIupEuz1yMNGtKWfLDXwvJ", galleryLimit: null, sortOrder: 2 },
-    { gb: -1, label: "Unlimited", priceCents: 4900, stripePriceId: "price_1TGIupEuz1yMNGtKhHSfZV4k", galleryLimit: null, sortOrder: 3 },
+    {
+      gb: 5,
+      label: "Free",
+      priceCents: 0,
+      stripePriceId: null,
+      galleryLimit: 2,
+      sortOrder: -1,
+    },
+    {
+      gb: 20,
+      label: "Solo",
+      priceCents: 900,
+      stripePriceId: "price_1TGNnaEuz1yMNGtKYLe4ibiI",
+      galleryLimit: null,
+      sortOrder: 0,
+    },
+    {
+      gb: 100,
+      label: "Studio",
+      priceCents: 1900,
+      stripePriceId: "price_1TGNnaEuz1yMNGtK2IL5v0uV",
+      galleryLimit: null,
+      sortOrder: 1,
+    },
+    {
+      gb: 500,
+      label: "Pro Studio",
+      priceCents: 3500,
+      stripePriceId: "price_1TGNnaEuz1yMNGtKYLe4ibiI",
+      galleryLimit: null,
+      sortOrder: 2,
+    },
+    {
+      gb: -1,
+      label: "Unlimited",
+      priceCents: 4900,
+      stripePriceId: "price_1TGNnaEuz1yMNGtK3ZAQs9w2",
+      galleryLimit: null,
+      sortOrder: 3,
+    },
   ];
 
   for (const tier of tiers) {
@@ -115,7 +156,9 @@ async function main() {
       },
     });
   }
-  console.log(`✔ Regional tier overrides seeded (${overrides.length} overrides)`);
+  console.log(
+    `✔ Regional tier overrides seeded (${overrides.length} overrides)`,
+  );
 
   console.log("\n✅ Seed complete!");
 }

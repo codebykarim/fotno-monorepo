@@ -29,8 +29,9 @@ export const changeTier = async ({
     throw new AppError("Invalid storage tier", 400);
   }
 
-  if (subscription.storageTierGb === newStorageTierGb) {
-    throw new AppError("Already on this tier", 400);
+  const effectiveTierGb = subscription.pendingTierGb ?? subscription.storageTierGb;
+  if (effectiveTierGb === newStorageTierGb) {
+    throw new AppError("Already scheduled for or on this tier", 400);
   }
 
   if (
@@ -98,8 +99,8 @@ export const changeTier = async ({
   await (prisma as any).subscription.update({
     where: { id: subscription.id },
     data: {
-      pendingTierGb: newStorageTierGb,
-      pendingEffectiveAt: period.end,
+      pendingTierGb: newStorageTierGb === subscription.storageTierGb ? null : newStorageTierGb,
+      pendingEffectiveAt: newStorageTierGb === subscription.storageTierGb ? null : period.end,
     },
   });
 

@@ -165,7 +165,9 @@ export default function BillingPage() {
         body: JSON.stringify({ newStorageTierGb: newGb }),
       });
       toast.success(
-        "Plan change scheduled. Your new plan will take effect at the end of this billing period.",
+        newGb === subscription?.storageTierGb
+          ? "Your plan will remain on your current tier."
+          : "Plan change scheduled. Your new plan will take effect at the end of this billing period.",
       );
       await mutate();
       router.refresh();
@@ -190,8 +192,7 @@ export default function BillingPage() {
 
   const isFree = access?.status === "free";
   const hasSubscription =
-    access?.status === "active" ||
-    access?.status === "cancelled_grace";
+    access?.status === "active" || access?.status === "cancelled_grace";
 
   return (
     <div className="space-y-10">
@@ -305,7 +306,9 @@ export default function BillingPage() {
                         onClick={handleCancel}
                         disabled={cancelLoading}
                       >
-                        {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                        {cancelLoading
+                          ? "Cancelling..."
+                          : "Cancel Subscription"}
                       </Button>
                     )}
                   </div>
@@ -314,10 +317,12 @@ export default function BillingPage() {
                   <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/30 dark:bg-amber-950/20">
                     <p className="text-sm text-amber-900 dark:text-amber-200">
                       <strong>Plan change pending:</strong> You'll switch to{" "}
-                      <strong>{subscription.pendingDowngrade.tierLabel}</strong> ({formatStorage(subscription.pendingDowngrade.tierGb)}){" "}
+                      <strong>{subscription.pendingDowngrade.tierLabel}</strong>{" "}
+                      ({formatStorage(subscription.pendingDowngrade.tierGb)}){" "}
                       {subscription.pendingDowngrade.effectiveAt
                         ? `on ${new Date(subscription.pendingDowngrade.effectiveAt).toLocaleDateString()}`
-                        : "at the end of your billing period"}.
+                        : "at the end of your billing period"}
+                      .
                     </p>
                   </div>
                 )}
@@ -460,14 +465,26 @@ export default function BillingPage() {
 
                     <div className="mt-4 w-full">
                       {isCurrent ? (
-                        <Button
-                          disabled
-                          size="sm"
-                          variant="secondary"
-                          className="w-full text-xs"
-                        >
-                          Current Plan
-                        </Button>
+                        subscription?.pendingDowngrade ? (
+                          <Button
+                            size="sm"
+                            className="w-full text-xs"
+                            variant={"secondary"}
+                            onClick={() => handleChangeTier(tier.gb)}
+                            disabled={isLoading}
+                          >
+                            {isLoading ? "..." : "Return to Current Plan"}
+                          </Button>
+                        ) : (
+                          <Button
+                            disabled
+                            size="sm"
+                            variant="secondary"
+                            className="w-full text-xs"
+                          >
+                            Current Plan
+                          </Button>
+                        )
                       ) : access?.status === "cancelled_grace" ? (
                         <Button
                           size="sm"

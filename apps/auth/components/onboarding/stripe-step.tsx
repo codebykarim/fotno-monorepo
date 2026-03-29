@@ -13,7 +13,12 @@ import { trackEvent } from "../../lib/rybbit";
 
 // Only load stripe outside of component render
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
+  {
+    developerTools: {
+      assistant: { enabled: process.env.NODE_ENV === "development" },
+    },
+  },
 );
 
 interface StripeStepProps {
@@ -57,9 +62,10 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
     const fetchIntent = async () => {
       setIsLoadingSecret(true);
       try {
-        const endpoint = plan === "Free"
-          ? "/api/billing/create-setup-intent"
-          : "/api/billing/create-subscription-intent";
+        const endpoint =
+          plan === "Free"
+            ? "/api/billing/create-setup-intent"
+            : "/api/billing/create-subscription-intent";
 
         // Detect country for regional pricing:
         // 1. user_country cookie (set by landing page)
@@ -78,7 +84,9 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
                 countryCode = lastPart.toUpperCase();
               }
             }
-          } catch { /* ignore */ }
+          } catch {
+            /* ignore */
+          }
         }
 
         const response = await fetch(
@@ -87,8 +95,11 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: plan === "Free" ? undefined : JSON.stringify({ tierLabel: plan, countryCode }),
-          }
+            body:
+              plan === "Free"
+                ? undefined
+                : JSON.stringify({ tierLabel: plan, countryCode }),
+          },
         );
 
         if (!response.ok) {
@@ -135,7 +146,7 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -192,7 +203,9 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
     return (
       <div className="flex flex-col items-center justify-center p-8 gap-3 mt-6">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-sm font-medium text-foreground">Setting up your workspace...</p>
+        <p className="text-sm font-medium text-foreground">
+          Setting up your workspace...
+        </p>
       </div>
     );
   }
@@ -203,8 +216,12 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
         {plan === "Free" ? "Add a payment method" : "Set up your subscription"}
       </h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        You selected the <strong>{plan}</strong> plan.{plan !== "Free" && displayPrice && (
-          <> <strong>{displayPrice}/mo</strong></>
+        You selected the <strong>{plan}</strong> plan.
+        {plan !== "Free" && displayPrice && (
+          <>
+            {" "}
+            <strong>{displayPrice}/mo</strong>
+          </>
         )}
       </p>
 
@@ -212,9 +229,12 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
         <div className="my-6 rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 flex gap-3 text-amber-600 dark:text-amber-500">
           <AlertCircle className="h-5 w-5 shrink-0" />
           <div className="flex flex-col gap-1">
-            <p className="text-sm font-medium">Are you sure you want to skip?</p>
+            <p className="text-sm font-medium">
+              Are you sure you want to skip?
+            </p>
             <p className="text-xs opacity-90">
-              You&apos;ll start on the Free plan instead. You can always upgrade later from your dashboard.
+              You&apos;ll start on the Free plan instead. You can always upgrade
+              later from your dashboard.
             </p>
           </div>
         </div>
@@ -226,7 +246,8 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
             Add a payment method (Optional)
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Save a card now for frictionless upgrades later. <strong>You will not be charged on the Free plan.</strong>
+            Save a card now for frictionless upgrades later.{" "}
+            <strong>You will not be charged on the Free plan.</strong>
           </p>
         </div>
       )}

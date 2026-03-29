@@ -43,7 +43,7 @@ const buildUploadServiceToken = (userId: string): string => {
       sub: userId,
       role: "photographer",
       email: "",
-      plan: "TRIAL",
+      plan: "FREE",
     },
     secret,
     { expiresIn: "15m" },

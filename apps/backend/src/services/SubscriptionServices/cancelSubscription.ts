@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 import { stripe } from "./stripe";
-import { getFreeTierLimits } from "../../constants/plans";
+import { extractBillingPeriod } from "./handleWebhook";
 import AppError from "../../errors/AppError";
 
 export const cancelSubscription = async (userId: string): Promise<void> => {
@@ -18,71 +18,46 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
 
   if (subscription.source === "STRIPE" && subscription.stripeSubscriptionId) {
     try {
+      // Retrieve subscription first to extract billing period
+      const stripeSub = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId);
+
       // Cancel at period end — Stripe will fire customer.subscription.updated webhook
       await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
         cancel_at_period_end: true,
       });
+
+      // Set endsAt now so the grace period check works immediately
+      const period = await extractBillingPeriod(stripeSub);
+
+      await (prisma as any).subscription.update({
+        where: { id: subscription.id },
+        data: {
+          status: "CANCELLED",
+          cancelledAt: new Date(),
+          endsAt: period.end,
+          // Clear any pending tier change since subscription is being cancelled
+          pendingTierGb: null,
+          pendingEffectiveAt: null,
+        },
+      });
+
+      console.log(
+        `[cancelSubscription] Scheduled cancellation for userId=${userId}, ` +
+        `access until ${period.end}`,
+      );
     } catch (err: any) {
       if (err.statusCode !== 404) {
         throw new AppError(`Failed to cancel subscription: ${err.message}`, 500);
       }
-    }
-  }
-
-  // If user is in free trial, cancel immediately with no grace period
-  const user = await (prisma as any).user.findUnique({
-    where: { id: userId },
-    select: { trialEndsAt: true },
-  });
-  const TRIAL_DAYS = 14;
-  const subscriptionAgeDays = subscription.createdAt
-    ? (Date.now() - new Date(subscription.createdAt).getTime()) / (1000 * 60 * 60 * 24)
-    : Infinity;
-  const isTrialing =
-    (user?.trialEndsAt && new Date(user.trialEndsAt) > new Date()) ||
-    subscriptionAgeDays <= TRIAL_DAYS;
-
-  if (isTrialing) {
-    // Immediately cancel on Stripe as well (not just at period end)
-    if (subscription.source === "STRIPE" && subscription.stripeSubscriptionId) {
-      try {
-        await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
-      } catch {
-        // Already cancelled above, ignore
-      }
-    }
-
-    const freeLimits = await getFreeTierLimits();
-    await (prisma as any).$transaction(async (tx: any) => {
-      await tx.subscription.update({
+      // Stripe sub not found — just mark as cancelled in DB
+      await (prisma as any).subscription.update({
         where: { id: subscription.id },
-        data: { status: "EXPIRED", cancelledAt: new Date() },
-      });
-      await tx.user.update({
-        where: { id: userId },
         data: {
-          plan: "FREE",
-          subscribed: false,
-          trialEndsAt: null,
-          storageLimit: freeLimits.storageLimitBytes,
-          galleryLimit: freeLimits.galleryLimit,
-          downgradedAt: new Date(),
+          status: "CANCELLED",
+          cancelledAt: new Date(),
         },
       });
-      // Auto-draft galleries beyond the free tier gallery limit
-      const publishedGalleries = await tx.gallery.findMany({
-        where: { userId, isPublished: true },
-        orderBy: { updatedAt: "desc" },
-        select: { id: true },
-      });
-      if (publishedGalleries.length > freeLimits.galleryLimit) {
-        const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
-        await tx.gallery.updateMany({
-          where: { id: { in: toDraft } },
-          data: { isPublished: false },
-        });
-      }
-    });
+    }
   } else {
     await (prisma as any).subscription.update({
       where: { id: subscription.id },

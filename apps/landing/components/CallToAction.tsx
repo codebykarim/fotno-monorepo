@@ -40,7 +40,7 @@ export function CallToAction() {
               color="white"
               className="w-full px-8 py-3 text-base sm:w-auto"
             >
-              Start free trial
+              Get started free
             </Button>
             <Button
               href="#pricing"

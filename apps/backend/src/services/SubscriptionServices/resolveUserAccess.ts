@@ -5,7 +5,6 @@ import { getFreeTierLimits } from "../../constants/plans";
 export type UserAccessStatus =
   | "free"
   | "active"
-  | "trialing"
   | "past_due"
   | "cancelled_grace"
   | "no_subscription";
@@ -17,8 +16,6 @@ export type UserAccess = {
   storageLimitBytes: bigint;
   galleryLimit?: number | null;
   galleryCount?: number;
-  trialEndsAt?: Date | null;
-  trialDaysLeft?: number;
   subscription?: {
     id: string;
     source: string;
@@ -41,7 +38,6 @@ export const resolveUserAccess = async (
       storageLimit: true,
       storageUsed: true,
       galleryLimit: true,
-      trialEndsAt: true,
     },
   });
 
@@ -90,28 +86,12 @@ export const resolveUserAccess = async (
     const storageLimitBytes =
       storageTierToBytes(subscription.storageTierGb as number);
 
-    const TRIAL_DAYS = 14;
-    let trialEndsAt = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
-    // Fallback: if trialEndsAt was never set, infer from subscription creation date
-    if (!trialEndsAt && subscription.createdAt) {
-      const inferredEnd = new Date(subscription.createdAt);
-      inferredEnd.setDate(inferredEnd.getDate() + TRIAL_DAYS);
-      if (inferredEnd > new Date()) {
-        trialEndsAt = inferredEnd;
-      }
-    }
-    const isTrialing = trialEndsAt !== null && trialEndsAt > new Date();
-    const trialDaysLeft = isTrialing
-      ? Math.ceil((trialEndsAt!.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-      : undefined;
-
     return {
-      status: isTrialing ? "trialing" : "active",
+      status: "active",
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
       galleryLimit: null,
-      ...(isTrialing ? { trialEndsAt, trialDaysLeft } : {}),
       subscription: {
         id: subscription.id,
         source: subscription.source,
@@ -176,7 +156,7 @@ export const resolveUserAccess = async (
     };
   }
 
-  // No active subscription — return no_subscription for legacy TRIAL/EXPIRED users
+  // No active subscription
   return buildNoSubscriptionAccess();
 };
 

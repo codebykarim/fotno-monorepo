@@ -9,7 +9,7 @@ import { formatBytes, formatDate } from "@/lib/format";
 import type { AdminUser, AdminUserDetail, PaginatedResponse } from "@/lib/types/admin";
 import { toast } from "sonner";
 
-const PLANS = ["all", "TRIAL", "PRO", "EXPIRED"];
+const PLANS = ["all", "FREE", "PRO", "EXPIRED"];
 
 export function UsersPage() {
   const [search, setSearch] = useState("");

@@ -139,7 +139,6 @@ export function AnalyticsPage() {
                     className={cn(
                       "h-3 w-3 rounded-sm",
                       p.plan === "FREE" ? "bg-green-500" :
-                      p.plan === "TRIAL" ? "bg-blue-500" :
                       p.plan === "PRO" ? "bg-emerald-500" :
                       p.plan === "EXPIRED" ? "bg-zinc-400" :
                       "bg-zinc-400"

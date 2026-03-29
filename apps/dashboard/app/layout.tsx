@@ -9,7 +9,6 @@ import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 import { getSession } from "@workspace/lib/auth/auth-client";
 import { headers } from "next/headers";
 import Header from "@workspace/ui/components/header";
-import { TrialBanner } from "@/components/trial-banner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,7 +61,6 @@ export default async function RootLayout({
                 aria-hidden="true"
               />
               <div className="dashboard-glass relative mx-auto max-w-screen-xl min-h-full rounded-2xl p-6 lg:p-8">
-                <TrialBanner />
                 {children}
               </div>
             </main>

@@ -118,7 +118,7 @@ export function Hero() {
             href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
             className="w-full px-8 py-3 text-base sm:w-auto"
           >
-            Start free trial
+            Get started free
           </Button>
           <Button
             href="#features"

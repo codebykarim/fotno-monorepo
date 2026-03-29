@@ -81,7 +81,6 @@ export type StorageEventsResponse = {
 export type UserAccessStatus =
   | "free"
   | "active"
-  | "trialing"
   | "past_due"
   | "cancelled_grace"
   | "no_subscription";
@@ -94,8 +93,6 @@ export type SubscriptionResponse = {
     storageLimitBytes: string;
     galleryLimit?: number | null;
     galleryCount?: number;
-    trialEndsAt?: string | null;
-    trialDaysLeft?: number;
     subscription?: {
       id: string;
       source: string;
@@ -117,6 +114,11 @@ export type SubscriptionResponse = {
     currentPeriodEnd: string | null;
     cancelledAt: string | null;
     endsAt: string | null;
+    pendingDowngrade?: {
+      tierGb: number;
+      tierLabel: string;
+      effectiveAt: string;
+    } | null;
   } | null;
 };
 

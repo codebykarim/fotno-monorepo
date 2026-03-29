@@ -15,6 +15,7 @@ import { stripe } from "../services/SubscriptionServices/stripe";
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
 import { withSpan, captureWithContext, addBreadcrumb } from "../utils/sentry";
+import { findTierByGb } from "../constants/plans";
 
 /**
  * Resolve country code from: explicit query/body param → CF header → IP geolocation.
@@ -51,7 +52,6 @@ export const getSubscriptionController = async (
       addBreadcrumb("subscription", "resolved user access", {
         status: acc.status,
         canUpload: acc.canUpload,
-        trialDaysLeft: acc.trialDaysLeft,
       });
       return { access: acc, subscription: sub };
     },
@@ -62,7 +62,21 @@ export const getSubscriptionController = async (
     storageLimitBytes: access.storageLimitBytes.toString(),
   };
 
-  return controllerReturn({ access: serializedAccess, subscription }, req, res);
+  // Include pending downgrade if set
+  let serializedSubscription = subscription;
+  if (subscription && subscription.pendingTierGb) {
+    const pendingTier = findTierByGb(subscription.pendingTierGb);
+    serializedSubscription = {
+      ...subscription,
+      pendingDowngrade: pendingTier ? {
+        tierGb: subscription.pendingTierGb,
+        tierLabel: pendingTier.label,
+        effectiveAt: subscription.pendingEffectiveAt?.toISOString() ?? null,
+      } : null,
+    };
+  }
+
+  return controllerReturn({ access: serializedAccess, subscription: serializedSubscription }, req, res);
 };
 
 export const createCheckoutController = async (

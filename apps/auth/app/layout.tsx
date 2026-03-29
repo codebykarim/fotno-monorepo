@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | FOTNO",
   },
   description:
-    "Sign in or create your FOTNO account. Start delivering stunning photo galleries to your clients in minutes. Free trial available.",
+    "Sign in or create your FOTNO account. Start delivering stunning photo galleries to your clients in minutes. Free plan available.",
   keywords: [
     "fotno login", "fotno sign up", "photno login", "photnoo sign up",
     "photographer sign up", "photo gallery sign up",

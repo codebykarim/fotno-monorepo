@@ -1,7 +1,8 @@
 import { prisma } from "@workspace/db";
 import { stripe } from "./stripe";
 import { findTierByGb } from "../../constants/plans";
-import { storageTierToBytes } from "../../constants/storage";
+import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
+import { extractBillingPeriod } from "./handleWebhook";
 import AppError from "../../errors/AppError";
 
 export const changeTier = async ({
@@ -32,58 +33,78 @@ export const changeTier = async ({
     throw new AppError("Already on this tier", 400);
   }
 
+  if (
+    !subscription.stripeSubscriptionId ||
+    subscription.source !== "STRIPE"
+  ) {
+    throw new AppError("Only Stripe subscriptions can change tier", 400);
+  }
+
   const normalizeGb = (gb: number) => (gb === -1 ? Infinity : gb);
   const isUpgrade = normalizeGb(newStorageTierGb) > normalizeGb(subscription.storageTierGb);
 
-  if (
-    subscription.source === "STRIPE" &&
-    subscription.stripeSubscriptionId
-  ) {
+  console.log(
+    `[changeTier] Scheduling ${isUpgrade ? "upgrade" : "downgrade"}: ` +
+    `userId=${userId}, stripeSubId=${subscription.stripeSubscriptionId}, ` +
+    `${subscription.storageTierGb}GB -> ${newStorageTierGb}GB (effective at period end)`,
+  );
+
+  // Retrieve the current subscription to get the item ID and period info
+  const stripeSub = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId);
+  const currentItem = stripeSub.items.data[0];
+
+  if (!currentItem) {
+    throw new AppError("Stripe subscription has no items", 500);
+  }
+
+  // Check if user has regional pricing (from subscription metadata)
+  const countryCode = (stripeSub as any).metadata?.country_code as string | undefined;
+  const regional =
+    (await fetchRegionalPricingFromDB(countryCode)) ?? getRegionalPricing(countryCode);
+  const regionalCheckoutCents = regional?.tierCheckoutCents?.[newTier.gb];
+
+  // Build the subscription item update: use price_data for regional, price ID for global
+  let itemUpdate: any;
+  if (regionalCheckoutCents) {
+    const existingPrice = await stripe.prices.retrieve(currentItem.price.id);
+    itemUpdate = {
+      id: currentItem.id,
+      price_data: {
+        currency: "usd",
+        unit_amount: regionalCheckoutCents,
+        recurring: { interval: "month" as const },
+        product: existingPrice.product as string,
+      },
+    };
     console.log(
-      `[changeTier] Attempting ${isUpgrade ? "upgrade" : "downgrade"}: ` +
-      `userId=${userId}, stripeSubId=${subscription.stripeSubscriptionId}, ` +
-      `${subscription.storageTierGb}GB -> ${newStorageTierGb}GB`,
+      `[changeTier] Using regional pricing for ${countryCode}: ${regionalCheckoutCents} cents`,
     );
-
-    // Retrieve the current subscription to get the item ID
-    const stripeSub = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId);
-    const currentItem = stripeSub.items.data[0];
-
-    if (!currentItem) {
-      throw new AppError("Stripe subscription has no items", 500);
-    }
-
-    // Update the subscription item to the new price
-    await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
-      items: [
-        {
-          id: currentItem.id,
-          price: newTier.stripePriceId,
-        },
-      ],
-      proration_behavior: isUpgrade ? "create_prorations" : "none",
-    });
+  } else {
+    itemUpdate = {
+      id: currentItem.id,
+      price: newTier.stripePriceId,
+    };
   }
 
-  // For upgrades, apply immediately
-  if (isUpgrade) {
-    const newLimit = storageTierToBytes(newStorageTierGb);
-    await (prisma as any).$transaction([
-      (prisma as any).subscription.update({
-        where: { id: subscription.id },
-        data: {
-          storageTierGb: newStorageTierGb,
-          priceCents: newTier.priceCents,
-          stripePriceId: newTier.stripePriceId,
-        },
-      }),
-      (prisma as any).user.update({
-        where: { id: userId },
-        data: {
-          storageLimit: newLimit,
-        },
-      }),
-    ]);
-  }
-  // For downgrades, the webhook will handle the change at period end
+  // Update Stripe — no proration, new price takes effect at next renewal
+  await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+    items: [itemUpdate],
+    proration_behavior: "none",
+  });
+
+  // Store as pending change (both upgrades and downgrades take effect at period end)
+  const period = await extractBillingPeriod(stripeSub);
+
+  await (prisma as any).subscription.update({
+    where: { id: subscription.id },
+    data: {
+      pendingTierGb: newStorageTierGb,
+      pendingEffectiveAt: period.end,
+    },
+  });
+
+  console.log(
+    `[changeTier] Change pending: userId=${userId}, ` +
+    `${subscription.storageTierGb}GB -> ${newStorageTierGb}GB at ${period.end}`,
+  );
 };

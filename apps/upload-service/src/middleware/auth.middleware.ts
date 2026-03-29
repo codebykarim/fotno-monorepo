@@ -45,7 +45,7 @@ export function authMiddleware(req: Request, _res: Response, next: NextFunction)
     req.user = {
       id: userId,
       email: payload.email ?? '',
-      plan: payload.plan ?? 'TRIAL',
+      plan: payload.plan ?? 'FREE',
     }
 
     next()

@@ -164,7 +164,9 @@ export default function BillingPage() {
         method: "PATCH",
         body: JSON.stringify({ newStorageTierGb: newGb }),
       });
-      toast.success("Plan updated successfully!");
+      toast.success(
+        "Plan change scheduled. Your new plan will take effect at the end of this billing period.",
+      );
       await mutate();
       router.refresh();
     } catch {
@@ -189,7 +191,6 @@ export default function BillingPage() {
   const isFree = access?.status === "free";
   const hasSubscription =
     access?.status === "active" ||
-    access?.status === "trialing" ||
     access?.status === "cancelled_grace";
 
   return (
@@ -252,76 +253,74 @@ export default function BillingPage() {
                 </Button>
               </div>
             ) : access.status === "active" ||
-              access.status === "trialing" ||
               access.status === "cancelled_grace" ? (
-              <div className="space-y-2 flex flex-col md:flex-row items-center justify-between">
-                <div className="flex flex-wrap items-center gap-2">
-                  {access.status === "trialing" ? (
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        access.trialDaysLeft !== undefined &&
-                        access.trialDaysLeft <= 1
-                          ? "bg-red-500/15 text-red-700 dark:text-red-400"
-                          : "bg-blue-500/15 text-blue-700 dark:text-blue-400"
-                      }`}
-                    >
-                      Free Trial — {access.trialDaysLeft} day
-                      {access.trialDaysLeft === 1 ? "" : "s"} left
-                    </span>
-                  ) : (
+              <div className="space-y-4">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
                       {access.status === "cancelled_grace"
                         ? "Cancelling"
                         : "Active"}
                     </span>
-                  )}
-                  <span className="text-sm font-medium">
-                    {paidPlans?.find(
-                      (t) => t.gb === subscription?.storageTierGb,
-                    )?.label ?? "Fotno Pro"}{" "}
-                    &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {(() => {
-                      const currentTier = paidPlans?.find(
+                    <span className="text-sm font-medium">
+                      {paidPlans?.find(
                         (t) => t.gb === subscription?.storageTierGb,
-                      );
-                      return currentTier
-                        ? formatTierPrice(currentTier)
-                        : formatPrice(subscription?.priceCents ?? 0);
-                    })()}
-                    /mo
-                  </span>
-                </div>
-                {subscription?.currentPeriodEnd && (
-                  <p className="text-sm text-muted-foreground">
-                    {access.status === "cancelled_grace"
-                      ? "Access until"
-                      : "Renews on"}{" "}
-                    {new Date(
-                      subscription.currentPeriodEnd,
-                    ).toLocaleDateString()}
-                  </p>
-                )}
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleManageBilling}
-                  >
-                    Manage Billing
-                  </Button>
-                  {access.status !== "cancelled_grace" && (
+                      )?.label ?? "Fotno Pro"}{" "}
+                      &mdash; {formatStorage(subscription?.storageTierGb ?? 0)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {(() => {
+                        const currentTier = paidPlans?.find(
+                          (t) => t.gb === subscription?.storageTierGb,
+                        );
+                        return currentTier
+                          ? formatTierPrice(currentTier)
+                          : formatPrice(subscription?.priceCents ?? 0);
+                      })()}
+                      /mo
+                    </span>
+                  </div>
+                  {subscription?.currentPeriodEnd && (
+                    <p className="text-sm text-muted-foreground">
+                      {access.status === "cancelled_grace"
+                        ? "Access until"
+                        : "Renews on"}{" "}
+                      {new Date(
+                        subscription.currentPeriodEnd,
+                      ).toLocaleDateString()}
+                    </p>
+                  )}
+                  <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={handleCancel}
-                      disabled={cancelLoading}
+                      onClick={handleManageBilling}
                     >
-                      {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                      Manage Billing
                     </Button>
-                  )}
+                    {access.status !== "cancelled_grace" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCancel}
+                        disabled={cancelLoading}
+                      >
+                        {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                      </Button>
+                    )}
+                  </div>
                 </div>
+                {subscription?.pendingDowngrade && (
+                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/30 dark:bg-amber-950/20">
+                    <p className="text-sm text-amber-900 dark:text-amber-200">
+                      <strong>Plan change pending:</strong> You'll switch to{" "}
+                      <strong>{subscription.pendingDowngrade.tierLabel}</strong> ({formatStorage(subscription.pendingDowngrade.tierGb)}){" "}
+                      {subscription.pendingDowngrade.effectiveAt
+                        ? `on ${new Date(subscription.pendingDowngrade.effectiveAt).toLocaleDateString()}`
+                        : "at the end of your billing period"}.
+                    </p>
+                  </div>
+                )}
               </div>
             ) : access.status === "past_due" ? (
               <div className="space-y-2">
@@ -468,6 +467,15 @@ export default function BillingPage() {
                           className="w-full text-xs"
                         >
                           Current Plan
+                        </Button>
+                      ) : access?.status === "cancelled_grace" ? (
+                        <Button
+                          size="sm"
+                          className="w-full text-xs"
+                          variant={isPopular ? "secondary" : "outline"}
+                          onClick={handleManageBilling}
+                        >
+                          Manage Billing
                         </Button>
                       ) : hasSubscription ? (
                         <Button

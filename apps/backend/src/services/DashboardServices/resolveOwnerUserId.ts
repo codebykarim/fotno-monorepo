@@ -15,7 +15,7 @@ export const resolveOwnerUserId = async (): Promise<string> => {
     data: {
       name: "Local Photographer",
       email: fallbackEmail,
-      plan: "TRIAL",
+      plan: "FREE",
       emailVerified: true,
     },
     select: { id: true },

@@ -135,7 +135,6 @@ export type DriveImportItem = $Result.DefaultSelection<Prisma.$DriveImportItemPa
 export namespace $Enums {
   export const Plan: {
   FREE: 'FREE',
-  TRIAL: 'TRIAL',
   PRO: 'PRO',
   EXPIRED: 'EXPIRED'
 };
@@ -3433,7 +3432,6 @@ export namespace Prisma {
     name: string | null
     email: string | null
     plan: $Enums.Plan | null
-    trialEndsAt: Date | null
     storageUsed: bigint | null
     storageLimit: bigint | null
     galleryLimit: number | null
@@ -3461,7 +3459,6 @@ export namespace Prisma {
     name: string | null
     email: string | null
     plan: $Enums.Plan | null
-    trialEndsAt: Date | null
     storageUsed: bigint | null
     storageLimit: bigint | null
     galleryLimit: number | null
@@ -3489,7 +3486,6 @@ export namespace Prisma {
     name: number
     email: number
     plan: number
-    trialEndsAt: number
     storageUsed: number
     storageLimit: number
     galleryLimit: number
@@ -3535,7 +3531,6 @@ export namespace Prisma {
     name?: true
     email?: true
     plan?: true
-    trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
     galleryLimit?: true
@@ -3563,7 +3558,6 @@ export namespace Prisma {
     name?: true
     email?: true
     plan?: true
-    trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
     galleryLimit?: true
@@ -3591,7 +3585,6 @@ export namespace Prisma {
     name?: true
     email?: true
     plan?: true
-    trialEndsAt?: true
     storageUsed?: true
     storageLimit?: true
     galleryLimit?: true
@@ -3706,7 +3699,6 @@ export namespace Prisma {
     name: string
     email: string
     plan: $Enums.Plan
-    trialEndsAt: Date | null
     storageUsed: bigint
     storageLimit: bigint
     galleryLimit: number | null
@@ -3753,7 +3745,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
-    trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
     galleryLimit?: boolean
@@ -3790,7 +3781,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
-    trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
     galleryLimit?: boolean
@@ -3818,7 +3808,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
-    trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
     galleryLimit?: boolean
@@ -3846,7 +3835,6 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     plan?: boolean
-    trialEndsAt?: boolean
     storageUsed?: boolean
     storageLimit?: boolean
     galleryLimit?: boolean
@@ -3869,7 +3857,7 @@ export namespace Prisma {
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "trialEndsAt" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -3901,7 +3889,6 @@ export namespace Prisma {
       name: string
       email: string
       plan: $Enums.Plan
-      trialEndsAt: Date | null
       storageUsed: bigint
       storageLimit: bigint
       galleryLimit: number | null
@@ -4357,7 +4344,6 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly plan: FieldRef<"User", 'Plan'>
-    readonly trialEndsAt: FieldRef<"User", 'DateTime'>
     readonly storageUsed: FieldRef<"User", 'BigInt'>
     readonly storageLimit: FieldRef<"User", 'BigInt'>
     readonly galleryLimit: FieldRef<"User", 'Int'>
@@ -8286,11 +8272,13 @@ export namespace Prisma {
   export type SubscriptionAvgAggregateOutputType = {
     storageTierGb: number | null
     priceCents: number | null
+    pendingTierGb: number | null
   }
 
   export type SubscriptionSumAggregateOutputType = {
     storageTierGb: number | null
     priceCents: number | null
+    pendingTierGb: number | null
   }
 
   export type SubscriptionMinAggregateOutputType = {
@@ -8307,6 +8295,8 @@ export namespace Prisma {
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
     endsAt: Date | null
+    pendingTierGb: number | null
+    pendingEffectiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8325,6 +8315,8 @@ export namespace Prisma {
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
     endsAt: Date | null
+    pendingTierGb: number | null
+    pendingEffectiveAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8343,6 +8335,8 @@ export namespace Prisma {
     currentPeriodEnd: number
     cancelledAt: number
     endsAt: number
+    pendingTierGb: number
+    pendingEffectiveAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8352,11 +8346,13 @@ export namespace Prisma {
   export type SubscriptionAvgAggregateInputType = {
     storageTierGb?: true
     priceCents?: true
+    pendingTierGb?: true
   }
 
   export type SubscriptionSumAggregateInputType = {
     storageTierGb?: true
     priceCents?: true
+    pendingTierGb?: true
   }
 
   export type SubscriptionMinAggregateInputType = {
@@ -8373,6 +8369,8 @@ export namespace Prisma {
     currentPeriodEnd?: true
     cancelledAt?: true
     endsAt?: true
+    pendingTierGb?: true
+    pendingEffectiveAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8391,6 +8389,8 @@ export namespace Prisma {
     currentPeriodEnd?: true
     cancelledAt?: true
     endsAt?: true
+    pendingTierGb?: true
+    pendingEffectiveAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8409,6 +8409,8 @@ export namespace Prisma {
     currentPeriodEnd?: true
     cancelledAt?: true
     endsAt?: true
+    pendingTierGb?: true
+    pendingEffectiveAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8514,6 +8516,8 @@ export namespace Prisma {
     currentPeriodEnd: Date | null
     cancelledAt: Date | null
     endsAt: Date | null
+    pendingTierGb: number | null
+    pendingEffectiveAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: SubscriptionCountAggregateOutputType | null
@@ -8551,6 +8555,8 @@ export namespace Prisma {
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
     endsAt?: boolean
+    pendingTierGb?: boolean
+    pendingEffectiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8570,6 +8576,8 @@ export namespace Prisma {
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
     endsAt?: boolean
+    pendingTierGb?: boolean
+    pendingEffectiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8589,6 +8597,8 @@ export namespace Prisma {
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
     endsAt?: boolean
+    pendingTierGb?: boolean
+    pendingEffectiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -8608,11 +8618,13 @@ export namespace Prisma {
     currentPeriodEnd?: boolean
     cancelledAt?: boolean
     endsAt?: boolean
+    pendingTierGb?: boolean
+    pendingEffectiveAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "status" | "storageTierGb" | "priceCents" | "currency" | "stripeSubscriptionId" | "stripePriceId" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "endsAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "source" | "status" | "storageTierGb" | "priceCents" | "currency" | "stripeSubscriptionId" | "stripePriceId" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "endsAt" | "pendingTierGb" | "pendingEffectiveAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -8642,6 +8654,8 @@ export namespace Prisma {
       currentPeriodEnd: Date | null
       cancelledAt: Date | null
       endsAt: Date | null
+      pendingTierGb: number | null
+      pendingEffectiveAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["subscription"]>
@@ -9081,6 +9095,8 @@ export namespace Prisma {
     readonly currentPeriodEnd: FieldRef<"Subscription", 'DateTime'>
     readonly cancelledAt: FieldRef<"Subscription", 'DateTime'>
     readonly endsAt: FieldRef<"Subscription", 'DateTime'>
+    readonly pendingTierGb: FieldRef<"Subscription", 'Int'>
+    readonly pendingEffectiveAt: FieldRef<"Subscription", 'DateTime'>
     readonly createdAt: FieldRef<"Subscription", 'DateTime'>
     readonly updatedAt: FieldRef<"Subscription", 'DateTime'>
   }
@@ -30818,7 +30834,6 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     plan: 'plan',
-    trialEndsAt: 'trialEndsAt',
     storageUsed: 'storageUsed',
     storageLimit: 'storageLimit',
     galleryLimit: 'galleryLimit',
@@ -30904,6 +30919,8 @@ export namespace Prisma {
     currentPeriodEnd: 'currentPeriodEnd',
     cancelledAt: 'cancelledAt',
     endsAt: 'endsAt',
+    pendingTierGb: 'pendingTierGb',
+    pendingEffectiveAt: 'pendingEffectiveAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -31277,20 +31294,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
    * Reference to a field of type 'BigInt'
    */
   export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -31315,6 +31318,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -31490,7 +31507,6 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     plan?: EnumPlanFilter<"User"> | $Enums.Plan
-    trialEndsAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
     galleryLimit?: IntNullableFilter<"User"> | number | null
@@ -31526,7 +31542,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
-    trialEndsAt?: SortOrderInput | SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
     galleryLimit?: SortOrderInput | SortOrder
@@ -31566,7 +31581,6 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
     plan?: EnumPlanFilter<"User"> | $Enums.Plan
-    trialEndsAt?: DateTimeNullableFilter<"User"> | Date | string | null
     storageUsed?: BigIntFilter<"User"> | bigint | number
     storageLimit?: BigIntFilter<"User"> | bigint | number
     galleryLimit?: IntNullableFilter<"User"> | number | null
@@ -31601,7 +31615,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
-    trialEndsAt?: SortOrderInput | SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
     galleryLimit?: SortOrderInput | SortOrder
@@ -31637,7 +31650,6 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     plan?: EnumPlanWithAggregatesFilter<"User"> | $Enums.Plan
-    trialEndsAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     storageUsed?: BigIntWithAggregatesFilter<"User"> | bigint | number
     storageLimit?: BigIntWithAggregatesFilter<"User"> | bigint | number
     galleryLimit?: IntNullableWithAggregatesFilter<"User"> | number | null
@@ -31904,6 +31916,8 @@ export namespace Prisma {
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    pendingTierGb?: IntNullableFilter<"Subscription"> | number | null
+    pendingEffectiveAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -31923,6 +31937,8 @@ export namespace Prisma {
     currentPeriodEnd?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     endsAt?: SortOrderInput | SortOrder
+    pendingTierGb?: SortOrderInput | SortOrder
+    pendingEffectiveAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -31945,6 +31961,8 @@ export namespace Prisma {
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    pendingTierGb?: IntNullableFilter<"Subscription"> | number | null
+    pendingEffectiveAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -31964,6 +31982,8 @@ export namespace Prisma {
     currentPeriodEnd?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     endsAt?: SortOrderInput | SortOrder
+    pendingTierGb?: SortOrderInput | SortOrder
+    pendingEffectiveAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SubscriptionCountOrderByAggregateInput
@@ -31990,6 +32010,8 @@ export namespace Prisma {
     currentPeriodEnd?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     endsAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    pendingTierGb?: IntNullableWithAggregatesFilter<"Subscription"> | number | null
+    pendingEffectiveAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   }
@@ -33555,7 +33577,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -33591,7 +33612,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -33627,7 +33647,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -33663,7 +33682,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -33699,7 +33717,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -33727,7 +33744,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -33755,7 +33771,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34048,6 +34063,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubscriptionsInput
@@ -34067,6 +34084,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34084,6 +34103,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
@@ -34103,6 +34124,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34121,6 +34144,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34138,6 +34163,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34156,6 +34183,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35894,17 +35923,6 @@ export namespace Prisma {
     not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -35925,6 +35943,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -36048,7 +36077,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
-    trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
     galleryLimit?: SortOrder
@@ -36084,7 +36112,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
-    trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
     galleryLimit?: SortOrder
@@ -36112,7 +36139,6 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     plan?: SortOrder
-    trialEndsAt?: SortOrder
     storageUsed?: SortOrder
     storageLimit?: SortOrder
     galleryLimit?: SortOrder
@@ -36171,20 +36197,6 @@ export namespace Prisma {
     _max?: NestedEnumPlanFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -36215,6 +36227,20 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -36420,6 +36446,8 @@ export namespace Prisma {
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
     endsAt?: SortOrder
+    pendingTierGb?: SortOrder
+    pendingEffectiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36427,6 +36455,7 @@ export namespace Prisma {
   export type SubscriptionAvgOrderByAggregateInput = {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
+    pendingTierGb?: SortOrder
   }
 
   export type SubscriptionMaxOrderByAggregateInput = {
@@ -36443,6 +36472,8 @@ export namespace Prisma {
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
     endsAt?: SortOrder
+    pendingTierGb?: SortOrder
+    pendingEffectiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36461,6 +36492,8 @@ export namespace Prisma {
     currentPeriodEnd?: SortOrder
     cancelledAt?: SortOrder
     endsAt?: SortOrder
+    pendingTierGb?: SortOrder
+    pendingEffectiveAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -36468,6 +36501,7 @@ export namespace Prisma {
   export type SubscriptionSumOrderByAggregateInput = {
     storageTierGb?: SortOrder
     priceCents?: SortOrder
+    pendingTierGb?: SortOrder
   }
 
   export type EnumSubscriptionSourceWithAggregatesFilter<$PrismaModel = never> = {
@@ -37830,10 +37864,6 @@ export namespace Prisma {
     set?: $Enums.Plan
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type BigIntFieldUpdateOperationsInput = {
     set?: bigint | number
     increment?: bigint | number
@@ -37848,6 +37878,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -39298,17 +39332,6 @@ export namespace Prisma {
     not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -39329,6 +39352,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -39404,20 +39438,6 @@ export namespace Prisma {
     _max?: NestedEnumPlanFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -39470,6 +39490,20 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -39812,6 +39846,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39829,6 +39865,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40156,6 +40194,8 @@ export namespace Prisma {
     currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     endsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    pendingTierGb?: IntNullableFilter<"Subscription"> | number | null
+    pendingEffectiveAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
   }
@@ -40342,7 +40382,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40377,7 +40416,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40428,7 +40466,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40463,7 +40500,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40498,7 +40534,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40533,7 +40568,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40584,7 +40618,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40619,7 +40652,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40654,7 +40686,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40689,7 +40720,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40740,7 +40770,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40775,7 +40804,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40810,7 +40838,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40845,7 +40872,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -40896,7 +40922,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40931,7 +40956,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40966,7 +40990,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -41001,7 +41024,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -41397,7 +41419,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -41432,7 +41453,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42411,7 +42431,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -42446,7 +42465,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -42497,7 +42515,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42532,7 +42549,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42567,7 +42583,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -42602,7 +42617,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -42673,7 +42687,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42708,7 +42721,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -44457,7 +44469,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -44492,7 +44503,6 @@ export namespace Prisma {
     name: string
     email: string
     plan?: $Enums.Plan
-    trialEndsAt?: Date | string | null
     storageUsed?: bigint | number
     storageLimit?: bigint | number
     galleryLimit?: number | null
@@ -44585,7 +44595,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -44620,7 +44629,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    trialEndsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
     storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
@@ -45081,6 +45089,8 @@ export namespace Prisma {
     currentPeriodEnd?: Date | string | null
     cancelledAt?: Date | string | null
     endsAt?: Date | string | null
+    pendingTierGb?: number | null
+    pendingEffectiveAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -45239,6 +45249,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -45256,6 +45268,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -45273,6 +45287,8 @@ export namespace Prisma {
     currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pendingTierGb?: NullableIntFieldUpdateOperationsInput | number | null
+    pendingEffectiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

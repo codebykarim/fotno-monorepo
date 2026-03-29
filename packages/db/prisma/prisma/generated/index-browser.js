@@ -125,7 +125,6 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   plan: 'plan',
-  trialEndsAt: 'trialEndsAt',
   storageUsed: 'storageUsed',
   storageLimit: 'storageLimit',
   galleryLimit: 'galleryLimit',
@@ -199,6 +198,8 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   currentPeriodEnd: 'currentPeriodEnd',
   cancelledAt: 'cancelledAt',
   endsAt: 'endsAt',
+  pendingTierGb: 'pendingTierGb',
+  pendingEffectiveAt: 'pendingEffectiveAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -467,7 +468,6 @@ exports.Prisma.JsonNullValueFilter = {
 };
 exports.Plan = exports.$Enums.Plan = {
   FREE: 'FREE',
-  TRIAL: 'TRIAL',
   PRO: 'PRO',
   EXPIRED: 'EXPIRED'
 };

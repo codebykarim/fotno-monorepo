@@ -22,14 +22,14 @@ export async function middleware(request: NextRequest) {
   let session: ExtendedSession | null = null;
 
   try {
-    const response = await betterFetch<ExtendedSession>("/api/auth/get-session", {
+    const sessionRes = await betterFetch<ExtendedSession>("/api/auth/get-session", {
       baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
         cookie: request.headers.get("cookie") ?? "",
       },
     });
 
-    session = response.data ?? null;
+    session = sessionRes.data ?? null;
   } catch {
     session = null;
   }
@@ -42,18 +42,29 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  // Allow access to public paths even without authentication
-  if (publicPaths.has(pathname)) {
-    return NextResponse.next();
-  }
-
   // Block access to all other routes if not authenticated
-  if (!session?.user) {
+  if (!session?.user && !publicPaths.has(pathname)) {
     return NextResponse.redirect(new URL("/account", request.url));
   }
 
-  // Allow access to protected routes for authenticated users
-  return NextResponse.next();
+  // Allow access — detect visitor country for regional pricing before returning
+  const response = NextResponse.next();
+  const country =
+    request.headers.get("cf-ipcountry") ||
+    request.headers.get("x-vercel-ip-country") ||
+    null;
+
+  if (country && !request.cookies.get("user_country")) {
+    const isProduction = request.nextUrl.hostname.endsWith(".fotno.com");
+    response.cookies.set("user_country", country, {
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      path: "/",
+      ...(isProduction && { domain: ".fotno.com" }),
+      sameSite: "lax",
+    });
+  }
+
+  return response;
 }
 
 export const config = {

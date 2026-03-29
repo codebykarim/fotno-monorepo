@@ -11,9 +11,11 @@ export function middleware(request: NextRequest) {
 
 
   if (country && !request.cookies.get("user_country")) {
+    const isProduction = request.nextUrl.hostname.endsWith(".fotno.com") || request.nextUrl.hostname === "fotno.com";
     response.cookies.set("user_country", country, {
       maxAge: 60 * 60 * 24 * 30, // 30 days
       path: "/",
+      ...(isProduction && { domain: ".fotno.com" }),
       sameSite: "lax",
     });
   }

@@ -108,7 +108,7 @@ A Free plan user reaches the Stripe step and chooses to add their payment card e
 
 ### Key Entities
 
-- **Onboarding Session**: Represents a user's progress through the onboarding flow. Tracks selected plan, current step, and completion status.
+- **Onboarding Session** *(transient)*: Represents a user's progress through the onboarding flow. State is derived from URL query parameters (`plan`, `step`, `resume`) and the `User.finishOnboarding` flag — no dedicated database entity is created.
 - **User Account**: Extended with an onboarding completion flag to gate dashboard access. Related to subscription and payment records.
 - **Plan Selection**: The user's chosen plan (Free, Starter, Professional, Business, Unlimited) carried through from landing page into the onboarding flow and ultimately to subscription creation.
 

@@ -54,10 +54,10 @@ async function main() {
   // ── Pricing Tiers ──────────────────────────────────────────
   const tiers = [
     { gb: 5, label: "Free", priceCents: 0, stripePriceId: null, galleryLimit: 2, sortOrder: -1 },
-    { gb: 20, label: "Starter", priceCents: 900, stripePriceId: "price_1TFHmpEuz1yMNGtKut0HynEw", galleryLimit: null, sortOrder: 0 },
-    { gb: 100, label: "Professional", priceCents: 1900, stripePriceId: "price_1TFHmqEuz1yMNGtKe4qRgNLA", galleryLimit: null, sortOrder: 1 },
-    { gb: 500, label: "Business", priceCents: 3500, stripePriceId: "price_1TFHmpEuz1yMNGtKwAobBwIU", galleryLimit: null, sortOrder: 2 },
-    { gb: -1, label: "Unlimited", priceCents: 4900, stripePriceId: "price_1TFHmqEuz1yMNGtK0gTVagzu", galleryLimit: null, sortOrder: 3 },
+    { gb: 20, label: "Starter", priceCents: 900, stripePriceId: "price_1TGIupEuz1yMNGtK1ggZxCv4", galleryLimit: null, sortOrder: 0 },
+    { gb: 100, label: "Professional", priceCents: 1900, stripePriceId: "price_1TGIupEuz1yMNGtKzsV8bjyD", galleryLimit: null, sortOrder: 1 },
+    { gb: 500, label: "Business", priceCents: 3500, stripePriceId: "price_1TGIupEuz1yMNGtKWfLDXwvJ", galleryLimit: null, sortOrder: 2 },
+    { gb: -1, label: "Unlimited", priceCents: 4900, stripePriceId: "price_1TGIupEuz1yMNGtKhHSfZV4k", galleryLimit: null, sortOrder: 3 },
   ];
 
   for (const tier of tiers) {

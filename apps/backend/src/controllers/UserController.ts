@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AppError from "../errors/AppError";
-import controllerReturn from "../utils/successReturn";
 import { prisma } from "@workspace/db";
+import { completeOnboarding } from "../services/UserServices/completeOnboarding";
 
 export const checkEmailExists = async (req: Request, res: Response) => {
   try {
@@ -30,3 +30,15 @@ export const checkEmailExists = async (req: Request, res: Response) => {
     throw new AppError("Failed to check email", 500);
   }
 };
+
+export const completeOnboardingController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = req.user?.id;
+  if (!userId) throw new AppError("Unauthorized", 401);
+
+  const result = await completeOnboarding(userId);
+  return res.status(result.status).json({ data: result.data });
+};
+

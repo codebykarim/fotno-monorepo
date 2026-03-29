@@ -87,7 +87,7 @@ function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
             My Dashboard
           </MobileNavLink>
         ) : (
-          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}>
+          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}>
             Get started
           </MobileNavLink>
         )}
@@ -173,7 +173,7 @@ export function Header() {
                 </Button>
               ) : (
                 <Button
-                  href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
+                  href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}
                   color="main"
                 >
                   Get started

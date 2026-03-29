@@ -113,7 +113,15 @@ function UnifiedAuthFormComponent({
   const plan = searchParams.get("plan");
 
   const postAuthRedirectUrl = useMemo(() => {
-    const raw = searchParams.get("callbackURL");
+    // When registering, redirect to onboarding (same auth app, not dashboard)
+    if (authMode === "register") {
+      const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
+      return `/onboarding?${planParam}step=stripe`;
+    }
+
+    let baseRaw = searchParams.get("callbackURL");
+    const raw = baseRaw;
+
     if (!raw) return DEFAULT_DASHBOARD_URL;
     try {
       if (raw.startsWith("/") && !raw.startsWith("//")) {
@@ -133,7 +141,7 @@ function UnifiedAuthFormComponent({
       /* ignore invalid callback */
     }
     return DEFAULT_DASHBOARD_URL;
-  }, [searchParams]);
+  }, [searchParams, authMode, plan]);
 
   const form = useForm<AuthFormData>({
     defaultValues: {
@@ -200,7 +208,8 @@ function UnifiedAuthFormComponent({
   };
 
   const checkNotAdminThenRedirect = async (): Promise<boolean> => {
-    const { data: session } = await getSession();
+    const sessionResponse = await getSession();
+    const session = (sessionResponse as any)?.data;
     if ((session?.user as any)?.role === "admin") {
       await signOut();
       toast.error("Admin accounts cannot sign in here. Use the admin panel.");
@@ -266,10 +275,11 @@ function UnifiedAuthFormComponent({
     setIsSendingOtp(true);
 
     try {
-      const { error } = await sendVerificationOTP({
+      const otpResponse = await sendVerificationOTP({
         email: parsed.data.email,
         type: "sign-in",
       });
+      const error = (otpResponse as any)?.error;
 
       if (error) {
         toast.error(error.message || "Failed to send verification code");
@@ -312,7 +322,7 @@ function UnifiedAuthFormComponent({
             rememberMe: true,
           },
           {
-            onSuccess: (data: any) => resolve({ email: data.data?.user.email }),
+            onSuccess: (context: any) => resolve({ email: context.data?.user?.email }),
             onError: (error: unknown) =>
               reject({ message: getErrorMessage(error, "Failed to log in") }),
           },
@@ -354,7 +364,7 @@ function UnifiedAuthFormComponent({
             callbackURL: postAuthRedirectUrl,
           },
           {
-            onSuccess: (data: any) => resolve({ email: data.data?.user.email }),
+            onSuccess: (context: any) => resolve({ email: context.data?.user?.email }),
             onError: (error: unknown) =>
               reject({
                 message: getErrorMessage(error, "Failed to create account"),
@@ -433,8 +443,8 @@ function UnifiedAuthFormComponent({
           setIsResetPassword(true);
           toast.success("Password reset email sent");
         },
-        onError: (error: unknown) => {
-          toast.error(getErrorMessage(error, "Failed to send reset email"));
+        onError: (context: any) => {
+          toast.error(getErrorMessage(context.error, "Failed to send reset email"));
         },
       },
     });
@@ -452,18 +462,21 @@ function UnifiedAuthFormComponent({
     setIsLoading(true);
 
     try {
+      const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
+      const oauthRedirectUrl = `/onboarding?${planParam}step=stripe`;
+
       const response = await signIn.social({
         provider,
-        callbackURL: postAuthRedirectUrl,
+        callbackURL: oauthRedirectUrl,
       });
 
-      if (response.error) {
+      if ((response as any).error) {
         toast.error(
-          response.error.message || `Failed to sign in with ${provider}`,
+          (response as any).error.message || `Failed to sign in with ${provider}`,
         );
         setIsLoading(false);
-      } else if (response.data?.url) {
-        window.location.href = response.data.url;
+      } else if ((response as any).data?.url) {
+        window.location.href = (response as any).data.url;
       }
     } catch {
       toast.error(`Failed to sign in with ${provider}`);

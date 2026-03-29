@@ -261,34 +261,25 @@ export function NavUser({
                 if (!extendedSession?.user.subscribed) router.push("/billing");
               }}
             >
-              {extendedSession?.user.subscribed ? (
-                <div className="flex items-center justify-between w-full">
-                  <div>
-                    <p className="text-xs font-semibold text-primary">
-                      Storage
-                    </p>
-                    <p className="text-sm font-medium text-foreground">
-                      {storage
-                        ? `${formatGb(storage.used)} of ${formatGb(storage.limit)} used`
-                        : "Loading..."}
-                    </p>
-                  </div>
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push("/billing");
-                    }}
-                    className="rounded-full border-2 border-secondary p-0.5 cursor-pointer"
-                  >
-                    <PlusIcon className="h-4 w-4 text-foreground" />
-                  </div>
+              <div className="flex items-center justify-between w-full">
+                <div>
+                  <p className="text-xs font-semibold text-primary">Storage</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {storage
+                      ? `${formatGb(storage.used)} of ${formatGb(storage.limit)} used`
+                      : "Loading..."}
+                  </p>
                 </div>
-              ) : (
-                <>
-                  <Sparkles />
-                  Upgrade to Pro
-                </>
-              )}
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push("/billing");
+                  }}
+                  className="rounded-full border-2 border-secondary p-0.5 cursor-pointer"
+                >
+                  <PlusIcon className="h-4 w-4 text-foreground" />
+                </div>
+              </div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

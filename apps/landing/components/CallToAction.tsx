@@ -36,7 +36,7 @@ export function CallToAction() {
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button
-              href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account`}
+              href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}
               color="white"
               className="w-full px-8 py-3 text-base sm:w-auto"
             >

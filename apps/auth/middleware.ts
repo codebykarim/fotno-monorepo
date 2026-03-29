@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
   // (except /add-account — multi-session: sign in while already signed in)
-  if (session?.user && publicPaths.has(pathname) && pathname !== "/add-account") {
+  if (session?.user && publicPaths.has(pathname) && pathname !== "/add-account" && pathname !== "/onboarding") {
     return NextResponse.redirect(
       DASHBOARD_URL || "https://dashboard.fotno.com"
     );

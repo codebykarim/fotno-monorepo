@@ -12,6 +12,9 @@ import {
   handleWebhookEvent,
 } from "../services/SubscriptionServices/handleWebhook";
 import { stripe } from "../services/SubscriptionServices/stripe";
+import { createSubscriptionIntent } from "../services/SubscriptionServices/createSubscriptionIntent";
+import { createSetupIntent } from "../services/SubscriptionServices/createSetupIntent";
+import { setDefaultPaymentMethod } from "../services/SubscriptionServices/setDefaultPaymentMethod";
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
 import { withSpan, captureWithContext, addBreadcrumb } from "../utils/sentry";
@@ -133,6 +136,47 @@ export const cancelSubscriptionController = async (
   return controllerReturn({ success: true }, req, res);
 };
 
+export const createSubscriptionIntentController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = req.user?.id;
+  if (!userId) throw new AppError("Unauthorized", 401);
+
+  const { tierLabel, countryCode: explicitCountry } = req.body;
+  const countryCode = await resolveCountry(req, explicitCountry);
+
+  const result = await withSpan(
+    "subscription.create_intent",
+    { userId, tierLabel, countryCode },
+    async () => {
+      addBreadcrumb("subscription", "creating subscription intent", { tierLabel, countryCode });
+      return createSubscriptionIntent({ userId, tierLabel, countryCode });
+    },
+  );
+
+  return res.status(result.status).json({ data: result.data });
+};
+
+export const createSetupIntentController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = req.user?.id;
+  if (!userId) throw new AppError("Unauthorized", 401);
+
+  const result = await withSpan(
+    "subscription.create_setup_intent",
+    { userId },
+    async () => {
+      addBreadcrumb("subscription", "creating setup intent", { userId });
+      return createSetupIntent(userId);
+    },
+  );
+
+  return res.status(result.status).json({ data: result.data });
+};
+
 export const changeTierController = async (req: Request, res: Response) => {
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
@@ -214,4 +258,26 @@ export const getPortalUrlController = async (
   });
 
   return controllerReturn({ portalUrl: portalSession.url }, req, res);
+};
+
+export const setDefaultPaymentMethodController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = req.user?.id;
+  if (!userId) throw new AppError("Unauthorized", 401);
+
+  const { paymentMethodId } = req.body;
+  if (!paymentMethodId) throw new AppError("Missing paymentMethodId", 400);
+
+  const result = await withSpan(
+    "billing.set_default_payment_method",
+    { userId },
+    async () => {
+      addBreadcrumb("billing", "setting default payment method", { userId });
+      return setDefaultPaymentMethod({ userId, paymentMethodId });
+    },
+  );
+
+  return res.status(result.status).json({ data: result.data });
 };

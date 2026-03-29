@@ -82,11 +82,11 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
           token: safeToken,
         },
         {
-          onSuccess: (data) => {
-            resolve({ success: data.data });
+          onSuccess: (context: any) => {
+            resolve({ success: context.data });
           },
-          onError: (error) => {
-            reject({ message: error.error.message ?? "Unknown error" });
+          onError: (context: any) => {
+            reject({ message: context.error.message ?? "Unknown error" });
           },
         }
       );

@@ -238,7 +238,7 @@ export async function Pricing() {
                   eventData={{ plan: freeTier.label }}
                 >
                   <Button
-                    href={`${signupUrl}/account`}
+                    href={`${signupUrl}/account?plan=Free`}
                     variant="solid"
                     color="white"
                     aria-label="Get started free"
@@ -269,7 +269,7 @@ export async function Pricing() {
               >
                 <a
                   key={tier.gb}
-                  href={`${signupUrl}/account`}
+                  href={`${signupUrl}/account?plan=${tier.label}`}
                   className={cn(
                     "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
                     isPopular
@@ -342,19 +342,6 @@ export async function Pricing() {
               </li>
             ))}
           </ul>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 flex justify-center">
-          <Button
-            href={`${signupUrl}/account`}
-            variant="solid"
-            color="white"
-            aria-label="Get started"
-            className="px-8 py-3 text-base"
-          >
-            Get started
-          </Button>
         </div>
       </Container>
     </section>

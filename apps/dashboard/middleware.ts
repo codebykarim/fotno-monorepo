@@ -24,6 +24,12 @@ export async function middleware(request: NextRequest) {
       );
     }
 
+    if ((session?.user as any)?.finishOnboarding !== true) {
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_AUTH_URL || "https://auth.fotno.com"}/onboarding?resume=true`
+      );
+    }
+
     if ((session?.user as any)?.role === "admin") {
       return NextResponse.redirect(
         process.env.NEXT_PUBLIC_ADMIN_URL || "https://admin.fotno.com"

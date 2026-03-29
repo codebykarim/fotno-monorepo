@@ -6,12 +6,18 @@ import isAuth from "../middleware/isAuth";
 
 const userRoutes = Router();
 
-const userMethods: { [key: string]: MethodInfo } = {};
+const userMethods: { [key: string]: MethodInfo } = {
+  "complete-onboarding": {
+    httpMethod: "POST",
+    controllerFunction: UserController.completeOnboardingController,
+    authFunction: isAuth,
+  },
+};
 
 const mapedMethods = init(userMethods);
 
 // Map the route with method query
-userRoutes.route("/auth/:method").all(mapedMethods);
+userRoutes.route("/user/:method").all(mapedMethods);
 
 // Email check route
 userRoutes.post("/check-email", UserController.checkEmailExists);

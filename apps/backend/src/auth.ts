@@ -13,7 +13,7 @@ const hasGithubOAuth =
   Boolean(process.env.GITHUB_CLIENT_ID) &&
   Boolean(process.env.GITHUB_CLIENT_SECRET);
 
-  console.log("hasGithubOAuth", hasGithubOAuth, "hasGoogleOAuth", hasGoogleOAuth);
+console.log("hasGithubOAuth", hasGithubOAuth, "hasGoogleOAuth", hasGoogleOAuth);
 
 export const auth = betterAuth({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -86,7 +86,7 @@ export const auth = betterAuth({
       },
     }),
     openAPI(),
-    multiSession(), 
+    multiSession(),
   ],
   user: {
     deleteUser: {

@@ -19,8 +19,8 @@
 
 **Purpose**: Install new dependencies and configure environment for Stripe Elements
 
-- [ ] T001 Install @stripe/stripe-js and @stripe/react-stripe-js in the auth app via `pnpm --filter auth add @stripe/stripe-js @stripe/react-stripe-js`
-- [ ] T002 Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable to .env and document in apps/auth/Dockerfile build args
+- [x] T001 Install @stripe/stripe-js and @stripe/react-stripe-js in the auth app via `pnpm --filter auth add @stripe/stripe-js @stripe/react-stripe-js`
+- [x] T002 Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable to .env and document in apps/auth/Dockerfile build args
 
 ---
 
@@ -30,13 +30,13 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Create completeOnboarding service in apps/backend/src/services/UserServices/completeOnboarding.ts — sets User.finishOnboarding = true, returns { data: { finishOnboarding: true }, status: 200 }, idempotent
-- [ ] T004 [P] Create createSubscriptionIntent service in apps/backend/src/services/SubscriptionServices/createSubscriptionIntent.ts — guard against existing active subscription (return 409), create Stripe customer if needed, calls stripe.subscriptions.create() with payment_behavior: "default_incomplete", supports regional pricing, returns { data: { subscriptionId, clientSecret }, status: 201 }
-- [ ] T005 [P] Create createSetupIntent service in apps/backend/src/services/SubscriptionServices/createSetupIntent.ts — creates Stripe customer if needed, calls stripe.setupIntents.create(), returns { data: { clientSecret }, status: 201 }
-- [ ] T006 Register new routes with Joi validation schemas: POST complete-onboarding in apps/backend/src/routes/userRoutes.ts (isAuth middleware, no body validation needed), POST create-subscription-intent in apps/backend/src/routes/billingRoutes.ts (isAuth middleware, Joi schema: tierLabel required string, countryCode optional string), POST create-setup-intent in apps/backend/src/routes/billingRoutes.ts (isAuth middleware, no body validation needed)
-- [ ] T007 [P] Add onboarding gate to dashboard middleware in apps/dashboard/middleware.ts — after session check, if session.user.finishOnboarding !== true, redirect to ${NEXT_PUBLIC_AUTH_URL}/onboarding?resume=true
-- [ ] T008 [P] Add Rybbit analytics to auth app: add Script tag in apps/auth/app/layout.tsx, add /api/script.js and /api/track rewrites in apps/auth/next.config.ts (same pattern as apps/landing/next.config.ts)
-- [ ] T009 [P] Add ?plan= query parameter to all landing page signup links: apps/landing/components/Hero.tsx, apps/landing/components/CallToAction.tsx, apps/landing/components/Header.tsx (default ?plan=Free for Get Started buttons), apps/landing/components/Pricing.tsx (append ?plan=<tier.label> for each plan button)
+- [x] T003 [P] Create completeOnboarding service in apps/backend/src/services/UserServices/completeOnboarding.ts — sets User.finishOnboarding = true, returns { data: { finishOnboarding: true }, status: 200 }, idempotent
+- [x] T004 [P] Create createSubscriptionIntent service in apps/backend/src/services/SubscriptionServices/createSubscriptionIntent.ts — guard against existing active subscription (return 409), create Stripe customer if needed, calls stripe.subscriptions.create() with payment_behavior: "default_incomplete", supports regional pricing, returns { data: { subscriptionId, clientSecret }, status: 201 }
+- [x] T005 [P] Create createSetupIntent service in apps/backend/src/services/SubscriptionServices/createSetupIntent.ts — creates Stripe customer if needed, calls stripe.setupIntents.create(), returns { data: { clientSecret }, status: 201 }
+- [x] T006 Register new routes with Joi validation schemas: POST complete-onboarding in apps/backend/src/routes/userRoutes.ts (isAuth middleware, no body validation needed), POST create-subscription-intent in apps/backend/src/routes/billingRoutes.ts (isAuth middleware, Joi schema: tierLabel required string, countryCode optional string), POST create-setup-intent in apps/backend/src/routes/billingRoutes.ts (isAuth middleware, no body validation needed)
+- [x] T007 [P] Add onboarding gate to dashboard middleware in apps/dashboard/middleware.ts — after session check, if session.user.finishOnboarding !== true, redirect to ${NEXT_PUBLIC_AUTH_URL}/onboarding?resume=true
+- [x] T008 [P] Add Rybbit analytics to auth app: add Script tag in apps/auth/app/layout.tsx, add /api/script.js and /api/track rewrites in apps/auth/next.config.ts (same pattern as apps/landing/next.config.ts)
+- [x] T009 [P] Add ?plan= query parameter to all landing page signup links: apps/landing/components/Hero.tsx, apps/landing/components/CallToAction.tsx, apps/landing/components/Header.tsx (default ?plan=Free for Get Started buttons), apps/landing/components/Pricing.tsx (append ?plan=<tier.label> for each plan button)
 
 **Checkpoint**: Foundation ready — all backend endpoints callable, dashboard gates onboarding, landing passes plan context, Rybbit available in auth app
 
@@ -50,13 +50,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Create onboarding server component page in apps/auth/app/onboarding/page.tsx — read searchParams (plan, step, resume), check session via getSession(), determine initial step (account vs stripe based on session presence), render OnboardingFlow client component
-- [ ] T011 [US1] Create onboarding flow orchestrator client component in apps/auth/components/onboarding/onboarding-flow.tsx — manages step state (account → stripe), receives plan and initialStep as props, renders current step component, handles step transitions
-- [ ] T012 [US1] Create account info step component in apps/auth/components/onboarding/account-info-step.tsx — email/name/password form using @workspace/ui Form components + React Hook Form + Zod validation (reuse password rules: min 8 chars, 1 uppercase, 1 number, 1 special char), check email uniqueness, call signUp.email() from @workspace/lib auth client, on success advance to stripe step
-- [ ] T013 [US1] Create stripe step component (skip-only for MVP) in apps/auth/components/onboarding/stripe-step.tsx — display selected plan info, show prominent Skip button, on skip: call POST /api/user/complete-onboarding, then redirect to NEXT_PUBLIC_DASHBOARD_URL
-- [ ] T014 [US1] Modify unified-auth-form.tsx to redirect to /onboarding after signup in apps/auth/components/unified-auth-form.tsx — change postAuthRedirectUrl for new signups to /onboarding?plan=<plan>&step=stripe, preserve plan from searchParams through signup flow, also update OAuth callbackURL to /onboarding?step=stripe&plan=<plan>
-- [ ] T015 [US1] Handle resume flow in onboarding page: if session exists and finishOnboarding is false, set initialStep to stripe (skip account info); if session exists and finishOnboarding is true, redirect to dashboard immediately in apps/auth/app/onboarding/page.tsx
-- [ ] T016 [US1] Handle edge case: email already registered in account info step — show "Email already taken" message with link to sign in at /account in apps/auth/components/onboarding/account-info-step.tsx
+- [x] T010 [US1] Create onboarding server component page in apps/auth/app/onboarding/page.tsx — read searchParams (plan, step, resume), check session via getSession(), determine initial step (account vs stripe based on session presence), render OnboardingFlow client component
+- [x] T011 [US1] Create onboarding flow orchestrator client component in apps/auth/components/onboarding/onboarding-flow.tsx — manages step state (account → stripe), receives plan and initialStep as props, renders current step component, handles step transitions. Design step progression as a configurable `steps: Step[]` array to support future additional steps (FR-015)
+- [x] T012 [US1] Create account info step component in apps/auth/components/onboarding/account-info-step.tsx — email/name/password form using @workspace/ui Form components + React Hook Form + Zod validation (reuse password rules: min 8 chars, 1 uppercase, 1 number, 1 special char), check email uniqueness, call signUp.email() from @workspace/lib auth client, on success advance to stripe step
+- [x] T013 [US1] Create stripe step component (skip-only for MVP) in apps/auth/components/onboarding/stripe-step.tsx — display selected plan info, show prominent Skip button, on skip: call POST /api/user/complete-onboarding, then redirect to NEXT_PUBLIC_DASHBOARD_URL
+- [x] T014 [US1] Modify unified-auth-form.tsx to redirect to /onboarding after signup in apps/auth/components/unified-auth-form.tsx — change postAuthRedirectUrl for new signups to /onboarding?plan=<plan>&step=stripe, preserve plan from searchParams through signup flow, also update OAuth callbackURL to /onboarding?step=stripe&plan=<plan>
+- [x] T015 [US1] Handle resume flow in onboarding page: if session exists and finishOnboarding is false, set initialStep to stripe (skip account info); if session exists and finishOnboarding is true, redirect to dashboard immediately in apps/auth/app/onboarding/page.tsx
+- [x] T016 [US1] Handle edge case: email already registered in account info step — show "Email already taken" message with link to sign in at /account in apps/auth/components/onboarding/account-info-step.tsx
 
 **Checkpoint**: Free plan onboarding works end-to-end. New users can create account and reach dashboard by skipping Stripe step. Dashboard blocks access for users with finishOnboarding = false.
 
@@ -70,10 +70,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Integrate Stripe Elements in stripe step: add Elements provider with loadStripe(NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY), for paid plans call POST /api/billing/create-subscription-intent to get clientSecret, render PaymentElement inside Elements provider in apps/auth/components/onboarding/stripe-step.tsx
-- [ ] T018 [US2] Implement payment confirmation flow in stripe step: on form submit call stripe.confirmPayment() with clientSecret, handle succeeded/processing/error states, on success call POST /api/user/complete-onboarding then redirect to dashboard in apps/auth/components/onboarding/stripe-step.tsx
-- [ ] T019 [US2] Implement paid plan skip logic: when user skips on a paid plan, display confirmation ("You'll start on the Free plan instead"), on confirm call POST /api/user/complete-onboarding with no subscription, redirect to dashboard on Free tier in apps/auth/components/onboarding/stripe-step.tsx
-- [ ] T020 [US2] Handle payment errors in stripe step: display Stripe error messages (declined card, insufficient funds, network error), allow retry with same or different card, maintain skip option as fallback in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T017 [US2] Integrate Stripe Elements in stripe step: add Elements provider with loadStripe(NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY), for paid plans call POST /api/billing/create-subscription-intent to get clientSecret, render PaymentElement inside Elements provider in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T018 [US2] Implement payment confirmation flow in stripe step: on form submit call stripe.confirmPayment() with clientSecret, handle succeeded/processing/error states, on success call POST /api/user/complete-onboarding then redirect to dashboard in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T019 [US2] Implement paid plan skip logic: when user skips on a paid plan, display confirmation ("You'll start on the Free plan instead"), on confirm call POST /api/user/complete-onboarding with no subscription, redirect to dashboard on Free tier in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T020 [US2] Handle payment errors in stripe step: display Stripe error messages (declined card, insufficient funds, network error), allow retry with same or different card, maintain skip option as fallback in apps/auth/components/onboarding/stripe-step.tsx
 
 **Checkpoint**: Both free and paid plan onboarding work. Users selecting paid plans see inline Stripe Elements, can pay or skip.
 
@@ -87,8 +87,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T021 [P] [US3] Add onboarding_started event (with plan context) on flow mount and onboarding_completed event (with outcome: subscribed/free) on dashboard redirect in apps/auth/components/onboarding/onboarding-flow.tsx
-- [ ] T022 [P] [US3] Add stripe_step_viewed event on stripe step mount, subscription_started event (with plan name) on payment success, and subscription_skipped event (with original plan) on skip in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T021 [P] [US3] Add onboarding_started event (with plan context) on flow mount and onboarding_completed event (with outcome: subscribed/free) on dashboard redirect in apps/auth/components/onboarding/onboarding-flow.tsx
+- [x] T022 [P] [US3] Add stripe_step_viewed event on stripe step mount, subscription_started event (with plan name) on payment success, and subscription_skipped event (with original plan) on skip in apps/auth/components/onboarding/stripe-step.tsx
 
 **Checkpoint**: All 5 tracking events fire at correct moments with correct metadata. Funnel data available in Rybbit.
 
@@ -102,8 +102,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T023 [US4] Add card-save option to stripe step for free plan users: show "Add a payment card (optional, no charge)" button alongside Skip, when clicked call POST /api/billing/create-setup-intent to get clientSecret, render PaymentElement in setup mode in apps/auth/components/onboarding/stripe-step.tsx
-- [ ] T024 [US4] Handle card save confirmation: call stripe.confirmSetup() on submit, display "No charge will be applied" messaging, on success call POST /api/user/complete-onboarding then redirect to dashboard on Free tier in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T023 [US4] Add card-save option to stripe step for free plan users: show "Add a payment card (optional, no charge)" button alongside Skip, when clicked call POST /api/billing/create-setup-intent to get clientSecret, render PaymentElement in setup mode in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T024 [US4] Handle card save confirmation: call stripe.confirmSetup() on submit, display "No charge will be applied" messaging, on success call POST /api/user/complete-onboarding then redirect to dashboard on Free tier in apps/auth/components/onboarding/stripe-step.tsx
 
 **Checkpoint**: Free plan users can save card or skip. Card-on-file enables frictionless future upgrades from dashboard billing page.
 
@@ -113,9 +113,9 @@
 
 **Purpose**: Loading states, error handling refinements, and end-to-end validation
 
-- [ ] T025 [P] Add loading states: skeleton/spinner while Stripe Elements initializes, disable submit button during API calls, show progress indicator (step 1 of 2 / step 2 of 2) in onboarding flow in apps/auth/components/onboarding/onboarding-flow.tsx and stripe-step.tsx
-- [ ] T026 [P] Add Stripe Elements appearance customization to match auth app theme (colors, fonts, border radius via Tailwind CSS variables) in apps/auth/components/onboarding/stripe-step.tsx
-- [ ] T027 Validate all quickstart.md scenarios end-to-end: Free plan skip, Paid plan subscribe, Free plan card save, OAuth flow, Resume flow
+- [x] T025 [P] Add loading states: skeleton/spinner while Stripe Elements initializes, disable submit button during API calls, show progress indicator (step 1 of 2 / step 2 of 2) in onboarding flow in apps/auth/components/onboarding/onboarding-flow.tsx and stripe-step.tsx
+- [x] T026 [P] Add Stripe Elements appearance customization to match auth app theme (colors, fonts, border radius via Tailwind CSS variables) in apps/auth/components/onboarding/stripe-step.tsx
+- [x] T027 Validate all quickstart.md scenarios end-to-end: Free plan skip, Paid plan subscribe, Free plan card save, OAuth flow (landing → Google/GitHub OAuth → /onboarding?step=stripe&plan=<plan> → skip/pay → dashboard), Resume flow (close browser mid-onboarding → reopen dashboard URL → redirected to onboarding Stripe step)
 
 ---
 

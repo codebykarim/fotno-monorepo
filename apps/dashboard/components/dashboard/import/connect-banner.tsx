@@ -46,6 +46,7 @@ export function ConnectBanner({ source }: { source: ImportSource }) {
         provider: "google",
         scopes: [config.scope],
         callbackURL: `${process.env.NEXT_PUBLIC_DASHBOARD_URL}/galleries/import`,
+        errorCallbackURL: `${process.env.NEXT_PUBLIC_DASHBOARD_URL}/galleries/import`,
       });
 
       if (response.error) {

@@ -103,6 +103,11 @@ export const auth = betterAuth({
       },
     },
   },
+  account: {
+    accountLinking: {
+      allowDifferentEmails: true,
+    },
+  },
   advanced: {
     crossSubDomainCookies: {
       enabled: true,

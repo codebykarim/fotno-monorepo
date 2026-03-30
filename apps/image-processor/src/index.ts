@@ -1,21 +1,11 @@
 import "../../backend/src/bootstrap";
-import sharp from "sharp";
 import { prisma } from "@workspace/db";
-import { multipartService } from "../../upload-service/src/services/multipart";
+import {
+  LambdaClient,
+  InvokeCommand,
+} from "@aws-sdk/client-lambda";
 
-// Disable sharp cache to reduce memory usage with many unique images
-sharp.cache(false);
-// Limit libvips thread pool — prevents saturating all shared CPU cores
-// Default of 0 uses all cores; 1-2 is ideal for shared / low-core servers
-sharp.concurrency(Number(process.env.IMAGE_PROCESSOR_SHARP_CONCURRENCY ?? 1));
-
-type CompressionOptions = {
-  targetWidth: number;
-  minWidth: number;
-  maxBytes: number;
-  initialQuality: number;
-  minQuality: number;
-};
+// ── Types ────────────────────────────────────────────────────────────
 
 type ProcessingPhoto = {
   id: string;
@@ -26,33 +16,37 @@ type ProcessingPhoto = {
   };
 };
 
+type LambdaResult = {
+  thumbnailKey: string;
+  previewKey: string;
+  thumbnailSize: number;
+  previewSize: number;
+  width: number | null;
+  height: number | null;
+  originalSize: number;
+  format: string;
+};
+
+// ── Configuration ────────────────────────────────────────────────────
+
 const PREVIEW_MAX_BYTES = 1_000_000;
 const THUMBNAIL_MAX_BYTES = 250_000;
 const POLL_INTERVAL_MS = Number(process.env.IMAGE_PROCESSOR_POLL_MS ?? 3000);
-const BATCH_SIZE = Number(process.env.IMAGE_PROCESSOR_BATCH_SIZE ?? 2);
+// With Lambda handling heavy work, we can process more concurrently
+const BATCH_SIZE = Number(process.env.IMAGE_PROCESSOR_BATCH_SIZE ?? 10);
 const RETRY_FAILED = process.env.IMAGE_PROCESSOR_RETRY_FAILED === "true";
 const PROCESSING_STALE_MS = Number(
   process.env.IMAGE_PROCESSOR_STALE_MS ?? 120_000,
 );
-// Per-photo timeout (default 60 seconds) — prevents hung sharp operations
-const PHOTO_TIMEOUT_MS = Number(
-  process.env.IMAGE_PROCESSOR_PHOTO_TIMEOUT_MS ?? 60_000,
-);
+const LAMBDA_FUNCTION_NAME =
+  process.env.IMAGE_PROCESSOR_LAMBDA_NAME ?? "fotno-image-processor";
 
 const sleep = async (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const withTimeout = <T>(promise: Promise<T>, ms: number, label: string): Promise<T> =>
-  new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(
-      () => reject(new Error(`Timeout after ${ms}ms: ${label}`)),
-      ms,
-    );
-    promise.then(
-      (val) => { clearTimeout(timer); resolve(val); },
-      (err) => { clearTimeout(timer); reject(err); },
-    );
-  });
+const lambda = new LambdaClient({ region: process.env.AWS_REGION });
+
+// ── Storage Accounting ───────────────────────────────────────────────
 
 const addProcessingStorage = async (
   userId: string,
@@ -94,59 +88,7 @@ const addProcessingStorage = async (
   });
 };
 
-const compressWebpUnderBudget = async (
-  sourceBuffer: Buffer,
-  options: CompressionOptions,
-): Promise<Buffer> => {
-  let width = options.targetWidth;
-  let quality = options.initialQuality;
-
-  // Step 1: Resize to target width once — avoids re-decoding the full original
-  // (a 15MB JPEG at 6000x4000 = ~72MB decoded; resized to 2400w ≈ ~11MB decoded)
-  let resized = await sharp(sourceBuffer, { failOnError: false })
-    .resize({ width, fit: "inside", withoutEnlargement: true })
-    .toBuffer();
-
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    // Encode the already-resized buffer — much cheaper than re-decoding original
-    const candidate = await sharp(resized, { failOnError: false })
-      .webp({ quality, effort: 4 })
-      .toBuffer();
-
-    if (candidate.length <= options.maxBytes) {
-      return candidate;
-    }
-
-    // Try reducing quality first (larger steps for fewer iterations)
-    if (quality > options.minQuality) {
-      quality = Math.max(options.minQuality, quality - 8);
-      continue;
-    }
-
-    // Quality exhausted at this width — downscale from the original
-    const nextWidth = Math.floor(width * 0.85);
-    if (nextWidth < options.minWidth) {
-      break;
-    }
-
-    width = nextWidth;
-    quality = options.initialQuality;
-    resized = await sharp(sourceBuffer, { failOnError: false })
-      .resize({ width, fit: "inside", withoutEnlargement: true })
-      .toBuffer();
-  }
-
-  // Final attempt at minimum quality + current width
-  const fallback = await sharp(resized, { failOnError: false })
-    .webp({ quality: options.minQuality, effort: 4 })
-    .toBuffer();
-
-  if (fallback.length > options.maxBytes) {
-    throw new Error(`Unable to compress image under ${options.maxBytes} bytes`);
-  }
-
-  return fallback;
-};
+// ── Batch Claiming ───────────────────────────────────────────────────
 
 const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
   const now = Date.now();
@@ -156,8 +98,6 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
     ? ["uploaded", "failed"]
     : ["uploaded"];
 
-  // Fresh uploads: need processing (missing preview/thumbnail)
-  // Stale "processing": something went wrong, reclaim regardless of key state
   const candidates = await (prisma as any).photo.findMany({
     where: {
       OR: [
@@ -198,7 +138,10 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
       where: {
         id: candidate.id,
         OR: [
-          { status: { in: claimableStatuses }, OR: [{ previewKey: null }, { thumbnailKey: null }] },
+          {
+            status: { in: claimableStatuses },
+            OR: [{ previewKey: null }, { thumbnailKey: null }],
+          },
           { status: "processing", createdAt: { lt: staleBefore } },
         ],
       },
@@ -215,124 +158,76 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
   return claimed;
 };
 
-// Maximum input pixels (100 megapixels) — prevents OOM on absurdly large images
-const MAX_INPUT_PIXELS = Number(
-  process.env.IMAGE_PROCESSOR_MAX_PIXELS ?? 100_000_000,
-);
+// ── Lambda Invocation ────────────────────────────────────────────────
 
 const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
   const startedAt = Date.now();
-  console.log(`[image-processor] started photoId=${photo.id} s3Key=${photo.s3Key}`);
-
-  let originalBuffer: Buffer | null = null;
+  console.log(
+    `[image-processor] invoking Lambda photoId=${photo.id} s3Key=${photo.s3Key}`,
+  );
 
   try {
-    originalBuffer = await withTimeout(
-      multipartService.downloadToBuffer(photo.s3Key),
-      PHOTO_TIMEOUT_MS,
-      `download ${photo.id}`,
+    const response = await lambda.send(
+      new InvokeCommand({
+        FunctionName: LAMBDA_FUNCTION_NAME,
+        InvocationType: "RequestResponse",
+        Payload: Buffer.from(
+          JSON.stringify({
+            s3Key: photo.s3Key,
+            photoId: photo.id,
+            thumbnailMaxBytes: THUMBNAIL_MAX_BYTES,
+            previewMaxBytes: PREVIEW_MAX_BYTES,
+          }),
+        ),
+      }),
     );
 
-    console.log(
-      `[image-processor] downloaded photoId=${photo.id} sizeBytes=${originalBuffer.length}`,
-    );
+    const payloadStr = new TextDecoder().decode(response.Payload);
 
-    // Validate the image is readable before doing heavy work
-    const metadata = await withTimeout(
-      sharp(originalBuffer, { failOnError: true, limitInputPixels: MAX_INPUT_PIXELS }).metadata(),
-      15_000,
-      `metadata ${photo.id}`,
-    );
-
-    if (!metadata.format) {
-      throw new Error("Unrecognizable image format");
+    if (response.FunctionError) {
+      let errorMessage = response.FunctionError;
+      try {
+        const errorPayload = JSON.parse(payloadStr);
+        errorMessage = errorPayload.errorMessage ?? errorPayload.errorType ?? payloadStr;
+      } catch {
+        errorMessage = payloadStr || response.FunctionError;
+      }
+      throw new Error(`Lambda error: ${errorMessage}`);
     }
 
-    const pixels = (metadata.width ?? 0) * (metadata.height ?? 0);
-    if (pixels > MAX_INPUT_PIXELS) {
-      throw new Error(
-        `Image too large: ${metadata.width}x${metadata.height} = ${pixels} pixels (max ${MAX_INPUT_PIXELS})`,
-      );
-    }
+    const result: LambdaResult = JSON.parse(payloadStr);
 
-    console.log(
-      `[image-processor] metadata photoId=${photo.id} format=${metadata.format} dimensions=${metadata.width}x${metadata.height}`,
-    );
-
-    const thumbnailKey = `thumbnails/${photo.id}.webp`;
-    const previewKey = `previews/${photo.id}.webp`;
-
-    const originalWidth = metadata.width ?? 2400;
-    const previewTargetWidth = Math.min(2400, Math.max(1600, originalWidth));
-    const thumbnailTargetWidth = Math.min(
-      700,
-      Math.max(480, Math.floor(originalWidth / 3)),
-    );
-
-    // Process sequentially to keep memory predictable
-    const thumbnailBuffer = await withTimeout(
-      compressWebpUnderBudget(originalBuffer, {
-        targetWidth: thumbnailTargetWidth,
-        minWidth: 320,
-        maxBytes: THUMBNAIL_MAX_BYTES,
-        initialQuality: 84,
-        minQuality: 50,
-      }),
-      PHOTO_TIMEOUT_MS,
-      `thumbnail ${photo.id}`,
-    );
-
-    const previewBuffer = await withTimeout(
-      compressWebpUnderBudget(originalBuffer, {
-        targetWidth: previewTargetWidth,
-        minWidth: 960,
-        maxBytes: PREVIEW_MAX_BYTES,
-        initialQuality: 86,
-        minQuality: 54,
-      }),
-      PHOTO_TIMEOUT_MS,
-      `preview ${photo.id}`,
-    );
-
-    // Free original buffer before uploads — no longer needed
-    const originalSize = originalBuffer.length;
-    originalBuffer = null;
-
-    await Promise.all([
-      multipartService.uploadBuffer(thumbnailKey, thumbnailBuffer, "image/webp"),
-      multipartService.uploadBuffer(previewKey, previewBuffer, "image/webp"),
-    ]);
-
+    // Update DB with Lambda results
     await (prisma as any).photo.update({
       where: { id: photo.id },
       data: {
-        thumbnailKey,
-        previewKey,
-        thumbnailSize: BigInt(thumbnailBuffer.length),
-        previewSize: BigInt(previewBuffer.length),
+        thumbnailKey: result.thumbnailKey,
+        previewKey: result.previewKey,
+        thumbnailSize: BigInt(result.thumbnailSize),
+        previewSize: BigInt(result.previewSize),
         totalSize: BigInt(
-          originalSize + thumbnailBuffer.length + previewBuffer.length,
+          result.originalSize + result.thumbnailSize + result.previewSize,
         ),
-        width: metadata.width ?? null,
-        height: metadata.height ?? null,
+        width: result.width,
+        height: result.height,
         status: "processed",
       },
     });
 
     await addProcessingStorage(
       photo.gallery.userId,
-      BigInt(thumbnailBuffer.length + previewBuffer.length),
+      BigInt(result.thumbnailSize + result.previewSize),
       photo.id,
     );
 
     console.log(
-      `[image-processor] completed photoId=${photo.id} previewBytes=${previewBuffer.length} thumbnailBytes=${thumbnailBuffer.length} durationMs=${Date.now() - startedAt}`,
+      `[image-processor] completed photoId=${photo.id} format=${result.format} preview=${result.previewSize}B thumbnail=${result.thumbnailSize}B ${Date.now() - startedAt}ms`,
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     const stack = error instanceof Error ? error.stack : undefined;
     console.error(
-      `[image-processor] failed photoId=${photo.id} s3Key=${photo.s3Key} durationMs=${Date.now() - startedAt} error=${message}`,
+      `[image-processor] failed photoId=${photo.id} s3Key=${photo.s3Key} ${Date.now() - startedAt}ms error=${message}`,
     );
     if (stack) {
       console.error(`[image-processor] stack: ${stack}`);
@@ -348,19 +243,17 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
         `[image-processor] failed to mark photo as failed photoId=${photo.id}`,
       );
     }
-  } finally {
-    // Ensure buffer is released even on unexpected paths
-    originalBuffer = null;
   }
 };
 
+// ── Main Loop ────────────────────────────────────────────────────────
+
 const start = async (): Promise<void> => {
   console.log(
-    `[image-processor] started pollMs=${POLL_INTERVAL_MS} batchSize=${BATCH_SIZE} retryFailed=${RETRY_FAILED}`,
+    `[image-processor] started (Lambda mode) pollMs=${POLL_INTERVAL_MS} batchSize=${BATCH_SIZE} retryFailed=${RETRY_FAILED} lambda=${LAMBDA_FUNCTION_NAME}`,
   );
 
   let running = true;
-  // Track currently processing photo IDs so we can mark them failed on crash
   let activePhotoIds: string[] = [];
 
   const markActiveAsFailed = async () => {
@@ -379,9 +272,7 @@ const start = async (): Promise<void> => {
   };
 
   const stop = async (signal: string) => {
-    if (!running) {
-      return;
-    }
+    if (!running) return;
     running = false;
     console.log(`[image-processor] stopping signal=${signal}`);
     await markActiveAsFailed();
@@ -389,15 +280,9 @@ const start = async (): Promise<void> => {
     process.exit(0);
   };
 
-  process.on("SIGINT", () => {
-    void stop("SIGINT");
-  });
+  process.on("SIGINT", () => void stop("SIGINT"));
+  process.on("SIGTERM", () => void stop("SIGTERM"));
 
-  process.on("SIGTERM", () => {
-    void stop("SIGTERM");
-  });
-
-  // Catch unhandled errors — mark active photos as failed so they don't stay stuck
   process.on("uncaughtException", async (err) => {
     console.error(`[image-processor] uncaughtException: ${err.message}`);
     await markActiveAsFailed();
@@ -422,13 +307,19 @@ const start = async (): Promise<void> => {
 
       activePhotoIds = batch.map((p) => p.id);
 
-      for (const photo of batch) {
-        if (!running) {
-          break;
-        }
-        await processPhoto(photo);
-        // Remove from active list after completion (success or caught failure)
-        activePhotoIds = activePhotoIds.filter((id) => id !== photo.id);
+      // Process entire batch concurrently — Lambda handles isolation,
+      // our server just waits for responses (near-zero CPU/RAM)
+      const results = await Promise.allSettled(
+        batch.map((photo) => processPhoto(photo)),
+      );
+
+      // Log summary
+      const succeeded = results.filter((r) => r.status === "fulfilled").length;
+      const failed = results.filter((r) => r.status === "rejected").length;
+      if (failed > 0) {
+        console.log(
+          `[image-processor] batch done: ${succeeded} succeeded, ${failed} failed`,
+        );
       }
 
       activePhotoIds = [];

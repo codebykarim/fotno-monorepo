@@ -44,6 +44,6 @@ RUN cd apps/image-processor && pnpm build
 ENV NODE_ENV=production
 WORKDIR /app/apps/image-processor
 
-# No HTTP port — this is a background polling worker
-# Run source directly via tsx — cross-app relative imports need source, not compiled dist/
+# No HTTP port — this is a lightweight polling orchestrator that invokes Lambda
+# Near-zero CPU/RAM: all image processing happens in AWS Lambda
 CMD ["tsx", "src/index.ts"]

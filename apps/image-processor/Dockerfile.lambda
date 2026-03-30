@@ -1,0 +1,20 @@
+# Lambda container image (ARM64/Graviton2 for ~34% cost savings)
+# Builds only the handler entrypoint — no monorepo deps needed
+FROM public.ecr.aws/lambda/nodejs:20-arm64 AS builder
+
+WORKDIR /build
+COPY package.lambda.json ./package.json
+RUN npm install
+COPY tsconfig.lambda.json ./tsconfig.json
+COPY src/handler.ts ./src/
+RUN npx tsc
+
+# ── Production image ──────────────────────────────────────────────────
+FROM public.ecr.aws/lambda/nodejs:20-arm64
+
+COPY package.lambda.json ./package.json
+RUN npm install --omit=dev
+
+COPY --from=builder /build/dist/ ./dist/
+
+CMD ["dist/handler.handler"]

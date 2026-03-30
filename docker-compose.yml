@@ -228,8 +228,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
-    ports:
-      - "9443:9443"
+    expose:
+      - "9000"
     restart: unless-stopped
 
 volumes:

@@ -58,9 +58,9 @@ type PlansResponse = {
 
 const FALLBACK_TIERS: PlanTier[] = [
   { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2 },
-  { gb: 20, priceCents: 900, label: "Starter" },
-  { gb: 100, priceCents: 1900, label: "Professional" },
-  { gb: 500, priceCents: 3500, label: "Business" },
+  { gb: 20, priceCents: 900, label: "Solo" },
+  { gb: 100, priceCents: 1900, label: "Studio" },
+  { gb: 500, priceCents: 3500, label: "Pro Studio" },
   { gb: -1, priceCents: 4900, label: "Unlimited" },
 ];
 

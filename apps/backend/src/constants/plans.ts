@@ -56,7 +56,10 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
     _tierCacheExpiresAt = Date.now() + TIER_CACHE_TTL_MS;
     return tiers;
   } catch (err) {
-    console.warn("[fetchTiersFromDB] DB query failed, using hardcoded fallback:", err);
+    console.warn(
+      "[fetchTiersFromDB] DB query failed, using hardcoded fallback:",
+      err,
+    );
     return STORAGE_TIERS.map((t) => ({
       id: "",
       gb: t.gb,
@@ -82,19 +85,19 @@ export const STORAGE_TIERS = [
   {
     gb: 20,
     priceCents: 900,
-    label: "Starter",
+    label: "Solo",
     stripePriceId: process.env.STRIPE_PRICE_STARTER || "",
   },
   {
     gb: 100,
     priceCents: 1900,
-    label: "Professional",
+    label: "Studio",
     stripePriceId: process.env.STRIPE_PRICE_PROFESSIONAL || "",
   },
   {
     gb: 500,
     priceCents: 3500,
-    label: "Business",
+    label: "Pro Studio",
     stripePriceId: process.env.STRIPE_PRICE_BUSINESS || "",
   },
   {
@@ -121,7 +124,10 @@ export const PLAN_FEATURES = [
 ];
 
 /** Build free-tier feature list dynamically from actual tier data */
-export function buildFreeFeatures(freeTier: { gb: number; galleryLimit: number | null }): string[] {
+export function buildFreeFeatures(freeTier: {
+  gb: number;
+  galleryLimit: number | null;
+}): string[] {
   const storage = freeTier.gb <= 0 ? "1 GB" : `${freeTier.gb} GB`;
   const galleries = freeTier.galleryLimit ?? 2;
   return [
@@ -148,7 +154,11 @@ export const FREE_PLAN_FEATURES = [
  * Get the current free tier limits from DB (cached).
  * Used by resolveUserAccess, createGallery, auth signup, etc.
  */
-export async function getFreeTierLimits(): Promise<{ storageLimitBytes: bigint; galleryLimit: number; gb: number }> {
+export async function getFreeTierLimits(): Promise<{
+  storageLimitBytes: bigint;
+  galleryLimit: number;
+  gb: number;
+}> {
   const tiers = await fetchTiersFromDB();
   const freeTier = tiers.find((t) => t.priceCents === 0);
   if (freeTier) {

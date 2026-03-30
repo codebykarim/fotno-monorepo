@@ -7,13 +7,22 @@ import { StatCard } from "@/components/stat-card";
 import { DataTable, type Column } from "@/components/data-table";
 import { StatusBadge } from "@/components/status-badge";
 import { formatCurrency, formatDate } from "@/lib/format";
-import type { AdminSubscriptionsOverview, AdminSubscription } from "@/lib/types/admin";
-import { DollarSign, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
+import type {
+  AdminSubscriptionsOverview,
+  AdminSubscription,
+} from "@/lib/types/admin";
+import {
+  DollarSign,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertTriangle,
+} from "lucide-react";
 
 const STORAGE_TIER_LABELS: Record<number, string> = {
-  20: "Starter (20 GB)",
-  100: "Professional (100 GB)",
-  500: "Business (500 GB)",
+  20: "Solo (20 GB)",
+  100: "Studio (100 GB)",
+  500: "Pro Studio (500 GB)",
   [-1]: "Unlimited",
 };
 
@@ -32,22 +41,27 @@ export function PaymentsPage() {
     pageSize: "50",
   }).toString();
 
-  const { data, isLoading } = useSWR<AdminSubscriptionsOverview & { total: number; page: number; pageSize: number }>(
-    `/api/payments?${queryParams}`,
-    jsonFetcher,
-    { refreshInterval: 60000 }
-  );
+  const { data, isLoading } = useSWR<
+    AdminSubscriptionsOverview & {
+      total: number;
+      page: number;
+      pageSize: number;
+    }
+  >(`/api/payments?${queryParams}`, jsonFetcher, { refreshInterval: 60000 });
 
   const columns: Column<AdminSubscription>[] = [
     {
       key: "user",
       header: "User",
-      render: (s) => s.user ? (
-        <div>
-          <p className="font-medium">{s.user.name}</p>
-          <p className="text-xs text-muted-foreground">{s.user.email}</p>
-        </div>
-      ) : "—",
+      render: (s) =>
+        s.user ? (
+          <div>
+            <p className="font-medium">{s.user.name}</p>
+            <p className="text-xs text-muted-foreground">{s.user.email}</p>
+          </div>
+        ) : (
+          "—"
+        ),
     },
     {
       key: "source",
@@ -77,14 +91,20 @@ export function PaymentsPage() {
       header: "Price",
       render: (s) => (
         <span className="font-medium">
-          {formatCurrency(s.priceCents)}/{s.currency === "USD" ? "mo" : s.currency}
+          {formatCurrency(s.priceCents)}/
+          {s.currency === "USD" ? "mo" : s.currency}
         </span>
       ),
     },
     {
       key: "period",
       header: "Period End",
-      render: (s) => s.currentPeriodEnd ? formatDate(s.currentPeriodEnd) : s.endsAt ? formatDate(s.endsAt) : "—",
+      render: (s) =>
+        s.currentPeriodEnd
+          ? formatDate(s.currentPeriodEnd)
+          : s.endsAt
+            ? formatDate(s.endsAt)
+            : "—",
     },
     {
       key: "created",
@@ -137,7 +157,10 @@ export function PaymentsPage() {
           <div className="flex gap-2">
             <select
               value={status}
-              onChange={(e) => { setStatus(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
               className="h-9 rounded-lg border border-border bg-background px-3 text-sm"
             >
               {STATUS_OPTIONS.map((s) => (
@@ -148,12 +171,19 @@ export function PaymentsPage() {
             </select>
             <select
               value={source}
-              onChange={(e) => { setSource(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setSource(e.target.value);
+                setPage(1);
+              }}
               className="h-9 rounded-lg border border-border bg-background px-3 text-sm"
             >
               {SOURCE_OPTIONS.map((s) => (
                 <option key={s} value={s}>
-                  {s === "all" ? "All Sources" : s === "STRIPE" ? "Stripe" : "Manual"}
+                  {s === "all"
+                    ? "All Sources"
+                    : s === "STRIPE"
+                      ? "Stripe"
+                      : "Manual"}
                 </option>
               ))}
             </select>

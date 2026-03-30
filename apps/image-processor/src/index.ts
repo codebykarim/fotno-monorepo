@@ -25,6 +25,7 @@ type LambdaResult = {
   height: number | null;
   originalSize: number;
   format: string;
+  blurDataUrl: string;
 };
 
 // ── Configuration ────────────────────────────────────────────────────
@@ -210,6 +211,7 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
         ),
         width: result.width,
         height: result.height,
+        blurDataUrl: result.blurDataUrl,
         status: "processed",
       },
     });

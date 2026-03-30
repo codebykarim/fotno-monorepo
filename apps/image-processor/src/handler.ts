@@ -34,6 +34,7 @@ type ProcessingResult = {
   height: number | null;
   originalSize: number;
   format: string;
+  blurDataUrl: string;
 };
 
 // ── Compression ──────────────────────────────────────────────────────
@@ -158,6 +159,13 @@ export const handler = async (
     54,
   );
 
+  // Tiny blur placeholder for gallery UI (16px wide, ~300-500 chars base64)
+  const blurBuffer = await sharp(originalBuffer, { failOnError: false })
+    .resize(16, undefined, { fit: "inside" })
+    .webp({ quality: 20 })
+    .toBuffer();
+  const blurDataUrl = `data:image/webp;base64,${blurBuffer.toString("base64")}`;
+
   const thumbnailKey = `thumbnails/${event.photoId}.webp`;
   const previewKey = `previews/${event.photoId}.webp`;
 
@@ -199,5 +207,6 @@ export const handler = async (
     height: metadata.height ?? null,
     originalSize: originalBuffer.length,
     format: metadata.format,
+    blurDataUrl,
   };
 };

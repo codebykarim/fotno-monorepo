@@ -10,7 +10,6 @@ import { logger } from './utils/logger'
 
 export let redis: Redis
 
-let processPhotoWorkerRef: { close: () => Promise<void> } | null = null
 let cleanupWorkerRef: { close: () => Promise<void> } | null = null
 let gdriveImportWorkerRef: { close: () => Promise<void> } | null = null
 let gphotosImportWorkerRef: { close: () => Promise<void> } | null = null
@@ -53,12 +52,11 @@ export async function bootstrap(): Promise<void> {
   await prisma.$connect()
   logger.info('Database connected')
 
-  const { processPhotoWorker } = await import('./queues/process-photo-worker')
+  // process-photo worker removed — image-processor Lambda handles processing
   const { cleanupWorker } = await import('./queues/cleanup.worker')
   const { gdriveImportWorker } = await import('./queues/gdrive-import-worker')
   const { gphotosImportWorker } = await import('./queues/gphotos-import-worker')
 
-  processPhotoWorkerRef = processPhotoWorker
   cleanupWorkerRef = cleanupWorker
   gdriveImportWorkerRef = gdriveImportWorker
   gphotosImportWorkerRef = gphotosImportWorker
@@ -73,7 +71,6 @@ export async function bootstrap(): Promise<void> {
 export async function gracefulShutdown(): Promise<void> {
   logger.info('Shutting down gracefully...')
 
-  await processPhotoWorkerRef?.close().catch(() => {})
   await cleanupWorkerRef?.close().catch(() => {})
   await gdriveImportWorkerRef?.close().catch(() => {})
   await gphotosImportWorkerRef?.close().catch(() => {})

@@ -3,7 +3,6 @@ import { randomUUID } from 'node:crypto'
 import { prisma } from '@workspace/db'
 import { OAuth2Client } from 'google-auth-library'
 import type { GdriveImportJobData } from './gdrive-import-queue'
-import { processPhotoQueue } from './process-photo-queue'
 import { bullConnection } from './connection'
 import { downloadDriveFileToR2 } from '../services/gdrive-download'
 import { storageService } from '../services/storage'
@@ -177,17 +176,7 @@ async function processItem(
     data: { status: 'UPLOADED', photoId },
   })
 
-  // Enqueue process-photo job
-  await processPhotoQueue.add(
-    'process-photo',
-    {
-      photoId,
-      userId,
-      s3Key,
-      s3Bucket: env.AWS_S3_BUCKET,
-    },
-    { jobId: `process-photo-${photoId}` },
-  )
+  // Photo is status: "uploaded" — image-processor picks it up via DB polling
 
   await prisma.driveImportItem.update({
     where: { id: item.id },

@@ -14,7 +14,6 @@ import {
 import { multipartService } from '../services/multipart'
 import { storageService } from '../services/storage'
 import { dedupService } from '../services/dedup'
-import { processPhotoQueue } from '../queues/process-photo-queue'
 import { Errors } from '../errors/index'
 import {
   ALLOWED_MIME_TYPES,
@@ -290,23 +289,8 @@ export class UploadController {
 
       await storageService.confirmReservation(userId, photo.id, session.totalSize)
 
-      try {
-        await processPhotoQueue.add(
-          'process-photo',
-          {
-            photoId: photo.id,
-            userId,
-            s3Key: session.s3Key,
-            s3Bucket: photo.s3Bucket,
-          },
-          {
-            jobId: `process-photo-${photo.id}`,
-          },
-        )
-      } catch (error) {
-        log.error({ err: error, photoId: photo.id, userId }, 'Failed to enqueue processing job')
-        throw Errors.PROCESSING_FAILED('Failed to enqueue photo processing job')
-      }
+      // Photo is now status: "uploaded" — the image-processor service
+      // will pick it up via DB polling and process it via Lambda
 
       res.json({
         success: true,

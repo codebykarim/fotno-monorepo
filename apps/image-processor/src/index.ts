@@ -5,6 +5,9 @@ import { multipartService } from "../../upload-service/src/services/multipart";
 
 // Disable sharp cache to reduce memory usage with many unique images
 sharp.cache(false);
+// Limit libvips thread pool — prevents saturating all shared CPU cores
+// Default of 0 uses all cores; 1-2 is ideal for shared / low-core servers
+sharp.concurrency(Number(process.env.IMAGE_PROCESSOR_SHARP_CONCURRENCY ?? 1));
 
 type CompressionOptions = {
   targetWidth: number;
@@ -26,7 +29,7 @@ type ProcessingPhoto = {
 const PREVIEW_MAX_BYTES = 1_000_000;
 const THUMBNAIL_MAX_BYTES = 250_000;
 const POLL_INTERVAL_MS = Number(process.env.IMAGE_PROCESSOR_POLL_MS ?? 3000);
-const BATCH_SIZE = Number(process.env.IMAGE_PROCESSOR_BATCH_SIZE ?? 5);
+const BATCH_SIZE = Number(process.env.IMAGE_PROCESSOR_BATCH_SIZE ?? 2);
 const RETRY_FAILED = process.env.IMAGE_PROCESSOR_RETRY_FAILED === "true";
 const PROCESSING_STALE_MS = Number(
   process.env.IMAGE_PROCESSOR_STALE_MS ?? 120_000,
@@ -97,46 +100,52 @@ const compressWebpUnderBudget = async (
 ): Promise<Buffer> => {
   let width = options.targetWidth;
   let quality = options.initialQuality;
-  let lastResult: Buffer | null = null;
 
-  for (let attempt = 0; attempt < 20; attempt += 1) {
-    const candidate = await sharp(sourceBuffer, { failOnError: false })
-      .resize({
-        width,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .webp({ quality, effort: 5 })
+  // Step 1: Resize to target width once — avoids re-decoding the full original
+  // (a 15MB JPEG at 6000x4000 = ~72MB decoded; resized to 2400w ≈ ~11MB decoded)
+  let resized = await sharp(sourceBuffer, { failOnError: false })
+    .resize({ width, fit: "inside", withoutEnlargement: true })
+    .toBuffer();
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    // Encode the already-resized buffer — much cheaper than re-decoding original
+    const candidate = await sharp(resized, { failOnError: false })
+      .webp({ quality, effort: 4 })
       .toBuffer();
 
-    lastResult = candidate;
     if (candidate.length <= options.maxBytes) {
       return candidate;
     }
 
+    // Try reducing quality first (larger steps for fewer iterations)
     if (quality > options.minQuality) {
-      quality = Math.max(options.minQuality, quality - 5);
+      quality = Math.max(options.minQuality, quality - 8);
       continue;
     }
 
-    const nextWidth = Math.floor(width * 0.88);
+    // Quality exhausted at this width — downscale from the original
+    const nextWidth = Math.floor(width * 0.85);
     if (nextWidth < options.minWidth) {
       break;
     }
 
     width = nextWidth;
     quality = options.initialQuality;
+    resized = await sharp(sourceBuffer, { failOnError: false })
+      .resize({ width, fit: "inside", withoutEnlargement: true })
+      .toBuffer();
   }
 
-  if (!lastResult) {
-    throw new Error("Failed to produce compressed image output");
-  }
+  // Final attempt at minimum quality + current width
+  const fallback = await sharp(resized, { failOnError: false })
+    .webp({ quality: options.minQuality, effort: 4 })
+    .toBuffer();
 
-  if (lastResult.length > options.maxBytes) {
+  if (fallback.length > options.maxBytes) {
     throw new Error(`Unable to compress image under ${options.maxBytes} bytes`);
   }
 
-  return lastResult;
+  return fallback;
 };
 
 const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
@@ -206,20 +215,31 @@ const claimNextBatch = async (): Promise<ProcessingPhoto[]> => {
   return claimed;
 };
 
+// Maximum input pixels (100 megapixels) — prevents OOM on absurdly large images
+const MAX_INPUT_PIXELS = Number(
+  process.env.IMAGE_PROCESSOR_MAX_PIXELS ?? 100_000_000,
+);
+
 const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
   const startedAt = Date.now();
-  console.log(`[image-processor] started photoId=${photo.id}`);
+  console.log(`[image-processor] started photoId=${photo.id} s3Key=${photo.s3Key}`);
+
+  let originalBuffer: Buffer | null = null;
 
   try {
-    const originalBuffer = await withTimeout(
+    originalBuffer = await withTimeout(
       multipartService.downloadToBuffer(photo.s3Key),
       PHOTO_TIMEOUT_MS,
       `download ${photo.id}`,
     );
 
+    console.log(
+      `[image-processor] downloaded photoId=${photo.id} sizeBytes=${originalBuffer.length}`,
+    );
+
     // Validate the image is readable before doing heavy work
     const metadata = await withTimeout(
-      sharp(originalBuffer, { failOnError: false }).metadata(),
+      sharp(originalBuffer, { failOnError: true, limitInputPixels: MAX_INPUT_PIXELS }).metadata(),
       15_000,
       `metadata ${photo.id}`,
     );
@@ -227,6 +247,17 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
     if (!metadata.format) {
       throw new Error("Unrecognizable image format");
     }
+
+    const pixels = (metadata.width ?? 0) * (metadata.height ?? 0);
+    if (pixels > MAX_INPUT_PIXELS) {
+      throw new Error(
+        `Image too large: ${metadata.width}x${metadata.height} = ${pixels} pixels (max ${MAX_INPUT_PIXELS})`,
+      );
+    }
+
+    console.log(
+      `[image-processor] metadata photoId=${photo.id} format=${metadata.format} dimensions=${metadata.width}x${metadata.height}`,
+    );
 
     const thumbnailKey = `thumbnails/${photo.id}.webp`;
     const previewKey = `previews/${photo.id}.webp`;
@@ -238,6 +269,7 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       Math.max(480, Math.floor(originalWidth / 3)),
     );
 
+    // Process sequentially to keep memory predictable
     const thumbnailBuffer = await withTimeout(
       compressWebpUnderBudget(originalBuffer, {
         targetWidth: thumbnailTargetWidth,
@@ -262,6 +294,10 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
       `preview ${photo.id}`,
     );
 
+    // Free original buffer before uploads — no longer needed
+    const originalSize = originalBuffer.length;
+    originalBuffer = null;
+
     await Promise.all([
       multipartService.uploadBuffer(thumbnailKey, thumbnailBuffer, "image/webp"),
       multipartService.uploadBuffer(previewKey, previewBuffer, "image/webp"),
@@ -275,7 +311,7 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
         thumbnailSize: BigInt(thumbnailBuffer.length),
         previewSize: BigInt(previewBuffer.length),
         totalSize: BigInt(
-          originalBuffer.length + thumbnailBuffer.length + previewBuffer.length,
+          originalSize + thumbnailBuffer.length + previewBuffer.length,
         ),
         width: metadata.width ?? null,
         height: metadata.height ?? null,
@@ -294,9 +330,13 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
+    const stack = error instanceof Error ? error.stack : undefined;
     console.error(
-      `[image-processor] failed photoId=${photo.id} durationMs=${Date.now() - startedAt} error=${message}`,
+      `[image-processor] failed photoId=${photo.id} s3Key=${photo.s3Key} durationMs=${Date.now() - startedAt} error=${message}`,
     );
+    if (stack) {
+      console.error(`[image-processor] stack: ${stack}`);
+    }
 
     try {
       await (prisma as any).photo.update({
@@ -308,6 +348,9 @@ const processPhoto = async (photo: ProcessingPhoto): Promise<void> => {
         `[image-processor] failed to mark photo as failed photoId=${photo.id}`,
       );
     }
+  } finally {
+    // Ensure buffer is released even on unexpected paths
+    originalBuffer = null;
   }
 };
 

@@ -157,11 +157,9 @@ export function GalleryProcessingBanner() {
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm font-medium">
                 {stuck} photo{stuck !== 1 ? "s" : ""} appear stuck
-                {failed > 0 && (
-                  <span className="text-destructive">
-                    , {failed} failed
-                  </span>
-                )}
+                {/* {failed > 0 && (
+                  <span className="text-destructive">, {failed} failed</span>
+                )} */}
               </p>
               <Button
                 variant="outline"
@@ -211,11 +209,11 @@ export function GalleryProcessingBanner() {
             <Progress value={percent} className="h-1.5" />
             <p className="text-xs text-muted-foreground">
               {inProgress} photo{inProgress !== 1 ? "s" : ""} remaining
-              {failed > 0 && (
+              {/* {failed > 0 && (
                 <span className="text-destructive">
                   {" "}&middot; {failed} failed
                 </span>
-              )}
+              )} */}
             </p>
           </div>
         </div>

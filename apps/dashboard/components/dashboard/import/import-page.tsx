@@ -17,7 +17,6 @@ import { GphotosPicker, type PickedPhoto } from "./gphotos-picker";
 import { GphotosReviewGrid } from "./gphotos-review-grid";
 import { ImportConfig, type FolderMapping } from "./import-config";
 import { ImportProgress } from "./import-progress";
-import { ImportHistoryDialog } from "./import-history-dialog";
 
 const GDRIVE_STEPS = [
   { label: "Browse Folders" },
@@ -35,13 +34,16 @@ const GPHOTOS_STEPS = [
 export function ImportPage() {
   const searchParams = useSearchParams();
   const initialSource = searchParams.get("source") as ImportSource | null;
+  const initialJobId = searchParams.get("jobId");
 
   const [source, setSource] = useState<ImportSource | null>(
     initialSource === "gphotos" || initialSource === "gdrive"
       ? initialSource
-      : null,
+      : initialJobId
+        ? "gdrive"
+        : null,
   );
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(initialJobId ? 2 : 0);
 
   // Google Drive state
   const [selectedFolders, setSelectedFolders] = useState<SelectedFolder[]>([]);
@@ -54,7 +56,7 @@ export function ImportPage() {
 
   // Shared state
   const [importing, setImporting] = useState(false);
-  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobId, setJobId] = useState<string | null>(initialJobId);
 
   function handleSelectSource(s: ImportSource) {
     setSource(s);
@@ -132,15 +134,6 @@ export function ImportPage() {
     setStep(1); // review step
   }, []);
 
-  function handleViewJob(id: string) {
-    setJobId(id);
-    if (source === "gdrive") {
-      setStep(2);
-    } else if (source === "gphotos") {
-      setStep(3);
-    }
-  }
-
   function handleImportMore() {
     setJobId(null);
     setStep(0);
@@ -151,8 +144,7 @@ export function ImportPage() {
 
   const steps = source === "gdrive" ? GDRIVE_STEPS : GPHOTOS_STEPS;
   const isProgressStep =
-    (source === "gdrive" && step === 2) ||
-    (source === "gphotos" && step === 3);
+    (source === "gdrive" && step === 2) || (source === "gphotos" && step === 3);
 
   return (
     <div className="space-y-6">
@@ -176,9 +168,6 @@ export function ImportPage() {
               : "Choose a source to import photos from."}
           </p>
         </div>
-        {source && (
-          <ImportHistoryDialog onViewJob={handleViewJob} />
-        )}
       </div>
 
       {/* Source selection */}
@@ -235,11 +224,7 @@ export function ImportPage() {
               {/* Step 1: Configure */}
               {step === 1 && (
                 <div className="space-y-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setStep(0)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => setStep(0)}>
                     <ArrowLeft className="mr-1.5 h-4 w-4" />
                     Back to folder selection
                   </Button>
@@ -299,11 +284,7 @@ export function ImportPage() {
               {/* Step 2: Configure */}
               {step === 2 && (
                 <div className="space-y-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setStep(1)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                     <ArrowLeft className="mr-1.5 h-4 w-4" />
                     Back to review
                   </Button>

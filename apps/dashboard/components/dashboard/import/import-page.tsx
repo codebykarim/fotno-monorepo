@@ -178,15 +178,6 @@ export function ImportPage() {
         <div className="space-y-6">
           {/* Stepper + back to sources */}
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleBackToSources}
-              className="shrink-0"
-            >
-              <ArrowLeft className="mr-1.5 h-4 w-4" />
-              Sources
-            </Button>
             <ImportStepper steps={steps} currentStep={step} />
           </div>
 

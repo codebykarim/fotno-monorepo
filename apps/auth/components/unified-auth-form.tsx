@@ -322,7 +322,8 @@ function UnifiedAuthFormComponent({
             rememberMe: true,
           },
           {
-            onSuccess: (context: any) => resolve({ email: context.data?.user?.email }),
+            onSuccess: (context: any) =>
+              resolve({ email: context.data?.user?.email }),
             onError: (error: unknown) =>
               reject({ message: getErrorMessage(error, "Failed to log in") }),
           },
@@ -364,7 +365,8 @@ function UnifiedAuthFormComponent({
             callbackURL: postAuthRedirectUrl,
           },
           {
-            onSuccess: (context: any) => resolve({ email: context.data?.user?.email }),
+            onSuccess: (context: any) =>
+              resolve({ email: context.data?.user?.email }),
             onError: (error: unknown) =>
               reject({
                 message: getErrorMessage(error, "Failed to create account"),
@@ -444,7 +446,9 @@ function UnifiedAuthFormComponent({
           toast.success("Password reset email sent");
         },
         onError: (context: any) => {
-          toast.error(getErrorMessage(context.error, "Failed to send reset email"));
+          toast.error(
+            getErrorMessage(context.error, "Failed to send reset email"),
+          );
         },
       },
     });
@@ -462,17 +466,20 @@ function UnifiedAuthFormComponent({
     setIsLoading(true);
 
     try {
+      const origin = window.location.origin;
       const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
-      const oauthRedirectUrl = `/onboarding?${planParam}step=stripe`;
+      const oauthRedirectUrl = `${origin}/onboarding?${planParam}step=stripe`;
 
       const response = await signIn.social({
         provider,
         callbackURL: oauthRedirectUrl,
+        errorCallbackURL: `${origin}/account`,
       });
 
       if ((response as any).error) {
         toast.error(
-          (response as any).error.message || `Failed to sign in with ${provider}`,
+          (response as any).error.message ||
+            `Failed to sign in with ${provider}`,
         );
         setIsLoading(false);
       } else if ((response as any).data?.url) {
@@ -767,7 +774,7 @@ function UnifiedAuthFormComponent({
                   <div className="h-px flex-1 bg-border" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   <Button
                     type="button"
                     variant="outline"
@@ -800,7 +807,7 @@ function UnifiedAuthFormComponent({
                     Google
                   </Button>
 
-                  <Button
+                  {/* <Button
                     type="button"
                     variant="outline"
                     disabled={isLoading}
@@ -808,7 +815,7 @@ function UnifiedAuthFormComponent({
                     onClick={() => handleSocialSignIn("github")}
                   >
                     <Github className="mr-2 h-4 w-4" /> GitHub
-                  </Button>
+                  </Button> */}
                 </div>
               </>
             )}

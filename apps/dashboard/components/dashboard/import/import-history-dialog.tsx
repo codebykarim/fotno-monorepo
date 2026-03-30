@@ -19,6 +19,7 @@ import {
   DialogTrigger,
 } from "@workspace/ui/components/dialog";
 import { jsonFetcher } from "@/lib/api/client";
+import { Dispatch, SetStateAction } from "react";
 
 interface ImportSummary {
   id: string;
@@ -66,8 +67,12 @@ function timeAgo(dateStr: string): string {
 
 export function ImportHistoryDialog({
   onViewJob,
+  closeDialog,
+  setCloseDialog,
 }: {
   onViewJob: (jobId: string) => void;
+  closeDialog: boolean;
+  setCloseDialog: Dispatch<SetStateAction<boolean>>;
 }) {
   const { data, isLoading } = useSWR<ImportsResponse>(
     "/api/gdrive/imports",
@@ -79,7 +84,7 @@ export function ImportHistoryDialog({
   const imports = data?.imports ?? [];
 
   return (
-    <Dialog>
+    <Dialog open={closeDialog} onOpenChange={setCloseDialog}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="gap-1.5">
           <History className="h-3.5 w-3.5" />
@@ -117,10 +122,7 @@ export function ImportHistoryDialog({
                 job.status === "LISTING";
 
               return (
-                <div
-                  key={job.id}
-                  className="flex items-center gap-3 px-4 py-3"
-                >
+                <div key={job.id} className="flex items-center gap-3 px-4 py-3">
                   {STATUS_ICON[job.status] ?? (
                     <Clock className="h-4 w-4 text-muted-foreground" />
                   )}

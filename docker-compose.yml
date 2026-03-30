@@ -223,47 +223,14 @@ services:
   # ──────────────────────────────────────────────
   # Monitoring
   # ──────────────────────────────────────────────
-  prometheus:
-    build:
-      context: ./monitoring/prometheus
-      dockerfile: Dockerfile
+  portainer:
+    image: portainer/portainer-ce:latest
     volumes:
-      - prometheus_data:/prometheus
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.retention.time=30d"
-      - "--storage.tsdb.retention.size=5GB"
-    expose:
-      - "9090"
-    restart: unless-stopped
-
-  grafana:
-    build:
-      context: ./monitoring/grafana
-      dockerfile: Dockerfile
-    volumes:
-      - grafana_data:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
-      - GF_USERS_ALLOW_SIGN_UP=false
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
     ports:
-      - "3100:3000"
-    depends_on:
-      - prometheus
-    restart: unless-stopped
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    expose:
-      - "8080"
+      - "9443:9443"
     restart: unless-stopped
 
 volumes:
-  prometheus_data:
-  grafana_data:
+  portainer_data:

@@ -5,9 +5,7 @@ import { signProductImageUrls } from "../SmartAlbumServices/productImages";
  * Get active SmartAlbum products for a gallery's photographer
  * Returns empty array if photographer doesn't have albums enabled or no active products
  */
-export const getSmartAlbumProducts = async (
-  shareToken: string,
-) => {
+export const getSmartAlbumProducts = async (shareToken: string) => {
   const gallery = await db.gallery.findFirst({
     where: publishedGalleryWhere(shareToken),
     select: {
@@ -62,7 +60,7 @@ export const getSmartAlbumProducts = async (
 
   // Sign image URLs
   const productsWithSignedImages = await Promise.all(
-    products.map(async (p) => ({
+    products.map(async (p: any) => ({
       ...p,
       imageUrls: await signProductImageUrls((p.images as string[]) || []),
     })),

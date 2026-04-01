@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@workspace/ui/components/button";
+import { Badge } from "@workspace/ui/components/badge";
+import { CheckCircle2, Clock, XCircle, RotateCcw } from "lucide-react";
 import { AlbumPreviewViewer } from "./album-preview-viewer";
 import type { SubmissionDetail } from "@/lib/types/smart-album";
 
@@ -132,10 +134,94 @@ export function SubmissionReview({
         )}
       </div>
 
+      {/* Payment Info */}
+      {submission.transactionId && (
+        <div className="border rounded-lg p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold">Payment</h2>
+            {submission.transactionStatus === "SUCCEEDED" && (
+              <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
+                <CheckCircle2 className="mr-1 h-3 w-3" />
+                Paid
+              </Badge>
+            )}
+            {submission.transactionStatus === "PENDING" && (
+              <Badge variant="secondary">
+                <Clock className="mr-1 h-3 w-3" />
+                Pending
+              </Badge>
+            )}
+            {submission.transactionStatus === "FAILED" && (
+              <Badge variant="destructive">
+                <XCircle className="mr-1 h-3 w-3" />
+                Failed
+              </Badge>
+            )}
+            {submission.transactionStatus === "REFUNDED" && (
+              <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-100">
+                <RotateCcw className="mr-1 h-3 w-3" />
+                Refunded
+              </Badge>
+            )}
+          </div>
+
+          {submission.transactionAmountCents != null && submission.transactionCurrency && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+              <div>
+                <p className="text-xs text-muted-foreground mb-0.5">Total</p>
+                <p className="font-medium">
+                  {(submission.transactionAmountCents / 100).toLocaleString("en-US", {
+                    style: "currency",
+                    currency: submission.transactionCurrency,
+                  })}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-0.5">Platform fee</p>
+                <p className="font-medium text-muted-foreground">
+                  -{(submission.transactionFeeCents! / 100).toLocaleString("en-US", {
+                    style: "currency",
+                    currency: submission.transactionCurrency,
+                  })}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-0.5">You receive</p>
+                <p className="font-semibold text-green-600">
+                  {(submission.transactionNetCents! / 100).toLocaleString("en-US", {
+                    style: "currency",
+                    currency: submission.transactionCurrency,
+                  })}
+                </p>
+              </div>
+              {submission.transactionPaidAt && (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-0.5">Paid at</p>
+                  <p className="font-medium">
+                    {new Date(submission.transactionPaidAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Album Preview */}
       <div>
         <h2 className="text-base font-semibold mb-4">Album Preview</h2>
-        <AlbumPreviewViewer designSnapshot={submission.designSnapshot} photoUrls={photoUrls} />
+        <AlbumPreviewViewer
+          designSnapshot={submission.designSnapshot}
+          photoUrls={photoUrls}
+          widthCm={submission.productWidthCm}
+          heightCm={submission.productHeightCm}
+        />
       </div>
 
       {/* Review Actions */}

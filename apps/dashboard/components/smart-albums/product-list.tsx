@@ -24,10 +24,17 @@ import { MoreHorizontal } from "lucide-react";
 interface Product {
   id: string;
   name: string;
-  size: string;
+  widthCm: number;
+  heightCm: number;
   coverType: string;
   paperType: string;
-  maxPages: number;
+  maxSpreads: number;
+  minSpreads: number | null;
+  allowFewerSpreads: boolean;
+  hasCover: boolean;
+  hasFirstPage: boolean;
+  hasLastPage: boolean;
+  images: string[];
   priceCents: number;
   currency: string;
   isActive: boolean;
@@ -105,10 +112,11 @@ export function ProductList() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Size</TableHead>
+              <TableHead>Size (cm)</TableHead>
               <TableHead>Cover</TableHead>
               <TableHead>Paper</TableHead>
-              <TableHead>Max Pages</TableHead>
+              <TableHead>Spreads</TableHead>
+              <TableHead>Pages</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -117,7 +125,7 @@ export function ProductList() {
           <TableBody>
             {Array.from({ length: 3 }).map((_, i) => (
               <TableRow key={i}>
-                {Array.from({ length: 8 }).map((_, j) => (
+                {Array.from({ length: 9 }).map((_, j) => (
                   <TableCell key={j}>
                     <Skeleton className="h-4 w-full" />
                   </TableCell>
@@ -153,56 +161,71 @@ export function ProductList() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Size</TableHead>
+              <TableHead>Size (cm)</TableHead>
               <TableHead>Cover</TableHead>
               <TableHead>Paper</TableHead>
-              <TableHead>Max Pages</TableHead>
+              <TableHead>Spreads</TableHead>
+              <TableHead>Pages</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.size}</TableCell>
-                <TableCell>{product.coverType}</TableCell>
-                <TableCell>{product.paperType}</TableCell>
-                <TableCell>{product.maxPages}</TableCell>
-                <TableCell>${(product.priceCents / 100).toFixed(2)}</TableCell>
-                <TableCell>
-                  <Badge variant={product.isActive ? "default" : "secondary"}>
-                    {product.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(product)}>
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleToggleActive(product)}
-                      >
-                        {product.isActive ? "Deactivate" : "Activate"}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="text-destructive"
-                        onClick={() => handleDelete(product.id)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+            {products.map((product) => {
+              const pages = [
+                product.hasCover ? "C" : null,
+                product.hasFirstPage ? "F" : null,
+                product.hasLastPage ? "L" : null,
+              ].filter(Boolean);
+              const spreadLabel = product.allowFewerSpreads && product.minSpreads
+                ? `${product.minSpreads}-${product.maxSpreads}`
+                : String(product.maxSpreads);
+
+              return (
+                <TableRow key={product.id}>
+                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell>{product.widthCm} x {product.heightCm}</TableCell>
+                  <TableCell>{product.coverType}</TableCell>
+                  <TableCell>{product.paperType}</TableCell>
+                  <TableCell>{spreadLabel}</TableCell>
+                  <TableCell>
+                    {pages.length > 0 ? pages.join(", ") : "-"}
+                  </TableCell>
+                  <TableCell>${(product.priceCents / 100).toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Badge variant={product.isActive ? "default" : "secondary"}>
+                      {product.isActive ? "Active" : "Inactive"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleEdit(product)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleToggleActive(product)}
+                        >
+                          {product.isActive ? "Deactivate" : "Activate"}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

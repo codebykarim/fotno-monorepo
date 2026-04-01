@@ -10,7 +10,13 @@ import {
   CardTitle,
 } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
-import { CheckCircle2, ExternalLink, Loader2, AlertCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  ExternalLink,
+  Loader2,
+  AlertCircle,
+  Unlink,
+} from "lucide-react";
 
 interface ConnectStatus {
   connected: boolean;
@@ -22,10 +28,14 @@ interface StripeConnectSetupProps {
   onStatusChange?: (fullyOnboarded: boolean) => void;
 }
 
-export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) {
+export function StripeConnectSetup({
+  onStatusChange,
+}: StripeConnectSetupProps) {
   const [status, setStatus] = useState<ConnectStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [onboarding, setOnboarding] = useState(false);
+  const [disconnecting, setDisconnecting] = useState(false);
+  const [confirmDisconnect, setConfirmDisconnect] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const onStatusChangeRef = useRef(onStatusChange);
   onStatusChangeRef.current = onStatusChange;
@@ -51,7 +61,9 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
     setOnboarding(true);
     setError(null);
     try {
-      const res = await fetch("/api/smart-albums/connect/onboard", { method: "POST" });
+      const res = await fetch("/api/smart-albums/connect/onboard", {
+        method: "POST",
+      });
       if (!res.ok) throw new Error("Failed to start onboarding");
       const data = await res.json();
       if (data.onboardingUrl) {
@@ -63,7 +75,33 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
     }
   };
 
+  const handleDisconnect = async () => {
+    setDisconnecting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/smart-albums/connect/disconnect", {
+        method: "POST",
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to disconnect");
+      }
+      setStatus({
+        connected: false,
+        chargesEnabled: false,
+        payoutsEnabled: false,
+      });
+      setConfirmDisconnect(false);
+      onStatusChangeRef.current?.(false);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setDisconnecting(false);
+    }
+  };
+
   const fullyOnboarded = status?.chargesEnabled && status?.payoutsEnabled;
+  const canDisconnect = status?.connected;
 
   if (loading) {
     return (
@@ -79,8 +117,8 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
       <CardHeader>
         <CardTitle className="text-base">Stripe Connect</CardTitle>
         <CardDescription>
-          Required to accept payments through Fotno. Clients pay securely and funds are
-          transferred to your Stripe account.
+          Required to accept payments through Fotno. Clients pay securely and
+          funds are transferred to your Stripe account.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -95,7 +133,10 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Account connected</span>
             {status?.connected ? (
-              <Badge variant="default" className="bg-green-100 text-green-700 hover:bg-green-100">
+              <Badge
+                variant="default"
+                className="bg-green-100 text-green-700 hover:bg-green-100"
+              >
                 <CheckCircle2 className="mr-1 h-3 w-3" />
                 Connected
               </Badge>
@@ -109,7 +150,10 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Charges enabled</span>
                 {status.chargesEnabled ? (
-                  <Badge variant="default" className="bg-green-100 text-green-700 hover:bg-green-100">
+                  <Badge
+                    variant="default"
+                    className="bg-green-100 text-green-700 hover:bg-green-100"
+                  >
                     <CheckCircle2 className="mr-1 h-3 w-3" />
                     Enabled
                   </Badge>
@@ -120,7 +164,10 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Payouts enabled</span>
                 {status.payoutsEnabled ? (
-                  <Badge variant="default" className="bg-green-100 text-green-700 hover:bg-green-100">
+                  <Badge
+                    variant="default"
+                    className="bg-green-100 text-green-700 hover:bg-green-100"
+                  >
                     <CheckCircle2 className="mr-1 h-3 w-3" />
                     Enabled
                   </Badge>
@@ -133,7 +180,7 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
         </div>
 
         {fullyOnboarded ? (
-          <div className="flex flex-col gap-2">
+          <div className="space-y-3">
             <p className="text-sm text-green-700 font-medium flex items-center gap-1">
               <CheckCircle2 className="h-4 w-4" />
               Ready to accept payments
@@ -151,8 +198,55 @@ export function StripeConnectSetup({ onStatusChange }: StripeConnectSetupProps) 
         ) : (
           <Button onClick={handleOnboard} disabled={onboarding} size="sm">
             {onboarding && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {status?.connected ? "Continue onboarding" : "Connect Stripe account"}
+            {status?.connected
+              ? "Continue onboarding"
+              : "Connect Stripe account"}
           </Button>
+        )}
+
+        {canDisconnect && (
+          <div className="border-t pt-3">
+            {confirmDisconnect ? (
+              <div className="space-y-2">
+                <p className="text-sm text-destructive">
+                  Are you sure? This will disconnect your Stripe account and
+                  switch payment method to &quot;outside Fotno&quot;. You can
+                  reconnect a different account anytime.
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleDisconnect}
+                    disabled={disconnecting}
+                  >
+                    {disconnecting && (
+                      <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                    )}
+                    Yes, disconnect
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setConfirmDisconnect(false)}
+                    disabled={disconnecting}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-destructive"
+                onClick={() => setConfirmDisconnect(true)}
+              >
+                <Unlink className="mr-2 h-3 w-3" />
+                Disconnect Stripe account
+              </Button>
+            )}
+          </div>
         )}
       </CardContent>
     </Card>

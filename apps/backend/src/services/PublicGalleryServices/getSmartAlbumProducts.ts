@@ -1,4 +1,5 @@
 import { publishedGalleryWhere, db } from "./_shared";
+import { signProductImageUrls } from "../SmartAlbumServices/productImages";
 
 /**
  * Get active SmartAlbum products for a gallery's photographer
@@ -42,15 +43,30 @@ export const getSmartAlbumProducts = async (
     select: {
       id: true,
       name: true,
-      size: true,
+      widthCm: true,
+      heightCm: true,
       coverType: true,
       paperType: true,
-      maxPages: true,
+      maxSpreads: true,
+      minSpreads: true,
+      allowFewerSpreads: true,
+      hasCover: true,
+      hasFirstPage: true,
+      hasLastPage: true,
+      images: true,
       priceCents: true,
       currency: true,
     },
     orderBy: [{ createdAt: "asc" }],
   });
 
-  return { products };
+  // Sign image URLs
+  const productsWithSignedImages = await Promise.all(
+    products.map(async (p) => ({
+      ...p,
+      imageUrls: await signProductImageUrls((p.images as string[]) || []),
+    })),
+  );
+
+  return { products: productsWithSignedImages };
 };

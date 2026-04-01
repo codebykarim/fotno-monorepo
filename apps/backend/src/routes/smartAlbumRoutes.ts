@@ -39,7 +39,9 @@ import { reviewSubmission } from "../services/SmartAlbumServices/reviewSubmissio
 import { generateExport } from "../services/SmartAlbumServices/generateExport";
 import { stripeConnectOnboard } from "../services/SmartAlbumServices/stripeConnectOnboard";
 import { stripeConnectStatus } from "../services/SmartAlbumServices/stripeConnectStatus";
+import { stripeConnectDisconnect } from "../services/SmartAlbumServices/stripeConnectDisconnect";
 import { confirmSmartAlbumPayment } from "../services/PublicGalleryServices/confirmSmartAlbumPayment";
+import { presignProductImage, confirmProductImage, removeProductImage } from "../services/SmartAlbumServices/productImages";
 
 const smartAlbumRoutes = Router();
 
@@ -67,7 +69,7 @@ smartAlbumRoutes.patch("/dashboard/smart-album/config", requireAuth, async (req:
 });
 
 // POST /dashboard/smart-album/products
-// Validation: name (string), size (string), coverType (string), paperType (string), maxPages (number >= 2), priceCents (number >= 0), currency? (string, default USD)
+// Validation: name (string), widthCm (number > 0), heightCm (number > 0), coverType (string), paperType (string), maxSpreads (number >= 1), priceCents (number >= 0), currency? (string, default USD)
 smartAlbumRoutes.post(
   "/dashboard/smart-album/products",
   requireAuth,
@@ -83,7 +85,7 @@ smartAlbumRoutes.post(
 );
 
 // PATCH /dashboard/smart-album/products/:productId
-// Validation: name? (string), maxPages? (number >= 2), priceCents? (number >= 0), isActive? (boolean)
+// Validation: name? (string), maxSpreads? (number >= 1), priceCents? (number >= 0), isActive? (boolean), plus page config and images
 smartAlbumRoutes.patch(
   "/dashboard/smart-album/products/:productId",
   requireAuth,
@@ -106,6 +108,56 @@ smartAlbumRoutes.delete(
     const userId = (req as any).user?.id;
     const { productId } = req.params;
     const result = await deleteProduct(userId, productId);
+    if (result.error) {
+      return res.status(result.status || 500).json({ error: result.error });
+    }
+    res.json(result.data);
+  }
+);
+
+// ─── Product Images ────────────────────────────────────────────────────────────
+
+// POST /dashboard/smart-album/products/:productId/images/presign
+// Body: { fileName, contentType }
+smartAlbumRoutes.post(
+  "/dashboard/smart-album/products/:productId/images/presign",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const userId = (req as any).user?.id;
+    const { productId } = req.params;
+    const result = await presignProductImage(userId, productId, req.body);
+    if (result.error) {
+      return res.status(result.status || 500).json({ error: result.error });
+    }
+    res.json(result.data);
+  }
+);
+
+// POST /dashboard/smart-album/products/:productId/images
+// Body: { key }
+smartAlbumRoutes.post(
+  "/dashboard/smart-album/products/:productId/images",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const userId = (req as any).user?.id;
+    const { productId } = req.params;
+    const result = await confirmProductImage(userId, productId, req.body);
+    if (result.error) {
+      return res.status(result.status || 500).json({ error: result.error });
+    }
+    res.json(result.data);
+  }
+);
+
+// DELETE /dashboard/smart-album/products/:productId/images
+// Body: { key }
+smartAlbumRoutes.delete(
+  "/dashboard/smart-album/products/:productId/images",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const userId = (req as any).user?.id;
+    const { productId } = req.params;
+    const result = await removeProductImage(userId, productId, req.body);
     if (result.error) {
       return res.status(result.status || 500).json({ error: result.error });
     }
@@ -322,6 +374,20 @@ smartAlbumRoutes.get(
   async (req: Request, res: Response) => {
     const userId = (req as any).user?.id;
     const result = await stripeConnectStatus(userId);
+    if (result.error) {
+      return res.status(result.status || 500).json({ error: result.error });
+    }
+    res.json(result.data);
+  }
+);
+
+// POST /dashboard/smart-album/connect/disconnect
+smartAlbumRoutes.post(
+  "/dashboard/smart-album/connect/disconnect",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const userId = (req as any).user?.id;
+    const result = await stripeConnectDisconnect(userId);
     if (result.error) {
       return res.status(result.status || 500).json({ error: result.error });
     }

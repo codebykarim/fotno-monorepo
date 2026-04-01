@@ -1,5 +1,9 @@
 import { db } from "./_shared";
 
+const PLATFORM_FEE_PERCENT = parseFloat(
+  process.env.SMART_ALBUM_PLATFORM_FEE_PERCENT || "10",
+);
+
 export const getConfig = async (userId: string) => {
   try {
     let config = await db.smartAlbumConfig.findUnique({
@@ -15,7 +19,7 @@ export const getConfig = async (userId: string) => {
       });
     }
 
-    return { data: config };
+    return { data: { ...config, platformFeePercent: PLATFORM_FEE_PERCENT } };
   } catch (err: any) {
     return { error: err.message, status: 500 as const };
   }

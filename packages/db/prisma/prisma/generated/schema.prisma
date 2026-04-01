@@ -565,22 +565,29 @@ model SmartAlbumConfig {
 }
 
 model SmartAlbumProduct {
-  id         String             @id @default(uuid())
-  configId   String
-  config     SmartAlbumConfig   @relation(fields: [configId], references: [id], onDelete: Cascade)
-  name       String
-  size       String
-  coverType  String
-  paperType  String
-  maxPages   Int
-  priceCents Int
-  currency   String             @default("USD")
-  isActive   Boolean            @default(true)
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  designs    SmartAlbumDesign[]
+  id                String             @id @default(uuid())
+  configId          String
+  config            SmartAlbumConfig   @relation(fields: [configId], references: [id], onDelete: Cascade)
+  name              String
+  widthCm           Float
+  heightCm          Float
+  coverType         String
+  paperType         String
+  maxSpreads        Int
+  minSpreads        Int?
+  allowFewerSpreads Boolean            @default(false)
+  hasCover          Boolean            @default(true)
+  hasFirstPage      Boolean            @default(true)
+  hasLastPage       Boolean            @default(true)
+  images            Json               @default("[]")
+  priceCents        Int
+  currency          String             @default("USD")
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  designs           SmartAlbumDesign[]
 
-  @@unique([configId, size, coverType, paperType])
+  @@unique([configId, widthCm, heightCm, coverType, paperType])
   @@index([configId])
   @@map("smart_album_product")
 }

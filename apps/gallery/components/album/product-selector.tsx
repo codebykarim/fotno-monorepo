@@ -11,10 +11,11 @@ import {
 interface Product {
   id: string;
   name: string;
-  size: string;
+  widthCm: number;
+  heightCm: number;
   coverType: string;
   paperType: string;
-  maxPages: number;
+  maxSpreads: number;
   priceCents: number;
   currency: string;
 }
@@ -51,7 +52,7 @@ export function ProductSelector({
               <div className="flex items-center gap-2">
                 <span className="font-medium">{product.name}</span>
                 <span className="text-muted-foreground">
-                  {product.size} &middot; ${price}
+                  {product.widthCm}x{product.heightCm}cm &middot; ${price}
                 </span>
               </div>
             </SelectItem>

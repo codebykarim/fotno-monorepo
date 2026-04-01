@@ -13,6 +13,7 @@ export default function AlbumPreviewPage() {
   const router = useRouter();
 
   const [design, setDesign] = useState<SmartAlbumDesign | null>(null);
+  const [product, setProduct] = useState<{ widthCm?: number; heightCm?: number } | null>(null);
   const [photos, setPhotos] = useState<
     Array<{
       id: string;
@@ -54,6 +55,7 @@ export default function AlbumPreviewPage() {
         const galleryData = galleryRes.ok ? await galleryRes.json() : null;
 
         setDesign(data);
+        setProduct(data.product || null);
         setPhotos(
           (galleryData?.gallery?.photos || []).map((p: any) => ({
             id: p.id,
@@ -137,7 +139,12 @@ export default function AlbumPreviewPage() {
       </header>
 
       <div className="flex-1 overflow-y-auto">
-        <AlbumPreview designData={design.designData} photos={photos} />
+        <AlbumPreview
+          designData={design.designData}
+          photos={photos}
+          widthCm={product?.widthCm}
+          heightCm={product?.heightCm}
+        />
       </div>
     </div>
   );

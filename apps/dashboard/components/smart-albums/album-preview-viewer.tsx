@@ -19,6 +19,8 @@ interface SpreadPreviewProps {
   photoUrls: Record<string, string>;
   label: string;
   isSpread: boolean;
+  widthCm?: number;
+  heightCm?: number;
 }
 
 function SpreadPreview({
@@ -26,6 +28,8 @@ function SpreadPreview({
   photoUrls,
   label,
   isSpread,
+  widthCm,
+  heightCm,
 }: SpreadPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [canvasScale, setCanvasScale] = useState(1);
@@ -54,7 +58,14 @@ function SpreadPreview({
           ref={containerRef}
           className="relative w-full bg-zinc-900 rounded-lg shadow-lg overflow-hidden"
           style={{
-            aspectRatio: isSpread ? "2 / 1" : "3 / 4",
+            aspectRatio:
+              widthCm && heightCm
+                ? isSpread
+                  ? `${widthCm * 2} / ${heightCm}`
+                  : `${widthCm} / ${heightCm}`
+                : isSpread
+                  ? "2 / 1"
+                  : "3 / 4",
             maxWidth: isSpread ? "900px" : "400px",
           }}
         >
@@ -171,11 +182,15 @@ function SpreadPreview({
 interface AlbumPreviewViewerProps {
   designSnapshot: DesignSnapshot;
   photoUrls: Record<string, string>;
+  widthCm?: number;
+  heightCm?: number;
 }
 
 export function AlbumPreviewViewer({
   designSnapshot,
   photoUrls,
+  widthCm,
+  heightCm,
 }: AlbumPreviewViewerProps) {
   // Load Google Fonts for text overlays
   useEffect(() => {
@@ -194,6 +209,8 @@ export function AlbumPreviewViewer({
           photoUrls={photoUrls}
           label="Cover"
           isSpread={false}
+          widthCm={widthCm}
+          heightCm={heightCm}
         />
       )}
 
@@ -203,6 +220,8 @@ export function AlbumPreviewViewer({
           photoUrls={photoUrls}
           label="First Page"
           isSpread={false}
+          widthCm={widthCm}
+          heightCm={heightCm}
         />
       )}
 
@@ -213,6 +232,8 @@ export function AlbumPreviewViewer({
           photoUrls={photoUrls}
           label={`Spread ${spread.order + 1}`}
           isSpread={true}
+          widthCm={widthCm}
+          heightCm={heightCm}
         />
       ))}
 
@@ -222,6 +243,8 @@ export function AlbumPreviewViewer({
           photoUrls={photoUrls}
           label="Last Page"
           isSpread={false}
+          widthCm={widthCm}
+          heightCm={heightCm}
         />
       )}
     </div>

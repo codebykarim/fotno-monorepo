@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { useMemo, useState } from "react";
+import { Appearance, loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
   PaymentElement,
@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@workspace/ui/components/dialog";
 import { Send, CheckCircle2, Loader2, CreditCard } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -57,18 +58,17 @@ function PaymentForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
-  const [confirming, setConfirming] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const formatAmount = (cents: number, cur: string) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: cur,
-    }).format(cents / 100);
-  };
+  const displayPrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  }).format(amountCents / 100);
 
-  const handlePay = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!stripe || !elements) return;
-    setConfirming(true);
+    setIsProcessing(true);
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
@@ -77,39 +77,43 @@ function PaymentForm({
     });
 
     if (error) {
-      onError(error.message ?? "Payment failed");
-      setConfirming(false);
+      onError(error.message ?? "Payment failed. Please try again.");
+      setIsProcessing(false);
       return;
     }
 
-    if (paymentIntent?.status === "succeeded") {
+    if (
+      paymentIntent?.status === "succeeded" ||
+      paymentIntent?.status === "processing"
+    ) {
       onSuccess(paymentIntent.id);
     } else {
-      onError(`Unexpected payment status: ${paymentIntent?.status}`);
-      setConfirming(false);
+      onError("Payment not completed. Please try again.");
+      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="space-y-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
       <div className="rounded-md border p-3 text-sm text-center font-medium">
-        Total: {formatAmount(amountCents, currency)}
+        Total: {displayPrice}
       </div>
       <PaymentElement />
-      <Button onClick={handlePay} disabled={confirming || !stripe} className="w-full">
-        {confirming ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Processing payment...
-          </>
+      <Button
+        type="submit"
+        disabled={isProcessing || !stripe || !elements}
+        className="h-12 w-full"
+      >
+        {isProcessing ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <>
-            <CreditCard className="mr-2 h-4 w-4" />
-            Pay and submit album
-          </>
+          <CreditCard className="mr-2 h-4 w-4" />
         )}
+        {isProcessing
+          ? "Processing payment..."
+          : `Pay ${displayPrice} & Submit`}
       </Button>
-    </div>
+    </form>
   );
 }
 
@@ -129,6 +133,22 @@ export function SubmitDialog({
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
+  const { resolvedTheme } = useTheme();
+
+  const stripeAppearance = useMemo<Appearance>(() => {
+    const isDark = resolvedTheme === "dark";
+    return {
+      theme: isDark ? "night" : "stripe",
+      variables: {
+        colorPrimary: isDark ? "#dda040" : "#c87d2f",
+        colorBackground: isDark ? "#1a1610" : "#faf9f7",
+        colorText: isDark ? "#f5f3f0" : "#1a1610",
+        colorDanger: "#ef4444",
+        fontFamily: "system-ui, sans-serif",
+        borderRadius: "0.625rem",
+      },
+    };
+  }, [resolvedTheme]);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -156,7 +176,9 @@ export function SubmitDialog({
       setIsSuccess(true);
       setPaymentInfo(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to confirm payment");
+      setError(
+        err instanceof Error ? err.message : "Failed to confirm payment",
+      );
     }
   };
 
@@ -187,8 +209,8 @@ export function SubmitDialog({
               Album Submitted!
             </DialogTitle>
             <DialogDescription>
-              Your album has been submitted to the photographer for review. You'll receive
-              an email once they've reviewed it.
+              Your album has been submitted to the photographer for review.
+              You'll receive an email once they've reviewed it.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -208,8 +230,8 @@ export function SubmitDialog({
             <DialogHeader>
               <DialogTitle>Payment Configuration Error</DialogTitle>
               <DialogDescription>
-                Payment processing is not configured. Please contact the photographer
-                to resolve this issue.
+                Payment processing is not configured. Please contact the
+                photographer to resolve this issue.
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -223,18 +245,19 @@ export function SubmitDialog({
           <DialogHeader>
             <DialogTitle>Complete Payment</DialogTitle>
             <DialogDescription>
-              Enter your payment details to submit the album. Payment is processed
-              securely through Stripe.
+              Enter your payment details to submit the album. Payment is
+              processed securely through Stripe.
             </DialogDescription>
           </DialogHeader>
 
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
 
           <Elements
             stripe={stripePromise}
-            options={{ clientSecret: paymentInfo.clientSecret }}
+            options={{
+              clientSecret: paymentInfo.clientSecret,
+              appearance: stripeAppearance,
+            }}
           >
             <PaymentForm
               amountCents={paymentInfo.amountCents}
@@ -255,8 +278,8 @@ export function SubmitDialog({
         <DialogHeader>
           <DialogTitle>Submit Album for Review</DialogTitle>
           <DialogDescription>
-            Once submitted, the album will be sent to the photographer for review. You
-            won&apos;t be able to make changes until they respond.
+            Once submitted, the album will be sent to the photographer for
+            review. You won&apos;t be able to make changes until they respond.
           </DialogDescription>
         </DialogHeader>
 
@@ -276,13 +299,15 @@ export function SubmitDialog({
             </div>
           </div>
 
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} disabled={isSubmitting}>
+          <Button
+            variant="outline"
+            onClick={handleClose}
+            disabled={isSubmitting}
+          >
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={isSubmitting}>

@@ -178,7 +178,10 @@ export default function AlbumDesignerPage() {
 
   const designData = design.designData as any;
   const pageCount =
-    1 + 1 + (designData?.spreads?.length || 0) + 1;
+    (designData?.cover ? 1 : 0) +
+    (designData?.firstPage ? 1 : 0) +
+    (designData?.spreads?.length || 0) +
+    (designData?.lastPage ? 1 : 0);
 
   const product = products.find((p: any) => p.id === design.productId);
 

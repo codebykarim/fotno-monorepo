@@ -24,6 +24,7 @@ interface SmartAlbumConfig {
   enabled: boolean;
   paymentMethod: "OUTSIDE_FOTNO" | "INSIDE_FOTNO";
   stripeConnectOnboarded?: boolean;
+  platformFeePercent?: number;
   products: any[];
 }
 
@@ -168,12 +169,32 @@ export function AlbumConfigForm() {
                   ? "Clients will pay you directly via link in the submission confirmation"
                   : "Clients will pay through our platform using Stripe"}
               </p>
+
+              {config.paymentMethod === "INSIDE_FOTNO" && config.platformFeePercent != null && (
+                <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm">
+                  <p className="font-medium text-amber-400">
+                    Platform fee: {config.platformFeePercent}%
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    A {config.platformFeePercent}% service fee is deducted from each album payment.
+                    Your client pays the full price, and you receive{" "}
+                    {100 - config.platformFeePercent}% of each sale directly to your Stripe account.
+                  </p>
+                </div>
+              )}
             </div>
 
             {(config.paymentMethod === "INSIDE_FOTNO" || !connectOnboarded) && (
               <StripeConnectSetup
                 onStatusChange={(onboarded) => {
                   setConnectOnboarded(onboarded);
+                  // When disconnected, reload config to pick up payment method reset
+                  if (!onboarded) {
+                    fetch("/api/smart-albums/config")
+                      .then((r) => r.json())
+                      .then((data) => setConfig(data))
+                      .catch(() => {});
+                  }
                 }}
               />
             )}

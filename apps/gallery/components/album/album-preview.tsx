@@ -13,9 +13,11 @@ interface Photo {
 interface AlbumPreviewProps {
   designData: DesignData;
   photos?: Photo[];
+  widthCm?: number;
+  heightCm?: number;
 }
 
-export function AlbumPreview({ designData, photos = [] }: AlbumPreviewProps) {
+export function AlbumPreview({ designData, photos = [], widthCm, heightCm }: AlbumPreviewProps) {
   return (
     <div className="space-y-6 w-full max-w-[900px] mx-auto max-h-[90vh] overflow-y-auto p-4">
       {designData.cover && (
@@ -28,6 +30,8 @@ export function AlbumPreview({ designData, photos = [] }: AlbumPreviewProps) {
             slots={designData.cover.slots || []}
             photos={photos}
             isSpread={false}
+            widthCm={widthCm}
+            heightCm={heightCm}
             onSlotUpdate={() => {}}
             isReadOnly
           />
@@ -44,6 +48,8 @@ export function AlbumPreview({ designData, photos = [] }: AlbumPreviewProps) {
             slots={designData.firstPage.slots || []}
             photos={photos}
             isSpread={false}
+            widthCm={widthCm}
+            heightCm={heightCm}
             onSlotUpdate={() => {}}
             isReadOnly
             texts={designData.firstPage.texts}
@@ -63,6 +69,8 @@ export function AlbumPreview({ designData, photos = [] }: AlbumPreviewProps) {
                 slots={spread.slots || []}
                 photos={photos}
                 isSpread
+                widthCm={widthCm}
+                heightCm={heightCm}
                 onSlotUpdate={() => {}}
                 isReadOnly
               />
@@ -81,6 +89,8 @@ export function AlbumPreview({ designData, photos = [] }: AlbumPreviewProps) {
             slots={designData.lastPage.slots || []}
             photos={photos}
             isSpread={false}
+            widthCm={widthCm}
+            heightCm={heightCm}
             onSlotUpdate={() => {}}
             isReadOnly
             texts={designData.lastPage.texts}

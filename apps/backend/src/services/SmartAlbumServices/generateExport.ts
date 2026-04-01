@@ -14,9 +14,6 @@ import {
 // Album page background — always dark (zinc-900) to match gallery/dashboard preview
 const PAGE_BG = { r: 24, g: 24, b: 27 };
 
-// Aspect ratios matching the gallery UI
-const SINGLE_ASPECT = 4 / 3; // height / width  (portrait 3:4)
-
 // ─── Font cache ──────────────────────────────────────────────────────
 // satori needs raw font ArrayBuffers. We fetch from Google Fonts and cache.
 
@@ -61,21 +58,19 @@ async function fetchFontBuffer(fontFamily: string): Promise<ArrayBuffer | null> 
 
 // ─── Dimensions ───────────────────────────────────────────────────────
 
-function parseProductDimensions(size: string): { base: number } {
-  const parts = size.split("x").map(Number);
-  const dpi = 150;
-  if (parts.length === 2 && !isNaN(parts[0])) {
-    return { base: parts[0] * dpi };
-  }
-  return { base: 1800 };
+const DPI = 150;
+const CM_TO_INCH = 1 / 2.54;
+
+function cmToPixels(cm: number): number {
+  return Math.round(cm * CM_TO_INCH * DPI);
 }
 
-function singlePageDims(base: number): { w: number; h: number } {
-  return { w: base, h: Math.round(base * SINGLE_ASPECT) };
+function singlePageDimsFromProduct(widthCm: number, heightCm: number): { w: number; h: number } {
+  return { w: cmToPixels(widthCm), h: cmToPixels(heightCm) };
 }
 
-function spreadDims(base: number): { w: number; h: number } {
-  return { w: base * 2, h: base };
+function spreadDimsFromProduct(widthCm: number, heightCm: number): { w: number; h: number } {
+  return { w: cmToPixels(widthCm) * 2, h: cmToPixels(heightCm) };
 }
 
 // ─── Render a single image slot ───────────────────────────────────────
@@ -314,6 +309,7 @@ async function renderPage(
     },
   })
     .composite(composites)
+    .withMetadata({ density: DPI })
     .jpeg({ quality: 90 })
     .toBuffer();
 }
@@ -334,7 +330,7 @@ export const generateExport = async (
             id: true,
             title: true,
             gallery: { select: { userId: true } },
-            product: { select: { size: true, name: true } },
+            product: { select: { widthCm: true, heightCm: true, name: true } },
           },
         },
       },
@@ -390,9 +386,9 @@ export const generateExport = async (
       }),
     );
 
-    const { base } = parseProductDimensions(submission.design.product.size);
-    const single = singlePageDims(base);
-    const spread = spreadDims(base);
+    const { widthCm, heightCm } = submission.design.product;
+    const single = singlePageDimsFromProduct(widthCm, heightCm);
+    const spread = spreadDimsFromProduct(widthCm, heightCm);
 
     const pages: [string, Buffer][] = [];
 

@@ -131,7 +131,7 @@ export const getDesign = async (
 /**
  * Update a design (auto-save)
  * Updates designData, title, or productId with DRAFT status validation
- * Validates maxPages constraint
+ * Validates maxSpreads constraint
  */
 export const updateDesign = async (
   shareToken: string,

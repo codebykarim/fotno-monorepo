@@ -40,6 +40,10 @@ interface SpreadCanvasProps {
   slots: Slot[];
   photos?: Photo[];
   isSpread?: boolean;
+  /** Product page width in cm — controls aspect ratio */
+  widthCm?: number;
+  /** Product page height in cm — controls aspect ratio */
+  heightCm?: number;
   onSlotUpdate: (slotIndex: number, updates: Partial<Slot>) => void;
   onSlotSelect?: (slotIndex: number) => void;
   selectedSlotIndex?: number | null;
@@ -55,6 +59,8 @@ export function SpreadCanvas({
   slots,
   photos = [],
   isSpread = true,
+  widthCm,
+  heightCm,
   onSlotUpdate,
   onSlotSelect,
   selectedSlotIndex,
@@ -219,7 +225,14 @@ export function SpreadCanvas({
         ref={containerRef}
         className="relative w-full bg-zinc-900 rounded-lg shadow-lg overflow-hidden"
         style={{
-          aspectRatio: isSpread ? "2 / 1" : "3 / 4",
+          aspectRatio:
+            widthCm && heightCm
+              ? isSpread
+                ? `${widthCm * 2} / ${heightCm}`
+                : `${widthCm} / ${heightCm}`
+              : isSpread
+                ? "2 / 1"
+                : "3 / 4",
           maxWidth: isSpread ? "900px" : "400px",
         }}
       >

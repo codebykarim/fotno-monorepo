@@ -31,6 +31,12 @@ interface SubmissionListItem {
   galleryTitle: string;
   productName: string;
   pageCount: number;
+  paid?: boolean;
+  paymentAmount?: {
+    amountCents: number;
+    netCents: number;
+    currency: string;
+  } | null;
 }
 
 const STATUS_OPTIONS = [
@@ -132,6 +138,7 @@ export function SubmissionList({ galleryId, basePath = "/smart-albums/submission
                 <TableHead>Pages</TableHead>
                 <TableHead>Version</TableHead>
                 <TableHead>Submitted</TableHead>
+                <TableHead>Payment</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead />
               </TableRow>
@@ -145,7 +152,7 @@ export function SubmissionList({ galleryId, basePath = "/smart-albums/submission
                       <Skeleton className="h-3 w-32" />
                     </div>
                   </TableCell>
-                  {Array.from({ length: 6 }).map((_, j) => (
+                  {Array.from({ length: 7 }).map((_, j) => (
                     <TableCell key={j}>
                       <Skeleton className="h-4 w-full" />
                     </TableCell>
@@ -179,6 +186,7 @@ export function SubmissionList({ galleryId, basePath = "/smart-albums/submission
                   <TableHead>Pages</TableHead>
                   <TableHead>Version</TableHead>
                   <TableHead>Submitted</TableHead>
+                  <TableHead>Payment</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead />
                 </TableRow>
@@ -200,6 +208,29 @@ export function SubmissionList({ galleryId, basePath = "/smart-albums/submission
                     <TableCell>v{sub.version}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {new Date(sub.submittedAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      {sub.paid ? (
+                        <div>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                            Paid
+                          </span>
+                          {sub.paymentAmount && (
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              {(sub.paymentAmount.netCents / 100).toLocaleString("en-US", {
+                                style: "currency",
+                                currency: sub.paymentAmount.currency,
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      ) : sub.paymentAmount ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                          Pending
+                        </span>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={sub.status} />

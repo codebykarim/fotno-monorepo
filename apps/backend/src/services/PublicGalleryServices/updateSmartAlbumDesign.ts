@@ -30,7 +30,7 @@ export const updateSmartAlbumDesign = async (
       status: true,
       productId: true,
       product: {
-        select: { maxPages: true },
+        select: { maxSpreads: true },
       },
     },
   });
@@ -47,8 +47,8 @@ export const updateSmartAlbumDesign = async (
     };
   }
 
-  // Determine maxPages for validation — use new product if changing, otherwise current
-  let effectiveMaxPages = design.product.maxPages;
+  // Determine maxSpreads for validation — use new product if changing, otherwise current
+  let effectiveMaxSpreads = design.product.maxSpreads;
 
   if (body.productId && body.productId !== design.productId) {
     const newProduct = await db.smartAlbumProduct.findFirst({
@@ -59,22 +59,22 @@ export const updateSmartAlbumDesign = async (
           userId: gallery.userId,
         },
       },
-      select: { maxPages: true },
+      select: { maxSpreads: true },
     });
 
     if (!newProduct) {
       return { error: "Product not found or not available for this gallery", status: 404 };
     }
 
-    effectiveMaxPages = newProduct.maxPages;
+    effectiveMaxSpreads = newProduct.maxSpreads;
   }
 
-  // Validate maxPages constraint if designData is being updated
+  // Validate maxSpreads constraint if designData is being updated
   if (body.designData) {
     const spreadCount = (body.designData.spreads as any[] | undefined)?.length || 0;
-    if (spreadCount > effectiveMaxPages) {
+    if (spreadCount > effectiveMaxSpreads) {
       return {
-        error: `Design has ${spreadCount} spreads, but product only allows ${effectiveMaxPages} spreads`,
+        error: `Design has ${spreadCount} spreads, but product only allows ${effectiveMaxSpreads} spreads`,
         status: 400,
       };
     }
@@ -97,7 +97,7 @@ export const updateSmartAlbumDesign = async (
         select: {
           id: true,
           name: true,
-          maxPages: true,
+          maxSpreads: true,
         },
       },
       updatedAt: true,

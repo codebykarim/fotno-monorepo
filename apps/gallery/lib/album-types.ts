@@ -33,15 +33,23 @@ export enum SmartAlbumPaymentMethod {
 export interface SmartAlbumProduct {
   id: string;
   name: string;
-  size: string; // e.g., "12x12", "10x10"
-  coverType: string; // e.g., "leather", "linen"
-  paperType: string; // e.g., "matte", "lustre"
-  maxPages: number; // Maximum spread count
+  widthCm: number;
+  heightCm: number;
+  coverType: string;
+  paperType: string;
+  maxSpreads: number;
+  minSpreads: number | null;
+  allowFewerSpreads: boolean;
+  hasCover: boolean;
+  hasFirstPage: boolean;
+  hasLastPage: boolean;
+  images: string[];
+  imageUrls?: string[]; // signed download URLs
   priceCents: number;
-  currency: string; // "USD"
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
+  currency: string;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductListResponse {

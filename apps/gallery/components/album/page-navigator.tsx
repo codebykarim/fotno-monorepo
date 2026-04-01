@@ -26,6 +26,13 @@ interface PageNavigatorProps {
   onRemovePage?: (page: "cover" | "first" | "last") => void;
   onAddPage?: (page: "cover" | "first" | "last") => void;
   maxPages?: number;
+  minSpreads?: number;
+  /** Product config: whether product includes cover */
+  productHasCover?: boolean;
+  /** Product config: whether product includes first page */
+  productHasFirstPage?: boolean;
+  /** Product config: whether product includes last page */
+  productHasLastPage?: boolean;
   isReadOnly?: boolean;
 }
 
@@ -154,40 +161,47 @@ export function PageNavigator({
   onRemovePage,
   onAddPage,
   maxPages = 50,
+  minSpreads = 0,
+  productHasCover,
+  productHasFirstPage,
+  productHasLastPage,
   isReadOnly = false,
 }: PageNavigatorProps) {
   const canAddSpread = spreads.length < maxPages;
+  const canRemoveSpread = onRemoveSpread && spreads.length > minSpreads;
 
   return (
     <div className="border-t border-border/50 bg-background/80 px-4 py-.5">
       <div className="flex items-center gap-2 overflow-x-auto">
-        {/* Cover */}
-        {cover ? (
-          <PageThumb
-            label="Cover"
-            isSelected={selectedIndex === null}
-            slots={cover.slots as any}
-            onClick={() => onSelectPage(null)}
-            onDelete={!isReadOnly ? () => onRemovePage?.("cover") : undefined}
-          />
-        ) : (
-          !isReadOnly && (
-            <AddPageButton label="Cover" onClick={() => onAddPage?.("cover")} />
+        {/* Cover - only show if product has cover */}
+        {productHasCover !== false && (
+          cover ? (
+            <PageThumb
+              label="Cover"
+              isSelected={selectedIndex === null}
+              slots={cover.slots as any}
+              onClick={() => onSelectPage(null)}
+            />
+          ) : (
+            !isReadOnly && (
+              <AddPageButton label="Cover" onClick={() => onAddPage?.("cover")} />
+            )
           )
         )}
 
-        {/* First Page */}
-        {firstPage ? (
-          <PageThumb
-            label="First"
-            isSelected={selectedIndex === -1}
-            slots={firstPage.slots as any}
-            onClick={() => onSelectPage(-1)}
-            onDelete={!isReadOnly ? () => onRemovePage?.("first") : undefined}
-          />
-        ) : (
-          !isReadOnly && (
-            <AddPageButton label="First" onClick={() => onAddPage?.("first")} />
+        {/* First Page - only show if product has first page */}
+        {productHasFirstPage !== false && (
+          firstPage ? (
+            <PageThumb
+              label="First"
+              isSelected={selectedIndex === -1}
+              slots={firstPage.slots as any}
+              onClick={() => onSelectPage(-1)}
+            />
+          ) : (
+            !isReadOnly && (
+              <AddPageButton label="First" onClick={() => onAddPage?.("first")} />
+            )
           )
         )}
 
@@ -206,7 +220,9 @@ export function PageNavigator({
             slots={spread.slots as any}
             onClick={() => onSelectPage(spread.order)}
             onDelete={
-              !isReadOnly ? () => onRemoveSpread?.(spread.order) : undefined
+              !isReadOnly && canRemoveSpread
+                ? () => onRemoveSpread?.(spread.order)
+                : undefined
             }
           />
         ))}
@@ -228,18 +244,19 @@ export function PageNavigator({
           <div className="w-px h-10 bg-border/30 flex-shrink-0 mx-1" />
         )}
 
-        {/* Last Page */}
-        {lastPage ? (
-          <PageThumb
-            label="Last"
-            isSelected={selectedIndex === -2}
-            slots={lastPage.slots as any}
-            onClick={() => onSelectPage(-2)}
-            onDelete={!isReadOnly ? () => onRemovePage?.("last") : undefined}
-          />
-        ) : (
-          !isReadOnly && (
-            <AddPageButton label="Last" onClick={() => onAddPage?.("last")} />
+        {/* Last Page - only show if product has last page */}
+        {productHasLastPage !== false && (
+          lastPage ? (
+            <PageThumb
+              label="Last"
+              isSelected={selectedIndex === -2}
+              slots={lastPage.slots as any}
+              onClick={() => onSelectPage(-2)}
+            />
+          ) : (
+            !isReadOnly && (
+              <AddPageButton label="Last" onClick={() => onAddPage?.("last")} />
+            )
           )
         )}
 

@@ -32623,12 +32623,18 @@ export namespace Prisma {
   }
 
   export type SmartAlbumProductAvgAggregateOutputType = {
-    maxPages: number | null
+    widthCm: number | null
+    heightCm: number | null
+    maxSpreads: number | null
+    minSpreads: number | null
     priceCents: number | null
   }
 
   export type SmartAlbumProductSumAggregateOutputType = {
-    maxPages: number | null
+    widthCm: number | null
+    heightCm: number | null
+    maxSpreads: number | null
+    minSpreads: number | null
     priceCents: number | null
   }
 
@@ -32636,10 +32642,16 @@ export namespace Prisma {
     id: string | null
     configId: string | null
     name: string | null
-    size: string | null
+    widthCm: number | null
+    heightCm: number | null
     coverType: string | null
     paperType: string | null
-    maxPages: number | null
+    maxSpreads: number | null
+    minSpreads: number | null
+    allowFewerSpreads: boolean | null
+    hasCover: boolean | null
+    hasFirstPage: boolean | null
+    hasLastPage: boolean | null
     priceCents: number | null
     currency: string | null
     isActive: boolean | null
@@ -32651,10 +32663,16 @@ export namespace Prisma {
     id: string | null
     configId: string | null
     name: string | null
-    size: string | null
+    widthCm: number | null
+    heightCm: number | null
     coverType: string | null
     paperType: string | null
-    maxPages: number | null
+    maxSpreads: number | null
+    minSpreads: number | null
+    allowFewerSpreads: boolean | null
+    hasCover: boolean | null
+    hasFirstPage: boolean | null
+    hasLastPage: boolean | null
     priceCents: number | null
     currency: string | null
     isActive: boolean | null
@@ -32666,10 +32684,17 @@ export namespace Prisma {
     id: number
     configId: number
     name: number
-    size: number
+    widthCm: number
+    heightCm: number
     coverType: number
     paperType: number
-    maxPages: number
+    maxSpreads: number
+    minSpreads: number
+    allowFewerSpreads: number
+    hasCover: number
+    hasFirstPage: number
+    hasLastPage: number
+    images: number
     priceCents: number
     currency: number
     isActive: number
@@ -32680,12 +32705,18 @@ export namespace Prisma {
 
 
   export type SmartAlbumProductAvgAggregateInputType = {
-    maxPages?: true
+    widthCm?: true
+    heightCm?: true
+    maxSpreads?: true
+    minSpreads?: true
     priceCents?: true
   }
 
   export type SmartAlbumProductSumAggregateInputType = {
-    maxPages?: true
+    widthCm?: true
+    heightCm?: true
+    maxSpreads?: true
+    minSpreads?: true
     priceCents?: true
   }
 
@@ -32693,10 +32724,16 @@ export namespace Prisma {
     id?: true
     configId?: true
     name?: true
-    size?: true
+    widthCm?: true
+    heightCm?: true
     coverType?: true
     paperType?: true
-    maxPages?: true
+    maxSpreads?: true
+    minSpreads?: true
+    allowFewerSpreads?: true
+    hasCover?: true
+    hasFirstPage?: true
+    hasLastPage?: true
     priceCents?: true
     currency?: true
     isActive?: true
@@ -32708,10 +32745,16 @@ export namespace Prisma {
     id?: true
     configId?: true
     name?: true
-    size?: true
+    widthCm?: true
+    heightCm?: true
     coverType?: true
     paperType?: true
-    maxPages?: true
+    maxSpreads?: true
+    minSpreads?: true
+    allowFewerSpreads?: true
+    hasCover?: true
+    hasFirstPage?: true
+    hasLastPage?: true
     priceCents?: true
     currency?: true
     isActive?: true
@@ -32723,10 +32766,17 @@ export namespace Prisma {
     id?: true
     configId?: true
     name?: true
-    size?: true
+    widthCm?: true
+    heightCm?: true
     coverType?: true
     paperType?: true
-    maxPages?: true
+    maxSpreads?: true
+    minSpreads?: true
+    allowFewerSpreads?: true
+    hasCover?: true
+    hasFirstPage?: true
+    hasLastPage?: true
+    images?: true
     priceCents?: true
     currency?: true
     isActive?: true
@@ -32825,10 +32875,17 @@ export namespace Prisma {
     id: string
     configId: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads: number | null
+    allowFewerSpreads: boolean
+    hasCover: boolean
+    hasFirstPage: boolean
+    hasLastPage: boolean
+    images: JsonValue
     priceCents: number
     currency: string
     isActive: boolean
@@ -32859,10 +32916,17 @@ export namespace Prisma {
     id?: boolean
     configId?: boolean
     name?: boolean
-    size?: boolean
+    widthCm?: boolean
+    heightCm?: boolean
     coverType?: boolean
     paperType?: boolean
-    maxPages?: boolean
+    maxSpreads?: boolean
+    minSpreads?: boolean
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: boolean
     priceCents?: boolean
     currency?: boolean
     isActive?: boolean
@@ -32877,10 +32941,17 @@ export namespace Prisma {
     id?: boolean
     configId?: boolean
     name?: boolean
-    size?: boolean
+    widthCm?: boolean
+    heightCm?: boolean
     coverType?: boolean
     paperType?: boolean
-    maxPages?: boolean
+    maxSpreads?: boolean
+    minSpreads?: boolean
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: boolean
     priceCents?: boolean
     currency?: boolean
     isActive?: boolean
@@ -32893,10 +32964,17 @@ export namespace Prisma {
     id?: boolean
     configId?: boolean
     name?: boolean
-    size?: boolean
+    widthCm?: boolean
+    heightCm?: boolean
     coverType?: boolean
     paperType?: boolean
-    maxPages?: boolean
+    maxSpreads?: boolean
+    minSpreads?: boolean
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: boolean
     priceCents?: boolean
     currency?: boolean
     isActive?: boolean
@@ -32909,10 +32987,17 @@ export namespace Prisma {
     id?: boolean
     configId?: boolean
     name?: boolean
-    size?: boolean
+    widthCm?: boolean
+    heightCm?: boolean
     coverType?: boolean
     paperType?: boolean
-    maxPages?: boolean
+    maxSpreads?: boolean
+    minSpreads?: boolean
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: boolean
     priceCents?: boolean
     currency?: boolean
     isActive?: boolean
@@ -32920,7 +33005,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SmartAlbumProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "configId" | "name" | "size" | "coverType" | "paperType" | "maxPages" | "priceCents" | "currency" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["smartAlbumProduct"]>
+  export type SmartAlbumProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "configId" | "name" | "widthCm" | "heightCm" | "coverType" | "paperType" | "maxSpreads" | "minSpreads" | "allowFewerSpreads" | "hasCover" | "hasFirstPage" | "hasLastPage" | "images" | "priceCents" | "currency" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["smartAlbumProduct"]>
   export type SmartAlbumProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
     designs?: boolean | SmartAlbumProduct$designsArgs<ExtArgs>
@@ -32943,10 +33028,17 @@ export namespace Prisma {
       id: string
       configId: string
       name: string
-      size: string
+      widthCm: number
+      heightCm: number
       coverType: string
       paperType: string
-      maxPages: number
+      maxSpreads: number
+      minSpreads: number | null
+      allowFewerSpreads: boolean
+      hasCover: boolean
+      hasFirstPage: boolean
+      hasLastPage: boolean
+      images: Prisma.JsonValue
       priceCents: number
       currency: string
       isActive: boolean
@@ -33380,10 +33472,17 @@ export namespace Prisma {
     readonly id: FieldRef<"SmartAlbumProduct", 'String'>
     readonly configId: FieldRef<"SmartAlbumProduct", 'String'>
     readonly name: FieldRef<"SmartAlbumProduct", 'String'>
-    readonly size: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly widthCm: FieldRef<"SmartAlbumProduct", 'Float'>
+    readonly heightCm: FieldRef<"SmartAlbumProduct", 'Float'>
     readonly coverType: FieldRef<"SmartAlbumProduct", 'String'>
     readonly paperType: FieldRef<"SmartAlbumProduct", 'String'>
-    readonly maxPages: FieldRef<"SmartAlbumProduct", 'Int'>
+    readonly maxSpreads: FieldRef<"SmartAlbumProduct", 'Int'>
+    readonly minSpreads: FieldRef<"SmartAlbumProduct", 'Int'>
+    readonly allowFewerSpreads: FieldRef<"SmartAlbumProduct", 'Boolean'>
+    readonly hasCover: FieldRef<"SmartAlbumProduct", 'Boolean'>
+    readonly hasFirstPage: FieldRef<"SmartAlbumProduct", 'Boolean'>
+    readonly hasLastPage: FieldRef<"SmartAlbumProduct", 'Boolean'>
+    readonly images: FieldRef<"SmartAlbumProduct", 'Json'>
     readonly priceCents: FieldRef<"SmartAlbumProduct", 'Int'>
     readonly currency: FieldRef<"SmartAlbumProduct", 'String'>
     readonly isActive: FieldRef<"SmartAlbumProduct", 'Boolean'>
@@ -37768,10 +37867,17 @@ export namespace Prisma {
     id: 'id',
     configId: 'configId',
     name: 'name',
-    size: 'size',
+    widthCm: 'widthCm',
+    heightCm: 'heightCm',
     coverType: 'coverType',
     paperType: 'paperType',
-    maxPages: 'maxPages',
+    maxSpreads: 'maxSpreads',
+    minSpreads: 'minSpreads',
+    allowFewerSpreads: 'allowFewerSpreads',
+    hasCover: 'hasCover',
+    hasFirstPage: 'hasFirstPage',
+    hasLastPage: 'hasLastPage',
+    images: 'images',
     priceCents: 'priceCents',
     currency: 'currency',
     isActive: 'isActive',
@@ -40324,10 +40430,17 @@ export namespace Prisma {
     id?: StringFilter<"SmartAlbumProduct"> | string
     configId?: StringFilter<"SmartAlbumProduct"> | string
     name?: StringFilter<"SmartAlbumProduct"> | string
-    size?: StringFilter<"SmartAlbumProduct"> | string
+    widthCm?: FloatFilter<"SmartAlbumProduct"> | number
+    heightCm?: FloatFilter<"SmartAlbumProduct"> | number
     coverType?: StringFilter<"SmartAlbumProduct"> | string
     paperType?: StringFilter<"SmartAlbumProduct"> | string
-    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    maxSpreads?: IntFilter<"SmartAlbumProduct"> | number
+    minSpreads?: IntNullableFilter<"SmartAlbumProduct"> | number | null
+    allowFewerSpreads?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasCover?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasFirstPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasLastPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    images?: JsonFilter<"SmartAlbumProduct">
     priceCents?: IntFilter<"SmartAlbumProduct"> | number
     currency?: StringFilter<"SmartAlbumProduct"> | string
     isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
@@ -40341,10 +40454,17 @@ export namespace Prisma {
     id?: SortOrder
     configId?: SortOrder
     name?: SortOrder
-    size?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
     coverType?: SortOrder
     paperType?: SortOrder
-    maxPages?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrderInput | SortOrder
+    allowFewerSpreads?: SortOrder
+    hasCover?: SortOrder
+    hasFirstPage?: SortOrder
+    hasLastPage?: SortOrder
+    images?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
     isActive?: SortOrder
@@ -40356,16 +40476,23 @@ export namespace Prisma {
 
   export type SmartAlbumProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    configId_size_coverType_paperType?: SmartAlbumProductConfigIdSizeCoverTypePaperTypeCompoundUniqueInput
+    configId_widthCm_heightCm_coverType_paperType?: SmartAlbumProductConfigIdWidthCmHeightCmCoverTypePaperTypeCompoundUniqueInput
     AND?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
     OR?: SmartAlbumProductWhereInput[]
     NOT?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
     configId?: StringFilter<"SmartAlbumProduct"> | string
     name?: StringFilter<"SmartAlbumProduct"> | string
-    size?: StringFilter<"SmartAlbumProduct"> | string
+    widthCm?: FloatFilter<"SmartAlbumProduct"> | number
+    heightCm?: FloatFilter<"SmartAlbumProduct"> | number
     coverType?: StringFilter<"SmartAlbumProduct"> | string
     paperType?: StringFilter<"SmartAlbumProduct"> | string
-    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    maxSpreads?: IntFilter<"SmartAlbumProduct"> | number
+    minSpreads?: IntNullableFilter<"SmartAlbumProduct"> | number | null
+    allowFewerSpreads?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasCover?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasFirstPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasLastPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    images?: JsonFilter<"SmartAlbumProduct">
     priceCents?: IntFilter<"SmartAlbumProduct"> | number
     currency?: StringFilter<"SmartAlbumProduct"> | string
     isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
@@ -40373,16 +40500,23 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
     config?: XOR<SmartAlbumConfigScalarRelationFilter, SmartAlbumConfigWhereInput>
     designs?: SmartAlbumDesignListRelationFilter
-  }, "id" | "configId_size_coverType_paperType">
+  }, "id" | "configId_widthCm_heightCm_coverType_paperType">
 
   export type SmartAlbumProductOrderByWithAggregationInput = {
     id?: SortOrder
     configId?: SortOrder
     name?: SortOrder
-    size?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
     coverType?: SortOrder
     paperType?: SortOrder
-    maxPages?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrderInput | SortOrder
+    allowFewerSpreads?: SortOrder
+    hasCover?: SortOrder
+    hasFirstPage?: SortOrder
+    hasLastPage?: SortOrder
+    images?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
     isActive?: SortOrder
@@ -40402,10 +40536,17 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
     configId?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
     name?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
-    size?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    widthCm?: FloatWithAggregatesFilter<"SmartAlbumProduct"> | number
+    heightCm?: FloatWithAggregatesFilter<"SmartAlbumProduct"> | number
     coverType?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
     paperType?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
-    maxPages?: IntWithAggregatesFilter<"SmartAlbumProduct"> | number
+    maxSpreads?: IntWithAggregatesFilter<"SmartAlbumProduct"> | number
+    minSpreads?: IntNullableWithAggregatesFilter<"SmartAlbumProduct"> | number | null
+    allowFewerSpreads?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
+    hasCover?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
+    hasFirstPage?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
+    hasLastPage?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
+    images?: JsonWithAggregatesFilter<"SmartAlbumProduct">
     priceCents?: IntWithAggregatesFilter<"SmartAlbumProduct"> | number
     currency?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
     isActive?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
@@ -43087,10 +43228,17 @@ export namespace Prisma {
   export type SmartAlbumProductCreateInput = {
     id?: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -43104,10 +43252,17 @@ export namespace Prisma {
     id?: string
     configId: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -43119,10 +43274,17 @@ export namespace Prisma {
   export type SmartAlbumProductUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -43136,10 +43298,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     configId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -43152,10 +43321,17 @@ export namespace Prisma {
     id?: string
     configId: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -43166,10 +43342,17 @@ export namespace Prisma {
   export type SmartAlbumProductUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -43181,10 +43364,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     configId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -45394,9 +45584,10 @@ export namespace Prisma {
     isNot?: SmartAlbumConfigWhereInput
   }
 
-  export type SmartAlbumProductConfigIdSizeCoverTypePaperTypeCompoundUniqueInput = {
+  export type SmartAlbumProductConfigIdWidthCmHeightCmCoverTypePaperTypeCompoundUniqueInput = {
     configId: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
   }
@@ -45405,10 +45596,17 @@ export namespace Prisma {
     id?: SortOrder
     configId?: SortOrder
     name?: SortOrder
-    size?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
     coverType?: SortOrder
     paperType?: SortOrder
-    maxPages?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrder
+    allowFewerSpreads?: SortOrder
+    hasCover?: SortOrder
+    hasFirstPage?: SortOrder
+    hasLastPage?: SortOrder
+    images?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
     isActive?: SortOrder
@@ -45417,7 +45615,10 @@ export namespace Prisma {
   }
 
   export type SmartAlbumProductAvgOrderByAggregateInput = {
-    maxPages?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrder
     priceCents?: SortOrder
   }
 
@@ -45425,10 +45626,16 @@ export namespace Prisma {
     id?: SortOrder
     configId?: SortOrder
     name?: SortOrder
-    size?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
     coverType?: SortOrder
     paperType?: SortOrder
-    maxPages?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrder
+    allowFewerSpreads?: SortOrder
+    hasCover?: SortOrder
+    hasFirstPage?: SortOrder
+    hasLastPage?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
     isActive?: SortOrder
@@ -45440,10 +45647,16 @@ export namespace Prisma {
     id?: SortOrder
     configId?: SortOrder
     name?: SortOrder
-    size?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
     coverType?: SortOrder
     paperType?: SortOrder
-    maxPages?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrder
+    allowFewerSpreads?: SortOrder
+    hasCover?: SortOrder
+    hasFirstPage?: SortOrder
+    hasLastPage?: SortOrder
     priceCents?: SortOrder
     currency?: SortOrder
     isActive?: SortOrder
@@ -45452,7 +45665,10 @@ export namespace Prisma {
   }
 
   export type SmartAlbumProductSumOrderByAggregateInput = {
-    maxPages?: SortOrder
+    widthCm?: SortOrder
+    heightCm?: SortOrder
+    maxSpreads?: SortOrder
+    minSpreads?: SortOrder
     priceCents?: SortOrder
   }
 
@@ -53653,10 +53869,17 @@ export namespace Prisma {
   export type SmartAlbumProductCreateWithoutConfigInput = {
     id?: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -53668,10 +53891,17 @@ export namespace Prisma {
   export type SmartAlbumProductUncheckedCreateWithoutConfigInput = {
     id?: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -53794,10 +54024,17 @@ export namespace Prisma {
     id?: StringFilter<"SmartAlbumProduct"> | string
     configId?: StringFilter<"SmartAlbumProduct"> | string
     name?: StringFilter<"SmartAlbumProduct"> | string
-    size?: StringFilter<"SmartAlbumProduct"> | string
+    widthCm?: FloatFilter<"SmartAlbumProduct"> | number
+    heightCm?: FloatFilter<"SmartAlbumProduct"> | number
     coverType?: StringFilter<"SmartAlbumProduct"> | string
     paperType?: StringFilter<"SmartAlbumProduct"> | string
-    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    maxSpreads?: IntFilter<"SmartAlbumProduct"> | number
+    minSpreads?: IntNullableFilter<"SmartAlbumProduct"> | number | null
+    allowFewerSpreads?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasCover?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasFirstPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    hasLastPage?: BoolFilter<"SmartAlbumProduct"> | boolean
+    images?: JsonFilter<"SmartAlbumProduct">
     priceCents?: IntFilter<"SmartAlbumProduct"> | number
     currency?: StringFilter<"SmartAlbumProduct"> | string
     isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
@@ -54005,10 +54242,17 @@ export namespace Prisma {
   export type SmartAlbumProductCreateWithoutDesignsInput = {
     id?: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -54021,10 +54265,17 @@ export namespace Prisma {
     id?: string
     configId: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -54178,10 +54429,17 @@ export namespace Prisma {
   export type SmartAlbumProductUpdateWithoutDesignsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -54194,10 +54452,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     configId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -55788,10 +56053,17 @@ export namespace Prisma {
   export type SmartAlbumProductCreateManyConfigInput = {
     id?: string
     name: string
-    size: string
+    widthCm: number
+    heightCm: number
     coverType: string
     paperType: string
-    maxPages: number
+    maxSpreads: number
+    minSpreads?: number | null
+    allowFewerSpreads?: boolean
+    hasCover?: boolean
+    hasFirstPage?: boolean
+    hasLastPage?: boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents: number
     currency?: string
     isActive?: boolean
@@ -55802,10 +56074,17 @@ export namespace Prisma {
   export type SmartAlbumProductUpdateWithoutConfigInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -55817,10 +56096,17 @@ export namespace Prisma {
   export type SmartAlbumProductUncheckedUpdateWithoutConfigInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -55832,10 +56118,17 @@ export namespace Prisma {
   export type SmartAlbumProductUncheckedUpdateManyWithoutConfigInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    size?: StringFieldUpdateOperationsInput | string
+    widthCm?: FloatFieldUpdateOperationsInput | number
+    heightCm?: FloatFieldUpdateOperationsInput | number
     coverType?: StringFieldUpdateOperationsInput | string
     paperType?: StringFieldUpdateOperationsInput | string
-    maxPages?: IntFieldUpdateOperationsInput | number
+    maxSpreads?: IntFieldUpdateOperationsInput | number
+    minSpreads?: NullableIntFieldUpdateOperationsInput | number | null
+    allowFewerSpreads?: BoolFieldUpdateOperationsInput | boolean
+    hasCover?: BoolFieldUpdateOperationsInput | boolean
+    hasFirstPage?: BoolFieldUpdateOperationsInput | boolean
+    hasLastPage?: BoolFieldUpdateOperationsInput | boolean
+    images?: JsonNullValueInput | InputJsonValue
     priceCents?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean

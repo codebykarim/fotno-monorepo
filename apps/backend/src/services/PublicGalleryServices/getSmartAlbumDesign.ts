@@ -1,4 +1,5 @@
 import { publishedGalleryWhere, db } from "./_shared";
+import { signProductImageUrls } from "../SmartAlbumServices/productImages";
 
 export const getSmartAlbumDesign = async (
   shareToken: string,
@@ -32,10 +33,17 @@ export const getSmartAlbumDesign = async (
         select: {
           id: true,
           name: true,
-          size: true,
+          widthCm: true,
+          heightCm: true,
           coverType: true,
           paperType: true,
-          maxPages: true,
+          maxSpreads: true,
+          minSpreads: true,
+          allowFewerSpreads: true,
+          hasCover: true,
+          hasFirstPage: true,
+          hasLastPage: true,
+          images: true,
           priceCents: true,
           currency: true,
         },
@@ -54,12 +62,21 @@ export const getSmartAlbumDesign = async (
     return { error: "Design not found", status: 404 };
   }
 
+  // Sign product image URLs
+  const imageUrls = await signProductImageUrls(
+    (design.product.images as string[]) || [],
+  );
+
   // Flatten: expose photographerNotes at top level for CHANGES_REQUESTED
   const latestSubmission = design.submissions?.[0] ?? null;
   const { submissions: _submissions, ...rest } = design;
   return {
     design: {
       ...rest,
+      product: {
+        ...rest.product,
+        imageUrls,
+      },
       photographerNotes:
         design.status === "CHANGES_REQUESTED"
           ? (latestSubmission?.photographerNotes ?? null)

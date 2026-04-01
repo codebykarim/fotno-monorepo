@@ -150,3 +150,19 @@ export const deleteS3Object = async (key: string): Promise<void> => {
     }),
   );
 };
+
+/**
+ * Generates a presigned PUT URL for uploading an object directly to S3.
+ */
+export const getPresignedUploadUrl = async (
+  key: string,
+  contentType: string,
+  expiresIn = 3600,
+): Promise<string> => {
+  const command = new PutObjectCommand({
+    Bucket: bucket,
+    Key: key,
+    ContentType: contentType,
+  });
+  return getS3SignedUrl(s3Client, command, { expiresIn });
+};

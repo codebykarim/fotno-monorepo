@@ -20,7 +20,6 @@ export const createSmartAlbumDesign = async (
   }
 
   // Verify product exists and belongs to this gallery's photographer
-  // Relation: SmartAlbumProduct → config (SmartAlbumConfig) → userId must match gallery.userId
   const product = await db.smartAlbumProduct.findFirst({
     where: {
       id: body.productId,
@@ -36,13 +35,41 @@ export const createSmartAlbumDesign = async (
     return { error: "Product not found or not available for this gallery", status: 404 };
   }
 
-  // Create design with empty scaffold
-  const designData = {
-    cover: { layoutId: "cover-full-bleed", slots: [] },
-    firstPage: { layoutId: "single-centered", slots: [] },
+  // Build design scaffold based on product configuration
+  const designData: Record<string, any> = {
     spreads: [],
-    lastPage: { layoutId: "single-centered", slots: [] },
   };
+
+  // Add cover if product has it
+  if (product.hasCover) {
+    designData.cover = { layoutId: "cover-full-bleed", slots: [] };
+  } else {
+    designData.cover = null;
+  }
+
+  // Add first page if product has it
+  if (product.hasFirstPage) {
+    designData.firstPage = { layoutId: "single-centered", slots: [] };
+  } else {
+    designData.firstPage = null;
+  }
+
+  // Add last page if product has it
+  if (product.hasLastPage) {
+    designData.lastPage = { layoutId: "single-centered", slots: [] };
+  } else {
+    designData.lastPage = null;
+  }
+
+  // Auto-add all max spreads so user doesn't have to add one by one
+  const defaultSpreadLayoutId = "spread-full-bleed";
+  for (let i = 0; i < product.maxSpreads; i++) {
+    designData.spreads.push({
+      order: i,
+      layoutId: defaultSpreadLayoutId,
+      slots: [],
+    });
+  }
 
   const design = await db.smartAlbumDesign.create({
     data: {

@@ -19,6 +19,7 @@ import {
   ArrowLeft,
   Pencil,
   Type,
+  Wand2,
 } from "lucide-react";
 import { useAlbumDesigner } from "../../lib/album-store";
 import { ProductSelector } from "./product-selector";
@@ -43,10 +44,16 @@ const GOOGLE_FONTS_URL =
 interface Product {
   id: string;
   name: string;
-  size: string;
+  widthCm: number;
+  heightCm: number;
   coverType: string;
   paperType: string;
-  maxPages: number;
+  maxSpreads: number;
+  minSpreads: number | null;
+  allowFewerSpreads: boolean;
+  hasCover: boolean;
+  hasFirstPage: boolean;
+  hasLastPage: boolean;
   priceCents: number;
   currency: string;
 }
@@ -419,7 +426,9 @@ export function AlbumDesigner({
   const selectedProduct = products.find(
     (p) => p.id === currentDesign?.productId,
   );
-  const maxSpreads = selectedProduct?.maxPages ?? 50;
+  const maxSpreads = selectedProduct?.maxSpreads ?? 50;
+  const productWidthCm = selectedProduct?.widthCm;
+  const productHeightCm = selectedProduct?.heightCm;
 
   // ─── Add / Remove spreads ─────────────────────────────────────────
   const handleAddSpread = () => {
@@ -501,6 +510,50 @@ export function AlbumDesigner({
       };
       setSelectedSpreadIndex(-2);
     }
+    updateDesignData(newDesignData);
+  };
+
+  // ─── Prefill: auto-fill all empty slots with unused photos ────────
+  const handlePrefill = () => {
+    if (!designData) return;
+
+    // Collect all available photo IDs (not yet used)
+    const usedIds = new Set<string>();
+    const collectUsed = (slots?: Array<{ photoId?: string }>) =>
+      slots?.forEach((s) => s.photoId && usedIds.add(s.photoId));
+    collectUsed(designData.cover?.slots);
+    collectUsed(designData.firstPage?.slots);
+    collectUsed(designData.lastPage?.slots);
+    designData.spreads?.forEach((sp) => collectUsed(sp.slots));
+
+    const availablePhotos = photos.filter((p) => !usedIds.has(p.id));
+    let photoIndex = 0;
+
+    const fillSlots = (slots: any[] | undefined): any[] | undefined => {
+      if (!slots) return slots;
+      return slots.map((slot) => {
+        if (slot.photoId || photoIndex >= availablePhotos.length) return slot;
+        const photo = availablePhotos[photoIndex++];
+        return { ...slot, photoId: photo!.id };
+      });
+    };
+
+    const newDesignData: DesignData = {
+      cover: designData.cover
+        ? { ...designData.cover, slots: fillSlots(designData.cover.slots) as any }
+        : designData.cover,
+      firstPage: designData.firstPage
+        ? { ...designData.firstPage, slots: fillSlots(designData.firstPage.slots) as any }
+        : designData.firstPage,
+      spreads: (designData.spreads || []).map((s) => ({
+        ...s,
+        slots: fillSlots(s.slots) as any,
+      })),
+      lastPage: designData.lastPage
+        ? { ...designData.lastPage, slots: fillSlots(designData.lastPage.slots) as any }
+        : designData.lastPage,
+    };
+
     updateDesignData(newDesignData);
   };
 
@@ -700,7 +753,21 @@ export function AlbumDesigner({
             <Button
               size="sm"
               variant="outline"
+              onClick={handlePrefill}
+              className="h-8"
+              title="Auto-fill empty slots with photos"
+            >
+              <Wand2 className="h-3.5 w-3.5 mr-1.5" />
+              Prefill
+            </Button>
+          )}
+
+          {!isLocked && (
+            <Button
+              size="sm"
+              variant="outline"
               onClick={handlePreview}
+              disabled={isDirty && saveStatus !== "saved"}
               className="h-8"
             >
               <Eye className="h-3.5 w-3.5 mr-1.5" />
@@ -712,12 +779,14 @@ export function AlbumDesigner({
             <Button
               size="sm"
               onClick={handleSubmit}
-              disabled={isSubmitting || isAlbumsDisabled}
+              disabled={isSubmitting || isAlbumsDisabled || (isDirty && saveStatus !== "saved")}
               className="h-8"
               title={
                 isAlbumsDisabled
                   ? "Albums have been disabled by the photographer"
-                  : undefined
+                  : isDirty && saveStatus !== "saved"
+                    ? "Save your changes first"
+                    : undefined
               }
             >
               <Send className="h-3.5 w-3.5 mr-1.5" />
@@ -744,7 +813,7 @@ export function AlbumDesigner({
         {/* Center: Canvas */}
         <div className="flex-1 flex flex-col items-center justify-center p-6 overflow-auto bg-muted/20">
           {isLocked ? (
-            <AlbumPreview designData={designData} photos={photos} />
+            <AlbumPreview designData={designData} photos={photos} widthCm={productWidthCm} heightCm={productHeightCm} />
           ) : currentSpread ? (
             <>
               <SpreadCanvas
@@ -753,6 +822,8 @@ export function AlbumDesigner({
                 slots={currentSpread.slots || []}
                 photos={photos}
                 isSpread={isCurrentSpread}
+                widthCm={productWidthCm}
+                heightCm={productHeightCm}
                 onSlotUpdate={handleSlotUpdate}
                 onSlotSelect={handleSlotSelect}
                 selectedSlotIndex={selectedSlotIndex}
@@ -826,10 +897,14 @@ export function AlbumDesigner({
             selectedIndex={selectedSpreadIndex}
             onSelectPage={setSelectedSpreadIndex}
             onAddSpread={handleAddSpread}
-            onRemoveSpread={handleRemoveSpread}
+            onRemoveSpread={selectedProduct?.allowFewerSpreads ? handleRemoveSpread : undefined}
             onRemovePage={handleRemovePage}
             onAddPage={handleAddPage}
             maxPages={maxSpreads}
+            minSpreads={selectedProduct?.allowFewerSpreads ? (selectedProduct?.minSpreads ?? 1) : maxSpreads}
+            productHasCover={selectedProduct?.hasCover}
+            productHasFirstPage={selectedProduct?.hasFirstPage}
+            productHasLastPage={selectedProduct?.hasLastPage}
           />
         )}
 

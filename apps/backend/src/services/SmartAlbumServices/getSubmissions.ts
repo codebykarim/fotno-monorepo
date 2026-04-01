@@ -40,6 +40,9 @@ export const getSubmissions = async (userId: string, options: GetSubmissionsOpti
               product: { select: { name: true } },
             },
           },
+          transaction: {
+            select: { status: true, amountCents: true, netCents: true, currency: true },
+          },
         },
         orderBy: { submittedAt: "desc" },
         skip,
@@ -67,6 +70,12 @@ export const getSubmissions = async (userId: string, options: GetSubmissionsOpti
         galleryTitle: s.design.gallery.title,
         productName: s.design.product.name,
         pageCount,
+        paid: s.transaction?.status === "SUCCEEDED",
+        paymentAmount: s.transaction ? {
+          amountCents: s.transaction.amountCents,
+          netCents: s.transaction.netCents,
+          currency: s.transaction.currency,
+        } : null,
       };
     });
 

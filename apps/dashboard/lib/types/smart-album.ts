@@ -38,12 +38,19 @@ export interface SmartAlbumProduct {
   id: string;
   configId: string;
   name: string;
-  size: string; // e.g., "12x12", "10x10"
-  coverType: string; // e.g., "leather", "linen"
-  paperType: string; // e.g., "matte", "lustre"
-  maxPages: number; // Maximum spread count (interior spreads)
+  widthCm: number;
+  heightCm: number;
+  coverType: string;
+  paperType: string;
+  maxSpreads: number;
+  minSpreads: number | null;
+  allowFewerSpreads: boolean;
+  hasCover: boolean;
+  hasFirstPage: boolean;
+  hasLastPage: boolean;
+  images: string[]; // S3 keys
   priceCents: number;
-  currency: string; // "USD"
+  currency: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -51,12 +58,18 @@ export interface SmartAlbumProduct {
 
 export interface CreateProductRequest {
   name: string;
-  size: string;
+  widthCm: number;
+  heightCm: number;
   coverType: string;
   paperType: string;
-  maxPages: number;
+  maxSpreads: number;
+  minSpreads?: number | null;
+  allowFewerSpreads?: boolean;
+  hasCover?: boolean;
+  hasFirstPage?: boolean;
+  hasLastPage?: boolean;
   priceCents: number;
-  currency?: string; // defaults to "USD"
+  currency?: string;
 }
 
 export interface CreateProductResponse {
@@ -65,9 +78,15 @@ export interface CreateProductResponse {
 
 export interface UpdateProductRequest {
   name?: string;
-  maxPages?: number;
+  maxSpreads?: number;
+  minSpreads?: number | null;
+  allowFewerSpreads?: boolean;
+  hasCover?: boolean;
+  hasFirstPage?: boolean;
+  hasLastPage?: boolean;
   priceCents?: number;
   isActive?: boolean;
+  images?: string[];
 }
 
 export interface UpdateProductResponse {
@@ -113,6 +132,8 @@ export interface SubmissionDetail {
   galleryTitle: string;
   productName: string;
   productId: string;
+  productWidthCm?: number;
+  productHeightCm?: number;
   designSnapshot: DesignSnapshot;
   photographerNotes?: string;
   reviewedAt?: string;
@@ -120,7 +141,12 @@ export interface SubmissionDetail {
   exportUrl?: string; // S3 signed URL if exported
   exportReady: boolean;
   transactionId?: string; // if payment was made
-  transactionStatus?: string; // PENDING, SUCCEEDED, FAILED
+  transactionStatus?: string; // PENDING, SUCCEEDED, FAILED, REFUNDED
+  transactionAmountCents?: number;
+  transactionFeeCents?: number;
+  transactionNetCents?: number;
+  transactionCurrency?: string;
+  transactionPaidAt?: string;
 }
 
 export interface GetSubmissionResponse {
@@ -235,9 +261,15 @@ export interface ConfigFormData {
 
 export interface ProductFormData {
   name: string;
-  size: string;
+  widthCm: number;
+  heightCm: number;
   coverType: string;
   paperType: string;
-  maxPages: number;
+  maxSpreads: number;
+  minSpreads: number | null;
+  allowFewerSpreads: boolean;
+  hasCover: boolean;
+  hasFirstPage: boolean;
+  hasLastPage: boolean;
   priceCents: number;
 }

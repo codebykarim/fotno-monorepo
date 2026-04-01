@@ -86,7 +86,7 @@ export const confirmSmartAlbumPayment = async (
         feeCents,
         netCents,
         currency,
-        status: "COMPLETED",
+        status: "SUCCEEDED",
         paidAt: new Date(),
       },
     });

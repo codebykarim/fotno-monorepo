@@ -15,10 +15,20 @@ export const getSubmissionDetail = async (userId: string, submissionId: string) 
             gallery: {
               select: { id: true, title: true, userId: true, shareToken: true },
             },
-            product: { select: { id: true, name: true } },
+            product: { select: { id: true, name: true, widthCm: true, heightCm: true } },
           },
         },
-        transaction: { select: { id: true, status: true } },
+        transaction: {
+          select: {
+            id: true,
+            status: true,
+            amountCents: true,
+            feeCents: true,
+            netCents: true,
+            currency: true,
+            paidAt: true,
+          },
+        },
       },
     });
 
@@ -63,6 +73,8 @@ export const getSubmissionDetail = async (userId: string, submissionId: string) 
         shareToken: submission.design.gallery.shareToken,
         productName: submission.design.product.name,
         productId: submission.design.product.id,
+        productWidthCm: submission.design.product.widthCm,
+        productHeightCm: submission.design.product.heightCm,
         designSnapshot: snapshot,
         photographerNotes: submission.photographerNotes,
         reviewedAt: submission.reviewedAt,
@@ -71,6 +83,11 @@ export const getSubmissionDetail = async (userId: string, submissionId: string) 
         exportReady: submission.exportReady,
         transactionId: submission.transaction?.id,
         transactionStatus: submission.transaction?.status,
+        transactionAmountCents: submission.transaction?.amountCents,
+        transactionFeeCents: submission.transaction?.feeCents,
+        transactionNetCents: submission.transaction?.netCents,
+        transactionCurrency: submission.transaction?.currency,
+        transactionPaidAt: submission.transaction?.paidAt,
         photoUrls,
       },
     };

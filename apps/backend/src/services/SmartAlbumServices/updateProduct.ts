@@ -32,11 +32,11 @@ export const updateProduct = async (userId: string, productId: string, body: any
     if (body.name !== undefined) {
       updateData.name = String(body.name).trim();
     }
-    if (body.maxPages !== undefined) {
-      if (typeof body.maxPages !== "number" || body.maxPages < 2) {
-        return { error: "maxPages must be at least 2", status: 400 as const };
+    if (body.maxSpreads !== undefined) {
+      if (typeof body.maxSpreads !== "number" || body.maxSpreads < 1) {
+        return { error: "maxSpreads must be at least 1", status: 400 as const };
       }
-      updateData.maxPages = body.maxPages;
+      updateData.maxSpreads = body.maxSpreads;
     }
     if (body.priceCents !== undefined) {
       if (typeof body.priceCents !== "number" || body.priceCents < 0) {
@@ -46,6 +46,39 @@ export const updateProduct = async (userId: string, productId: string, body: any
     }
     if (body.isActive !== undefined) {
       updateData.isActive = Boolean(body.isActive);
+    }
+    if (body.hasCover !== undefined) {
+      updateData.hasCover = Boolean(body.hasCover);
+    }
+    if (body.hasFirstPage !== undefined) {
+      updateData.hasFirstPage = Boolean(body.hasFirstPage);
+    }
+    if (body.hasLastPage !== undefined) {
+      updateData.hasLastPage = Boolean(body.hasLastPage);
+    }
+    if (body.allowFewerSpreads !== undefined) {
+      updateData.allowFewerSpreads = Boolean(body.allowFewerSpreads);
+    }
+    if (body.minSpreads !== undefined) {
+      const effectiveMax = body.maxSpreads ?? product.maxSpreads;
+      if (body.minSpreads !== null) {
+        const min = Number(body.minSpreads);
+        if (isNaN(min) || min < 1 || min > effectiveMax) {
+          return {
+            error: `minSpreads must be between 1 and ${effectiveMax}`,
+            status: 400 as const,
+          };
+        }
+        updateData.minSpreads = min;
+      } else {
+        updateData.minSpreads = null;
+      }
+    }
+    if (body.images !== undefined) {
+      if (!Array.isArray(body.images)) {
+        return { error: "images must be an array", status: 400 as const };
+      }
+      updateData.images = body.images;
     }
 
     const updated = await db.smartAlbumProduct.update({

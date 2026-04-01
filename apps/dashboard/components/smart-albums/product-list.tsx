@@ -20,6 +20,7 @@ import {
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { ProductForm } from "./product-form";
 import { MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -87,7 +88,7 @@ export function ProductList() {
       }
       await loadProducts();
     } catch (err: any) {
-      alert(`Error: ${err.message}`);
+      toast.error(`Error: ${err.message}`);
     }
   };
 
@@ -101,7 +102,7 @@ export function ProductList() {
       if (!res.ok) throw new Error("Failed to update product");
       await loadProducts();
     } catch (err: any) {
-      alert(`Error: ${err.message}`);
+      toast.error(`Error: ${err.message}`);
     }
   };
 
@@ -178,21 +179,26 @@ export function ProductList() {
                 product.hasFirstPage ? "F" : null,
                 product.hasLastPage ? "L" : null,
               ].filter(Boolean);
-              const spreadLabel = product.allowFewerSpreads && product.minSpreads
-                ? `${product.minSpreads}-${product.maxSpreads}`
-                : String(product.maxSpreads);
+              const spreadLabel =
+                product.allowFewerSpreads && product.minSpreads
+                  ? `${product.minSpreads}-${product.maxSpreads}`
+                  : String(product.maxSpreads);
 
               return (
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">{product.name}</TableCell>
-                  <TableCell>{product.widthCm} x {product.heightCm}</TableCell>
+                  <TableCell>
+                    {product.widthCm} x {product.heightCm}
+                  </TableCell>
                   <TableCell>{product.coverType}</TableCell>
                   <TableCell>{product.paperType}</TableCell>
                   <TableCell>{spreadLabel}</TableCell>
                   <TableCell>
                     {pages.length > 0 ? pages.join(", ") : "-"}
                   </TableCell>
-                  <TableCell>${(product.priceCents / 100).toFixed(2)}</TableCell>
+                  <TableCell>
+                    ${(product.priceCents / 100).toFixed(2)}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={product.isActive ? "default" : "secondary"}>
                       {product.isActive ? "Active" : "Inactive"}

@@ -11,5 +11,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/handler.ts"]
+  "exclude": ["src/handler.ts", "src/handler-export.ts"]
 }

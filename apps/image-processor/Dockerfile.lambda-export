@@ -1,0 +1,19 @@
+# Lambda container image for smart album export (ARM64/Graviton2)
+FROM public.ecr.aws/lambda/nodejs:20-arm64 AS builder
+
+WORKDIR /build
+COPY package.lambda-export.json ./package.json
+RUN npm install
+COPY tsconfig.lambda-export.json ./tsconfig.json
+COPY src/handler-export.ts ./src/
+RUN npx tsc
+
+# ── Production image ──────────────────────────────────────────────────
+FROM public.ecr.aws/lambda/nodejs:20-arm64
+
+COPY package.lambda-export.json ./package.json
+RUN npm install --omit=dev
+
+COPY --from=builder /build/dist/ ./dist/
+
+CMD ["dist/handler-export.handler"]

@@ -3,7 +3,10 @@
  * Types for photographer settings, config, products, submissions, and review
  */
 
-import { SmartAlbumPaymentMethod } from "@workspace/db";
+export enum SmartAlbumPaymentMethod {
+  OUTSIDE_FOTNO = "OUTSIDE_FOTNO",
+  INSIDE_FOTNO = "INSIDE_FOTNO",
+}
 
 // ─── Config Types ──────────────────────────────────────────────────────
 

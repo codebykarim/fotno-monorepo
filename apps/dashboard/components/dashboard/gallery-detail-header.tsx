@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   Album,
+  BookImage,
   CalendarDays,
   ExternalLink,
   FolderKanban,
@@ -33,9 +34,10 @@ import { useGalleryDetail } from "./gallery-detail-provider";
 
 const TABS = [
   { id: "photos", label: "Photos", icon: Grid2x2, segment: "" },
-  { id: "albums", label: "Albums", icon: Album, segment: "/albums" },
-  { id: "settings", label: "Settings", icon: Settings2, segment: "/settings" },
+  // { id: "albums", label: "Albums", icon: Album, segment: "/albums" },
+  { id: "smart-albums", label: "Smart Albums", icon: BookImage, segment: "/smart-albums" },
   { id: "share", label: "Share", icon: Share2, segment: "/share" },
+  { id: "settings", label: "Settings", icon: Settings2, segment: "/settings" },
 ] as const;
 
 function formatDate(dateStr: string | null): string {
@@ -163,15 +165,16 @@ export function GalleryDetailHeader() {
             <div
               className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5"
               title={
-                isActivelyProcessing
-                  ? "Photos are still processing"
-                  : undefined
+                isActivelyProcessing ? "Photos are still processing" : undefined
               }
             >
               <Switch
                 checked={data.gallery.isPublished}
                 onCheckedChange={togglePublish}
-                disabled={publishSaving || (isActivelyProcessing && !data.gallery.isPublished)}
+                disabled={
+                  publishSaving ||
+                  (isActivelyProcessing && !data.gallery.isPublished)
+                }
               />
               <span
                 className={cn(

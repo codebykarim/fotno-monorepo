@@ -64,7 +64,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="fixed top-4 right-4 z-50">
+          <div className="fixed bottom-4 left-4 z-50">
             <ThemeToggle />
           </div>
           {children}

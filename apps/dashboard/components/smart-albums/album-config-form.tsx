@@ -1,0 +1,185 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Switch } from "@workspace/ui/components/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
+import { Skeleton } from "@workspace/ui/components/skeleton";
+import { StripeConnectSetup } from "./stripe-connect-setup";
+
+interface SmartAlbumConfig {
+  id: string;
+  enabled: boolean;
+  paymentMethod: "OUTSIDE_FOTNO" | "INSIDE_FOTNO";
+  stripeConnectOnboarded?: boolean;
+  products: any[];
+}
+
+export function AlbumConfigForm() {
+  const [config, setConfig] = useState<SmartAlbumConfig | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [connectOnboarded, setConnectOnboarded] = useState(false);
+
+  // Load config on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const res = await fetch("/api/smart-albums/config");
+        if (!res.ok) throw new Error("Failed to load config");
+        const data = await res.json();
+        setConfig(data);
+        setConnectOnboarded(data.stripeConnectOnboarded ?? false);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadConfig();
+  }, []);
+
+  const handleEnabledChange = async (enabled: boolean) => {
+    if (!config) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/smart-albums/config", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled }),
+      });
+      if (!res.ok) throw new Error("Failed to update config");
+      const updated = await res.json();
+      setConfig(updated);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePaymentMethodChange = async (paymentMethod: string) => {
+    if (!config) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/smart-albums/config", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentMethod }),
+      });
+      if (!res.ok) throw new Error("Failed to update config");
+      const updated = await res.json();
+      setConfig(updated);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading)
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-64 mt-1" />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-3 w-56" />
+            </div>
+            <Skeleton className="h-5 w-9 rounded-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  if (!config) return <div>Failed to load configuration</div>;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Album Settings</CardTitle>
+        <CardDescription>
+          Configure smart album feature and payment options
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {error && (
+          <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">
+            {error}
+          </div>
+        )}
+
+        <div className="flex items-center justify-between">
+          <div>
+            <label className="text-sm font-medium">Enable Smart Albums</label>
+            <p className="text-xs text-muted-foreground">
+              Allow clients to design and order physical albums
+            </p>
+          </div>
+          <Switch
+            checked={config.enabled}
+            onCheckedChange={handleEnabledChange}
+            disabled={saving}
+          />
+        </div>
+
+        {config.enabled && (
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <label className="text-sm font-medium">Payment Method</label>
+              <Select
+                value={config.paymentMethod}
+                onValueChange={handlePaymentMethodChange}
+                disabled={saving}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="OUTSIDE_FOTNO">
+                    Client pays directly (outside Fotno)
+                  </SelectItem>
+                  <SelectItem value="INSIDE_FOTNO" disabled={!connectOnboarded}>
+                    Client pays through Fotno (requires Stripe Connect)
+                    {!connectOnboarded && " — complete setup below"}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {config.paymentMethod === "OUTSIDE_FOTNO"
+                  ? "Clients will pay you directly via link in the submission confirmation"
+                  : "Clients will pay through our platform using Stripe"}
+              </p>
+            </div>
+
+            {(config.paymentMethod === "INSIDE_FOTNO" || !connectOnboarded) && (
+              <StripeConnectSetup
+                onStatusChange={(onboarded) => {
+                  setConnectOnboarded(onboarded);
+                }}
+              />
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

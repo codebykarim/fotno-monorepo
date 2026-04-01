@@ -442,6 +442,71 @@ exports.Prisma.DriveImportItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SmartAlbumConfigScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  enabled: 'enabled',
+  paymentMethod: 'paymentMethod',
+  stripeConnectAccountId: 'stripeConnectAccountId',
+  stripeConnectOnboarded: 'stripeConnectOnboarded',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SmartAlbumProductScalarFieldEnum = {
+  id: 'id',
+  configId: 'configId',
+  name: 'name',
+  size: 'size',
+  coverType: 'coverType',
+  paperType: 'paperType',
+  maxPages: 'maxPages',
+  priceCents: 'priceCents',
+  currency: 'currency',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SmartAlbumDesignScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  productId: 'productId',
+  clientName: 'clientName',
+  clientEmail: 'clientEmail',
+  title: 'title',
+  designData: 'designData',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SmartAlbumSubmissionScalarFieldEnum = {
+  id: 'id',
+  designId: 'designId',
+  version: 'version',
+  designSnapshot: 'designSnapshot',
+  status: 'status',
+  photographerNotes: 'photographerNotes',
+  reviewedAt: 'reviewedAt',
+  submittedAt: 'submittedAt',
+  exportReady: 'exportReady',
+  exportUrl: 'exportUrl'
+};
+
+exports.Prisma.SmartAlbumTransactionScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  stripePaymentIntentId: 'stripePaymentIntentId',
+  amountCents: 'amountCents',
+  feeCents: 'feeCents',
+  netCents: 'netCents',
+  currency: 'currency',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -531,6 +596,33 @@ exports.DriveImportItemStatus = exports.$Enums.DriveImportItemStatus = {
   SKIPPED: 'SKIPPED'
 };
 
+exports.SmartAlbumPaymentMethod = exports.$Enums.SmartAlbumPaymentMethod = {
+  OUTSIDE_FOTNO: 'OUTSIDE_FOTNO',
+  INSIDE_FOTNO: 'INSIDE_FOTNO'
+};
+
+exports.SmartAlbumDesignStatus = exports.$Enums.SmartAlbumDesignStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  REJECTED: 'REJECTED'
+};
+
+exports.SmartAlbumSubmissionStatus = exports.$Enums.SmartAlbumSubmissionStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  REJECTED: 'REJECTED'
+};
+
+exports.SmartAlbumTransactionStatus = exports.$Enums.SmartAlbumTransactionStatus = {
+  PENDING: 'PENDING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -554,7 +646,12 @@ exports.Prisma.ModelName = {
   PricingTier: 'PricingTier',
   RegionalPricing: 'RegionalPricing',
   RegionalTierOverride: 'RegionalTierOverride',
-  DriveImportItem: 'DriveImportItem'
+  DriveImportItem: 'DriveImportItem',
+  SmartAlbumConfig: 'SmartAlbumConfig',
+  SmartAlbumProduct: 'SmartAlbumProduct',
+  SmartAlbumDesign: 'SmartAlbumDesign',
+  SmartAlbumSubmission: 'SmartAlbumSubmission',
+  SmartAlbumTransaction: 'SmartAlbumTransaction'
 };
 
 /**

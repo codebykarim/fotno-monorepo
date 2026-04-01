@@ -19,6 +19,7 @@
   "description": "",
   "devDependencies": {
     "@prisma/client": "^7.5.0",
+    "@types/archiver": "^6.0.3",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -41,7 +42,6 @@
     "@aws-sdk/cloudfront-signer": "^3.1012.0",
     "@aws-sdk/s3-request-presigner": "^3.888.0",
     "@hapi/boom": "^10.0.1",
-    "stripe": "^17.7.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@sentry/node": "^10.45.0",
     "@supabase/supabase-js": "^2.39.3",
@@ -51,6 +51,7 @@
     "@types/qs": "^6.9.17",
     "@whiskeysockets/baileys": "^6.7.9",
     "@workspace/db": "workspace:*",
+    "archiver": "^7.0.1",
     "axios": "^1.8.1",
     "base64-arraybuffer": "^1.0.2",
     "bcrypt": "^5.1.1",
@@ -78,6 +79,9 @@
     "puppeteer-core": "^23.9.0",
     "qrcode-terminal": "^0.12.0",
     "resend": "^4.1.2",
+    "satori": "^0.26.0",
+    "sharp": "^0.34.3",
+    "stripe": "^17.7.0",
     "zod": "^3.24.2"
   },
   "prisma": {

@@ -1,6 +1,7 @@
 import {
   DeleteObjectCommand,
   GetObjectCommand,
+  PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl as getS3SignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -107,6 +108,34 @@ export const getPresignedDownloadUrl = async (
   });
 
   return getS3SignedUrl(s3Client, command, { expiresIn });
+};
+
+/**
+ * Downloads an S3 object and returns its contents as a Buffer.
+ */
+export const getS3ObjectBuffer = async (key: string): Promise<Buffer> => {
+  const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+  const response = await s3Client.send(command);
+  const bytes = await response.Body!.transformToByteArray();
+  return Buffer.from(bytes);
+};
+
+/**
+ * Uploads a Buffer to S3 at the given key.
+ */
+export const putS3Object = async (
+  key: string,
+  body: Buffer,
+  contentType: string,
+): Promise<void> => {
+  await s3Client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    }),
+  );
 };
 
 /**

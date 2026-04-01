@@ -114,6 +114,12 @@ export const handleWebhookEvent = async (event: Stripe.Event): Promise<void> => 
       case "invoice.payment_failed":
         await handlePaymentFailed(event.data.object as Stripe.Invoice);
         break;
+      case "payment_intent.succeeded":
+        await handleAlbumPaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent);
+        break;
+      case "account.updated":
+        await handleConnectAccountUpdated(event.data.object as Stripe.Account);
+        break;
       default:
         console.log(`[Webhook] Unhandled event type: ${eventType}`);
     }
@@ -488,5 +494,80 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
     console.warn(`[Webhook] invoice.payment_failed: no subscriptions found to update`);
   } else {
     console.log(`[Webhook] invoice.payment_failed: marked ${result.count} subscription(s) as PAST_DUE`);
+  }
+}
+
+/**
+ * Handle Stripe Connect payment_intent.succeeded for album payments.
+ * Records transaction if metadata references a submission and one doesn't already exist.
+ */
+async function handleAlbumPaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent): Promise<void> {
+  const submissionId = paymentIntent.metadata?.submission_id;
+  if (!submissionId) {
+    // Not an album payment intent
+    return;
+  }
+
+  console.log(`[Webhook] payment_intent.succeeded (album): submissionId=${submissionId}, pi=${paymentIntent.id}`);
+
+  const existingTx = await (prisma as any).smartAlbumTransaction.findUnique({
+    where: { stripePaymentIntentId: paymentIntent.id },
+  });
+
+  if (existingTx) {
+    console.log(`[Webhook] payment_intent.succeeded: transaction already exists for pi=${paymentIntent.id}`);
+    return;
+  }
+
+  const platformFeePercent = parseFloat(process.env.SMART_ALBUM_PLATFORM_FEE_PERCENT || "10");
+  const amountCents = paymentIntent.amount;
+  const feeCents = Math.round(amountCents * (platformFeePercent / 100));
+  const netCents = amountCents - feeCents;
+  const currency = paymentIntent.currency?.toUpperCase() || "USD";
+
+  await (prisma as any).smartAlbumTransaction.upsert({
+    where: { submissionId },
+    create: {
+      submissionId,
+      stripePaymentIntentId: paymentIntent.id,
+      amountCents,
+      feeCents,
+      netCents,
+      currency,
+      status: "COMPLETED",
+      paidAt: new Date(),
+    },
+    update: {
+      stripePaymentIntentId: paymentIntent.id,
+      status: "COMPLETED",
+      paidAt: new Date(),
+    },
+  });
+
+  console.log(`[Webhook] payment_intent.succeeded: transaction recorded for submissionId=${submissionId}`);
+}
+
+/**
+ * Handle Stripe Connect account.updated for onboarding status changes.
+ * Persists stripeConnectOnboarded=true when charges + payouts become enabled.
+ */
+async function handleConnectAccountUpdated(account: Stripe.Account): Promise<void> {
+  const accountId = account.id;
+  const chargesEnabled = account.charges_enabled ?? false;
+  const payoutsEnabled = account.payouts_enabled ?? false;
+
+  console.log(
+    `[Webhook] account.updated: accountId=${accountId}, charges=${chargesEnabled}, payouts=${payoutsEnabled}`,
+  );
+
+  if (!chargesEnabled || !payoutsEnabled) return;
+
+  const updated = await (prisma as any).smartAlbumConfig.updateMany({
+    where: { stripeConnectAccountId: accountId, stripeConnectOnboarded: false },
+    data: { stripeConnectOnboarded: true },
+  });
+
+  if (updated.count > 0) {
+    console.log(`[Webhook] account.updated: marked stripeConnectOnboarded=true for accountId=${accountId}`);
   }
 }

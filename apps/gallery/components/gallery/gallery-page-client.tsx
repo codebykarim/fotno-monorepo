@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Album,
   Camera,
   Check,
   ChevronLeft,
@@ -2707,6 +2709,14 @@ export default function GalleryPageClient({
       <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
         Powered by <span className="font-semibold text-primary">FOTNO</span>
       </footer>
+
+      {/* Create Album Button */}
+      <Link href={`/${encodeURIComponent(gallery.shareToken)}/album`}>
+        <Button className="fixed right-5 bottom-20 z-40 gap-2 shadow-lg">
+          <Album className="h-4 w-4" />
+          Create Album
+        </Button>
+      </Link>
 
       <Sheet>
         <SheetTrigger asChild>

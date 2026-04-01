@@ -9,24 +9,24 @@ datasource db {
 }
 
 model User {
-  id                 String           @id @unique @default(uuid())
+  id                 String            @id @unique @default(uuid())
   name               String
   email              String
-  plan               Plan             @default(FREE)
-  storageUsed        BigInt           @default(0)
-  storageLimit       BigInt           @default(1073741824) // 1 GB
+  plan               Plan              @default(FREE)
+  storageUsed        BigInt            @default(0)
+  storageLimit       BigInt            @default(1073741824) // 1 GB
   galleryLimit       Int? // null = unlimited
   downgradedAt       DateTime? // tracks subscription expiry for 90-day retention
-  storageReserved    BigInt           @default(0)
-  overageBytes       BigInt           @default(0)
+  storageReserved    BigInt            @default(0)
+  overageBytes       BigInt            @default(0)
   overageResetAt     DateTime?
-  stripeCustomerId   String?          @unique
-  warningEmailSent80 Boolean          @default(false)
-  warningEmailSent95 Boolean          @default(false)
+  stripeCustomerId   String?           @unique
+  warningEmailSent80 Boolean           @default(false)
+  warningEmailSent95 Boolean           @default(false)
   emailVerified      Boolean
   image              String?
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now()) @updatedAt
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now()) @updatedAt
   role               String?
   banned             Boolean?
   banReason          String?
@@ -41,6 +41,7 @@ model User {
   clients            Client[]
   storageEvents      StorageEvent[]
   driveImportJobs    DriveImportJob[]
+  smartAlbumConfig   SmartAlbumConfig?
 
   @@unique([email])
   @@map("user")
@@ -203,16 +204,17 @@ model Gallery {
   favoritesEnabled     Boolean @default(true)
   favoriteNotesEnabled Boolean @default(true)
 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @default(now()) @updatedAt
-  photos           Photo[]           @relation("GalleryPhotos")
-  albums           Album[]
-  clients          GalleryClient[]
-  comments         GalleryComment[]
-  driveImportItems DriveImportItem[]
-  favorites        GalleryFavorite[]
-  downloadEvents   DownloadEvent[]
-  favoriteShares   FavoriteShare[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  photos            Photo[]            @relation("GalleryPhotos")
+  albums            Album[]
+  clients           GalleryClient[]
+  comments          GalleryComment[]
+  driveImportItems  DriveImportItem[]
+  favorites         GalleryFavorite[]
+  downloadEvents    DownloadEvent[]
+  favoriteShares    FavoriteShare[]
+  smartAlbumDesigns SmartAlbumDesign[]
 
   @@unique([userId, slug])
   @@map("gallery")
@@ -516,4 +518,124 @@ model DriveImportItem {
 
   @@index([jobId, status])
   @@map("drive_import_item")
+}
+
+// ── Smart Album Workflow ─────────────────────────────────────
+
+enum SmartAlbumPaymentMethod {
+  OUTSIDE_FOTNO
+  INSIDE_FOTNO
+}
+
+enum SmartAlbumDesignStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+
+enum SmartAlbumSubmissionStatus {
+  PENDING
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+
+enum SmartAlbumTransactionStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model SmartAlbumConfig {
+  id                     String                  @id @default(uuid())
+  userId                 String                  @unique
+  user                   User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enabled                Boolean                 @default(false)
+  paymentMethod          SmartAlbumPaymentMethod @default(OUTSIDE_FOTNO)
+  stripeConnectAccountId String?
+  stripeConnectOnboarded Boolean                 @default(false)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  products               SmartAlbumProduct[]
+
+  @@map("smart_album_config")
+}
+
+model SmartAlbumProduct {
+  id         String             @id @default(uuid())
+  configId   String
+  config     SmartAlbumConfig   @relation(fields: [configId], references: [id], onDelete: Cascade)
+  name       String
+  size       String
+  coverType  String
+  paperType  String
+  maxPages   Int
+  priceCents Int
+  currency   String             @default("USD")
+  isActive   Boolean            @default(true)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  designs    SmartAlbumDesign[]
+
+  @@unique([configId, size, coverType, paperType])
+  @@index([configId])
+  @@map("smart_album_product")
+}
+
+model SmartAlbumDesign {
+  id          String                 @id @default(uuid())
+  galleryId   String
+  gallery     Gallery                @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  productId   String
+  product     SmartAlbumProduct      @relation(fields: [productId], references: [id], onDelete: Restrict)
+  clientName  String
+  clientEmail String
+  title       String                 @default("Untitled Album")
+  designData  Json                   @default("{}")
+  status      SmartAlbumDesignStatus @default(DRAFT)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+  submissions SmartAlbumSubmission[]
+
+  @@index([galleryId, status])
+  @@index([galleryId, clientEmail])
+  @@map("smart_album_design")
+}
+
+model SmartAlbumSubmission {
+  id                String                     @id @default(uuid())
+  designId          String
+  design            SmartAlbumDesign           @relation(fields: [designId], references: [id], onDelete: Cascade)
+  version           Int                        @default(1)
+  designSnapshot    Json
+  status            SmartAlbumSubmissionStatus @default(PENDING)
+  photographerNotes String?
+  reviewedAt        DateTime?
+  submittedAt       DateTime                   @default(now())
+  exportReady       Boolean                    @default(false)
+  exportUrl         String?
+  transaction       SmartAlbumTransaction?
+
+  @@unique([designId, version])
+  @@index([designId, status])
+  @@map("smart_album_submission")
+}
+
+model SmartAlbumTransaction {
+  id                    String                      @id @default(uuid())
+  submissionId          String                      @unique
+  submission            SmartAlbumSubmission        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  stripePaymentIntentId String                      @unique
+  amountCents           Int
+  feeCents              Int
+  netCents              Int
+  currency              String                      @default("USD")
+  status                SmartAlbumTransactionStatus @default(PENDING)
+  paidAt                DateTime?
+  createdAt             DateTime                    @default(now())
+
+  @@map("smart_album_transaction")
 }

@@ -128,6 +128,31 @@ export type RegionalTierOverride = $Result.DefaultSelection<Prisma.$RegionalTier
  * 
  */
 export type DriveImportItem = $Result.DefaultSelection<Prisma.$DriveImportItemPayload>
+/**
+ * Model SmartAlbumConfig
+ * 
+ */
+export type SmartAlbumConfig = $Result.DefaultSelection<Prisma.$SmartAlbumConfigPayload>
+/**
+ * Model SmartAlbumProduct
+ * 
+ */
+export type SmartAlbumProduct = $Result.DefaultSelection<Prisma.$SmartAlbumProductPayload>
+/**
+ * Model SmartAlbumDesign
+ * 
+ */
+export type SmartAlbumDesign = $Result.DefaultSelection<Prisma.$SmartAlbumDesignPayload>
+/**
+ * Model SmartAlbumSubmission
+ * 
+ */
+export type SmartAlbumSubmission = $Result.DefaultSelection<Prisma.$SmartAlbumSubmissionPayload>
+/**
+ * Model SmartAlbumTransaction
+ * 
+ */
+export type SmartAlbumTransaction = $Result.DefaultSelection<Prisma.$SmartAlbumTransactionPayload>
 
 /**
  * Enums
@@ -227,6 +252,45 @@ export const DriveImportItemStatus: {
 
 export type DriveImportItemStatus = (typeof DriveImportItemStatus)[keyof typeof DriveImportItemStatus]
 
+
+export const SmartAlbumPaymentMethod: {
+  OUTSIDE_FOTNO: 'OUTSIDE_FOTNO',
+  INSIDE_FOTNO: 'INSIDE_FOTNO'
+};
+
+export type SmartAlbumPaymentMethod = (typeof SmartAlbumPaymentMethod)[keyof typeof SmartAlbumPaymentMethod]
+
+
+export const SmartAlbumDesignStatus: {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  REJECTED: 'REJECTED'
+};
+
+export type SmartAlbumDesignStatus = (typeof SmartAlbumDesignStatus)[keyof typeof SmartAlbumDesignStatus]
+
+
+export const SmartAlbumSubmissionStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  REJECTED: 'REJECTED'
+};
+
+export type SmartAlbumSubmissionStatus = (typeof SmartAlbumSubmissionStatus)[keyof typeof SmartAlbumSubmissionStatus]
+
+
+export const SmartAlbumTransactionStatus: {
+  PENDING: 'PENDING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+export type SmartAlbumTransactionStatus = (typeof SmartAlbumTransactionStatus)[keyof typeof SmartAlbumTransactionStatus]
+
 }
 
 export type Plan = $Enums.Plan
@@ -268,6 +332,22 @@ export const DriveImportStatus: typeof $Enums.DriveImportStatus
 export type DriveImportItemStatus = $Enums.DriveImportItemStatus
 
 export const DriveImportItemStatus: typeof $Enums.DriveImportItemStatus
+
+export type SmartAlbumPaymentMethod = $Enums.SmartAlbumPaymentMethod
+
+export const SmartAlbumPaymentMethod: typeof $Enums.SmartAlbumPaymentMethod
+
+export type SmartAlbumDesignStatus = $Enums.SmartAlbumDesignStatus
+
+export const SmartAlbumDesignStatus: typeof $Enums.SmartAlbumDesignStatus
+
+export type SmartAlbumSubmissionStatus = $Enums.SmartAlbumSubmissionStatus
+
+export const SmartAlbumSubmissionStatus: typeof $Enums.SmartAlbumSubmissionStatus
+
+export type SmartAlbumTransactionStatus = $Enums.SmartAlbumTransactionStatus
+
+export const SmartAlbumTransactionStatus: typeof $Enums.SmartAlbumTransactionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -619,6 +699,56 @@ export class PrismaClient<
     * ```
     */
   get driveImportItem(): Prisma.DriveImportItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.smartAlbumConfig`: Exposes CRUD operations for the **SmartAlbumConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SmartAlbumConfigs
+    * const smartAlbumConfigs = await prisma.smartAlbumConfig.findMany()
+    * ```
+    */
+  get smartAlbumConfig(): Prisma.SmartAlbumConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.smartAlbumProduct`: Exposes CRUD operations for the **SmartAlbumProduct** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SmartAlbumProducts
+    * const smartAlbumProducts = await prisma.smartAlbumProduct.findMany()
+    * ```
+    */
+  get smartAlbumProduct(): Prisma.SmartAlbumProductDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.smartAlbumDesign`: Exposes CRUD operations for the **SmartAlbumDesign** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SmartAlbumDesigns
+    * const smartAlbumDesigns = await prisma.smartAlbumDesign.findMany()
+    * ```
+    */
+  get smartAlbumDesign(): Prisma.SmartAlbumDesignDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.smartAlbumSubmission`: Exposes CRUD operations for the **SmartAlbumSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SmartAlbumSubmissions
+    * const smartAlbumSubmissions = await prisma.smartAlbumSubmission.findMany()
+    * ```
+    */
+  get smartAlbumSubmission(): Prisma.SmartAlbumSubmissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.smartAlbumTransaction`: Exposes CRUD operations for the **SmartAlbumTransaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SmartAlbumTransactions
+    * const smartAlbumTransactions = await prisma.smartAlbumTransaction.findMany()
+    * ```
+    */
+  get smartAlbumTransaction(): Prisma.SmartAlbumTransactionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1075,7 +1205,12 @@ export namespace Prisma {
     PricingTier: 'PricingTier',
     RegionalPricing: 'RegionalPricing',
     RegionalTierOverride: 'RegionalTierOverride',
-    DriveImportItem: 'DriveImportItem'
+    DriveImportItem: 'DriveImportItem',
+    SmartAlbumConfig: 'SmartAlbumConfig',
+    SmartAlbumProduct: 'SmartAlbumProduct',
+    SmartAlbumDesign: 'SmartAlbumDesign',
+    SmartAlbumSubmission: 'SmartAlbumSubmission',
+    SmartAlbumTransaction: 'SmartAlbumTransaction'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1091,7 +1226,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2797,6 +2932,376 @@ export namespace Prisma {
           }
         }
       }
+      SmartAlbumConfig: {
+        payload: Prisma.$SmartAlbumConfigPayload<ExtArgs>
+        fields: Prisma.SmartAlbumConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SmartAlbumConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SmartAlbumConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.SmartAlbumConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SmartAlbumConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          findMany: {
+            args: Prisma.SmartAlbumConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>[]
+          }
+          create: {
+            args: Prisma.SmartAlbumConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          createMany: {
+            args: Prisma.SmartAlbumConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SmartAlbumConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.SmartAlbumConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          update: {
+            args: Prisma.SmartAlbumConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.SmartAlbumConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SmartAlbumConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SmartAlbumConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.SmartAlbumConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.SmartAlbumConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSmartAlbumConfig>
+          }
+          groupBy: {
+            args: Prisma.SmartAlbumConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SmartAlbumConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      SmartAlbumProduct: {
+        payload: Prisma.$SmartAlbumProductPayload<ExtArgs>
+        fields: Prisma.SmartAlbumProductFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SmartAlbumProductFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SmartAlbumProductFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          findFirst: {
+            args: Prisma.SmartAlbumProductFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SmartAlbumProductFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          findMany: {
+            args: Prisma.SmartAlbumProductFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>[]
+          }
+          create: {
+            args: Prisma.SmartAlbumProductCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          createMany: {
+            args: Prisma.SmartAlbumProductCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SmartAlbumProductCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>[]
+          }
+          delete: {
+            args: Prisma.SmartAlbumProductDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          update: {
+            args: Prisma.SmartAlbumProductUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          deleteMany: {
+            args: Prisma.SmartAlbumProductDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SmartAlbumProductUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SmartAlbumProductUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>[]
+          }
+          upsert: {
+            args: Prisma.SmartAlbumProductUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumProductPayload>
+          }
+          aggregate: {
+            args: Prisma.SmartAlbumProductAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSmartAlbumProduct>
+          }
+          groupBy: {
+            args: Prisma.SmartAlbumProductGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumProductGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SmartAlbumProductCountArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumProductCountAggregateOutputType> | number
+          }
+        }
+      }
+      SmartAlbumDesign: {
+        payload: Prisma.$SmartAlbumDesignPayload<ExtArgs>
+        fields: Prisma.SmartAlbumDesignFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SmartAlbumDesignFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SmartAlbumDesignFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          findFirst: {
+            args: Prisma.SmartAlbumDesignFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SmartAlbumDesignFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          findMany: {
+            args: Prisma.SmartAlbumDesignFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>[]
+          }
+          create: {
+            args: Prisma.SmartAlbumDesignCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          createMany: {
+            args: Prisma.SmartAlbumDesignCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SmartAlbumDesignCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>[]
+          }
+          delete: {
+            args: Prisma.SmartAlbumDesignDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          update: {
+            args: Prisma.SmartAlbumDesignUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          deleteMany: {
+            args: Prisma.SmartAlbumDesignDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SmartAlbumDesignUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SmartAlbumDesignUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>[]
+          }
+          upsert: {
+            args: Prisma.SmartAlbumDesignUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumDesignPayload>
+          }
+          aggregate: {
+            args: Prisma.SmartAlbumDesignAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSmartAlbumDesign>
+          }
+          groupBy: {
+            args: Prisma.SmartAlbumDesignGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumDesignGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SmartAlbumDesignCountArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumDesignCountAggregateOutputType> | number
+          }
+        }
+      }
+      SmartAlbumSubmission: {
+        payload: Prisma.$SmartAlbumSubmissionPayload<ExtArgs>
+        fields: Prisma.SmartAlbumSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SmartAlbumSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SmartAlbumSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.SmartAlbumSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SmartAlbumSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.SmartAlbumSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.SmartAlbumSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.SmartAlbumSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SmartAlbumSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.SmartAlbumSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          update: {
+            args: Prisma.SmartAlbumSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SmartAlbumSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SmartAlbumSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SmartAlbumSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SmartAlbumSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.SmartAlbumSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSmartAlbumSubmission>
+          }
+          groupBy: {
+            args: Prisma.SmartAlbumSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SmartAlbumSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SmartAlbumTransaction: {
+        payload: Prisma.$SmartAlbumTransactionPayload<ExtArgs>
+        fields: Prisma.SmartAlbumTransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SmartAlbumTransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SmartAlbumTransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.SmartAlbumTransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SmartAlbumTransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          findMany: {
+            args: Prisma.SmartAlbumTransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>[]
+          }
+          create: {
+            args: Prisma.SmartAlbumTransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          createMany: {
+            args: Prisma.SmartAlbumTransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SmartAlbumTransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.SmartAlbumTransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          update: {
+            args: Prisma.SmartAlbumTransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SmartAlbumTransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SmartAlbumTransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SmartAlbumTransactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SmartAlbumTransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SmartAlbumTransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.SmartAlbumTransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSmartAlbumTransaction>
+          }
+          groupBy: {
+            args: Prisma.SmartAlbumTransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumTransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SmartAlbumTransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<SmartAlbumTransactionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2928,6 +3433,11 @@ export namespace Prisma {
     regionalPricing?: RegionalPricingOmit
     regionalTierOverride?: RegionalTierOverrideOmit
     driveImportItem?: DriveImportItemOmit
+    smartAlbumConfig?: SmartAlbumConfigOmit
+    smartAlbumProduct?: SmartAlbumProductOmit
+    smartAlbumDesign?: SmartAlbumDesignOmit
+    smartAlbumSubmission?: SmartAlbumSubmissionOmit
+    smartAlbumTransaction?: SmartAlbumTransactionOmit
   }
 
   /* Types for Logging */
@@ -3101,6 +3611,7 @@ export namespace Prisma {
     favorites: number
     downloadEvents: number
     favoriteShares: number
+    smartAlbumDesigns: number
   }
 
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3112,6 +3623,7 @@ export namespace Prisma {
     favorites?: boolean | GalleryCountOutputTypeCountFavoritesArgs
     downloadEvents?: boolean | GalleryCountOutputTypeCountDownloadEventsArgs
     favoriteShares?: boolean | GalleryCountOutputTypeCountFavoriteSharesArgs
+    smartAlbumDesigns?: boolean | GalleryCountOutputTypeCountSmartAlbumDesignsArgs
   }
 
   // Custom InputTypes
@@ -3179,6 +3691,13 @@ export namespace Prisma {
    */
   export type GalleryCountOutputTypeCountFavoriteSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FavoriteShareWhereInput
+  }
+
+  /**
+   * GalleryCountOutputType without action
+   */
+  export type GalleryCountOutputTypeCountSmartAlbumDesignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumDesignWhereInput
   }
 
 
@@ -3392,6 +3911,99 @@ export namespace Prisma {
    */
   export type RegionalPricingCountOutputTypeCountTierOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RegionalTierOverrideWhereInput
+  }
+
+
+  /**
+   * Count Type SmartAlbumConfigCountOutputType
+   */
+
+  export type SmartAlbumConfigCountOutputType = {
+    products: number
+  }
+
+  export type SmartAlbumConfigCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | SmartAlbumConfigCountOutputTypeCountProductsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumConfigCountOutputType without action
+   */
+  export type SmartAlbumConfigCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfigCountOutputType
+     */
+    select?: SmartAlbumConfigCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumConfigCountOutputType without action
+   */
+  export type SmartAlbumConfigCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumProductWhereInput
+  }
+
+
+  /**
+   * Count Type SmartAlbumProductCountOutputType
+   */
+
+  export type SmartAlbumProductCountOutputType = {
+    designs: number
+  }
+
+  export type SmartAlbumProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    designs?: boolean | SmartAlbumProductCountOutputTypeCountDesignsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumProductCountOutputType without action
+   */
+  export type SmartAlbumProductCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProductCountOutputType
+     */
+    select?: SmartAlbumProductCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumProductCountOutputType without action
+   */
+  export type SmartAlbumProductCountOutputTypeCountDesignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumDesignWhereInput
+  }
+
+
+  /**
+   * Count Type SmartAlbumDesignCountOutputType
+   */
+
+  export type SmartAlbumDesignCountOutputType = {
+    submissions: number
+  }
+
+  export type SmartAlbumDesignCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submissions?: boolean | SmartAlbumDesignCountOutputTypeCountSubmissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumDesignCountOutputType without action
+   */
+  export type SmartAlbumDesignCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesignCountOutputType
+     */
+    select?: SmartAlbumDesignCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumDesignCountOutputType without action
+   */
+  export type SmartAlbumDesignCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumSubmissionWhereInput
   }
 
 
@@ -3773,6 +4385,7 @@ export namespace Prisma {
     clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
+    smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3867,6 +4480,7 @@ export namespace Prisma {
     clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
+    smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3883,6 +4497,7 @@ export namespace Prisma {
       clients: Prisma.$ClientPayload<ExtArgs>[]
       storageEvents: Prisma.$StorageEventPayload<ExtArgs>[]
       driveImportJobs: Prisma.$DriveImportJobPayload<ExtArgs>[]
+      smartAlbumConfig: Prisma.$SmartAlbumConfigPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4311,6 +4926,7 @@ export namespace Prisma {
     clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     storageEvents<T extends User$storageEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$storageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     driveImportJobs<T extends User$driveImportJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$driveImportJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    smartAlbumConfig<T extends User$smartAlbumConfigArgs<ExtArgs> = {}>(args?: Subset<T, User$smartAlbumConfigArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4941,6 +5557,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DriveImportJobScalarFieldEnum | DriveImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * User.smartAlbumConfig
+   */
+  export type User$smartAlbumConfigArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    where?: SmartAlbumConfigWhereInput
   }
 
   /**
@@ -11080,6 +11715,7 @@ export namespace Prisma {
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
     downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
     favoriteShares?: boolean | Gallery$favoriteSharesArgs<ExtArgs>
+    smartAlbumDesigns?: boolean | Gallery$smartAlbumDesignsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gallery"]>
 
@@ -11195,6 +11831,7 @@ export namespace Prisma {
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
     downloadEvents?: boolean | Gallery$downloadEventsArgs<ExtArgs>
     favoriteShares?: boolean | Gallery$favoriteSharesArgs<ExtArgs>
+    smartAlbumDesigns?: boolean | Gallery$smartAlbumDesignsArgs<ExtArgs>
     _count?: boolean | GalleryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GalleryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11219,6 +11856,7 @@ export namespace Prisma {
       favorites: Prisma.$GalleryFavoritePayload<ExtArgs>[]
       downloadEvents: Prisma.$DownloadEventPayload<ExtArgs>[]
       favoriteShares: Prisma.$FavoriteSharePayload<ExtArgs>[]
+      smartAlbumDesigns: Prisma.$SmartAlbumDesignPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11654,6 +12292,7 @@ export namespace Prisma {
     favorites<T extends Gallery$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     downloadEvents<T extends Gallery$downloadEventsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$downloadEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favoriteShares<T extends Gallery$favoriteSharesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoriteSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    smartAlbumDesigns<T extends Gallery$smartAlbumDesignsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$smartAlbumDesignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12321,6 +12960,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FavoriteShareScalarFieldEnum | FavoriteShareScalarFieldEnum[]
+  }
+
+  /**
+   * Gallery.smartAlbumDesigns
+   */
+  export type Gallery$smartAlbumDesignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    where?: SmartAlbumDesignWhereInput
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SmartAlbumDesignScalarFieldEnum | SmartAlbumDesignScalarFieldEnum[]
   }
 
   /**
@@ -30816,6 +31479,5873 @@ export namespace Prisma {
 
 
   /**
+   * Model SmartAlbumConfig
+   */
+
+  export type AggregateSmartAlbumConfig = {
+    _count: SmartAlbumConfigCountAggregateOutputType | null
+    _min: SmartAlbumConfigMinAggregateOutputType | null
+    _max: SmartAlbumConfigMaxAggregateOutputType | null
+  }
+
+  export type SmartAlbumConfigMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    enabled: boolean | null
+    paymentMethod: $Enums.SmartAlbumPaymentMethod | null
+    stripeConnectAccountId: string | null
+    stripeConnectOnboarded: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumConfigMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    enabled: boolean | null
+    paymentMethod: $Enums.SmartAlbumPaymentMethod | null
+    stripeConnectAccountId: string | null
+    stripeConnectOnboarded: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumConfigCountAggregateOutputType = {
+    id: number
+    userId: number
+    enabled: number
+    paymentMethod: number
+    stripeConnectAccountId: number
+    stripeConnectOnboarded: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SmartAlbumConfigMinAggregateInputType = {
+    id?: true
+    userId?: true
+    enabled?: true
+    paymentMethod?: true
+    stripeConnectAccountId?: true
+    stripeConnectOnboarded?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumConfigMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    enabled?: true
+    paymentMethod?: true
+    stripeConnectAccountId?: true
+    stripeConnectOnboarded?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumConfigCountAggregateInputType = {
+    id?: true
+    userId?: true
+    enabled?: true
+    paymentMethod?: true
+    stripeConnectAccountId?: true
+    stripeConnectOnboarded?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SmartAlbumConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumConfig to aggregate.
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumConfigs to fetch.
+     */
+    orderBy?: SmartAlbumConfigOrderByWithRelationInput | SmartAlbumConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SmartAlbumConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SmartAlbumConfigs
+    **/
+    _count?: true | SmartAlbumConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SmartAlbumConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SmartAlbumConfigMaxAggregateInputType
+  }
+
+  export type GetSmartAlbumConfigAggregateType<T extends SmartAlbumConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateSmartAlbumConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSmartAlbumConfig[P]>
+      : GetScalarType<T[P], AggregateSmartAlbumConfig[P]>
+  }
+
+
+
+
+  export type SmartAlbumConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumConfigWhereInput
+    orderBy?: SmartAlbumConfigOrderByWithAggregationInput | SmartAlbumConfigOrderByWithAggregationInput[]
+    by: SmartAlbumConfigScalarFieldEnum[] | SmartAlbumConfigScalarFieldEnum
+    having?: SmartAlbumConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SmartAlbumConfigCountAggregateInputType | true
+    _min?: SmartAlbumConfigMinAggregateInputType
+    _max?: SmartAlbumConfigMaxAggregateInputType
+  }
+
+  export type SmartAlbumConfigGroupByOutputType = {
+    id: string
+    userId: string
+    enabled: boolean
+    paymentMethod: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId: string | null
+    stripeConnectOnboarded: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: SmartAlbumConfigCountAggregateOutputType | null
+    _min: SmartAlbumConfigMinAggregateOutputType | null
+    _max: SmartAlbumConfigMaxAggregateOutputType | null
+  }
+
+  type GetSmartAlbumConfigGroupByPayload<T extends SmartAlbumConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SmartAlbumConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SmartAlbumConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SmartAlbumConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], SmartAlbumConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SmartAlbumConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    enabled?: boolean
+    paymentMethod?: boolean
+    stripeConnectAccountId?: boolean
+    stripeConnectOnboarded?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    products?: boolean | SmartAlbumConfig$productsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumConfig"]>
+
+  export type SmartAlbumConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    enabled?: boolean
+    paymentMethod?: boolean
+    stripeConnectAccountId?: boolean
+    stripeConnectOnboarded?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumConfig"]>
+
+  export type SmartAlbumConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    enabled?: boolean
+    paymentMethod?: boolean
+    stripeConnectAccountId?: boolean
+    stripeConnectOnboarded?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumConfig"]>
+
+  export type SmartAlbumConfigSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    enabled?: boolean
+    paymentMethod?: boolean
+    stripeConnectAccountId?: boolean
+    stripeConnectOnboarded?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SmartAlbumConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "enabled" | "paymentMethod" | "stripeConnectAccountId" | "stripeConnectOnboarded" | "createdAt" | "updatedAt", ExtArgs["result"]["smartAlbumConfig"]>
+  export type SmartAlbumConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    products?: boolean | SmartAlbumConfig$productsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SmartAlbumConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SmartAlbumConfig"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      products: Prisma.$SmartAlbumProductPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      enabled: boolean
+      paymentMethod: $Enums.SmartAlbumPaymentMethod
+      stripeConnectAccountId: string | null
+      stripeConnectOnboarded: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["smartAlbumConfig"]>
+    composites: {}
+  }
+
+  type SmartAlbumConfigGetPayload<S extends boolean | null | undefined | SmartAlbumConfigDefaultArgs> = $Result.GetResult<Prisma.$SmartAlbumConfigPayload, S>
+
+  type SmartAlbumConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SmartAlbumConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SmartAlbumConfigCountAggregateInputType | true
+    }
+
+  export interface SmartAlbumConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SmartAlbumConfig'], meta: { name: 'SmartAlbumConfig' } }
+    /**
+     * Find zero or one SmartAlbumConfig that matches the filter.
+     * @param {SmartAlbumConfigFindUniqueArgs} args - Arguments to find a SmartAlbumConfig
+     * @example
+     * // Get one SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SmartAlbumConfigFindUniqueArgs>(args: SelectSubset<T, SmartAlbumConfigFindUniqueArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SmartAlbumConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SmartAlbumConfigFindUniqueOrThrowArgs} args - Arguments to find a SmartAlbumConfig
+     * @example
+     * // Get one SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SmartAlbumConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, SmartAlbumConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigFindFirstArgs} args - Arguments to find a SmartAlbumConfig
+     * @example
+     * // Get one SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SmartAlbumConfigFindFirstArgs>(args?: SelectSubset<T, SmartAlbumConfigFindFirstArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigFindFirstOrThrowArgs} args - Arguments to find a SmartAlbumConfig
+     * @example
+     * // Get one SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SmartAlbumConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, SmartAlbumConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SmartAlbumConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SmartAlbumConfigs
+     * const smartAlbumConfigs = await prisma.smartAlbumConfig.findMany()
+     * 
+     * // Get first 10 SmartAlbumConfigs
+     * const smartAlbumConfigs = await prisma.smartAlbumConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const smartAlbumConfigWithIdOnly = await prisma.smartAlbumConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SmartAlbumConfigFindManyArgs>(args?: SelectSubset<T, SmartAlbumConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SmartAlbumConfig.
+     * @param {SmartAlbumConfigCreateArgs} args - Arguments to create a SmartAlbumConfig.
+     * @example
+     * // Create one SmartAlbumConfig
+     * const SmartAlbumConfig = await prisma.smartAlbumConfig.create({
+     *   data: {
+     *     // ... data to create a SmartAlbumConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends SmartAlbumConfigCreateArgs>(args: SelectSubset<T, SmartAlbumConfigCreateArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SmartAlbumConfigs.
+     * @param {SmartAlbumConfigCreateManyArgs} args - Arguments to create many SmartAlbumConfigs.
+     * @example
+     * // Create many SmartAlbumConfigs
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SmartAlbumConfigCreateManyArgs>(args?: SelectSubset<T, SmartAlbumConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SmartAlbumConfigs and returns the data saved in the database.
+     * @param {SmartAlbumConfigCreateManyAndReturnArgs} args - Arguments to create many SmartAlbumConfigs.
+     * @example
+     * // Create many SmartAlbumConfigs
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SmartAlbumConfigs and only return the `id`
+     * const smartAlbumConfigWithIdOnly = await prisma.smartAlbumConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SmartAlbumConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, SmartAlbumConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SmartAlbumConfig.
+     * @param {SmartAlbumConfigDeleteArgs} args - Arguments to delete one SmartAlbumConfig.
+     * @example
+     * // Delete one SmartAlbumConfig
+     * const SmartAlbumConfig = await prisma.smartAlbumConfig.delete({
+     *   where: {
+     *     // ... filter to delete one SmartAlbumConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SmartAlbumConfigDeleteArgs>(args: SelectSubset<T, SmartAlbumConfigDeleteArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SmartAlbumConfig.
+     * @param {SmartAlbumConfigUpdateArgs} args - Arguments to update one SmartAlbumConfig.
+     * @example
+     * // Update one SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SmartAlbumConfigUpdateArgs>(args: SelectSubset<T, SmartAlbumConfigUpdateArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SmartAlbumConfigs.
+     * @param {SmartAlbumConfigDeleteManyArgs} args - Arguments to filter SmartAlbumConfigs to delete.
+     * @example
+     * // Delete a few SmartAlbumConfigs
+     * const { count } = await prisma.smartAlbumConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SmartAlbumConfigDeleteManyArgs>(args?: SelectSubset<T, SmartAlbumConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SmartAlbumConfigs
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SmartAlbumConfigUpdateManyArgs>(args: SelectSubset<T, SmartAlbumConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumConfigs and returns the data updated in the database.
+     * @param {SmartAlbumConfigUpdateManyAndReturnArgs} args - Arguments to update many SmartAlbumConfigs.
+     * @example
+     * // Update many SmartAlbumConfigs
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SmartAlbumConfigs and only return the `id`
+     * const smartAlbumConfigWithIdOnly = await prisma.smartAlbumConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SmartAlbumConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, SmartAlbumConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SmartAlbumConfig.
+     * @param {SmartAlbumConfigUpsertArgs} args - Arguments to update or create a SmartAlbumConfig.
+     * @example
+     * // Update or create a SmartAlbumConfig
+     * const smartAlbumConfig = await prisma.smartAlbumConfig.upsert({
+     *   create: {
+     *     // ... data to create a SmartAlbumConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SmartAlbumConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SmartAlbumConfigUpsertArgs>(args: SelectSubset<T, SmartAlbumConfigUpsertArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SmartAlbumConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigCountArgs} args - Arguments to filter SmartAlbumConfigs to count.
+     * @example
+     * // Count the number of SmartAlbumConfigs
+     * const count = await prisma.smartAlbumConfig.count({
+     *   where: {
+     *     // ... the filter for the SmartAlbumConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends SmartAlbumConfigCountArgs>(
+      args?: Subset<T, SmartAlbumConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SmartAlbumConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SmartAlbumConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SmartAlbumConfigAggregateArgs>(args: Subset<T, SmartAlbumConfigAggregateArgs>): Prisma.PrismaPromise<GetSmartAlbumConfigAggregateType<T>>
+
+    /**
+     * Group by SmartAlbumConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SmartAlbumConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SmartAlbumConfigGroupByArgs['orderBy'] }
+        : { orderBy?: SmartAlbumConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SmartAlbumConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSmartAlbumConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SmartAlbumConfig model
+   */
+  readonly fields: SmartAlbumConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SmartAlbumConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SmartAlbumConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    products<T extends SmartAlbumConfig$productsArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumConfig$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SmartAlbumConfig model
+   */
+  interface SmartAlbumConfigFieldRefs {
+    readonly id: FieldRef<"SmartAlbumConfig", 'String'>
+    readonly userId: FieldRef<"SmartAlbumConfig", 'String'>
+    readonly enabled: FieldRef<"SmartAlbumConfig", 'Boolean'>
+    readonly paymentMethod: FieldRef<"SmartAlbumConfig", 'SmartAlbumPaymentMethod'>
+    readonly stripeConnectAccountId: FieldRef<"SmartAlbumConfig", 'String'>
+    readonly stripeConnectOnboarded: FieldRef<"SmartAlbumConfig", 'Boolean'>
+    readonly createdAt: FieldRef<"SmartAlbumConfig", 'DateTime'>
+    readonly updatedAt: FieldRef<"SmartAlbumConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumConfig findUnique
+   */
+  export type SmartAlbumConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumConfig to fetch.
+     */
+    where: SmartAlbumConfigWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumConfig findUniqueOrThrow
+   */
+  export type SmartAlbumConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumConfig to fetch.
+     */
+    where: SmartAlbumConfigWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumConfig findFirst
+   */
+  export type SmartAlbumConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumConfig to fetch.
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumConfigs to fetch.
+     */
+    orderBy?: SmartAlbumConfigOrderByWithRelationInput | SmartAlbumConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumConfigs.
+     */
+    cursor?: SmartAlbumConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumConfigs.
+     */
+    distinct?: SmartAlbumConfigScalarFieldEnum | SmartAlbumConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumConfig findFirstOrThrow
+   */
+  export type SmartAlbumConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumConfig to fetch.
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumConfigs to fetch.
+     */
+    orderBy?: SmartAlbumConfigOrderByWithRelationInput | SmartAlbumConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumConfigs.
+     */
+    cursor?: SmartAlbumConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumConfigs.
+     */
+    distinct?: SmartAlbumConfigScalarFieldEnum | SmartAlbumConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumConfig findMany
+   */
+  export type SmartAlbumConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumConfigs to fetch.
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumConfigs to fetch.
+     */
+    orderBy?: SmartAlbumConfigOrderByWithRelationInput | SmartAlbumConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SmartAlbumConfigs.
+     */
+    cursor?: SmartAlbumConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumConfigs.
+     */
+    distinct?: SmartAlbumConfigScalarFieldEnum | SmartAlbumConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumConfig create
+   */
+  export type SmartAlbumConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SmartAlbumConfig.
+     */
+    data: XOR<SmartAlbumConfigCreateInput, SmartAlbumConfigUncheckedCreateInput>
+  }
+
+  /**
+   * SmartAlbumConfig createMany
+   */
+  export type SmartAlbumConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SmartAlbumConfigs.
+     */
+    data: SmartAlbumConfigCreateManyInput | SmartAlbumConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SmartAlbumConfig createManyAndReturn
+   */
+  export type SmartAlbumConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many SmartAlbumConfigs.
+     */
+    data: SmartAlbumConfigCreateManyInput | SmartAlbumConfigCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumConfig update
+   */
+  export type SmartAlbumConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SmartAlbumConfig.
+     */
+    data: XOR<SmartAlbumConfigUpdateInput, SmartAlbumConfigUncheckedUpdateInput>
+    /**
+     * Choose, which SmartAlbumConfig to update.
+     */
+    where: SmartAlbumConfigWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumConfig updateMany
+   */
+  export type SmartAlbumConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SmartAlbumConfigs.
+     */
+    data: XOR<SmartAlbumConfigUpdateManyMutationInput, SmartAlbumConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumConfigs to update
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * Limit how many SmartAlbumConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumConfig updateManyAndReturn
+   */
+  export type SmartAlbumConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update SmartAlbumConfigs.
+     */
+    data: XOR<SmartAlbumConfigUpdateManyMutationInput, SmartAlbumConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumConfigs to update
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * Limit how many SmartAlbumConfigs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumConfig upsert
+   */
+  export type SmartAlbumConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SmartAlbumConfig to update in case it exists.
+     */
+    where: SmartAlbumConfigWhereUniqueInput
+    /**
+     * In case the SmartAlbumConfig found by the `where` argument doesn't exist, create a new SmartAlbumConfig with this data.
+     */
+    create: XOR<SmartAlbumConfigCreateInput, SmartAlbumConfigUncheckedCreateInput>
+    /**
+     * In case the SmartAlbumConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SmartAlbumConfigUpdateInput, SmartAlbumConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * SmartAlbumConfig delete
+   */
+  export type SmartAlbumConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+    /**
+     * Filter which SmartAlbumConfig to delete.
+     */
+    where: SmartAlbumConfigWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumConfig deleteMany
+   */
+  export type SmartAlbumConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumConfigs to delete
+     */
+    where?: SmartAlbumConfigWhereInput
+    /**
+     * Limit how many SmartAlbumConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumConfig.products
+   */
+  export type SmartAlbumConfig$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    where?: SmartAlbumProductWhereInput
+    orderBy?: SmartAlbumProductOrderByWithRelationInput | SmartAlbumProductOrderByWithRelationInput[]
+    cursor?: SmartAlbumProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SmartAlbumProductScalarFieldEnum | SmartAlbumProductScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumConfig without action
+   */
+  export type SmartAlbumConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumConfig
+     */
+    select?: SmartAlbumConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumConfig
+     */
+    omit?: SmartAlbumConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumConfigInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SmartAlbumProduct
+   */
+
+  export type AggregateSmartAlbumProduct = {
+    _count: SmartAlbumProductCountAggregateOutputType | null
+    _avg: SmartAlbumProductAvgAggregateOutputType | null
+    _sum: SmartAlbumProductSumAggregateOutputType | null
+    _min: SmartAlbumProductMinAggregateOutputType | null
+    _max: SmartAlbumProductMaxAggregateOutputType | null
+  }
+
+  export type SmartAlbumProductAvgAggregateOutputType = {
+    maxPages: number | null
+    priceCents: number | null
+  }
+
+  export type SmartAlbumProductSumAggregateOutputType = {
+    maxPages: number | null
+    priceCents: number | null
+  }
+
+  export type SmartAlbumProductMinAggregateOutputType = {
+    id: string | null
+    configId: string | null
+    name: string | null
+    size: string | null
+    coverType: string | null
+    paperType: string | null
+    maxPages: number | null
+    priceCents: number | null
+    currency: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumProductMaxAggregateOutputType = {
+    id: string | null
+    configId: string | null
+    name: string | null
+    size: string | null
+    coverType: string | null
+    paperType: string | null
+    maxPages: number | null
+    priceCents: number | null
+    currency: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumProductCountAggregateOutputType = {
+    id: number
+    configId: number
+    name: number
+    size: number
+    coverType: number
+    paperType: number
+    maxPages: number
+    priceCents: number
+    currency: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SmartAlbumProductAvgAggregateInputType = {
+    maxPages?: true
+    priceCents?: true
+  }
+
+  export type SmartAlbumProductSumAggregateInputType = {
+    maxPages?: true
+    priceCents?: true
+  }
+
+  export type SmartAlbumProductMinAggregateInputType = {
+    id?: true
+    configId?: true
+    name?: true
+    size?: true
+    coverType?: true
+    paperType?: true
+    maxPages?: true
+    priceCents?: true
+    currency?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumProductMaxAggregateInputType = {
+    id?: true
+    configId?: true
+    name?: true
+    size?: true
+    coverType?: true
+    paperType?: true
+    maxPages?: true
+    priceCents?: true
+    currency?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumProductCountAggregateInputType = {
+    id?: true
+    configId?: true
+    name?: true
+    size?: true
+    coverType?: true
+    paperType?: true
+    maxPages?: true
+    priceCents?: true
+    currency?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SmartAlbumProductAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumProduct to aggregate.
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumProducts to fetch.
+     */
+    orderBy?: SmartAlbumProductOrderByWithRelationInput | SmartAlbumProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SmartAlbumProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SmartAlbumProducts
+    **/
+    _count?: true | SmartAlbumProductCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SmartAlbumProductAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SmartAlbumProductSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SmartAlbumProductMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SmartAlbumProductMaxAggregateInputType
+  }
+
+  export type GetSmartAlbumProductAggregateType<T extends SmartAlbumProductAggregateArgs> = {
+        [P in keyof T & keyof AggregateSmartAlbumProduct]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSmartAlbumProduct[P]>
+      : GetScalarType<T[P], AggregateSmartAlbumProduct[P]>
+  }
+
+
+
+
+  export type SmartAlbumProductGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumProductWhereInput
+    orderBy?: SmartAlbumProductOrderByWithAggregationInput | SmartAlbumProductOrderByWithAggregationInput[]
+    by: SmartAlbumProductScalarFieldEnum[] | SmartAlbumProductScalarFieldEnum
+    having?: SmartAlbumProductScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SmartAlbumProductCountAggregateInputType | true
+    _avg?: SmartAlbumProductAvgAggregateInputType
+    _sum?: SmartAlbumProductSumAggregateInputType
+    _min?: SmartAlbumProductMinAggregateInputType
+    _max?: SmartAlbumProductMaxAggregateInputType
+  }
+
+  export type SmartAlbumProductGroupByOutputType = {
+    id: string
+    configId: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: SmartAlbumProductCountAggregateOutputType | null
+    _avg: SmartAlbumProductAvgAggregateOutputType | null
+    _sum: SmartAlbumProductSumAggregateOutputType | null
+    _min: SmartAlbumProductMinAggregateOutputType | null
+    _max: SmartAlbumProductMaxAggregateOutputType | null
+  }
+
+  type GetSmartAlbumProductGroupByPayload<T extends SmartAlbumProductGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SmartAlbumProductGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SmartAlbumProductGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SmartAlbumProductGroupByOutputType[P]>
+            : GetScalarType<T[P], SmartAlbumProductGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SmartAlbumProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    configId?: boolean
+    name?: boolean
+    size?: boolean
+    coverType?: boolean
+    paperType?: boolean
+    maxPages?: boolean
+    priceCents?: boolean
+    currency?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+    designs?: boolean | SmartAlbumProduct$designsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumProductCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumProduct"]>
+
+  export type SmartAlbumProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    configId?: boolean
+    name?: boolean
+    size?: boolean
+    coverType?: boolean
+    paperType?: boolean
+    maxPages?: boolean
+    priceCents?: boolean
+    currency?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumProduct"]>
+
+  export type SmartAlbumProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    configId?: boolean
+    name?: boolean
+    size?: boolean
+    coverType?: boolean
+    paperType?: boolean
+    maxPages?: boolean
+    priceCents?: boolean
+    currency?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumProduct"]>
+
+  export type SmartAlbumProductSelectScalar = {
+    id?: boolean
+    configId?: boolean
+    name?: boolean
+    size?: boolean
+    coverType?: boolean
+    paperType?: boolean
+    maxPages?: boolean
+    priceCents?: boolean
+    currency?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SmartAlbumProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "configId" | "name" | "size" | "coverType" | "paperType" | "maxPages" | "priceCents" | "currency" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["smartAlbumProduct"]>
+  export type SmartAlbumProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+    designs?: boolean | SmartAlbumProduct$designsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumProductCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumProductIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    config?: boolean | SmartAlbumConfigDefaultArgs<ExtArgs>
+  }
+
+  export type $SmartAlbumProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SmartAlbumProduct"
+    objects: {
+      config: Prisma.$SmartAlbumConfigPayload<ExtArgs>
+      designs: Prisma.$SmartAlbumDesignPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      configId: string
+      name: string
+      size: string
+      coverType: string
+      paperType: string
+      maxPages: number
+      priceCents: number
+      currency: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["smartAlbumProduct"]>
+    composites: {}
+  }
+
+  type SmartAlbumProductGetPayload<S extends boolean | null | undefined | SmartAlbumProductDefaultArgs> = $Result.GetResult<Prisma.$SmartAlbumProductPayload, S>
+
+  type SmartAlbumProductCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SmartAlbumProductFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SmartAlbumProductCountAggregateInputType | true
+    }
+
+  export interface SmartAlbumProductDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SmartAlbumProduct'], meta: { name: 'SmartAlbumProduct' } }
+    /**
+     * Find zero or one SmartAlbumProduct that matches the filter.
+     * @param {SmartAlbumProductFindUniqueArgs} args - Arguments to find a SmartAlbumProduct
+     * @example
+     * // Get one SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SmartAlbumProductFindUniqueArgs>(args: SelectSubset<T, SmartAlbumProductFindUniqueArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SmartAlbumProduct that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SmartAlbumProductFindUniqueOrThrowArgs} args - Arguments to find a SmartAlbumProduct
+     * @example
+     * // Get one SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SmartAlbumProductFindUniqueOrThrowArgs>(args: SelectSubset<T, SmartAlbumProductFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumProduct that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductFindFirstArgs} args - Arguments to find a SmartAlbumProduct
+     * @example
+     * // Get one SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SmartAlbumProductFindFirstArgs>(args?: SelectSubset<T, SmartAlbumProductFindFirstArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumProduct that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductFindFirstOrThrowArgs} args - Arguments to find a SmartAlbumProduct
+     * @example
+     * // Get one SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SmartAlbumProductFindFirstOrThrowArgs>(args?: SelectSubset<T, SmartAlbumProductFindFirstOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SmartAlbumProducts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SmartAlbumProducts
+     * const smartAlbumProducts = await prisma.smartAlbumProduct.findMany()
+     * 
+     * // Get first 10 SmartAlbumProducts
+     * const smartAlbumProducts = await prisma.smartAlbumProduct.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const smartAlbumProductWithIdOnly = await prisma.smartAlbumProduct.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SmartAlbumProductFindManyArgs>(args?: SelectSubset<T, SmartAlbumProductFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SmartAlbumProduct.
+     * @param {SmartAlbumProductCreateArgs} args - Arguments to create a SmartAlbumProduct.
+     * @example
+     * // Create one SmartAlbumProduct
+     * const SmartAlbumProduct = await prisma.smartAlbumProduct.create({
+     *   data: {
+     *     // ... data to create a SmartAlbumProduct
+     *   }
+     * })
+     * 
+     */
+    create<T extends SmartAlbumProductCreateArgs>(args: SelectSubset<T, SmartAlbumProductCreateArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SmartAlbumProducts.
+     * @param {SmartAlbumProductCreateManyArgs} args - Arguments to create many SmartAlbumProducts.
+     * @example
+     * // Create many SmartAlbumProducts
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SmartAlbumProductCreateManyArgs>(args?: SelectSubset<T, SmartAlbumProductCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SmartAlbumProducts and returns the data saved in the database.
+     * @param {SmartAlbumProductCreateManyAndReturnArgs} args - Arguments to create many SmartAlbumProducts.
+     * @example
+     * // Create many SmartAlbumProducts
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SmartAlbumProducts and only return the `id`
+     * const smartAlbumProductWithIdOnly = await prisma.smartAlbumProduct.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SmartAlbumProductCreateManyAndReturnArgs>(args?: SelectSubset<T, SmartAlbumProductCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SmartAlbumProduct.
+     * @param {SmartAlbumProductDeleteArgs} args - Arguments to delete one SmartAlbumProduct.
+     * @example
+     * // Delete one SmartAlbumProduct
+     * const SmartAlbumProduct = await prisma.smartAlbumProduct.delete({
+     *   where: {
+     *     // ... filter to delete one SmartAlbumProduct
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SmartAlbumProductDeleteArgs>(args: SelectSubset<T, SmartAlbumProductDeleteArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SmartAlbumProduct.
+     * @param {SmartAlbumProductUpdateArgs} args - Arguments to update one SmartAlbumProduct.
+     * @example
+     * // Update one SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SmartAlbumProductUpdateArgs>(args: SelectSubset<T, SmartAlbumProductUpdateArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SmartAlbumProducts.
+     * @param {SmartAlbumProductDeleteManyArgs} args - Arguments to filter SmartAlbumProducts to delete.
+     * @example
+     * // Delete a few SmartAlbumProducts
+     * const { count } = await prisma.smartAlbumProduct.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SmartAlbumProductDeleteManyArgs>(args?: SelectSubset<T, SmartAlbumProductDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumProducts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SmartAlbumProducts
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SmartAlbumProductUpdateManyArgs>(args: SelectSubset<T, SmartAlbumProductUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumProducts and returns the data updated in the database.
+     * @param {SmartAlbumProductUpdateManyAndReturnArgs} args - Arguments to update many SmartAlbumProducts.
+     * @example
+     * // Update many SmartAlbumProducts
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SmartAlbumProducts and only return the `id`
+     * const smartAlbumProductWithIdOnly = await prisma.smartAlbumProduct.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SmartAlbumProductUpdateManyAndReturnArgs>(args: SelectSubset<T, SmartAlbumProductUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SmartAlbumProduct.
+     * @param {SmartAlbumProductUpsertArgs} args - Arguments to update or create a SmartAlbumProduct.
+     * @example
+     * // Update or create a SmartAlbumProduct
+     * const smartAlbumProduct = await prisma.smartAlbumProduct.upsert({
+     *   create: {
+     *     // ... data to create a SmartAlbumProduct
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SmartAlbumProduct we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SmartAlbumProductUpsertArgs>(args: SelectSubset<T, SmartAlbumProductUpsertArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SmartAlbumProducts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductCountArgs} args - Arguments to filter SmartAlbumProducts to count.
+     * @example
+     * // Count the number of SmartAlbumProducts
+     * const count = await prisma.smartAlbumProduct.count({
+     *   where: {
+     *     // ... the filter for the SmartAlbumProducts we want to count
+     *   }
+     * })
+    **/
+    count<T extends SmartAlbumProductCountArgs>(
+      args?: Subset<T, SmartAlbumProductCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SmartAlbumProductCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SmartAlbumProduct.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SmartAlbumProductAggregateArgs>(args: Subset<T, SmartAlbumProductAggregateArgs>): Prisma.PrismaPromise<GetSmartAlbumProductAggregateType<T>>
+
+    /**
+     * Group by SmartAlbumProduct.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumProductGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SmartAlbumProductGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SmartAlbumProductGroupByArgs['orderBy'] }
+        : { orderBy?: SmartAlbumProductGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SmartAlbumProductGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSmartAlbumProductGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SmartAlbumProduct model
+   */
+  readonly fields: SmartAlbumProductFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SmartAlbumProduct.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SmartAlbumProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    config<T extends SmartAlbumConfigDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumConfigDefaultArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    designs<T extends SmartAlbumProduct$designsArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumProduct$designsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SmartAlbumProduct model
+   */
+  interface SmartAlbumProductFieldRefs {
+    readonly id: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly configId: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly name: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly size: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly coverType: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly paperType: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly maxPages: FieldRef<"SmartAlbumProduct", 'Int'>
+    readonly priceCents: FieldRef<"SmartAlbumProduct", 'Int'>
+    readonly currency: FieldRef<"SmartAlbumProduct", 'String'>
+    readonly isActive: FieldRef<"SmartAlbumProduct", 'Boolean'>
+    readonly createdAt: FieldRef<"SmartAlbumProduct", 'DateTime'>
+    readonly updatedAt: FieldRef<"SmartAlbumProduct", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumProduct findUnique
+   */
+  export type SmartAlbumProductFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumProduct to fetch.
+     */
+    where: SmartAlbumProductWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumProduct findUniqueOrThrow
+   */
+  export type SmartAlbumProductFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumProduct to fetch.
+     */
+    where: SmartAlbumProductWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumProduct findFirst
+   */
+  export type SmartAlbumProductFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumProduct to fetch.
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumProducts to fetch.
+     */
+    orderBy?: SmartAlbumProductOrderByWithRelationInput | SmartAlbumProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumProducts.
+     */
+    cursor?: SmartAlbumProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumProducts.
+     */
+    distinct?: SmartAlbumProductScalarFieldEnum | SmartAlbumProductScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumProduct findFirstOrThrow
+   */
+  export type SmartAlbumProductFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumProduct to fetch.
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumProducts to fetch.
+     */
+    orderBy?: SmartAlbumProductOrderByWithRelationInput | SmartAlbumProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumProducts.
+     */
+    cursor?: SmartAlbumProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumProducts.
+     */
+    distinct?: SmartAlbumProductScalarFieldEnum | SmartAlbumProductScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumProduct findMany
+   */
+  export type SmartAlbumProductFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumProducts to fetch.
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumProducts to fetch.
+     */
+    orderBy?: SmartAlbumProductOrderByWithRelationInput | SmartAlbumProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SmartAlbumProducts.
+     */
+    cursor?: SmartAlbumProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumProducts.
+     */
+    distinct?: SmartAlbumProductScalarFieldEnum | SmartAlbumProductScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumProduct create
+   */
+  export type SmartAlbumProductCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SmartAlbumProduct.
+     */
+    data: XOR<SmartAlbumProductCreateInput, SmartAlbumProductUncheckedCreateInput>
+  }
+
+  /**
+   * SmartAlbumProduct createMany
+   */
+  export type SmartAlbumProductCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SmartAlbumProducts.
+     */
+    data: SmartAlbumProductCreateManyInput | SmartAlbumProductCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SmartAlbumProduct createManyAndReturn
+   */
+  export type SmartAlbumProductCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * The data used to create many SmartAlbumProducts.
+     */
+    data: SmartAlbumProductCreateManyInput | SmartAlbumProductCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumProduct update
+   */
+  export type SmartAlbumProductUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SmartAlbumProduct.
+     */
+    data: XOR<SmartAlbumProductUpdateInput, SmartAlbumProductUncheckedUpdateInput>
+    /**
+     * Choose, which SmartAlbumProduct to update.
+     */
+    where: SmartAlbumProductWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumProduct updateMany
+   */
+  export type SmartAlbumProductUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SmartAlbumProducts.
+     */
+    data: XOR<SmartAlbumProductUpdateManyMutationInput, SmartAlbumProductUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumProducts to update
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * Limit how many SmartAlbumProducts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumProduct updateManyAndReturn
+   */
+  export type SmartAlbumProductUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * The data used to update SmartAlbumProducts.
+     */
+    data: XOR<SmartAlbumProductUpdateManyMutationInput, SmartAlbumProductUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumProducts to update
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * Limit how many SmartAlbumProducts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumProduct upsert
+   */
+  export type SmartAlbumProductUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SmartAlbumProduct to update in case it exists.
+     */
+    where: SmartAlbumProductWhereUniqueInput
+    /**
+     * In case the SmartAlbumProduct found by the `where` argument doesn't exist, create a new SmartAlbumProduct with this data.
+     */
+    create: XOR<SmartAlbumProductCreateInput, SmartAlbumProductUncheckedCreateInput>
+    /**
+     * In case the SmartAlbumProduct was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SmartAlbumProductUpdateInput, SmartAlbumProductUncheckedUpdateInput>
+  }
+
+  /**
+   * SmartAlbumProduct delete
+   */
+  export type SmartAlbumProductDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+    /**
+     * Filter which SmartAlbumProduct to delete.
+     */
+    where: SmartAlbumProductWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumProduct deleteMany
+   */
+  export type SmartAlbumProductDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumProducts to delete
+     */
+    where?: SmartAlbumProductWhereInput
+    /**
+     * Limit how many SmartAlbumProducts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumProduct.designs
+   */
+  export type SmartAlbumProduct$designsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    where?: SmartAlbumDesignWhereInput
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SmartAlbumDesignScalarFieldEnum | SmartAlbumDesignScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumProduct without action
+   */
+  export type SmartAlbumProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumProduct
+     */
+    select?: SmartAlbumProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumProduct
+     */
+    omit?: SmartAlbumProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SmartAlbumDesign
+   */
+
+  export type AggregateSmartAlbumDesign = {
+    _count: SmartAlbumDesignCountAggregateOutputType | null
+    _min: SmartAlbumDesignMinAggregateOutputType | null
+    _max: SmartAlbumDesignMaxAggregateOutputType | null
+  }
+
+  export type SmartAlbumDesignMinAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    productId: string | null
+    clientName: string | null
+    clientEmail: string | null
+    title: string | null
+    status: $Enums.SmartAlbumDesignStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumDesignMaxAggregateOutputType = {
+    id: string | null
+    galleryId: string | null
+    productId: string | null
+    clientName: string | null
+    clientEmail: string | null
+    title: string | null
+    status: $Enums.SmartAlbumDesignStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SmartAlbumDesignCountAggregateOutputType = {
+    id: number
+    galleryId: number
+    productId: number
+    clientName: number
+    clientEmail: number
+    title: number
+    designData: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SmartAlbumDesignMinAggregateInputType = {
+    id?: true
+    galleryId?: true
+    productId?: true
+    clientName?: true
+    clientEmail?: true
+    title?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumDesignMaxAggregateInputType = {
+    id?: true
+    galleryId?: true
+    productId?: true
+    clientName?: true
+    clientEmail?: true
+    title?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SmartAlbumDesignCountAggregateInputType = {
+    id?: true
+    galleryId?: true
+    productId?: true
+    clientName?: true
+    clientEmail?: true
+    title?: true
+    designData?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SmartAlbumDesignAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumDesign to aggregate.
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumDesigns to fetch.
+     */
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumDesigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumDesigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SmartAlbumDesigns
+    **/
+    _count?: true | SmartAlbumDesignCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SmartAlbumDesignMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SmartAlbumDesignMaxAggregateInputType
+  }
+
+  export type GetSmartAlbumDesignAggregateType<T extends SmartAlbumDesignAggregateArgs> = {
+        [P in keyof T & keyof AggregateSmartAlbumDesign]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSmartAlbumDesign[P]>
+      : GetScalarType<T[P], AggregateSmartAlbumDesign[P]>
+  }
+
+
+
+
+  export type SmartAlbumDesignGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumDesignWhereInput
+    orderBy?: SmartAlbumDesignOrderByWithAggregationInput | SmartAlbumDesignOrderByWithAggregationInput[]
+    by: SmartAlbumDesignScalarFieldEnum[] | SmartAlbumDesignScalarFieldEnum
+    having?: SmartAlbumDesignScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SmartAlbumDesignCountAggregateInputType | true
+    _min?: SmartAlbumDesignMinAggregateInputType
+    _max?: SmartAlbumDesignMaxAggregateInputType
+  }
+
+  export type SmartAlbumDesignGroupByOutputType = {
+    id: string
+    galleryId: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title: string
+    designData: JsonValue
+    status: $Enums.SmartAlbumDesignStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: SmartAlbumDesignCountAggregateOutputType | null
+    _min: SmartAlbumDesignMinAggregateOutputType | null
+    _max: SmartAlbumDesignMaxAggregateOutputType | null
+  }
+
+  type GetSmartAlbumDesignGroupByPayload<T extends SmartAlbumDesignGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SmartAlbumDesignGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SmartAlbumDesignGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SmartAlbumDesignGroupByOutputType[P]>
+            : GetScalarType<T[P], SmartAlbumDesignGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SmartAlbumDesignSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    productId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    title?: boolean
+    designData?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+    submissions?: boolean | SmartAlbumDesign$submissionsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumDesignCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumDesign"]>
+
+  export type SmartAlbumDesignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    productId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    title?: boolean
+    designData?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumDesign"]>
+
+  export type SmartAlbumDesignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    galleryId?: boolean
+    productId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    title?: boolean
+    designData?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumDesign"]>
+
+  export type SmartAlbumDesignSelectScalar = {
+    id?: boolean
+    galleryId?: boolean
+    productId?: boolean
+    clientName?: boolean
+    clientEmail?: boolean
+    title?: boolean
+    designData?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SmartAlbumDesignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "galleryId" | "productId" | "clientName" | "clientEmail" | "title" | "designData" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["smartAlbumDesign"]>
+  export type SmartAlbumDesignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+    submissions?: boolean | SmartAlbumDesign$submissionsArgs<ExtArgs>
+    _count?: boolean | SmartAlbumDesignCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumDesignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumDesignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
+    product?: boolean | SmartAlbumProductDefaultArgs<ExtArgs>
+  }
+
+  export type $SmartAlbumDesignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SmartAlbumDesign"
+    objects: {
+      gallery: Prisma.$GalleryPayload<ExtArgs>
+      product: Prisma.$SmartAlbumProductPayload<ExtArgs>
+      submissions: Prisma.$SmartAlbumSubmissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      galleryId: string
+      productId: string
+      clientName: string
+      clientEmail: string
+      title: string
+      designData: Prisma.JsonValue
+      status: $Enums.SmartAlbumDesignStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["smartAlbumDesign"]>
+    composites: {}
+  }
+
+  type SmartAlbumDesignGetPayload<S extends boolean | null | undefined | SmartAlbumDesignDefaultArgs> = $Result.GetResult<Prisma.$SmartAlbumDesignPayload, S>
+
+  type SmartAlbumDesignCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SmartAlbumDesignFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SmartAlbumDesignCountAggregateInputType | true
+    }
+
+  export interface SmartAlbumDesignDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SmartAlbumDesign'], meta: { name: 'SmartAlbumDesign' } }
+    /**
+     * Find zero or one SmartAlbumDesign that matches the filter.
+     * @param {SmartAlbumDesignFindUniqueArgs} args - Arguments to find a SmartAlbumDesign
+     * @example
+     * // Get one SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SmartAlbumDesignFindUniqueArgs>(args: SelectSubset<T, SmartAlbumDesignFindUniqueArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SmartAlbumDesign that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SmartAlbumDesignFindUniqueOrThrowArgs} args - Arguments to find a SmartAlbumDesign
+     * @example
+     * // Get one SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SmartAlbumDesignFindUniqueOrThrowArgs>(args: SelectSubset<T, SmartAlbumDesignFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumDesign that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignFindFirstArgs} args - Arguments to find a SmartAlbumDesign
+     * @example
+     * // Get one SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SmartAlbumDesignFindFirstArgs>(args?: SelectSubset<T, SmartAlbumDesignFindFirstArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumDesign that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignFindFirstOrThrowArgs} args - Arguments to find a SmartAlbumDesign
+     * @example
+     * // Get one SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SmartAlbumDesignFindFirstOrThrowArgs>(args?: SelectSubset<T, SmartAlbumDesignFindFirstOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SmartAlbumDesigns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SmartAlbumDesigns
+     * const smartAlbumDesigns = await prisma.smartAlbumDesign.findMany()
+     * 
+     * // Get first 10 SmartAlbumDesigns
+     * const smartAlbumDesigns = await prisma.smartAlbumDesign.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const smartAlbumDesignWithIdOnly = await prisma.smartAlbumDesign.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SmartAlbumDesignFindManyArgs>(args?: SelectSubset<T, SmartAlbumDesignFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SmartAlbumDesign.
+     * @param {SmartAlbumDesignCreateArgs} args - Arguments to create a SmartAlbumDesign.
+     * @example
+     * // Create one SmartAlbumDesign
+     * const SmartAlbumDesign = await prisma.smartAlbumDesign.create({
+     *   data: {
+     *     // ... data to create a SmartAlbumDesign
+     *   }
+     * })
+     * 
+     */
+    create<T extends SmartAlbumDesignCreateArgs>(args: SelectSubset<T, SmartAlbumDesignCreateArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SmartAlbumDesigns.
+     * @param {SmartAlbumDesignCreateManyArgs} args - Arguments to create many SmartAlbumDesigns.
+     * @example
+     * // Create many SmartAlbumDesigns
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SmartAlbumDesignCreateManyArgs>(args?: SelectSubset<T, SmartAlbumDesignCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SmartAlbumDesigns and returns the data saved in the database.
+     * @param {SmartAlbumDesignCreateManyAndReturnArgs} args - Arguments to create many SmartAlbumDesigns.
+     * @example
+     * // Create many SmartAlbumDesigns
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SmartAlbumDesigns and only return the `id`
+     * const smartAlbumDesignWithIdOnly = await prisma.smartAlbumDesign.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SmartAlbumDesignCreateManyAndReturnArgs>(args?: SelectSubset<T, SmartAlbumDesignCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SmartAlbumDesign.
+     * @param {SmartAlbumDesignDeleteArgs} args - Arguments to delete one SmartAlbumDesign.
+     * @example
+     * // Delete one SmartAlbumDesign
+     * const SmartAlbumDesign = await prisma.smartAlbumDesign.delete({
+     *   where: {
+     *     // ... filter to delete one SmartAlbumDesign
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SmartAlbumDesignDeleteArgs>(args: SelectSubset<T, SmartAlbumDesignDeleteArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SmartAlbumDesign.
+     * @param {SmartAlbumDesignUpdateArgs} args - Arguments to update one SmartAlbumDesign.
+     * @example
+     * // Update one SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SmartAlbumDesignUpdateArgs>(args: SelectSubset<T, SmartAlbumDesignUpdateArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SmartAlbumDesigns.
+     * @param {SmartAlbumDesignDeleteManyArgs} args - Arguments to filter SmartAlbumDesigns to delete.
+     * @example
+     * // Delete a few SmartAlbumDesigns
+     * const { count } = await prisma.smartAlbumDesign.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SmartAlbumDesignDeleteManyArgs>(args?: SelectSubset<T, SmartAlbumDesignDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumDesigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SmartAlbumDesigns
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SmartAlbumDesignUpdateManyArgs>(args: SelectSubset<T, SmartAlbumDesignUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumDesigns and returns the data updated in the database.
+     * @param {SmartAlbumDesignUpdateManyAndReturnArgs} args - Arguments to update many SmartAlbumDesigns.
+     * @example
+     * // Update many SmartAlbumDesigns
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SmartAlbumDesigns and only return the `id`
+     * const smartAlbumDesignWithIdOnly = await prisma.smartAlbumDesign.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SmartAlbumDesignUpdateManyAndReturnArgs>(args: SelectSubset<T, SmartAlbumDesignUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SmartAlbumDesign.
+     * @param {SmartAlbumDesignUpsertArgs} args - Arguments to update or create a SmartAlbumDesign.
+     * @example
+     * // Update or create a SmartAlbumDesign
+     * const smartAlbumDesign = await prisma.smartAlbumDesign.upsert({
+     *   create: {
+     *     // ... data to create a SmartAlbumDesign
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SmartAlbumDesign we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SmartAlbumDesignUpsertArgs>(args: SelectSubset<T, SmartAlbumDesignUpsertArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SmartAlbumDesigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignCountArgs} args - Arguments to filter SmartAlbumDesigns to count.
+     * @example
+     * // Count the number of SmartAlbumDesigns
+     * const count = await prisma.smartAlbumDesign.count({
+     *   where: {
+     *     // ... the filter for the SmartAlbumDesigns we want to count
+     *   }
+     * })
+    **/
+    count<T extends SmartAlbumDesignCountArgs>(
+      args?: Subset<T, SmartAlbumDesignCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SmartAlbumDesignCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SmartAlbumDesign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SmartAlbumDesignAggregateArgs>(args: Subset<T, SmartAlbumDesignAggregateArgs>): Prisma.PrismaPromise<GetSmartAlbumDesignAggregateType<T>>
+
+    /**
+     * Group by SmartAlbumDesign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumDesignGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SmartAlbumDesignGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SmartAlbumDesignGroupByArgs['orderBy'] }
+        : { orderBy?: SmartAlbumDesignGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SmartAlbumDesignGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSmartAlbumDesignGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SmartAlbumDesign model
+   */
+  readonly fields: SmartAlbumDesignFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SmartAlbumDesign.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SmartAlbumDesignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends SmartAlbumProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumProductDefaultArgs<ExtArgs>>): Prisma__SmartAlbumProductClient<$Result.GetResult<Prisma.$SmartAlbumProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    submissions<T extends SmartAlbumDesign$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumDesign$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SmartAlbumDesign model
+   */
+  interface SmartAlbumDesignFieldRefs {
+    readonly id: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly galleryId: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly productId: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly clientName: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly clientEmail: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly title: FieldRef<"SmartAlbumDesign", 'String'>
+    readonly designData: FieldRef<"SmartAlbumDesign", 'Json'>
+    readonly status: FieldRef<"SmartAlbumDesign", 'SmartAlbumDesignStatus'>
+    readonly createdAt: FieldRef<"SmartAlbumDesign", 'DateTime'>
+    readonly updatedAt: FieldRef<"SmartAlbumDesign", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumDesign findUnique
+   */
+  export type SmartAlbumDesignFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumDesign to fetch.
+     */
+    where: SmartAlbumDesignWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumDesign findUniqueOrThrow
+   */
+  export type SmartAlbumDesignFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumDesign to fetch.
+     */
+    where: SmartAlbumDesignWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumDesign findFirst
+   */
+  export type SmartAlbumDesignFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumDesign to fetch.
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumDesigns to fetch.
+     */
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumDesigns.
+     */
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumDesigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumDesigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumDesigns.
+     */
+    distinct?: SmartAlbumDesignScalarFieldEnum | SmartAlbumDesignScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumDesign findFirstOrThrow
+   */
+  export type SmartAlbumDesignFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumDesign to fetch.
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumDesigns to fetch.
+     */
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumDesigns.
+     */
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumDesigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumDesigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumDesigns.
+     */
+    distinct?: SmartAlbumDesignScalarFieldEnum | SmartAlbumDesignScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumDesign findMany
+   */
+  export type SmartAlbumDesignFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumDesigns to fetch.
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumDesigns to fetch.
+     */
+    orderBy?: SmartAlbumDesignOrderByWithRelationInput | SmartAlbumDesignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SmartAlbumDesigns.
+     */
+    cursor?: SmartAlbumDesignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumDesigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumDesigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumDesigns.
+     */
+    distinct?: SmartAlbumDesignScalarFieldEnum | SmartAlbumDesignScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumDesign create
+   */
+  export type SmartAlbumDesignCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SmartAlbumDesign.
+     */
+    data: XOR<SmartAlbumDesignCreateInput, SmartAlbumDesignUncheckedCreateInput>
+  }
+
+  /**
+   * SmartAlbumDesign createMany
+   */
+  export type SmartAlbumDesignCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SmartAlbumDesigns.
+     */
+    data: SmartAlbumDesignCreateManyInput | SmartAlbumDesignCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SmartAlbumDesign createManyAndReturn
+   */
+  export type SmartAlbumDesignCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * The data used to create many SmartAlbumDesigns.
+     */
+    data: SmartAlbumDesignCreateManyInput | SmartAlbumDesignCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumDesign update
+   */
+  export type SmartAlbumDesignUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SmartAlbumDesign.
+     */
+    data: XOR<SmartAlbumDesignUpdateInput, SmartAlbumDesignUncheckedUpdateInput>
+    /**
+     * Choose, which SmartAlbumDesign to update.
+     */
+    where: SmartAlbumDesignWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumDesign updateMany
+   */
+  export type SmartAlbumDesignUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SmartAlbumDesigns.
+     */
+    data: XOR<SmartAlbumDesignUpdateManyMutationInput, SmartAlbumDesignUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumDesigns to update
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * Limit how many SmartAlbumDesigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumDesign updateManyAndReturn
+   */
+  export type SmartAlbumDesignUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * The data used to update SmartAlbumDesigns.
+     */
+    data: XOR<SmartAlbumDesignUpdateManyMutationInput, SmartAlbumDesignUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumDesigns to update
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * Limit how many SmartAlbumDesigns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumDesign upsert
+   */
+  export type SmartAlbumDesignUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SmartAlbumDesign to update in case it exists.
+     */
+    where: SmartAlbumDesignWhereUniqueInput
+    /**
+     * In case the SmartAlbumDesign found by the `where` argument doesn't exist, create a new SmartAlbumDesign with this data.
+     */
+    create: XOR<SmartAlbumDesignCreateInput, SmartAlbumDesignUncheckedCreateInput>
+    /**
+     * In case the SmartAlbumDesign was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SmartAlbumDesignUpdateInput, SmartAlbumDesignUncheckedUpdateInput>
+  }
+
+  /**
+   * SmartAlbumDesign delete
+   */
+  export type SmartAlbumDesignDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+    /**
+     * Filter which SmartAlbumDesign to delete.
+     */
+    where: SmartAlbumDesignWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumDesign deleteMany
+   */
+  export type SmartAlbumDesignDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumDesigns to delete
+     */
+    where?: SmartAlbumDesignWhereInput
+    /**
+     * Limit how many SmartAlbumDesigns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumDesign.submissions
+   */
+  export type SmartAlbumDesign$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    where?: SmartAlbumSubmissionWhereInput
+    orderBy?: SmartAlbumSubmissionOrderByWithRelationInput | SmartAlbumSubmissionOrderByWithRelationInput[]
+    cursor?: SmartAlbumSubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SmartAlbumSubmissionScalarFieldEnum | SmartAlbumSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumDesign without action
+   */
+  export type SmartAlbumDesignDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumDesign
+     */
+    select?: SmartAlbumDesignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumDesign
+     */
+    omit?: SmartAlbumDesignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumDesignInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SmartAlbumSubmission
+   */
+
+  export type AggregateSmartAlbumSubmission = {
+    _count: SmartAlbumSubmissionCountAggregateOutputType | null
+    _avg: SmartAlbumSubmissionAvgAggregateOutputType | null
+    _sum: SmartAlbumSubmissionSumAggregateOutputType | null
+    _min: SmartAlbumSubmissionMinAggregateOutputType | null
+    _max: SmartAlbumSubmissionMaxAggregateOutputType | null
+  }
+
+  export type SmartAlbumSubmissionAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type SmartAlbumSubmissionSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type SmartAlbumSubmissionMinAggregateOutputType = {
+    id: string | null
+    designId: string | null
+    version: number | null
+    status: $Enums.SmartAlbumSubmissionStatus | null
+    photographerNotes: string | null
+    reviewedAt: Date | null
+    submittedAt: Date | null
+    exportReady: boolean | null
+    exportUrl: string | null
+  }
+
+  export type SmartAlbumSubmissionMaxAggregateOutputType = {
+    id: string | null
+    designId: string | null
+    version: number | null
+    status: $Enums.SmartAlbumSubmissionStatus | null
+    photographerNotes: string | null
+    reviewedAt: Date | null
+    submittedAt: Date | null
+    exportReady: boolean | null
+    exportUrl: string | null
+  }
+
+  export type SmartAlbumSubmissionCountAggregateOutputType = {
+    id: number
+    designId: number
+    version: number
+    designSnapshot: number
+    status: number
+    photographerNotes: number
+    reviewedAt: number
+    submittedAt: number
+    exportReady: number
+    exportUrl: number
+    _all: number
+  }
+
+
+  export type SmartAlbumSubmissionAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type SmartAlbumSubmissionSumAggregateInputType = {
+    version?: true
+  }
+
+  export type SmartAlbumSubmissionMinAggregateInputType = {
+    id?: true
+    designId?: true
+    version?: true
+    status?: true
+    photographerNotes?: true
+    reviewedAt?: true
+    submittedAt?: true
+    exportReady?: true
+    exportUrl?: true
+  }
+
+  export type SmartAlbumSubmissionMaxAggregateInputType = {
+    id?: true
+    designId?: true
+    version?: true
+    status?: true
+    photographerNotes?: true
+    reviewedAt?: true
+    submittedAt?: true
+    exportReady?: true
+    exportUrl?: true
+  }
+
+  export type SmartAlbumSubmissionCountAggregateInputType = {
+    id?: true
+    designId?: true
+    version?: true
+    designSnapshot?: true
+    status?: true
+    photographerNotes?: true
+    reviewedAt?: true
+    submittedAt?: true
+    exportReady?: true
+    exportUrl?: true
+    _all?: true
+  }
+
+  export type SmartAlbumSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumSubmission to aggregate.
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumSubmissions to fetch.
+     */
+    orderBy?: SmartAlbumSubmissionOrderByWithRelationInput | SmartAlbumSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SmartAlbumSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SmartAlbumSubmissions
+    **/
+    _count?: true | SmartAlbumSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SmartAlbumSubmissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SmartAlbumSubmissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SmartAlbumSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SmartAlbumSubmissionMaxAggregateInputType
+  }
+
+  export type GetSmartAlbumSubmissionAggregateType<T extends SmartAlbumSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSmartAlbumSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSmartAlbumSubmission[P]>
+      : GetScalarType<T[P], AggregateSmartAlbumSubmission[P]>
+  }
+
+
+
+
+  export type SmartAlbumSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumSubmissionWhereInput
+    orderBy?: SmartAlbumSubmissionOrderByWithAggregationInput | SmartAlbumSubmissionOrderByWithAggregationInput[]
+    by: SmartAlbumSubmissionScalarFieldEnum[] | SmartAlbumSubmissionScalarFieldEnum
+    having?: SmartAlbumSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SmartAlbumSubmissionCountAggregateInputType | true
+    _avg?: SmartAlbumSubmissionAvgAggregateInputType
+    _sum?: SmartAlbumSubmissionSumAggregateInputType
+    _min?: SmartAlbumSubmissionMinAggregateInputType
+    _max?: SmartAlbumSubmissionMaxAggregateInputType
+  }
+
+  export type SmartAlbumSubmissionGroupByOutputType = {
+    id: string
+    designId: string
+    version: number
+    designSnapshot: JsonValue
+    status: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes: string | null
+    reviewedAt: Date | null
+    submittedAt: Date
+    exportReady: boolean
+    exportUrl: string | null
+    _count: SmartAlbumSubmissionCountAggregateOutputType | null
+    _avg: SmartAlbumSubmissionAvgAggregateOutputType | null
+    _sum: SmartAlbumSubmissionSumAggregateOutputType | null
+    _min: SmartAlbumSubmissionMinAggregateOutputType | null
+    _max: SmartAlbumSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetSmartAlbumSubmissionGroupByPayload<T extends SmartAlbumSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SmartAlbumSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SmartAlbumSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SmartAlbumSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], SmartAlbumSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SmartAlbumSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    designId?: boolean
+    version?: boolean
+    designSnapshot?: boolean
+    status?: boolean
+    photographerNotes?: boolean
+    reviewedAt?: boolean
+    submittedAt?: boolean
+    exportReady?: boolean
+    exportUrl?: boolean
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+    transaction?: boolean | SmartAlbumSubmission$transactionArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumSubmission"]>
+
+  export type SmartAlbumSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    designId?: boolean
+    version?: boolean
+    designSnapshot?: boolean
+    status?: boolean
+    photographerNotes?: boolean
+    reviewedAt?: boolean
+    submittedAt?: boolean
+    exportReady?: boolean
+    exportUrl?: boolean
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumSubmission"]>
+
+  export type SmartAlbumSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    designId?: boolean
+    version?: boolean
+    designSnapshot?: boolean
+    status?: boolean
+    photographerNotes?: boolean
+    reviewedAt?: boolean
+    submittedAt?: boolean
+    exportReady?: boolean
+    exportUrl?: boolean
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumSubmission"]>
+
+  export type SmartAlbumSubmissionSelectScalar = {
+    id?: boolean
+    designId?: boolean
+    version?: boolean
+    designSnapshot?: boolean
+    status?: boolean
+    photographerNotes?: boolean
+    reviewedAt?: boolean
+    submittedAt?: boolean
+    exportReady?: boolean
+    exportUrl?: boolean
+  }
+
+  export type SmartAlbumSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "designId" | "version" | "designSnapshot" | "status" | "photographerNotes" | "reviewedAt" | "submittedAt" | "exportReady" | "exportUrl", ExtArgs["result"]["smartAlbumSubmission"]>
+  export type SmartAlbumSubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+    transaction?: boolean | SmartAlbumSubmission$transactionArgs<ExtArgs>
+  }
+  export type SmartAlbumSubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumSubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    design?: boolean | SmartAlbumDesignDefaultArgs<ExtArgs>
+  }
+
+  export type $SmartAlbumSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SmartAlbumSubmission"
+    objects: {
+      design: Prisma.$SmartAlbumDesignPayload<ExtArgs>
+      transaction: Prisma.$SmartAlbumTransactionPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      designId: string
+      version: number
+      designSnapshot: Prisma.JsonValue
+      status: $Enums.SmartAlbumSubmissionStatus
+      photographerNotes: string | null
+      reviewedAt: Date | null
+      submittedAt: Date
+      exportReady: boolean
+      exportUrl: string | null
+    }, ExtArgs["result"]["smartAlbumSubmission"]>
+    composites: {}
+  }
+
+  type SmartAlbumSubmissionGetPayload<S extends boolean | null | undefined | SmartAlbumSubmissionDefaultArgs> = $Result.GetResult<Prisma.$SmartAlbumSubmissionPayload, S>
+
+  type SmartAlbumSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SmartAlbumSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SmartAlbumSubmissionCountAggregateInputType | true
+    }
+
+  export interface SmartAlbumSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SmartAlbumSubmission'], meta: { name: 'SmartAlbumSubmission' } }
+    /**
+     * Find zero or one SmartAlbumSubmission that matches the filter.
+     * @param {SmartAlbumSubmissionFindUniqueArgs} args - Arguments to find a SmartAlbumSubmission
+     * @example
+     * // Get one SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SmartAlbumSubmissionFindUniqueArgs>(args: SelectSubset<T, SmartAlbumSubmissionFindUniqueArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SmartAlbumSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SmartAlbumSubmissionFindUniqueOrThrowArgs} args - Arguments to find a SmartAlbumSubmission
+     * @example
+     * // Get one SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SmartAlbumSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, SmartAlbumSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionFindFirstArgs} args - Arguments to find a SmartAlbumSubmission
+     * @example
+     * // Get one SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SmartAlbumSubmissionFindFirstArgs>(args?: SelectSubset<T, SmartAlbumSubmissionFindFirstArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionFindFirstOrThrowArgs} args - Arguments to find a SmartAlbumSubmission
+     * @example
+     * // Get one SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SmartAlbumSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, SmartAlbumSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SmartAlbumSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SmartAlbumSubmissions
+     * const smartAlbumSubmissions = await prisma.smartAlbumSubmission.findMany()
+     * 
+     * // Get first 10 SmartAlbumSubmissions
+     * const smartAlbumSubmissions = await prisma.smartAlbumSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const smartAlbumSubmissionWithIdOnly = await prisma.smartAlbumSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SmartAlbumSubmissionFindManyArgs>(args?: SelectSubset<T, SmartAlbumSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SmartAlbumSubmission.
+     * @param {SmartAlbumSubmissionCreateArgs} args - Arguments to create a SmartAlbumSubmission.
+     * @example
+     * // Create one SmartAlbumSubmission
+     * const SmartAlbumSubmission = await prisma.smartAlbumSubmission.create({
+     *   data: {
+     *     // ... data to create a SmartAlbumSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends SmartAlbumSubmissionCreateArgs>(args: SelectSubset<T, SmartAlbumSubmissionCreateArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SmartAlbumSubmissions.
+     * @param {SmartAlbumSubmissionCreateManyArgs} args - Arguments to create many SmartAlbumSubmissions.
+     * @example
+     * // Create many SmartAlbumSubmissions
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SmartAlbumSubmissionCreateManyArgs>(args?: SelectSubset<T, SmartAlbumSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SmartAlbumSubmissions and returns the data saved in the database.
+     * @param {SmartAlbumSubmissionCreateManyAndReturnArgs} args - Arguments to create many SmartAlbumSubmissions.
+     * @example
+     * // Create many SmartAlbumSubmissions
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SmartAlbumSubmissions and only return the `id`
+     * const smartAlbumSubmissionWithIdOnly = await prisma.smartAlbumSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SmartAlbumSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, SmartAlbumSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SmartAlbumSubmission.
+     * @param {SmartAlbumSubmissionDeleteArgs} args - Arguments to delete one SmartAlbumSubmission.
+     * @example
+     * // Delete one SmartAlbumSubmission
+     * const SmartAlbumSubmission = await prisma.smartAlbumSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one SmartAlbumSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SmartAlbumSubmissionDeleteArgs>(args: SelectSubset<T, SmartAlbumSubmissionDeleteArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SmartAlbumSubmission.
+     * @param {SmartAlbumSubmissionUpdateArgs} args - Arguments to update one SmartAlbumSubmission.
+     * @example
+     * // Update one SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SmartAlbumSubmissionUpdateArgs>(args: SelectSubset<T, SmartAlbumSubmissionUpdateArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SmartAlbumSubmissions.
+     * @param {SmartAlbumSubmissionDeleteManyArgs} args - Arguments to filter SmartAlbumSubmissions to delete.
+     * @example
+     * // Delete a few SmartAlbumSubmissions
+     * const { count } = await prisma.smartAlbumSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SmartAlbumSubmissionDeleteManyArgs>(args?: SelectSubset<T, SmartAlbumSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SmartAlbumSubmissions
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SmartAlbumSubmissionUpdateManyArgs>(args: SelectSubset<T, SmartAlbumSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumSubmissions and returns the data updated in the database.
+     * @param {SmartAlbumSubmissionUpdateManyAndReturnArgs} args - Arguments to update many SmartAlbumSubmissions.
+     * @example
+     * // Update many SmartAlbumSubmissions
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SmartAlbumSubmissions and only return the `id`
+     * const smartAlbumSubmissionWithIdOnly = await prisma.smartAlbumSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SmartAlbumSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, SmartAlbumSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SmartAlbumSubmission.
+     * @param {SmartAlbumSubmissionUpsertArgs} args - Arguments to update or create a SmartAlbumSubmission.
+     * @example
+     * // Update or create a SmartAlbumSubmission
+     * const smartAlbumSubmission = await prisma.smartAlbumSubmission.upsert({
+     *   create: {
+     *     // ... data to create a SmartAlbumSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SmartAlbumSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SmartAlbumSubmissionUpsertArgs>(args: SelectSubset<T, SmartAlbumSubmissionUpsertArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SmartAlbumSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionCountArgs} args - Arguments to filter SmartAlbumSubmissions to count.
+     * @example
+     * // Count the number of SmartAlbumSubmissions
+     * const count = await prisma.smartAlbumSubmission.count({
+     *   where: {
+     *     // ... the filter for the SmartAlbumSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SmartAlbumSubmissionCountArgs>(
+      args?: Subset<T, SmartAlbumSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SmartAlbumSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SmartAlbumSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SmartAlbumSubmissionAggregateArgs>(args: Subset<T, SmartAlbumSubmissionAggregateArgs>): Prisma.PrismaPromise<GetSmartAlbumSubmissionAggregateType<T>>
+
+    /**
+     * Group by SmartAlbumSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SmartAlbumSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SmartAlbumSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: SmartAlbumSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SmartAlbumSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSmartAlbumSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SmartAlbumSubmission model
+   */
+  readonly fields: SmartAlbumSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SmartAlbumSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SmartAlbumSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    design<T extends SmartAlbumDesignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumDesignDefaultArgs<ExtArgs>>): Prisma__SmartAlbumDesignClient<$Result.GetResult<Prisma.$SmartAlbumDesignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transaction<T extends SmartAlbumSubmission$transactionArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumSubmission$transactionArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SmartAlbumSubmission model
+   */
+  interface SmartAlbumSubmissionFieldRefs {
+    readonly id: FieldRef<"SmartAlbumSubmission", 'String'>
+    readonly designId: FieldRef<"SmartAlbumSubmission", 'String'>
+    readonly version: FieldRef<"SmartAlbumSubmission", 'Int'>
+    readonly designSnapshot: FieldRef<"SmartAlbumSubmission", 'Json'>
+    readonly status: FieldRef<"SmartAlbumSubmission", 'SmartAlbumSubmissionStatus'>
+    readonly photographerNotes: FieldRef<"SmartAlbumSubmission", 'String'>
+    readonly reviewedAt: FieldRef<"SmartAlbumSubmission", 'DateTime'>
+    readonly submittedAt: FieldRef<"SmartAlbumSubmission", 'DateTime'>
+    readonly exportReady: FieldRef<"SmartAlbumSubmission", 'Boolean'>
+    readonly exportUrl: FieldRef<"SmartAlbumSubmission", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumSubmission findUnique
+   */
+  export type SmartAlbumSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumSubmission to fetch.
+     */
+    where: SmartAlbumSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumSubmission findUniqueOrThrow
+   */
+  export type SmartAlbumSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumSubmission to fetch.
+     */
+    where: SmartAlbumSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumSubmission findFirst
+   */
+  export type SmartAlbumSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumSubmission to fetch.
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumSubmissions to fetch.
+     */
+    orderBy?: SmartAlbumSubmissionOrderByWithRelationInput | SmartAlbumSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumSubmissions.
+     */
+    cursor?: SmartAlbumSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumSubmissions.
+     */
+    distinct?: SmartAlbumSubmissionScalarFieldEnum | SmartAlbumSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumSubmission findFirstOrThrow
+   */
+  export type SmartAlbumSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumSubmission to fetch.
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumSubmissions to fetch.
+     */
+    orderBy?: SmartAlbumSubmissionOrderByWithRelationInput | SmartAlbumSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumSubmissions.
+     */
+    cursor?: SmartAlbumSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumSubmissions.
+     */
+    distinct?: SmartAlbumSubmissionScalarFieldEnum | SmartAlbumSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumSubmission findMany
+   */
+  export type SmartAlbumSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumSubmissions to fetch.
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumSubmissions to fetch.
+     */
+    orderBy?: SmartAlbumSubmissionOrderByWithRelationInput | SmartAlbumSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SmartAlbumSubmissions.
+     */
+    cursor?: SmartAlbumSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumSubmissions.
+     */
+    distinct?: SmartAlbumSubmissionScalarFieldEnum | SmartAlbumSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumSubmission create
+   */
+  export type SmartAlbumSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SmartAlbumSubmission.
+     */
+    data: XOR<SmartAlbumSubmissionCreateInput, SmartAlbumSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * SmartAlbumSubmission createMany
+   */
+  export type SmartAlbumSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SmartAlbumSubmissions.
+     */
+    data: SmartAlbumSubmissionCreateManyInput | SmartAlbumSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SmartAlbumSubmission createManyAndReturn
+   */
+  export type SmartAlbumSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many SmartAlbumSubmissions.
+     */
+    data: SmartAlbumSubmissionCreateManyInput | SmartAlbumSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumSubmission update
+   */
+  export type SmartAlbumSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SmartAlbumSubmission.
+     */
+    data: XOR<SmartAlbumSubmissionUpdateInput, SmartAlbumSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which SmartAlbumSubmission to update.
+     */
+    where: SmartAlbumSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumSubmission updateMany
+   */
+  export type SmartAlbumSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SmartAlbumSubmissions.
+     */
+    data: XOR<SmartAlbumSubmissionUpdateManyMutationInput, SmartAlbumSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumSubmissions to update
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * Limit how many SmartAlbumSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumSubmission updateManyAndReturn
+   */
+  export type SmartAlbumSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update SmartAlbumSubmissions.
+     */
+    data: XOR<SmartAlbumSubmissionUpdateManyMutationInput, SmartAlbumSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumSubmissions to update
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * Limit how many SmartAlbumSubmissions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumSubmission upsert
+   */
+  export type SmartAlbumSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SmartAlbumSubmission to update in case it exists.
+     */
+    where: SmartAlbumSubmissionWhereUniqueInput
+    /**
+     * In case the SmartAlbumSubmission found by the `where` argument doesn't exist, create a new SmartAlbumSubmission with this data.
+     */
+    create: XOR<SmartAlbumSubmissionCreateInput, SmartAlbumSubmissionUncheckedCreateInput>
+    /**
+     * In case the SmartAlbumSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SmartAlbumSubmissionUpdateInput, SmartAlbumSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * SmartAlbumSubmission delete
+   */
+  export type SmartAlbumSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter which SmartAlbumSubmission to delete.
+     */
+    where: SmartAlbumSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumSubmission deleteMany
+   */
+  export type SmartAlbumSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumSubmissions to delete
+     */
+    where?: SmartAlbumSubmissionWhereInput
+    /**
+     * Limit how many SmartAlbumSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumSubmission.transaction
+   */
+  export type SmartAlbumSubmission$transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    where?: SmartAlbumTransactionWhereInput
+  }
+
+  /**
+   * SmartAlbumSubmission without action
+   */
+  export type SmartAlbumSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumSubmission
+     */
+    select?: SmartAlbumSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumSubmission
+     */
+    omit?: SmartAlbumSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumSubmissionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SmartAlbumTransaction
+   */
+
+  export type AggregateSmartAlbumTransaction = {
+    _count: SmartAlbumTransactionCountAggregateOutputType | null
+    _avg: SmartAlbumTransactionAvgAggregateOutputType | null
+    _sum: SmartAlbumTransactionSumAggregateOutputType | null
+    _min: SmartAlbumTransactionMinAggregateOutputType | null
+    _max: SmartAlbumTransactionMaxAggregateOutputType | null
+  }
+
+  export type SmartAlbumTransactionAvgAggregateOutputType = {
+    amountCents: number | null
+    feeCents: number | null
+    netCents: number | null
+  }
+
+  export type SmartAlbumTransactionSumAggregateOutputType = {
+    amountCents: number | null
+    feeCents: number | null
+    netCents: number | null
+  }
+
+  export type SmartAlbumTransactionMinAggregateOutputType = {
+    id: string | null
+    submissionId: string | null
+    stripePaymentIntentId: string | null
+    amountCents: number | null
+    feeCents: number | null
+    netCents: number | null
+    currency: string | null
+    status: $Enums.SmartAlbumTransactionStatus | null
+    paidAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SmartAlbumTransactionMaxAggregateOutputType = {
+    id: string | null
+    submissionId: string | null
+    stripePaymentIntentId: string | null
+    amountCents: number | null
+    feeCents: number | null
+    netCents: number | null
+    currency: string | null
+    status: $Enums.SmartAlbumTransactionStatus | null
+    paidAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SmartAlbumTransactionCountAggregateOutputType = {
+    id: number
+    submissionId: number
+    stripePaymentIntentId: number
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency: number
+    status: number
+    paidAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SmartAlbumTransactionAvgAggregateInputType = {
+    amountCents?: true
+    feeCents?: true
+    netCents?: true
+  }
+
+  export type SmartAlbumTransactionSumAggregateInputType = {
+    amountCents?: true
+    feeCents?: true
+    netCents?: true
+  }
+
+  export type SmartAlbumTransactionMinAggregateInputType = {
+    id?: true
+    submissionId?: true
+    stripePaymentIntentId?: true
+    amountCents?: true
+    feeCents?: true
+    netCents?: true
+    currency?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+  }
+
+  export type SmartAlbumTransactionMaxAggregateInputType = {
+    id?: true
+    submissionId?: true
+    stripePaymentIntentId?: true
+    amountCents?: true
+    feeCents?: true
+    netCents?: true
+    currency?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+  }
+
+  export type SmartAlbumTransactionCountAggregateInputType = {
+    id?: true
+    submissionId?: true
+    stripePaymentIntentId?: true
+    amountCents?: true
+    feeCents?: true
+    netCents?: true
+    currency?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SmartAlbumTransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumTransaction to aggregate.
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumTransactions to fetch.
+     */
+    orderBy?: SmartAlbumTransactionOrderByWithRelationInput | SmartAlbumTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SmartAlbumTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SmartAlbumTransactions
+    **/
+    _count?: true | SmartAlbumTransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SmartAlbumTransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SmartAlbumTransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SmartAlbumTransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SmartAlbumTransactionMaxAggregateInputType
+  }
+
+  export type GetSmartAlbumTransactionAggregateType<T extends SmartAlbumTransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSmartAlbumTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSmartAlbumTransaction[P]>
+      : GetScalarType<T[P], AggregateSmartAlbumTransaction[P]>
+  }
+
+
+
+
+  export type SmartAlbumTransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SmartAlbumTransactionWhereInput
+    orderBy?: SmartAlbumTransactionOrderByWithAggregationInput | SmartAlbumTransactionOrderByWithAggregationInput[]
+    by: SmartAlbumTransactionScalarFieldEnum[] | SmartAlbumTransactionScalarFieldEnum
+    having?: SmartAlbumTransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SmartAlbumTransactionCountAggregateInputType | true
+    _avg?: SmartAlbumTransactionAvgAggregateInputType
+    _sum?: SmartAlbumTransactionSumAggregateInputType
+    _min?: SmartAlbumTransactionMinAggregateInputType
+    _max?: SmartAlbumTransactionMaxAggregateInputType
+  }
+
+  export type SmartAlbumTransactionGroupByOutputType = {
+    id: string
+    submissionId: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency: string
+    status: $Enums.SmartAlbumTransactionStatus
+    paidAt: Date | null
+    createdAt: Date
+    _count: SmartAlbumTransactionCountAggregateOutputType | null
+    _avg: SmartAlbumTransactionAvgAggregateOutputType | null
+    _sum: SmartAlbumTransactionSumAggregateOutputType | null
+    _min: SmartAlbumTransactionMinAggregateOutputType | null
+    _max: SmartAlbumTransactionMaxAggregateOutputType | null
+  }
+
+  type GetSmartAlbumTransactionGroupByPayload<T extends SmartAlbumTransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SmartAlbumTransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SmartAlbumTransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SmartAlbumTransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], SmartAlbumTransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SmartAlbumTransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    stripePaymentIntentId?: boolean
+    amountCents?: boolean
+    feeCents?: boolean
+    netCents?: boolean
+    currency?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumTransaction"]>
+
+  export type SmartAlbumTransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    stripePaymentIntentId?: boolean
+    amountCents?: boolean
+    feeCents?: boolean
+    netCents?: boolean
+    currency?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumTransaction"]>
+
+  export type SmartAlbumTransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    stripePaymentIntentId?: boolean
+    amountCents?: boolean
+    feeCents?: boolean
+    netCents?: boolean
+    currency?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["smartAlbumTransaction"]>
+
+  export type SmartAlbumTransactionSelectScalar = {
+    id?: boolean
+    submissionId?: boolean
+    stripePaymentIntentId?: boolean
+    amountCents?: boolean
+    feeCents?: boolean
+    netCents?: boolean
+    currency?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type SmartAlbumTransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "stripePaymentIntentId" | "amountCents" | "feeCents" | "netCents" | "currency" | "status" | "paidAt" | "createdAt", ExtArgs["result"]["smartAlbumTransaction"]>
+  export type SmartAlbumTransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumTransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }
+  export type SmartAlbumTransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submission?: boolean | SmartAlbumSubmissionDefaultArgs<ExtArgs>
+  }
+
+  export type $SmartAlbumTransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SmartAlbumTransaction"
+    objects: {
+      submission: Prisma.$SmartAlbumSubmissionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      submissionId: string
+      stripePaymentIntentId: string
+      amountCents: number
+      feeCents: number
+      netCents: number
+      currency: string
+      status: $Enums.SmartAlbumTransactionStatus
+      paidAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["smartAlbumTransaction"]>
+    composites: {}
+  }
+
+  type SmartAlbumTransactionGetPayload<S extends boolean | null | undefined | SmartAlbumTransactionDefaultArgs> = $Result.GetResult<Prisma.$SmartAlbumTransactionPayload, S>
+
+  type SmartAlbumTransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SmartAlbumTransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SmartAlbumTransactionCountAggregateInputType | true
+    }
+
+  export interface SmartAlbumTransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SmartAlbumTransaction'], meta: { name: 'SmartAlbumTransaction' } }
+    /**
+     * Find zero or one SmartAlbumTransaction that matches the filter.
+     * @param {SmartAlbumTransactionFindUniqueArgs} args - Arguments to find a SmartAlbumTransaction
+     * @example
+     * // Get one SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SmartAlbumTransactionFindUniqueArgs>(args: SelectSubset<T, SmartAlbumTransactionFindUniqueArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SmartAlbumTransaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SmartAlbumTransactionFindUniqueOrThrowArgs} args - Arguments to find a SmartAlbumTransaction
+     * @example
+     * // Get one SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SmartAlbumTransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, SmartAlbumTransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumTransaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionFindFirstArgs} args - Arguments to find a SmartAlbumTransaction
+     * @example
+     * // Get one SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SmartAlbumTransactionFindFirstArgs>(args?: SelectSubset<T, SmartAlbumTransactionFindFirstArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SmartAlbumTransaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionFindFirstOrThrowArgs} args - Arguments to find a SmartAlbumTransaction
+     * @example
+     * // Get one SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SmartAlbumTransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, SmartAlbumTransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SmartAlbumTransactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SmartAlbumTransactions
+     * const smartAlbumTransactions = await prisma.smartAlbumTransaction.findMany()
+     * 
+     * // Get first 10 SmartAlbumTransactions
+     * const smartAlbumTransactions = await prisma.smartAlbumTransaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const smartAlbumTransactionWithIdOnly = await prisma.smartAlbumTransaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SmartAlbumTransactionFindManyArgs>(args?: SelectSubset<T, SmartAlbumTransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SmartAlbumTransaction.
+     * @param {SmartAlbumTransactionCreateArgs} args - Arguments to create a SmartAlbumTransaction.
+     * @example
+     * // Create one SmartAlbumTransaction
+     * const SmartAlbumTransaction = await prisma.smartAlbumTransaction.create({
+     *   data: {
+     *     // ... data to create a SmartAlbumTransaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends SmartAlbumTransactionCreateArgs>(args: SelectSubset<T, SmartAlbumTransactionCreateArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SmartAlbumTransactions.
+     * @param {SmartAlbumTransactionCreateManyArgs} args - Arguments to create many SmartAlbumTransactions.
+     * @example
+     * // Create many SmartAlbumTransactions
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SmartAlbumTransactionCreateManyArgs>(args?: SelectSubset<T, SmartAlbumTransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SmartAlbumTransactions and returns the data saved in the database.
+     * @param {SmartAlbumTransactionCreateManyAndReturnArgs} args - Arguments to create many SmartAlbumTransactions.
+     * @example
+     * // Create many SmartAlbumTransactions
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SmartAlbumTransactions and only return the `id`
+     * const smartAlbumTransactionWithIdOnly = await prisma.smartAlbumTransaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SmartAlbumTransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, SmartAlbumTransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SmartAlbumTransaction.
+     * @param {SmartAlbumTransactionDeleteArgs} args - Arguments to delete one SmartAlbumTransaction.
+     * @example
+     * // Delete one SmartAlbumTransaction
+     * const SmartAlbumTransaction = await prisma.smartAlbumTransaction.delete({
+     *   where: {
+     *     // ... filter to delete one SmartAlbumTransaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SmartAlbumTransactionDeleteArgs>(args: SelectSubset<T, SmartAlbumTransactionDeleteArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SmartAlbumTransaction.
+     * @param {SmartAlbumTransactionUpdateArgs} args - Arguments to update one SmartAlbumTransaction.
+     * @example
+     * // Update one SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SmartAlbumTransactionUpdateArgs>(args: SelectSubset<T, SmartAlbumTransactionUpdateArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SmartAlbumTransactions.
+     * @param {SmartAlbumTransactionDeleteManyArgs} args - Arguments to filter SmartAlbumTransactions to delete.
+     * @example
+     * // Delete a few SmartAlbumTransactions
+     * const { count } = await prisma.smartAlbumTransaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SmartAlbumTransactionDeleteManyArgs>(args?: SelectSubset<T, SmartAlbumTransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SmartAlbumTransactions
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SmartAlbumTransactionUpdateManyArgs>(args: SelectSubset<T, SmartAlbumTransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SmartAlbumTransactions and returns the data updated in the database.
+     * @param {SmartAlbumTransactionUpdateManyAndReturnArgs} args - Arguments to update many SmartAlbumTransactions.
+     * @example
+     * // Update many SmartAlbumTransactions
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SmartAlbumTransactions and only return the `id`
+     * const smartAlbumTransactionWithIdOnly = await prisma.smartAlbumTransaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SmartAlbumTransactionUpdateManyAndReturnArgs>(args: SelectSubset<T, SmartAlbumTransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SmartAlbumTransaction.
+     * @param {SmartAlbumTransactionUpsertArgs} args - Arguments to update or create a SmartAlbumTransaction.
+     * @example
+     * // Update or create a SmartAlbumTransaction
+     * const smartAlbumTransaction = await prisma.smartAlbumTransaction.upsert({
+     *   create: {
+     *     // ... data to create a SmartAlbumTransaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SmartAlbumTransaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SmartAlbumTransactionUpsertArgs>(args: SelectSubset<T, SmartAlbumTransactionUpsertArgs<ExtArgs>>): Prisma__SmartAlbumTransactionClient<$Result.GetResult<Prisma.$SmartAlbumTransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SmartAlbumTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionCountArgs} args - Arguments to filter SmartAlbumTransactions to count.
+     * @example
+     * // Count the number of SmartAlbumTransactions
+     * const count = await prisma.smartAlbumTransaction.count({
+     *   where: {
+     *     // ... the filter for the SmartAlbumTransactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SmartAlbumTransactionCountArgs>(
+      args?: Subset<T, SmartAlbumTransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SmartAlbumTransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SmartAlbumTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SmartAlbumTransactionAggregateArgs>(args: Subset<T, SmartAlbumTransactionAggregateArgs>): Prisma.PrismaPromise<GetSmartAlbumTransactionAggregateType<T>>
+
+    /**
+     * Group by SmartAlbumTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SmartAlbumTransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SmartAlbumTransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SmartAlbumTransactionGroupByArgs['orderBy'] }
+        : { orderBy?: SmartAlbumTransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SmartAlbumTransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSmartAlbumTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SmartAlbumTransaction model
+   */
+  readonly fields: SmartAlbumTransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SmartAlbumTransaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SmartAlbumTransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    submission<T extends SmartAlbumSubmissionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SmartAlbumSubmissionDefaultArgs<ExtArgs>>): Prisma__SmartAlbumSubmissionClient<$Result.GetResult<Prisma.$SmartAlbumSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SmartAlbumTransaction model
+   */
+  interface SmartAlbumTransactionFieldRefs {
+    readonly id: FieldRef<"SmartAlbumTransaction", 'String'>
+    readonly submissionId: FieldRef<"SmartAlbumTransaction", 'String'>
+    readonly stripePaymentIntentId: FieldRef<"SmartAlbumTransaction", 'String'>
+    readonly amountCents: FieldRef<"SmartAlbumTransaction", 'Int'>
+    readonly feeCents: FieldRef<"SmartAlbumTransaction", 'Int'>
+    readonly netCents: FieldRef<"SmartAlbumTransaction", 'Int'>
+    readonly currency: FieldRef<"SmartAlbumTransaction", 'String'>
+    readonly status: FieldRef<"SmartAlbumTransaction", 'SmartAlbumTransactionStatus'>
+    readonly paidAt: FieldRef<"SmartAlbumTransaction", 'DateTime'>
+    readonly createdAt: FieldRef<"SmartAlbumTransaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SmartAlbumTransaction findUnique
+   */
+  export type SmartAlbumTransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumTransaction to fetch.
+     */
+    where: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumTransaction findUniqueOrThrow
+   */
+  export type SmartAlbumTransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumTransaction to fetch.
+     */
+    where: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumTransaction findFirst
+   */
+  export type SmartAlbumTransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumTransaction to fetch.
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumTransactions to fetch.
+     */
+    orderBy?: SmartAlbumTransactionOrderByWithRelationInput | SmartAlbumTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumTransactions.
+     */
+    cursor?: SmartAlbumTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumTransactions.
+     */
+    distinct?: SmartAlbumTransactionScalarFieldEnum | SmartAlbumTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumTransaction findFirstOrThrow
+   */
+  export type SmartAlbumTransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumTransaction to fetch.
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumTransactions to fetch.
+     */
+    orderBy?: SmartAlbumTransactionOrderByWithRelationInput | SmartAlbumTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SmartAlbumTransactions.
+     */
+    cursor?: SmartAlbumTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumTransactions.
+     */
+    distinct?: SmartAlbumTransactionScalarFieldEnum | SmartAlbumTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumTransaction findMany
+   */
+  export type SmartAlbumTransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which SmartAlbumTransactions to fetch.
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SmartAlbumTransactions to fetch.
+     */
+    orderBy?: SmartAlbumTransactionOrderByWithRelationInput | SmartAlbumTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SmartAlbumTransactions.
+     */
+    cursor?: SmartAlbumTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SmartAlbumTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SmartAlbumTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SmartAlbumTransactions.
+     */
+    distinct?: SmartAlbumTransactionScalarFieldEnum | SmartAlbumTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * SmartAlbumTransaction create
+   */
+  export type SmartAlbumTransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SmartAlbumTransaction.
+     */
+    data: XOR<SmartAlbumTransactionCreateInput, SmartAlbumTransactionUncheckedCreateInput>
+  }
+
+  /**
+   * SmartAlbumTransaction createMany
+   */
+  export type SmartAlbumTransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SmartAlbumTransactions.
+     */
+    data: SmartAlbumTransactionCreateManyInput | SmartAlbumTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SmartAlbumTransaction createManyAndReturn
+   */
+  export type SmartAlbumTransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many SmartAlbumTransactions.
+     */
+    data: SmartAlbumTransactionCreateManyInput | SmartAlbumTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumTransaction update
+   */
+  export type SmartAlbumTransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SmartAlbumTransaction.
+     */
+    data: XOR<SmartAlbumTransactionUpdateInput, SmartAlbumTransactionUncheckedUpdateInput>
+    /**
+     * Choose, which SmartAlbumTransaction to update.
+     */
+    where: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumTransaction updateMany
+   */
+  export type SmartAlbumTransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SmartAlbumTransactions.
+     */
+    data: XOR<SmartAlbumTransactionUpdateManyMutationInput, SmartAlbumTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumTransactions to update
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * Limit how many SmartAlbumTransactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumTransaction updateManyAndReturn
+   */
+  export type SmartAlbumTransactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * The data used to update SmartAlbumTransactions.
+     */
+    data: XOR<SmartAlbumTransactionUpdateManyMutationInput, SmartAlbumTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which SmartAlbumTransactions to update
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * Limit how many SmartAlbumTransactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SmartAlbumTransaction upsert
+   */
+  export type SmartAlbumTransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SmartAlbumTransaction to update in case it exists.
+     */
+    where: SmartAlbumTransactionWhereUniqueInput
+    /**
+     * In case the SmartAlbumTransaction found by the `where` argument doesn't exist, create a new SmartAlbumTransaction with this data.
+     */
+    create: XOR<SmartAlbumTransactionCreateInput, SmartAlbumTransactionUncheckedCreateInput>
+    /**
+     * In case the SmartAlbumTransaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SmartAlbumTransactionUpdateInput, SmartAlbumTransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * SmartAlbumTransaction delete
+   */
+  export type SmartAlbumTransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+    /**
+     * Filter which SmartAlbumTransaction to delete.
+     */
+    where: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  /**
+   * SmartAlbumTransaction deleteMany
+   */
+  export type SmartAlbumTransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SmartAlbumTransactions to delete
+     */
+    where?: SmartAlbumTransactionWhereInput
+    /**
+     * Limit how many SmartAlbumTransactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SmartAlbumTransaction without action
+   */
+  export type SmartAlbumTransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SmartAlbumTransaction
+     */
+    select?: SmartAlbumTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SmartAlbumTransaction
+     */
+    omit?: SmartAlbumTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SmartAlbumTransactionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -31220,6 +37750,86 @@ export namespace Prisma {
   export type DriveImportItemScalarFieldEnum = (typeof DriveImportItemScalarFieldEnum)[keyof typeof DriveImportItemScalarFieldEnum]
 
 
+  export const SmartAlbumConfigScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    enabled: 'enabled',
+    paymentMethod: 'paymentMethod',
+    stripeConnectAccountId: 'stripeConnectAccountId',
+    stripeConnectOnboarded: 'stripeConnectOnboarded',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SmartAlbumConfigScalarFieldEnum = (typeof SmartAlbumConfigScalarFieldEnum)[keyof typeof SmartAlbumConfigScalarFieldEnum]
+
+
+  export const SmartAlbumProductScalarFieldEnum: {
+    id: 'id',
+    configId: 'configId',
+    name: 'name',
+    size: 'size',
+    coverType: 'coverType',
+    paperType: 'paperType',
+    maxPages: 'maxPages',
+    priceCents: 'priceCents',
+    currency: 'currency',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SmartAlbumProductScalarFieldEnum = (typeof SmartAlbumProductScalarFieldEnum)[keyof typeof SmartAlbumProductScalarFieldEnum]
+
+
+  export const SmartAlbumDesignScalarFieldEnum: {
+    id: 'id',
+    galleryId: 'galleryId',
+    productId: 'productId',
+    clientName: 'clientName',
+    clientEmail: 'clientEmail',
+    title: 'title',
+    designData: 'designData',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SmartAlbumDesignScalarFieldEnum = (typeof SmartAlbumDesignScalarFieldEnum)[keyof typeof SmartAlbumDesignScalarFieldEnum]
+
+
+  export const SmartAlbumSubmissionScalarFieldEnum: {
+    id: 'id',
+    designId: 'designId',
+    version: 'version',
+    designSnapshot: 'designSnapshot',
+    status: 'status',
+    photographerNotes: 'photographerNotes',
+    reviewedAt: 'reviewedAt',
+    submittedAt: 'submittedAt',
+    exportReady: 'exportReady',
+    exportUrl: 'exportUrl'
+  };
+
+  export type SmartAlbumSubmissionScalarFieldEnum = (typeof SmartAlbumSubmissionScalarFieldEnum)[keyof typeof SmartAlbumSubmissionScalarFieldEnum]
+
+
+  export const SmartAlbumTransactionScalarFieldEnum: {
+    id: 'id',
+    submissionId: 'submissionId',
+    stripePaymentIntentId: 'stripePaymentIntentId',
+    amountCents: 'amountCents',
+    feeCents: 'feeCents',
+    netCents: 'netCents',
+    currency: 'currency',
+    status: 'status',
+    paidAt: 'paidAt',
+    createdAt: 'createdAt'
+  };
+
+  export type SmartAlbumTransactionScalarFieldEnum = (typeof SmartAlbumTransactionScalarFieldEnum)[keyof typeof SmartAlbumTransactionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -31494,6 +38104,62 @@ export namespace Prisma {
    */
   export type ListEnumDriveImportItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DriveImportItemStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumPaymentMethod'
+   */
+  export type EnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumPaymentMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumPaymentMethod[]'
+   */
+  export type ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumPaymentMethod[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumDesignStatus'
+   */
+  export type EnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumDesignStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumDesignStatus[]'
+   */
+  export type ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumDesignStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumSubmissionStatus'
+   */
+  export type EnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumSubmissionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumSubmissionStatus[]'
+   */
+  export type ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumSubmissionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumTransactionStatus'
+   */
+  export type EnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumTransactionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SmartAlbumTransactionStatus[]'
+   */
+  export type ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumTransactionStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -31535,6 +38201,7 @@ export namespace Prisma {
     clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
+    smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -31570,6 +38237,7 @@ export namespace Prisma {
     clients?: ClientOrderByRelationAggregateInput
     storageEvents?: StorageEventOrderByRelationAggregateInput
     driveImportJobs?: DriveImportJobOrderByRelationAggregateInput
+    smartAlbumConfig?: SmartAlbumConfigOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -31608,6 +38276,7 @@ export namespace Prisma {
     clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
+    smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
   }, "id" | "id" | "stripeCustomerId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -32141,6 +38810,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteListRelationFilter
     downloadEvents?: DownloadEventListRelationFilter
     favoriteShares?: FavoriteShareListRelationFilter
+    smartAlbumDesigns?: SmartAlbumDesignListRelationFilter
   }
 
   export type GalleryOrderByWithRelationInput = {
@@ -32183,6 +38853,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteOrderByRelationAggregateInput
     downloadEvents?: DownloadEventOrderByRelationAggregateInput
     favoriteShares?: FavoriteShareOrderByRelationAggregateInput
+    smartAlbumDesigns?: SmartAlbumDesignOrderByRelationAggregateInput
   }
 
   export type GalleryWhereUniqueInput = Prisma.AtLeast<{
@@ -32229,6 +38900,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteListRelationFilter
     downloadEvents?: DownloadEventListRelationFilter
     favoriteShares?: FavoriteShareListRelationFilter
+    smartAlbumDesigns?: SmartAlbumDesignListRelationFilter
   }, "id" | "id" | "shareToken" | "userId_slug">
 
   export type GalleryOrderByWithAggregationInput = {
@@ -33572,6 +40244,429 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"DriveImportItem"> | Date | string
   }
 
+  export type SmartAlbumConfigWhereInput = {
+    AND?: SmartAlbumConfigWhereInput | SmartAlbumConfigWhereInput[]
+    OR?: SmartAlbumConfigWhereInput[]
+    NOT?: SmartAlbumConfigWhereInput | SmartAlbumConfigWhereInput[]
+    id?: StringFilter<"SmartAlbumConfig"> | string
+    userId?: StringFilter<"SmartAlbumConfig"> | string
+    enabled?: BoolFilter<"SmartAlbumConfig"> | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFilter<"SmartAlbumConfig"> | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: StringNullableFilter<"SmartAlbumConfig"> | string | null
+    stripeConnectOnboarded?: BoolFilter<"SmartAlbumConfig"> | boolean
+    createdAt?: DateTimeFilter<"SmartAlbumConfig"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumConfig"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    products?: SmartAlbumProductListRelationFilter
+  }
+
+  export type SmartAlbumConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    enabled?: SortOrder
+    paymentMethod?: SortOrder
+    stripeConnectAccountId?: SortOrderInput | SortOrder
+    stripeConnectOnboarded?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    products?: SmartAlbumProductOrderByRelationAggregateInput
+  }
+
+  export type SmartAlbumConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: SmartAlbumConfigWhereInput | SmartAlbumConfigWhereInput[]
+    OR?: SmartAlbumConfigWhereInput[]
+    NOT?: SmartAlbumConfigWhereInput | SmartAlbumConfigWhereInput[]
+    enabled?: BoolFilter<"SmartAlbumConfig"> | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFilter<"SmartAlbumConfig"> | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: StringNullableFilter<"SmartAlbumConfig"> | string | null
+    stripeConnectOnboarded?: BoolFilter<"SmartAlbumConfig"> | boolean
+    createdAt?: DateTimeFilter<"SmartAlbumConfig"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumConfig"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    products?: SmartAlbumProductListRelationFilter
+  }, "id" | "userId">
+
+  export type SmartAlbumConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    enabled?: SortOrder
+    paymentMethod?: SortOrder
+    stripeConnectAccountId?: SortOrderInput | SortOrder
+    stripeConnectOnboarded?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SmartAlbumConfigCountOrderByAggregateInput
+    _max?: SmartAlbumConfigMaxOrderByAggregateInput
+    _min?: SmartAlbumConfigMinOrderByAggregateInput
+  }
+
+  export type SmartAlbumConfigScalarWhereWithAggregatesInput = {
+    AND?: SmartAlbumConfigScalarWhereWithAggregatesInput | SmartAlbumConfigScalarWhereWithAggregatesInput[]
+    OR?: SmartAlbumConfigScalarWhereWithAggregatesInput[]
+    NOT?: SmartAlbumConfigScalarWhereWithAggregatesInput | SmartAlbumConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SmartAlbumConfig"> | string
+    userId?: StringWithAggregatesFilter<"SmartAlbumConfig"> | string
+    enabled?: BoolWithAggregatesFilter<"SmartAlbumConfig"> | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodWithAggregatesFilter<"SmartAlbumConfig"> | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: StringNullableWithAggregatesFilter<"SmartAlbumConfig"> | string | null
+    stripeConnectOnboarded?: BoolWithAggregatesFilter<"SmartAlbumConfig"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SmartAlbumConfig"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SmartAlbumConfig"> | Date | string
+  }
+
+  export type SmartAlbumProductWhereInput = {
+    AND?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
+    OR?: SmartAlbumProductWhereInput[]
+    NOT?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
+    id?: StringFilter<"SmartAlbumProduct"> | string
+    configId?: StringFilter<"SmartAlbumProduct"> | string
+    name?: StringFilter<"SmartAlbumProduct"> | string
+    size?: StringFilter<"SmartAlbumProduct"> | string
+    coverType?: StringFilter<"SmartAlbumProduct"> | string
+    paperType?: StringFilter<"SmartAlbumProduct"> | string
+    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    priceCents?: IntFilter<"SmartAlbumProduct"> | number
+    currency?: StringFilter<"SmartAlbumProduct"> | string
+    isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
+    createdAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+    config?: XOR<SmartAlbumConfigScalarRelationFilter, SmartAlbumConfigWhereInput>
+    designs?: SmartAlbumDesignListRelationFilter
+  }
+
+  export type SmartAlbumProductOrderByWithRelationInput = {
+    id?: SortOrder
+    configId?: SortOrder
+    name?: SortOrder
+    size?: SortOrder
+    coverType?: SortOrder
+    paperType?: SortOrder
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+    currency?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    config?: SmartAlbumConfigOrderByWithRelationInput
+    designs?: SmartAlbumDesignOrderByRelationAggregateInput
+  }
+
+  export type SmartAlbumProductWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    configId_size_coverType_paperType?: SmartAlbumProductConfigIdSizeCoverTypePaperTypeCompoundUniqueInput
+    AND?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
+    OR?: SmartAlbumProductWhereInput[]
+    NOT?: SmartAlbumProductWhereInput | SmartAlbumProductWhereInput[]
+    configId?: StringFilter<"SmartAlbumProduct"> | string
+    name?: StringFilter<"SmartAlbumProduct"> | string
+    size?: StringFilter<"SmartAlbumProduct"> | string
+    coverType?: StringFilter<"SmartAlbumProduct"> | string
+    paperType?: StringFilter<"SmartAlbumProduct"> | string
+    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    priceCents?: IntFilter<"SmartAlbumProduct"> | number
+    currency?: StringFilter<"SmartAlbumProduct"> | string
+    isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
+    createdAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+    config?: XOR<SmartAlbumConfigScalarRelationFilter, SmartAlbumConfigWhereInput>
+    designs?: SmartAlbumDesignListRelationFilter
+  }, "id" | "configId_size_coverType_paperType">
+
+  export type SmartAlbumProductOrderByWithAggregationInput = {
+    id?: SortOrder
+    configId?: SortOrder
+    name?: SortOrder
+    size?: SortOrder
+    coverType?: SortOrder
+    paperType?: SortOrder
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+    currency?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SmartAlbumProductCountOrderByAggregateInput
+    _avg?: SmartAlbumProductAvgOrderByAggregateInput
+    _max?: SmartAlbumProductMaxOrderByAggregateInput
+    _min?: SmartAlbumProductMinOrderByAggregateInput
+    _sum?: SmartAlbumProductSumOrderByAggregateInput
+  }
+
+  export type SmartAlbumProductScalarWhereWithAggregatesInput = {
+    AND?: SmartAlbumProductScalarWhereWithAggregatesInput | SmartAlbumProductScalarWhereWithAggregatesInput[]
+    OR?: SmartAlbumProductScalarWhereWithAggregatesInput[]
+    NOT?: SmartAlbumProductScalarWhereWithAggregatesInput | SmartAlbumProductScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    configId?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    name?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    size?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    coverType?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    paperType?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    maxPages?: IntWithAggregatesFilter<"SmartAlbumProduct"> | number
+    priceCents?: IntWithAggregatesFilter<"SmartAlbumProduct"> | number
+    currency?: StringWithAggregatesFilter<"SmartAlbumProduct"> | string
+    isActive?: BoolWithAggregatesFilter<"SmartAlbumProduct"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SmartAlbumProduct"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SmartAlbumProduct"> | Date | string
+  }
+
+  export type SmartAlbumDesignWhereInput = {
+    AND?: SmartAlbumDesignWhereInput | SmartAlbumDesignWhereInput[]
+    OR?: SmartAlbumDesignWhereInput[]
+    NOT?: SmartAlbumDesignWhereInput | SmartAlbumDesignWhereInput[]
+    id?: StringFilter<"SmartAlbumDesign"> | string
+    galleryId?: StringFilter<"SmartAlbumDesign"> | string
+    productId?: StringFilter<"SmartAlbumDesign"> | string
+    clientName?: StringFilter<"SmartAlbumDesign"> | string
+    clientEmail?: StringFilter<"SmartAlbumDesign"> | string
+    title?: StringFilter<"SmartAlbumDesign"> | string
+    designData?: JsonFilter<"SmartAlbumDesign">
+    status?: EnumSmartAlbumDesignStatusFilter<"SmartAlbumDesign"> | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    product?: XOR<SmartAlbumProductScalarRelationFilter, SmartAlbumProductWhereInput>
+    submissions?: SmartAlbumSubmissionListRelationFilter
+  }
+
+  export type SmartAlbumDesignOrderByWithRelationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    productId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    title?: SortOrder
+    designData?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gallery?: GalleryOrderByWithRelationInput
+    product?: SmartAlbumProductOrderByWithRelationInput
+    submissions?: SmartAlbumSubmissionOrderByRelationAggregateInput
+  }
+
+  export type SmartAlbumDesignWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SmartAlbumDesignWhereInput | SmartAlbumDesignWhereInput[]
+    OR?: SmartAlbumDesignWhereInput[]
+    NOT?: SmartAlbumDesignWhereInput | SmartAlbumDesignWhereInput[]
+    galleryId?: StringFilter<"SmartAlbumDesign"> | string
+    productId?: StringFilter<"SmartAlbumDesign"> | string
+    clientName?: StringFilter<"SmartAlbumDesign"> | string
+    clientEmail?: StringFilter<"SmartAlbumDesign"> | string
+    title?: StringFilter<"SmartAlbumDesign"> | string
+    designData?: JsonFilter<"SmartAlbumDesign">
+    status?: EnumSmartAlbumDesignStatusFilter<"SmartAlbumDesign"> | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
+    product?: XOR<SmartAlbumProductScalarRelationFilter, SmartAlbumProductWhereInput>
+    submissions?: SmartAlbumSubmissionListRelationFilter
+  }, "id">
+
+  export type SmartAlbumDesignOrderByWithAggregationInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    productId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    title?: SortOrder
+    designData?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SmartAlbumDesignCountOrderByAggregateInput
+    _max?: SmartAlbumDesignMaxOrderByAggregateInput
+    _min?: SmartAlbumDesignMinOrderByAggregateInput
+  }
+
+  export type SmartAlbumDesignScalarWhereWithAggregatesInput = {
+    AND?: SmartAlbumDesignScalarWhereWithAggregatesInput | SmartAlbumDesignScalarWhereWithAggregatesInput[]
+    OR?: SmartAlbumDesignScalarWhereWithAggregatesInput[]
+    NOT?: SmartAlbumDesignScalarWhereWithAggregatesInput | SmartAlbumDesignScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    galleryId?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    productId?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    clientName?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    clientEmail?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    title?: StringWithAggregatesFilter<"SmartAlbumDesign"> | string
+    designData?: JsonWithAggregatesFilter<"SmartAlbumDesign">
+    status?: EnumSmartAlbumDesignStatusWithAggregatesFilter<"SmartAlbumDesign"> | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeWithAggregatesFilter<"SmartAlbumDesign"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SmartAlbumDesign"> | Date | string
+  }
+
+  export type SmartAlbumSubmissionWhereInput = {
+    AND?: SmartAlbumSubmissionWhereInput | SmartAlbumSubmissionWhereInput[]
+    OR?: SmartAlbumSubmissionWhereInput[]
+    NOT?: SmartAlbumSubmissionWhereInput | SmartAlbumSubmissionWhereInput[]
+    id?: StringFilter<"SmartAlbumSubmission"> | string
+    designId?: StringFilter<"SmartAlbumSubmission"> | string
+    version?: IntFilter<"SmartAlbumSubmission"> | number
+    designSnapshot?: JsonFilter<"SmartAlbumSubmission">
+    status?: EnumSmartAlbumSubmissionStatusFilter<"SmartAlbumSubmission"> | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"SmartAlbumSubmission"> | Date | string | null
+    submittedAt?: DateTimeFilter<"SmartAlbumSubmission"> | Date | string
+    exportReady?: BoolFilter<"SmartAlbumSubmission"> | boolean
+    exportUrl?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+    design?: XOR<SmartAlbumDesignScalarRelationFilter, SmartAlbumDesignWhereInput>
+    transaction?: XOR<SmartAlbumTransactionNullableScalarRelationFilter, SmartAlbumTransactionWhereInput> | null
+  }
+
+  export type SmartAlbumSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    designId?: SortOrder
+    version?: SortOrder
+    designSnapshot?: SortOrder
+    status?: SortOrder
+    photographerNotes?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    submittedAt?: SortOrder
+    exportReady?: SortOrder
+    exportUrl?: SortOrderInput | SortOrder
+    design?: SmartAlbumDesignOrderByWithRelationInput
+    transaction?: SmartAlbumTransactionOrderByWithRelationInput
+  }
+
+  export type SmartAlbumSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    designId_version?: SmartAlbumSubmissionDesignIdVersionCompoundUniqueInput
+    AND?: SmartAlbumSubmissionWhereInput | SmartAlbumSubmissionWhereInput[]
+    OR?: SmartAlbumSubmissionWhereInput[]
+    NOT?: SmartAlbumSubmissionWhereInput | SmartAlbumSubmissionWhereInput[]
+    designId?: StringFilter<"SmartAlbumSubmission"> | string
+    version?: IntFilter<"SmartAlbumSubmission"> | number
+    designSnapshot?: JsonFilter<"SmartAlbumSubmission">
+    status?: EnumSmartAlbumSubmissionStatusFilter<"SmartAlbumSubmission"> | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"SmartAlbumSubmission"> | Date | string | null
+    submittedAt?: DateTimeFilter<"SmartAlbumSubmission"> | Date | string
+    exportReady?: BoolFilter<"SmartAlbumSubmission"> | boolean
+    exportUrl?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+    design?: XOR<SmartAlbumDesignScalarRelationFilter, SmartAlbumDesignWhereInput>
+    transaction?: XOR<SmartAlbumTransactionNullableScalarRelationFilter, SmartAlbumTransactionWhereInput> | null
+  }, "id" | "designId_version">
+
+  export type SmartAlbumSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    designId?: SortOrder
+    version?: SortOrder
+    designSnapshot?: SortOrder
+    status?: SortOrder
+    photographerNotes?: SortOrderInput | SortOrder
+    reviewedAt?: SortOrderInput | SortOrder
+    submittedAt?: SortOrder
+    exportReady?: SortOrder
+    exportUrl?: SortOrderInput | SortOrder
+    _count?: SmartAlbumSubmissionCountOrderByAggregateInput
+    _avg?: SmartAlbumSubmissionAvgOrderByAggregateInput
+    _max?: SmartAlbumSubmissionMaxOrderByAggregateInput
+    _min?: SmartAlbumSubmissionMinOrderByAggregateInput
+    _sum?: SmartAlbumSubmissionSumOrderByAggregateInput
+  }
+
+  export type SmartAlbumSubmissionScalarWhereWithAggregatesInput = {
+    AND?: SmartAlbumSubmissionScalarWhereWithAggregatesInput | SmartAlbumSubmissionScalarWhereWithAggregatesInput[]
+    OR?: SmartAlbumSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: SmartAlbumSubmissionScalarWhereWithAggregatesInput | SmartAlbumSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SmartAlbumSubmission"> | string
+    designId?: StringWithAggregatesFilter<"SmartAlbumSubmission"> | string
+    version?: IntWithAggregatesFilter<"SmartAlbumSubmission"> | number
+    designSnapshot?: JsonWithAggregatesFilter<"SmartAlbumSubmission">
+    status?: EnumSmartAlbumSubmissionStatusWithAggregatesFilter<"SmartAlbumSubmission"> | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: StringNullableWithAggregatesFilter<"SmartAlbumSubmission"> | string | null
+    reviewedAt?: DateTimeNullableWithAggregatesFilter<"SmartAlbumSubmission"> | Date | string | null
+    submittedAt?: DateTimeWithAggregatesFilter<"SmartAlbumSubmission"> | Date | string
+    exportReady?: BoolWithAggregatesFilter<"SmartAlbumSubmission"> | boolean
+    exportUrl?: StringNullableWithAggregatesFilter<"SmartAlbumSubmission"> | string | null
+  }
+
+  export type SmartAlbumTransactionWhereInput = {
+    AND?: SmartAlbumTransactionWhereInput | SmartAlbumTransactionWhereInput[]
+    OR?: SmartAlbumTransactionWhereInput[]
+    NOT?: SmartAlbumTransactionWhereInput | SmartAlbumTransactionWhereInput[]
+    id?: StringFilter<"SmartAlbumTransaction"> | string
+    submissionId?: StringFilter<"SmartAlbumTransaction"> | string
+    stripePaymentIntentId?: StringFilter<"SmartAlbumTransaction"> | string
+    amountCents?: IntFilter<"SmartAlbumTransaction"> | number
+    feeCents?: IntFilter<"SmartAlbumTransaction"> | number
+    netCents?: IntFilter<"SmartAlbumTransaction"> | number
+    currency?: StringFilter<"SmartAlbumTransaction"> | string
+    status?: EnumSmartAlbumTransactionStatusFilter<"SmartAlbumTransaction"> | $Enums.SmartAlbumTransactionStatus
+    paidAt?: DateTimeNullableFilter<"SmartAlbumTransaction"> | Date | string | null
+    createdAt?: DateTimeFilter<"SmartAlbumTransaction"> | Date | string
+    submission?: XOR<SmartAlbumSubmissionScalarRelationFilter, SmartAlbumSubmissionWhereInput>
+  }
+
+  export type SmartAlbumTransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    submission?: SmartAlbumSubmissionOrderByWithRelationInput
+  }
+
+  export type SmartAlbumTransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    submissionId?: string
+    stripePaymentIntentId?: string
+    AND?: SmartAlbumTransactionWhereInput | SmartAlbumTransactionWhereInput[]
+    OR?: SmartAlbumTransactionWhereInput[]
+    NOT?: SmartAlbumTransactionWhereInput | SmartAlbumTransactionWhereInput[]
+    amountCents?: IntFilter<"SmartAlbumTransaction"> | number
+    feeCents?: IntFilter<"SmartAlbumTransaction"> | number
+    netCents?: IntFilter<"SmartAlbumTransaction"> | number
+    currency?: StringFilter<"SmartAlbumTransaction"> | string
+    status?: EnumSmartAlbumTransactionStatusFilter<"SmartAlbumTransaction"> | $Enums.SmartAlbumTransactionStatus
+    paidAt?: DateTimeNullableFilter<"SmartAlbumTransaction"> | Date | string | null
+    createdAt?: DateTimeFilter<"SmartAlbumTransaction"> | Date | string
+    submission?: XOR<SmartAlbumSubmissionScalarRelationFilter, SmartAlbumSubmissionWhereInput>
+  }, "id" | "submissionId" | "stripePaymentIntentId">
+
+  export type SmartAlbumTransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SmartAlbumTransactionCountOrderByAggregateInput
+    _avg?: SmartAlbumTransactionAvgOrderByAggregateInput
+    _max?: SmartAlbumTransactionMaxOrderByAggregateInput
+    _min?: SmartAlbumTransactionMinOrderByAggregateInput
+    _sum?: SmartAlbumTransactionSumOrderByAggregateInput
+  }
+
+  export type SmartAlbumTransactionScalarWhereWithAggregatesInput = {
+    AND?: SmartAlbumTransactionScalarWhereWithAggregatesInput | SmartAlbumTransactionScalarWhereWithAggregatesInput[]
+    OR?: SmartAlbumTransactionScalarWhereWithAggregatesInput[]
+    NOT?: SmartAlbumTransactionScalarWhereWithAggregatesInput | SmartAlbumTransactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SmartAlbumTransaction"> | string
+    submissionId?: StringWithAggregatesFilter<"SmartAlbumTransaction"> | string
+    stripePaymentIntentId?: StringWithAggregatesFilter<"SmartAlbumTransaction"> | string
+    amountCents?: IntWithAggregatesFilter<"SmartAlbumTransaction"> | number
+    feeCents?: IntWithAggregatesFilter<"SmartAlbumTransaction"> | number
+    netCents?: IntWithAggregatesFilter<"SmartAlbumTransaction"> | number
+    currency?: StringWithAggregatesFilter<"SmartAlbumTransaction"> | string
+    status?: EnumSmartAlbumTransactionStatusWithAggregatesFilter<"SmartAlbumTransaction"> | $Enums.SmartAlbumTransactionStatus
+    paidAt?: DateTimeNullableWithAggregatesFilter<"SmartAlbumTransaction"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SmartAlbumTransaction"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -33605,6 +40700,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -33640,6 +40736,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -33675,6 +40772,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -33710,6 +40808,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -34314,6 +41413,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateInput = {
@@ -34354,6 +41454,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUpdateInput = {
@@ -34394,6 +41495,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateInput = {
@@ -34434,6 +41536,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateManyInput = {
@@ -35901,6 +43004,471 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SmartAlbumConfigCreateInput = {
+    id?: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSmartAlbumConfigInput
+    products?: SmartAlbumProductCreateNestedManyWithoutConfigInput
+  }
+
+  export type SmartAlbumConfigUncheckedCreateInput = {
+    id?: string
+    userId: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    products?: SmartAlbumProductUncheckedCreateNestedManyWithoutConfigInput
+  }
+
+  export type SmartAlbumConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSmartAlbumConfigNestedInput
+    products?: SmartAlbumProductUpdateManyWithoutConfigNestedInput
+  }
+
+  export type SmartAlbumConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: SmartAlbumProductUncheckedUpdateManyWithoutConfigNestedInput
+  }
+
+  export type SmartAlbumConfigCreateManyInput = {
+    id?: string
+    userId: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumProductCreateInput = {
+    id?: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    config: SmartAlbumConfigCreateNestedOneWithoutProductsInput
+    designs?: SmartAlbumDesignCreateNestedManyWithoutProductInput
+  }
+
+  export type SmartAlbumProductUncheckedCreateInput = {
+    id?: string
+    configId: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designs?: SmartAlbumDesignUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type SmartAlbumProductUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    config?: SmartAlbumConfigUpdateOneRequiredWithoutProductsNestedInput
+    designs?: SmartAlbumDesignUpdateManyWithoutProductNestedInput
+  }
+
+  export type SmartAlbumProductUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    configId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designs?: SmartAlbumDesignUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type SmartAlbumProductCreateManyInput = {
+    id?: string
+    configId: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumProductUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumProductUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    configId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumDesignCreateInput = {
+    id?: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutSmartAlbumDesignsInput
+    product: SmartAlbumProductCreateNestedOneWithoutDesignsInput
+    submissions?: SmartAlbumSubmissionCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignUncheckedCreateInput = {
+    id?: string
+    galleryId: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SmartAlbumSubmissionUncheckedCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutSmartAlbumDesignsNestedInput
+    product?: SmartAlbumProductUpdateOneRequiredWithoutDesignsNestedInput
+    submissions?: SmartAlbumSubmissionUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignCreateManyInput = {
+    id?: string
+    galleryId: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumDesignUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumSubmissionCreateInput = {
+    id?: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+    design: SmartAlbumDesignCreateNestedOneWithoutSubmissionsInput
+    transaction?: SmartAlbumTransactionCreateNestedOneWithoutSubmissionInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedCreateInput = {
+    id?: string
+    designId: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+    transaction?: SmartAlbumTransactionUncheckedCreateNestedOneWithoutSubmissionInput
+  }
+
+  export type SmartAlbumSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    design?: SmartAlbumDesignUpdateOneRequiredWithoutSubmissionsNestedInput
+    transaction?: SmartAlbumTransactionUpdateOneWithoutSubmissionNestedInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designId?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction?: SmartAlbumTransactionUncheckedUpdateOneWithoutSubmissionNestedInput
+  }
+
+  export type SmartAlbumSubmissionCreateManyInput = {
+    id?: string
+    designId: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+  }
+
+  export type SmartAlbumSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designId?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SmartAlbumTransactionCreateInput = {
+    id?: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency?: string
+    status?: $Enums.SmartAlbumTransactionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    submission: SmartAlbumSubmissionCreateNestedOneWithoutTransactionInput
+  }
+
+  export type SmartAlbumTransactionUncheckedCreateInput = {
+    id?: string
+    submissionId: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency?: string
+    status?: $Enums.SmartAlbumTransactionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SmartAlbumTransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submission?: SmartAlbumSubmissionUpdateOneRequiredWithoutTransactionNestedInput
+  }
+
+  export type SmartAlbumTransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumTransactionCreateManyInput = {
+    id?: string
+    submissionId: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency?: string
+    status?: $Enums.SmartAlbumTransactionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SmartAlbumTransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumTransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -36037,6 +43605,11 @@ export namespace Prisma {
     every?: DriveImportJobWhereInput
     some?: DriveImportJobWhereInput
     none?: DriveImportJobWhereInput
+  }
+
+  export type SmartAlbumConfigNullableScalarRelationFilter = {
+    is?: SmartAlbumConfigWhereInput | null
+    isNot?: SmartAlbumConfigWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -36697,6 +44270,12 @@ export namespace Prisma {
     none?: FavoriteShareWhereInput
   }
 
+  export type SmartAlbumDesignListRelationFilter = {
+    every?: SmartAlbumDesignWhereInput
+    some?: SmartAlbumDesignWhereInput
+    none?: SmartAlbumDesignWhereInput
+  }
+
   export type PhotoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -36726,6 +44305,10 @@ export namespace Prisma {
   }
 
   export type FavoriteShareOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SmartAlbumDesignOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -37746,6 +45329,352 @@ export namespace Prisma {
     _max?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
   }
 
+  export type EnumSmartAlbumPaymentMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumPaymentMethod | EnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel> | $Enums.SmartAlbumPaymentMethod
+  }
+
+  export type SmartAlbumProductListRelationFilter = {
+    every?: SmartAlbumProductWhereInput
+    some?: SmartAlbumProductWhereInput
+    none?: SmartAlbumProductWhereInput
+  }
+
+  export type SmartAlbumProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SmartAlbumConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    enabled?: SortOrder
+    paymentMethod?: SortOrder
+    stripeConnectAccountId?: SortOrder
+    stripeConnectOnboarded?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    enabled?: SortOrder
+    paymentMethod?: SortOrder
+    stripeConnectAccountId?: SortOrder
+    stripeConnectOnboarded?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    enabled?: SortOrder
+    paymentMethod?: SortOrder
+    stripeConnectAccountId?: SortOrder
+    stripeConnectOnboarded?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumSmartAlbumPaymentMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumPaymentMethod | EnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumPaymentMethodWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumPaymentMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel>
+  }
+
+  export type SmartAlbumConfigScalarRelationFilter = {
+    is?: SmartAlbumConfigWhereInput
+    isNot?: SmartAlbumConfigWhereInput
+  }
+
+  export type SmartAlbumProductConfigIdSizeCoverTypePaperTypeCompoundUniqueInput = {
+    configId: string
+    size: string
+    coverType: string
+    paperType: string
+  }
+
+  export type SmartAlbumProductCountOrderByAggregateInput = {
+    id?: SortOrder
+    configId?: SortOrder
+    name?: SortOrder
+    size?: SortOrder
+    coverType?: SortOrder
+    paperType?: SortOrder
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+    currency?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumProductAvgOrderByAggregateInput = {
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+  }
+
+  export type SmartAlbumProductMaxOrderByAggregateInput = {
+    id?: SortOrder
+    configId?: SortOrder
+    name?: SortOrder
+    size?: SortOrder
+    coverType?: SortOrder
+    paperType?: SortOrder
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+    currency?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumProductMinOrderByAggregateInput = {
+    id?: SortOrder
+    configId?: SortOrder
+    name?: SortOrder
+    size?: SortOrder
+    coverType?: SortOrder
+    paperType?: SortOrder
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+    currency?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumProductSumOrderByAggregateInput = {
+    maxPages?: SortOrder
+    priceCents?: SortOrder
+  }
+
+  export type EnumSmartAlbumDesignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumDesignStatus | EnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel> | $Enums.SmartAlbumDesignStatus
+  }
+
+  export type SmartAlbumProductScalarRelationFilter = {
+    is?: SmartAlbumProductWhereInput
+    isNot?: SmartAlbumProductWhereInput
+  }
+
+  export type SmartAlbumSubmissionListRelationFilter = {
+    every?: SmartAlbumSubmissionWhereInput
+    some?: SmartAlbumSubmissionWhereInput
+    none?: SmartAlbumSubmissionWhereInput
+  }
+
+  export type SmartAlbumSubmissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SmartAlbumDesignCountOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    productId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    title?: SortOrder
+    designData?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumDesignMaxOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    productId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    title?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SmartAlbumDesignMinOrderByAggregateInput = {
+    id?: SortOrder
+    galleryId?: SortOrder
+    productId?: SortOrder
+    clientName?: SortOrder
+    clientEmail?: SortOrder
+    title?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumSmartAlbumDesignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumDesignStatus | EnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumDesignStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumDesignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel>
+  }
+
+  export type EnumSmartAlbumSubmissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumSubmissionStatus | EnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel> | $Enums.SmartAlbumSubmissionStatus
+  }
+
+  export type SmartAlbumDesignScalarRelationFilter = {
+    is?: SmartAlbumDesignWhereInput
+    isNot?: SmartAlbumDesignWhereInput
+  }
+
+  export type SmartAlbumTransactionNullableScalarRelationFilter = {
+    is?: SmartAlbumTransactionWhereInput | null
+    isNot?: SmartAlbumTransactionWhereInput | null
+  }
+
+  export type SmartAlbumSubmissionDesignIdVersionCompoundUniqueInput = {
+    designId: string
+    version: number
+  }
+
+  export type SmartAlbumSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    designId?: SortOrder
+    version?: SortOrder
+    designSnapshot?: SortOrder
+    status?: SortOrder
+    photographerNotes?: SortOrder
+    reviewedAt?: SortOrder
+    submittedAt?: SortOrder
+    exportReady?: SortOrder
+    exportUrl?: SortOrder
+  }
+
+  export type SmartAlbumSubmissionAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type SmartAlbumSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    designId?: SortOrder
+    version?: SortOrder
+    status?: SortOrder
+    photographerNotes?: SortOrder
+    reviewedAt?: SortOrder
+    submittedAt?: SortOrder
+    exportReady?: SortOrder
+    exportUrl?: SortOrder
+  }
+
+  export type SmartAlbumSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    designId?: SortOrder
+    version?: SortOrder
+    status?: SortOrder
+    photographerNotes?: SortOrder
+    reviewedAt?: SortOrder
+    submittedAt?: SortOrder
+    exportReady?: SortOrder
+    exportUrl?: SortOrder
+  }
+
+  export type SmartAlbumSubmissionSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type EnumSmartAlbumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumSubmissionStatus | EnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumSubmissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel>
+  }
+
+  export type EnumSmartAlbumTransactionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumTransactionStatus | EnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel> | $Enums.SmartAlbumTransactionStatus
+  }
+
+  export type SmartAlbumSubmissionScalarRelationFilter = {
+    is?: SmartAlbumSubmissionWhereInput
+    isNot?: SmartAlbumSubmissionWhereInput
+  }
+
+  export type SmartAlbumTransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SmartAlbumTransactionAvgOrderByAggregateInput = {
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+  }
+
+  export type SmartAlbumTransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SmartAlbumTransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    stripePaymentIntentId?: SortOrder
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SmartAlbumTransactionSumOrderByAggregateInput = {
+    amountCents?: SortOrder
+    feeCents?: SortOrder
+    netCents?: SortOrder
+  }
+
+  export type EnumSmartAlbumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumTransactionStatus | EnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumTransactionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumTransactionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -37801,6 +45730,12 @@ export namespace Prisma {
     connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
   }
 
+  export type SmartAlbumConfigCreateNestedOneWithoutUserInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutUserInput
+    connect?: SmartAlbumConfigWhereUniqueInput
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -37854,6 +45789,12 @@ export namespace Prisma {
     connectOrCreate?: DriveImportJobCreateOrConnectWithoutUserInput | DriveImportJobCreateOrConnectWithoutUserInput[]
     createMany?: DriveImportJobCreateManyUserInputEnvelope
     connect?: DriveImportJobWhereUniqueInput | DriveImportJobWhereUniqueInput[]
+  }
+
+  export type SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutUserInput
+    connect?: SmartAlbumConfigWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -38008,6 +45949,16 @@ export namespace Prisma {
     deleteMany?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
   }
 
+  export type SmartAlbumConfigUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutUserInput
+    upsert?: SmartAlbumConfigUpsertWithoutUserInput
+    disconnect?: SmartAlbumConfigWhereInput | boolean
+    delete?: SmartAlbumConfigWhereInput | boolean
+    connect?: SmartAlbumConfigWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumConfigUpdateToOneWithWhereWithoutUserInput, SmartAlbumConfigUpdateWithoutUserInput>, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -38114,6 +46065,16 @@ export namespace Prisma {
     update?: DriveImportJobUpdateWithWhereUniqueWithoutUserInput | DriveImportJobUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DriveImportJobUpdateManyWithWhereWithoutUserInput | DriveImportJobUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DriveImportJobScalarWhereInput | DriveImportJobScalarWhereInput[]
+  }
+
+  export type SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutUserInput
+    upsert?: SmartAlbumConfigUpsertWithoutUserInput
+    disconnect?: SmartAlbumConfigWhereInput | boolean
+    delete?: SmartAlbumConfigWhereInput | boolean
+    connect?: SmartAlbumConfigWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumConfigUpdateToOneWithWhereWithoutUserInput, SmartAlbumConfigUpdateWithoutUserInput>, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -38281,6 +46242,13 @@ export namespace Prisma {
     connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
   }
 
+  export type SmartAlbumDesignCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput> | SmartAlbumDesignCreateWithoutGalleryInput[] | SmartAlbumDesignUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutGalleryInput | SmartAlbumDesignCreateOrConnectWithoutGalleryInput[]
+    createMany?: SmartAlbumDesignCreateManyGalleryInputEnvelope
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+  }
+
   export type PhotoUncheckedCreateNestedManyWithoutGalleryInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -38335,6 +46303,13 @@ export namespace Prisma {
     connectOrCreate?: FavoriteShareCreateOrConnectWithoutGalleryInput | FavoriteShareCreateOrConnectWithoutGalleryInput[]
     createMany?: FavoriteShareCreateManyGalleryInputEnvelope
     connect?: FavoriteShareWhereUniqueInput | FavoriteShareWhereUniqueInput[]
+  }
+
+  export type SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput> | SmartAlbumDesignCreateWithoutGalleryInput[] | SmartAlbumDesignUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutGalleryInput | SmartAlbumDesignCreateOrConnectWithoutGalleryInput[]
+    createMany?: SmartAlbumDesignCreateManyGalleryInputEnvelope
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
   }
 
   export type GalleryUpdatecategoryTagsInput = {
@@ -38472,6 +46447,20 @@ export namespace Prisma {
     deleteMany?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
   }
 
+  export type SmartAlbumDesignUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput> | SmartAlbumDesignCreateWithoutGalleryInput[] | SmartAlbumDesignUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutGalleryInput | SmartAlbumDesignCreateOrConnectWithoutGalleryInput[]
+    upsert?: SmartAlbumDesignUpsertWithWhereUniqueWithoutGalleryInput | SmartAlbumDesignUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: SmartAlbumDesignCreateManyGalleryInputEnvelope
+    set?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    disconnect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    delete?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    update?: SmartAlbumDesignUpdateWithWhereUniqueWithoutGalleryInput | SmartAlbumDesignUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: SmartAlbumDesignUpdateManyWithWhereWithoutGalleryInput | SmartAlbumDesignUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
+  }
+
   export type PhotoUncheckedUpdateManyWithoutGalleryNestedInput = {
     create?: XOR<PhotoCreateWithoutGalleryInput, PhotoUncheckedCreateWithoutGalleryInput> | PhotoCreateWithoutGalleryInput[] | PhotoUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: PhotoCreateOrConnectWithoutGalleryInput | PhotoCreateOrConnectWithoutGalleryInput[]
@@ -38582,6 +46571,20 @@ export namespace Prisma {
     update?: FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput | FavoriteShareUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: FavoriteShareUpdateManyWithWhereWithoutGalleryInput | FavoriteShareUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: FavoriteShareScalarWhereInput | FavoriteShareScalarWhereInput[]
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput> | SmartAlbumDesignCreateWithoutGalleryInput[] | SmartAlbumDesignUncheckedCreateWithoutGalleryInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutGalleryInput | SmartAlbumDesignCreateOrConnectWithoutGalleryInput[]
+    upsert?: SmartAlbumDesignUpsertWithWhereUniqueWithoutGalleryInput | SmartAlbumDesignUpsertWithWhereUniqueWithoutGalleryInput[]
+    createMany?: SmartAlbumDesignCreateManyGalleryInputEnvelope
+    set?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    disconnect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    delete?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    update?: SmartAlbumDesignUpdateWithWhereUniqueWithoutGalleryInput | SmartAlbumDesignUpdateWithWhereUniqueWithoutGalleryInput[]
+    updateMany?: SmartAlbumDesignUpdateManyWithWhereWithoutGalleryInput | SmartAlbumDesignUpdateManyWithWhereWithoutGalleryInput[]
+    deleteMany?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
   }
 
   export type GalleryCreateNestedOneWithoutPhotosInput = {
@@ -39311,6 +47314,264 @@ export namespace Prisma {
     update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutDriveImportItemsInput, GalleryUpdateWithoutDriveImportItemsInput>, GalleryUncheckedUpdateWithoutDriveImportItemsInput>
   }
 
+  export type UserCreateNestedOneWithoutSmartAlbumConfigInput = {
+    create?: XOR<UserCreateWithoutSmartAlbumConfigInput, UserUncheckedCreateWithoutSmartAlbumConfigInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSmartAlbumConfigInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SmartAlbumProductCreateNestedManyWithoutConfigInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput> | SmartAlbumProductCreateWithoutConfigInput[] | SmartAlbumProductUncheckedCreateWithoutConfigInput[]
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutConfigInput | SmartAlbumProductCreateOrConnectWithoutConfigInput[]
+    createMany?: SmartAlbumProductCreateManyConfigInputEnvelope
+    connect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+  }
+
+  export type SmartAlbumProductUncheckedCreateNestedManyWithoutConfigInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput> | SmartAlbumProductCreateWithoutConfigInput[] | SmartAlbumProductUncheckedCreateWithoutConfigInput[]
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutConfigInput | SmartAlbumProductCreateOrConnectWithoutConfigInput[]
+    createMany?: SmartAlbumProductCreateManyConfigInputEnvelope
+    connect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+  }
+
+  export type EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput = {
+    set?: $Enums.SmartAlbumPaymentMethod
+  }
+
+  export type UserUpdateOneRequiredWithoutSmartAlbumConfigNestedInput = {
+    create?: XOR<UserCreateWithoutSmartAlbumConfigInput, UserUncheckedCreateWithoutSmartAlbumConfigInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSmartAlbumConfigInput
+    upsert?: UserUpsertWithoutSmartAlbumConfigInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSmartAlbumConfigInput, UserUpdateWithoutSmartAlbumConfigInput>, UserUncheckedUpdateWithoutSmartAlbumConfigInput>
+  }
+
+  export type SmartAlbumProductUpdateManyWithoutConfigNestedInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput> | SmartAlbumProductCreateWithoutConfigInput[] | SmartAlbumProductUncheckedCreateWithoutConfigInput[]
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutConfigInput | SmartAlbumProductCreateOrConnectWithoutConfigInput[]
+    upsert?: SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput | SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput[]
+    createMany?: SmartAlbumProductCreateManyConfigInputEnvelope
+    set?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    disconnect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    delete?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    connect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    update?: SmartAlbumProductUpdateWithWhereUniqueWithoutConfigInput | SmartAlbumProductUpdateWithWhereUniqueWithoutConfigInput[]
+    updateMany?: SmartAlbumProductUpdateManyWithWhereWithoutConfigInput | SmartAlbumProductUpdateManyWithWhereWithoutConfigInput[]
+    deleteMany?: SmartAlbumProductScalarWhereInput | SmartAlbumProductScalarWhereInput[]
+  }
+
+  export type SmartAlbumProductUncheckedUpdateManyWithoutConfigNestedInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput> | SmartAlbumProductCreateWithoutConfigInput[] | SmartAlbumProductUncheckedCreateWithoutConfigInput[]
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutConfigInput | SmartAlbumProductCreateOrConnectWithoutConfigInput[]
+    upsert?: SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput | SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput[]
+    createMany?: SmartAlbumProductCreateManyConfigInputEnvelope
+    set?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    disconnect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    delete?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    connect?: SmartAlbumProductWhereUniqueInput | SmartAlbumProductWhereUniqueInput[]
+    update?: SmartAlbumProductUpdateWithWhereUniqueWithoutConfigInput | SmartAlbumProductUpdateWithWhereUniqueWithoutConfigInput[]
+    updateMany?: SmartAlbumProductUpdateManyWithWhereWithoutConfigInput | SmartAlbumProductUpdateManyWithWhereWithoutConfigInput[]
+    deleteMany?: SmartAlbumProductScalarWhereInput | SmartAlbumProductScalarWhereInput[]
+  }
+
+  export type SmartAlbumConfigCreateNestedOneWithoutProductsInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutProductsInput, SmartAlbumConfigUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutProductsInput
+    connect?: SmartAlbumConfigWhereUniqueInput
+  }
+
+  export type SmartAlbumDesignCreateNestedManyWithoutProductInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput> | SmartAlbumDesignCreateWithoutProductInput[] | SmartAlbumDesignUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutProductInput | SmartAlbumDesignCreateOrConnectWithoutProductInput[]
+    createMany?: SmartAlbumDesignCreateManyProductInputEnvelope
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+  }
+
+  export type SmartAlbumDesignUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput> | SmartAlbumDesignCreateWithoutProductInput[] | SmartAlbumDesignUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutProductInput | SmartAlbumDesignCreateOrConnectWithoutProductInput[]
+    createMany?: SmartAlbumDesignCreateManyProductInputEnvelope
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+  }
+
+  export type SmartAlbumConfigUpdateOneRequiredWithoutProductsNestedInput = {
+    create?: XOR<SmartAlbumConfigCreateWithoutProductsInput, SmartAlbumConfigUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutProductsInput
+    upsert?: SmartAlbumConfigUpsertWithoutProductsInput
+    connect?: SmartAlbumConfigWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumConfigUpdateToOneWithWhereWithoutProductsInput, SmartAlbumConfigUpdateWithoutProductsInput>, SmartAlbumConfigUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type SmartAlbumDesignUpdateManyWithoutProductNestedInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput> | SmartAlbumDesignCreateWithoutProductInput[] | SmartAlbumDesignUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutProductInput | SmartAlbumDesignCreateOrConnectWithoutProductInput[]
+    upsert?: SmartAlbumDesignUpsertWithWhereUniqueWithoutProductInput | SmartAlbumDesignUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: SmartAlbumDesignCreateManyProductInputEnvelope
+    set?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    disconnect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    delete?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    update?: SmartAlbumDesignUpdateWithWhereUniqueWithoutProductInput | SmartAlbumDesignUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: SmartAlbumDesignUpdateManyWithWhereWithoutProductInput | SmartAlbumDesignUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput> | SmartAlbumDesignCreateWithoutProductInput[] | SmartAlbumDesignUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutProductInput | SmartAlbumDesignCreateOrConnectWithoutProductInput[]
+    upsert?: SmartAlbumDesignUpsertWithWhereUniqueWithoutProductInput | SmartAlbumDesignUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: SmartAlbumDesignCreateManyProductInputEnvelope
+    set?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    disconnect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    delete?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    connect?: SmartAlbumDesignWhereUniqueInput | SmartAlbumDesignWhereUniqueInput[]
+    update?: SmartAlbumDesignUpdateWithWhereUniqueWithoutProductInput | SmartAlbumDesignUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: SmartAlbumDesignUpdateManyWithWhereWithoutProductInput | SmartAlbumDesignUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
+  }
+
+  export type GalleryCreateNestedOneWithoutSmartAlbumDesignsInput = {
+    create?: XOR<GalleryCreateWithoutSmartAlbumDesignsInput, GalleryUncheckedCreateWithoutSmartAlbumDesignsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutSmartAlbumDesignsInput
+    connect?: GalleryWhereUniqueInput
+  }
+
+  export type SmartAlbumProductCreateNestedOneWithoutDesignsInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutDesignsInput, SmartAlbumProductUncheckedCreateWithoutDesignsInput>
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutDesignsInput
+    connect?: SmartAlbumProductWhereUniqueInput
+  }
+
+  export type SmartAlbumSubmissionCreateNestedManyWithoutDesignInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput> | SmartAlbumSubmissionCreateWithoutDesignInput[] | SmartAlbumSubmissionUncheckedCreateWithoutDesignInput[]
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutDesignInput | SmartAlbumSubmissionCreateOrConnectWithoutDesignInput[]
+    createMany?: SmartAlbumSubmissionCreateManyDesignInputEnvelope
+    connect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+  }
+
+  export type SmartAlbumSubmissionUncheckedCreateNestedManyWithoutDesignInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput> | SmartAlbumSubmissionCreateWithoutDesignInput[] | SmartAlbumSubmissionUncheckedCreateWithoutDesignInput[]
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutDesignInput | SmartAlbumSubmissionCreateOrConnectWithoutDesignInput[]
+    createMany?: SmartAlbumSubmissionCreateManyDesignInputEnvelope
+    connect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+  }
+
+  export type EnumSmartAlbumDesignStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SmartAlbumDesignStatus
+  }
+
+  export type GalleryUpdateOneRequiredWithoutSmartAlbumDesignsNestedInput = {
+    create?: XOR<GalleryCreateWithoutSmartAlbumDesignsInput, GalleryUncheckedCreateWithoutSmartAlbumDesignsInput>
+    connectOrCreate?: GalleryCreateOrConnectWithoutSmartAlbumDesignsInput
+    upsert?: GalleryUpsertWithoutSmartAlbumDesignsInput
+    connect?: GalleryWhereUniqueInput
+    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutSmartAlbumDesignsInput, GalleryUpdateWithoutSmartAlbumDesignsInput>, GalleryUncheckedUpdateWithoutSmartAlbumDesignsInput>
+  }
+
+  export type SmartAlbumProductUpdateOneRequiredWithoutDesignsNestedInput = {
+    create?: XOR<SmartAlbumProductCreateWithoutDesignsInput, SmartAlbumProductUncheckedCreateWithoutDesignsInput>
+    connectOrCreate?: SmartAlbumProductCreateOrConnectWithoutDesignsInput
+    upsert?: SmartAlbumProductUpsertWithoutDesignsInput
+    connect?: SmartAlbumProductWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumProductUpdateToOneWithWhereWithoutDesignsInput, SmartAlbumProductUpdateWithoutDesignsInput>, SmartAlbumProductUncheckedUpdateWithoutDesignsInput>
+  }
+
+  export type SmartAlbumSubmissionUpdateManyWithoutDesignNestedInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput> | SmartAlbumSubmissionCreateWithoutDesignInput[] | SmartAlbumSubmissionUncheckedCreateWithoutDesignInput[]
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutDesignInput | SmartAlbumSubmissionCreateOrConnectWithoutDesignInput[]
+    upsert?: SmartAlbumSubmissionUpsertWithWhereUniqueWithoutDesignInput | SmartAlbumSubmissionUpsertWithWhereUniqueWithoutDesignInput[]
+    createMany?: SmartAlbumSubmissionCreateManyDesignInputEnvelope
+    set?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    disconnect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    delete?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    connect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    update?: SmartAlbumSubmissionUpdateWithWhereUniqueWithoutDesignInput | SmartAlbumSubmissionUpdateWithWhereUniqueWithoutDesignInput[]
+    updateMany?: SmartAlbumSubmissionUpdateManyWithWhereWithoutDesignInput | SmartAlbumSubmissionUpdateManyWithWhereWithoutDesignInput[]
+    deleteMany?: SmartAlbumSubmissionScalarWhereInput | SmartAlbumSubmissionScalarWhereInput[]
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignNestedInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput> | SmartAlbumSubmissionCreateWithoutDesignInput[] | SmartAlbumSubmissionUncheckedCreateWithoutDesignInput[]
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutDesignInput | SmartAlbumSubmissionCreateOrConnectWithoutDesignInput[]
+    upsert?: SmartAlbumSubmissionUpsertWithWhereUniqueWithoutDesignInput | SmartAlbumSubmissionUpsertWithWhereUniqueWithoutDesignInput[]
+    createMany?: SmartAlbumSubmissionCreateManyDesignInputEnvelope
+    set?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    disconnect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    delete?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    connect?: SmartAlbumSubmissionWhereUniqueInput | SmartAlbumSubmissionWhereUniqueInput[]
+    update?: SmartAlbumSubmissionUpdateWithWhereUniqueWithoutDesignInput | SmartAlbumSubmissionUpdateWithWhereUniqueWithoutDesignInput[]
+    updateMany?: SmartAlbumSubmissionUpdateManyWithWhereWithoutDesignInput | SmartAlbumSubmissionUpdateManyWithWhereWithoutDesignInput[]
+    deleteMany?: SmartAlbumSubmissionScalarWhereInput | SmartAlbumSubmissionScalarWhereInput[]
+  }
+
+  export type SmartAlbumDesignCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutSubmissionsInput, SmartAlbumDesignUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutSubmissionsInput
+    connect?: SmartAlbumDesignWhereUniqueInput
+  }
+
+  export type SmartAlbumTransactionCreateNestedOneWithoutSubmissionInput = {
+    create?: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+    connectOrCreate?: SmartAlbumTransactionCreateOrConnectWithoutSubmissionInput
+    connect?: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  export type SmartAlbumTransactionUncheckedCreateNestedOneWithoutSubmissionInput = {
+    create?: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+    connectOrCreate?: SmartAlbumTransactionCreateOrConnectWithoutSubmissionInput
+    connect?: SmartAlbumTransactionWhereUniqueInput
+  }
+
+  export type EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SmartAlbumSubmissionStatus
+  }
+
+  export type SmartAlbumDesignUpdateOneRequiredWithoutSubmissionsNestedInput = {
+    create?: XOR<SmartAlbumDesignCreateWithoutSubmissionsInput, SmartAlbumDesignUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: SmartAlbumDesignCreateOrConnectWithoutSubmissionsInput
+    upsert?: SmartAlbumDesignUpsertWithoutSubmissionsInput
+    connect?: SmartAlbumDesignWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumDesignUpdateToOneWithWhereWithoutSubmissionsInput, SmartAlbumDesignUpdateWithoutSubmissionsInput>, SmartAlbumDesignUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type SmartAlbumTransactionUpdateOneWithoutSubmissionNestedInput = {
+    create?: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+    connectOrCreate?: SmartAlbumTransactionCreateOrConnectWithoutSubmissionInput
+    upsert?: SmartAlbumTransactionUpsertWithoutSubmissionInput
+    disconnect?: SmartAlbumTransactionWhereInput | boolean
+    delete?: SmartAlbumTransactionWhereInput | boolean
+    connect?: SmartAlbumTransactionWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumTransactionUpdateToOneWithWhereWithoutSubmissionInput, SmartAlbumTransactionUpdateWithoutSubmissionInput>, SmartAlbumTransactionUncheckedUpdateWithoutSubmissionInput>
+  }
+
+  export type SmartAlbumTransactionUncheckedUpdateOneWithoutSubmissionNestedInput = {
+    create?: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+    connectOrCreate?: SmartAlbumTransactionCreateOrConnectWithoutSubmissionInput
+    upsert?: SmartAlbumTransactionUpsertWithoutSubmissionInput
+    disconnect?: SmartAlbumTransactionWhereInput | boolean
+    delete?: SmartAlbumTransactionWhereInput | boolean
+    connect?: SmartAlbumTransactionWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumTransactionUpdateToOneWithWhereWithoutSubmissionInput, SmartAlbumTransactionUpdateWithoutSubmissionInput>, SmartAlbumTransactionUncheckedUpdateWithoutSubmissionInput>
+  }
+
+  export type SmartAlbumSubmissionCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutTransactionInput, SmartAlbumSubmissionUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutTransactionInput
+    connect?: SmartAlbumSubmissionWhereUniqueInput
+  }
+
+  export type EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SmartAlbumTransactionStatus
+  }
+
+  export type SmartAlbumSubmissionUpdateOneRequiredWithoutTransactionNestedInput = {
+    create?: XOR<SmartAlbumSubmissionCreateWithoutTransactionInput, SmartAlbumSubmissionUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: SmartAlbumSubmissionCreateOrConnectWithoutTransactionInput
+    upsert?: SmartAlbumSubmissionUpsertWithoutTransactionInput
+    connect?: SmartAlbumSubmissionWhereUniqueInput
+    update?: XOR<XOR<SmartAlbumSubmissionUpdateToOneWithWhereWithoutTransactionInput, SmartAlbumSubmissionUpdateWithoutTransactionInput>, SmartAlbumSubmissionUncheckedUpdateWithoutTransactionInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -39761,6 +48022,74 @@ export namespace Prisma {
     _max?: NestedEnumDriveImportItemStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumPaymentMethod | EnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel> | $Enums.SmartAlbumPaymentMethod
+  }
+
+  export type NestedEnumSmartAlbumPaymentMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumPaymentMethod | EnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumPaymentMethod[] | ListEnumSmartAlbumPaymentMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumPaymentMethodWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumPaymentMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumPaymentMethodFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumDesignStatus | EnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel> | $Enums.SmartAlbumDesignStatus
+  }
+
+  export type NestedEnumSmartAlbumDesignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumDesignStatus | EnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumDesignStatus[] | ListEnumSmartAlbumDesignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumDesignStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumDesignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumDesignStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumSubmissionStatus | EnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel> | $Enums.SmartAlbumSubmissionStatus
+  }
+
+  export type NestedEnumSmartAlbumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumSubmissionStatus | EnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumSubmissionStatus[] | ListEnumSmartAlbumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumSubmissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumSubmissionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumTransactionStatus | EnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel> | $Enums.SmartAlbumTransactionStatus
+  }
+
+  export type NestedEnumSmartAlbumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SmartAlbumTransactionStatus | EnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SmartAlbumTransactionStatus[] | ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSmartAlbumTransactionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SmartAlbumTransactionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id?: string
     expiresAt: Date | string
@@ -39946,6 +48275,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutUserInput = {
@@ -39985,6 +48315,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutUserInput = {
@@ -40093,6 +48424,33 @@ export namespace Prisma {
   export type DriveImportJobCreateManyUserInputEnvelope = {
     data: DriveImportJobCreateManyUserInput | DriveImportJobCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type SmartAlbumConfigCreateWithoutUserInput = {
+    id?: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    products?: SmartAlbumProductCreateNestedManyWithoutConfigInput
+  }
+
+  export type SmartAlbumConfigUncheckedCreateWithoutUserInput = {
+    id?: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    products?: SmartAlbumProductUncheckedCreateNestedManyWithoutConfigInput
+  }
+
+  export type SmartAlbumConfigCreateOrConnectWithoutUserInput = {
+    where: SmartAlbumConfigWhereUniqueInput
+    create: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -40377,6 +48735,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DriveImportJob"> | Date | string
   }
 
+  export type SmartAlbumConfigUpsertWithoutUserInput = {
+    update: XOR<SmartAlbumConfigUpdateWithoutUserInput, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
+    create: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
+    where?: SmartAlbumConfigWhereInput
+  }
+
+  export type SmartAlbumConfigUpdateToOneWithWhereWithoutUserInput = {
+    where?: SmartAlbumConfigWhereInput
+    data: XOR<SmartAlbumConfigUpdateWithoutUserInput, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SmartAlbumConfigUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: SmartAlbumProductUpdateManyWithoutConfigNestedInput
+  }
+
+  export type SmartAlbumConfigUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: SmartAlbumProductUncheckedUpdateManyWithoutConfigNestedInput
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -40409,6 +48800,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -40443,6 +48835,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -40493,6 +48886,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -40527,6 +48921,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -40561,6 +48956,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -40595,6 +48991,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -40645,6 +49042,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -40679,6 +49077,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -40713,6 +49112,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -40747,6 +49147,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -40797,6 +49198,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -40831,6 +49233,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
@@ -40865,6 +49268,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
@@ -40899,6 +49303,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -40949,6 +49354,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
@@ -40983,6 +49389,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
@@ -41017,6 +49424,7 @@ export namespace Prisma {
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
@@ -41051,6 +49459,7 @@ export namespace Prisma {
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -41403,6 +49812,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SmartAlbumDesignCreateWithoutGalleryInput = {
+    id?: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: SmartAlbumProductCreateNestedOneWithoutDesignsInput
+    submissions?: SmartAlbumSubmissionCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignUncheckedCreateWithoutGalleryInput = {
+    id?: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SmartAlbumSubmissionUncheckedCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignCreateOrConnectWithoutGalleryInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    create: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type SmartAlbumDesignCreateManyGalleryInputEnvelope = {
+    data: SmartAlbumDesignCreateManyGalleryInput | SmartAlbumDesignCreateManyGalleryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutGalleriesInput = {
     update: XOR<UserUpdateWithoutGalleriesInput, UserUncheckedUpdateWithoutGalleriesInput>
     create: XOR<UserCreateWithoutGalleriesInput, UserUncheckedCreateWithoutGalleriesInput>
@@ -41446,6 +49891,7 @@ export namespace Prisma {
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
@@ -41480,6 +49926,7 @@ export namespace Prisma {
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -41805,6 +50252,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"FavoriteShare"> | Date | string
   }
 
+  export type SmartAlbumDesignUpsertWithWhereUniqueWithoutGalleryInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    update: XOR<SmartAlbumDesignUpdateWithoutGalleryInput, SmartAlbumDesignUncheckedUpdateWithoutGalleryInput>
+    create: XOR<SmartAlbumDesignCreateWithoutGalleryInput, SmartAlbumDesignUncheckedCreateWithoutGalleryInput>
+  }
+
+  export type SmartAlbumDesignUpdateWithWhereUniqueWithoutGalleryInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    data: XOR<SmartAlbumDesignUpdateWithoutGalleryInput, SmartAlbumDesignUncheckedUpdateWithoutGalleryInput>
+  }
+
+  export type SmartAlbumDesignUpdateManyWithWhereWithoutGalleryInput = {
+    where: SmartAlbumDesignScalarWhereInput
+    data: XOR<SmartAlbumDesignUpdateManyMutationInput, SmartAlbumDesignUncheckedUpdateManyWithoutGalleryInput>
+  }
+
+  export type SmartAlbumDesignScalarWhereInput = {
+    AND?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
+    OR?: SmartAlbumDesignScalarWhereInput[]
+    NOT?: SmartAlbumDesignScalarWhereInput | SmartAlbumDesignScalarWhereInput[]
+    id?: StringFilter<"SmartAlbumDesign"> | string
+    galleryId?: StringFilter<"SmartAlbumDesign"> | string
+    productId?: StringFilter<"SmartAlbumDesign"> | string
+    clientName?: StringFilter<"SmartAlbumDesign"> | string
+    clientEmail?: StringFilter<"SmartAlbumDesign"> | string
+    title?: StringFilter<"SmartAlbumDesign"> | string
+    designData?: JsonFilter<"SmartAlbumDesign">
+    status?: EnumSmartAlbumDesignStatusFilter<"SmartAlbumDesign"> | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumDesign"> | Date | string
+  }
+
   export type GalleryCreateWithoutPhotosInput = {
     id?: string
     title: string
@@ -41842,6 +50321,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutPhotosInput = {
@@ -41881,6 +50361,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutPhotosInput = {
@@ -41925,6 +50406,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCoverPhotoInput = {
@@ -41964,6 +50446,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCoverPhotoInput = {
@@ -42143,6 +50626,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutPhotosInput = {
@@ -42182,6 +50666,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUpsertWithWhereUniqueWithoutCoverPhotoInput = {
@@ -42458,6 +50943,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStorageEventsInput = {
@@ -42492,6 +50978,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStorageEventsInput = {
@@ -42542,6 +51029,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStorageEventsInput = {
@@ -42576,6 +51064,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutClientsInput = {
@@ -42610,6 +51099,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClientsInput = {
@@ -42644,6 +51134,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClientsInput = {
@@ -42714,6 +51205,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClientsInput = {
@@ -42748,6 +51240,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type GalleryClientUpsertWithWhereUniqueWithoutClientInput = {
@@ -42803,6 +51296,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutClientsInput = {
@@ -42842,6 +51336,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutClientsInput = {
@@ -42922,6 +51417,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutClientsInput = {
@@ -42961,6 +51457,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type ClientUpsertWithoutGalleriesInput = {
@@ -43031,6 +51528,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutAlbumsInput = {
@@ -43070,6 +51568,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutAlbumsInput = {
@@ -43145,6 +51644,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutAlbumsInput = {
@@ -43184,6 +51684,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type AlbumPhotoUpsertWithWhereUniqueWithoutAlbumInput = {
@@ -43423,6 +51924,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutCommentsInput = {
@@ -43462,6 +51964,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutCommentsInput = {
@@ -43651,6 +52154,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCommentsInput = {
@@ -43690,6 +52194,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutCommentsInput = {
@@ -43853,6 +52358,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutFavoritesInput = {
@@ -43892,6 +52398,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutFavoritesInput = {
@@ -44010,6 +52517,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutFavoritesInput = {
@@ -44049,6 +52557,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type PhotoUpsertWithoutFavoritesInput = {
@@ -44157,6 +52666,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutFavoriteSharesInput = {
@@ -44196,6 +52706,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutFavoriteSharesInput = {
@@ -44251,6 +52762,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutFavoriteSharesInput = {
@@ -44290,6 +52802,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryCreateWithoutDownloadEventsInput = {
@@ -44329,6 +52842,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutDownloadEventsInput = {
@@ -44368,6 +52882,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutDownloadEventsInput = {
@@ -44423,6 +52938,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutDownloadEventsInput = {
@@ -44462,6 +52978,7 @@ export namespace Prisma {
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type UserCreateWithoutDriveImportJobsInput = {
@@ -44496,6 +53013,7 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDriveImportJobsInput = {
@@ -44530,6 +53048,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDriveImportJobsInput = {
@@ -44622,6 +53141,7 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDriveImportJobsInput = {
@@ -44656,6 +53176,7 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type DriveImportItemUpsertWithWhereUniqueWithoutJobInput = {
@@ -44872,6 +53393,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryUncheckedCreateWithoutDriveImportItemsInput = {
@@ -44911,6 +53433,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
     favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
   }
 
   export type GalleryCreateOrConnectWithoutDriveImportItemsInput = {
@@ -45009,6 +53532,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutDriveImportItemsInput = {
@@ -45048,6 +53572,869 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type UserCreateWithoutSmartAlbumConfigInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    clients?: ClientCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSmartAlbumConfigInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSmartAlbumConfigInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSmartAlbumConfigInput, UserUncheckedCreateWithoutSmartAlbumConfigInput>
+  }
+
+  export type SmartAlbumProductCreateWithoutConfigInput = {
+    id?: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designs?: SmartAlbumDesignCreateNestedManyWithoutProductInput
+  }
+
+  export type SmartAlbumProductUncheckedCreateWithoutConfigInput = {
+    id?: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    designs?: SmartAlbumDesignUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type SmartAlbumProductCreateOrConnectWithoutConfigInput = {
+    where: SmartAlbumProductWhereUniqueInput
+    create: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput>
+  }
+
+  export type SmartAlbumProductCreateManyConfigInputEnvelope = {
+    data: SmartAlbumProductCreateManyConfigInput | SmartAlbumProductCreateManyConfigInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutSmartAlbumConfigInput = {
+    update: XOR<UserUpdateWithoutSmartAlbumConfigInput, UserUncheckedUpdateWithoutSmartAlbumConfigInput>
+    create: XOR<UserCreateWithoutSmartAlbumConfigInput, UserUncheckedCreateWithoutSmartAlbumConfigInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSmartAlbumConfigInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSmartAlbumConfigInput, UserUncheckedUpdateWithoutSmartAlbumConfigInput>
+  }
+
+  export type UserUpdateWithoutSmartAlbumConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    clients?: ClientUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSmartAlbumConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput = {
+    where: SmartAlbumProductWhereUniqueInput
+    update: XOR<SmartAlbumProductUpdateWithoutConfigInput, SmartAlbumProductUncheckedUpdateWithoutConfigInput>
+    create: XOR<SmartAlbumProductCreateWithoutConfigInput, SmartAlbumProductUncheckedCreateWithoutConfigInput>
+  }
+
+  export type SmartAlbumProductUpdateWithWhereUniqueWithoutConfigInput = {
+    where: SmartAlbumProductWhereUniqueInput
+    data: XOR<SmartAlbumProductUpdateWithoutConfigInput, SmartAlbumProductUncheckedUpdateWithoutConfigInput>
+  }
+
+  export type SmartAlbumProductUpdateManyWithWhereWithoutConfigInput = {
+    where: SmartAlbumProductScalarWhereInput
+    data: XOR<SmartAlbumProductUpdateManyMutationInput, SmartAlbumProductUncheckedUpdateManyWithoutConfigInput>
+  }
+
+  export type SmartAlbumProductScalarWhereInput = {
+    AND?: SmartAlbumProductScalarWhereInput | SmartAlbumProductScalarWhereInput[]
+    OR?: SmartAlbumProductScalarWhereInput[]
+    NOT?: SmartAlbumProductScalarWhereInput | SmartAlbumProductScalarWhereInput[]
+    id?: StringFilter<"SmartAlbumProduct"> | string
+    configId?: StringFilter<"SmartAlbumProduct"> | string
+    name?: StringFilter<"SmartAlbumProduct"> | string
+    size?: StringFilter<"SmartAlbumProduct"> | string
+    coverType?: StringFilter<"SmartAlbumProduct"> | string
+    paperType?: StringFilter<"SmartAlbumProduct"> | string
+    maxPages?: IntFilter<"SmartAlbumProduct"> | number
+    priceCents?: IntFilter<"SmartAlbumProduct"> | number
+    currency?: StringFilter<"SmartAlbumProduct"> | string
+    isActive?: BoolFilter<"SmartAlbumProduct"> | boolean
+    createdAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+    updatedAt?: DateTimeFilter<"SmartAlbumProduct"> | Date | string
+  }
+
+  export type SmartAlbumConfigCreateWithoutProductsInput = {
+    id?: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSmartAlbumConfigInput
+  }
+
+  export type SmartAlbumConfigUncheckedCreateWithoutProductsInput = {
+    id?: string
+    userId: string
+    enabled?: boolean
+    paymentMethod?: $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: string | null
+    stripeConnectOnboarded?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumConfigCreateOrConnectWithoutProductsInput = {
+    where: SmartAlbumConfigWhereUniqueInput
+    create: XOR<SmartAlbumConfigCreateWithoutProductsInput, SmartAlbumConfigUncheckedCreateWithoutProductsInput>
+  }
+
+  export type SmartAlbumDesignCreateWithoutProductInput = {
+    id?: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutSmartAlbumDesignsInput
+    submissions?: SmartAlbumSubmissionCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignUncheckedCreateWithoutProductInput = {
+    id?: string
+    galleryId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SmartAlbumSubmissionUncheckedCreateNestedManyWithoutDesignInput
+  }
+
+  export type SmartAlbumDesignCreateOrConnectWithoutProductInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    create: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput>
+  }
+
+  export type SmartAlbumDesignCreateManyProductInputEnvelope = {
+    data: SmartAlbumDesignCreateManyProductInput | SmartAlbumDesignCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SmartAlbumConfigUpsertWithoutProductsInput = {
+    update: XOR<SmartAlbumConfigUpdateWithoutProductsInput, SmartAlbumConfigUncheckedUpdateWithoutProductsInput>
+    create: XOR<SmartAlbumConfigCreateWithoutProductsInput, SmartAlbumConfigUncheckedCreateWithoutProductsInput>
+    where?: SmartAlbumConfigWhereInput
+  }
+
+  export type SmartAlbumConfigUpdateToOneWithWhereWithoutProductsInput = {
+    where?: SmartAlbumConfigWhereInput
+    data: XOR<SmartAlbumConfigUpdateWithoutProductsInput, SmartAlbumConfigUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type SmartAlbumConfigUpdateWithoutProductsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSmartAlbumConfigNestedInput
+  }
+
+  export type SmartAlbumConfigUncheckedUpdateWithoutProductsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    paymentMethod?: EnumSmartAlbumPaymentMethodFieldUpdateOperationsInput | $Enums.SmartAlbumPaymentMethod
+    stripeConnectAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeConnectOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumDesignUpsertWithWhereUniqueWithoutProductInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    update: XOR<SmartAlbumDesignUpdateWithoutProductInput, SmartAlbumDesignUncheckedUpdateWithoutProductInput>
+    create: XOR<SmartAlbumDesignCreateWithoutProductInput, SmartAlbumDesignUncheckedCreateWithoutProductInput>
+  }
+
+  export type SmartAlbumDesignUpdateWithWhereUniqueWithoutProductInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    data: XOR<SmartAlbumDesignUpdateWithoutProductInput, SmartAlbumDesignUncheckedUpdateWithoutProductInput>
+  }
+
+  export type SmartAlbumDesignUpdateManyWithWhereWithoutProductInput = {
+    where: SmartAlbumDesignScalarWhereInput
+    data: XOR<SmartAlbumDesignUpdateManyMutationInput, SmartAlbumDesignUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type GalleryCreateWithoutSmartAlbumDesignsInput = {
+    id?: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGalleriesInput
+    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
+    photos?: PhotoCreateNestedManyWithoutGalleryInput
+    albums?: AlbumCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryUncheckedCreateWithoutSmartAlbumDesignsInput = {
+    id?: string
+    userId: string
+    title: string
+    slug: string
+    eventDate?: Date | string | null
+    deadline?: Date | string | null
+    coverPhotoId?: string | null
+    passwordHash?: string | null
+    shareToken?: string
+    isPublished?: boolean
+    categoryTags?: GalleryCreatecategoryTagsInput | string[]
+    expiresAt?: Date | string | null
+    slideshowEnabled?: boolean
+    socialSharingEnabled?: boolean
+    emailRegistration?: boolean
+    language?: string
+    downloadEnabled?: boolean
+    downloadPin?: string | null
+    downloadSizeOriginal?: boolean
+    downloadSizeHighRes?: boolean
+    downloadSizeWeb?: boolean
+    downloadWebMaxPx?: number
+    downloadHighResMaxPx?: number
+    downloadLimit?: number | null
+    downloadContactsOnly?: boolean
+    favoritesEnabled?: boolean
+    favoriteNotesEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
+    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
+    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
+    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
+    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
+    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
+    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
+    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
+  }
+
+  export type GalleryCreateOrConnectWithoutSmartAlbumDesignsInput = {
+    where: GalleryWhereUniqueInput
+    create: XOR<GalleryCreateWithoutSmartAlbumDesignsInput, GalleryUncheckedCreateWithoutSmartAlbumDesignsInput>
+  }
+
+  export type SmartAlbumProductCreateWithoutDesignsInput = {
+    id?: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    config: SmartAlbumConfigCreateNestedOneWithoutProductsInput
+  }
+
+  export type SmartAlbumProductUncheckedCreateWithoutDesignsInput = {
+    id?: string
+    configId: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumProductCreateOrConnectWithoutDesignsInput = {
+    where: SmartAlbumProductWhereUniqueInput
+    create: XOR<SmartAlbumProductCreateWithoutDesignsInput, SmartAlbumProductUncheckedCreateWithoutDesignsInput>
+  }
+
+  export type SmartAlbumSubmissionCreateWithoutDesignInput = {
+    id?: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+    transaction?: SmartAlbumTransactionCreateNestedOneWithoutSubmissionInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedCreateWithoutDesignInput = {
+    id?: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+    transaction?: SmartAlbumTransactionUncheckedCreateNestedOneWithoutSubmissionInput
+  }
+
+  export type SmartAlbumSubmissionCreateOrConnectWithoutDesignInput = {
+    where: SmartAlbumSubmissionWhereUniqueInput
+    create: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput>
+  }
+
+  export type SmartAlbumSubmissionCreateManyDesignInputEnvelope = {
+    data: SmartAlbumSubmissionCreateManyDesignInput | SmartAlbumSubmissionCreateManyDesignInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GalleryUpsertWithoutSmartAlbumDesignsInput = {
+    update: XOR<GalleryUpdateWithoutSmartAlbumDesignsInput, GalleryUncheckedUpdateWithoutSmartAlbumDesignsInput>
+    create: XOR<GalleryCreateWithoutSmartAlbumDesignsInput, GalleryUncheckedCreateWithoutSmartAlbumDesignsInput>
+    where?: GalleryWhereInput
+  }
+
+  export type GalleryUpdateToOneWithWhereWithoutSmartAlbumDesignsInput = {
+    where?: GalleryWhereInput
+    data: XOR<GalleryUpdateWithoutSmartAlbumDesignsInput, GalleryUncheckedUpdateWithoutSmartAlbumDesignsInput>
+  }
+
+  export type GalleryUpdateWithoutSmartAlbumDesignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
+    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
+    photos?: PhotoUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type GalleryUncheckedUpdateWithoutSmartAlbumDesignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    shareToken?: StringFieldUpdateOperationsInput | string
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
+    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
+    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
+    language?: StringFieldUpdateOperationsInput | string
+    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
+    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
+    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
+    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
+    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
+    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
+    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
+    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
+    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
+    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
+    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
+    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
+    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
+    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+  }
+
+  export type SmartAlbumProductUpsertWithoutDesignsInput = {
+    update: XOR<SmartAlbumProductUpdateWithoutDesignsInput, SmartAlbumProductUncheckedUpdateWithoutDesignsInput>
+    create: XOR<SmartAlbumProductCreateWithoutDesignsInput, SmartAlbumProductUncheckedCreateWithoutDesignsInput>
+    where?: SmartAlbumProductWhereInput
+  }
+
+  export type SmartAlbumProductUpdateToOneWithWhereWithoutDesignsInput = {
+    where?: SmartAlbumProductWhereInput
+    data: XOR<SmartAlbumProductUpdateWithoutDesignsInput, SmartAlbumProductUncheckedUpdateWithoutDesignsInput>
+  }
+
+  export type SmartAlbumProductUpdateWithoutDesignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    config?: SmartAlbumConfigUpdateOneRequiredWithoutProductsNestedInput
+  }
+
+  export type SmartAlbumProductUncheckedUpdateWithoutDesignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    configId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumSubmissionUpsertWithWhereUniqueWithoutDesignInput = {
+    where: SmartAlbumSubmissionWhereUniqueInput
+    update: XOR<SmartAlbumSubmissionUpdateWithoutDesignInput, SmartAlbumSubmissionUncheckedUpdateWithoutDesignInput>
+    create: XOR<SmartAlbumSubmissionCreateWithoutDesignInput, SmartAlbumSubmissionUncheckedCreateWithoutDesignInput>
+  }
+
+  export type SmartAlbumSubmissionUpdateWithWhereUniqueWithoutDesignInput = {
+    where: SmartAlbumSubmissionWhereUniqueInput
+    data: XOR<SmartAlbumSubmissionUpdateWithoutDesignInput, SmartAlbumSubmissionUncheckedUpdateWithoutDesignInput>
+  }
+
+  export type SmartAlbumSubmissionUpdateManyWithWhereWithoutDesignInput = {
+    where: SmartAlbumSubmissionScalarWhereInput
+    data: XOR<SmartAlbumSubmissionUpdateManyMutationInput, SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignInput>
+  }
+
+  export type SmartAlbumSubmissionScalarWhereInput = {
+    AND?: SmartAlbumSubmissionScalarWhereInput | SmartAlbumSubmissionScalarWhereInput[]
+    OR?: SmartAlbumSubmissionScalarWhereInput[]
+    NOT?: SmartAlbumSubmissionScalarWhereInput | SmartAlbumSubmissionScalarWhereInput[]
+    id?: StringFilter<"SmartAlbumSubmission"> | string
+    designId?: StringFilter<"SmartAlbumSubmission"> | string
+    version?: IntFilter<"SmartAlbumSubmission"> | number
+    designSnapshot?: JsonFilter<"SmartAlbumSubmission">
+    status?: EnumSmartAlbumSubmissionStatusFilter<"SmartAlbumSubmission"> | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"SmartAlbumSubmission"> | Date | string | null
+    submittedAt?: DateTimeFilter<"SmartAlbumSubmission"> | Date | string
+    exportReady?: BoolFilter<"SmartAlbumSubmission"> | boolean
+    exportUrl?: StringNullableFilter<"SmartAlbumSubmission"> | string | null
+  }
+
+  export type SmartAlbumDesignCreateWithoutSubmissionsInput = {
+    id?: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gallery: GalleryCreateNestedOneWithoutSmartAlbumDesignsInput
+    product: SmartAlbumProductCreateNestedOneWithoutDesignsInput
+  }
+
+  export type SmartAlbumDesignUncheckedCreateWithoutSubmissionsInput = {
+    id?: string
+    galleryId: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumDesignCreateOrConnectWithoutSubmissionsInput = {
+    where: SmartAlbumDesignWhereUniqueInput
+    create: XOR<SmartAlbumDesignCreateWithoutSubmissionsInput, SmartAlbumDesignUncheckedCreateWithoutSubmissionsInput>
+  }
+
+  export type SmartAlbumTransactionCreateWithoutSubmissionInput = {
+    id?: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency?: string
+    status?: $Enums.SmartAlbumTransactionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput = {
+    id?: string
+    stripePaymentIntentId: string
+    amountCents: number
+    feeCents: number
+    netCents: number
+    currency?: string
+    status?: $Enums.SmartAlbumTransactionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SmartAlbumTransactionCreateOrConnectWithoutSubmissionInput = {
+    where: SmartAlbumTransactionWhereUniqueInput
+    create: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+  }
+
+  export type SmartAlbumDesignUpsertWithoutSubmissionsInput = {
+    update: XOR<SmartAlbumDesignUpdateWithoutSubmissionsInput, SmartAlbumDesignUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<SmartAlbumDesignCreateWithoutSubmissionsInput, SmartAlbumDesignUncheckedCreateWithoutSubmissionsInput>
+    where?: SmartAlbumDesignWhereInput
+  }
+
+  export type SmartAlbumDesignUpdateToOneWithWhereWithoutSubmissionsInput = {
+    where?: SmartAlbumDesignWhereInput
+    data: XOR<SmartAlbumDesignUpdateWithoutSubmissionsInput, SmartAlbumDesignUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type SmartAlbumDesignUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutSmartAlbumDesignsNestedInput
+    product?: SmartAlbumProductUpdateOneRequiredWithoutDesignsNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumTransactionUpsertWithoutSubmissionInput = {
+    update: XOR<SmartAlbumTransactionUpdateWithoutSubmissionInput, SmartAlbumTransactionUncheckedUpdateWithoutSubmissionInput>
+    create: XOR<SmartAlbumTransactionCreateWithoutSubmissionInput, SmartAlbumTransactionUncheckedCreateWithoutSubmissionInput>
+    where?: SmartAlbumTransactionWhereInput
+  }
+
+  export type SmartAlbumTransactionUpdateToOneWithWhereWithoutSubmissionInput = {
+    where?: SmartAlbumTransactionWhereInput
+    data: XOR<SmartAlbumTransactionUpdateWithoutSubmissionInput, SmartAlbumTransactionUncheckedUpdateWithoutSubmissionInput>
+  }
+
+  export type SmartAlbumTransactionUpdateWithoutSubmissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumTransactionUncheckedUpdateWithoutSubmissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripePaymentIntentId?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    feeCents?: IntFieldUpdateOperationsInput | number
+    netCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumSmartAlbumTransactionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumTransactionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumSubmissionCreateWithoutTransactionInput = {
+    id?: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+    design: SmartAlbumDesignCreateNestedOneWithoutSubmissionsInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedCreateWithoutTransactionInput = {
+    id?: string
+    designId: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+  }
+
+  export type SmartAlbumSubmissionCreateOrConnectWithoutTransactionInput = {
+    where: SmartAlbumSubmissionWhereUniqueInput
+    create: XOR<SmartAlbumSubmissionCreateWithoutTransactionInput, SmartAlbumSubmissionUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type SmartAlbumSubmissionUpsertWithoutTransactionInput = {
+    update: XOR<SmartAlbumSubmissionUpdateWithoutTransactionInput, SmartAlbumSubmissionUncheckedUpdateWithoutTransactionInput>
+    create: XOR<SmartAlbumSubmissionCreateWithoutTransactionInput, SmartAlbumSubmissionUncheckedCreateWithoutTransactionInput>
+    where?: SmartAlbumSubmissionWhereInput
+  }
+
+  export type SmartAlbumSubmissionUpdateToOneWithWhereWithoutTransactionInput = {
+    where?: SmartAlbumSubmissionWhereInput
+    data: XOR<SmartAlbumSubmissionUpdateWithoutTransactionInput, SmartAlbumSubmissionUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type SmartAlbumSubmissionUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    design?: SmartAlbumDesignUpdateOneRequiredWithoutSubmissionsNestedInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    designId?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionCreateManyUserInput = {
@@ -45330,6 +54717,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutUserInput = {
@@ -45369,6 +54757,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutUserInput = {
@@ -45594,6 +54983,18 @@ export namespace Prisma {
     viewerName: string
     shareToken?: string
     createdAt?: Date | string
+  }
+
+  export type SmartAlbumDesignCreateManyGalleryInput = {
+    id?: string
+    productId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PhotoUpdateWithoutGalleryInput = {
@@ -45892,6 +55293,44 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SmartAlbumDesignUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: SmartAlbumProductUpdateOneRequiredWithoutDesignsNestedInput
+    submissions?: SmartAlbumSubmissionUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateManyWithoutGalleryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GalleryCreateManyCoverPhotoInput = {
     id?: string
     userId: string
@@ -45988,6 +55427,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateWithoutCoverPhotoInput = {
@@ -46027,6 +55467,7 @@ export namespace Prisma {
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
     favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
+    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
   }
 
   export type GalleryUncheckedUpdateManyWithoutCoverPhotoInput = {
@@ -46342,6 +55783,164 @@ export namespace Prisma {
     storageOverrideGb?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumProductCreateManyConfigInput = {
+    id?: string
+    name: string
+    size: string
+    coverType: string
+    paperType: string
+    maxPages: number
+    priceCents: number
+    currency?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumProductUpdateWithoutConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designs?: SmartAlbumDesignUpdateManyWithoutProductNestedInput
+  }
+
+  export type SmartAlbumProductUncheckedUpdateWithoutConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    designs?: SmartAlbumDesignUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type SmartAlbumProductUncheckedUpdateManyWithoutConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    coverType?: StringFieldUpdateOperationsInput | string
+    paperType?: StringFieldUpdateOperationsInput | string
+    maxPages?: IntFieldUpdateOperationsInput | number
+    priceCents?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumDesignCreateManyProductInput = {
+    id?: string
+    galleryId: string
+    clientName: string
+    clientEmail: string
+    title?: string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumDesignStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SmartAlbumDesignUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gallery?: GalleryUpdateOneRequiredWithoutSmartAlbumDesignsNestedInput
+    submissions?: SmartAlbumSubmissionUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignNestedInput
+  }
+
+  export type SmartAlbumDesignUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryId?: StringFieldUpdateOperationsInput | string
+    clientName?: StringFieldUpdateOperationsInput | string
+    clientEmail?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    designData?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumDesignStatusFieldUpdateOperationsInput | $Enums.SmartAlbumDesignStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SmartAlbumSubmissionCreateManyDesignInput = {
+    id?: string
+    version?: number
+    designSnapshot: JsonNullValueInput | InputJsonValue
+    status?: $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: string | null
+    reviewedAt?: Date | string | null
+    submittedAt?: Date | string
+    exportReady?: boolean
+    exportUrl?: string | null
+  }
+
+  export type SmartAlbumSubmissionUpdateWithoutDesignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction?: SmartAlbumTransactionUpdateOneWithoutSubmissionNestedInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateWithoutDesignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction?: SmartAlbumTransactionUncheckedUpdateOneWithoutSubmissionNestedInput
+  }
+
+  export type SmartAlbumSubmissionUncheckedUpdateManyWithoutDesignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    designSnapshot?: JsonNullValueInput | InputJsonValue
+    status?: EnumSmartAlbumSubmissionStatusFieldUpdateOperationsInput | $Enums.SmartAlbumSubmissionStatus
+    photographerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exportReady?: BoolFieldUpdateOperationsInput | boolean
+    exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

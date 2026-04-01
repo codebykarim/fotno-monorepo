@@ -52,7 +52,7 @@ ENV NEXT_PUBLIC_LANDING_URL=${NEXT_PUBLIC_LANDING_URL}
 ENV BACKEND_API_URL=${BACKEND_API_URL}
 # Ensure public dir exists (admin has no public assets)
 RUN mkdir -p apps/admin/public
-RUN cd apps/admin && NODE_OPTIONS="--max-old-space-size=81924096" pnpm build
+RUN cd apps/admin && NODE_OPTIONS="--max-old-space-size=8192" pnpm build
 
 # --- Production runner ---
 FROM node:20-alpine AS runner

@@ -6,6 +6,7 @@ import {
 import sharp from "sharp";
 import satori from "satori";
 import archiver from "archiver";
+import { PDFDocument } from "pdf-lib";
 import { PassThrough } from "stream";
 
 // Lambda — limit Sharp resources
@@ -20,6 +21,8 @@ const BUCKET = process.env.AWS_S3_BUCKET!;
 const PAGE_BG = { r: 24, g: 24, b: 27 };
 const DPI = 300;
 const CM_TO_INCH = 1 / 2.54;
+// PDF uses points (72 per inch)
+const CM_TO_PT = CM_TO_INCH * 72;
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -30,10 +33,14 @@ type ExportEvent = {
   photos: { id: string; s3Key: string }[];
   widthCm: number;
   heightCm: number;
+  albumName: string;
+  galleryName: string;
+  productName: string;
 };
 
 type ExportResult = {
   s3Key: string;
+  fileName: string;
 };
 
 // ─── Font cache ──────────────────────────────────────────────────────
@@ -139,6 +146,9 @@ async function renderSlot(
   srcLeft = Math.max(0, Math.min(imgW - srcWidth, srcLeft));
   srcTop = Math.max(0, Math.min(imgH - srcHeight, srcTop));
 
+  // Output as raw PNG (lossless) — these are intermediate buffers for compositing.
+  // If we let Sharp default to JPEG here, it compresses at quality 80 and the
+  // final quality-98 step can't recover the lost detail.
   return sharp(srcBuffer)
     .extract({
       left: srcLeft,
@@ -147,6 +157,7 @@ async function renderSlot(
       height: srcHeight,
     })
     .resize(slotWidth, slotHeight)
+    .png({ compressionLevel: 1 })
     .toBuffer();
 }
 
@@ -309,6 +320,38 @@ async function renderPage(
     .toBuffer();
 }
 
+// ─── Build print-ready PDF ───────────────────────────────────────────
+
+async function buildPdf(
+  pages: [string, Buffer][],
+  widthCm: number,
+  heightCm: number,
+  spreads: string[],
+): Promise<Uint8Array> {
+  const pdf = await PDFDocument.create();
+
+  const singleWPt = widthCm * CM_TO_PT;
+  const singleHPt = heightCm * CM_TO_PT;
+  const spreadWPt = widthCm * 2 * CM_TO_PT;
+
+  for (const [name, jpegBuffer] of pages) {
+    const isSpread = spreads.includes(name);
+    const pageW = isSpread ? spreadWPt : singleWPt;
+    const pageH = singleHPt;
+
+    const image = await pdf.embedJpg(jpegBuffer);
+    const page = pdf.addPage([pageW, pageH]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: pageW,
+      height: pageH,
+    });
+  }
+
+  return pdf.save();
+}
+
 // ─── Extract photo IDs from snapshot ──────────────────────────────────
 
 function extractPhotoIds(snapshot: any): Set<string> {
@@ -325,6 +368,16 @@ function extractPhotoIds(snapshot: any): Set<string> {
     addFromSlots(spread.slots);
   }
   return ids;
+}
+
+// ─── Sanitize filename parts ─────────────────────────────────────────
+
+function sanitize(str: string | undefined | null): string {
+  if (!str) return "untitled";
+  return str
+    .replace(/[^a-zA-Z0-9\u0600-\u06FF\s_-]/g, "")
+    .replace(/\s+/g, "_")
+    .trim() || "untitled";
 }
 
 // ─── Lambda Handler ──────────────────────────────────────────────────
@@ -373,8 +426,9 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
     `[export-lambda] rendering pages single=${single.w}x${single.h} spread=${spread.w}x${spread.h}`,
   );
 
-  // Render all pages
+  // Render all pages — track which filenames are spreads for PDF page sizing
   const pages: [string, Buffer][] = [];
+  const spreadNames: string[] = [];
 
   if (snapshot.cover) {
     pages.push([
@@ -392,10 +446,12 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
   }
   for (const sp of snapshot.spreads || []) {
     const num = String(sp.order + 3).padStart(2, "0");
+    const name = `${num}_spread_${sp.order + 1}.jpg`;
     pages.push([
-      `${num}_spread_${sp.order + 1}.jpg`,
+      name,
       await renderPage(sp, photoBuffers, spread.w, spread.h),
     ]);
+    spreadNames.push(name);
     console.log(`[export-lambda] rendered spread ${sp.order + 1}`);
   }
   if (snapshot.lastPage) {
@@ -407,7 +463,14 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
     console.log(`[export-lambda] rendered last page`);
   }
 
-  // Create ZIP archive in memory (store-only — JPEGs are already compressed)
+  // Build print-ready PDF with exact cm page dimensions
+  console.log(`[export-lambda] building PDF...`);
+  const pdfBytes = await buildPdf(pages, event.widthCm, event.heightCm, spreadNames);
+  console.log(`[export-lambda] PDF created bytes=${pdfBytes.length}`);
+
+  // Build ZIP: individual JPEGs + print-ready PDF
+  const fileName = `${sanitize(event.albumName)}-${sanitize(event.galleryName)}-${sanitize(event.productName)}-v${event.version}.zip`;
+
   const zipBuffer = await new Promise<Buffer>((resolve, reject) => {
     const passThrough = new PassThrough();
     const chunks: Buffer[] = [];
@@ -419,6 +482,10 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
     archive.on("error", reject);
     archive.pipe(passThrough);
 
+    // Print-ready PDF first
+    archive.append(Buffer.from(pdfBytes), { name: "00_READY_PRINT.pdf" });
+
+    // Individual JPEG pages
     for (const [name, buffer] of pages) {
       archive.append(buffer, { name });
     }
@@ -431,7 +498,7 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
   );
 
   // Upload ZIP to S3
-  const s3Key = `exports/smart-album/${event.submissionId}/album-v${event.version}.zip`;
+  const s3Key = `exports/smart-album/${event.submissionId}/${fileName}`;
   await s3.send(
     new PutObjectCommand({
       Bucket: BUCKET,
@@ -446,5 +513,5 @@ export const handler = async (event: ExportEvent): Promise<ExportResult> => {
     `[export-lambda] done submissionId=${event.submissionId} s3Key=${s3Key} ${durationMs}ms`,
   );
 
-  return { s3Key };
+  return { s3Key, fileName };
 };

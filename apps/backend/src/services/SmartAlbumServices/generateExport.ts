@@ -24,7 +24,7 @@ export const generateExport = async (
           select: {
             id: true,
             title: true,
-            gallery: { select: { userId: true } },
+            gallery: { select: { userId: true, title: true } },
             product: { select: { widthCm: true, heightCm: true, name: true } },
           },
         },
@@ -52,11 +52,15 @@ export const generateExport = async (
         submission.exportUrl,
         3600,
       );
+      // Extract filename from the stored S3 key
+      const storedFileName =
+        submission.exportUrl.split("/").pop() ??
+        `album-v${submission.version}.zip`;
       return {
         data: {
           exportUrl: signedUrl,
           expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
-          fileName: `album-v${submission.version}.zip`,
+          fileName: storedFileName,
         },
       };
     }
@@ -69,9 +73,9 @@ export const generateExport = async (
       select: { id: true, s3Key: true },
     });
 
-    const { widthCm, heightCm } = submission.design.product;
+    const { widthCm, heightCm, name: productName } = submission.design.product;
 
-    // Invoke Lambda to render all pages, zip, and upload to S3
+    // Invoke Lambda to render all pages, build PDF, zip, and upload to S3
     const response = await lambda.send(
       new InvokeCommand({
         FunctionName: LAMBDA_FUNCTION_NAME,
@@ -84,6 +88,9 @@ export const generateExport = async (
             photos: photos.map((p: any) => ({ id: p.id, s3Key: p.s3Key })),
             widthCm,
             heightCm,
+            albumName: submission.design.title,
+            galleryName: submission.design.gallery.title,
+            productName,
           }),
         ),
       }),
@@ -103,7 +110,7 @@ export const generateExport = async (
       throw new Error(`Export Lambda error: ${errorMessage}`);
     }
 
-    const result: { s3Key: string } = JSON.parse(payloadStr);
+    const result: { s3Key: string; fileName: string } = JSON.parse(payloadStr);
 
     await db.smartAlbumSubmission.update({
       where: { id: submissionId },
@@ -116,7 +123,7 @@ export const generateExport = async (
       data: {
         exportUrl: signedUrl,
         expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
-        fileName: `album-v${submission.version}.zip`,
+        fileName: result.fileName,
       },
     };
   } catch (err: any) {

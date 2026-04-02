@@ -95,6 +95,7 @@ export const reviewSubmission = async (
     if (action === "approve") {
       sendAlbumNotification({
         type: "approved",
+        photographerId: userId,
         clientEmail: submission.design.clientEmail,
         clientName: submission.design.clientName,
         albumTitle: submission.design.title,
@@ -104,6 +105,7 @@ export const reviewSubmission = async (
     } else if (action === "request_changes") {
       sendAlbumNotification({
         type: "changes_requested",
+        photographerId: userId,
         clientEmail: submission.design.clientEmail,
         clientName: submission.design.clientName,
         albumTitle: submission.design.title,
@@ -114,6 +116,7 @@ export const reviewSubmission = async (
     } else if (action === "reject") {
       sendAlbumNotification({
         type: "rejected",
+        photographerId: userId,
         clientEmail: submission.design.clientEmail,
         clientName: submission.design.clientName,
         albumTitle: submission.design.title,

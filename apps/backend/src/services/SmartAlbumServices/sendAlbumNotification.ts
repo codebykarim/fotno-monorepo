@@ -1,4 +1,7 @@
 import { sendMail } from "../../utils/sendMail";
+import { getPresignedDownloadUrl } from "../../utils/s3";
+import type { EmailBranding } from "../../emails/branded-wrapper";
+import { prisma } from "@workspace/db";
 
 function escapeHtml(str: string): string {
   return str
@@ -9,13 +12,42 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
+const fetchPhotographerBranding = async (photographerId: string): Promise<EmailBranding | undefined> => {
+  try {
+    const user = await (prisma as any).user.findUnique({
+      where: { id: photographerId },
+      select: {
+        name: true,
+        brandingConfig: { select: { logoS3Key: true } },
+      },
+    });
+    if (!user?.name) return undefined;
+
+    let logoUrl: string | null = null;
+    if (user.brandingConfig?.logoS3Key) {
+      try {
+        logoUrl = await getPresignedDownloadUrl(user.brandingConfig.logoS3Key, 86400);
+      } catch {
+        // best-effort
+      }
+    }
+
+    return { photographerName: user.name, logoUrl };
+  } catch {
+    return undefined;
+  }
+};
+
 type NotificationEvent =
-  | { type: "submitted"; photographerEmail: string; photographerName: string; clientName: string; albumTitle: string; galleryTitle: string; reviewUrl: string }
-  | { type: "approved"; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; notes?: string | null }
-  | { type: "changes_requested"; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; notes: string; designUrl: string }
-  | { type: "rejected"; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; reason: string };
+  | { type: "submitted"; photographerEmail: string; photographerName: string; photographerId?: string; clientName: string; albumTitle: string; galleryTitle: string; reviewUrl: string }
+  | { type: "approved"; photographerId?: string; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; notes?: string | null }
+  | { type: "changes_requested"; photographerId?: string; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; notes: string; designUrl: string }
+  | { type: "rejected"; photographerId?: string; clientEmail: string; clientName: string; albumTitle: string; galleryTitle: string; reason: string };
 
 export const sendAlbumNotification = async (event: NotificationEvent): Promise<void> => {
+  const photographerId = "photographerId" in event ? event.photographerId : undefined;
+  const branding = photographerId ? await fetchPhotographerBranding(photographerId) : undefined;
+
   switch (event.type) {
     case "submitted": {
       const name = escapeHtml(event.photographerName);
@@ -34,6 +66,7 @@ export const sendAlbumNotification = async (event: NotificationEvent): Promise<v
 </ul>
 <p><a href="${url}">Review the submission</a></p>
 <p>— Fotno</p>`,
+        branding,
       });
       break;
     }
@@ -53,6 +86,7 @@ export const sendAlbumNotification = async (event: NotificationEvent): Promise<v
 </ul>
 ${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
 <p>— Fotno</p>`,
+        branding,
       });
       break;
     }
@@ -74,6 +108,7 @@ ${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
 <p><strong>Feedback:</strong> ${notes}</p>
 <p><a href="${url}">Update your album</a></p>
 <p>— Fotno</p>`,
+        branding,
       });
       break;
     }
@@ -94,6 +129,7 @@ ${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
 <p><strong>Reason:</strong> ${reason}</p>
 <p>Please contact the photographer if you have questions.</p>
 <p>— Fotno</p>`,
+        branding,
       });
       break;
     }

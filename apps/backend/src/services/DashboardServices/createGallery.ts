@@ -29,13 +29,20 @@ export const createGallery = async (userId: string, body: any) => {
   const slugBase = String(body?.slug ?? "").trim() || slugify(title);
   const slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
 
+  const now = new Date();
+  const defaultDeadline = new Date(now);
+  defaultDeadline.setMonth(defaultDeadline.getMonth() + 1);
+  const defaultExpiry = new Date(now);
+  defaultExpiry.setMonth(defaultExpiry.getMonth() + 2);
+
   const gallery = await db.gallery.create({
     data: {
       userId,
       title,
       slug,
-      eventDate: toIsoOrNull(body?.eventDate),
-      deadline: toIsoOrNull(body?.deadline),
+      eventDate: toIsoOrNull(body?.eventDate) ?? now.toISOString(),
+      deadline: toIsoOrNull(body?.deadline) ?? defaultDeadline.toISOString(),
+      expiresAt: toIsoOrNull(body?.expiresAt) ?? defaultExpiry.toISOString(),
       isPublished: false,
     },
   });
@@ -89,6 +96,9 @@ export const createGallery = async (userId: string, body: any) => {
       ),
       deadline: toDateOnly(
         gallery.deadline ? gallery.deadline.toISOString() : null,
+      ),
+      expiresAt: toDateOnly(
+        gallery.expiresAt ? gallery.expiresAt.toISOString() : null,
       ),
       passwordEnabled: Boolean(gallery.passwordHash),
       password: gallery.passwordHash ?? null,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, X } from "lucide-react";
+import { CalendarIcon, Loader2, X as XIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -14,8 +14,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select";
+import { Calendar } from "@workspace/ui/components/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover";
 import { apiRequest } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
+import { addDays, addMonths, formatDisplayDate, formatLocalDate } from "@/lib/utils/date";
+
+const QUICK_EXPIRY = [
+  { label: "1 week from now", months: 0, days: 7 },
+  { label: "2 weeks from now", months: 0, days: 14 },
+  { label: "1 month from now", months: 1, days: 0 },
+  { label: "6 months from now", months: 6, days: 0 },
+  { label: "1 year from now", months: 12, days: 0 },
+];
+
+function quickDate(months: number, days: number): Date {
+  return addDays(addMonths(new Date(), months), days);
+}
 
 const LANGUAGES = [
   { value: "en", label: "English" },
@@ -42,10 +61,14 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
   const g = data.gallery;
   const [title, setTitle] = useState(g.title);
   const [slug, setSlug] = useState(g.slug);
-  const [eventDate, setEventDate] = useState(g.eventDate ?? "");
-  const [deadline, setDeadline] = useState(g.deadline ?? "");
-  const [expiresAt, setExpiresAt] = useState(
-    g.expiresAt ? g.expiresAt.split("T")[0] : "",
+  const [eventDate, setEventDate] = useState<Date | undefined>(
+    g.eventDate ? new Date(g.eventDate + "T00:00:00") : undefined,
+  );
+  const [deadline, setDeadline] = useState<Date | undefined>(
+    g.deadline ? new Date(g.deadline + "T00:00:00") : undefined,
+  );
+  const [expiresAt, setExpiresAt] = useState<Date | undefined>(
+    g.expiresAt ? new Date(g.expiresAt.split("T")[0] + "T00:00:00") : undefined,
   );
   const [categoryTags, setCategoryTags] = useState<string[]>(g.categoryTags);
   const [tagInput, setTagInput] = useState("");
@@ -80,9 +103,9 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
         body: JSON.stringify({
           title,
           slug,
-          eventDate: eventDate || null,
-          deadline: deadline || null,
-          expiresAt: expiresAt || null,
+          eventDate: formatLocalDate(eventDate),
+          deadline: formatLocalDate(deadline),
+          expiresAt: formatLocalDate(expiresAt),
           categoryTags,
           slideshowEnabled,
           socialSharingEnabled,
@@ -147,46 +170,99 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
         <h4 className="text-sm font-medium">Dates</h4>
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-1.5">
-            <Label htmlFor="eventDate" className="text-xs">
-              Event Date
-            </Label>
-            <Input
-              id="eventDate"
-              type="date"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
-            />
+            <Label className="text-xs">Event Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {formatDisplayDate(eventDate)}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={eventDate}
+                  onSelect={setEventDate}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="deadline" className="text-xs">
-              Deadline
-            </Label>
-            <Input
-              id="deadline"
-              type="date"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-            />
+            <Label className="text-xs">Deadline</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {formatDisplayDate(deadline)}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={deadline}
+                  onSelect={setDeadline}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="expiresAt" className="text-xs">
-              Auto-Expire
-            </Label>
-            <Input
-              id="expiresAt"
-              type="date"
-              value={expiresAt}
-              onChange={(e) => setExpiresAt(e.target.value)}
-            />
-            <p className="text-[10px] text-muted-foreground">
-              Gallery becomes inaccessible after this date.
+            <Label className="text-xs">Auto-Delete</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {formatDisplayDate(expiresAt)}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <div className="flex">
+                  <Calendar
+                    mode="single"
+                    selected={expiresAt}
+                    onSelect={setExpiresAt}
+                  />
+                  <div className="border-l p-3">
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">
+                      QUICK SELECT
+                    </p>
+                    <div className="flex flex-col gap-1">
+                      {QUICK_EXPIRY.map((opt) => (
+                        <Button
+                          key={opt.label}
+                          variant="ghost"
+                          size="sm"
+                          className="justify-start text-xs"
+                          onClick={() =>
+                            setExpiresAt(quickDate(opt.months, opt.days))
+                          }
+                        >
+                          {opt.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <p className="text-[10px] text-destructive">
+              Gallery and all photos will be permanently deleted after this
+              date.
             </p>
           </div>
         </div>
       </section>
 
       {/* Category Tags */}
-      <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
+      {/* <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
         <h4 className="text-sm font-medium">Category Tags</h4>
         <div className="flex flex-wrap gap-1.5">
           {categoryTags.map((tag) => (
@@ -222,7 +298,7 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
             Add
           </Button>
         </div>
-      </section>
+      </section> */}
 
       {/* Display Options */}
       <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
@@ -240,7 +316,7 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
               onCheckedChange={setSlideshowEnabled}
             />
           </div>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div>
               <p className="text-sm">Social Sharing</p>
               <p className="text-xs text-muted-foreground">
@@ -251,12 +327,12 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
               checked={socialSharingEnabled}
               onCheckedChange={setSocialSharingEnabled}
             />
-          </div>
+          </div> */}
         </div>
       </section>
 
       {/* Language */}
-      <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
+      {/* <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
         <h4 className="text-sm font-medium">Language</h4>
         <div className="max-w-xs">
           <Select value={language} onValueChange={setLanguage}>
@@ -272,7 +348,7 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
             </SelectContent>
           </Select>
         </div>
-      </section>
+      </section> */}
 
       <Button onClick={onSave} disabled={saving} className="w-full sm:w-auto">
         {saving ? (

@@ -11,6 +11,7 @@ import { auth } from "./auth";
 import path from "path";
 import { ZodError } from "zod";
 import { startCleanupWorker } from "./workers/cleanupPhotoWorker";
+import { startExpiryWorker } from "./workers/expiryWorker";
 import Sentry from "./sentry";
 
 const app = express();
@@ -148,6 +149,7 @@ const startServer = async () => {
   try {
     if (process.env.PHOTO_WORKER_IN_API !== "false") {
       await startCleanupWorker();
+      await startExpiryWorker();
     }
 
     app.listen(port, () => {

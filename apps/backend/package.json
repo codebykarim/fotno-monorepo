@@ -10,6 +10,7 @@
     "dev": "sh -c 'pnpm run dev:server & pnpm run dev:worker:cleanup; wait'",
     "worker:cleanup": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/cleanupPhotoWorker.ts",
     "worker:reconcile-storage": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/reconcileStorageWorker.ts",
+    "worker:expiry": "ts-node-dev --respawn --transpile-only --ignore node_modules src/workers/expiryWorker.ts",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

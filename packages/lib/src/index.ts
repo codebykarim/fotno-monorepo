@@ -8,5 +8,3 @@ export {
   ONE_GB_BYTES,
   ONE_MB_BYTES,
 } from './constants/storage.js'
-
-export { sendStorageWarningEmail, type StorageWarningLevel } from './email.js'

@@ -7,13 +7,10 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.888.0",
-    "@aws-sdk/s3-request-presigner": "^3.888.0",
     "better-auth": "^1.5.5",
     "next": "16.1.6",
     "react": "^19.0.2",
-    "react-dom": "^19.0.2",
-    "resend": "^4.1.2"
+    "react-dom": "^19.0.2"
   },
   "devDependencies": {
     "@turbo/gen": "^2.2.3",
@@ -27,11 +24,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./s3": "./src/s3.ts",
-    "./email": "./src/email.ts",
     "./constants/*": "./src/constants/*.ts",
-    "./auth/*": "./src/auth/*.ts",
-    "./actions/*": "./src/actions/*.ts",
-    "./data/*": "./src/data/*.ts"
+    "./auth/*": "./src/auth/*.ts"
   }
 }

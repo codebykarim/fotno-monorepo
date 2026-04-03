@@ -497,6 +497,39 @@ exports.Prisma.SmartAlbumTransactionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.NotificationPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  galleryExpiryBrowser: 'galleryExpiryBrowser',
+  galleryExpiryEmail: 'galleryExpiryEmail',
+  storageWarningBrowser: 'storageWarningBrowser',
+  storageWarningEmail: 'storageWarningEmail',
+  billingFailedBrowser: 'billingFailedBrowser',
+  billingFailedEmail: 'billingFailedEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FcmTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  device: 'device',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CustomDomainScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  domain: 'domain',
+  status: 'status',
+  verificationToken: 'verificationToken',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -613,6 +646,12 @@ exports.SmartAlbumTransactionStatus = exports.$Enums.SmartAlbumTransactionStatus
   REFUNDED: 'REFUNDED'
 };
 
+exports.DomainStatus = exports.$Enums.DomainStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  FAILED: 'FAILED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -639,7 +678,10 @@ exports.Prisma.ModelName = {
   SmartAlbumProduct: 'SmartAlbumProduct',
   SmartAlbumDesign: 'SmartAlbumDesign',
   SmartAlbumSubmission: 'SmartAlbumSubmission',
-  SmartAlbumTransaction: 'SmartAlbumTransaction'
+  SmartAlbumTransaction: 'SmartAlbumTransaction',
+  NotificationPreference: 'NotificationPreference',
+  FcmToken: 'FcmToken',
+  CustomDomain: 'CustomDomain'
 };
 
 /**

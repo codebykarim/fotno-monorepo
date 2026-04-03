@@ -6,6 +6,7 @@ import storageRoutes from "./storageRoutes";
 import publicGalleryRoutes from "./publicGalleryRoutes";
 import adminRoutes from "./adminRoutes";
 import smartAlbumRoutes from "./smartAlbumRoutes";
+import settingsRoutes from "./settingsRoutes";
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.use("/api", storageRoutes);
 routes.use("/api", publicGalleryRoutes);
 routes.use("/api", adminRoutes);
 routes.use("/api", smartAlbumRoutes);
+routes.use("/api", settingsRoutes);
 
 export default routes;

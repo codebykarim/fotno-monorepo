@@ -3,6 +3,7 @@ import { stripe, Stripe } from "./stripe";
 import { findTierByPriceId, fetchTiersFromDB, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
 import { storageTierToBytes } from "../../constants/storage";
 import { getRegionalPricing } from "../../constants/regional-pricing";
+import { sendPushNotification } from "../../utils/fcm";
 
 /**
  * Extract billing period dates from a Stripe subscription.
@@ -479,21 +480,42 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
     data: { status: "PAST_DUE" },
   });
 
+  // Resolve user ID for notification
+  let notifyUserId: string | null = null;
+
   if (result.count === 0 && stripeCustomerId) {
     const user = await (prisma as any).user.findUnique({ where: { stripeCustomerId } });
     if (user) {
+      notifyUserId = user.id;
       const fallbackResult = await (prisma as any).subscription.updateMany({
         where: { userId: user.id, source: "STRIPE" },
         data: { status: "PAST_DUE" },
       });
       if (fallbackResult.count > 0) {
         console.warn(`[Webhook] invoice.payment_failed: updated via stripeCustomerId fallback for userId=${user.id}`);
-        return;
       }
+    } else {
+      console.warn(`[Webhook] invoice.payment_failed: no subscriptions found to update`);
     }
-    console.warn(`[Webhook] invoice.payment_failed: no subscriptions found to update`);
-  } else {
+  } else if (result.count > 0) {
     console.log(`[Webhook] invoice.payment_failed: marked ${result.count} subscription(s) as PAST_DUE`);
+    // Find the user from the subscription
+    const sub = await (prisma as any).subscription.findFirst({
+      where: { stripeSubscriptionId },
+      select: { userId: true },
+    });
+    if (sub) notifyUserId = sub.userId;
+  }
+
+  // Send push notification about billing failure
+  if (notifyUserId) {
+    await sendPushNotification(
+      notifyUserId,
+      "billingFailed",
+      "Payment Failed",
+      "Your subscription payment failed. Please update your payment method to avoid service interruption.",
+      { action: "update_payment" },
+    );
   }
 }
 

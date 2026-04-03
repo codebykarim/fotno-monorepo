@@ -9,38 +9,41 @@ datasource db {
 }
 
 model User {
-  id                 String            @id @unique @default(uuid())
-  name               String
-  email              String
-  plan               Plan              @default(FREE)
-  storageUsed        BigInt            @default(0)
-  storageLimit       BigInt            @default(1073741824) // 1 GB
-  galleryLimit       Int? // null = unlimited
-  downgradedAt       DateTime? // tracks subscription expiry for 90-day retention
-  storageReserved    BigInt            @default(0)
-  overageBytes       BigInt            @default(0)
-  overageResetAt     DateTime?
-  stripeCustomerId   String?           @unique
-  warningEmailSent80 Boolean           @default(false)
-  warningEmailSent95 Boolean           @default(false)
-  emailVerified      Boolean
-  image              String?
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now()) @updatedAt
-  role               String?
-  banned             Boolean?
-  banReason          String?
-  banExpires         DateTime?
-  subscribed         Boolean?
-  finishOnboarding   Boolean?
-  sessions           Session[]
-  accounts           Account[]
-  subscriptions      Subscription[]
-  userOnboarding     UserOnboarding?
-  galleries          Gallery[]
-  storageEvents      StorageEvent[]
-  driveImportJobs    DriveImportJob[]
-  smartAlbumConfig   SmartAlbumConfig?
+  id                     String                  @id @unique @default(uuid())
+  name                   String
+  email                  String
+  plan                   Plan                    @default(FREE)
+  storageUsed            BigInt                  @default(0)
+  storageLimit           BigInt                  @default(1073741824) // 1 GB
+  galleryLimit           Int? // null = unlimited
+  downgradedAt           DateTime? // tracks subscription expiry for 90-day retention
+  storageReserved        BigInt                  @default(0)
+  overageBytes           BigInt                  @default(0)
+  overageResetAt         DateTime?
+  stripeCustomerId       String?                 @unique
+  warningEmailSent80     Boolean                 @default(false)
+  warningEmailSent95     Boolean                 @default(false)
+  emailVerified          Boolean
+  image                  String?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @default(now()) @updatedAt
+  role                   String?
+  banned                 Boolean?
+  banReason              String?
+  banExpires             DateTime?
+  subscribed             Boolean?
+  finishOnboarding       Boolean?
+  sessions               Session[]
+  accounts               Account[]
+  subscriptions          Subscription[]
+  userOnboarding         UserOnboarding?
+  galleries              Gallery[]
+  storageEvents          StorageEvent[]
+  driveImportJobs        DriveImportJob[]
+  smartAlbumConfig       SmartAlbumConfig?
+  notificationPreference NotificationPreference?
+  fcmTokens              FcmToken[]
+  customDomain           CustomDomain?
 
   @@unique([email])
   @@map("user")
@@ -615,4 +618,58 @@ model SmartAlbumTransaction {
   createdAt             DateTime                    @default(now())
 
   @@map("smart_album_transaction")
+}
+
+// ── Settings: Notification Preferences ──────────────────────────
+
+model NotificationPreference {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  galleryExpiryBrowser  Boolean  @default(false)
+  galleryExpiryEmail    Boolean  @default(false)
+  storageWarningBrowser Boolean  @default(false)
+  storageWarningEmail   Boolean  @default(false)
+  billingFailedBrowser  Boolean  @default(false)
+  billingFailedEmail    Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
+
+  @@map("notification_preference")
+}
+
+model FcmToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String
+  device    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([userId, token])
+  @@index([userId])
+  @@map("fcm_token")
+}
+
+// ── Settings: Custom Domain ─────────────────────────────────────
+
+enum DomainStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+model CustomDomain {
+  id                String       @id @default(uuid())
+  userId            String       @unique
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain            String       @unique
+  status            DomainStatus @default(PENDING)
+  verificationToken String       @unique @default(uuid())
+  verifiedAt        DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @default(now()) @updatedAt
+
+  @@map("custom_domain")
 }

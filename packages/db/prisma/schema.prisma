@@ -40,7 +40,10 @@ model User {
   galleries          Gallery[]
   storageEvents      StorageEvent[]
   driveImportJobs    DriveImportJob[]
-  smartAlbumConfig   SmartAlbumConfig?
+  smartAlbumConfig       SmartAlbumConfig?
+  notificationPreference NotificationPreference?
+  fcmTokens              FcmToken[]
+  customDomain           CustomDomain?
 
   @@unique([email])
   @@map("user")
@@ -615,4 +618,58 @@ model SmartAlbumTransaction {
   createdAt                DateTime                    @default(now())
 
   @@map("smart_album_transaction")
+}
+
+// ── Settings: Notification Preferences ──────────────────────────
+
+model NotificationPreference {
+  id                       String   @id @default(uuid())
+  userId                   String   @unique
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  galleryExpiryBrowser     Boolean  @default(false)
+  galleryExpiryEmail       Boolean  @default(false)
+  storageWarningBrowser    Boolean  @default(false)
+  storageWarningEmail      Boolean  @default(false)
+  billingFailedBrowser     Boolean  @default(false)
+  billingFailedEmail       Boolean  @default(false)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @default(now()) @updatedAt
+
+  @@map("notification_preference")
+}
+
+model FcmToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String
+  device    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([userId, token])
+  @@index([userId])
+  @@map("fcm_token")
+}
+
+// ── Settings: Custom Domain ─────────────────────────────────────
+
+enum DomainStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+model CustomDomain {
+  id             String       @id @default(uuid())
+  userId         String       @unique
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain         String       @unique
+  status         DomainStatus @default(PENDING)
+  verificationToken String    @unique @default(uuid())
+  verifiedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+
+  @@map("custom_domain")
 }

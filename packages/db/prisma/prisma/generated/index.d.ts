@@ -143,6 +143,21 @@ export type SmartAlbumSubmission = $Result.DefaultSelection<Prisma.$SmartAlbumSu
  * 
  */
 export type SmartAlbumTransaction = $Result.DefaultSelection<Prisma.$SmartAlbumTransactionPayload>
+/**
+ * Model NotificationPreference
+ * 
+ */
+export type NotificationPreference = $Result.DefaultSelection<Prisma.$NotificationPreferencePayload>
+/**
+ * Model FcmToken
+ * 
+ */
+export type FcmToken = $Result.DefaultSelection<Prisma.$FcmTokenPayload>
+/**
+ * Model CustomDomain
+ * 
+ */
+export type CustomDomain = $Result.DefaultSelection<Prisma.$CustomDomainPayload>
 
 /**
  * Enums
@@ -281,6 +296,15 @@ export const SmartAlbumTransactionStatus: {
 
 export type SmartAlbumTransactionStatus = (typeof SmartAlbumTransactionStatus)[keyof typeof SmartAlbumTransactionStatus]
 
+
+export const DomainStatus: {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  FAILED: 'FAILED'
+};
+
+export type DomainStatus = (typeof DomainStatus)[keyof typeof DomainStatus]
+
 }
 
 export type Plan = $Enums.Plan
@@ -338,6 +362,10 @@ export const SmartAlbumSubmissionStatus: typeof $Enums.SmartAlbumSubmissionStatu
 export type SmartAlbumTransactionStatus = $Enums.SmartAlbumTransactionStatus
 
 export const SmartAlbumTransactionStatus: typeof $Enums.SmartAlbumTransactionStatus
+
+export type DomainStatus = $Enums.DomainStatus
+
+export const DomainStatus: typeof $Enums.DomainStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -719,6 +747,36 @@ export class PrismaClient<
     * ```
     */
   get smartAlbumTransaction(): Prisma.SmartAlbumTransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notificationPreference`: Exposes CRUD operations for the **NotificationPreference** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificationPreferences
+    * const notificationPreferences = await prisma.notificationPreference.findMany()
+    * ```
+    */
+  get notificationPreference(): Prisma.NotificationPreferenceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fcmToken`: Exposes CRUD operations for the **FcmToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FcmTokens
+    * const fcmTokens = await prisma.fcmToken.findMany()
+    * ```
+    */
+  get fcmToken(): Prisma.FcmTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.customDomain`: Exposes CRUD operations for the **CustomDomain** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CustomDomains
+    * const customDomains = await prisma.customDomain.findMany()
+    * ```
+    */
+  get customDomain(): Prisma.CustomDomainDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1178,7 +1236,10 @@ export namespace Prisma {
     SmartAlbumProduct: 'SmartAlbumProduct',
     SmartAlbumDesign: 'SmartAlbumDesign',
     SmartAlbumSubmission: 'SmartAlbumSubmission',
-    SmartAlbumTransaction: 'SmartAlbumTransaction'
+    SmartAlbumTransaction: 'SmartAlbumTransaction',
+    NotificationPreference: 'NotificationPreference',
+    FcmToken: 'FcmToken',
+    CustomDomain: 'CustomDomain'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1194,7 +1255,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3122,6 +3183,228 @@ export namespace Prisma {
           }
         }
       }
+      NotificationPreference: {
+        payload: Prisma.$NotificationPreferencePayload<ExtArgs>
+        fields: Prisma.NotificationPreferenceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationPreferenceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationPreferenceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationPreferenceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          findMany: {
+            args: Prisma.NotificationPreferenceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+          }
+          create: {
+            args: Prisma.NotificationPreferenceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          createMany: {
+            args: Prisma.NotificationPreferenceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationPreferenceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationPreferenceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          update: {
+            args: Prisma.NotificationPreferenceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationPreferenceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationPreferenceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationPreferenceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationPreferenceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationPreferenceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotificationPreference>
+          }
+          groupBy: {
+            args: Prisma.NotificationPreferenceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationPreferenceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationPreferenceCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationPreferenceCountAggregateOutputType> | number
+          }
+        }
+      }
+      FcmToken: {
+        payload: Prisma.$FcmTokenPayload<ExtArgs>
+        fields: Prisma.FcmTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FcmTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FcmTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.FcmTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FcmTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          findMany: {
+            args: Prisma.FcmTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+          }
+          create: {
+            args: Prisma.FcmTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          createMany: {
+            args: Prisma.FcmTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FcmTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.FcmTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          update: {
+            args: Prisma.FcmTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.FcmTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FcmTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FcmTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.FcmTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.FcmTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFcmToken>
+          }
+          groupBy: {
+            args: Prisma.FcmTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FcmTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FcmTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<FcmTokenCountAggregateOutputType> | number
+          }
+        }
+      }
+      CustomDomain: {
+        payload: Prisma.$CustomDomainPayload<ExtArgs>
+        fields: Prisma.CustomDomainFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CustomDomainFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CustomDomainFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          findFirst: {
+            args: Prisma.CustomDomainFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CustomDomainFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          findMany: {
+            args: Prisma.CustomDomainFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          create: {
+            args: Prisma.CustomDomainCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          createMany: {
+            args: Prisma.CustomDomainCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CustomDomainCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          delete: {
+            args: Prisma.CustomDomainDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          update: {
+            args: Prisma.CustomDomainUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          deleteMany: {
+            args: Prisma.CustomDomainDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CustomDomainUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CustomDomainUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          upsert: {
+            args: Prisma.CustomDomainUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          aggregate: {
+            args: Prisma.CustomDomainAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCustomDomain>
+          }
+          groupBy: {
+            args: Prisma.CustomDomainGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CustomDomainGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CustomDomainCountArgs<ExtArgs>
+            result: $Utils.Optional<CustomDomainCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3256,6 +3539,9 @@ export namespace Prisma {
     smartAlbumDesign?: SmartAlbumDesignOmit
     smartAlbumSubmission?: SmartAlbumSubmissionOmit
     smartAlbumTransaction?: SmartAlbumTransactionOmit
+    notificationPreference?: NotificationPreferenceOmit
+    fcmToken?: FcmTokenOmit
+    customDomain?: CustomDomainOmit
   }
 
   /* Types for Logging */
@@ -3342,6 +3628,7 @@ export namespace Prisma {
     galleries: number
     storageEvents: number
     driveImportJobs: number
+    fcmTokens: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3351,6 +3638,7 @@ export namespace Prisma {
     galleries?: boolean | UserCountOutputTypeCountGalleriesArgs
     storageEvents?: boolean | UserCountOutputTypeCountStorageEventsArgs
     driveImportJobs?: boolean | UserCountOutputTypeCountDriveImportJobsArgs
+    fcmTokens?: boolean | UserCountOutputTypeCountFcmTokensArgs
   }
 
   // Custom InputTypes
@@ -3404,6 +3692,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountDriveImportJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DriveImportJobWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFcmTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FcmTokenWhereInput
   }
 
 
@@ -4154,6 +4449,9 @@ export namespace Prisma {
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
+    notificationPreference?: boolean | User$notificationPreferenceArgs<ExtArgs>
+    fcmTokens?: boolean | User$fcmTokensArgs<ExtArgs>
+    customDomain?: boolean | User$customDomainArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4248,6 +4546,9 @@ export namespace Prisma {
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
+    notificationPreference?: boolean | User$notificationPreferenceArgs<ExtArgs>
+    fcmTokens?: boolean | User$fcmTokensArgs<ExtArgs>
+    customDomain?: boolean | User$customDomainArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4264,6 +4565,9 @@ export namespace Prisma {
       storageEvents: Prisma.$StorageEventPayload<ExtArgs>[]
       driveImportJobs: Prisma.$DriveImportJobPayload<ExtArgs>[]
       smartAlbumConfig: Prisma.$SmartAlbumConfigPayload<ExtArgs> | null
+      notificationPreference: Prisma.$NotificationPreferencePayload<ExtArgs> | null
+      fcmTokens: Prisma.$FcmTokenPayload<ExtArgs>[]
+      customDomain: Prisma.$CustomDomainPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4692,6 +4996,9 @@ export namespace Prisma {
     storageEvents<T extends User$storageEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$storageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     driveImportJobs<T extends User$driveImportJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$driveImportJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     smartAlbumConfig<T extends User$smartAlbumConfigArgs<ExtArgs> = {}>(args?: Subset<T, User$smartAlbumConfigArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    notificationPreference<T extends User$notificationPreferenceArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationPreferenceArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    fcmTokens<T extends User$fcmTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$fcmTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    customDomain<T extends User$customDomainArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5317,6 +5624,68 @@ export namespace Prisma {
      */
     include?: SmartAlbumConfigInclude<ExtArgs> | null
     where?: SmartAlbumConfigWhereInput
+  }
+
+  /**
+   * User.notificationPreference
+   */
+  export type User$notificationPreferenceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    where?: NotificationPreferenceWhereInput
+  }
+
+  /**
+   * User.fcmTokens
+   */
+  export type User$fcmTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    where?: FcmTokenWhereInput
+    orderBy?: FcmTokenOrderByWithRelationInput | FcmTokenOrderByWithRelationInput[]
+    cursor?: FcmTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FcmTokenScalarFieldEnum | FcmTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.customDomain
+   */
+  export type User$customDomainArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    where?: CustomDomainWhereInput
   }
 
   /**
@@ -34981,6 +35350,3312 @@ export namespace Prisma {
 
 
   /**
+   * Model NotificationPreference
+   */
+
+  export type AggregateNotificationPreference = {
+    _count: NotificationPreferenceCountAggregateOutputType | null
+    _min: NotificationPreferenceMinAggregateOutputType | null
+    _max: NotificationPreferenceMaxAggregateOutputType | null
+  }
+
+  export type NotificationPreferenceMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    galleryExpiryBrowser: boolean | null
+    galleryExpiryEmail: boolean | null
+    storageWarningBrowser: boolean | null
+    storageWarningEmail: boolean | null
+    billingFailedBrowser: boolean | null
+    billingFailedEmail: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationPreferenceMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    galleryExpiryBrowser: boolean | null
+    galleryExpiryEmail: boolean | null
+    storageWarningBrowser: boolean | null
+    storageWarningEmail: boolean | null
+    billingFailedBrowser: boolean | null
+    billingFailedEmail: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationPreferenceCountAggregateOutputType = {
+    id: number
+    userId: number
+    galleryExpiryBrowser: number
+    galleryExpiryEmail: number
+    storageWarningBrowser: number
+    storageWarningEmail: number
+    billingFailedBrowser: number
+    billingFailedEmail: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type NotificationPreferenceMinAggregateInputType = {
+    id?: true
+    userId?: true
+    galleryExpiryBrowser?: true
+    galleryExpiryEmail?: true
+    storageWarningBrowser?: true
+    storageWarningEmail?: true
+    billingFailedBrowser?: true
+    billingFailedEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationPreferenceMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    galleryExpiryBrowser?: true
+    galleryExpiryEmail?: true
+    storageWarningBrowser?: true
+    storageWarningEmail?: true
+    billingFailedBrowser?: true
+    billingFailedEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationPreferenceCountAggregateInputType = {
+    id?: true
+    userId?: true
+    galleryExpiryBrowser?: true
+    galleryExpiryEmail?: true
+    storageWarningBrowser?: true
+    storageWarningEmail?: true
+    billingFailedBrowser?: true
+    billingFailedEmail?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type NotificationPreferenceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationPreference to aggregate.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotificationPreferences
+    **/
+    _count?: true | NotificationPreferenceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationPreferenceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationPreferenceMaxAggregateInputType
+  }
+
+  export type GetNotificationPreferenceAggregateType<T extends NotificationPreferenceAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotificationPreference]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotificationPreference[P]>
+      : GetScalarType<T[P], AggregateNotificationPreference[P]>
+  }
+
+
+
+
+  export type NotificationPreferenceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationPreferenceWhereInput
+    orderBy?: NotificationPreferenceOrderByWithAggregationInput | NotificationPreferenceOrderByWithAggregationInput[]
+    by: NotificationPreferenceScalarFieldEnum[] | NotificationPreferenceScalarFieldEnum
+    having?: NotificationPreferenceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationPreferenceCountAggregateInputType | true
+    _min?: NotificationPreferenceMinAggregateInputType
+    _max?: NotificationPreferenceMaxAggregateInputType
+  }
+
+  export type NotificationPreferenceGroupByOutputType = {
+    id: string
+    userId: string
+    galleryExpiryBrowser: boolean
+    galleryExpiryEmail: boolean
+    storageWarningBrowser: boolean
+    storageWarningEmail: boolean
+    billingFailedBrowser: boolean
+    billingFailedEmail: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: NotificationPreferenceCountAggregateOutputType | null
+    _min: NotificationPreferenceMinAggregateOutputType | null
+    _max: NotificationPreferenceMaxAggregateOutputType | null
+  }
+
+  type GetNotificationPreferenceGroupByPayload<T extends NotificationPreferenceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationPreferenceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationPreferenceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationPreferenceGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationPreferenceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationPreferenceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationPreference"]>
+
+  export type NotificationPreferenceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationPreference"]>
+
+  export type NotificationPreferenceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationPreference"]>
+
+  export type NotificationPreferenceSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type NotificationPreferenceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "galleryExpiryBrowser" | "galleryExpiryEmail" | "storageWarningBrowser" | "storageWarningEmail" | "billingFailedBrowser" | "billingFailedEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["notificationPreference"]>
+  export type NotificationPreferenceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationPreferenceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationPreferenceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationPreferencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotificationPreference"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      galleryExpiryBrowser: boolean
+      galleryExpiryEmail: boolean
+      storageWarningBrowser: boolean
+      storageWarningEmail: boolean
+      billingFailedBrowser: boolean
+      billingFailedEmail: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["notificationPreference"]>
+    composites: {}
+  }
+
+  type NotificationPreferenceGetPayload<S extends boolean | null | undefined | NotificationPreferenceDefaultArgs> = $Result.GetResult<Prisma.$NotificationPreferencePayload, S>
+
+  type NotificationPreferenceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationPreferenceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationPreferenceCountAggregateInputType | true
+    }
+
+  export interface NotificationPreferenceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotificationPreference'], meta: { name: 'NotificationPreference' } }
+    /**
+     * Find zero or one NotificationPreference that matches the filter.
+     * @param {NotificationPreferenceFindUniqueArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationPreferenceFindUniqueArgs>(args: SelectSubset<T, NotificationPreferenceFindUniqueArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NotificationPreference that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationPreferenceFindUniqueOrThrowArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationPreferenceFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificationPreference that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindFirstArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationPreferenceFindFirstArgs>(args?: SelectSubset<T, NotificationPreferenceFindFirstArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificationPreference that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindFirstOrThrowArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationPreferenceFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationPreferenceFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NotificationPreferences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotificationPreferences
+     * const notificationPreferences = await prisma.notificationPreference.findMany()
+     * 
+     * // Get first 10 NotificationPreferences
+     * const notificationPreferences = await prisma.notificationPreference.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationPreferenceWithIdOnly = await prisma.notificationPreference.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationPreferenceFindManyArgs>(args?: SelectSubset<T, NotificationPreferenceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NotificationPreference.
+     * @param {NotificationPreferenceCreateArgs} args - Arguments to create a NotificationPreference.
+     * @example
+     * // Create one NotificationPreference
+     * const NotificationPreference = await prisma.notificationPreference.create({
+     *   data: {
+     *     // ... data to create a NotificationPreference
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationPreferenceCreateArgs>(args: SelectSubset<T, NotificationPreferenceCreateArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NotificationPreferences.
+     * @param {NotificationPreferenceCreateManyArgs} args - Arguments to create many NotificationPreferences.
+     * @example
+     * // Create many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationPreferenceCreateManyArgs>(args?: SelectSubset<T, NotificationPreferenceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotificationPreferences and returns the data saved in the database.
+     * @param {NotificationPreferenceCreateManyAndReturnArgs} args - Arguments to create many NotificationPreferences.
+     * @example
+     * // Create many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotificationPreferences and only return the `id`
+     * const notificationPreferenceWithIdOnly = await prisma.notificationPreference.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationPreferenceCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationPreferenceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NotificationPreference.
+     * @param {NotificationPreferenceDeleteArgs} args - Arguments to delete one NotificationPreference.
+     * @example
+     * // Delete one NotificationPreference
+     * const NotificationPreference = await prisma.notificationPreference.delete({
+     *   where: {
+     *     // ... filter to delete one NotificationPreference
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationPreferenceDeleteArgs>(args: SelectSubset<T, NotificationPreferenceDeleteArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NotificationPreference.
+     * @param {NotificationPreferenceUpdateArgs} args - Arguments to update one NotificationPreference.
+     * @example
+     * // Update one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationPreferenceUpdateArgs>(args: SelectSubset<T, NotificationPreferenceUpdateArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NotificationPreferences.
+     * @param {NotificationPreferenceDeleteManyArgs} args - Arguments to filter NotificationPreferences to delete.
+     * @example
+     * // Delete a few NotificationPreferences
+     * const { count } = await prisma.notificationPreference.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationPreferenceDeleteManyArgs>(args?: SelectSubset<T, NotificationPreferenceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationPreferenceUpdateManyArgs>(args: SelectSubset<T, NotificationPreferenceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationPreferences and returns the data updated in the database.
+     * @param {NotificationPreferenceUpdateManyAndReturnArgs} args - Arguments to update many NotificationPreferences.
+     * @example
+     * // Update many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NotificationPreferences and only return the `id`
+     * const notificationPreferenceWithIdOnly = await prisma.notificationPreference.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationPreferenceUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationPreferenceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NotificationPreference.
+     * @param {NotificationPreferenceUpsertArgs} args - Arguments to update or create a NotificationPreference.
+     * @example
+     * // Update or create a NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.upsert({
+     *   create: {
+     *     // ... data to create a NotificationPreference
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotificationPreference we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationPreferenceUpsertArgs>(args: SelectSubset<T, NotificationPreferenceUpsertArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NotificationPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceCountArgs} args - Arguments to filter NotificationPreferences to count.
+     * @example
+     * // Count the number of NotificationPreferences
+     * const count = await prisma.notificationPreference.count({
+     *   where: {
+     *     // ... the filter for the NotificationPreferences we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationPreferenceCountArgs>(
+      args?: Subset<T, NotificationPreferenceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationPreferenceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotificationPreference.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationPreferenceAggregateArgs>(args: Subset<T, NotificationPreferenceAggregateArgs>): Prisma.PrismaPromise<GetNotificationPreferenceAggregateType<T>>
+
+    /**
+     * Group by NotificationPreference.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationPreferenceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationPreferenceGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationPreferenceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationPreferenceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationPreferenceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotificationPreference model
+   */
+  readonly fields: NotificationPreferenceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotificationPreference.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationPreferenceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotificationPreference model
+   */
+  interface NotificationPreferenceFieldRefs {
+    readonly id: FieldRef<"NotificationPreference", 'String'>
+    readonly userId: FieldRef<"NotificationPreference", 'String'>
+    readonly galleryExpiryBrowser: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly galleryExpiryEmail: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly storageWarningBrowser: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly storageWarningEmail: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly billingFailedBrowser: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly billingFailedEmail: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly createdAt: FieldRef<"NotificationPreference", 'DateTime'>
+    readonly updatedAt: FieldRef<"NotificationPreference", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotificationPreference findUnique
+   */
+  export type NotificationPreferenceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference findUniqueOrThrow
+   */
+  export type NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference findFirst
+   */
+  export type NotificationPreferenceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationPreferences.
+     */
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference findFirstOrThrow
+   */
+  export type NotificationPreferenceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationPreferences.
+     */
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference findMany
+   */
+  export type NotificationPreferenceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreferences to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationPreferences.
+     */
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference create
+   */
+  export type NotificationPreferenceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotificationPreference.
+     */
+    data: XOR<NotificationPreferenceCreateInput, NotificationPreferenceUncheckedCreateInput>
+  }
+
+  /**
+   * NotificationPreference createMany
+   */
+  export type NotificationPreferenceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotificationPreferences.
+     */
+    data: NotificationPreferenceCreateManyInput | NotificationPreferenceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotificationPreference createManyAndReturn
+   */
+  export type NotificationPreferenceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * The data used to create many NotificationPreferences.
+     */
+    data: NotificationPreferenceCreateManyInput | NotificationPreferenceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationPreference update
+   */
+  export type NotificationPreferenceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotificationPreference.
+     */
+    data: XOR<NotificationPreferenceUpdateInput, NotificationPreferenceUncheckedUpdateInput>
+    /**
+     * Choose, which NotificationPreference to update.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference updateMany
+   */
+  export type NotificationPreferenceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotificationPreferences.
+     */
+    data: XOR<NotificationPreferenceUpdateManyMutationInput, NotificationPreferenceUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationPreferences to update
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * Limit how many NotificationPreferences to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificationPreference updateManyAndReturn
+   */
+  export type NotificationPreferenceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * The data used to update NotificationPreferences.
+     */
+    data: XOR<NotificationPreferenceUpdateManyMutationInput, NotificationPreferenceUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationPreferences to update
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * Limit how many NotificationPreferences to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationPreference upsert
+   */
+  export type NotificationPreferenceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotificationPreference to update in case it exists.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+    /**
+     * In case the NotificationPreference found by the `where` argument doesn't exist, create a new NotificationPreference with this data.
+     */
+    create: XOR<NotificationPreferenceCreateInput, NotificationPreferenceUncheckedCreateInput>
+    /**
+     * In case the NotificationPreference was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationPreferenceUpdateInput, NotificationPreferenceUncheckedUpdateInput>
+  }
+
+  /**
+   * NotificationPreference delete
+   */
+  export type NotificationPreferenceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter which NotificationPreference to delete.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference deleteMany
+   */
+  export type NotificationPreferenceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationPreferences to delete
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * Limit how many NotificationPreferences to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificationPreference without action
+   */
+  export type NotificationPreferenceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificationPreference
+     */
+    omit?: NotificationPreferenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FcmToken
+   */
+
+  export type AggregateFcmToken = {
+    _count: FcmTokenCountAggregateOutputType | null
+    _min: FcmTokenMinAggregateOutputType | null
+    _max: FcmTokenMaxAggregateOutputType | null
+  }
+
+  export type FcmTokenMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    device: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FcmTokenMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    device: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FcmTokenCountAggregateOutputType = {
+    id: number
+    userId: number
+    token: number
+    device: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FcmTokenMinAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    device?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FcmTokenMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    device?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FcmTokenCountAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    device?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FcmTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FcmToken to aggregate.
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FcmTokens to fetch.
+     */
+    orderBy?: FcmTokenOrderByWithRelationInput | FcmTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FcmTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FcmTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FcmTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FcmTokens
+    **/
+    _count?: true | FcmTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FcmTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FcmTokenMaxAggregateInputType
+  }
+
+  export type GetFcmTokenAggregateType<T extends FcmTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateFcmToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFcmToken[P]>
+      : GetScalarType<T[P], AggregateFcmToken[P]>
+  }
+
+
+
+
+  export type FcmTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FcmTokenWhereInput
+    orderBy?: FcmTokenOrderByWithAggregationInput | FcmTokenOrderByWithAggregationInput[]
+    by: FcmTokenScalarFieldEnum[] | FcmTokenScalarFieldEnum
+    having?: FcmTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FcmTokenCountAggregateInputType | true
+    _min?: FcmTokenMinAggregateInputType
+    _max?: FcmTokenMaxAggregateInputType
+  }
+
+  export type FcmTokenGroupByOutputType = {
+    id: string
+    userId: string
+    token: string
+    device: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FcmTokenCountAggregateOutputType | null
+    _min: FcmTokenMinAggregateOutputType | null
+    _max: FcmTokenMaxAggregateOutputType | null
+  }
+
+  type GetFcmTokenGroupByPayload<T extends FcmTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FcmTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FcmTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FcmTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], FcmTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FcmTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    device?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fcmToken"]>
+
+  export type FcmTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    device?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fcmToken"]>
+
+  export type FcmTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    device?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fcmToken"]>
+
+  export type FcmTokenSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    device?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FcmTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "token" | "device" | "createdAt" | "updatedAt", ExtArgs["result"]["fcmToken"]>
+  export type FcmTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FcmTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FcmTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FcmTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FcmToken"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      token: string
+      device: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["fcmToken"]>
+    composites: {}
+  }
+
+  type FcmTokenGetPayload<S extends boolean | null | undefined | FcmTokenDefaultArgs> = $Result.GetResult<Prisma.$FcmTokenPayload, S>
+
+  type FcmTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FcmTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FcmTokenCountAggregateInputType | true
+    }
+
+  export interface FcmTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FcmToken'], meta: { name: 'FcmToken' } }
+    /**
+     * Find zero or one FcmToken that matches the filter.
+     * @param {FcmTokenFindUniqueArgs} args - Arguments to find a FcmToken
+     * @example
+     * // Get one FcmToken
+     * const fcmToken = await prisma.fcmToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FcmTokenFindUniqueArgs>(args: SelectSubset<T, FcmTokenFindUniqueArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FcmToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FcmTokenFindUniqueOrThrowArgs} args - Arguments to find a FcmToken
+     * @example
+     * // Get one FcmToken
+     * const fcmToken = await prisma.fcmToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FcmTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, FcmTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FcmToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenFindFirstArgs} args - Arguments to find a FcmToken
+     * @example
+     * // Get one FcmToken
+     * const fcmToken = await prisma.fcmToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FcmTokenFindFirstArgs>(args?: SelectSubset<T, FcmTokenFindFirstArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FcmToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenFindFirstOrThrowArgs} args - Arguments to find a FcmToken
+     * @example
+     * // Get one FcmToken
+     * const fcmToken = await prisma.fcmToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FcmTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, FcmTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FcmTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FcmTokens
+     * const fcmTokens = await prisma.fcmToken.findMany()
+     * 
+     * // Get first 10 FcmTokens
+     * const fcmTokens = await prisma.fcmToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fcmTokenWithIdOnly = await prisma.fcmToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FcmTokenFindManyArgs>(args?: SelectSubset<T, FcmTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FcmToken.
+     * @param {FcmTokenCreateArgs} args - Arguments to create a FcmToken.
+     * @example
+     * // Create one FcmToken
+     * const FcmToken = await prisma.fcmToken.create({
+     *   data: {
+     *     // ... data to create a FcmToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends FcmTokenCreateArgs>(args: SelectSubset<T, FcmTokenCreateArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FcmTokens.
+     * @param {FcmTokenCreateManyArgs} args - Arguments to create many FcmTokens.
+     * @example
+     * // Create many FcmTokens
+     * const fcmToken = await prisma.fcmToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FcmTokenCreateManyArgs>(args?: SelectSubset<T, FcmTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FcmTokens and returns the data saved in the database.
+     * @param {FcmTokenCreateManyAndReturnArgs} args - Arguments to create many FcmTokens.
+     * @example
+     * // Create many FcmTokens
+     * const fcmToken = await prisma.fcmToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FcmTokens and only return the `id`
+     * const fcmTokenWithIdOnly = await prisma.fcmToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FcmTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, FcmTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FcmToken.
+     * @param {FcmTokenDeleteArgs} args - Arguments to delete one FcmToken.
+     * @example
+     * // Delete one FcmToken
+     * const FcmToken = await prisma.fcmToken.delete({
+     *   where: {
+     *     // ... filter to delete one FcmToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FcmTokenDeleteArgs>(args: SelectSubset<T, FcmTokenDeleteArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FcmToken.
+     * @param {FcmTokenUpdateArgs} args - Arguments to update one FcmToken.
+     * @example
+     * // Update one FcmToken
+     * const fcmToken = await prisma.fcmToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FcmTokenUpdateArgs>(args: SelectSubset<T, FcmTokenUpdateArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FcmTokens.
+     * @param {FcmTokenDeleteManyArgs} args - Arguments to filter FcmTokens to delete.
+     * @example
+     * // Delete a few FcmTokens
+     * const { count } = await prisma.fcmToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FcmTokenDeleteManyArgs>(args?: SelectSubset<T, FcmTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FcmTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FcmTokens
+     * const fcmToken = await prisma.fcmToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FcmTokenUpdateManyArgs>(args: SelectSubset<T, FcmTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FcmTokens and returns the data updated in the database.
+     * @param {FcmTokenUpdateManyAndReturnArgs} args - Arguments to update many FcmTokens.
+     * @example
+     * // Update many FcmTokens
+     * const fcmToken = await prisma.fcmToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FcmTokens and only return the `id`
+     * const fcmTokenWithIdOnly = await prisma.fcmToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FcmTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, FcmTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FcmToken.
+     * @param {FcmTokenUpsertArgs} args - Arguments to update or create a FcmToken.
+     * @example
+     * // Update or create a FcmToken
+     * const fcmToken = await prisma.fcmToken.upsert({
+     *   create: {
+     *     // ... data to create a FcmToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FcmToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FcmTokenUpsertArgs>(args: SelectSubset<T, FcmTokenUpsertArgs<ExtArgs>>): Prisma__FcmTokenClient<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FcmTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenCountArgs} args - Arguments to filter FcmTokens to count.
+     * @example
+     * // Count the number of FcmTokens
+     * const count = await prisma.fcmToken.count({
+     *   where: {
+     *     // ... the filter for the FcmTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends FcmTokenCountArgs>(
+      args?: Subset<T, FcmTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FcmTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FcmToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FcmTokenAggregateArgs>(args: Subset<T, FcmTokenAggregateArgs>): Prisma.PrismaPromise<GetFcmTokenAggregateType<T>>
+
+    /**
+     * Group by FcmToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FcmTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FcmTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FcmTokenGroupByArgs['orderBy'] }
+        : { orderBy?: FcmTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FcmTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFcmTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FcmToken model
+   */
+  readonly fields: FcmTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FcmToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FcmTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FcmToken model
+   */
+  interface FcmTokenFieldRefs {
+    readonly id: FieldRef<"FcmToken", 'String'>
+    readonly userId: FieldRef<"FcmToken", 'String'>
+    readonly token: FieldRef<"FcmToken", 'String'>
+    readonly device: FieldRef<"FcmToken", 'String'>
+    readonly createdAt: FieldRef<"FcmToken", 'DateTime'>
+    readonly updatedAt: FieldRef<"FcmToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FcmToken findUnique
+   */
+  export type FcmTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which FcmToken to fetch.
+     */
+    where: FcmTokenWhereUniqueInput
+  }
+
+  /**
+   * FcmToken findUniqueOrThrow
+   */
+  export type FcmTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which FcmToken to fetch.
+     */
+    where: FcmTokenWhereUniqueInput
+  }
+
+  /**
+   * FcmToken findFirst
+   */
+  export type FcmTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which FcmToken to fetch.
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FcmTokens to fetch.
+     */
+    orderBy?: FcmTokenOrderByWithRelationInput | FcmTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FcmTokens.
+     */
+    cursor?: FcmTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FcmTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FcmTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FcmTokens.
+     */
+    distinct?: FcmTokenScalarFieldEnum | FcmTokenScalarFieldEnum[]
+  }
+
+  /**
+   * FcmToken findFirstOrThrow
+   */
+  export type FcmTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which FcmToken to fetch.
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FcmTokens to fetch.
+     */
+    orderBy?: FcmTokenOrderByWithRelationInput | FcmTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FcmTokens.
+     */
+    cursor?: FcmTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FcmTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FcmTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FcmTokens.
+     */
+    distinct?: FcmTokenScalarFieldEnum | FcmTokenScalarFieldEnum[]
+  }
+
+  /**
+   * FcmToken findMany
+   */
+  export type FcmTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which FcmTokens to fetch.
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FcmTokens to fetch.
+     */
+    orderBy?: FcmTokenOrderByWithRelationInput | FcmTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FcmTokens.
+     */
+    cursor?: FcmTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FcmTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FcmTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FcmTokens.
+     */
+    distinct?: FcmTokenScalarFieldEnum | FcmTokenScalarFieldEnum[]
+  }
+
+  /**
+   * FcmToken create
+   */
+  export type FcmTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FcmToken.
+     */
+    data: XOR<FcmTokenCreateInput, FcmTokenUncheckedCreateInput>
+  }
+
+  /**
+   * FcmToken createMany
+   */
+  export type FcmTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FcmTokens.
+     */
+    data: FcmTokenCreateManyInput | FcmTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FcmToken createManyAndReturn
+   */
+  export type FcmTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many FcmTokens.
+     */
+    data: FcmTokenCreateManyInput | FcmTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FcmToken update
+   */
+  export type FcmTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FcmToken.
+     */
+    data: XOR<FcmTokenUpdateInput, FcmTokenUncheckedUpdateInput>
+    /**
+     * Choose, which FcmToken to update.
+     */
+    where: FcmTokenWhereUniqueInput
+  }
+
+  /**
+   * FcmToken updateMany
+   */
+  export type FcmTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FcmTokens.
+     */
+    data: XOR<FcmTokenUpdateManyMutationInput, FcmTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which FcmTokens to update
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * Limit how many FcmTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FcmToken updateManyAndReturn
+   */
+  export type FcmTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update FcmTokens.
+     */
+    data: XOR<FcmTokenUpdateManyMutationInput, FcmTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which FcmTokens to update
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * Limit how many FcmTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FcmToken upsert
+   */
+  export type FcmTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FcmToken to update in case it exists.
+     */
+    where: FcmTokenWhereUniqueInput
+    /**
+     * In case the FcmToken found by the `where` argument doesn't exist, create a new FcmToken with this data.
+     */
+    create: XOR<FcmTokenCreateInput, FcmTokenUncheckedCreateInput>
+    /**
+     * In case the FcmToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FcmTokenUpdateInput, FcmTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * FcmToken delete
+   */
+  export type FcmTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+    /**
+     * Filter which FcmToken to delete.
+     */
+    where: FcmTokenWhereUniqueInput
+  }
+
+  /**
+   * FcmToken deleteMany
+   */
+  export type FcmTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FcmTokens to delete
+     */
+    where?: FcmTokenWhereInput
+    /**
+     * Limit how many FcmTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FcmToken without action
+   */
+  export type FcmTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FcmToken
+     */
+    select?: FcmTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FcmToken
+     */
+    omit?: FcmTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FcmTokenInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CustomDomain
+   */
+
+  export type AggregateCustomDomain = {
+    _count: CustomDomainCountAggregateOutputType | null
+    _min: CustomDomainMinAggregateOutputType | null
+    _max: CustomDomainMaxAggregateOutputType | null
+  }
+
+  export type CustomDomainMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    domain: string | null
+    status: $Enums.DomainStatus | null
+    verificationToken: string | null
+    verifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomDomainMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    domain: string | null
+    status: $Enums.DomainStatus | null
+    verificationToken: string | null
+    verifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomDomainCountAggregateOutputType = {
+    id: number
+    userId: number
+    domain: number
+    status: number
+    verificationToken: number
+    verifiedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CustomDomainMinAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    verificationToken?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomDomainMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    verificationToken?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomDomainCountAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    verificationToken?: true
+    verifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CustomDomainAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CustomDomain to aggregate.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CustomDomains
+    **/
+    _count?: true | CustomDomainCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CustomDomainMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CustomDomainMaxAggregateInputType
+  }
+
+  export type GetCustomDomainAggregateType<T extends CustomDomainAggregateArgs> = {
+        [P in keyof T & keyof AggregateCustomDomain]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCustomDomain[P]>
+      : GetScalarType<T[P], AggregateCustomDomain[P]>
+  }
+
+
+
+
+  export type CustomDomainGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomDomainWhereInput
+    orderBy?: CustomDomainOrderByWithAggregationInput | CustomDomainOrderByWithAggregationInput[]
+    by: CustomDomainScalarFieldEnum[] | CustomDomainScalarFieldEnum
+    having?: CustomDomainScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CustomDomainCountAggregateInputType | true
+    _min?: CustomDomainMinAggregateInputType
+    _max?: CustomDomainMaxAggregateInputType
+  }
+
+  export type CustomDomainGroupByOutputType = {
+    id: string
+    userId: string
+    domain: string
+    status: $Enums.DomainStatus
+    verificationToken: string
+    verifiedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CustomDomainCountAggregateOutputType | null
+    _min: CustomDomainMinAggregateOutputType | null
+    _max: CustomDomainMaxAggregateOutputType | null
+  }
+
+  type GetCustomDomainGroupByPayload<T extends CustomDomainGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CustomDomainGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CustomDomainGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CustomDomainGroupByOutputType[P]>
+            : GetScalarType<T[P], CustomDomainGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CustomDomainSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    verificationToken?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    verificationToken?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    verificationToken?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    verificationToken?: boolean
+    verifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CustomDomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "status" | "verificationToken" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["customDomain"]>
+  export type CustomDomainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CustomDomainIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CustomDomainIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CustomDomainPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CustomDomain"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      domain: string
+      status: $Enums.DomainStatus
+      verificationToken: string
+      verifiedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["customDomain"]>
+    composites: {}
+  }
+
+  type CustomDomainGetPayload<S extends boolean | null | undefined | CustomDomainDefaultArgs> = $Result.GetResult<Prisma.$CustomDomainPayload, S>
+
+  type CustomDomainCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CustomDomainFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CustomDomainCountAggregateInputType | true
+    }
+
+  export interface CustomDomainDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CustomDomain'], meta: { name: 'CustomDomain' } }
+    /**
+     * Find zero or one CustomDomain that matches the filter.
+     * @param {CustomDomainFindUniqueArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CustomDomainFindUniqueArgs>(args: SelectSubset<T, CustomDomainFindUniqueArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CustomDomain that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CustomDomainFindUniqueOrThrowArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CustomDomainFindUniqueOrThrowArgs>(args: SelectSubset<T, CustomDomainFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CustomDomain that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindFirstArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CustomDomainFindFirstArgs>(args?: SelectSubset<T, CustomDomainFindFirstArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CustomDomain that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindFirstOrThrowArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CustomDomainFindFirstOrThrowArgs>(args?: SelectSubset<T, CustomDomainFindFirstOrThrowArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CustomDomains that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CustomDomains
+     * const customDomains = await prisma.customDomain.findMany()
+     * 
+     * // Get first 10 CustomDomains
+     * const customDomains = await prisma.customDomain.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CustomDomainFindManyArgs>(args?: SelectSubset<T, CustomDomainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CustomDomain.
+     * @param {CustomDomainCreateArgs} args - Arguments to create a CustomDomain.
+     * @example
+     * // Create one CustomDomain
+     * const CustomDomain = await prisma.customDomain.create({
+     *   data: {
+     *     // ... data to create a CustomDomain
+     *   }
+     * })
+     * 
+     */
+    create<T extends CustomDomainCreateArgs>(args: SelectSubset<T, CustomDomainCreateArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CustomDomains.
+     * @param {CustomDomainCreateManyArgs} args - Arguments to create many CustomDomains.
+     * @example
+     * // Create many CustomDomains
+     * const customDomain = await prisma.customDomain.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CustomDomainCreateManyArgs>(args?: SelectSubset<T, CustomDomainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CustomDomains and returns the data saved in the database.
+     * @param {CustomDomainCreateManyAndReturnArgs} args - Arguments to create many CustomDomains.
+     * @example
+     * // Create many CustomDomains
+     * const customDomain = await prisma.customDomain.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CustomDomains and only return the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CustomDomainCreateManyAndReturnArgs>(args?: SelectSubset<T, CustomDomainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CustomDomain.
+     * @param {CustomDomainDeleteArgs} args - Arguments to delete one CustomDomain.
+     * @example
+     * // Delete one CustomDomain
+     * const CustomDomain = await prisma.customDomain.delete({
+     *   where: {
+     *     // ... filter to delete one CustomDomain
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CustomDomainDeleteArgs>(args: SelectSubset<T, CustomDomainDeleteArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CustomDomain.
+     * @param {CustomDomainUpdateArgs} args - Arguments to update one CustomDomain.
+     * @example
+     * // Update one CustomDomain
+     * const customDomain = await prisma.customDomain.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CustomDomainUpdateArgs>(args: SelectSubset<T, CustomDomainUpdateArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CustomDomains.
+     * @param {CustomDomainDeleteManyArgs} args - Arguments to filter CustomDomains to delete.
+     * @example
+     * // Delete a few CustomDomains
+     * const { count } = await prisma.customDomain.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CustomDomainDeleteManyArgs>(args?: SelectSubset<T, CustomDomainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CustomDomains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CustomDomains
+     * const customDomain = await prisma.customDomain.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CustomDomainUpdateManyArgs>(args: SelectSubset<T, CustomDomainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CustomDomains and returns the data updated in the database.
+     * @param {CustomDomainUpdateManyAndReturnArgs} args - Arguments to update many CustomDomains.
+     * @example
+     * // Update many CustomDomains
+     * const customDomain = await prisma.customDomain.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CustomDomains and only return the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CustomDomainUpdateManyAndReturnArgs>(args: SelectSubset<T, CustomDomainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CustomDomain.
+     * @param {CustomDomainUpsertArgs} args - Arguments to update or create a CustomDomain.
+     * @example
+     * // Update or create a CustomDomain
+     * const customDomain = await prisma.customDomain.upsert({
+     *   create: {
+     *     // ... data to create a CustomDomain
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CustomDomain we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CustomDomainUpsertArgs>(args: SelectSubset<T, CustomDomainUpsertArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CustomDomains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainCountArgs} args - Arguments to filter CustomDomains to count.
+     * @example
+     * // Count the number of CustomDomains
+     * const count = await prisma.customDomain.count({
+     *   where: {
+     *     // ... the filter for the CustomDomains we want to count
+     *   }
+     * })
+    **/
+    count<T extends CustomDomainCountArgs>(
+      args?: Subset<T, CustomDomainCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CustomDomainCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CustomDomain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CustomDomainAggregateArgs>(args: Subset<T, CustomDomainAggregateArgs>): Prisma.PrismaPromise<GetCustomDomainAggregateType<T>>
+
+    /**
+     * Group by CustomDomain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CustomDomainGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CustomDomainGroupByArgs['orderBy'] }
+        : { orderBy?: CustomDomainGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CustomDomainGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCustomDomainGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CustomDomain model
+   */
+  readonly fields: CustomDomainFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CustomDomain.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CustomDomainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CustomDomain model
+   */
+  interface CustomDomainFieldRefs {
+    readonly id: FieldRef<"CustomDomain", 'String'>
+    readonly userId: FieldRef<"CustomDomain", 'String'>
+    readonly domain: FieldRef<"CustomDomain", 'String'>
+    readonly status: FieldRef<"CustomDomain", 'DomainStatus'>
+    readonly verificationToken: FieldRef<"CustomDomain", 'String'>
+    readonly verifiedAt: FieldRef<"CustomDomain", 'DateTime'>
+    readonly createdAt: FieldRef<"CustomDomain", 'DateTime'>
+    readonly updatedAt: FieldRef<"CustomDomain", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CustomDomain findUnique
+   */
+  export type CustomDomainFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain findUniqueOrThrow
+   */
+  export type CustomDomainFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain findFirst
+   */
+  export type CustomDomainFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain findFirstOrThrow
+   */
+  export type CustomDomainFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain findMany
+   */
+  export type CustomDomainFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomains to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain create
+   */
+  export type CustomDomainCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CustomDomain.
+     */
+    data: XOR<CustomDomainCreateInput, CustomDomainUncheckedCreateInput>
+  }
+
+  /**
+   * CustomDomain createMany
+   */
+  export type CustomDomainCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CustomDomains.
+     */
+    data: CustomDomainCreateManyInput | CustomDomainCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CustomDomain createManyAndReturn
+   */
+  export type CustomDomainCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * The data used to create many CustomDomains.
+     */
+    data: CustomDomainCreateManyInput | CustomDomainCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CustomDomain update
+   */
+  export type CustomDomainUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CustomDomain.
+     */
+    data: XOR<CustomDomainUpdateInput, CustomDomainUncheckedUpdateInput>
+    /**
+     * Choose, which CustomDomain to update.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain updateMany
+   */
+  export type CustomDomainUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CustomDomains.
+     */
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyInput>
+    /**
+     * Filter which CustomDomains to update
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CustomDomain updateManyAndReturn
+   */
+  export type CustomDomainUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * The data used to update CustomDomains.
+     */
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyInput>
+    /**
+     * Filter which CustomDomains to update
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CustomDomain upsert
+   */
+  export type CustomDomainUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CustomDomain to update in case it exists.
+     */
+    where: CustomDomainWhereUniqueInput
+    /**
+     * In case the CustomDomain found by the `where` argument doesn't exist, create a new CustomDomain with this data.
+     */
+    create: XOR<CustomDomainCreateInput, CustomDomainUncheckedCreateInput>
+    /**
+     * In case the CustomDomain was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CustomDomainUpdateInput, CustomDomainUncheckedUpdateInput>
+  }
+
+  /**
+   * CustomDomain delete
+   */
+  export type CustomDomainDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter which CustomDomain to delete.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain deleteMany
+   */
+  export type CustomDomainDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CustomDomains to delete
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CustomDomain without action
+   */
+  export type CustomDomainDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -35449,6 +39124,48 @@ export namespace Prisma {
   export type SmartAlbumTransactionScalarFieldEnum = (typeof SmartAlbumTransactionScalarFieldEnum)[keyof typeof SmartAlbumTransactionScalarFieldEnum]
 
 
+  export const NotificationPreferenceScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    galleryExpiryBrowser: 'galleryExpiryBrowser',
+    galleryExpiryEmail: 'galleryExpiryEmail',
+    storageWarningBrowser: 'storageWarningBrowser',
+    storageWarningEmail: 'storageWarningEmail',
+    billingFailedBrowser: 'billingFailedBrowser',
+    billingFailedEmail: 'billingFailedEmail',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
+
+
+  export const FcmTokenScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    token: 'token',
+    device: 'device',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FcmTokenScalarFieldEnum = (typeof FcmTokenScalarFieldEnum)[keyof typeof FcmTokenScalarFieldEnum]
+
+
+  export const CustomDomainScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    domain: 'domain',
+    status: 'status',
+    verificationToken: 'verificationToken',
+    verifiedAt: 'verifiedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CustomDomainScalarFieldEnum = (typeof CustomDomainScalarFieldEnum)[keyof typeof CustomDomainScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -35779,6 +39496,20 @@ export namespace Prisma {
    */
   export type ListEnumSmartAlbumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmartAlbumTransactionStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DomainStatus'
+   */
+  export type EnumDomainStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DomainStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DomainStatus[]'
+   */
+  export type ListEnumDomainStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DomainStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -35820,6 +39551,9 @@ export namespace Prisma {
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
     smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
+    notificationPreference?: XOR<NotificationPreferenceNullableScalarRelationFilter, NotificationPreferenceWhereInput> | null
+    fcmTokens?: FcmTokenListRelationFilter
+    customDomain?: XOR<CustomDomainNullableScalarRelationFilter, CustomDomainWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -35855,6 +39589,9 @@ export namespace Prisma {
     storageEvents?: StorageEventOrderByRelationAggregateInput
     driveImportJobs?: DriveImportJobOrderByRelationAggregateInput
     smartAlbumConfig?: SmartAlbumConfigOrderByWithRelationInput
+    notificationPreference?: NotificationPreferenceOrderByWithRelationInput
+    fcmTokens?: FcmTokenOrderByRelationAggregateInput
+    customDomain?: CustomDomainOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -35893,6 +39630,9 @@ export namespace Prisma {
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
     smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
+    notificationPreference?: XOR<NotificationPreferenceNullableScalarRelationFilter, NotificationPreferenceWhereInput> | null
+    fcmTokens?: FcmTokenListRelationFilter
+    customDomain?: XOR<CustomDomainNullableScalarRelationFilter, CustomDomainWhereInput> | null
   }, "id" | "id" | "stripeCustomerId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -38192,6 +41932,217 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"SmartAlbumTransaction"> | Date | string
   }
 
+  export type NotificationPreferenceWhereInput = {
+    AND?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    OR?: NotificationPreferenceWhereInput[]
+    NOT?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    id?: StringFilter<"NotificationPreference"> | string
+    userId?: StringFilter<"NotificationPreference"> | string
+    galleryExpiryBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    galleryExpiryEmail?: BoolFilter<"NotificationPreference"> | boolean
+    storageWarningBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    storageWarningEmail?: BoolFilter<"NotificationPreference"> | boolean
+    billingFailedBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    billingFailedEmail?: BoolFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type NotificationPreferenceOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    galleryExpiryBrowser?: SortOrder
+    galleryExpiryEmail?: SortOrder
+    storageWarningBrowser?: SortOrder
+    storageWarningEmail?: SortOrder
+    billingFailedBrowser?: SortOrder
+    billingFailedEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationPreferenceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    OR?: NotificationPreferenceWhereInput[]
+    NOT?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    galleryExpiryBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    galleryExpiryEmail?: BoolFilter<"NotificationPreference"> | boolean
+    storageWarningBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    storageWarningEmail?: BoolFilter<"NotificationPreference"> | boolean
+    billingFailedBrowser?: BoolFilter<"NotificationPreference"> | boolean
+    billingFailedEmail?: BoolFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type NotificationPreferenceOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    galleryExpiryBrowser?: SortOrder
+    galleryExpiryEmail?: SortOrder
+    storageWarningBrowser?: SortOrder
+    storageWarningEmail?: SortOrder
+    billingFailedBrowser?: SortOrder
+    billingFailedEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: NotificationPreferenceCountOrderByAggregateInput
+    _max?: NotificationPreferenceMaxOrderByAggregateInput
+    _min?: NotificationPreferenceMinOrderByAggregateInput
+  }
+
+  export type NotificationPreferenceScalarWhereWithAggregatesInput = {
+    AND?: NotificationPreferenceScalarWhereWithAggregatesInput | NotificationPreferenceScalarWhereWithAggregatesInput[]
+    OR?: NotificationPreferenceScalarWhereWithAggregatesInput[]
+    NOT?: NotificationPreferenceScalarWhereWithAggregatesInput | NotificationPreferenceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotificationPreference"> | string
+    userId?: StringWithAggregatesFilter<"NotificationPreference"> | string
+    galleryExpiryBrowser?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    galleryExpiryEmail?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    storageWarningBrowser?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    storageWarningEmail?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    billingFailedBrowser?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    billingFailedEmail?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NotificationPreference"> | Date | string
+  }
+
+  export type FcmTokenWhereInput = {
+    AND?: FcmTokenWhereInput | FcmTokenWhereInput[]
+    OR?: FcmTokenWhereInput[]
+    NOT?: FcmTokenWhereInput | FcmTokenWhereInput[]
+    id?: StringFilter<"FcmToken"> | string
+    userId?: StringFilter<"FcmToken"> | string
+    token?: StringFilter<"FcmToken"> | string
+    device?: StringNullableFilter<"FcmToken"> | string | null
+    createdAt?: DateTimeFilter<"FcmToken"> | Date | string
+    updatedAt?: DateTimeFilter<"FcmToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FcmTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    device?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type FcmTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_token?: FcmTokenUserIdTokenCompoundUniqueInput
+    AND?: FcmTokenWhereInput | FcmTokenWhereInput[]
+    OR?: FcmTokenWhereInput[]
+    NOT?: FcmTokenWhereInput | FcmTokenWhereInput[]
+    userId?: StringFilter<"FcmToken"> | string
+    token?: StringFilter<"FcmToken"> | string
+    device?: StringNullableFilter<"FcmToken"> | string | null
+    createdAt?: DateTimeFilter<"FcmToken"> | Date | string
+    updatedAt?: DateTimeFilter<"FcmToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_token">
+
+  export type FcmTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    device?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FcmTokenCountOrderByAggregateInput
+    _max?: FcmTokenMaxOrderByAggregateInput
+    _min?: FcmTokenMinOrderByAggregateInput
+  }
+
+  export type FcmTokenScalarWhereWithAggregatesInput = {
+    AND?: FcmTokenScalarWhereWithAggregatesInput | FcmTokenScalarWhereWithAggregatesInput[]
+    OR?: FcmTokenScalarWhereWithAggregatesInput[]
+    NOT?: FcmTokenScalarWhereWithAggregatesInput | FcmTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FcmToken"> | string
+    userId?: StringWithAggregatesFilter<"FcmToken"> | string
+    token?: StringWithAggregatesFilter<"FcmToken"> | string
+    device?: StringNullableWithAggregatesFilter<"FcmToken"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FcmToken"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FcmToken"> | Date | string
+  }
+
+  export type CustomDomainWhereInput = {
+    AND?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    OR?: CustomDomainWhereInput[]
+    NOT?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    id?: StringFilter<"CustomDomain"> | string
+    userId?: StringFilter<"CustomDomain"> | string
+    domain?: StringFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    verificationToken?: StringFilter<"CustomDomain"> | string
+    verifiedAt?: DateTimeNullableFilter<"CustomDomain"> | Date | string | null
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CustomDomainOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    verificationToken?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CustomDomainWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    domain?: string
+    verificationToken?: string
+    AND?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    OR?: CustomDomainWhereInput[]
+    NOT?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    verifiedAt?: DateTimeNullableFilter<"CustomDomain"> | Date | string | null
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId" | "domain" | "verificationToken">
+
+  export type CustomDomainOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    verificationToken?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CustomDomainCountOrderByAggregateInput
+    _max?: CustomDomainMaxOrderByAggregateInput
+    _min?: CustomDomainMinOrderByAggregateInput
+  }
+
+  export type CustomDomainScalarWhereWithAggregatesInput = {
+    AND?: CustomDomainScalarWhereWithAggregatesInput | CustomDomainScalarWhereWithAggregatesInput[]
+    OR?: CustomDomainScalarWhereWithAggregatesInput[]
+    NOT?: CustomDomainScalarWhereWithAggregatesInput | CustomDomainScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CustomDomain"> | string
+    userId?: StringWithAggregatesFilter<"CustomDomain"> | string
+    domain?: StringWithAggregatesFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusWithAggregatesFilter<"CustomDomain"> | $Enums.DomainStatus
+    verificationToken?: StringWithAggregatesFilter<"CustomDomain"> | string
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"CustomDomain"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -38225,6 +42176,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -38260,6 +42214,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -38295,6 +42252,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -38330,6 +42290,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -40915,6 +44878,234 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationPreferenceCreateInput = {
+    id?: string
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationPreferenceInput
+  }
+
+  export type NotificationPreferenceUncheckedCreateInput = {
+    id?: string
+    userId: string
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationPreferenceNestedInput
+  }
+
+  export type NotificationPreferenceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceCreateManyInput = {
+    id?: string
+    userId: string
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenCreateInput = {
+    id?: string
+    token: string
+    device?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutFcmTokensInput
+  }
+
+  export type FcmTokenUncheckedCreateInput = {
+    id?: string
+    userId: string
+    token: string
+    device?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FcmTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFcmTokensNestedInput
+  }
+
+  export type FcmTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenCreateManyInput = {
+    id?: string
+    userId: string
+    token: string
+    device?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FcmTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainCreateInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    verificationToken?: string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCustomDomainInput
+  }
+
+  export type CustomDomainUncheckedCreateInput = {
+    id?: string
+    userId: string
+    domain: string
+    status?: $Enums.DomainStatus
+    verificationToken?: string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCustomDomainNestedInput
+  }
+
+  export type CustomDomainUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainCreateManyInput = {
+    id?: string
+    userId: string
+    domain: string
+    status?: $Enums.DomainStatus
+    verificationToken?: string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -41052,6 +45243,22 @@ export namespace Prisma {
     isNot?: SmartAlbumConfigWhereInput | null
   }
 
+  export type NotificationPreferenceNullableScalarRelationFilter = {
+    is?: NotificationPreferenceWhereInput | null
+    isNot?: NotificationPreferenceWhereInput | null
+  }
+
+  export type FcmTokenListRelationFilter = {
+    every?: FcmTokenWhereInput
+    some?: FcmTokenWhereInput
+    none?: FcmTokenWhereInput
+  }
+
+  export type CustomDomainNullableScalarRelationFilter = {
+    is?: CustomDomainWhereInput | null
+    isNot?: CustomDomainWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -41078,6 +45285,10 @@ export namespace Prisma {
   }
 
   export type DriveImportJobOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FcmTokenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -43061,6 +47272,127 @@ export namespace Prisma {
     _max?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
   }
 
+  export type NotificationPreferenceCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    galleryExpiryBrowser?: SortOrder
+    galleryExpiryEmail?: SortOrder
+    storageWarningBrowser?: SortOrder
+    storageWarningEmail?: SortOrder
+    billingFailedBrowser?: SortOrder
+    billingFailedEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationPreferenceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    galleryExpiryBrowser?: SortOrder
+    galleryExpiryEmail?: SortOrder
+    storageWarningBrowser?: SortOrder
+    storageWarningEmail?: SortOrder
+    billingFailedBrowser?: SortOrder
+    billingFailedEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationPreferenceMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    galleryExpiryBrowser?: SortOrder
+    galleryExpiryEmail?: SortOrder
+    storageWarningBrowser?: SortOrder
+    storageWarningEmail?: SortOrder
+    billingFailedBrowser?: SortOrder
+    billingFailedEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FcmTokenUserIdTokenCompoundUniqueInput = {
+    userId: string
+    token: string
+  }
+
+  export type FcmTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    device?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FcmTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    device?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FcmTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    device?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDomainStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusFilter<$PrismaModel> | $Enums.DomainStatus
+  }
+
+  export type CustomDomainCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    verificationToken?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomDomainMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    verificationToken?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomDomainMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    verificationToken?: SortOrder
+    verifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDomainStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel> | $Enums.DomainStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDomainStatusFilter<$PrismaModel>
+    _max?: NestedEnumDomainStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -43115,6 +47447,25 @@ export namespace Prisma {
     connect?: SmartAlbumConfigWhereUniqueInput
   }
 
+  export type NotificationPreferenceCreateNestedOneWithoutUserInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    connect?: NotificationPreferenceWhereUniqueInput
+  }
+
+  export type FcmTokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput> | FcmTokenCreateWithoutUserInput[] | FcmTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FcmTokenCreateOrConnectWithoutUserInput | FcmTokenCreateOrConnectWithoutUserInput[]
+    createMany?: FcmTokenCreateManyUserInputEnvelope
+    connect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+  }
+
+  export type CustomDomainCreateNestedOneWithoutUserInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput
+    connect?: CustomDomainWhereUniqueInput
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -43167,6 +47518,25 @@ export namespace Prisma {
     create?: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
     connectOrCreate?: SmartAlbumConfigCreateOrConnectWithoutUserInput
     connect?: SmartAlbumConfigWhereUniqueInput
+  }
+
+  export type NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    connect?: NotificationPreferenceWhereUniqueInput
+  }
+
+  export type FcmTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput> | FcmTokenCreateWithoutUserInput[] | FcmTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FcmTokenCreateOrConnectWithoutUserInput | FcmTokenCreateOrConnectWithoutUserInput[]
+    createMany?: FcmTokenCreateManyUserInputEnvelope
+    connect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+  }
+
+  export type CustomDomainUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput
+    connect?: CustomDomainWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -43317,6 +47687,40 @@ export namespace Prisma {
     update?: XOR<XOR<SmartAlbumConfigUpdateToOneWithWhereWithoutUserInput, SmartAlbumConfigUpdateWithoutUserInput>, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
   }
 
+  export type NotificationPreferenceUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    upsert?: NotificationPreferenceUpsertWithoutUserInput
+    disconnect?: NotificationPreferenceWhereInput | boolean
+    delete?: NotificationPreferenceWhereInput | boolean
+    connect?: NotificationPreferenceWhereUniqueInput
+    update?: XOR<XOR<NotificationPreferenceUpdateToOneWithWhereWithoutUserInput, NotificationPreferenceUpdateWithoutUserInput>, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FcmTokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput> | FcmTokenCreateWithoutUserInput[] | FcmTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FcmTokenCreateOrConnectWithoutUserInput | FcmTokenCreateOrConnectWithoutUserInput[]
+    upsert?: FcmTokenUpsertWithWhereUniqueWithoutUserInput | FcmTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FcmTokenCreateManyUserInputEnvelope
+    set?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    disconnect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    delete?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    connect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    update?: FcmTokenUpdateWithWhereUniqueWithoutUserInput | FcmTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FcmTokenUpdateManyWithWhereWithoutUserInput | FcmTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FcmTokenScalarWhereInput | FcmTokenScalarWhereInput[]
+  }
+
+  export type CustomDomainUpdateOneWithoutUserNestedInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput
+    upsert?: CustomDomainUpsertWithoutUserInput
+    disconnect?: CustomDomainWhereInput | boolean
+    delete?: CustomDomainWhereInput | boolean
+    connect?: CustomDomainWhereUniqueInput
+    update?: XOR<XOR<CustomDomainUpdateToOneWithWhereWithoutUserInput, CustomDomainUpdateWithoutUserInput>, CustomDomainUncheckedUpdateWithoutUserInput>
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -43419,6 +47823,40 @@ export namespace Prisma {
     delete?: SmartAlbumConfigWhereInput | boolean
     connect?: SmartAlbumConfigWhereUniqueInput
     update?: XOR<XOR<SmartAlbumConfigUpdateToOneWithWhereWithoutUserInput, SmartAlbumConfigUpdateWithoutUserInput>, SmartAlbumConfigUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    upsert?: NotificationPreferenceUpsertWithoutUserInput
+    disconnect?: NotificationPreferenceWhereInput | boolean
+    delete?: NotificationPreferenceWhereInput | boolean
+    connect?: NotificationPreferenceWhereUniqueInput
+    update?: XOR<XOR<NotificationPreferenceUpdateToOneWithWhereWithoutUserInput, NotificationPreferenceUpdateWithoutUserInput>, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FcmTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput> | FcmTokenCreateWithoutUserInput[] | FcmTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FcmTokenCreateOrConnectWithoutUserInput | FcmTokenCreateOrConnectWithoutUserInput[]
+    upsert?: FcmTokenUpsertWithWhereUniqueWithoutUserInput | FcmTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FcmTokenCreateManyUserInputEnvelope
+    set?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    disconnect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    delete?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    connect?: FcmTokenWhereUniqueInput | FcmTokenWhereUniqueInput[]
+    update?: FcmTokenUpdateWithWhereUniqueWithoutUserInput | FcmTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FcmTokenUpdateManyWithWhereWithoutUserInput | FcmTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FcmTokenScalarWhereInput | FcmTokenScalarWhereInput[]
+  }
+
+  export type CustomDomainUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput
+    upsert?: CustomDomainUpsertWithoutUserInput
+    disconnect?: CustomDomainWhereInput | boolean
+    delete?: CustomDomainWhereInput | boolean
+    connect?: CustomDomainWhereUniqueInput
+    update?: XOR<XOR<CustomDomainUpdateToOneWithWhereWithoutUserInput, CustomDomainUpdateWithoutUserInput>, CustomDomainUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -44790,6 +49228,52 @@ export namespace Prisma {
     update?: XOR<XOR<SmartAlbumSubmissionUpdateToOneWithWhereWithoutTransactionInput, SmartAlbumSubmissionUpdateWithoutTransactionInput>, SmartAlbumSubmissionUncheckedUpdateWithoutTransactionInput>
   }
 
+  export type UserCreateNestedOneWithoutNotificationPreferenceInput = {
+    create?: XOR<UserCreateWithoutNotificationPreferenceInput, UserUncheckedCreateWithoutNotificationPreferenceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationPreferenceInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationPreferenceNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationPreferenceInput, UserUncheckedCreateWithoutNotificationPreferenceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationPreferenceInput
+    upsert?: UserUpsertWithoutNotificationPreferenceInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationPreferenceInput, UserUpdateWithoutNotificationPreferenceInput>, UserUncheckedUpdateWithoutNotificationPreferenceInput>
+  }
+
+  export type UserCreateNestedOneWithoutFcmTokensInput = {
+    create?: XOR<UserCreateWithoutFcmTokensInput, UserUncheckedCreateWithoutFcmTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFcmTokensInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFcmTokensNestedInput = {
+    create?: XOR<UserCreateWithoutFcmTokensInput, UserUncheckedCreateWithoutFcmTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFcmTokensInput
+    upsert?: UserUpsertWithoutFcmTokensInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFcmTokensInput, UserUpdateWithoutFcmTokensInput>, UserUncheckedUpdateWithoutFcmTokensInput>
+  }
+
+  export type UserCreateNestedOneWithoutCustomDomainInput = {
+    create?: XOR<UserCreateWithoutCustomDomainInput, UserUncheckedCreateWithoutCustomDomainInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustomDomainInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDomainStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DomainStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutCustomDomainNestedInput = {
+    create?: XOR<UserCreateWithoutCustomDomainInput, UserUncheckedCreateWithoutCustomDomainInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustomDomainInput
+    upsert?: UserUpsertWithoutCustomDomainInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCustomDomainInput, UserUpdateWithoutCustomDomainInput>, UserUncheckedUpdateWithoutCustomDomainInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -45308,6 +49792,23 @@ export namespace Prisma {
     _max?: NestedEnumSmartAlbumTransactionStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDomainStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusFilter<$PrismaModel> | $Enums.DomainStatus
+  }
+
+  export type NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel> | $Enums.DomainStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDomainStatusFilter<$PrismaModel>
+    _max?: NestedEnumDomainStatusFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id?: string
     expiresAt: Date | string
@@ -45637,6 +50138,86 @@ export namespace Prisma {
     create: XOR<SmartAlbumConfigCreateWithoutUserInput, SmartAlbumConfigUncheckedCreateWithoutUserInput>
   }
 
+  export type NotificationPreferenceCreateWithoutUserInput = {
+    id?: string
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceUncheckedCreateWithoutUserInput = {
+    id?: string
+    galleryExpiryBrowser?: boolean
+    galleryExpiryEmail?: boolean
+    storageWarningBrowser?: boolean
+    storageWarningEmail?: boolean
+    billingFailedBrowser?: boolean
+    billingFailedEmail?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceCreateOrConnectWithoutUserInput = {
+    where: NotificationPreferenceWhereUniqueInput
+    create: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+  }
+
+  export type FcmTokenCreateWithoutUserInput = {
+    id?: string
+    token: string
+    device?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FcmTokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    device?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FcmTokenCreateOrConnectWithoutUserInput = {
+    where: FcmTokenWhereUniqueInput
+    create: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type FcmTokenCreateManyUserInputEnvelope = {
+    data: FcmTokenCreateManyUserInput | FcmTokenCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CustomDomainCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    verificationToken?: string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUncheckedCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    verificationToken?: string
+    verifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainCreateOrConnectWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -45922,6 +50503,100 @@ export namespace Prisma {
     products?: SmartAlbumProductUncheckedUpdateManyWithoutConfigNestedInput
   }
 
+  export type NotificationPreferenceUpsertWithoutUserInput = {
+    update: XOR<NotificationPreferenceUpdateWithoutUserInput, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    where?: NotificationPreferenceWhereInput
+  }
+
+  export type NotificationPreferenceUpdateToOneWithWhereWithoutUserInput = {
+    where?: NotificationPreferenceWhereInput
+    data: XOR<NotificationPreferenceUpdateWithoutUserInput, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationPreferenceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    galleryExpiryBrowser?: BoolFieldUpdateOperationsInput | boolean
+    galleryExpiryEmail?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningBrowser?: BoolFieldUpdateOperationsInput | boolean
+    storageWarningEmail?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedBrowser?: BoolFieldUpdateOperationsInput | boolean
+    billingFailedEmail?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: FcmTokenWhereUniqueInput
+    update: XOR<FcmTokenUpdateWithoutUserInput, FcmTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<FcmTokenCreateWithoutUserInput, FcmTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type FcmTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: FcmTokenWhereUniqueInput
+    data: XOR<FcmTokenUpdateWithoutUserInput, FcmTokenUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FcmTokenUpdateManyWithWhereWithoutUserInput = {
+    where: FcmTokenScalarWhereInput
+    data: XOR<FcmTokenUpdateManyMutationInput, FcmTokenUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FcmTokenScalarWhereInput = {
+    AND?: FcmTokenScalarWhereInput | FcmTokenScalarWhereInput[]
+    OR?: FcmTokenScalarWhereInput[]
+    NOT?: FcmTokenScalarWhereInput | FcmTokenScalarWhereInput[]
+    id?: StringFilter<"FcmToken"> | string
+    userId?: StringFilter<"FcmToken"> | string
+    token?: StringFilter<"FcmToken"> | string
+    device?: StringNullableFilter<"FcmToken"> | string | null
+    createdAt?: DateTimeFilter<"FcmToken"> | Date | string
+    updatedAt?: DateTimeFilter<"FcmToken"> | Date | string
+  }
+
+  export type CustomDomainUpsertWithoutUserInput = {
+    update: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+    where?: CustomDomainWhereInput
+  }
+
+  export type CustomDomainUpdateToOneWithWhereWithoutUserInput = {
+    where?: CustomDomainWhereInput
+    data: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CustomDomainUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    verificationToken?: StringFieldUpdateOperationsInput | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -45954,6 +50629,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -45988,6 +50666,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -46038,6 +50719,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -46072,6 +50756,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -46106,6 +50793,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -46140,6 +50830,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -46190,6 +50883,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -46224,6 +50920,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -46258,6 +50957,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -46292,6 +50994,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -46342,6 +51047,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -46376,6 +51084,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
@@ -46410,6 +51121,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
@@ -46444,6 +51158,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -46494,6 +51211,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
@@ -46528,6 +51248,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
@@ -46562,6 +51285,9 @@ export namespace Prisma {
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
@@ -46596,6 +51322,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -47007,6 +51736,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
@@ -47041,6 +51773,9 @@ export namespace Prisma {
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -48020,6 +52755,9 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStorageEventsInput = {
@@ -48054,6 +52792,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStorageEventsInput = {
@@ -48104,6 +52845,9 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStorageEventsInput = {
@@ -48138,6 +52882,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type GalleryCreateWithoutAlbumsInput = {
@@ -49622,6 +54369,9 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDriveImportJobsInput = {
@@ -49656,6 +54406,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDriveImportJobsInput = {
@@ -49748,6 +54501,9 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDriveImportJobsInput = {
@@ -49782,6 +54538,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type DriveImportItemUpsertWithWhereUniqueWithoutJobInput = {
@@ -50204,6 +54963,9 @@ export namespace Prisma {
     galleries?: GalleryCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSmartAlbumConfigInput = {
@@ -50238,6 +55000,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSmartAlbumConfigInput = {
@@ -50342,6 +55107,9 @@ export namespace Prisma {
     galleries?: GalleryUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSmartAlbumConfigInput = {
@@ -50376,6 +55144,9 @@ export namespace Prisma {
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput = {
@@ -51071,6 +55842,498 @@ export namespace Prisma {
     exportUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type UserCreateWithoutNotificationPreferenceInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationPreferenceInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationPreferenceInput, UserUncheckedCreateWithoutNotificationPreferenceInput>
+  }
+
+  export type UserUpsertWithoutNotificationPreferenceInput = {
+    update: XOR<UserUpdateWithoutNotificationPreferenceInput, UserUncheckedUpdateWithoutNotificationPreferenceInput>
+    create: XOR<UserCreateWithoutNotificationPreferenceInput, UserUncheckedCreateWithoutNotificationPreferenceInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationPreferenceInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationPreferenceInput, UserUncheckedUpdateWithoutNotificationPreferenceInput>
+  }
+
+  export type UserUpdateWithoutNotificationPreferenceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutFcmTokensInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFcmTokensInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFcmTokensInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFcmTokensInput, UserUncheckedCreateWithoutFcmTokensInput>
+  }
+
+  export type UserUpsertWithoutFcmTokensInput = {
+    update: XOR<UserUpdateWithoutFcmTokensInput, UserUncheckedUpdateWithoutFcmTokensInput>
+    create: XOR<UserCreateWithoutFcmTokensInput, UserUncheckedCreateWithoutFcmTokensInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFcmTokensInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFcmTokensInput, UserUncheckedUpdateWithoutFcmTokensInput>
+  }
+
+  export type UserUpdateWithoutFcmTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFcmTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCustomDomainInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCustomDomainInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCustomDomainInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCustomDomainInput, UserUncheckedCreateWithoutCustomDomainInput>
+  }
+
+  export type UserUpsertWithoutCustomDomainInput = {
+    update: XOR<UserUpdateWithoutCustomDomainInput, UserUncheckedUpdateWithoutCustomDomainInput>
+    create: XOR<UserCreateWithoutCustomDomainInput, UserUncheckedCreateWithoutCustomDomainInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCustomDomainInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCustomDomainInput, UserUncheckedUpdateWithoutCustomDomainInput>
+  }
+
+  export type UserUpdateWithoutCustomDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCustomDomainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type SessionCreateManyUserInput = {
     id?: string
     expiresAt: Date | string
@@ -51165,6 +56428,14 @@ export namespace Prisma {
     errorMessage?: string | null
     startedAt?: Date | string | null
     completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FcmTokenCreateManyUserInput = {
+    id?: string
+    token: string
+    device?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -51477,6 +56748,30 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FcmTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    device?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

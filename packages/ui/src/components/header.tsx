@@ -16,6 +16,7 @@ const dashboardNavItems = [
   { title: "Overview", href: "/" },
   { title: "Galleries", href: "/galleries" },
   { title: "Billing", href: "/billing" },
+  { title: "Settings", href: "/settings" },
 ];
 
 const Header = async ({ main }: Props) => {

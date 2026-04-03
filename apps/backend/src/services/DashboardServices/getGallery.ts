@@ -53,7 +53,6 @@ export const getGallery = async (userId: string, galleryId: string) => {
       downloadWebMaxPx: gallery.downloadWebMaxPx,
       downloadHighResMaxPx: gallery.downloadHighResMaxPx,
       downloadLimit: gallery.downloadLimit ?? null,
-      downloadContactsOnly: gallery.downloadContactsOnly,
       // Favorites settings
       favoritesEnabled: gallery.favoritesEnabled,
       favoriteNotesEnabled: gallery.favoriteNotesEnabled,

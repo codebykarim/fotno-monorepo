@@ -64,16 +64,6 @@ export type UploadSession = $Result.DefaultSelection<Prisma.$UploadSessionPayloa
  */
 export type StorageEvent = $Result.DefaultSelection<Prisma.$StorageEventPayload>
 /**
- * Model Client
- * 
- */
-export type Client = $Result.DefaultSelection<Prisma.$ClientPayload>
-/**
- * Model GalleryClient
- * 
- */
-export type GalleryClient = $Result.DefaultSelection<Prisma.$GalleryClientPayload>
-/**
  * Model Album
  * 
  */
@@ -569,26 +559,6 @@ export class PrismaClient<
     * ```
     */
   get storageEvent(): Prisma.StorageEventDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.client`: Exposes CRUD operations for the **Client** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Clients
-    * const clients = await prisma.client.findMany()
-    * ```
-    */
-  get client(): Prisma.ClientDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.galleryClient`: Exposes CRUD operations for the **GalleryClient** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more GalleryClients
-    * const galleryClients = await prisma.galleryClient.findMany()
-    * ```
-    */
-  get galleryClient(): Prisma.GalleryClientDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.album`: Exposes CRUD operations for the **Album** model.
@@ -1193,8 +1163,6 @@ export namespace Prisma {
     Photo: 'Photo',
     UploadSession: 'UploadSession',
     StorageEvent: 'StorageEvent',
-    Client: 'Client',
-    GalleryClient: 'GalleryClient',
     Album: 'Album',
     AlbumPhoto: 'AlbumPhoto',
     GalleryComment: 'GalleryComment',
@@ -1226,7 +1194,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "client" | "galleryClient" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1967,154 +1935,6 @@ export namespace Prisma {
           count: {
             args: Prisma.StorageEventCountArgs<ExtArgs>
             result: $Utils.Optional<StorageEventCountAggregateOutputType> | number
-          }
-        }
-      }
-      Client: {
-        payload: Prisma.$ClientPayload<ExtArgs>
-        fields: Prisma.ClientFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ClientFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ClientFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          findFirst: {
-            args: Prisma.ClientFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ClientFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          findMany: {
-            args: Prisma.ClientFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
-          }
-          create: {
-            args: Prisma.ClientCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          createMany: {
-            args: Prisma.ClientCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.ClientCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
-          }
-          delete: {
-            args: Prisma.ClientDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          update: {
-            args: Prisma.ClientUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          deleteMany: {
-            args: Prisma.ClientDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ClientUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.ClientUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>[]
-          }
-          upsert: {
-            args: Prisma.ClientUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ClientPayload>
-          }
-          aggregate: {
-            args: Prisma.ClientAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateClient>
-          }
-          groupBy: {
-            args: Prisma.ClientGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ClientGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ClientCountArgs<ExtArgs>
-            result: $Utils.Optional<ClientCountAggregateOutputType> | number
-          }
-        }
-      }
-      GalleryClient: {
-        payload: Prisma.$GalleryClientPayload<ExtArgs>
-        fields: Prisma.GalleryClientFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.GalleryClientFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.GalleryClientFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          findFirst: {
-            args: Prisma.GalleryClientFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.GalleryClientFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          findMany: {
-            args: Prisma.GalleryClientFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
-          }
-          create: {
-            args: Prisma.GalleryClientCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          createMany: {
-            args: Prisma.GalleryClientCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.GalleryClientCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
-          }
-          delete: {
-            args: Prisma.GalleryClientDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          update: {
-            args: Prisma.GalleryClientUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          deleteMany: {
-            args: Prisma.GalleryClientDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.GalleryClientUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.GalleryClientUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>[]
-          }
-          upsert: {
-            args: Prisma.GalleryClientUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GalleryClientPayload>
-          }
-          aggregate: {
-            args: Prisma.GalleryClientAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateGalleryClient>
-          }
-          groupBy: {
-            args: Prisma.GalleryClientGroupByArgs<ExtArgs>
-            result: $Utils.Optional<GalleryClientGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.GalleryClientCountArgs<ExtArgs>
-            result: $Utils.Optional<GalleryClientCountAggregateOutputType> | number
           }
         }
       }
@@ -3420,8 +3240,6 @@ export namespace Prisma {
     photo?: PhotoOmit
     uploadSession?: UploadSessionOmit
     storageEvent?: StorageEventOmit
-    client?: ClientOmit
-    galleryClient?: GalleryClientOmit
     album?: AlbumOmit
     albumPhoto?: AlbumPhotoOmit
     galleryComment?: GalleryCommentOmit
@@ -3522,7 +3340,6 @@ export namespace Prisma {
     accounts: number
     subscriptions: number
     galleries: number
-    clients: number
     storageEvents: number
     driveImportJobs: number
   }
@@ -3532,7 +3349,6 @@ export namespace Prisma {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
     galleries?: boolean | UserCountOutputTypeCountGalleriesArgs
-    clients?: boolean | UserCountOutputTypeCountClientsArgs
     storageEvents?: boolean | UserCountOutputTypeCountStorageEventsArgs
     driveImportJobs?: boolean | UserCountOutputTypeCountDriveImportJobsArgs
   }
@@ -3579,13 +3395,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ClientWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountStorageEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StorageEventWhereInput
   }
@@ -3605,7 +3414,6 @@ export namespace Prisma {
   export type GalleryCountOutputType = {
     photos: number
     albums: number
-    clients: number
     comments: number
     driveImportItems: number
     favorites: number
@@ -3617,7 +3425,6 @@ export namespace Prisma {
   export type GalleryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     photos?: boolean | GalleryCountOutputTypeCountPhotosArgs
     albums?: boolean | GalleryCountOutputTypeCountAlbumsArgs
-    clients?: boolean | GalleryCountOutputTypeCountClientsArgs
     comments?: boolean | GalleryCountOutputTypeCountCommentsArgs
     driveImportItems?: boolean | GalleryCountOutputTypeCountDriveImportItemsArgs
     favorites?: boolean | GalleryCountOutputTypeCountFavoritesArgs
@@ -3649,13 +3456,6 @@ export namespace Prisma {
    */
   export type GalleryCountOutputTypeCountAlbumsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AlbumWhereInput
-  }
-
-  /**
-   * GalleryCountOutputType without action
-   */
-  export type GalleryCountOutputTypeCountClientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GalleryClientWhereInput
   }
 
   /**
@@ -3756,37 +3556,6 @@ export namespace Prisma {
    */
   export type PhotoCountOutputTypeCountFavoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GalleryFavoriteWhereInput
-  }
-
-
-  /**
-   * Count Type ClientCountOutputType
-   */
-
-  export type ClientCountOutputType = {
-    galleries: number
-  }
-
-  export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    galleries?: boolean | ClientCountOutputTypeCountGalleriesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ClientCountOutputType without action
-   */
-  export type ClientCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ClientCountOutputType
-     */
-    select?: ClientCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ClientCountOutputType without action
-   */
-  export type ClientCountOutputTypeCountGalleriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GalleryClientWhereInput
   }
 
 
@@ -4382,7 +4151,6 @@ export namespace Prisma {
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
-    clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
@@ -4477,7 +4245,6 @@ export namespace Prisma {
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     userOnboarding?: boolean | User$userOnboardingArgs<ExtArgs>
     galleries?: boolean | User$galleriesArgs<ExtArgs>
-    clients?: boolean | User$clientsArgs<ExtArgs>
     storageEvents?: boolean | User$storageEventsArgs<ExtArgs>
     driveImportJobs?: boolean | User$driveImportJobsArgs<ExtArgs>
     smartAlbumConfig?: boolean | User$smartAlbumConfigArgs<ExtArgs>
@@ -4494,7 +4261,6 @@ export namespace Prisma {
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       userOnboarding: Prisma.$UserOnboardingPayload<ExtArgs> | null
       galleries: Prisma.$GalleryPayload<ExtArgs>[]
-      clients: Prisma.$ClientPayload<ExtArgs>[]
       storageEvents: Prisma.$StorageEventPayload<ExtArgs>[]
       driveImportJobs: Prisma.$DriveImportJobPayload<ExtArgs>[]
       smartAlbumConfig: Prisma.$SmartAlbumConfigPayload<ExtArgs> | null
@@ -4923,7 +4689,6 @@ export namespace Prisma {
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userOnboarding<T extends User$userOnboardingArgs<ExtArgs> = {}>(args?: Subset<T, User$userOnboardingArgs<ExtArgs>>): Prisma__UserOnboardingClient<$Result.GetResult<Prisma.$UserOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     galleries<T extends User$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, User$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    clients<T extends User$clientsArgs<ExtArgs> = {}>(args?: Subset<T, User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     storageEvents<T extends User$storageEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$storageEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorageEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     driveImportJobs<T extends User$driveImportJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$driveImportJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     smartAlbumConfig<T extends User$smartAlbumConfigArgs<ExtArgs> = {}>(args?: Subset<T, User$smartAlbumConfigArgs<ExtArgs>>): Prisma__SmartAlbumConfigClient<$Result.GetResult<Prisma.$SmartAlbumConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -5485,30 +5250,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GalleryScalarFieldEnum | GalleryScalarFieldEnum[]
-  }
-
-  /**
-   * User.clients
-   */
-  export type User$clientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    where?: ClientWhereInput
-    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
-    cursor?: ClientWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
   }
 
   /**
@@ -11359,7 +11100,6 @@ export namespace Prisma {
     downloadWebMaxPx: number | null
     downloadHighResMaxPx: number | null
     downloadLimit: number | null
-    downloadContactsOnly: boolean | null
     favoritesEnabled: boolean | null
     favoriteNotesEnabled: boolean | null
     createdAt: Date | null
@@ -11390,7 +11130,6 @@ export namespace Prisma {
     downloadWebMaxPx: number | null
     downloadHighResMaxPx: number | null
     downloadLimit: number | null
-    downloadContactsOnly: boolean | null
     favoritesEnabled: boolean | null
     favoriteNotesEnabled: boolean | null
     createdAt: Date | null
@@ -11422,7 +11161,6 @@ export namespace Prisma {
     downloadWebMaxPx: number
     downloadHighResMaxPx: number
     downloadLimit: number
-    downloadContactsOnly: number
     favoritesEnabled: number
     favoriteNotesEnabled: number
     createdAt: number
@@ -11467,7 +11205,6 @@ export namespace Prisma {
     downloadWebMaxPx?: true
     downloadHighResMaxPx?: true
     downloadLimit?: true
-    downloadContactsOnly?: true
     favoritesEnabled?: true
     favoriteNotesEnabled?: true
     createdAt?: true
@@ -11498,7 +11235,6 @@ export namespace Prisma {
     downloadWebMaxPx?: true
     downloadHighResMaxPx?: true
     downloadLimit?: true
-    downloadContactsOnly?: true
     favoritesEnabled?: true
     favoriteNotesEnabled?: true
     createdAt?: true
@@ -11530,7 +11266,6 @@ export namespace Prisma {
     downloadWebMaxPx?: true
     downloadHighResMaxPx?: true
     downloadLimit?: true
-    downloadContactsOnly?: true
     favoritesEnabled?: true
     favoriteNotesEnabled?: true
     createdAt?: true
@@ -11649,7 +11384,6 @@ export namespace Prisma {
     downloadWebMaxPx: number
     downloadHighResMaxPx: number
     downloadLimit: number | null
-    downloadContactsOnly: boolean
     favoritesEnabled: boolean
     favoriteNotesEnabled: boolean
     createdAt: Date
@@ -11700,7 +11434,6 @@ export namespace Prisma {
     downloadWebMaxPx?: boolean
     downloadHighResMaxPx?: boolean
     downloadLimit?: boolean
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: boolean
@@ -11709,7 +11442,6 @@ export namespace Prisma {
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
     photos?: boolean | Gallery$photosArgs<ExtArgs>
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
-    clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
@@ -11744,7 +11476,6 @@ export namespace Prisma {
     downloadWebMaxPx?: boolean
     downloadHighResMaxPx?: boolean
     downloadLimit?: boolean
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: boolean
@@ -11778,7 +11509,6 @@ export namespace Prisma {
     downloadWebMaxPx?: boolean
     downloadHighResMaxPx?: boolean
     downloadLimit?: boolean
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: boolean
@@ -11812,20 +11542,18 @@ export namespace Prisma {
     downloadWebMaxPx?: boolean
     downloadHighResMaxPx?: boolean
     downloadLimit?: boolean
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "categoryTags" | "expiresAt" | "slideshowEnabled" | "socialSharingEnabled" | "emailRegistration" | "language" | "downloadEnabled" | "downloadPin" | "downloadSizeOriginal" | "downloadSizeHighRes" | "downloadSizeWeb" | "downloadWebMaxPx" | "downloadHighResMaxPx" | "downloadLimit" | "downloadContactsOnly" | "favoritesEnabled" | "favoriteNotesEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
+  export type GalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "slug" | "eventDate" | "deadline" | "coverPhotoId" | "passwordHash" | "shareToken" | "isPublished" | "categoryTags" | "expiresAt" | "slideshowEnabled" | "socialSharingEnabled" | "emailRegistration" | "language" | "downloadEnabled" | "downloadPin" | "downloadSizeOriginal" | "downloadSizeHighRes" | "downloadSizeWeb" | "downloadWebMaxPx" | "downloadHighResMaxPx" | "downloadLimit" | "favoritesEnabled" | "favoriteNotesEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["gallery"]>
   export type GalleryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     coverPhoto?: boolean | Gallery$coverPhotoArgs<ExtArgs>
     photos?: boolean | Gallery$photosArgs<ExtArgs>
     albums?: boolean | Gallery$albumsArgs<ExtArgs>
-    clients?: boolean | Gallery$clientsArgs<ExtArgs>
     comments?: boolean | Gallery$commentsArgs<ExtArgs>
     driveImportItems?: boolean | Gallery$driveImportItemsArgs<ExtArgs>
     favorites?: boolean | Gallery$favoritesArgs<ExtArgs>
@@ -11850,7 +11578,6 @@ export namespace Prisma {
       coverPhoto: Prisma.$PhotoPayload<ExtArgs> | null
       photos: Prisma.$PhotoPayload<ExtArgs>[]
       albums: Prisma.$AlbumPayload<ExtArgs>[]
-      clients: Prisma.$GalleryClientPayload<ExtArgs>[]
       comments: Prisma.$GalleryCommentPayload<ExtArgs>[]
       driveImportItems: Prisma.$DriveImportItemPayload<ExtArgs>[]
       favorites: Prisma.$GalleryFavoritePayload<ExtArgs>[]
@@ -11883,7 +11610,6 @@ export namespace Prisma {
       downloadWebMaxPx: number
       downloadHighResMaxPx: number
       downloadLimit: number | null
-      downloadContactsOnly: boolean
       favoritesEnabled: boolean
       favoriteNotesEnabled: boolean
       createdAt: Date
@@ -12286,7 +12012,6 @@ export namespace Prisma {
     coverPhoto<T extends Gallery$coverPhotoArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$coverPhotoArgs<ExtArgs>>): Prisma__PhotoClient<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     photos<T extends Gallery$photosArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$photosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     albums<T extends Gallery$albumsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$albumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    clients<T extends Gallery$clientsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Gallery$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     driveImportItems<T extends Gallery$driveImportItemsArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$driveImportItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriveImportItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favorites<T extends Gallery$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, Gallery$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12346,7 +12071,6 @@ export namespace Prisma {
     readonly downloadWebMaxPx: FieldRef<"Gallery", 'Int'>
     readonly downloadHighResMaxPx: FieldRef<"Gallery", 'Int'>
     readonly downloadLimit: FieldRef<"Gallery", 'Int'>
-    readonly downloadContactsOnly: FieldRef<"Gallery", 'Boolean'>
     readonly favoritesEnabled: FieldRef<"Gallery", 'Boolean'>
     readonly favoriteNotesEnabled: FieldRef<"Gallery", 'Boolean'>
     readonly createdAt: FieldRef<"Gallery", 'DateTime'>
@@ -12816,30 +12540,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AlbumScalarFieldEnum | AlbumScalarFieldEnum[]
-  }
-
-  /**
-   * Gallery.clients
-   */
-  export type Gallery$clientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    where?: GalleryClientWhereInput
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    cursor?: GalleryClientWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
   }
 
   /**
@@ -16766,2170 +16466,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: StorageEventInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Client
-   */
-
-  export type AggregateClient = {
-    _count: ClientCountAggregateOutputType | null
-    _min: ClientMinAggregateOutputType | null
-    _max: ClientMaxAggregateOutputType | null
-  }
-
-  export type ClientMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    email: string | null
-    phone: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ClientMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    email: string | null
-    phone: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ClientCountAggregateOutputType = {
-    id: number
-    userId: number
-    name: number
-    email: number
-    phone: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ClientMinAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    email?: true
-    phone?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ClientMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    email?: true
-    phone?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ClientCountAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    email?: true
-    phone?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Client to aggregate.
-     */
-    where?: ClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Clients to fetch.
-     */
-    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Clients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Clients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Clients
-    **/
-    _count?: true | ClientCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ClientMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ClientMaxAggregateInputType
-  }
-
-  export type GetClientAggregateType<T extends ClientAggregateArgs> = {
-        [P in keyof T & keyof AggregateClient]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateClient[P]>
-      : GetScalarType<T[P], AggregateClient[P]>
-  }
-
-
-
-
-  export type ClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ClientWhereInput
-    orderBy?: ClientOrderByWithAggregationInput | ClientOrderByWithAggregationInput[]
-    by: ClientScalarFieldEnum[] | ClientScalarFieldEnum
-    having?: ClientScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ClientCountAggregateInputType | true
-    _min?: ClientMinAggregateInputType
-    _max?: ClientMaxAggregateInputType
-  }
-
-  export type ClientGroupByOutputType = {
-    id: string
-    userId: string
-    name: string
-    email: string
-    phone: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ClientCountAggregateOutputType | null
-    _min: ClientMinAggregateOutputType | null
-    _max: ClientMaxAggregateOutputType | null
-  }
-
-  type GetClientGroupByPayload<T extends ClientGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ClientGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ClientGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ClientGroupByOutputType[P]>
-            : GetScalarType<T[P], ClientGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    email?: boolean
-    phone?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    galleries?: boolean | Client$galleriesArgs<ExtArgs>
-    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["client"]>
-
-  export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    email?: boolean
-    phone?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["client"]>
-
-  export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    email?: boolean
-    phone?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["client"]>
-
-  export type ClientSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    email?: boolean
-    phone?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "email" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["client"]>
-  export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    galleries?: boolean | Client$galleriesArgs<ExtArgs>
-    _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type ClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $ClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Client"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      galleries: Prisma.$GalleryClientPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      name: string
-      email: string
-      phone: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["client"]>
-    composites: {}
-  }
-
-  type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
-
-  type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ClientCountAggregateInputType | true
-    }
-
-  export interface ClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Client'], meta: { name: 'Client' } }
-    /**
-     * Find zero or one Client that matches the filter.
-     * @param {ClientFindUniqueArgs} args - Arguments to find a Client
-     * @example
-     * // Get one Client
-     * const client = await prisma.client.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ClientFindUniqueArgs>(args: SelectSubset<T, ClientFindUniqueArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Client that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ClientFindUniqueOrThrowArgs} args - Arguments to find a Client
-     * @example
-     * // Get one Client
-     * const client = await prisma.client.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ClientFindUniqueOrThrowArgs>(args: SelectSubset<T, ClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Client that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientFindFirstArgs} args - Arguments to find a Client
-     * @example
-     * // Get one Client
-     * const client = await prisma.client.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ClientFindFirstArgs>(args?: SelectSubset<T, ClientFindFirstArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Client that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientFindFirstOrThrowArgs} args - Arguments to find a Client
-     * @example
-     * // Get one Client
-     * const client = await prisma.client.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ClientFindFirstOrThrowArgs>(args?: SelectSubset<T, ClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Clients that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Clients
-     * const clients = await prisma.client.findMany()
-     * 
-     * // Get first 10 Clients
-     * const clients = await prisma.client.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const clientWithIdOnly = await prisma.client.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ClientFindManyArgs>(args?: SelectSubset<T, ClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Client.
-     * @param {ClientCreateArgs} args - Arguments to create a Client.
-     * @example
-     * // Create one Client
-     * const Client = await prisma.client.create({
-     *   data: {
-     *     // ... data to create a Client
-     *   }
-     * })
-     * 
-     */
-    create<T extends ClientCreateArgs>(args: SelectSubset<T, ClientCreateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Clients.
-     * @param {ClientCreateManyArgs} args - Arguments to create many Clients.
-     * @example
-     * // Create many Clients
-     * const client = await prisma.client.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ClientCreateManyArgs>(args?: SelectSubset<T, ClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Clients and returns the data saved in the database.
-     * @param {ClientCreateManyAndReturnArgs} args - Arguments to create many Clients.
-     * @example
-     * // Create many Clients
-     * const client = await prisma.client.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Clients and only return the `id`
-     * const clientWithIdOnly = await prisma.client.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends ClientCreateManyAndReturnArgs>(args?: SelectSubset<T, ClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Client.
-     * @param {ClientDeleteArgs} args - Arguments to delete one Client.
-     * @example
-     * // Delete one Client
-     * const Client = await prisma.client.delete({
-     *   where: {
-     *     // ... filter to delete one Client
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ClientDeleteArgs>(args: SelectSubset<T, ClientDeleteArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Client.
-     * @param {ClientUpdateArgs} args - Arguments to update one Client.
-     * @example
-     * // Update one Client
-     * const client = await prisma.client.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ClientUpdateArgs>(args: SelectSubset<T, ClientUpdateArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Clients.
-     * @param {ClientDeleteManyArgs} args - Arguments to filter Clients to delete.
-     * @example
-     * // Delete a few Clients
-     * const { count } = await prisma.client.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ClientDeleteManyArgs>(args?: SelectSubset<T, ClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Clients.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Clients
-     * const client = await prisma.client.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ClientUpdateManyArgs>(args: SelectSubset<T, ClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Clients and returns the data updated in the database.
-     * @param {ClientUpdateManyAndReturnArgs} args - Arguments to update many Clients.
-     * @example
-     * // Update many Clients
-     * const client = await prisma.client.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Clients and only return the `id`
-     * const clientWithIdOnly = await prisma.client.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends ClientUpdateManyAndReturnArgs>(args: SelectSubset<T, ClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Client.
-     * @param {ClientUpsertArgs} args - Arguments to update or create a Client.
-     * @example
-     * // Update or create a Client
-     * const client = await prisma.client.upsert({
-     *   create: {
-     *     // ... data to create a Client
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Client we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ClientUpsertArgs>(args: SelectSubset<T, ClientUpsertArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Clients.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientCountArgs} args - Arguments to filter Clients to count.
-     * @example
-     * // Count the number of Clients
-     * const count = await prisma.client.count({
-     *   where: {
-     *     // ... the filter for the Clients we want to count
-     *   }
-     * })
-    **/
-    count<T extends ClientCountArgs>(
-      args?: Subset<T, ClientCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ClientCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Client.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ClientAggregateArgs>(args: Subset<T, ClientAggregateArgs>): Prisma.PrismaPromise<GetClientAggregateType<T>>
-
-    /**
-     * Group by Client.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ClientGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ClientGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ClientGroupByArgs['orderBy'] }
-        : { orderBy?: ClientGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Client model
-   */
-  readonly fields: ClientFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Client.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    galleries<T extends Client$galleriesArgs<ExtArgs> = {}>(args?: Subset<T, Client$galleriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Client model
-   */
-  interface ClientFieldRefs {
-    readonly id: FieldRef<"Client", 'String'>
-    readonly userId: FieldRef<"Client", 'String'>
-    readonly name: FieldRef<"Client", 'String'>
-    readonly email: FieldRef<"Client", 'String'>
-    readonly phone: FieldRef<"Client", 'String'>
-    readonly createdAt: FieldRef<"Client", 'DateTime'>
-    readonly updatedAt: FieldRef<"Client", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Client findUnique
-   */
-  export type ClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter, which Client to fetch.
-     */
-    where: ClientWhereUniqueInput
-  }
-
-  /**
-   * Client findUniqueOrThrow
-   */
-  export type ClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter, which Client to fetch.
-     */
-    where: ClientWhereUniqueInput
-  }
-
-  /**
-   * Client findFirst
-   */
-  export type ClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter, which Client to fetch.
-     */
-    where?: ClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Clients to fetch.
-     */
-    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Clients.
-     */
-    cursor?: ClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Clients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Clients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Clients.
-     */
-    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-  }
-
-  /**
-   * Client findFirstOrThrow
-   */
-  export type ClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter, which Client to fetch.
-     */
-    where?: ClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Clients to fetch.
-     */
-    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Clients.
-     */
-    cursor?: ClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Clients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Clients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Clients.
-     */
-    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-  }
-
-  /**
-   * Client findMany
-   */
-  export type ClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter, which Clients to fetch.
-     */
-    where?: ClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Clients to fetch.
-     */
-    orderBy?: ClientOrderByWithRelationInput | ClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Clients.
-     */
-    cursor?: ClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Clients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Clients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Clients.
-     */
-    distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-  }
-
-  /**
-   * Client create
-   */
-  export type ClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Client.
-     */
-    data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
-  }
-
-  /**
-   * Client createMany
-   */
-  export type ClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Clients.
-     */
-    data: ClientCreateManyInput | ClientCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Client createManyAndReturn
-   */
-  export type ClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * The data used to create many Clients.
-     */
-    data: ClientCreateManyInput | ClientCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Client update
-   */
-  export type ClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Client.
-     */
-    data: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
-    /**
-     * Choose, which Client to update.
-     */
-    where: ClientWhereUniqueInput
-  }
-
-  /**
-   * Client updateMany
-   */
-  export type ClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Clients.
-     */
-    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
-    /**
-     * Filter which Clients to update
-     */
-    where?: ClientWhereInput
-    /**
-     * Limit how many Clients to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Client updateManyAndReturn
-   */
-  export type ClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * The data used to update Clients.
-     */
-    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyInput>
-    /**
-     * Filter which Clients to update
-     */
-    where?: ClientWhereInput
-    /**
-     * Limit how many Clients to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Client upsert
-   */
-  export type ClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Client to update in case it exists.
-     */
-    where: ClientWhereUniqueInput
-    /**
-     * In case the Client found by the `where` argument doesn't exist, create a new Client with this data.
-     */
-    create: XOR<ClientCreateInput, ClientUncheckedCreateInput>
-    /**
-     * In case the Client was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
-  }
-
-  /**
-   * Client delete
-   */
-  export type ClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-    /**
-     * Filter which Client to delete.
-     */
-    where: ClientWhereUniqueInput
-  }
-
-  /**
-   * Client deleteMany
-   */
-  export type ClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Clients to delete
-     */
-    where?: ClientWhereInput
-    /**
-     * Limit how many Clients to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Client.galleries
-   */
-  export type Client$galleriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    where?: GalleryClientWhereInput
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    cursor?: GalleryClientWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
-  }
-
-  /**
-   * Client without action
-   */
-  export type ClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Client
-     */
-    select?: ClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Client
-     */
-    omit?: ClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ClientInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model GalleryClient
-   */
-
-  export type AggregateGalleryClient = {
-    _count: GalleryClientCountAggregateOutputType | null
-    _min: GalleryClientMinAggregateOutputType | null
-    _max: GalleryClientMaxAggregateOutputType | null
-  }
-
-  export type GalleryClientMinAggregateOutputType = {
-    galleryId: string | null
-    clientId: string | null
-    createdAt: Date | null
-  }
-
-  export type GalleryClientMaxAggregateOutputType = {
-    galleryId: string | null
-    clientId: string | null
-    createdAt: Date | null
-  }
-
-  export type GalleryClientCountAggregateOutputType = {
-    galleryId: number
-    clientId: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type GalleryClientMinAggregateInputType = {
-    galleryId?: true
-    clientId?: true
-    createdAt?: true
-  }
-
-  export type GalleryClientMaxAggregateInputType = {
-    galleryId?: true
-    clientId?: true
-    createdAt?: true
-  }
-
-  export type GalleryClientCountAggregateInputType = {
-    galleryId?: true
-    clientId?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type GalleryClientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which GalleryClient to aggregate.
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GalleryClients to fetch.
-     */
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: GalleryClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GalleryClients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GalleryClients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned GalleryClients
-    **/
-    _count?: true | GalleryClientCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: GalleryClientMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: GalleryClientMaxAggregateInputType
-  }
-
-  export type GetGalleryClientAggregateType<T extends GalleryClientAggregateArgs> = {
-        [P in keyof T & keyof AggregateGalleryClient]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateGalleryClient[P]>
-      : GetScalarType<T[P], AggregateGalleryClient[P]>
-  }
-
-
-
-
-  export type GalleryClientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GalleryClientWhereInput
-    orderBy?: GalleryClientOrderByWithAggregationInput | GalleryClientOrderByWithAggregationInput[]
-    by: GalleryClientScalarFieldEnum[] | GalleryClientScalarFieldEnum
-    having?: GalleryClientScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: GalleryClientCountAggregateInputType | true
-    _min?: GalleryClientMinAggregateInputType
-    _max?: GalleryClientMaxAggregateInputType
-  }
-
-  export type GalleryClientGroupByOutputType = {
-    galleryId: string
-    clientId: string
-    createdAt: Date
-    _count: GalleryClientCountAggregateOutputType | null
-    _min: GalleryClientMinAggregateOutputType | null
-    _max: GalleryClientMaxAggregateOutputType | null
-  }
-
-  type GetGalleryClientGroupByPayload<T extends GalleryClientGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<GalleryClientGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof GalleryClientGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], GalleryClientGroupByOutputType[P]>
-            : GetScalarType<T[P], GalleryClientGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type GalleryClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    galleryId?: boolean
-    clientId?: boolean
-    createdAt?: boolean
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["galleryClient"]>
-
-  export type GalleryClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    galleryId?: boolean
-    clientId?: boolean
-    createdAt?: boolean
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["galleryClient"]>
-
-  export type GalleryClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    galleryId?: boolean
-    clientId?: boolean
-    createdAt?: boolean
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["galleryClient"]>
-
-  export type GalleryClientSelectScalar = {
-    galleryId?: boolean
-    clientId?: boolean
-    createdAt?: boolean
-  }
-
-  export type GalleryClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"galleryId" | "clientId" | "createdAt", ExtArgs["result"]["galleryClient"]>
-  export type GalleryClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }
-  export type GalleryClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }
-  export type GalleryClientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    gallery?: boolean | GalleryDefaultArgs<ExtArgs>
-    client?: boolean | ClientDefaultArgs<ExtArgs>
-  }
-
-  export type $GalleryClientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "GalleryClient"
-    objects: {
-      gallery: Prisma.$GalleryPayload<ExtArgs>
-      client: Prisma.$ClientPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      galleryId: string
-      clientId: string
-      createdAt: Date
-    }, ExtArgs["result"]["galleryClient"]>
-    composites: {}
-  }
-
-  type GalleryClientGetPayload<S extends boolean | null | undefined | GalleryClientDefaultArgs> = $Result.GetResult<Prisma.$GalleryClientPayload, S>
-
-  type GalleryClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<GalleryClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: GalleryClientCountAggregateInputType | true
-    }
-
-  export interface GalleryClientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GalleryClient'], meta: { name: 'GalleryClient' } }
-    /**
-     * Find zero or one GalleryClient that matches the filter.
-     * @param {GalleryClientFindUniqueArgs} args - Arguments to find a GalleryClient
-     * @example
-     * // Get one GalleryClient
-     * const galleryClient = await prisma.galleryClient.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends GalleryClientFindUniqueArgs>(args: SelectSubset<T, GalleryClientFindUniqueArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one GalleryClient that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {GalleryClientFindUniqueOrThrowArgs} args - Arguments to find a GalleryClient
-     * @example
-     * // Get one GalleryClient
-     * const galleryClient = await prisma.galleryClient.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends GalleryClientFindUniqueOrThrowArgs>(args: SelectSubset<T, GalleryClientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first GalleryClient that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientFindFirstArgs} args - Arguments to find a GalleryClient
-     * @example
-     * // Get one GalleryClient
-     * const galleryClient = await prisma.galleryClient.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends GalleryClientFindFirstArgs>(args?: SelectSubset<T, GalleryClientFindFirstArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first GalleryClient that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientFindFirstOrThrowArgs} args - Arguments to find a GalleryClient
-     * @example
-     * // Get one GalleryClient
-     * const galleryClient = await prisma.galleryClient.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends GalleryClientFindFirstOrThrowArgs>(args?: SelectSubset<T, GalleryClientFindFirstOrThrowArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more GalleryClients that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all GalleryClients
-     * const galleryClients = await prisma.galleryClient.findMany()
-     * 
-     * // Get first 10 GalleryClients
-     * const galleryClients = await prisma.galleryClient.findMany({ take: 10 })
-     * 
-     * // Only select the `galleryId`
-     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.findMany({ select: { galleryId: true } })
-     * 
-     */
-    findMany<T extends GalleryClientFindManyArgs>(args?: SelectSubset<T, GalleryClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a GalleryClient.
-     * @param {GalleryClientCreateArgs} args - Arguments to create a GalleryClient.
-     * @example
-     * // Create one GalleryClient
-     * const GalleryClient = await prisma.galleryClient.create({
-     *   data: {
-     *     // ... data to create a GalleryClient
-     *   }
-     * })
-     * 
-     */
-    create<T extends GalleryClientCreateArgs>(args: SelectSubset<T, GalleryClientCreateArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many GalleryClients.
-     * @param {GalleryClientCreateManyArgs} args - Arguments to create many GalleryClients.
-     * @example
-     * // Create many GalleryClients
-     * const galleryClient = await prisma.galleryClient.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends GalleryClientCreateManyArgs>(args?: SelectSubset<T, GalleryClientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many GalleryClients and returns the data saved in the database.
-     * @param {GalleryClientCreateManyAndReturnArgs} args - Arguments to create many GalleryClients.
-     * @example
-     * // Create many GalleryClients
-     * const galleryClient = await prisma.galleryClient.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many GalleryClients and only return the `galleryId`
-     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.createManyAndReturn({
-     *   select: { galleryId: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends GalleryClientCreateManyAndReturnArgs>(args?: SelectSubset<T, GalleryClientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a GalleryClient.
-     * @param {GalleryClientDeleteArgs} args - Arguments to delete one GalleryClient.
-     * @example
-     * // Delete one GalleryClient
-     * const GalleryClient = await prisma.galleryClient.delete({
-     *   where: {
-     *     // ... filter to delete one GalleryClient
-     *   }
-     * })
-     * 
-     */
-    delete<T extends GalleryClientDeleteArgs>(args: SelectSubset<T, GalleryClientDeleteArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one GalleryClient.
-     * @param {GalleryClientUpdateArgs} args - Arguments to update one GalleryClient.
-     * @example
-     * // Update one GalleryClient
-     * const galleryClient = await prisma.galleryClient.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends GalleryClientUpdateArgs>(args: SelectSubset<T, GalleryClientUpdateArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more GalleryClients.
-     * @param {GalleryClientDeleteManyArgs} args - Arguments to filter GalleryClients to delete.
-     * @example
-     * // Delete a few GalleryClients
-     * const { count } = await prisma.galleryClient.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends GalleryClientDeleteManyArgs>(args?: SelectSubset<T, GalleryClientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more GalleryClients.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many GalleryClients
-     * const galleryClient = await prisma.galleryClient.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends GalleryClientUpdateManyArgs>(args: SelectSubset<T, GalleryClientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more GalleryClients and returns the data updated in the database.
-     * @param {GalleryClientUpdateManyAndReturnArgs} args - Arguments to update many GalleryClients.
-     * @example
-     * // Update many GalleryClients
-     * const galleryClient = await prisma.galleryClient.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more GalleryClients and only return the `galleryId`
-     * const galleryClientWithGalleryIdOnly = await prisma.galleryClient.updateManyAndReturn({
-     *   select: { galleryId: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends GalleryClientUpdateManyAndReturnArgs>(args: SelectSubset<T, GalleryClientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one GalleryClient.
-     * @param {GalleryClientUpsertArgs} args - Arguments to update or create a GalleryClient.
-     * @example
-     * // Update or create a GalleryClient
-     * const galleryClient = await prisma.galleryClient.upsert({
-     *   create: {
-     *     // ... data to create a GalleryClient
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the GalleryClient we want to update
-     *   }
-     * })
-     */
-    upsert<T extends GalleryClientUpsertArgs>(args: SelectSubset<T, GalleryClientUpsertArgs<ExtArgs>>): Prisma__GalleryClientClient<$Result.GetResult<Prisma.$GalleryClientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of GalleryClients.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientCountArgs} args - Arguments to filter GalleryClients to count.
-     * @example
-     * // Count the number of GalleryClients
-     * const count = await prisma.galleryClient.count({
-     *   where: {
-     *     // ... the filter for the GalleryClients we want to count
-     *   }
-     * })
-    **/
-    count<T extends GalleryClientCountArgs>(
-      args?: Subset<T, GalleryClientCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], GalleryClientCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a GalleryClient.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends GalleryClientAggregateArgs>(args: Subset<T, GalleryClientAggregateArgs>): Prisma.PrismaPromise<GetGalleryClientAggregateType<T>>
-
-    /**
-     * Group by GalleryClient.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GalleryClientGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends GalleryClientGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: GalleryClientGroupByArgs['orderBy'] }
-        : { orderBy?: GalleryClientGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, GalleryClientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGalleryClientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the GalleryClient model
-   */
-  readonly fields: GalleryClientFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for GalleryClient.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__GalleryClientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    gallery<T extends GalleryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GalleryDefaultArgs<ExtArgs>>): Prisma__GalleryClient<$Result.GetResult<Prisma.$GalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    client<T extends ClientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClientDefaultArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the GalleryClient model
-   */
-  interface GalleryClientFieldRefs {
-    readonly galleryId: FieldRef<"GalleryClient", 'String'>
-    readonly clientId: FieldRef<"GalleryClient", 'String'>
-    readonly createdAt: FieldRef<"GalleryClient", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * GalleryClient findUnique
-   */
-  export type GalleryClientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter, which GalleryClient to fetch.
-     */
-    where: GalleryClientWhereUniqueInput
-  }
-
-  /**
-   * GalleryClient findUniqueOrThrow
-   */
-  export type GalleryClientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter, which GalleryClient to fetch.
-     */
-    where: GalleryClientWhereUniqueInput
-  }
-
-  /**
-   * GalleryClient findFirst
-   */
-  export type GalleryClientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter, which GalleryClient to fetch.
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GalleryClients to fetch.
-     */
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for GalleryClients.
-     */
-    cursor?: GalleryClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GalleryClients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GalleryClients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of GalleryClients.
-     */
-    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
-  }
-
-  /**
-   * GalleryClient findFirstOrThrow
-   */
-  export type GalleryClientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter, which GalleryClient to fetch.
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GalleryClients to fetch.
-     */
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for GalleryClients.
-     */
-    cursor?: GalleryClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GalleryClients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GalleryClients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of GalleryClients.
-     */
-    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
-  }
-
-  /**
-   * GalleryClient findMany
-   */
-  export type GalleryClientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter, which GalleryClients to fetch.
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GalleryClients to fetch.
-     */
-    orderBy?: GalleryClientOrderByWithRelationInput | GalleryClientOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing GalleryClients.
-     */
-    cursor?: GalleryClientWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GalleryClients from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GalleryClients.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of GalleryClients.
-     */
-    distinct?: GalleryClientScalarFieldEnum | GalleryClientScalarFieldEnum[]
-  }
-
-  /**
-   * GalleryClient create
-   */
-  export type GalleryClientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * The data needed to create a GalleryClient.
-     */
-    data: XOR<GalleryClientCreateInput, GalleryClientUncheckedCreateInput>
-  }
-
-  /**
-   * GalleryClient createMany
-   */
-  export type GalleryClientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many GalleryClients.
-     */
-    data: GalleryClientCreateManyInput | GalleryClientCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * GalleryClient createManyAndReturn
-   */
-  export type GalleryClientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * The data used to create many GalleryClients.
-     */
-    data: GalleryClientCreateManyInput | GalleryClientCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * GalleryClient update
-   */
-  export type GalleryClientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * The data needed to update a GalleryClient.
-     */
-    data: XOR<GalleryClientUpdateInput, GalleryClientUncheckedUpdateInput>
-    /**
-     * Choose, which GalleryClient to update.
-     */
-    where: GalleryClientWhereUniqueInput
-  }
-
-  /**
-   * GalleryClient updateMany
-   */
-  export type GalleryClientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update GalleryClients.
-     */
-    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyInput>
-    /**
-     * Filter which GalleryClients to update
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * Limit how many GalleryClients to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * GalleryClient updateManyAndReturn
-   */
-  export type GalleryClientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * The data used to update GalleryClients.
-     */
-    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyInput>
-    /**
-     * Filter which GalleryClients to update
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * Limit how many GalleryClients to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * GalleryClient upsert
-   */
-  export type GalleryClientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * The filter to search for the GalleryClient to update in case it exists.
-     */
-    where: GalleryClientWhereUniqueInput
-    /**
-     * In case the GalleryClient found by the `where` argument doesn't exist, create a new GalleryClient with this data.
-     */
-    create: XOR<GalleryClientCreateInput, GalleryClientUncheckedCreateInput>
-    /**
-     * In case the GalleryClient was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<GalleryClientUpdateInput, GalleryClientUncheckedUpdateInput>
-  }
-
-  /**
-   * GalleryClient delete
-   */
-  export type GalleryClientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
-    /**
-     * Filter which GalleryClient to delete.
-     */
-    where: GalleryClientWhereUniqueInput
-  }
-
-  /**
-   * GalleryClient deleteMany
-   */
-  export type GalleryClientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which GalleryClients to delete
-     */
-    where?: GalleryClientWhereInput
-    /**
-     * Limit how many GalleryClients to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * GalleryClient without action
-   */
-  export type GalleryClientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GalleryClient
-     */
-    select?: GalleryClientSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GalleryClient
-     */
-    omit?: GalleryClientOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GalleryClientInclude<ExtArgs> | null
   }
 
 
@@ -37598,7 +35134,6 @@ export namespace Prisma {
     downloadWebMaxPx: 'downloadWebMaxPx',
     downloadHighResMaxPx: 'downloadHighResMaxPx',
     downloadLimit: 'downloadLimit',
-    downloadContactsOnly: 'downloadContactsOnly',
     favoritesEnabled: 'favoritesEnabled',
     favoriteNotesEnabled: 'favoriteNotesEnabled',
     createdAt: 'createdAt',
@@ -37663,28 +35198,6 @@ export namespace Prisma {
   };
 
   export type StorageEventScalarFieldEnum = (typeof StorageEventScalarFieldEnum)[keyof typeof StorageEventScalarFieldEnum]
-
-
-  export const ClientScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    name: 'name',
-    email: 'email',
-    phone: 'phone',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
-
-
-  export const GalleryClientScalarFieldEnum: {
-    galleryId: 'galleryId',
-    clientId: 'clientId',
-    createdAt: 'createdAt'
-  };
-
-  export type GalleryClientScalarFieldEnum = (typeof GalleryClientScalarFieldEnum)[keyof typeof GalleryClientScalarFieldEnum]
 
 
   export const AlbumScalarFieldEnum: {
@@ -38304,7 +35817,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
-    clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
     smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
@@ -38340,7 +35852,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     userOnboarding?: UserOnboardingOrderByWithRelationInput
     galleries?: GalleryOrderByRelationAggregateInput
-    clients?: ClientOrderByRelationAggregateInput
     storageEvents?: StorageEventOrderByRelationAggregateInput
     driveImportJobs?: DriveImportJobOrderByRelationAggregateInput
     smartAlbumConfig?: SmartAlbumConfigOrderByWithRelationInput
@@ -38379,7 +35890,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     userOnboarding?: XOR<UserOnboardingNullableScalarRelationFilter, UserOnboardingWhereInput> | null
     galleries?: GalleryListRelationFilter
-    clients?: ClientListRelationFilter
     storageEvents?: StorageEventListRelationFilter
     driveImportJobs?: DriveImportJobListRelationFilter
     smartAlbumConfig?: XOR<SmartAlbumConfigNullableScalarRelationFilter, SmartAlbumConfigWhereInput> | null
@@ -38901,7 +36411,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFilter<"Gallery"> | number
     downloadHighResMaxPx?: IntFilter<"Gallery"> | number
     downloadLimit?: IntNullableFilter<"Gallery"> | number | null
-    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
     favoritesEnabled?: BoolFilter<"Gallery"> | boolean
     favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
@@ -38910,7 +36419,6 @@ export namespace Prisma {
     coverPhoto?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
     photos?: PhotoListRelationFilter
     albums?: AlbumListRelationFilter
-    clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
     driveImportItems?: DriveImportItemListRelationFilter
     favorites?: GalleryFavoriteListRelationFilter
@@ -38944,7 +36452,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrderInput | SortOrder
-    downloadContactsOnly?: SortOrder
     favoritesEnabled?: SortOrder
     favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
@@ -38953,7 +36460,6 @@ export namespace Prisma {
     coverPhoto?: PhotoOrderByWithRelationInput
     photos?: PhotoOrderByRelationAggregateInput
     albums?: AlbumOrderByRelationAggregateInput
-    clients?: GalleryClientOrderByRelationAggregateInput
     comments?: GalleryCommentOrderByRelationAggregateInput
     driveImportItems?: DriveImportItemOrderByRelationAggregateInput
     favorites?: GalleryFavoriteOrderByRelationAggregateInput
@@ -38991,7 +36497,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFilter<"Gallery"> | number
     downloadHighResMaxPx?: IntFilter<"Gallery"> | number
     downloadLimit?: IntNullableFilter<"Gallery"> | number | null
-    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
     favoritesEnabled?: BoolFilter<"Gallery"> | boolean
     favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
@@ -39000,7 +36505,6 @@ export namespace Prisma {
     coverPhoto?: XOR<PhotoNullableScalarRelationFilter, PhotoWhereInput> | null
     photos?: PhotoListRelationFilter
     albums?: AlbumListRelationFilter
-    clients?: GalleryClientListRelationFilter
     comments?: GalleryCommentListRelationFilter
     driveImportItems?: DriveImportItemListRelationFilter
     favorites?: GalleryFavoriteListRelationFilter
@@ -39034,7 +36538,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrderInput | SortOrder
-    downloadContactsOnly?: SortOrder
     favoritesEnabled?: SortOrder
     favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
@@ -39074,7 +36577,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntWithAggregatesFilter<"Gallery"> | number
     downloadHighResMaxPx?: IntWithAggregatesFilter<"Gallery"> | number
     downloadLimit?: IntNullableWithAggregatesFilter<"Gallery"> | number | null
-    downloadContactsOnly?: BoolWithAggregatesFilter<"Gallery"> | boolean
     favoritesEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
     favoriteNotesEnabled?: BoolWithAggregatesFilter<"Gallery"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Gallery"> | Date | string
@@ -39385,124 +36887,6 @@ export namespace Prisma {
     delta?: BigIntWithAggregatesFilter<"StorageEvent"> | bigint | number
     reason?: StringWithAggregatesFilter<"StorageEvent"> | string
     createdAt?: DateTimeWithAggregatesFilter<"StorageEvent"> | Date | string
-  }
-
-  export type ClientWhereInput = {
-    AND?: ClientWhereInput | ClientWhereInput[]
-    OR?: ClientWhereInput[]
-    NOT?: ClientWhereInput | ClientWhereInput[]
-    id?: StringFilter<"Client"> | string
-    userId?: StringFilter<"Client"> | string
-    name?: StringFilter<"Client"> | string
-    email?: StringFilter<"Client"> | string
-    phone?: StringNullableFilter<"Client"> | string | null
-    createdAt?: DateTimeFilter<"Client"> | Date | string
-    updatedAt?: DateTimeFilter<"Client"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    galleries?: GalleryClientListRelationFilter
-  }
-
-  export type ClientOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    phone?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    galleries?: GalleryClientOrderByRelationAggregateInput
-  }
-
-  export type ClientWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    userId_email?: ClientUserIdEmailCompoundUniqueInput
-    AND?: ClientWhereInput | ClientWhereInput[]
-    OR?: ClientWhereInput[]
-    NOT?: ClientWhereInput | ClientWhereInput[]
-    userId?: StringFilter<"Client"> | string
-    name?: StringFilter<"Client"> | string
-    email?: StringFilter<"Client"> | string
-    phone?: StringNullableFilter<"Client"> | string | null
-    createdAt?: DateTimeFilter<"Client"> | Date | string
-    updatedAt?: DateTimeFilter<"Client"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    galleries?: GalleryClientListRelationFilter
-  }, "id" | "id" | "userId_email">
-
-  export type ClientOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    phone?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ClientCountOrderByAggregateInput
-    _max?: ClientMaxOrderByAggregateInput
-    _min?: ClientMinOrderByAggregateInput
-  }
-
-  export type ClientScalarWhereWithAggregatesInput = {
-    AND?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
-    OR?: ClientScalarWhereWithAggregatesInput[]
-    NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Client"> | string
-    userId?: StringWithAggregatesFilter<"Client"> | string
-    name?: StringWithAggregatesFilter<"Client"> | string
-    email?: StringWithAggregatesFilter<"Client"> | string
-    phone?: StringNullableWithAggregatesFilter<"Client"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Client"> | Date | string
-  }
-
-  export type GalleryClientWhereInput = {
-    AND?: GalleryClientWhereInput | GalleryClientWhereInput[]
-    OR?: GalleryClientWhereInput[]
-    NOT?: GalleryClientWhereInput | GalleryClientWhereInput[]
-    galleryId?: StringFilter<"GalleryClient"> | string
-    clientId?: StringFilter<"GalleryClient"> | string
-    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
-    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
-    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
-  }
-
-  export type GalleryClientOrderByWithRelationInput = {
-    galleryId?: SortOrder
-    clientId?: SortOrder
-    createdAt?: SortOrder
-    gallery?: GalleryOrderByWithRelationInput
-    client?: ClientOrderByWithRelationInput
-  }
-
-  export type GalleryClientWhereUniqueInput = Prisma.AtLeast<{
-    galleryId_clientId?: GalleryClientGalleryIdClientIdCompoundUniqueInput
-    AND?: GalleryClientWhereInput | GalleryClientWhereInput[]
-    OR?: GalleryClientWhereInput[]
-    NOT?: GalleryClientWhereInput | GalleryClientWhereInput[]
-    galleryId?: StringFilter<"GalleryClient"> | string
-    clientId?: StringFilter<"GalleryClient"> | string
-    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
-    gallery?: XOR<GalleryScalarRelationFilter, GalleryWhereInput>
-    client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
-  }, "galleryId_clientId">
-
-  export type GalleryClientOrderByWithAggregationInput = {
-    galleryId?: SortOrder
-    clientId?: SortOrder
-    createdAt?: SortOrder
-    _count?: GalleryClientCountOrderByAggregateInput
-    _max?: GalleryClientMaxOrderByAggregateInput
-    _min?: GalleryClientMinOrderByAggregateInput
-  }
-
-  export type GalleryClientScalarWhereWithAggregatesInput = {
-    AND?: GalleryClientScalarWhereWithAggregatesInput | GalleryClientScalarWhereWithAggregatesInput[]
-    OR?: GalleryClientScalarWhereWithAggregatesInput[]
-    NOT?: GalleryClientScalarWhereWithAggregatesInput | GalleryClientScalarWhereWithAggregatesInput[]
-    galleryId?: StringWithAggregatesFilter<"GalleryClient"> | string
-    clientId?: StringWithAggregatesFilter<"GalleryClient"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"GalleryClient"> | Date | string
   }
 
   export type AlbumWhereInput = {
@@ -40838,7 +38222,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -40874,7 +38257,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -40910,7 +38292,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -40946,7 +38327,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -41539,7 +38919,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -41548,7 +38927,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -41582,14 +38960,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -41621,7 +38997,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41630,7 +39005,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -41664,14 +39038,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -41705,7 +39077,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -41735,7 +39106,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41767,7 +39137,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42124,119 +39493,6 @@ export namespace Prisma {
     photoId?: NullableStringFieldUpdateOperationsInput | string | null
     delta?: BigIntFieldUpdateOperationsInput | bigint | number
     reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ClientCreateInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutClientsInput
-    galleries?: GalleryClientCreateNestedManyWithoutClientInput
-  }
-
-  export type ClientUncheckedCreateInput = {
-    id?: string
-    userId: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
-  }
-
-  export type ClientUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutClientsNestedInput
-    galleries?: GalleryClientUpdateManyWithoutClientNestedInput
-  }
-
-  export type ClientUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
-  }
-
-  export type ClientCreateManyInput = {
-    id?: string
-    userId: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ClientUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ClientUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientCreateInput = {
-    createdAt?: Date | string
-    gallery: GalleryCreateNestedOneWithoutClientsInput
-    client: ClientCreateNestedOneWithoutGalleriesInput
-  }
-
-  export type GalleryClientUncheckedCreateInput = {
-    galleryId: string
-    clientId: string
-    createdAt?: Date | string
-  }
-
-  export type GalleryClientUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    gallery?: GalleryUpdateOneRequiredWithoutClientsNestedInput
-    client?: ClientUpdateOneRequiredWithoutGalleriesNestedInput
-  }
-
-  export type GalleryClientUncheckedUpdateInput = {
-    galleryId?: StringFieldUpdateOperationsInput | string
-    clientId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientCreateManyInput = {
-    galleryId: string
-    clientId: string
-    createdAt?: Date | string
-  }
-
-  export type GalleryClientUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientUncheckedUpdateManyInput = {
-    galleryId?: StringFieldUpdateOperationsInput | string
-    clientId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43779,12 +41035,6 @@ export namespace Prisma {
     none?: GalleryWhereInput
   }
 
-  export type ClientListRelationFilter = {
-    every?: ClientWhereInput
-    some?: ClientWhereInput
-    none?: ClientWhereInput
-  }
-
   export type StorageEventListRelationFilter = {
     every?: StorageEventWhereInput
     some?: StorageEventWhereInput
@@ -43820,10 +41070,6 @@ export namespace Prisma {
   }
 
   export type GalleryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ClientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44424,12 +41670,6 @@ export namespace Prisma {
     none?: AlbumWhereInput
   }
 
-  export type GalleryClientListRelationFilter = {
-    every?: GalleryClientWhereInput
-    some?: GalleryClientWhereInput
-    none?: GalleryClientWhereInput
-  }
-
   export type GalleryCommentListRelationFilter = {
     every?: GalleryCommentWhereInput
     some?: GalleryCommentWhereInput
@@ -44471,10 +41711,6 @@ export namespace Prisma {
   }
 
   export type AlbumOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type GalleryClientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44532,7 +41768,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrder
-    downloadContactsOnly?: SortOrder
     favoritesEnabled?: SortOrder
     favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
@@ -44569,7 +41804,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrder
-    downloadContactsOnly?: SortOrder
     favoritesEnabled?: SortOrder
     favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
@@ -44600,7 +41834,6 @@ export namespace Prisma {
     downloadWebMaxPx?: SortOrder
     downloadHighResMaxPx?: SortOrder
     downloadLimit?: SortOrder
-    downloadContactsOnly?: SortOrder
     favoritesEnabled?: SortOrder
     favoriteNotesEnabled?: SortOrder
     createdAt?: SortOrder
@@ -44882,69 +42115,6 @@ export namespace Prisma {
 
   export type StorageEventSumOrderByAggregateInput = {
     delta?: SortOrder
-  }
-
-  export type ClientUserIdEmailCompoundUniqueInput = {
-    userId: string
-    email: string
-  }
-
-  export type ClientCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    phone?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ClientMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    phone?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ClientMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    phone?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ClientScalarRelationFilter = {
-    is?: ClientWhereInput
-    isNot?: ClientWhereInput
-  }
-
-  export type GalleryClientGalleryIdClientIdCompoundUniqueInput = {
-    galleryId: string
-    clientId: string
-  }
-
-  export type GalleryClientCountOrderByAggregateInput = {
-    galleryId?: SortOrder
-    clientId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type GalleryClientMaxOrderByAggregateInput = {
-    galleryId?: SortOrder
-    clientId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type GalleryClientMinOrderByAggregateInput = {
-    galleryId?: SortOrder
-    clientId?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type AlbumCountOrderByAggregateInput = {
@@ -45925,13 +43095,6 @@ export namespace Prisma {
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
   }
 
-  export type ClientCreateNestedManyWithoutUserInput = {
-    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
-    createMany?: ClientCreateManyUserInputEnvelope
-    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-  }
-
   export type StorageEventCreateNestedManyWithoutUserInput = {
     create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
@@ -45984,13 +43147,6 @@ export namespace Prisma {
     connectOrCreate?: GalleryCreateOrConnectWithoutUserInput | GalleryCreateOrConnectWithoutUserInput[]
     createMany?: GalleryCreateManyUserInputEnvelope
     connect?: GalleryWhereUniqueInput | GalleryWhereUniqueInput[]
-  }
-
-  export type ClientUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
-    createMany?: ClientCreateManyUserInputEnvelope
-    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
   }
 
   export type StorageEventUncheckedCreateNestedManyWithoutUserInput = {
@@ -46123,20 +43279,6 @@ export namespace Prisma {
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
   }
 
-  export type ClientUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
-    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ClientCreateManyUserInputEnvelope
-    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
-  }
-
   export type StorageEventUpdateManyWithoutUserNestedInput = {
     create?: XOR<StorageEventCreateWithoutUserInput, StorageEventUncheckedCreateWithoutUserInput> | StorageEventCreateWithoutUserInput[] | StorageEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: StorageEventCreateOrConnectWithoutUserInput | StorageEventCreateOrConnectWithoutUserInput[]
@@ -46239,20 +43381,6 @@ export namespace Prisma {
     update?: GalleryUpdateWithWhereUniqueWithoutUserInput | GalleryUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: GalleryUpdateManyWithWhereWithoutUserInput | GalleryUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: GalleryScalarWhereInput | GalleryScalarWhereInput[]
-  }
-
-  export type ClientUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput> | ClientCreateWithoutUserInput[] | ClientUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ClientCreateOrConnectWithoutUserInput | ClientCreateOrConnectWithoutUserInput[]
-    upsert?: ClientUpsertWithWhereUniqueWithoutUserInput | ClientUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ClientCreateManyUserInputEnvelope
-    set?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    disconnect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    delete?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    connect?: ClientWhereUniqueInput | ClientWhereUniqueInput[]
-    update?: ClientUpdateWithWhereUniqueWithoutUserInput | ClientUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ClientUpdateManyWithWhereWithoutUserInput | ClientUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ClientScalarWhereInput | ClientScalarWhereInput[]
   }
 
   export type StorageEventUncheckedUpdateManyWithoutUserNestedInput = {
@@ -46416,13 +43544,6 @@ export namespace Prisma {
     connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
   }
 
-  export type GalleryClientCreateNestedManyWithoutGalleryInput = {
-    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
-    createMany?: GalleryClientCreateManyGalleryInputEnvelope
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-  }
-
   export type GalleryCommentCreateNestedManyWithoutGalleryInput = {
     create?: XOR<GalleryCommentCreateWithoutGalleryInput, GalleryCommentUncheckedCreateWithoutGalleryInput> | GalleryCommentCreateWithoutGalleryInput[] | GalleryCommentUncheckedCreateWithoutGalleryInput[]
     connectOrCreate?: GalleryCommentCreateOrConnectWithoutGalleryInput | GalleryCommentCreateOrConnectWithoutGalleryInput[]
@@ -46477,13 +43598,6 @@ export namespace Prisma {
     connectOrCreate?: AlbumCreateOrConnectWithoutGalleryInput | AlbumCreateOrConnectWithoutGalleryInput[]
     createMany?: AlbumCreateManyGalleryInputEnvelope
     connect?: AlbumWhereUniqueInput | AlbumWhereUniqueInput[]
-  }
-
-  export type GalleryClientUncheckedCreateNestedManyWithoutGalleryInput = {
-    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
-    createMany?: GalleryClientCreateManyGalleryInputEnvelope
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
   }
 
   export type GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput = {
@@ -46577,20 +43691,6 @@ export namespace Prisma {
     update?: AlbumUpdateWithWhereUniqueWithoutGalleryInput | AlbumUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: AlbumUpdateManyWithWhereWithoutGalleryInput | AlbumUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
-  }
-
-  export type GalleryClientUpdateManyWithoutGalleryNestedInput = {
-    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
-    upsert?: GalleryClientUpsertWithWhereUniqueWithoutGalleryInput | GalleryClientUpsertWithWhereUniqueWithoutGalleryInput[]
-    createMany?: GalleryClientCreateManyGalleryInputEnvelope
-    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    update?: GalleryClientUpdateWithWhereUniqueWithoutGalleryInput | GalleryClientUpdateWithWhereUniqueWithoutGalleryInput[]
-    updateMany?: GalleryClientUpdateManyWithWhereWithoutGalleryInput | GalleryClientUpdateManyWithWhereWithoutGalleryInput[]
-    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
   export type GalleryCommentUpdateManyWithoutGalleryNestedInput = {
@@ -46703,20 +43803,6 @@ export namespace Prisma {
     update?: AlbumUpdateWithWhereUniqueWithoutGalleryInput | AlbumUpdateWithWhereUniqueWithoutGalleryInput[]
     updateMany?: AlbumUpdateManyWithWhereWithoutGalleryInput | AlbumUpdateManyWithWhereWithoutGalleryInput[]
     deleteMany?: AlbumScalarWhereInput | AlbumScalarWhereInput[]
-  }
-
-  export type GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput = {
-    create?: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput> | GalleryClientCreateWithoutGalleryInput[] | GalleryClientUncheckedCreateWithoutGalleryInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutGalleryInput | GalleryClientCreateOrConnectWithoutGalleryInput[]
-    upsert?: GalleryClientUpsertWithWhereUniqueWithoutGalleryInput | GalleryClientUpsertWithWhereUniqueWithoutGalleryInput[]
-    createMany?: GalleryClientCreateManyGalleryInputEnvelope
-    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    update?: GalleryClientUpdateWithWhereUniqueWithoutGalleryInput | GalleryClientUpdateWithWhereUniqueWithoutGalleryInput[]
-    updateMany?: GalleryClientUpdateManyWithWhereWithoutGalleryInput | GalleryClientUpdateManyWithWhereWithoutGalleryInput[]
-    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
   }
 
   export type GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput = {
@@ -47047,90 +44133,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutStorageEventsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStorageEventsInput, UserUpdateWithoutStorageEventsInput>, UserUncheckedUpdateWithoutStorageEventsInput>
-  }
-
-  export type UserCreateNestedOneWithoutClientsInput = {
-    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type GalleryClientCreateNestedManyWithoutClientInput = {
-    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
-    createMany?: GalleryClientCreateManyClientInputEnvelope
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-  }
-
-  export type GalleryClientUncheckedCreateNestedManyWithoutClientInput = {
-    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
-    createMany?: GalleryClientCreateManyClientInputEnvelope
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutClientsNestedInput = {
-    create?: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutClientsInput
-    upsert?: UserUpsertWithoutClientsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClientsInput, UserUpdateWithoutClientsInput>, UserUncheckedUpdateWithoutClientsInput>
-  }
-
-  export type GalleryClientUpdateManyWithoutClientNestedInput = {
-    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
-    upsert?: GalleryClientUpsertWithWhereUniqueWithoutClientInput | GalleryClientUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: GalleryClientCreateManyClientInputEnvelope
-    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    update?: GalleryClientUpdateWithWhereUniqueWithoutClientInput | GalleryClientUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: GalleryClientUpdateManyWithWhereWithoutClientInput | GalleryClientUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
-  }
-
-  export type GalleryClientUncheckedUpdateManyWithoutClientNestedInput = {
-    create?: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput> | GalleryClientCreateWithoutClientInput[] | GalleryClientUncheckedCreateWithoutClientInput[]
-    connectOrCreate?: GalleryClientCreateOrConnectWithoutClientInput | GalleryClientCreateOrConnectWithoutClientInput[]
-    upsert?: GalleryClientUpsertWithWhereUniqueWithoutClientInput | GalleryClientUpsertWithWhereUniqueWithoutClientInput[]
-    createMany?: GalleryClientCreateManyClientInputEnvelope
-    set?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    disconnect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    delete?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    connect?: GalleryClientWhereUniqueInput | GalleryClientWhereUniqueInput[]
-    update?: GalleryClientUpdateWithWhereUniqueWithoutClientInput | GalleryClientUpdateWithWhereUniqueWithoutClientInput[]
-    updateMany?: GalleryClientUpdateManyWithWhereWithoutClientInput | GalleryClientUpdateManyWithWhereWithoutClientInput[]
-    deleteMany?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
-  }
-
-  export type GalleryCreateNestedOneWithoutClientsInput = {
-    create?: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
-    connectOrCreate?: GalleryCreateOrConnectWithoutClientsInput
-    connect?: GalleryWhereUniqueInput
-  }
-
-  export type ClientCreateNestedOneWithoutGalleriesInput = {
-    create?: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
-    connectOrCreate?: ClientCreateOrConnectWithoutGalleriesInput
-    connect?: ClientWhereUniqueInput
-  }
-
-  export type GalleryUpdateOneRequiredWithoutClientsNestedInput = {
-    create?: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
-    connectOrCreate?: GalleryCreateOrConnectWithoutClientsInput
-    upsert?: GalleryUpsertWithoutClientsInput
-    connect?: GalleryWhereUniqueInput
-    update?: XOR<XOR<GalleryUpdateToOneWithWhereWithoutClientsInput, GalleryUpdateWithoutClientsInput>, GalleryUncheckedUpdateWithoutClientsInput>
-  }
-
-  export type ClientUpdateOneRequiredWithoutGalleriesNestedInput = {
-    create?: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
-    connectOrCreate?: ClientCreateOrConnectWithoutGalleriesInput
-    upsert?: ClientUpsertWithoutGalleriesInput
-    connect?: ClientWhereUniqueInput
-    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutGalleriesInput, ClientUpdateWithoutGalleriesInput>, ClientUncheckedUpdateWithoutGalleriesInput>
   }
 
   export type GalleryCreateNestedOneWithoutAlbumsInput = {
@@ -48477,7 +45479,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -48485,7 +45486,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -48518,14 +45518,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -48541,36 +45539,6 @@ export namespace Prisma {
 
   export type GalleryCreateManyUserInputEnvelope = {
     data: GalleryCreateManyUserInput | GalleryCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ClientCreateWithoutUserInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    galleries?: GalleryClientCreateNestedManyWithoutClientInput
-  }
-
-  export type ClientUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    galleries?: GalleryClientUncheckedCreateNestedManyWithoutClientInput
-  }
-
-  export type ClientCreateOrConnectWithoutUserInput = {
-    where: ClientWhereUniqueInput
-    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
-  }
-
-  export type ClientCreateManyUserInputEnvelope = {
-    data: ClientCreateManyUserInput | ClientCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -48852,40 +45820,10 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFilter<"Gallery"> | number
     downloadHighResMaxPx?: IntFilter<"Gallery"> | number
     downloadLimit?: IntNullableFilter<"Gallery"> | number | null
-    downloadContactsOnly?: BoolFilter<"Gallery"> | boolean
     favoritesEnabled?: BoolFilter<"Gallery"> | boolean
     favoriteNotesEnabled?: BoolFilter<"Gallery"> | boolean
     createdAt?: DateTimeFilter<"Gallery"> | Date | string
     updatedAt?: DateTimeFilter<"Gallery"> | Date | string
-  }
-
-  export type ClientUpsertWithWhereUniqueWithoutUserInput = {
-    where: ClientWhereUniqueInput
-    update: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
-    create: XOR<ClientCreateWithoutUserInput, ClientUncheckedCreateWithoutUserInput>
-  }
-
-  export type ClientUpdateWithWhereUniqueWithoutUserInput = {
-    where: ClientWhereUniqueInput
-    data: XOR<ClientUpdateWithoutUserInput, ClientUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ClientUpdateManyWithWhereWithoutUserInput = {
-    where: ClientScalarWhereInput
-    data: XOR<ClientUpdateManyMutationInput, ClientUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ClientScalarWhereInput = {
-    AND?: ClientScalarWhereInput | ClientScalarWhereInput[]
-    OR?: ClientScalarWhereInput[]
-    NOT?: ClientScalarWhereInput | ClientScalarWhereInput[]
-    id?: StringFilter<"Client"> | string
-    userId?: StringFilter<"Client"> | string
-    name?: StringFilter<"Client"> | string
-    email?: StringFilter<"Client"> | string
-    phone?: StringNullableFilter<"Client"> | string | null
-    createdAt?: DateTimeFilter<"Client"> | Date | string
-    updatedAt?: DateTimeFilter<"Client"> | Date | string
   }
 
   export type StorageEventUpsertWithWhereUniqueWithoutUserInput = {
@@ -49013,7 +45951,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -49048,7 +45985,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -49099,7 +46035,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -49134,7 +46069,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -49169,7 +46103,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -49204,7 +46137,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -49255,7 +46187,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -49290,7 +46221,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -49325,7 +46255,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -49360,7 +46289,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -49411,7 +46339,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -49446,7 +46373,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -49481,7 +46407,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -49516,7 +46441,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -49567,7 +46491,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -49602,7 +46525,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -49637,7 +46559,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
@@ -49672,7 +46593,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
@@ -49839,26 +46759,6 @@ export namespace Prisma {
 
   export type AlbumCreateManyGalleryInputEnvelope = {
     data: AlbumCreateManyGalleryInput | AlbumCreateManyGalleryInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type GalleryClientCreateWithoutGalleryInput = {
-    createdAt?: Date | string
-    client: ClientCreateNestedOneWithoutGalleriesInput
-  }
-
-  export type GalleryClientUncheckedCreateWithoutGalleryInput = {
-    clientId: string
-    createdAt?: Date | string
-  }
-
-  export type GalleryClientCreateOrConnectWithoutGalleryInput = {
-    where: GalleryClientWhereUniqueInput
-    create: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput>
-  }
-
-  export type GalleryClientCreateManyGalleryInputEnvelope = {
-    data: GalleryClientCreateManyGalleryInput | GalleryClientCreateManyGalleryInput[]
     skipDuplicates?: boolean
   }
 
@@ -50104,7 +47004,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
@@ -50139,7 +47038,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
@@ -50284,31 +47182,6 @@ export namespace Prisma {
     downloadEnabled?: BoolFilter<"Album"> | boolean
     createdAt?: DateTimeFilter<"Album"> | Date | string
     updatedAt?: DateTimeFilter<"Album"> | Date | string
-  }
-
-  export type GalleryClientUpsertWithWhereUniqueWithoutGalleryInput = {
-    where: GalleryClientWhereUniqueInput
-    update: XOR<GalleryClientUpdateWithoutGalleryInput, GalleryClientUncheckedUpdateWithoutGalleryInput>
-    create: XOR<GalleryClientCreateWithoutGalleryInput, GalleryClientUncheckedCreateWithoutGalleryInput>
-  }
-
-  export type GalleryClientUpdateWithWhereUniqueWithoutGalleryInput = {
-    where: GalleryClientWhereUniqueInput
-    data: XOR<GalleryClientUpdateWithoutGalleryInput, GalleryClientUncheckedUpdateWithoutGalleryInput>
-  }
-
-  export type GalleryClientUpdateManyWithWhereWithoutGalleryInput = {
-    where: GalleryClientScalarWhereInput
-    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyWithoutGalleryInput>
-  }
-
-  export type GalleryClientScalarWhereInput = {
-    AND?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
-    OR?: GalleryClientScalarWhereInput[]
-    NOT?: GalleryClientScalarWhereInput | GalleryClientScalarWhereInput[]
-    galleryId?: StringFilter<"GalleryClient"> | string
-    clientId?: StringFilter<"GalleryClient"> | string
-    createdAt?: DateTimeFilter<"GalleryClient"> | Date | string
   }
 
   export type GalleryCommentUpsertWithWhereUniqueWithoutGalleryInput = {
@@ -50523,7 +47396,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -50531,7 +47403,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutGalleriesInput
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -50565,13 +47436,11 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -50608,7 +47477,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -50616,7 +47484,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutGalleriesInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -50649,14 +47516,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -50828,7 +47693,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50836,7 +47700,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -50870,13 +47733,11 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -51157,7 +48018,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
@@ -51192,7 +48052,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
@@ -51243,7 +48102,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
@@ -51278,433 +48136,8 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutClientsInput = {
-    id?: string
-    name: string
-    email: string
-    plan?: $Enums.Plan
-    storageUsed?: bigint | number
-    storageLimit?: bigint | number
-    galleryLimit?: number | null
-    downgradedAt?: Date | string | null
-    storageReserved?: bigint | number
-    overageBytes?: bigint | number
-    overageResetAt?: Date | string | null
-    stripeCustomerId?: string | null
-    warningEmailSent80?: boolean
-    warningEmailSent95?: boolean
-    emailVerified: boolean
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    subscribed?: boolean | null
-    finishOnboarding?: boolean | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
-    galleries?: GalleryCreateNestedManyWithoutUserInput
-    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
-    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
-    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutClientsInput = {
-    id?: string
-    name: string
-    email: string
-    plan?: $Enums.Plan
-    storageUsed?: bigint | number
-    storageLimit?: bigint | number
-    galleryLimit?: number | null
-    downgradedAt?: Date | string | null
-    storageReserved?: bigint | number
-    overageBytes?: bigint | number
-    overageResetAt?: Date | string | null
-    stripeCustomerId?: string | null
-    warningEmailSent80?: boolean
-    warningEmailSent95?: boolean
-    emailVerified: boolean
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    role?: string | null
-    banned?: boolean | null
-    banReason?: string | null
-    banExpires?: Date | string | null
-    subscribed?: boolean | null
-    finishOnboarding?: boolean | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
-    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
-    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
-    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutClientsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
-  }
-
-  export type GalleryClientCreateWithoutClientInput = {
-    createdAt?: Date | string
-    gallery: GalleryCreateNestedOneWithoutClientsInput
-  }
-
-  export type GalleryClientUncheckedCreateWithoutClientInput = {
-    galleryId: string
-    createdAt?: Date | string
-  }
-
-  export type GalleryClientCreateOrConnectWithoutClientInput = {
-    where: GalleryClientWhereUniqueInput
-    create: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput>
-  }
-
-  export type GalleryClientCreateManyClientInputEnvelope = {
-    data: GalleryClientCreateManyClientInput | GalleryClientCreateManyClientInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutClientsInput = {
-    update: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
-    create: XOR<UserCreateWithoutClientsInput, UserUncheckedCreateWithoutClientsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutClientsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutClientsInput, UserUncheckedUpdateWithoutClientsInput>
-  }
-
-  export type UserUpdateWithoutClientsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
-    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
-    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
-    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
-    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
-    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
-    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
-    galleries?: GalleryUpdateManyWithoutUserNestedInput
-    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
-    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
-    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutClientsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
-    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
-    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
-    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
-    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
-    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
-    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    role?: NullableStringFieldUpdateOperationsInput | string | null
-    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
-    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
-    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
-    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type GalleryClientUpsertWithWhereUniqueWithoutClientInput = {
-    where: GalleryClientWhereUniqueInput
-    update: XOR<GalleryClientUpdateWithoutClientInput, GalleryClientUncheckedUpdateWithoutClientInput>
-    create: XOR<GalleryClientCreateWithoutClientInput, GalleryClientUncheckedCreateWithoutClientInput>
-  }
-
-  export type GalleryClientUpdateWithWhereUniqueWithoutClientInput = {
-    where: GalleryClientWhereUniqueInput
-    data: XOR<GalleryClientUpdateWithoutClientInput, GalleryClientUncheckedUpdateWithoutClientInput>
-  }
-
-  export type GalleryClientUpdateManyWithWhereWithoutClientInput = {
-    where: GalleryClientScalarWhereInput
-    data: XOR<GalleryClientUpdateManyMutationInput, GalleryClientUncheckedUpdateManyWithoutClientInput>
-  }
-
-  export type GalleryCreateWithoutClientsInput = {
-    id?: string
-    title: string
-    slug: string
-    eventDate?: Date | string | null
-    deadline?: Date | string | null
-    passwordHash?: string | null
-    shareToken?: string
-    isPublished?: boolean
-    categoryTags?: GalleryCreatecategoryTagsInput | string[]
-    expiresAt?: Date | string | null
-    slideshowEnabled?: boolean
-    socialSharingEnabled?: boolean
-    emailRegistration?: boolean
-    language?: string
-    downloadEnabled?: boolean
-    downloadPin?: string | null
-    downloadSizeOriginal?: boolean
-    downloadSizeHighRes?: boolean
-    downloadSizeWeb?: boolean
-    downloadWebMaxPx?: number
-    downloadHighResMaxPx?: number
-    downloadLimit?: number | null
-    downloadContactsOnly?: boolean
-    favoritesEnabled?: boolean
-    favoriteNotesEnabled?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutGalleriesInput
-    coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
-    photos?: PhotoCreateNestedManyWithoutGalleryInput
-    albums?: AlbumCreateNestedManyWithoutGalleryInput
-    comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
-    driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
-    favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
-    downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
-    favoriteShares?: FavoriteShareCreateNestedManyWithoutGalleryInput
-    smartAlbumDesigns?: SmartAlbumDesignCreateNestedManyWithoutGalleryInput
-  }
-
-  export type GalleryUncheckedCreateWithoutClientsInput = {
-    id?: string
-    userId: string
-    title: string
-    slug: string
-    eventDate?: Date | string | null
-    deadline?: Date | string | null
-    coverPhotoId?: string | null
-    passwordHash?: string | null
-    shareToken?: string
-    isPublished?: boolean
-    categoryTags?: GalleryCreatecategoryTagsInput | string[]
-    expiresAt?: Date | string | null
-    slideshowEnabled?: boolean
-    socialSharingEnabled?: boolean
-    emailRegistration?: boolean
-    language?: string
-    downloadEnabled?: boolean
-    downloadPin?: string | null
-    downloadSizeOriginal?: boolean
-    downloadSizeHighRes?: boolean
-    downloadSizeWeb?: boolean
-    downloadWebMaxPx?: number
-    downloadHighResMaxPx?: number
-    downloadLimit?: number | null
-    downloadContactsOnly?: boolean
-    favoritesEnabled?: boolean
-    favoriteNotesEnabled?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
-    albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
-    driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
-    favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
-    downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
-    favoriteShares?: FavoriteShareUncheckedCreateNestedManyWithoutGalleryInput
-    smartAlbumDesigns?: SmartAlbumDesignUncheckedCreateNestedManyWithoutGalleryInput
-  }
-
-  export type GalleryCreateOrConnectWithoutClientsInput = {
-    where: GalleryWhereUniqueInput
-    create: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
-  }
-
-  export type ClientCreateWithoutGalleriesInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutClientsInput
-  }
-
-  export type ClientUncheckedCreateWithoutGalleriesInput = {
-    id?: string
-    userId: string
-    name: string
-    email: string
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ClientCreateOrConnectWithoutGalleriesInput = {
-    where: ClientWhereUniqueInput
-    create: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
-  }
-
-  export type GalleryUpsertWithoutClientsInput = {
-    update: XOR<GalleryUpdateWithoutClientsInput, GalleryUncheckedUpdateWithoutClientsInput>
-    create: XOR<GalleryCreateWithoutClientsInput, GalleryUncheckedCreateWithoutClientsInput>
-    where?: GalleryWhereInput
-  }
-
-  export type GalleryUpdateToOneWithWhereWithoutClientsInput = {
-    where?: GalleryWhereInput
-    data: XOR<GalleryUpdateWithoutClientsInput, GalleryUncheckedUpdateWithoutClientsInput>
-  }
-
-  export type GalleryUpdateWithoutClientsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    shareToken?: StringFieldUpdateOperationsInput | string
-    isPublished?: BoolFieldUpdateOperationsInput | boolean
-    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
-    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
-    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
-    language?: StringFieldUpdateOperationsInput | string
-    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
-    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
-    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
-    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
-    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
-    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
-    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
-    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
-    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
-    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
-    coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
-    photos?: PhotoUpdateManyWithoutGalleryNestedInput
-    albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
-    driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
-    favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
-    downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
-    favoriteShares?: FavoriteShareUpdateManyWithoutGalleryNestedInput
-    smartAlbumDesigns?: SmartAlbumDesignUpdateManyWithoutGalleryNestedInput
-  }
-
-  export type GalleryUncheckedUpdateWithoutClientsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    eventDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    coverPhotoId?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    shareToken?: StringFieldUpdateOperationsInput | string
-    isPublished?: BoolFieldUpdateOperationsInput | boolean
-    categoryTags?: GalleryUpdatecategoryTagsInput | string[]
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    slideshowEnabled?: BoolFieldUpdateOperationsInput | boolean
-    socialSharingEnabled?: BoolFieldUpdateOperationsInput | boolean
-    emailRegistration?: BoolFieldUpdateOperationsInput | boolean
-    language?: StringFieldUpdateOperationsInput | string
-    downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
-    downloadPin?: NullableStringFieldUpdateOperationsInput | string | null
-    downloadSizeOriginal?: BoolFieldUpdateOperationsInput | boolean
-    downloadSizeHighRes?: BoolFieldUpdateOperationsInput | boolean
-    downloadSizeWeb?: BoolFieldUpdateOperationsInput | boolean
-    downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
-    downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
-    downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
-    favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
-    favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
-    albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
-    driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
-    favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
-    downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
-    favoriteShares?: FavoriteShareUncheckedUpdateManyWithoutGalleryNestedInput
-    smartAlbumDesigns?: SmartAlbumDesignUncheckedUpdateManyWithoutGalleryNestedInput
-  }
-
-  export type ClientUpsertWithoutGalleriesInput = {
-    update: XOR<ClientUpdateWithoutGalleriesInput, ClientUncheckedUpdateWithoutGalleriesInput>
-    create: XOR<ClientCreateWithoutGalleriesInput, ClientUncheckedCreateWithoutGalleriesInput>
-    where?: ClientWhereInput
-  }
-
-  export type ClientUpdateToOneWithWhereWithoutGalleriesInput = {
-    where?: ClientWhereInput
-    data: XOR<ClientUpdateWithoutGalleriesInput, ClientUncheckedUpdateWithoutGalleriesInput>
-  }
-
-  export type ClientUpdateWithoutGalleriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutClientsNestedInput
-  }
-
-  export type ClientUncheckedUpdateWithoutGalleriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GalleryCreateWithoutAlbumsInput = {
@@ -51730,7 +48163,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -51738,7 +48170,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutGalleriesInput
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -51772,13 +48203,11 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -51846,7 +48275,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51854,7 +48282,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -51888,13 +48315,11 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -52126,7 +48551,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -52135,7 +48559,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
@@ -52168,14 +48591,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
@@ -52356,7 +48777,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52365,7 +48785,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
@@ -52398,14 +48817,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
@@ -52560,7 +48977,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -52569,7 +48985,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
@@ -52602,14 +49017,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
@@ -52719,7 +49132,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52728,7 +49140,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
@@ -52761,14 +49172,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
@@ -52868,7 +49277,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -52877,7 +49285,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -52910,14 +49317,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -52964,7 +49369,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52973,7 +49377,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -53006,14 +49409,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -53044,7 +49445,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -53053,7 +49453,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -53086,14 +49485,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -53140,7 +49537,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53149,7 +49545,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -53182,14 +49577,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -53227,7 +49620,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
   }
@@ -53262,7 +49654,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
   }
@@ -53355,7 +49746,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
   }
@@ -53390,7 +49780,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -53595,7 +49984,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -53604,7 +49992,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventCreateNestedManyWithoutGalleryInput
@@ -53637,14 +50024,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
     downloadEvents?: DownloadEventUncheckedCreateNestedManyWithoutGalleryInput
@@ -53734,7 +50119,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53743,7 +50127,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUpdateManyWithoutGalleryNestedInput
@@ -53776,14 +50159,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
     downloadEvents?: DownloadEventUncheckedUpdateManyWithoutGalleryNestedInput
@@ -53821,7 +50202,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
     galleries?: GalleryCreateNestedManyWithoutUserInput
-    clients?: ClientCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
   }
@@ -53856,7 +50236,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
     galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
-    clients?: ClientUncheckedCreateNestedManyWithoutUserInput
     storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
     driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
   }
@@ -53961,7 +50340,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
     galleries?: GalleryUpdateManyWithoutUserNestedInput
-    clients?: ClientUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
   }
@@ -53996,7 +50374,6 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
     galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
-    clients?: ClientUncheckedUpdateManyWithoutUserNestedInput
     storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
     driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -54177,7 +50554,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -54186,7 +50562,6 @@ export namespace Prisma {
     coverPhoto?: PhotoCreateNestedOneWithoutUsedAsCoverInInput
     photos?: PhotoCreateNestedManyWithoutGalleryInput
     albums?: AlbumCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteCreateNestedManyWithoutGalleryInput
@@ -54219,14 +50594,12 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     photos?: PhotoUncheckedCreateNestedManyWithoutGalleryInput
     albums?: AlbumUncheckedCreateNestedManyWithoutGalleryInput
-    clients?: GalleryClientUncheckedCreateNestedManyWithoutGalleryInput
     comments?: GalleryCommentUncheckedCreateNestedManyWithoutGalleryInput
     driveImportItems?: DriveImportItemUncheckedCreateNestedManyWithoutGalleryInput
     favorites?: GalleryFavoriteUncheckedCreateNestedManyWithoutGalleryInput
@@ -54358,7 +50731,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54367,7 +50739,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -54400,14 +50771,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -54771,18 +51140,8 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ClientCreateManyUserInput = {
-    id?: string
-    name: string
-    email: string
-    phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54968,7 +51327,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54976,7 +51334,6 @@ export namespace Prisma {
     coverPhoto?: PhotoUpdateOneWithoutUsedAsCoverInNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -55009,14 +51366,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -55049,38 +51404,8 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ClientUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    galleries?: GalleryClientUpdateManyWithoutClientNestedInput
-  }
-
-  export type ClientUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    galleries?: GalleryClientUncheckedUpdateManyWithoutClientNestedInput
-  }
-
-  export type ClientUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55186,11 +51511,6 @@ export namespace Prisma {
     downloadEnabled?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type GalleryClientCreateManyGalleryInput = {
-    clientId: string
-    createdAt?: Date | string
   }
 
   export type GalleryCommentCreateManyGalleryInput = {
@@ -55368,21 +51688,6 @@ export namespace Prisma {
     downloadEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientUpdateWithoutGalleryInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    client?: ClientUpdateOneRequiredWithoutGalleriesNestedInput
-  }
-
-  export type GalleryClientUncheckedUpdateWithoutGalleryInput = {
-    clientId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientUncheckedUpdateManyWithoutGalleryInput = {
-    clientId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GalleryCommentUpdateWithoutGalleryInput = {
@@ -55620,7 +51925,6 @@ export namespace Prisma {
     downloadWebMaxPx?: number
     downloadHighResMaxPx?: number
     downloadLimit?: number | null
-    downloadContactsOnly?: boolean
     favoritesEnabled?: boolean
     favoriteNotesEnabled?: boolean
     createdAt?: Date | string
@@ -55678,7 +51982,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55686,7 +51989,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutGalleriesNestedInput
     photos?: PhotoUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUpdateManyWithoutGalleryNestedInput
@@ -55719,14 +52021,12 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     photos?: PhotoUncheckedUpdateManyWithoutGalleryNestedInput
     albums?: AlbumUncheckedUpdateManyWithoutGalleryNestedInput
-    clients?: GalleryClientUncheckedUpdateManyWithoutGalleryNestedInput
     comments?: GalleryCommentUncheckedUpdateManyWithoutGalleryNestedInput
     driveImportItems?: DriveImportItemUncheckedUpdateManyWithoutGalleryNestedInput
     favorites?: GalleryFavoriteUncheckedUpdateManyWithoutGalleryNestedInput
@@ -55759,7 +52059,6 @@ export namespace Prisma {
     downloadWebMaxPx?: IntFieldUpdateOperationsInput | number
     downloadHighResMaxPx?: IntFieldUpdateOperationsInput | number
     downloadLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    downloadContactsOnly?: BoolFieldUpdateOperationsInput | boolean
     favoritesEnabled?: BoolFieldUpdateOperationsInput | boolean
     favoriteNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55850,26 +52149,6 @@ export namespace Prisma {
     note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientCreateManyClientInput = {
-    galleryId: string
-    createdAt?: Date | string
-  }
-
-  export type GalleryClientUpdateWithoutClientInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    gallery?: GalleryUpdateOneRequiredWithoutClientsNestedInput
-  }
-
-  export type GalleryClientUncheckedUpdateWithoutClientInput = {
-    galleryId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GalleryClientUncheckedUpdateManyWithoutClientInput = {
-    galleryId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AlbumPhotoCreateManyAlbumInput = {

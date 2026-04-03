@@ -47,45 +47,6 @@ export const createGallery = async (userId: string, body: any) => {
     },
   });
 
-  const clientId = String(body?.clientId ?? "").trim();
-  const clientEmail = String(body?.clientEmail ?? "").trim().toLowerCase();
-  const clientName = String(body?.clientName ?? "").trim();
-
-  if (clientId) {
-    await db.galleryClient.upsert({
-      where: { galleryId_clientId: { galleryId: gallery.id, clientId } },
-      update: {},
-      create: { galleryId: gallery.id, clientId },
-    });
-  } else if (clientEmail) {
-    let client = await db.client.findFirst({
-      where: { userId, email: clientEmail },
-    });
-
-    if (!client) {
-      client = await db.client.create({
-        data: {
-          userId,
-          email: clientEmail,
-          name: clientName || clientEmail.split("@")[0] || "New Client",
-        },
-      });
-    } else if (clientName && client.name !== clientName) {
-      client = await db.client.update({
-        where: { id: client.id },
-        data: { name: clientName },
-      });
-    }
-
-    await db.galleryClient.upsert({
-      where: {
-        galleryId_clientId: { galleryId: gallery.id, clientId: client.id },
-      },
-      update: {},
-      create: { galleryId: gallery.id, clientId: client.id },
-    });
-  }
-
   return {
     gallery: {
       id: gallery.id,

@@ -14,8 +14,6 @@ export { confirmPhotoUpload } from "./confirmPhotoUpload";
 export { createAlbum } from "./createAlbum";
 export { updateAlbum } from "./updateAlbum";
 export { deleteAlbum } from "./deleteAlbum";
-export { listClients } from "./listClients";
-export { updateClient } from "./updateClient";
 export { updatePhotoLoved } from "./updatePhotoLoved";
 export { deletePhoto } from "./deletePhoto";
 export { gdriveAuthStatus } from "./gdriveAuthStatus";

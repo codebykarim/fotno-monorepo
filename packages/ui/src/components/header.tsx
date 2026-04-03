@@ -15,7 +15,6 @@ type Props = {
 const dashboardNavItems = [
   { title: "Overview", href: "/" },
   { title: "Galleries", href: "/galleries" },
-  { title: "Clients", href: "/clients" },
   { title: "Billing", href: "/billing" },
 ];
 

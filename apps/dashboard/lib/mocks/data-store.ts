@@ -1,10 +1,9 @@
-import { Activity, Album, Client, Gallery, Photo, UploadTicket } from "@/lib/types/gallery";
+import { Activity, Album, Gallery, Photo, UploadTicket } from "@/lib/types/gallery";
 
 type Store = {
   galleries: Gallery[];
   photos: Photo[];
   albums: Album[];
-  clients: Client[];
   activity: Activity[];
   uploadTickets: UploadTicket[];
 };
@@ -88,7 +87,6 @@ const galleryDefaults = {
   downloadWebMaxPx: 2048,
   downloadHighResMaxPx: 3600,
   downloadLimit: null,
-  downloadContactsOnly: false,
   favoritesEnabled: true,
   favoriteNotesEnabled: true,
 };
@@ -135,21 +133,6 @@ const seedAlbums: Album[] = [
   },
 ];
 
-const seedClients: Client[] = [
-  {
-    id: "c1",
-    name: "Sarah Johnson",
-    email: "sarah@example.com",
-    galleryIds: ["g1"],
-  },
-  {
-    id: "c2",
-    name: "Mike Chen",
-    email: "mike@example.com",
-    galleryIds: ["g2"],
-  },
-];
-
 const seedActivity: Activity[] = [
   {
     id: "a1",
@@ -173,7 +156,6 @@ function createStore(): Store {
     galleries: seedGalleries,
     photos: seedPhotos,
     albums: seedAlbums,
-    clients: seedClients,
     activity: seedActivity,
     uploadTickets: [],
   };

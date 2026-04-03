@@ -242,7 +242,6 @@ exports.Prisma.GalleryScalarFieldEnum = {
   downloadWebMaxPx: 'downloadWebMaxPx',
   downloadHighResMaxPx: 'downloadHighResMaxPx',
   downloadLimit: 'downloadLimit',
-  downloadContactsOnly: 'downloadContactsOnly',
   favoritesEnabled: 'favoritesEnabled',
   favoriteNotesEnabled: 'favoriteNotesEnabled',
   createdAt: 'createdAt',
@@ -294,22 +293,6 @@ exports.Prisma.StorageEventScalarFieldEnum = {
   photoId: 'photoId',
   delta: 'delta',
   reason: 'reason',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.ClientScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.GalleryClientScalarFieldEnum = {
-  galleryId: 'galleryId',
-  clientId: 'clientId',
   createdAt: 'createdAt'
 };
 
@@ -641,8 +624,6 @@ exports.Prisma.ModelName = {
   Photo: 'Photo',
   UploadSession: 'UploadSession',
   StorageEvent: 'StorageEvent',
-  Client: 'Client',
-  GalleryClient: 'GalleryClient',
   Album: 'Album',
   AlbumPhoto: 'AlbumPhoto',
   GalleryComment: 'GalleryComment',

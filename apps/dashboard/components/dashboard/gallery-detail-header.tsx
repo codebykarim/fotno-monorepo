@@ -35,7 +35,12 @@ import { useGalleryDetail } from "./gallery-detail-provider";
 const TABS = [
   { id: "photos", label: "Photos", icon: Grid2x2, segment: "" },
   // { id: "albums", label: "Albums", icon: Album, segment: "/albums" },
-  { id: "smart-albums", label: "Smart Albums", icon: BookImage, segment: "/smart-albums" },
+  {
+    id: "smart-albums",
+    label: "Smart Albums",
+    icon: BookImage,
+    segment: "/smart-albums",
+  },
   { id: "share", label: "Share", icon: Share2, segment: "/share" },
   { id: "settings", label: "Settings", icon: Settings2, segment: "/settings" },
 ] as const;
@@ -300,11 +305,7 @@ export function GalleryDetailHeader() {
             {data.gallery.photoCount} photo
             {data.gallery.photoCount !== 1 ? "s" : ""}
           </span>
-          <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
-            <FolderKanban className="h-3 w-3" />
-            {data.gallery.albums.length} album
-            {data.gallery.albums.length !== 1 ? "s" : ""}
-          </span>
+
           {data.gallery.eventDate && (
             <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1">
               <CalendarDays className="h-3 w-3" />

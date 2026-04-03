@@ -44,7 +44,6 @@ export type Gallery = {
   downloadWebMaxPx: number;
   downloadHighResMaxPx: number;
   downloadLimit: number | null;
-  downloadContactsOnly: boolean;
   // Favorites settings
   favoritesEnabled: boolean;
   favoriteNotesEnabled: boolean;
@@ -69,14 +68,6 @@ export type GetGalleryPhotosResponse = {
   total: number;
   limit: number;
   offset: number;
-};
-
-export type Client = {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string | null;
-  galleryIds: string[];
 };
 
 export type Activity = {

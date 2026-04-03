@@ -76,10 +76,6 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
   if (typeof body?.downloadLimit === "number" || body?.downloadLimit === null) {
     data.downloadLimit = body.downloadLimit;
   }
-  if (typeof body?.downloadContactsOnly === "boolean") {
-    data.downloadContactsOnly = body.downloadContactsOnly;
-  }
-
   // Favorites settings
   if (typeof body?.favoritesEnabled === "boolean") {
     data.favoritesEnabled = body.favoritesEnabled;
@@ -126,7 +122,6 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
       downloadWebMaxPx: updated.downloadWebMaxPx,
       downloadHighResMaxPx: updated.downloadHighResMaxPx,
       downloadLimit: updated.downloadLimit ?? null,
-      downloadContactsOnly: updated.downloadContactsOnly,
       // Favorites settings
       favoritesEnabled: updated.favoritesEnabled,
       favoriteNotesEnabled: updated.favoriteNotesEnabled,

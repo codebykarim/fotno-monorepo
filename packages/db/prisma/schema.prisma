@@ -38,7 +38,6 @@ model User {
   subscriptions      Subscription[]
   userOnboarding     UserOnboarding?
   galleries          Gallery[]
-  clients            Client[]
   storageEvents      StorageEvent[]
   driveImportJobs    DriveImportJob[]
   smartAlbumConfig   SmartAlbumConfig?
@@ -198,8 +197,6 @@ model Gallery {
   downloadWebMaxPx     Int     @default(2048)
   downloadHighResMaxPx Int     @default(3600)
   downloadLimit        Int?
-  downloadContactsOnly Boolean @default(false)
-
   // Favorites settings
   favoritesEnabled     Boolean @default(true)
   favoriteNotesEnabled Boolean @default(true)
@@ -208,7 +205,6 @@ model Gallery {
   updatedAt        DateTime          @default(now()) @updatedAt
   photos             Photo[]              @relation("GalleryPhotos")
   albums             Album[]
-  clients            GalleryClient[]
   comments           GalleryComment[]
   driveImportItems   DriveImportItem[]
   favorites          GalleryFavorite[]
@@ -287,32 +283,6 @@ model StorageEvent {
 
   @@index([userId, createdAt])
   @@map("storage_event")
-}
-
-model Client {
-  id        String          @id @unique @default(uuid())
-  userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name      String
-  email     String
-  phone     String?
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @default(now()) @updatedAt
-  galleries GalleryClient[]
-
-  @@unique([userId, email])
-  @@map("client")
-}
-
-model GalleryClient {
-  galleryId String
-  clientId  String
-  createdAt DateTime @default(now())
-  gallery   Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@id([galleryId, clientId])
-  @@map("gallery_client")
 }
 
 model Album {

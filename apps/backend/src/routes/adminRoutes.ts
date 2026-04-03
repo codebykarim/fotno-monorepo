@@ -47,11 +47,6 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.listGalleriesController,
     authFunction: isAdmin,
   },
-  "list-clients": {
-    httpMethod: "GET",
-    controllerFunction: AdminController.listClientsController,
-    authFunction: isAdmin,
-  },
   "storage-overview": {
     httpMethod: "GET",
     controllerFunction: AdminController.getStorageOverviewController,
@@ -137,7 +132,6 @@ adminRoutes.post("/admin/users/:id/impersonate", handleMethod("impersonate-user"
 adminRoutes.get("/admin/users/:id/storage", handleMethod("user-storage"));
 adminRoutes.get("/admin/users/:id/subscriptions", handleMethod("user-subscriptions"));
 adminRoutes.get("/admin/galleries", handleMethod("list-galleries"));
-adminRoutes.get("/admin/clients", handleMethod("list-clients"));
 adminRoutes.get("/admin/storage", handleMethod("storage-overview"));
 adminRoutes.get("/admin/payments", handleMethod("payments-overview"));
 adminRoutes.get("/admin/services/health", handleMethod("service-health"));

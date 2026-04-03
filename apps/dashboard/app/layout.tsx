@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | FOTNO Dashboard",
   },
   description:
-    "Your FOTNO photographer command center. Manage galleries, clients, uploads, favorites, and sharing workflows all in one place.",
+    "Your FOTNO photographer command center. Manage galleries, uploads, favorites, and sharing workflows all in one place.",
   robots: {
     index: false,
     follow: false,

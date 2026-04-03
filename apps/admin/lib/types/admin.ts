@@ -50,20 +50,6 @@ export interface AdminGallery {
   };
 }
 
-export interface AdminClient {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  galleryCount: number;
-  createdAt: string;
-  owner: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
-
 export interface AdminStorageOverview {
   totalUsed: string;
   totalAllocated: string;

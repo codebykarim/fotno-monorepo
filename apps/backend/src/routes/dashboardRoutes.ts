@@ -86,16 +86,6 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.deleteAlbumController,
     authFunction: isAuth,
   },
-  "list-clients": {
-    httpMethod: "GET",
-    controllerFunction: DashboardController.listClientsController,
-    authFunction: isAuth,
-  },
-  "update-client": {
-    httpMethod: "PATCH",
-    controllerFunction: DashboardController.updateClientController,
-    authFunction: isAuth,
-  },
   "update-photo": {
     httpMethod: "PATCH",
     controllerFunction: DashboardController.updatePhotoController,
@@ -270,9 +260,6 @@ dashboardRoutes.delete(
   "/dashboard/galleries/:id/albums/:albumId",
   handleMethod("delete-album"),
 );
-
-dashboardRoutes.get("/dashboard/clients", handleMethod("list-clients"));
-dashboardRoutes.patch("/dashboard/clients/:id", handleMethod("update-client"));
 
 dashboardRoutes.patch("/dashboard/photos/:id", handleMethod("update-photo"));
 dashboardRoutes.delete("/dashboard/photos/:id", handleMethod("delete-photo"));

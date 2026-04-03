@@ -1,8 +1,7 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import useSWR from "swr";
 import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
@@ -15,15 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@workspace/ui/components/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/ui/components/select";
-import { apiRequest, jsonFetcher } from "@/lib/api/client";
-import { ListClientsResponse } from "@/lib/types/api";
+import { apiRequest } from "@/lib/api/client";
 import { addDays, addMonths, formatDisplayDate, formatLocalDate } from "@/lib/utils/date";
 
 const QUICK_EXPIRY = [
@@ -40,7 +31,6 @@ function quickDate(months: number, days: number): Date {
 
 export function NewGalleryForm() {
   const router = useRouter();
-  const { data } = useSWR<ListClientsResponse>("/api/clients", jsonFetcher);
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [eventDate, setEventDate] = useState<Date | undefined>(new Date());
@@ -50,15 +40,7 @@ export function NewGalleryForm() {
   const [expiresAt, setExpiresAt] = useState<Date | undefined>(
     addMonths(new Date(), 2),
   );
-  const [clientMode, setClientMode] = useState<"existing" | "new" | "none">(
-    "none",
-  );
-  const [existingClientId, setExistingClientId] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const existingClients = useMemo(() => data?.clients ?? [], [data?.clients]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -73,9 +55,6 @@ export function NewGalleryForm() {
           eventDate: formatLocalDate(eventDate),
           deadline: formatLocalDate(deadline),
           expiresAt: formatLocalDate(expiresAt),
-          clientId: clientMode === "existing" ? existingClientId : undefined,
-          clientName: clientMode === "new" ? clientName : undefined,
-          clientEmail: clientMode === "new" ? clientEmail : undefined,
         }),
       });
 
@@ -194,71 +173,6 @@ export function NewGalleryForm() {
                 Gallery and all its photos will be permanently deleted after this date.
               </p>
             </div>
-
-            <div className="space-y-2">
-              <Label>Client</Label>
-              <Select
-                value={clientMode}
-                onValueChange={(value) =>
-                  setClientMode(value as "existing" | "new" | "none")
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose client mode" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">No client yet</SelectItem>
-                  <SelectItem value="existing">Assign existing client</SelectItem>
-                  <SelectItem value="new">Create client from email</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {clientMode === "existing" && (
-              <div className="space-y-2">
-                <Label>Existing Client</Label>
-                <Select
-                  value={existingClientId}
-                  onValueChange={(value) => setExistingClientId(value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select client" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {existingClients.map((client) => (
-                      <SelectItem key={client.id} value={client.id}>
-                        {client.name} ({client.email})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {clientMode === "new" && (
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="clientName">Client Name</Label>
-                  <Input
-                    id="clientName"
-                    value={clientName}
-                    onChange={(event) => setClientName(event.target.value)}
-                    placeholder="Sarah Johnson"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="clientEmail">Client Email</Label>
-                  <Input
-                    id="clientEmail"
-                    type="email"
-                    required={clientMode === "new"}
-                    value={clientEmail}
-                    onChange={(event) => setClientEmail(event.target.value)}
-                    placeholder="sarah@example.com"
-                  />
-                </div>
-              </div>
-            )}
 
             <Button type="submit" disabled={submitting}>
               {submitting ? "Creating..." : "Create gallery"}

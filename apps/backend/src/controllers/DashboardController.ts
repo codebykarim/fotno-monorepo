@@ -246,26 +246,6 @@ export const deleteAlbumController = async (req: Request, res: Response) => {
   return res.status(200).json({ success: true });
 };
 
-export const listClientsController = async (req: Request, res: Response) => {
-  const userId = getUserId(req);
-  const result = await DashboardService.listClients(userId);
-  return res.status(200).json(result);
-};
-
-export const updateClientController = async (req: Request, res: Response) => {
-  const userId = getUserId(req);
-  const result = await DashboardService.updateClient(
-    userId,
-    req.params.id,
-    req.body,
-  );
-  if (!result) {
-    return res.status(404).json({ error: "Client not found" });
-  }
-
-  return res.status(200).json(result);
-};
-
 export const updatePhotoController = async (req: Request, res: Response) => {
   const userId = getUserId(req);
   const result = await DashboardService.updatePhotoLoved(

@@ -62,15 +62,6 @@ export const listGalleriesController = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-export const listClientsController = async (req: Request, res: Response) => {
-  const search = String(req.query.q ?? "");
-  const page = Math.max(1, Number(req.query.page) || 1);
-  const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 50));
-
-  const result = await AdminService.listAllClients(search, page, pageSize);
-  return res.status(200).json(result);
-};
-
 export const getStorageOverviewController = async (_req: Request, res: Response) => {
   const result = await AdminService.getStorageOverview();
   return res.status(200).json(result);

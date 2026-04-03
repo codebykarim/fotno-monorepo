@@ -1,4 +1,4 @@
-import { Activity, Client, GalleryWithPhotos } from "@/lib/types/gallery";
+import { Activity, GalleryWithPhotos } from "@/lib/types/gallery";
 
 export type GalleryListItem = {
   id: string;
@@ -32,20 +32,6 @@ export type OverviewResponse = {
   recentUploads7d: number;
   totalStorageUsedMb: number;
   recentActivity: Activity[];
-};
-
-export type ListClientsResponse = {
-  clients: Array<
-    Client & {
-      galleries: Array<{
-        id: string;
-        title: string;
-        eventDate: string | null;
-        deadline: string | null;
-      }>;
-    }
-  >;
-  galleries: Array<{ id: string; title: string; eventDate: string | null; deadline: string | null }>;
 };
 
 export type StorageSummaryResponse = {

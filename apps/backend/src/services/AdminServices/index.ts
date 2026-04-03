@@ -6,7 +6,6 @@ export { unbanUser } from "./unbanUser";
 export { setRole } from "./setRole";
 export { impersonateUser } from "./impersonateUser";
 export { listAllGalleries } from "./listAllGalleries";
-export { listAllClients } from "./listAllClients";
 export { getStorageOverview } from "./getStorageOverview";
 export { getUserStorage } from "./getUserStorage";
 export { getUserSubscriptions } from "./getUserPayments";

@@ -30,6 +30,8 @@ import { Skeleton } from "@workspace/ui/components/skeleton";
 import { Switch } from "@workspace/ui/components/switch";
 import { cn } from "@workspace/ui/lib/utils";
 import { apiRequest } from "@/lib/api/client";
+import { useCustomDomain } from "@/lib/hooks/use-custom-domain";
+import { getGalleryShareLink } from "@/lib/utils/gallery-link";
 import { useGalleryDetail } from "./gallery-detail-provider";
 
 const TABS = [
@@ -58,43 +60,12 @@ function formatDate(dateStr: string | null): string {
   }
 }
 
-function getGalleryShareLink(slug: string) {
-  const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
-    /\/$/,
-    "",
-  );
-  const buildShareUrl = (baseUrl: string) =>
-    `${baseUrl.replace(/\/$/, "")}/${slug}`;
-
-  const mapLocalhostToCurrentHost = (urlString: string): string => {
-    if (typeof window === "undefined") return urlString;
-    try {
-      const parsed = new URL(urlString);
-      if (parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1") {
-        parsed.hostname = window.location.hostname;
-      }
-      return parsed.toString().replace(/\/$/, "");
-    } catch {
-      return urlString;
-    }
-  };
-
-  if (configuredGalleryUrl)
-    return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
-  if (typeof window === "undefined")
-    return buildShareUrl("http://localhost:3003");
-
-  const inferredBaseUrl =
-    window.location.port === "3001"
-      ? `${window.location.protocol}//${window.location.hostname}:3003`
-      : window.location.origin;
-
-  return buildShareUrl(inferredBaseUrl);
-}
+// getGalleryShareLink is now imported from @/lib/utils/gallery-link
 
 export function GalleryDetailHeader() {
   const { galleryId, data, mutate, isLoading, processingStatus } =
     useGalleryDetail();
+  const { verifiedDomain } = useCustomDomain();
   const pathname = usePathname();
   const [publishSaving, setPublishSaving] = useState(false);
 
@@ -131,7 +102,7 @@ export function GalleryDetailHeader() {
     );
   }
 
-  const shareLink = getGalleryShareLink(data.gallery.slug);
+  const shareLink = getGalleryShareLink(data.gallery.slug, verifiedDomain);
 
   const togglePublish = async () => {
     setPublishSaving(true);

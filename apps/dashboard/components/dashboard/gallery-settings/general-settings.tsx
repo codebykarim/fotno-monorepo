@@ -21,6 +21,8 @@ import {
   PopoverTrigger,
 } from "@workspace/ui/components/popover";
 import { apiRequest } from "@/lib/api/client";
+import { useCustomDomain } from "@/lib/hooks/use-custom-domain";
+import { getGalleryBaseUrl } from "@/lib/utils/gallery-link";
 import { GetGalleryResponse } from "@/lib/types/api";
 import { addDays, addMonths, formatDisplayDate, formatLocalDate } from "@/lib/utils/date";
 
@@ -58,6 +60,7 @@ type Props = {
 };
 
 export function GeneralSettings({ galleryId, data, mutate }: Props) {
+  const { verifiedDomain } = useCustomDomain();
   const g = data.gallery;
   const [title, setTitle] = useState(g.title);
   const [slug, setSlug] = useState(g.slug);
@@ -79,8 +82,7 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
   const [language, setLanguage] = useState(g.language);
   const [saving, setSaving] = useState(false);
 
-  const galleryBaseUrl =
-    process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
+  const galleryBaseUrl = getGalleryBaseUrl(verifiedDomain);
   const slugPreview = `${galleryBaseUrl.replace(/\/$/, "").replace(/^https?:\/\//, "")}/`;
 
   function addTag() {

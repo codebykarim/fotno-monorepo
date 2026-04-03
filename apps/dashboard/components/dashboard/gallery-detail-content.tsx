@@ -28,6 +28,8 @@ import {
   FolderKanban,
   Album,
 } from "lucide-react";
+import { useCustomDomain } from "@/lib/hooks/use-custom-domain";
+import { getGalleryShareLink } from "@/lib/utils/gallery-link";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
@@ -123,6 +125,7 @@ export function GalleryDetailContent({
 }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [publishSaving, setPublishSaving] = useState(false);
+  const { verifiedDomain } = useCustomDomain();
   const { data, mutate, isLoading } = useSWR<GetGalleryResponse>(
     `/api/galleries/${galleryId}`,
     jsonFetcher,
@@ -172,7 +175,7 @@ export function GalleryDetailContent({
     );
   }
 
-  const shareLink = getGalleryShareLink(data.gallery.slug);
+  const shareLink = getGalleryShareLink(data.gallery.slug, verifiedDomain);
 
   return (
     <div className="space-y-5">
@@ -233,7 +236,7 @@ export function GalleryDetailContent({
               asChild
             >
               <a
-                href={getGalleryShareLink(data.gallery.slug)}
+                href={getGalleryShareLink(data.gallery.slug, verifiedDomain)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -389,39 +392,7 @@ export function GalleryDetailContent({
    Helper
    ═══════════════════════════════════════════════════════════════════ */
 
-export function getGalleryShareLink(slug: string) {
-  const configuredGalleryUrl = process.env.NEXT_PUBLIC_GALLERY_URL?.replace(
-    /\/$/,
-    "",
-  );
-  const buildShareUrl = (baseUrl: string) =>
-    `${baseUrl.replace(/\/$/, "")}/${slug}`;
-
-  const mapLocalhostToCurrentHost = (urlString: string): string => {
-    if (typeof window === "undefined") return urlString;
-    try {
-      const parsed = new URL(urlString);
-      if (parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1") {
-        parsed.hostname = window.location.hostname;
-      }
-      return parsed.toString().replace(/\/$/, "");
-    } catch {
-      return urlString;
-    }
-  };
-
-  if (configuredGalleryUrl)
-    return buildShareUrl(mapLocalhostToCurrentHost(configuredGalleryUrl));
-  if (typeof window === "undefined")
-    return buildShareUrl("http://localhost:3003");
-
-  const inferredBaseUrl =
-    window.location.port === "3001"
-      ? `${window.location.protocol}//${window.location.hostname}:3003`
-      : window.location.origin;
-
-  return buildShareUrl(inferredBaseUrl);
-}
+// getGalleryShareLink is now imported from @/lib/utils/gallery-link
 
 /* ═══════════════════════════════════════════════════════════════════
    Photos Tab
@@ -1855,14 +1826,16 @@ export function ShareTab({
     revalidateOnFocus: true,
   });
 
+  const { verifiedDomain } = useCustomDomain();
+
   useEffect(() => {
     const intervalId = window.setInterval(() => void refreshViewers(), 15000);
     return () => window.clearInterval(intervalId);
   }, [refreshViewers]);
 
   const shareLink = useMemo(
-    () => getGalleryShareLink(data.gallery.slug),
-    [data.gallery.slug],
+    () => getGalleryShareLink(data.gallery.slug, verifiedDomain),
+    [data.gallery.slug, verifiedDomain],
   );
   const [copied, setCopied] = useState(false);
 

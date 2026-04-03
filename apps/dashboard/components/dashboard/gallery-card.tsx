@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Images, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
+import { useCustomDomain } from "@/lib/hooks/use-custom-domain";
+import { getGalleryBaseUrl } from "@/lib/utils/gallery-link";
 import { Button } from "@workspace/ui/components/button";
 import {
   DropdownMenu,
@@ -34,8 +36,8 @@ const GRID_SLOTS = 4;
 export function GalleryCard({ gallery, onDelete }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteGalleryTitle, setDeleteGalleryTitle] = useState("");
-  const galleryBaseUrl =
-    process.env.NEXT_PUBLIC_GALLERY_URL ?? "http://localhost:3003";
+  const { verifiedDomain } = useCustomDomain();
+  const galleryBaseUrl = getGalleryBaseUrl(verifiedDomain);
 
   const urls = gallery.previewPhotoUrls ?? [];
 

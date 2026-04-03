@@ -1,6 +1,11 @@
 import { prisma } from "@workspace/db";
 import AppError from "../../errors/AppError";
 import dns from "dns/promises";
+import { Resolver } from "dns/promises";
+
+// Use public DNS resolvers to avoid local/ISP cache issues
+const resolver = new Resolver();
+resolver.setServers(["1.1.1.1", "8.8.8.8"]);
 
 export const getCustomDomain = async (userId: string) => {
   const domain = await (prisma as any).customDomain.findUnique({
@@ -72,23 +77,33 @@ export const verifyCustomDomain = async (userId: string) => {
   if (!domain) throw new AppError("No custom domain configured", 404);
 
   // Check DNS CNAME record points to gallery.fotno.com
+  // Also handles Cloudflare-proxied domains where CNAME is hidden
   let cnameValid = false;
   try {
-    const records = await dns.resolveCname(domain.domain);
+    const records = await resolver.resolveCname(domain.domain);
     cnameValid = records.some(
-      (r: string) =>
-        r === "gallery.fotno.com" || r === "gallery.fotno.com.",
+      (r: string) => r === "gallery.fotno.com" || r === "gallery.fotno.com.",
     );
   } catch {
-    // DNS resolution failed
+    // CNAME lookup failed — might be proxied (e.g. Cloudflare orange cloud).
+    // Fall back: check if the domain's A records match gallery.fotno.com's A records.
+    try {
+      const [domainIps, targetIps] = await Promise.all([
+        resolver.resolve4(domain.domain),
+        resolver.resolve4("gallery.fotno.com"),
+      ]);
+      cnameValid =
+        targetIps.length > 0 &&
+        targetIps.every((ip: string) => domainIps.includes(ip));
+    } catch {
+      // Both lookups failed
+    }
   }
 
   // Also check TXT record for verification token
   let txtValid = false;
   try {
-    const txtRecords = await dns.resolveTxt(
-      `_fotno-verify.${domain.domain}`,
-    );
+    const txtRecords = await resolver.resolveTxt(`_fotno-verify.${domain.domain}`);
     txtValid = txtRecords.some((r: string[]) =>
       r.some((v) => v === domain.verificationToken),
     );

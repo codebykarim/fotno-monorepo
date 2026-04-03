@@ -32,7 +32,26 @@ async function getComposeDomains(): Promise<
   Array<{ name: string; domain: string }>
 > {
   const app = await coolifyFetch(`/api/v1/applications/${COOLIFY_APP_UUID}`);
-  return app.docker_compose_domains || [];
+  let raw = app.docker_compose_domains;
+
+  // Coolify returns it as a JSON string, so parse it
+  if (typeof raw === "string") {
+    try {
+      raw = JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  // Convert object format { "gallery": { "domain": "..." } } to array
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    return Object.entries(raw).map(([name, val]: [string, any]) => ({
+      name,
+      domain: typeof val === "string" ? val : val?.domain || "",
+    }));
+  }
+  if (Array.isArray(raw)) return raw;
+  return [];
 }
 
 /**

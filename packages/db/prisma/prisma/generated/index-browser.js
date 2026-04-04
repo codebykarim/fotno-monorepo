@@ -525,6 +525,7 @@ exports.Prisma.CustomDomainScalarFieldEnum = {
   domain: 'domain',
   status: 'status',
   verificationToken: 'verificationToken',
+  cloudflareHostnameId: 'cloudflareHostnameId',
   verifiedAt: 'verifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

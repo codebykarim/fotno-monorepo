@@ -8,12 +8,13 @@ import { cn } from "@workspace/ui/lib/utils";
 const SECTIONS = [
   { href: "/settings/profile", label: "Profile", icon: User },
   { href: "/settings/notifications", label: "Notifications", icon: Bell },
-  { href: "/settings/domain", label: "Custom Domain", icon: Globe },
+  ...(process.env.NEXT_PUBLIC_CUSTOM_DOMAINS_ENABLED === "true"
+    ? [{ href: "/settings/domain", label: "Custom Domain", icon: Globe }]
+    : []),
 ];
 
 export function SettingsNav() {
   const pathname = usePathname();
-
   return (
     <>
       {/* Desktop sidebar */}

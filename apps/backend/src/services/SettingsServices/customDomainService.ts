@@ -1,6 +1,13 @@
 import { prisma } from "@workspace/db";
 import AppError from "../../errors/AppError";
 import { Resolver } from "dns/promises";
+import {
+  createCustomHostname,
+  deleteCustomHostname,
+} from "./cloudflareCustomHostname";
+
+const CUSTOM_DOMAINS_ENABLED =
+  process.env.CUSTOM_DOMAINS_ENABLED === "true";
 
 // Use public DNS resolvers to avoid local/ISP cache issues
 const resolver = new Resolver();
@@ -134,9 +141,19 @@ export const verifyCustomDomain = async (userId: string) => {
     );
   }
 
+  // Provision SSL via Cloudflare for SaaS when enabled
+  let cloudflareHostnameId: string | null = null;
+  if (CUSTOM_DOMAINS_ENABLED) {
+    cloudflareHostnameId = await createCustomHostname(domain.domain);
+  }
+
   const updated = await (prisma as any).customDomain.update({
     where: { userId },
-    data: { status: "VERIFIED", verifiedAt: new Date() },
+    data: {
+      status: "VERIFIED",
+      verifiedAt: new Date(),
+      cloudflareHostnameId,
+    },
   });
 
   return {
@@ -153,6 +170,11 @@ export const removeCustomDomain = async (userId: string) => {
   });
 
   if (!domain) throw new AppError("No custom domain configured", 404);
+
+  // Remove from Cloudflare if it was provisioned
+  if (CUSTOM_DOMAINS_ENABLED && domain.cloudflareHostnameId) {
+    await deleteCustomHostname(domain.cloudflareHostnameId);
+  }
 
   await (prisma as any).customDomain.delete({ where: { userId } });
 

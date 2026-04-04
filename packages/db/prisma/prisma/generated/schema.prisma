@@ -661,15 +661,16 @@ enum DomainStatus {
 }
 
 model CustomDomain {
-  id                String       @id @default(uuid())
-  userId            String       @unique
-  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  domain            String       @unique
-  status            DomainStatus @default(PENDING)
-  verificationToken String       @unique @default(uuid())
-  verifiedAt        DateTime?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @default(now()) @updatedAt
+  id                   String       @id @default(uuid())
+  userId               String       @unique
+  user                 User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain               String       @unique
+  status               DomainStatus @default(PENDING)
+  verificationToken    String       @unique @default(uuid())
+  cloudflareHostnameId String?
+  verifiedAt           DateTime?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @default(now()) @updatedAt
 
   @@map("custom_domain")
 }

@@ -37569,6 +37569,7 @@ export namespace Prisma {
     domain: string | null
     status: $Enums.DomainStatus | null
     verificationToken: string | null
+    cloudflareHostnameId: string | null
     verifiedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -37580,6 +37581,7 @@ export namespace Prisma {
     domain: string | null
     status: $Enums.DomainStatus | null
     verificationToken: string | null
+    cloudflareHostnameId: string | null
     verifiedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -37591,6 +37593,7 @@ export namespace Prisma {
     domain: number
     status: number
     verificationToken: number
+    cloudflareHostnameId: number
     verifiedAt: number
     createdAt: number
     updatedAt: number
@@ -37604,6 +37607,7 @@ export namespace Prisma {
     domain?: true
     status?: true
     verificationToken?: true
+    cloudflareHostnameId?: true
     verifiedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -37615,6 +37619,7 @@ export namespace Prisma {
     domain?: true
     status?: true
     verificationToken?: true
+    cloudflareHostnameId?: true
     verifiedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -37626,6 +37631,7 @@ export namespace Prisma {
     domain?: true
     status?: true
     verificationToken?: true
+    cloudflareHostnameId?: true
     verifiedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -37710,6 +37716,7 @@ export namespace Prisma {
     domain: string
     status: $Enums.DomainStatus
     verificationToken: string
+    cloudflareHostnameId: string | null
     verifiedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -37738,6 +37745,7 @@ export namespace Prisma {
     domain?: boolean
     status?: boolean
     verificationToken?: boolean
+    cloudflareHostnameId?: boolean
     verifiedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -37750,6 +37758,7 @@ export namespace Prisma {
     domain?: boolean
     status?: boolean
     verificationToken?: boolean
+    cloudflareHostnameId?: boolean
     verifiedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -37762,6 +37771,7 @@ export namespace Prisma {
     domain?: boolean
     status?: boolean
     verificationToken?: boolean
+    cloudflareHostnameId?: boolean
     verifiedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -37774,12 +37784,13 @@ export namespace Prisma {
     domain?: boolean
     status?: boolean
     verificationToken?: boolean
+    cloudflareHostnameId?: boolean
     verifiedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CustomDomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "status" | "verificationToken" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["customDomain"]>
+  export type CustomDomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "status" | "verificationToken" | "cloudflareHostnameId" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["customDomain"]>
   export type CustomDomainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -37801,6 +37812,7 @@ export namespace Prisma {
       domain: string
       status: $Enums.DomainStatus
       verificationToken: string
+      cloudflareHostnameId: string | null
       verifiedAt: Date | null
       createdAt: Date
       updatedAt: Date
@@ -38233,6 +38245,7 @@ export namespace Prisma {
     readonly domain: FieldRef<"CustomDomain", 'String'>
     readonly status: FieldRef<"CustomDomain", 'DomainStatus'>
     readonly verificationToken: FieldRef<"CustomDomain", 'String'>
+    readonly cloudflareHostnameId: FieldRef<"CustomDomain", 'String'>
     readonly verifiedAt: FieldRef<"CustomDomain", 'DateTime'>
     readonly createdAt: FieldRef<"CustomDomain", 'DateTime'>
     readonly updatedAt: FieldRef<"CustomDomain", 'DateTime'>
@@ -39158,6 +39171,7 @@ export namespace Prisma {
     domain: 'domain',
     status: 'status',
     verificationToken: 'verificationToken',
+    cloudflareHostnameId: 'cloudflareHostnameId',
     verifiedAt: 'verifiedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -42082,6 +42096,7 @@ export namespace Prisma {
     domain?: StringFilter<"CustomDomain"> | string
     status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
     verificationToken?: StringFilter<"CustomDomain"> | string
+    cloudflareHostnameId?: StringNullableFilter<"CustomDomain"> | string | null
     verifiedAt?: DateTimeNullableFilter<"CustomDomain"> | Date | string | null
     createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
     updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
@@ -42094,6 +42109,7 @@ export namespace Prisma {
     domain?: SortOrder
     status?: SortOrder
     verificationToken?: SortOrder
+    cloudflareHostnameId?: SortOrderInput | SortOrder
     verifiedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -42109,6 +42125,7 @@ export namespace Prisma {
     OR?: CustomDomainWhereInput[]
     NOT?: CustomDomainWhereInput | CustomDomainWhereInput[]
     status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    cloudflareHostnameId?: StringNullableFilter<"CustomDomain"> | string | null
     verifiedAt?: DateTimeNullableFilter<"CustomDomain"> | Date | string | null
     createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
     updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
@@ -42121,6 +42138,7 @@ export namespace Prisma {
     domain?: SortOrder
     status?: SortOrder
     verificationToken?: SortOrder
+    cloudflareHostnameId?: SortOrderInput | SortOrder
     verifiedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -42138,6 +42156,7 @@ export namespace Prisma {
     domain?: StringWithAggregatesFilter<"CustomDomain"> | string
     status?: EnumDomainStatusWithAggregatesFilter<"CustomDomain"> | $Enums.DomainStatus
     verificationToken?: StringWithAggregatesFilter<"CustomDomain"> | string
+    cloudflareHostnameId?: StringNullableWithAggregatesFilter<"CustomDomain"> | string | null
     verifiedAt?: DateTimeNullableWithAggregatesFilter<"CustomDomain"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
@@ -45035,6 +45054,7 @@ export namespace Prisma {
     domain: string
     status?: $Enums.DomainStatus
     verificationToken?: string
+    cloudflareHostnameId?: string | null
     verifiedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45047,6 +45067,7 @@ export namespace Prisma {
     domain: string
     status?: $Enums.DomainStatus
     verificationToken?: string
+    cloudflareHostnameId?: string | null
     verifiedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45057,6 +45078,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45069,6 +45091,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45080,6 +45103,7 @@ export namespace Prisma {
     domain: string
     status?: $Enums.DomainStatus
     verificationToken?: string
+    cloudflareHostnameId?: string | null
     verifiedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -45090,6 +45114,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45101,6 +45126,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47356,6 +47382,7 @@ export namespace Prisma {
     domain?: SortOrder
     status?: SortOrder
     verificationToken?: SortOrder
+    cloudflareHostnameId?: SortOrder
     verifiedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47367,6 +47394,7 @@ export namespace Prisma {
     domain?: SortOrder
     status?: SortOrder
     verificationToken?: SortOrder
+    cloudflareHostnameId?: SortOrder
     verifiedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47378,6 +47406,7 @@ export namespace Prisma {
     domain?: SortOrder
     status?: SortOrder
     verificationToken?: SortOrder
+    cloudflareHostnameId?: SortOrder
     verifiedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -50198,6 +50227,7 @@ export namespace Prisma {
     domain: string
     status?: $Enums.DomainStatus
     verificationToken?: string
+    cloudflareHostnameId?: string | null
     verifiedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50208,6 +50238,7 @@ export namespace Prisma {
     domain: string
     status?: $Enums.DomainStatus
     verificationToken?: string
+    cloudflareHostnameId?: string | null
     verifiedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50582,6 +50613,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50592,6 +50624,7 @@ export namespace Prisma {
     domain?: StringFieldUpdateOperationsInput | string
     status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
     verificationToken?: StringFieldUpdateOperationsInput | string
+    cloudflareHostnameId?: NullableStringFieldUpdateOperationsInput | string | null
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

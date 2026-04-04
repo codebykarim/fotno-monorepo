@@ -20,7 +20,7 @@ const SOURCE_CONFIG = {
     icon: HardDrive,
     authUrl: "/api/gdrive/auth-status",
     disconnectUrl: "/api/gdrive/disconnect",
-    scope: "https://www.googleapis.com/auth/drive.readonly",
+    scope: "https://www.googleapis.com/auth/drive.file",
   },
   gphotos: {
     label: "Google Photos",

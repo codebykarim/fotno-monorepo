@@ -12,7 +12,7 @@ export const gdriveDisconnect = async (userId: string) => {
 
   const scopes = (account.scope ?? "")
     .split(" ")
-    .filter((s: string) => !s.includes("drive.readonly"));
+    .filter((s: string) => !s.includes("drive.file"));
 
   await db.account.update({
     where: { id: account.id },

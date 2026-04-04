@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
                   {PrivacyPolicyTitle}
                 </h1>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Last updated: March 23, 2026
+                  Last updated: April 4, 2026
                 </p>
                 <p className="text-base leading-relaxed text-muted-foreground">
                   This Privacy Policy explains how FOTNO (“we”, “us”, or “our”)
@@ -179,6 +179,59 @@ export default function PrivacyPolicyPage() {
                   If your browser supports it, you may control cookies through your
                   browser settings. However, disabling certain cookies may affect
                   sign-in or service functionality.
+                </p>
+              </LegalSection>
+
+              <LegalSection title="Data protection">
+                <p>
+                  We implement technical and organizational measures to protect your
+                  data, including data accessed through third-party integrations such
+                  as Google Drive and Google Photos.
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">
+                    Encryption in transit and at rest.
+                  </span>{" "}
+                  All data transfers, including imports from Google services, are
+                  conducted over encrypted connections (TLS). Imported images are
+                  stored encrypted at rest in our cloud storage infrastructure
+                  (AWS S3 with server-side encryption).
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">
+                    Token storage and handling.
+                  </span>{" "}
+                  Google OAuth access and refresh tokens are stored securely in our
+                  database and are never exposed to the browser or shared with third
+                  parties. Tokens are used only to perform the import operations you
+                  explicitly initiate.
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">
+                    Minimal data retention from imports.
+                  </span>{" "}
+                  When you import from Google Drive or Google Photos, only the image
+                  files you explicitly select are copied to your gallery. We do not
+                  retain Google API session data, media item IDs, folder structures,
+                  or any metadata beyond the imported image files after the import
+                  process completes.
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">
+                    User control and disconnection.
+                  </span>{" "}
+                  You can disconnect Google services at any time from your dashboard.
+                  Disconnecting revokes our access and removes stored tokens. You
+                  may also revoke access through your{" "}
+                  <a
+                    href="https://myaccount.google.com/permissions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+                  >
+                    Google Account permissions
+                  </a>
+                  .
                 </p>
               </LegalSection>
 

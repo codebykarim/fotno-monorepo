@@ -19,7 +19,7 @@ export async function hasDriveScope(userId: string): Promise<boolean> {
   });
 
   if (!account?.scope) return false;
-  return account.scope.includes("drive.readonly");
+  return account.scope.includes("drive.file");
 }
 
 export async function hasPhotosScope(userId: string): Promise<boolean> {
@@ -77,5 +77,5 @@ export function getPhotosAccessToken(userId: string): Promise<string> {
 }
 
 export async function getDriveAccessToken(userId: string): Promise<string> {
-  return getGoogleAccessToken(userId, "drive.readonly");
+  return getGoogleAccessToken(userId, "drive.file");
 }

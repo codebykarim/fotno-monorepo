@@ -106,19 +106,9 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.gdriveDisconnectController,
     authFunction: isAuth,
   },
-  "gdrive-folders": {
+  "gdrive-access-token": {
     httpMethod: "GET",
-    controllerFunction: DashboardController.gdriveFoldersController,
-    authFunction: isAuth,
-  },
-  "gdrive-photo-folders": {
-    httpMethod: "GET",
-    controllerFunction: DashboardController.gdrivePhotoFoldersController,
-    authFunction: isAuth,
-  },
-  "gdrive-folder-preview": {
-    httpMethod: "GET",
-    controllerFunction: DashboardController.gdriveFolderPreviewController,
+    controllerFunction: DashboardController.gdriveAccessTokenController,
     authFunction: isAuth,
   },
   "gdrive-start-import": {
@@ -274,16 +264,8 @@ dashboardRoutes.post(
   handleMethod("gdrive-disconnect"),
 );
 dashboardRoutes.get(
-  "/dashboard/gdrive/folders",
-  handleMethod("gdrive-folders"),
-);
-dashboardRoutes.get(
-  "/dashboard/gdrive/photo-folders",
-  handleMethod("gdrive-photo-folders"),
-);
-dashboardRoutes.get(
-  "/dashboard/gdrive/folders/:folderId/preview",
-  handleMethod("gdrive-folder-preview"),
+  "/dashboard/gdrive/access-token",
+  handleMethod("gdrive-access-token"),
 );
 dashboardRoutes.post(
   "/dashboard/gdrive/import",

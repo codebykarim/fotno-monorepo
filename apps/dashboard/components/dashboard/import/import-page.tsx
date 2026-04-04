@@ -11,15 +11,16 @@ import { apiRequest } from "@/lib/api/client";
 import { SourceSelector, type ImportSource } from "./source-selector";
 import { ImportStepper } from "./import-stepper";
 import { ConnectBanner } from "./connect-banner";
-import { GdriveBrowser, type SelectedFolder } from "./gdrive-browser";
-import { GdrivePreviewSheet } from "./gdrive-preview-sheet";
+import { GdrivePicker, type PickedDriveFile } from "./gdrive-picker";
+import { GdriveReviewGrid } from "./gdrive-review-grid";
 import { GphotosPicker, type PickedPhoto } from "./gphotos-picker";
 import { GphotosReviewGrid } from "./gphotos-review-grid";
 import { ImportConfig, type FolderMapping } from "./import-config";
 import { ImportProgress } from "./import-progress";
 
 const GDRIVE_STEPS = [
-  { label: "Browse Folders" },
+  { label: "Pick Files" },
+  { label: "Review" },
   { label: "Configure" },
   { label: "Progress" },
 ];
@@ -43,11 +44,10 @@ export function ImportPage() {
         ? "gdrive"
         : null,
   );
-  const [step, setStep] = useState(initialJobId ? 2 : 0);
+  const [step, setStep] = useState(initialJobId ? 3 : 0);
 
   // Google Drive state
-  const [selectedFolders, setSelectedFolders] = useState<SelectedFolder[]>([]);
-  const [previewFolderId, setPreviewFolderId] = useState<string | null>(null);
+  const [pickedFiles, setPickedFiles] = useState<PickedDriveFile[]>([]);
 
   // Google Photos state
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -66,28 +66,43 @@ export function ImportPage() {
   function handleBackToSources() {
     setSource(null);
     setStep(0);
-    setSelectedFolders([]);
+    setPickedFiles([]);
     setPickedPhotos([]);
     setSessionId(null);
     setJobId(null);
   }
 
+  // Google Drive: files picked
+  const handleDriveFilesReady = useCallback((files: PickedDriveFile[]) => {
+    setPickedFiles(files);
+    setStep(1); // review step
+  }, []);
+
   // Google Drive: start import
   async function handleGdriveImport(mappings: FolderMapping[]) {
     setImporting(true);
     try {
-      const apiMappings = mappings.map((m) => ({
-        driveFolderId: m.sourceId,
-        driveFolderName: m.sourceName,
-        galleryId: m.galleryId,
-        newGallery: m.newGallery,
-      }));
+      const mapping = mappings[0];
+      if (!mapping) throw new Error("No gallery configured");
+
       const result = await apiRequest<{ jobId: string; totalFiles: number }>(
         "/api/gdrive/import",
-        { method: "POST", body: JSON.stringify({ mappings: apiMappings }) },
+        {
+          method: "POST",
+          body: JSON.stringify({
+            files: pickedFiles.map((f) => ({
+              id: f.id,
+              name: f.name,
+              mimeType: f.mimeType,
+              sizeBytes: f.sizeBytes,
+            })),
+            galleryId: mapping.galleryId,
+            newGallery: mapping.newGallery,
+          }),
+        },
       );
       setJobId(result.jobId);
-      setStep(2); // progress step
+      setStep(3); // progress step
       toast.success(`Import started: ${result.totalFiles} files`);
     } catch (error) {
       toast.error(
@@ -118,7 +133,7 @@ export function ImportPage() {
         },
       );
       setJobId(result.jobId);
-      setStep(3); // progress step (4th step, index 3)
+      setStep(3); // progress step
       toast.success(`Import started: ${result.totalFiles} photos`);
     } catch (error) {
       toast.error(
@@ -137,14 +152,13 @@ export function ImportPage() {
   function handleImportMore() {
     setJobId(null);
     setStep(0);
-    setSelectedFolders([]);
+    setPickedFiles([]);
     setPickedPhotos([]);
     setSessionId(null);
   }
 
   const steps = source === "gdrive" ? GDRIVE_STEPS : GPHOTOS_STEPS;
-  const isProgressStep =
-    (source === "gdrive" && step === 2) || (source === "gphotos" && step === 3);
+  const isProgressStep = step === 3;
 
   return (
     <div className="space-y-6">
@@ -163,7 +177,7 @@ export function ImportPage() {
           <p className="mt-0.5 text-sm text-muted-foreground">
             {source
               ? source === "gdrive"
-                ? "Select photo folders from your Drive and import them into galleries."
+                ? "Select photos from your Google Drive and import them into a gallery."
                 : "Pick photos from Google Photos and import them into a gallery."
               : "Choose a source to import photos from."}
           </p>
@@ -187,48 +201,48 @@ export function ImportPage() {
           {/* =================== GOOGLE DRIVE FLOW =================== */}
           {source === "gdrive" && (
             <>
-              {/* Step 0: Browse Folders */}
+              {/* Step 0: Pick Files */}
               {step === 0 && (
+                <GdrivePicker onFilesReady={handleDriveFilesReady} />
+              )}
+
+              {/* Step 1: Review */}
+              {step === 1 && pickedFiles.length > 0 && (
                 <div className="space-y-4">
-                  <GdriveBrowser
-                    selectedFolders={selectedFolders}
-                    onSelectionChange={setSelectedFolders}
-                    onPreviewFolder={setPreviewFolderId}
+                  <GdriveReviewGrid
+                    files={pickedFiles}
+                    onPickAgain={() => setStep(0)}
                   />
-
-                  <GdrivePreviewSheet
-                    folderId={previewFolderId}
-                    onClose={() => setPreviewFolderId(null)}
-                  />
-
-                  {selectedFolders.length > 0 && (
-                    <div className="flex justify-end">
-                      <Button onClick={() => setStep(1)}>
-                        Continue with {selectedFolders.length} folder
-                        {selectedFolders.length !== 1 ? "s" : ""}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="flex justify-end">
+                    <Button onClick={() => setStep(2)}>
+                      Continue to Import
+                    </Button>
+                  </div>
                 </div>
               )}
 
-              {/* Step 1: Configure */}
-              {step === 1 && (
+              {/* Step 2: Configure */}
+              {step === 2 && (
                 <div className="space-y-4">
-                  <Button variant="ghost" size="sm" onClick={() => setStep(0)}>
+                  <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                     <ArrowLeft className="mr-1.5 h-4 w-4" />
-                    Back to folder selection
+                    Back to review
                   </Button>
                   <ImportConfig
-                    items={selectedFolders}
+                    items={[
+                      {
+                        id: "drive-picker",
+                        name: `Google Drive (${pickedFiles.length} files)`,
+                      },
+                    ]}
                     onStartImport={handleGdriveImport}
                     importing={importing}
                   />
                 </div>
               )}
 
-              {/* Step 2: Progress */}
-              {step === 2 && jobId && (
+              {/* Step 3: Progress */}
+              {step === 3 && jobId && (
                 <div className="space-y-4">
                   <ImportProgress jobId={jobId} />
                   <div className="flex gap-2">

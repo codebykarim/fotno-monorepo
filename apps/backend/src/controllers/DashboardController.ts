@@ -297,39 +297,12 @@ export const gdriveDisconnectController = async (
   return res.status(200).json(result);
 };
 
-export const gdriveFoldersController = async (req: Request, res: Response) => {
-  const userId = getUserId(req);
-  const parentId = req.query.parentId ? String(req.query.parentId) : undefined;
-  const result = await DashboardService.gdriveFolders(userId, parentId);
-  if ("error" in result) {
-    return res
-      .status(asStatusCode(result.status, 400))
-      .json({ error: result.error });
-  }
-  return res.status(200).json(result);
-};
-
-export const gdrivePhotoFoldersController = async (
+export const gdriveAccessTokenController = async (
   req: Request,
   res: Response,
 ) => {
   const userId = getUserId(req);
-  const result = await DashboardService.gdrivePhotoFolders(userId);
-  if ("error" in result) {
-    return res
-      .status(asStatusCode(result.status, 400))
-      .json({ error: result.error });
-  }
-  return res.status(200).json(result);
-};
-
-export const gdriveFolderPreviewController = async (
-  req: Request,
-  res: Response,
-) => {
-  const userId = getUserId(req);
-  const folderId = req.params.folderId;
-  const result = await DashboardService.gdriveFolderPreview(userId, folderId);
+  const result = await DashboardService.gdriveAccessToken(userId);
   if ("error" in result) {
     return res
       .status(asStatusCode(result.status, 400))

@@ -2,9 +2,15 @@ import { db, slugify } from "./_shared";
 import { getDriveAccessToken, hasDriveScope } from "./gdriveTokenManager";
 import { uploadServiceRequest } from "./uploadServiceClient";
 
-interface FolderMapping {
-  driveFolderId: string;
-  driveFolderName: string;
+interface DriveFileInput {
+  id: string;
+  name: string;
+  mimeType: string;
+  sizeBytes: number;
+}
+
+interface StartImportBody {
+  files: DriveFileInput[];
   galleryId?: string;
   newGallery?: {
     title: string;
@@ -14,54 +20,16 @@ interface FolderMapping {
   };
 }
 
-interface DriveFile {
-  id: string;
-  name: string;
-  mimeType: string;
-  size: string;
-}
-
-async function listDriveImages(
-  accessToken: string,
-  folderId: string,
-): Promise<DriveFile[]> {
-  const query = `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`;
-  const params = new URLSearchParams({
-    q: query,
-    fields: "files(id,name,mimeType,size),nextPageToken",
-    pageSize: "1000",
-  });
-
-  let allFiles: DriveFile[] = [];
-  let pageToken: string | undefined;
-
-  do {
-    if (pageToken) params.set("pageToken", pageToken);
-
-    const res = await fetch(
-      `https://www.googleapis.com/drive/v3/files?${params.toString()}`,
-      { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-
-    if (!res.ok) throw new Error(`Drive API error: ${res.status}`);
-
-    const data = (await res.json()) as {
-      files: DriveFile[];
-      nextPageToken?: string;
-    };
-    allFiles = allFiles.concat(data.files);
-    pageToken = data.nextPageToken;
-  } while (pageToken);
-
-  return allFiles;
-}
-
 export const gdriveStartImport = async (
   userId: string,
-  body: { mappings: FolderMapping[] },
+  body: StartImportBody,
 ) => {
-  if (!body?.mappings?.length) {
-    return { error: "At least one folder mapping is required", status: 400 as const };
+  if (!body?.files?.length) {
+    return { error: "At least one file is required", status: 400 as const };
+  }
+
+  if (!body.galleryId && !body.newGallery) {
+    return { error: "galleryId or newGallery is required", status: 400 as const };
   }
 
   const hasScope = await hasDriveScope(userId);
@@ -69,123 +37,88 @@ export const gdriveStartImport = async (
     return { error: "Google Drive not connected", status: 403 as const };
   }
 
-  const accessToken = await getDriveAccessToken(userId);
+  // Verify we can get an access token
+  await getDriveAccessToken(userId);
 
-  const job = await db.driveImportJob.create({
-    data: { userId, source: "DRIVE", status: "LISTING" },
-  });
+  let galleryId = body.galleryId;
 
-  const allItems: Array<{
-    galleryId: string;
-    driveFolderId: string;
-    driveFolderName: string;
-    driveFileId: string;
-    driveFileName: string;
-    driveFileSize: bigint;
-    driveMimeType: string;
-  }> = [];
+  if (!galleryId && body.newGallery) {
+    const title = body.newGallery.title || "Google Drive Import";
+    const slugBase = slugify(title);
+    const slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
 
-  for (const mapping of body.mappings) {
-    let galleryId = mapping.galleryId;
+    const gallery = await db.gallery.create({
+      data: {
+        userId,
+        title,
+        slug,
+        eventDate: body.newGallery.eventDate
+          ? new Date(body.newGallery.eventDate)
+          : null,
+        isPublished: false,
+      },
+    });
 
-    if (!galleryId && mapping.newGallery) {
-      const title = mapping.newGallery.title || mapping.driveFolderName;
-      const slugBase = slugify(title);
-      const slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
+    if (body.newGallery.clientEmail) {
+      const email = body.newGallery.clientEmail.toLowerCase().trim();
+      const name =
+        body.newGallery.clientName ||
+        email.split("@")[0] ||
+        "New Client";
 
-      const gallery = await db.gallery.create({
-        data: {
-          userId,
-          title,
-          slug,
-          eventDate: mapping.newGallery.eventDate
-            ? new Date(mapping.newGallery.eventDate)
-            : null,
-          isPublished: false,
-        },
+      let client = await db.client.findFirst({
+        where: { userId, email },
       });
 
-      if (mapping.newGallery.clientEmail) {
-        const email = mapping.newGallery.clientEmail.toLowerCase().trim();
-        const name =
-          mapping.newGallery.clientName ||
-          email.split("@")[0] ||
-          "New Client";
-
-        let client = await db.client.findFirst({
-          where: { userId, email },
-        });
-
-        if (!client) {
-          client = await db.client.create({
-            data: { userId, email, name },
-          });
-        }
-
-        await db.galleryClient.upsert({
-          where: {
-            galleryId_clientId: {
-              galleryId: gallery.id,
-              clientId: client.id,
-            },
-          },
-          update: {},
-          create: { galleryId: gallery.id, clientId: client.id },
+      if (!client) {
+        client = await db.client.create({
+          data: { userId, email, name },
         });
       }
 
-      galleryId = gallery.id;
-    }
-
-    if (!galleryId) {
-      return { error: "Each mapping must have galleryId or newGallery", status: 400 as const };
-    }
-
-    const gallery = await db.gallery.findFirst({
-      where: { id: galleryId, userId },
-      select: { id: true },
-    });
-
-    if (!gallery) {
-      return { error: `Gallery ${galleryId} not found`, status: 404 as const };
-    }
-
-    const files = await listDriveImages(accessToken, mapping.driveFolderId);
-
-    for (const file of files) {
-      allItems.push({
-        galleryId,
-        driveFolderId: mapping.driveFolderId,
-        driveFolderName: mapping.driveFolderName,
-        driveFileId: file.id,
-        driveFileName: file.name,
-        driveFileSize: BigInt(file.size || "0"),
-        driveMimeType: file.mimeType,
+      await db.galleryClient.upsert({
+        where: {
+          galleryId_clientId: {
+            galleryId: gallery.id,
+            clientId: client.id,
+          },
+        },
+        update: {},
+        create: { galleryId: gallery.id, clientId: client.id },
       });
     }
+
+    galleryId = gallery.id;
   }
 
-  if (allItems.length === 0) {
-    await db.driveImportJob.update({
-      where: { id: job.id },
-      data: { status: "COMPLETED", completedAt: new Date() },
-    });
-    return { jobId: job.id, totalFiles: 0 };
+  if (!galleryId) {
+    return { error: "Could not resolve gallery", status: 400 as const };
   }
 
-  await db.driveImportItem.createMany({
-    data: allItems.map((item) => ({
-      jobId: job.id,
-      ...item,
-    })),
+  const gallery = await db.gallery.findFirst({
+    where: { id: galleryId, userId },
+    select: { id: true },
   });
 
-  await db.driveImportJob.update({
-    where: { id: job.id },
-    data: {
-      status: "PENDING",
-      totalFiles: allItems.length,
-    },
+  if (!gallery) {
+    return { error: `Gallery ${galleryId} not found`, status: 404 as const };
+  }
+
+  const job = await db.driveImportJob.create({
+    data: { userId, source: "DRIVE", status: "PENDING", totalFiles: body.files.length },
+  });
+
+  await db.driveImportItem.createMany({
+    data: body.files.map((file) => ({
+      jobId: job.id,
+      galleryId,
+      driveFolderId: "picker",
+      driveFolderName: "Google Drive Picker",
+      driveFileId: file.id,
+      driveFileName: file.name,
+      driveFileSize: BigInt(file.sizeBytes || 0),
+      driveMimeType: file.mimeType,
+    })),
   });
 
   const uploadResult = await uploadServiceRequest<{ success: boolean }>(
@@ -208,5 +141,5 @@ export const gdriveStartImport = async (
     return { error: "Failed to start import worker", status: 500 as const };
   }
 
-  return { jobId: job.id, totalFiles: allItems.length };
+  return { jobId: job.id, totalFiles: body.files.length };
 };

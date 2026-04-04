@@ -1,7 +1,5 @@
 services:
-  # ──────────────────────────────────────────────
   # Backend Services
-  # ──────────────────────────────────────────────
   backend:
     platform: linux/amd64
     build:
@@ -46,9 +44,6 @@ services:
       - SENTRY_DSN_BACKEND=${SENTRY_DSN_BACKEND}
       - EXPORT_LAMBDA_FUNCTION_NAME=${EXPORT_LAMBDA_FUNCTION_NAME}
       - FIREBASE_SERVICE_ACCOUNT_JSON=${FIREBASE_SERVICE_ACCOUNT_JSON}
-      - COOLIFY_API_URL=${COOLIFY_API_URL}
-      - COOLIFY_API_TOKEN=${COOLIFY_API_TOKEN}
-      - COOLIFY_GALLERY_APP_UUID=${COOLIFY_GALLERY_APP_UUID}
       - SENTRY_ENVIRONMENT=production
     expose:
       - "8000"
@@ -101,9 +96,7 @@ services:
     healthcheck:
       disable: true
 
-  # ──────────────────────────────────────────────
   # Frontend Apps (Next.js)
-  # ──────────────────────────────────────────────
   landing:
     platform: linux/amd64
     build:
@@ -226,9 +219,7 @@ services:
     expose:
       - "3004"
 
-  # ──────────────────────────────────────────────
   # Monitoring
-  # ──────────────────────────────────────────────
   portainer:
     image: portainer/portainer-ce:latest
     volumes:

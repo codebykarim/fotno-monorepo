@@ -1,8 +1,6 @@
 import { prisma } from "@workspace/db";
 import AppError from "../../errors/AppError";
-import dns from "dns/promises";
 import { Resolver } from "dns/promises";
-import { addDomainToCoolify, removeDomainFromCoolify } from "../../utils/coolify";
 
 // Use public DNS resolvers to avoid local/ISP cache issues
 const resolver = new Resolver();
@@ -104,7 +102,9 @@ export const verifyCustomDomain = async (userId: string) => {
   // Also check TXT record for verification token
   let txtValid = false;
   try {
-    const txtRecords = await resolver.resolveTxt(`_fotno-verify.${domain.domain}`);
+    const txtRecords = await resolver.resolveTxt(
+      `_fotno-verify.${domain.domain}`,
+    );
     txtValid = txtRecords.some((r: string[]) =>
       r.some((v) => v === domain.verificationToken),
     );
@@ -139,13 +139,6 @@ export const verifyCustomDomain = async (userId: string) => {
     data: { status: "VERIFIED", verifiedAt: new Date() },
   });
 
-  // Register the domain with Coolify so Traefik provisions an SSL cert
-  try {
-    await addDomainToCoolify(domain.domain);
-  } catch (err) {
-    console.warn("Failed to register domain with Coolify:", err);
-  }
-
   return {
     id: updated.id,
     domain: updated.domain,
@@ -160,13 +153,6 @@ export const removeCustomDomain = async (userId: string) => {
   });
 
   if (!domain) throw new AppError("No custom domain configured", 404);
-
-  // Remove from Coolify before deleting the record
-  try {
-    await removeDomainFromCoolify(domain.domain);
-  } catch (err) {
-    console.warn("Failed to remove domain from Coolify:", err);
-  }
 
   await (prisma as any).customDomain.delete({ where: { userId } });
 

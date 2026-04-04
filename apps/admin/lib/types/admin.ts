@@ -2,7 +2,6 @@ export interface AdminOverview {
   totalUsers: number;
   totalGalleries: number;
   totalPhotos: number;
-  totalClients: number;
   newUsersThisMonth: number;
   newGalleriesThisMonth: number;
   uploadsThisWeek: number;

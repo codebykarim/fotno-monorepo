@@ -6,7 +6,7 @@ import { StatCard } from "@/components/stat-card";
 import { StatusBadge } from "@/components/status-badge";
 import { formatBytes, formatNumber } from "@/lib/format";
 import type { AdminOverview } from "@/lib/types/admin";
-import { Users, Image, Camera, UserCheck, UserPlus, ImagePlus, Upload, HardDrive } from "lucide-react";
+import { Users, Image, Camera, UserPlus, ImagePlus, Upload, HardDrive } from "lucide-react";
 
 export function OverviewPage() {
   const { data, isLoading } = useSWR<AdminOverview>(
@@ -27,7 +27,6 @@ export function OverviewPage() {
         <StatCard title="Total Users" value={formatNumber(data.totalUsers)} icon={Users} />
         <StatCard title="Galleries" value={formatNumber(data.totalGalleries)} icon={Image} />
         <StatCard title="Photos" value={formatNumber(data.totalPhotos)} icon={Camera} />
-        <StatCard title="Clients" value={formatNumber(data.totalClients)} icon={UserCheck} />
         <StatCard title="New Users (Month)" value={formatNumber(data.newUsersThisMonth)} icon={UserPlus} />
         <StatCard title="New Galleries (Month)" value={formatNumber(data.newGalleriesThisMonth)} icon={ImagePlus} />
         <StatCard title="Uploads (Week)" value={formatNumber(data.uploadsThisWeek)} icon={Upload} />

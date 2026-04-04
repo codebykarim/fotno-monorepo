@@ -27,6 +27,11 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@workspace/ui/components/input-otp";
+import {
   Form,
   FormControl,
   FormField,
@@ -41,6 +46,7 @@ import {
   signIn,
   signOut,
   signUp,
+  updateUser,
 } from "@workspace/lib/auth/auth-client";
 
 import PasswordRequirements from "./password-req";
@@ -107,6 +113,7 @@ function UnifiedAuthFormComponent({
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [otpCountdown, setOtpCountdown] = useState(0);
+  const [isNewOtpUser, setIsNewOtpUser] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -275,6 +282,9 @@ function UnifiedAuthFormComponent({
     setIsSendingOtp(true);
 
     try {
+      const emailCheck = await checkEmailExists(parsed.data.email);
+      setIsNewOtpUser(!emailCheck.exists);
+
       const otpResponse = await sendVerificationOTP({
         email: parsed.data.email,
         type: "sign-in",
@@ -397,6 +407,17 @@ function UnifiedAuthFormComponent({
         return;
       }
 
+      if (isNewOtpUser) {
+        const name = payload.name?.trim();
+        if (!name || name.length < 2) {
+          form.setError("name", {
+            type: "manual",
+            message: "Name must be at least 2 characters",
+          });
+          return;
+        }
+      }
+
       setIsLoading(true);
       const result = new Promise<void>((resolve, reject) => {
         signIn.emailOtp(
@@ -405,7 +426,18 @@ function UnifiedAuthFormComponent({
             otp: parsed.data.otp,
           },
           {
-            onSuccess: () => resolve(),
+            onSuccess: async () => {
+              if (isNewOtpUser && payload.name?.trim()) {
+                try {
+                  await updateUser({
+                    name: payload.name.trim(),
+                  });
+                } catch {
+                  // non-critical, continue
+                }
+              }
+              resolve();
+            },
             onError: (error: unknown) =>
               reject({
                 message: getErrorMessage(error, "Invalid verification code"),
@@ -417,6 +449,12 @@ function UnifiedAuthFormComponent({
       toast.promise(result, {
         loading: "Verifying your code...",
         success: async () => {
+          if (isNewOtpUser) {
+            const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
+            const onboardingUrl = `/onboarding?${planParam}step=stripe`;
+            router.push(onboardingUrl);
+            return "Account created successfully";
+          }
           const allowed = await checkNotAdminThenRedirect();
           if (!allowed) return "Access denied";
           return "Signed in successfully";
@@ -498,6 +536,7 @@ function UnifiedAuthFormComponent({
     form.setValue("otp", "");
     form.clearErrors();
     setIsResetPassword(false);
+    setIsNewOtpUser(false);
   };
 
   const titleByMode: Record<AuthMode, string> = {
@@ -506,7 +545,7 @@ function UnifiedAuthFormComponent({
       : "Photographer Sign In",
     login: "Welcome back",
     register: "Create your photographer account",
-    otp: "Enter verification code",
+    otp: isNewOtpUser ? "Create your account" : "Enter verification code",
   };
 
   const subtitleByMode: Record<AuthMode, string> = {
@@ -517,7 +556,9 @@ function UnifiedAuthFormComponent({
         : "Use email, social login, or one-time code.",
     login: `Sign in to continue with ${form.getValues("email")}.`,
     register: `Finish setup for ${form.getValues("email")}.`,
-    otp: `We sent a 6-digit code to ${form.getValues("email")}.`,
+    otp: isNewOtpUser
+      ? `Enter your name and the code we sent to ${form.getValues("email")}.`
+      : `We sent a 6-digit code to ${form.getValues("email")}.`,
   };
 
   return (
@@ -676,6 +717,28 @@ function UnifiedAuthFormComponent({
                   />
                 )}
 
+                {authMode === "otp" && isNewOtpUser && (
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Full name"
+                            autoComplete="name"
+                            disabled={isLoading}
+                            className="h-12 border-border focus-visible:ring-primary"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
                 {authMode === "otp" && (
                   <FormField
                     control={form.control}
@@ -683,15 +746,21 @@ function UnifiedAuthFormComponent({
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input
-                            {...field}
-                            inputMode="numeric"
-                            pattern="[0-9]*"
+                          <InputOTP
                             maxLength={6}
-                            placeholder="6-digit code"
+                            value={field.value}
+                            onChange={field.onChange}
                             disabled={isLoading}
-                            className="h-12 border-border text-center text-lg tracking-[0.35em] focus-visible:ring-primary"
-                          />
+                          >
+                            <InputOTPGroup className="w-full justify-center">
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                              <InputOTPSlot index={3} />
+                              <InputOTPSlot index={4} />
+                              <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                          </InputOTP>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

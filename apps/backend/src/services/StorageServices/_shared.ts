@@ -1,10 +1,11 @@
-import { Resend } from "resend";
+import Plunk from "@plunk/node";
 import { prisma } from "@workspace/db";
 
-export const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
+export const plunk = process.env.PLUNK_API_KEY
+  ? new Plunk(process.env.PLUNK_API_KEY, {
+      baseUrl: process.env.PLUNK_API_URL || "https://plunk.fotno.com/api/v1/",
+    })
   : null;
-
 export const safeBigInt = (value: unknown, fallback = 0n): bigint => {
   if (typeof value === "bigint") {
     return value;
@@ -18,7 +19,10 @@ export const safeBigInt = (value: unknown, fallback = 0n): bigint => {
   return fallback;
 };
 
-export const resolvePlanLimit = (plan: unknown, storageLimit?: bigint): bigint => {
+export const resolvePlanLimit = (
+  plan: unknown,
+  storageLimit?: bigint,
+): bigint => {
   if (storageLimit && storageLimit > 0n) {
     return storageLimit;
   }

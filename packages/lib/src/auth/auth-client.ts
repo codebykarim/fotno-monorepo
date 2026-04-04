@@ -38,6 +38,7 @@ export const {
   resetPassword,
   linkSocial,
   multiSession,
+  updateUser,
 } = authClient;
 
 export const sendVerificationOTP = authClient.emailOtp.sendVerificationOtp;

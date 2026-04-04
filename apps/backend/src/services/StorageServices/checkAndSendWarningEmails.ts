@@ -13,7 +13,7 @@ import {
 import {
   fetchUserStorage,
   prisma,
-  resend,
+  plunk,
   resolvePlanLimit,
   safeBigInt,
 } from "./_shared";
@@ -24,7 +24,7 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
   const rawLimit = safeBigInt(user.storageLimit);
   const storageLimit = rawLimit > 0n ? rawLimit : resolvePlanLimit(user.plan);
 
-  if (storageLimit <= 0n || !resend || !user.email) {
+  if (storageLimit <= 0n || !plunk || !user.email) {
     return;
   }
 
@@ -40,11 +40,10 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       upgradeUrl,
     });
 
-    await resend.emails.send({
-      from: "Fotno <support@fotno.com>",
-      to: [user.email],
+    await plunk.emails.send({
+      to: user.email,
       subject: STORAGE_WARNING_95_SUBJECT,
-      html,
+      body: html,
     });
 
     await (prisma as any).user.update({
@@ -64,11 +63,10 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       upgradeUrl,
     });
 
-    await resend.emails.send({
-      from: "Fotno <support@fotno.com>",
-      to: [user.email],
+    await plunk.emails.send({
+      to: user.email,
       subject: STORAGE_WARNING_80_SUBJECT,
-      html,
+      body: html,
     });
 
     await (prisma as any).user.update({

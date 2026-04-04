@@ -1,6 +1,6 @@
-import { Resend } from "resend";
+import Plunk from "@plunk/node";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const plunk = new Plunk(process.env.PLUNK_API_KEY!, { baseUrl: process.env.PLUNK_API_URL || "https://plunk.fotno.com/api/v1/" });
 
 export type EmailBranding = {
   photographerName: string;
@@ -23,16 +23,13 @@ export const sendMail = async ({
     : "";
   const html = brandingHeader ? `${brandingHeader}${text}` : text;
 
-  const { data, error } = await resend.emails.send({
-    from: "Fotno <support@fotno.com>",
-    to: [to],
-    subject: subject,
-    html,
-  });
-
-  if (error) {
-    return console.error({ error, hi: "hi" });
+  try {
+    await plunk.emails.send({
+      to,
+      subject,
+      body: html,
+    });
+  } catch (error) {
+    console.error({ error });
   }
-
-  console.log({ data });
 };

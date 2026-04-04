@@ -28,10 +28,9 @@ async function coolifyFetch(path: string, options: RequestInit = {}) {
 /**
  * Get the current docker_compose_domains for the app.
  */
-async function getComposeDomains(): Promise<
-  Array<{ name: string; domain: string }>
-> {
-  const app = await coolifyFetch(`/api/v1/applications/${COOLIFY_APP_UUID}`);
+function parseComposeDomains(
+  app: any,
+): Array<{ name: string; domain: string }> {
   let raw = app.docker_compose_domains;
 
   // Coolify returns it as a JSON string, so parse it
@@ -69,9 +68,17 @@ function getGalleryDomains(
 }
 
 /**
+ * Get the full app data (needed for docker_compose_raw on PATCH).
+ */
+async function getAppData(): Promise<any> {
+  return coolifyFetch(`/api/v1/applications/${COOLIFY_APP_UUID}`);
+}
+
+/**
  * Update the gallery service domains in the docker compose app.
  */
 async function updateGalleryDomains(
+  app: any,
   composeDomains: Array<{ name: string; domain: string }>,
   newDomains: string[],
 ): Promise<void> {
@@ -89,7 +96,10 @@ async function updateGalleryDomains(
 
   await coolifyFetch(`/api/v1/applications/${COOLIFY_APP_UUID}`, {
     method: "PATCH",
-    body: JSON.stringify({ docker_compose_domains: updated }),
+    body: JSON.stringify({
+      docker_compose_domains: updated,
+      docker_compose_raw: app.docker_compose_raw,
+    }),
   });
 }
 
@@ -101,13 +111,14 @@ export async function addDomainToCoolify(domain: string): Promise<void> {
   if (!COOLIFY_APP_UUID) return;
 
   const fqdn = `https://${domain}`;
-  const composeDomains = await getComposeDomains();
+  const app = await getAppData();
+  const composeDomains = parseComposeDomains(app);
   const current = getGalleryDomains(composeDomains);
 
   if (current.includes(fqdn)) return;
 
   current.push(fqdn);
-  await updateGalleryDomains(composeDomains, current);
+  await updateGalleryDomains(app, composeDomains, current);
 }
 
 /**
@@ -117,11 +128,12 @@ export async function removeDomainFromCoolify(domain: string): Promise<void> {
   if (!COOLIFY_APP_UUID) return;
 
   const fqdn = `https://${domain}`;
-  const composeDomains = await getComposeDomains();
+  const app = await getAppData();
+  const composeDomains = parseComposeDomains(app);
   const current = getGalleryDomains(composeDomains);
   const filtered = current.filter((d) => d !== fqdn);
 
   if (filtered.length === current.length) return;
 
-  await updateGalleryDomains(composeDomains, filtered);
+  await updateGalleryDomains(app, composeDomains, filtered);
 }

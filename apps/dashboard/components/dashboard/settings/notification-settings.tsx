@@ -14,6 +14,8 @@ type NotificationPrefs = {
   storageWarningEmail: boolean;
   billingFailedBrowser: boolean;
   billingFailedEmail: boolean;
+  commentsBrowser: boolean;
+  commentsEmail: boolean;
 };
 
 type Props = {
@@ -45,15 +47,17 @@ async function requestFcmPermissionAndRegister(): Promise<boolean> {
   // Get FCM token from the service worker
   try {
     const { getToken } = await import("firebase/messaging");
-    const { initializeApp } = await import("firebase/app");
+    const { initializeApp, getApps, getApp } = await import("firebase/app");
     const { getMessaging } = await import("firebase/messaging");
 
-    const app = initializeApp({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, // client-side key — will need your Firebase web config
-      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    });
+    const app = getApps().length
+      ? getApp()
+      : initializeApp({
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+          messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+          appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+        });
 
     const messaging = getMessaging(app);
     const token = await getToken(messaging, {
@@ -95,6 +99,11 @@ const NOTIFICATION_TYPES = [
     label: "Billing Failed",
     description: "Get notified if a subscription payment fails.",
   },
+  {
+    key: "comments" as const,
+    label: "New Comments",
+    description: "Get notified when someone comments on your galleries.",
+  },
 ];
 
 export function NotificationSettings({ data, mutate }: Props) {
@@ -108,11 +117,13 @@ export function NotificationSettings({ data, mutate }: Props) {
     prefs.storageWarningBrowser !== data.storageWarningBrowser ||
     prefs.storageWarningEmail !== data.storageWarningEmail ||
     prefs.billingFailedBrowser !== data.billingFailedBrowser ||
-    prefs.billingFailedEmail !== data.billingFailedEmail;
+    prefs.billingFailedEmail !== data.billingFailedEmail ||
+    prefs.commentsBrowser !== data.commentsBrowser ||
+    prefs.commentsEmail !== data.commentsEmail;
 
   const handleBrowserToggle = useCallback(
     async (
-      key: "galleryExpiry" | "storageWarning" | "billingFailed",
+      key: "galleryExpiry" | "storageWarning" | "billingFailed" | "comments",
       checked: boolean,
     ) => {
       const browserKey = `${key}Browser` as keyof NotificationPrefs;
@@ -122,7 +133,8 @@ export function NotificationSettings({ data, mutate }: Props) {
         const anyBrowserOn =
           prefs.galleryExpiryBrowser ||
           prefs.storageWarningBrowser ||
-          prefs.billingFailedBrowser;
+          prefs.billingFailedBrowser ||
+          prefs.commentsBrowser;
 
         if (!anyBrowserOn) {
           setRequestingPermission(true);
@@ -139,7 +151,7 @@ export function NotificationSettings({ data, mutate }: Props) {
 
   const handleEmailToggle = useCallback(
     (
-      key: "galleryExpiry" | "storageWarning" | "billingFailed",
+      key: "galleryExpiry" | "storageWarning" | "billingFailed" | "comments",
       checked: boolean,
     ) => {
       const emailKey = `${key}Email` as keyof NotificationPrefs;

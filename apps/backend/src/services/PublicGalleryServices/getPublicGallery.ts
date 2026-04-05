@@ -1,5 +1,6 @@
 import { publishedGalleryWhere, db } from "./_shared";
 import { getPresignedDownloadUrl } from "../../utils/s3";
+import { resolveUserAccess } from "../SubscriptionServices/resolveUserAccess";
 
 /** Signed URL TTL for gallery view – 1 hour gives plenty of browsing time. */
 const GALLERY_VIEW_URL_TTL = 3600;
@@ -76,6 +77,10 @@ export const getPublicGallery = async (shareToken: string) => {
     return { expired: true };
   }
 
+  // Check if comments are enabled for this photographer's plan
+  const ownerAccess = await resolveUserAccess(gallery.userId);
+  const commentsEnabled = ownerAccess.features.includes("COMMENTS");
+
   // Check if smart albums are enabled for this photographer
   const smartAlbumConfig = gallery.userId
     ? await db.smartAlbumConfig.findUnique({
@@ -117,7 +122,7 @@ export const getPublicGallery = async (shareToken: string) => {
     // Gallery frontend uses this value in URL segments; keep it slug-compatible.
     shareToken: gallery.slug,
     title: gallery.title,
-    passwordHash: gallery.passwordHash,
+    passwordProtected: Boolean(gallery.passwordHash),
     coverPhotoId: gallery.coverPhotoId,
     photographer: {
       name: gallery.user?.name ?? "FOTNO",
@@ -137,6 +142,7 @@ export const getPublicGallery = async (shareToken: string) => {
       downloadLimit: gallery.downloadLimit,
       favoritesEnabled: gallery.favoritesEnabled,
       favoriteNotesEnabled: gallery.favoriteNotesEnabled,
+      commentsEnabled,
       smartAlbumsEnabled,
     },
     photos: photosWithUrls,

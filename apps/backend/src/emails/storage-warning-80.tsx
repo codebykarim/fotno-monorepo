@@ -20,22 +20,20 @@ export const renderStorageWarning80Email = ({
   const remaining = limit > used ? limit - used : 0n;
 
   return `
-    <div style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
-      <h2 style="margin-bottom: 8px;">Hi ${name},</h2>
-      <p style="margin-top: 0;">You have used most of your FOTNO storage.</p>
-      <div style="margin: 16px 0;">
-        <div style="height: 14px; border-radius: 999px; background: #fde68a; overflow: hidden; border: 1px solid #f59e0b;">
-          <div style="height: 100%; width: ${Math.min(100, Math.max(0, percentage))}%; background: #f59e0b;"></div>
-        </div>
-        <p style="margin: 10px 0 0;">${formatBytes(used)} of ${formatBytes(limit)} used (${percentage}%)</p>
-        <p style="margin: 4px 0 0;">You still have ${formatBytes(remaining)} remaining</p>
+    <h2 style="margin:0 0 8px;font-size:18px;font-weight:600;">Hi ${name},</h2>
+    <p style="margin:0 0 16px;">You have used most of your FOTNO storage.</p>
+    <div style="margin:0 0 20px;">
+      <div style="height:14px;border-radius:999px;background:#fde68a;overflow:hidden;border:1px solid #f59e0b;">
+        <div style="height:100%;width:${Math.min(100, Math.max(0, percentage))}%;background:#f59e0b;"></div>
       </div>
-      <a href="${upgradeUrl}" style="display: inline-block; padding: 10px 14px; background: #111827; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: 600;">
-        Upgrade Your Plan
-      </a>
-      <p style="margin-top: 16px; color: #4b5563; font-size: 14px;">
-        If you exceed your limit, additional storage is billed at $0.10/GB at the end of your billing cycle.
-      </p>
+      <p style="margin:10px 0 0;">${formatBytes(used)} of ${formatBytes(limit)} used (${percentage}%)</p>
+      <p style="margin:4px 0 0;color:#6b7280;">You still have ${formatBytes(remaining)} remaining</p>
     </div>
+    <a href="${upgradeUrl}" style="display:inline-block;padding:12px 24px;background:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">
+      Upgrade Your Plan
+    </a>
+    <p style="margin:16px 0 0;color:#6b7280;font-size:13px;">
+      If you exceed your limit, additional storage is billed at $0.10/GB at the end of your billing cycle.
+    </p>
   `;
 };

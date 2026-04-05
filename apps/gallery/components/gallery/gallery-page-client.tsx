@@ -436,6 +436,8 @@ export default function GalleryPageClient({
     null,
   );
   const [editText, setEditText] = useState("");
+  const [sendingComment, setSendingComment] = useState(false);
+  const [commentsSheetOpen, setCommentsSheetOpen] = useState(false);
   const [pinDialogOpen, setPinDialogOpen] = useState(false);
   const [pinValue, setPinValue] = useState("");
   const [pinVerified, setPinVerified] = useState(false);
@@ -461,6 +463,7 @@ export default function GalleryPageClient({
   const [phoneSubmitting, setPhoneSubmitting] = useState(false);
   const pendingFavoritePhotoIdRef = useRef<string | null>(null);
   const pendingDownloadActionRef = useRef<(() => void) | null>(null);
+  const pendingCommentActionRef = useRef<(() => void) | null>(null);
   const [editNameDialogOpen, setEditNameDialogOpen] = useState(false);
   const [editNameValue, setEditNameValue] = useState("");
 
@@ -469,9 +472,17 @@ export default function GalleryPageClient({
   const viewerRole: "client" | "photographer" = isPhotographer
     ? "photographer"
     : "client";
-  const viewerDisplayName = isPhotographer
-    ? (session?.user?.name ?? gallery.photographer.name)
-    : "Client";
+  const getViewerDisplayName = (): string => {
+    if (isPhotographer) return session?.user?.name ?? gallery.photographer.name;
+    if (typeof window !== "undefined") {
+      const storedName = sessionStorage.getItem(
+        getViewerNameKey(gallery.shareToken),
+      );
+      if (storedName) return storedName;
+    }
+    return "Client";
+  };
+  const viewerDisplayName = getViewerDisplayName();
 
   // Settings with backwards-compatible defaults
   const settings = gallery.settings;
@@ -480,6 +491,7 @@ export default function GalleryPageClient({
   const hasDownloadPin = settings?.hasDownloadPin === true;
   const favoriteNotesEnabled =
     favoritesEnabled && settings?.favoriteNotesEnabled !== false;
+  const commentsEnabled = settings?.commentsEnabled === true;
   const slideshowEnabled = settings?.slideshowEnabled !== false;
   const socialSharingEnabled = settings?.socialSharingEnabled !== false;
 
@@ -679,7 +691,7 @@ export default function GalleryPageClient({
     null;
 
   useEffect(() => {
-    if (!isUnlocked) {
+    if (!isUnlocked || !commentsEnabled) {
       return;
     }
 
@@ -724,7 +736,13 @@ export default function GalleryPageClient({
       window.clearInterval(refreshInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUnlocked, gallery.shareToken, galleryJwt, sessionToken]);
+  }, [
+    isUnlocked,
+    commentsEnabled,
+    gallery.shareToken,
+    galleryJwt,
+    sessionToken,
+  ]);
 
   useEffect(() => {
     if (!isUnlocked) {
@@ -1243,6 +1261,7 @@ export default function GalleryPageClient({
     setPhoneDialogMode("retrieve");
     setPhoneValue("");
     setNameValue("");
+    setRetrieveStep(1);
     setPhoneDialogOpen(true);
     return true;
   };
@@ -1287,16 +1306,21 @@ export default function GalleryPageClient({
             }
             setFavoriteNotes(notes);
 
-            // If there was a pending action (favorite/download), complete it now
+            // If there was a pending action (favorite/download/comment), complete it now
             const pendingPhotoId = pendingFavoritePhotoIdRef.current;
             const pendingDownload = pendingDownloadActionRef.current;
+            const pendingComment = pendingCommentActionRef.current;
             pendingFavoritePhotoIdRef.current = null;
             pendingDownloadActionRef.current = null;
+            pendingCommentActionRef.current = null;
             if (pendingPhotoId) {
               void toggleFavorite(pendingPhotoId);
             }
             if (pendingDownload) {
               void pendingDownload();
+            }
+            if (pendingComment) {
+              void pendingComment();
             }
 
             setPhoneDialogOpen(false);
@@ -1317,10 +1341,16 @@ export default function GalleryPageClient({
               data.viewerName,
             );
             setPhoneDialogOpen(false);
-            toast(
-              "No favorites in this gallery yet. Tap the heart on any photo to get started!",
-              { icon: "💡" },
-            );
+            const pendingComment = pendingCommentActionRef.current;
+            pendingCommentActionRef.current = null;
+            if (pendingComment) {
+              void pendingComment();
+            } else {
+              toast(
+                "No favorites in this gallery yet. Tap the heart on any photo to get started!",
+                { icon: "💡" },
+              );
+            }
             return;
           }
         }
@@ -1378,10 +1408,15 @@ export default function GalleryPageClient({
 
       const hadPendingFavorite = Boolean(pendingFavoritePhotoIdRef.current);
       const hadPendingDownload = Boolean(pendingDownloadActionRef.current);
+      const hadPendingComment = Boolean(pendingCommentActionRef.current);
 
       if (phoneDialogMode === "changePhone") {
         toast.success("Phone number updated");
-      } else if (!hadPendingFavorite && !hadPendingDownload) {
+      } else if (
+        !hadPendingFavorite &&
+        !hadPendingDownload &&
+        !hadPendingComment
+      ) {
         // Pure retrieval flow (e.g. from Loved tab) — no pending actions
         toast(
           "No favorites in this gallery yet. Tap the heart on any photo to get started!",
@@ -1398,6 +1433,11 @@ export default function GalleryPageClient({
         pendingDownloadActionRef.current = null;
         if (pendingDownload) {
           void pendingDownload();
+        }
+        const pendingComment = pendingCommentActionRef.current;
+        pendingCommentActionRef.current = null;
+        if (pendingComment) {
+          void pendingComment();
         }
       }
     } catch {
@@ -1794,43 +1834,62 @@ export default function GalleryPageClient({
     setIsDragging(false);
   };
 
-  const postComment = async () => {
+  const requireCommentIdentity = (): boolean => {
+    if (isPhotographer) return false;
+    if (isViewerIdentified()) return false;
+    pendingCommentActionRef.current = () => void postCommentInner();
+    setPhoneDialogMode("retrieve");
+    setPhoneValue("");
+    setNameValue("");
+    setRetrieveStep(1);
+    setPhoneDialogOpen(true);
+    return true;
+  };
+
+  const postCommentInner = async () => {
     const message = commentText.trim();
-    if (!message) {
-      return;
-    }
+    if (!message || sendingComment) return;
 
-    const viewerIdKey = getViewerIdKey(gallery.shareToken);
-    const viewerId = sessionStorage.getItem(viewerIdKey);
+    setSendingComment(true);
+    try {
+      const viewerIdKey = getViewerIdKey(gallery.shareToken);
+      const viewerId = sessionStorage.getItem(viewerIdKey);
+      const authorName = getViewerDisplayName();
 
-    const response = await fetch(
-      `/api/gallery/${gallery.shareToken}/comments`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `/api/gallery/${gallery.shareToken}/comments`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            authorName,
+            authorRole: viewerRole,
+            message,
+            photoId: commentPhotoId || null,
+            parentId: replyingTo?.id ?? null,
+            viewerId,
+          }),
         },
-        body: JSON.stringify({
-          authorName: viewerDisplayName,
-          authorRole: viewerRole,
-          message,
-          photoId: commentPhotoId || null,
-          parentId: replyingTo?.id ?? null,
-          viewerId,
-        }),
-      },
-    );
+      );
 
-    if (!response.ok) {
-      toast.error(await readErrorText(response));
-      return;
+      if (!response.ok) {
+        toast.error(await readErrorText(response));
+        return;
+      }
+
+      const payload = (await response.json()) as { comments: GalleryComment[] };
+      setComments(payload.comments);
+      setCommentText("");
+      setReplyingTo(null);
+      toast.success(replyingTo ? "Reply sent" : "Comment sent");
+    } finally {
+      setSendingComment(false);
     }
+  };
 
-    const payload = (await response.json()) as { comments: GalleryComment[] };
-    setComments(payload.comments);
-    setCommentText("");
-    setReplyingTo(null);
-    toast.success(replyingTo ? "Reply sent" : "Comment sent");
+  const postComment = async () => {
+    if (requireCommentIdentity()) return;
+    await postCommentInner();
   };
 
   const getViewerId = (): string => {
@@ -1841,6 +1900,7 @@ export default function GalleryPageClient({
   const editComment = async (comment: GalleryComment, newMessage: string) => {
     const message = newMessage.trim();
     if (!message) return;
+    if (!isPhotographer && !isViewerIdentified()) return;
 
     const response = await fetch(
       `/api/gallery/${gallery.shareToken}/comments/${comment.id}`,
@@ -1864,6 +1924,8 @@ export default function GalleryPageClient({
   };
 
   const deleteComment = async (comment: GalleryComment) => {
+    if (!isPhotographer && !isViewerIdentified()) return;
+
     const response = await fetch(
       `/api/gallery/${gallery.shareToken}/comments/${comment.id}`,
       {
@@ -1887,6 +1949,15 @@ export default function GalleryPageClient({
   };
 
   const toggleLike = async (comment: GalleryComment) => {
+    if (!isPhotographer && !isViewerIdentified()) {
+      pendingCommentActionRef.current = () => void toggleLike(comment);
+      setPhoneDialogMode("retrieve");
+      setPhoneValue("");
+      setNameValue("");
+      setPhoneDialogOpen(true);
+      return;
+    }
+
     const response = await fetch(
       `/api/gallery/${gallery.shareToken}/comments/${comment.id}/like`,
       {
@@ -2643,6 +2714,7 @@ export default function GalleryPageClient({
               onClick={() => {
                 setPhoneDialogOpen(false);
                 pendingFavoritePhotoIdRef.current = null;
+                pendingCommentActionRef.current = null;
               }}
             >
               Cancel
@@ -2728,169 +2800,189 @@ export default function GalleryPageClient({
         </Link>
       )}
 
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button className="fixed right-5 bottom-5 z-40 gap-2 shadow-lg">
-            <MessageSquare className="h-4 w-4" />
-            Comments
-            {comments.length > 0 ? (
-              <span className="ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] font-semibold">
-                {countAllComments(comments)}
-              </span>
-            ) : null}
-          </Button>
-        </SheetTrigger>
-        <SheetContent className="flex flex-col overflow-hidden">
-          <SheetHeader>
-            <SheetTitle>
-              {viewerRole === "photographer"
-                ? "Gallery Feedback"
-                : "Leave Feedback"}
-            </SheetTitle>
-            <SheetDescription>
-              {viewerRole === "photographer"
-                ? "View and reply to client feedback"
-                : "Share your thoughts on the photos"}
-            </SheetDescription>
-          </SheetHeader>
+      {commentsEnabled && (
+        <Sheet
+          open={commentsSheetOpen}
+          onOpenChange={(open) => {
+            if (open && !isPhotographer && !isViewerIdentified()) {
+              pendingCommentActionRef.current = () =>
+                setCommentsSheetOpen(true);
+              setPhoneDialogMode("retrieve");
+              setPhoneValue("");
+              setNameValue("");
+              setPhoneDialogOpen(true);
+              return;
+            }
+            setCommentsSheetOpen(open);
+          }}
+        >
+          <SheetTrigger asChild>
+            <Button className="fixed right-5 bottom-5 z-40 gap-2 shadow-lg">
+              <MessageSquare className="h-4 w-4" />
+              Comments
+              {comments.length > 0 ? (
+                <span className="ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-foreground/20 px-1 text-[11px] font-semibold">
+                  {countAllComments(comments)}
+                </span>
+              ) : null}
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="flex flex-col overflow-hidden">
+            <SheetHeader>
+              <SheetTitle>
+                {viewerRole === "photographer"
+                  ? "Gallery Feedback"
+                  : "Leave Feedback"}
+              </SheetTitle>
+              <SheetDescription>
+                {viewerRole === "photographer"
+                  ? "View and reply to client feedback"
+                  : "Share your thoughts on the photos"}
+              </SheetDescription>
+            </SheetHeader>
 
-          <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
-            {/* ── Compose area ── */}
-            <div className="shrink-0 space-y-3 rounded-xl border border-border/70 bg-muted/30 p-3">
-              {/* Thumbnail image picker */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Reference a photo
-                </label>
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  <button
-                    type="button"
-                    onClick={() => setCommentPhotoId("")}
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border-2 text-[10px] font-medium transition ${
-                      commentPhotoId === ""
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border bg-background text-muted-foreground hover:border-foreground/30"
-                    }`}
-                  >
-                    General
-                  </button>
-                  {gallery.photos.map((photo: PublicPhoto, index: number) => {
-                    const selected = commentPhotoId === photo.id;
-                    return (
-                      <button
-                        key={photo.id}
-                        type="button"
-                        onClick={() => setCommentPhotoId(photo.id)}
-                        title={`Image #${index + 1}`}
-                        className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                          selected
-                            ? "border-primary ring-2 ring-primary/30"
-                            : "border-border hover:border-foreground/30"
-                        }`}
-                      >
-                        <Image
-                          src={withOptionalToken(photo.thumbnailSrc)}
-                          alt={`Image #${index + 1}`}
-                          fill
-                          sizes="56px"
-                          className="object-cover"
-                          draggable={false}
-                        />
-                        <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-px text-center text-[9px] font-medium text-white">
-                          #{index + 1}
-                        </span>
-                      </button>
-                    );
-                  })}
+            <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
+              {/* ── Compose area ── */}
+              <div className="shrink-0 space-y-3 rounded-xl border border-border/70 bg-muted/30 p-3">
+                {/* Thumbnail image picker */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">
+                    Reference a photo
+                  </label>
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    <button
+                      type="button"
+                      onClick={() => setCommentPhotoId("")}
+                      className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border-2 text-[10px] font-medium transition ${
+                        commentPhotoId === ""
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border bg-background text-muted-foreground hover:border-foreground/30"
+                      }`}
+                    >
+                      General
+                    </button>
+                    {gallery.photos.map((photo: PublicPhoto, index: number) => {
+                      const selected = commentPhotoId === photo.id;
+                      return (
+                        <button
+                          key={photo.id}
+                          type="button"
+                          onClick={() => setCommentPhotoId(photo.id)}
+                          title={`Image #${index + 1}`}
+                          className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 transition ${
+                            selected
+                              ? "border-primary ring-2 ring-primary/30"
+                              : "border-border hover:border-foreground/30"
+                          }`}
+                        >
+                          <Image
+                            src={withOptionalToken(photo.thumbnailSrc)}
+                            alt={`Image #${index + 1}`}
+                            fill
+                            sizes="56px"
+                            className="object-cover"
+                            draggable={false}
+                          />
+                          <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-px text-center text-[9px] font-medium text-white">
+                            #{index + 1}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
+
+                {/* Reply indicator */}
+                {replyingTo ? (
+                  <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-2.5 py-1.5 text-xs">
+                    <CornerDownRight className="h-3 w-3 shrink-0 text-primary" />
+                    <span className="truncate text-foreground/80">
+                      Replying to <strong>{replyingTo.authorName}</strong>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setReplyingTo(null)}
+                      className="ml-auto shrink-0 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ) : null}
+
+                <textarea
+                  value={commentText}
+                  onChange={(event) => setCommentText(event.target.value)}
+                  placeholder={
+                    replyingTo
+                      ? `Reply to ${replyingTo.authorName}...`
+                      : "Write your feedback..."
+                  }
+                  className="min-h-[80px] w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none ring-primary/20 transition focus:ring-2"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => void postComment()}
+                  disabled={!commentText.trim() || sendingComment}
+                  className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {sendingComment
+                    ? "Sending..."
+                    : replyingTo
+                      ? "Send Reply"
+                      : "Send Comment"}
+                </button>
               </div>
 
-              {/* Reply indicator */}
-              {replyingTo ? (
-                <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-2.5 py-1.5 text-xs">
-                  <CornerDownRight className="h-3 w-3 shrink-0 text-primary" />
-                  <span className="truncate text-foreground/80">
-                    Replying to <strong>{replyingTo.authorName}</strong>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setReplyingTo(null)}
-                    className="ml-auto shrink-0 text-muted-foreground hover:text-foreground"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ) : null}
-
-              <textarea
-                value={commentText}
-                onChange={(event) => setCommentText(event.target.value)}
-                placeholder={
-                  replyingTo
-                    ? `Reply to ${replyingTo.authorName}...`
-                    : "Write your feedback..."
-                }
-                className="min-h-[80px] w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none ring-primary/20 transition focus:ring-2"
-              />
-
-              <button
-                type="button"
-                onClick={() => void postComment()}
-                disabled={!commentText.trim()}
-                className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
-              >
-                {replyingTo ? "Send Reply" : "Send Comment"}
-              </button>
+              {/* ── Comments list ── */}
+              <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+                {comments.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-10 text-center">
+                    <MessageSquare className="mb-2 h-8 w-8 text-muted-foreground/40" />
+                    <p className="text-sm text-muted-foreground">
+                      No comments yet.
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground/60">
+                      Be the first to leave feedback
+                    </p>
+                  </div>
+                ) : (
+                  comments.map((comment: GalleryComment) => (
+                    <CommentNode
+                      key={comment.id}
+                      comment={comment}
+                      depth={0}
+                      currentViewerId={getViewerId()}
+                      isPhotographer={isPhotographer}
+                      editingComment={editingComment}
+                      editText={editText}
+                      onSetEditText={setEditText}
+                      onStartEdit={(c) => {
+                        setEditingComment(c);
+                        setEditText(c.message);
+                      }}
+                      onCancelEdit={() => {
+                        setEditingComment(null);
+                        setEditText("");
+                      }}
+                      onSaveEdit={(c) => void editComment(c, editText)}
+                      onDelete={(c) => void deleteComment(c)}
+                      onToggleLike={(c) => void toggleLike(c)}
+                      onReply={(c) => {
+                        setReplyingTo(c);
+                        setCommentPhotoId("");
+                      }}
+                      onViewPhoto={(photoId) => setActivePhotoId(photoId)}
+                      withOptionalToken={withOptionalToken}
+                      formatRelative={formatRelative}
+                    />
+                  ))
+                )}
+              </div>
             </div>
-
-            {/* ── Comments list ── */}
-            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
-              {comments.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <MessageSquare className="mb-2 h-8 w-8 text-muted-foreground/40" />
-                  <p className="text-sm text-muted-foreground">
-                    No comments yet.
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted-foreground/60">
-                    Be the first to leave feedback
-                  </p>
-                </div>
-              ) : (
-                comments.map((comment: GalleryComment) => (
-                  <CommentNode
-                    key={comment.id}
-                    comment={comment}
-                    depth={0}
-                    currentViewerId={getViewerId()}
-                    isPhotographer={isPhotographer}
-                    editingComment={editingComment}
-                    editText={editText}
-                    onSetEditText={setEditText}
-                    onStartEdit={(c) => {
-                      setEditingComment(c);
-                      setEditText(c.message);
-                    }}
-                    onCancelEdit={() => {
-                      setEditingComment(null);
-                      setEditText("");
-                    }}
-                    onSaveEdit={(c) => void editComment(c, editText)}
-                    onDelete={(c) => void deleteComment(c)}
-                    onToggleLike={(c) => void toggleLike(c)}
-                    onReply={(c) => {
-                      setReplyingTo(c);
-                      setCommentPhotoId("");
-                    }}
-                    onViewPhoto={(photoId) => setActivePhotoId(photoId)}
-                    withOptionalToken={withOptionalToken}
-                    formatRelative={formatRelative}
-                  />
-                ))
-              )}
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   );
 }

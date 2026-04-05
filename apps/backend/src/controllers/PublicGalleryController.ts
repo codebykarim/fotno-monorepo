@@ -61,7 +61,8 @@ export const createGalleryCommentController = async (req: Request, res: Response
   const result = await PublicGalleryServices.createGalleryComment({
     shareToken: req.params.shareToken,
     authorName: req.body?.authorName,
-    authorRole: req.body?.authorRole,
+    // Public routes always create as "client" — only dashboard routes can set "photographer"
+    authorRole: "client",
     message,
     photoId: req.body?.photoId ?? null,
     parentId: req.body?.parentId ?? null,
@@ -105,7 +106,6 @@ export const editGalleryCommentController = async (req: Request, res: Response) 
 export const deleteGalleryCommentController = async (req: Request, res: Response) => {
   const viewerId =
     typeof req.body?.viewerId === "string" ? req.body.viewerId : "";
-  const isGalleryOwner = req.body?.isGalleryOwner === true;
 
   if (!viewerId) {
     return res.status(400).json({ error: "viewerId is required" });
@@ -115,7 +115,8 @@ export const deleteGalleryCommentController = async (req: Request, res: Response
     commentId: req.params.commentId,
     shareToken: req.params.shareToken,
     viewerId,
-    isGalleryOwner,
+    // Never trust isGalleryOwner from the client on public routes
+    isGalleryOwner: false,
   });
 
   if ("error" in result) {

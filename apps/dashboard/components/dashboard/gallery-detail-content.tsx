@@ -69,6 +69,7 @@ import { cn } from "@workspace/ui/lib/utils";
 import { withRetry } from "@/lib/utils/retry";
 import { GallerySettings } from "./gallery-settings/settings-layout";
 import { useHasFeature } from "@/lib/hooks/use-features";
+import { useGalleryDetail } from "./gallery-detail-provider";
 
 const tabs = ["photos", "albums", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
@@ -450,6 +451,17 @@ export function PhotosTab({
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [hasMore, isValidating, setSize]);
+
+  // Revalidate photos when processing finishes (new photos become visible)
+  const { processingStatus } = useGalleryDetail();
+  const prevProcessingDone = useRef<boolean | undefined>(undefined);
+  useEffect(() => {
+    if (processingStatus?.done && prevProcessingDone.current === false) {
+      void mutatePhotos();
+      void mutateGallery();
+    }
+    prevProcessingDone.current = processingStatus?.done;
+  }, [processingStatus?.done, mutatePhotos, mutateGallery]);
 
   // Refresh photos when gallery-level mutate triggers (e.g. after upload)
   const mutate = useCallback(async () => {
@@ -1284,7 +1296,7 @@ export function PhotosTab({
               </Button>
             </div>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 max-h-60 overflow-y-auto">
             {galleryUploadQueue.map((item) => (
               <div
                 key={item.id}

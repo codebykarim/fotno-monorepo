@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import * as PublicGalleryController from "../controllers/PublicGalleryController";
 import { MethodInfo } from "../interfaces";
 import { init } from "../utils/methods";
+import { requireGalleryOwnerFeature } from "../middleware/requireGalleryOwnerFeature";
 
 const publicGalleryRoutes = Router();
 
@@ -21,22 +22,27 @@ const publicGalleryMethods: { [key: string]: MethodInfo } = {
   "list-gallery-comments": {
     httpMethod: "GET",
     controllerFunction: PublicGalleryController.listGalleryCommentsController,
+    middlewares: [requireGalleryOwnerFeature("COMMENTS")],
   },
   "create-gallery-comment": {
     httpMethod: "POST",
     controllerFunction: PublicGalleryController.createGalleryCommentController,
+    middlewares: [requireGalleryOwnerFeature("COMMENTS")],
   },
   "edit-gallery-comment": {
     httpMethod: "PATCH",
     controllerFunction: PublicGalleryController.editGalleryCommentController,
+    middlewares: [requireGalleryOwnerFeature("COMMENTS")],
   },
   "delete-gallery-comment": {
     httpMethod: "DELETE",
     controllerFunction: PublicGalleryController.deleteGalleryCommentController,
+    middlewares: [requireGalleryOwnerFeature("COMMENTS")],
   },
   "toggle-comment-like": {
     httpMethod: "POST",
     controllerFunction: PublicGalleryController.toggleCommentLikeController,
+    middlewares: [requireGalleryOwnerFeature("COMMENTS")],
   },
   "add-favorite": {
     httpMethod: "POST",

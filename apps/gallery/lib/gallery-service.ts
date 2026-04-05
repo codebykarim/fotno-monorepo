@@ -27,7 +27,8 @@ type BackendGallery = {
   userId?: string;
   shareToken: string;
   title: string;
-  passwordHash: string | null;
+  passwordProtected?: boolean;
+  passwordHash?: string | null;
   coverPhotoId?: string | null;
   photographer?: {
     name?: string | null;
@@ -51,6 +52,8 @@ type BackendGallery = {
     downloadLimit?: number | null;
     favoritesEnabled?: boolean;
     favoriteNotesEnabled?: boolean;
+    commentsEnabled?: boolean;
+    smartAlbumsEnabled?: boolean;
   };
   photos?: BackendPhoto[];
   albums?: Array<{
@@ -130,7 +133,7 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
     userId: input.userId ?? null,
     shareToken: input.shareToken,
     title: input.title,
-    hasPassword: Boolean(input.passwordHash),
+    hasPassword: input.passwordProtected ?? Boolean(input.passwordHash),
     photographer: {
       name: photographerName,
       logoUrl: photographerLogo,
@@ -151,6 +154,8 @@ const normalizeGallery = (input: BackendGallery): PublicGallery => {
           downloadLimit: input.settings.downloadLimit ?? null,
           favoritesEnabled: input.settings.favoritesEnabled ?? true,
           favoriteNotesEnabled: input.settings.favoriteNotesEnabled ?? true,
+          commentsEnabled: input.settings.commentsEnabled,
+          smartAlbumsEnabled: input.settings.smartAlbumsEnabled,
         }
       : undefined,
     photos,

@@ -50,7 +50,12 @@ export const auth = betterAuth({
       await sendMail({
         to: user.email,
         subject: "Reset your password",
-        text: `Click the link to reset your password: ${resetUrl}`,
+        text: `<h2 style="margin:0 0 8px;font-size:18px;font-weight:600;">Reset Your Password</h2>
+<p style="margin:0 0 20px;color:#374151;">We received a request to reset your password. Click the button below to set a new one.</p>
+<a href="${resetUrl}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Reset Password</a>
+<p style="margin:20px 0 0;color:#6b7280;font-size:13px;">If you didn't request this, you can safely ignore this email.</p>`,
+        showFooterLinks: false,
+        preheaderText: "Reset your Fotno password",
       });
     },
   },
@@ -81,7 +86,11 @@ export const auth = betterAuth({
         await sendMail({
           to: email,
           subject: "Your FOTNO verification code",
-          text: `<p>Your one-time code is: <strong>${otp}</strong></p><p>This code expires in 5 minutes.</p><p>Request type: ${type}</p>`,
+          text: `<h2 style="margin:0 0 16px;font-size:18px;font-weight:600;">Your Verification Code</h2>
+<div style="margin:0 0 20px;padding:16px 24px;background:#f3f4f6;border-radius:8px;text-align:center;font-size:32px;letter-spacing:8px;font-weight:700;font-family:'Courier New',monospace;color:#111827;">${otp}</div>
+<p style="margin:0;color:#6b7280;font-size:13px;">This code expires in 5 minutes.</p>`,
+          showFooterLinks: false,
+          preheaderText: `Your verification code is ${otp}`,
         });
       },
     }),

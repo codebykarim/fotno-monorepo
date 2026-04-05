@@ -101,15 +101,15 @@ export const sendAlbumNotification = async (
       await sendMail({
         to: event.photographerEmail,
         subject: `New album submission: "${event.albumTitle}" from ${event.clientName}`,
-        text: `<p>Hi ${name},</p>
-<p><strong>${client}</strong> has submitted an album design for review.</p>
-<ul>
+        text: `<p style="margin:0 0 12px;">Hi ${name},</p>
+<p style="margin:0 0 16px;"><strong>${client}</strong> has submitted an album design for review.</p>
+<ul style="margin:0 0 20px;padding-left:20px;color:#374151;">
   <li><strong>Album:</strong> ${album}</li>
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
-<p><a href="${url}">Review the submission</a></p>
-<p>— Fotno</p>`,
+<a href="${url}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Review Submission</a>`,
         branding,
+        preheaderText: `${client} submitted "${album}" for review`,
       });
       break;
     }
@@ -121,15 +121,15 @@ export const sendAlbumNotification = async (
       await sendMail({
         to: event.clientEmail,
         subject: `Your album "${event.albumTitle}" has been approved!`,
-        text: `<p>Hi ${name},</p>
-<p>Great news! Your album design has been <strong>approved</strong> by the photographer.</p>
-<ul>
+        text: `<p style="margin:0 0 12px;">Hi ${name},</p>
+<p style="margin:0 0 16px;">Great news! Your album design has been <strong>approved</strong> by the photographer.</p>
+<ul style="margin:0 0 20px;padding-left:20px;color:#374151;">
   <li><strong>Album:</strong> ${album}</li>
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
-${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
-<p>— Fotno</p>`,
+${notes ? `<p style="margin:0 0 16px;"><strong>Note from photographer:</strong> ${notes}</p>` : ""}`,
         branding,
+        preheaderText: `Your album "${album}" has been approved`,
       });
       break;
     }
@@ -142,16 +142,16 @@ ${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
       await sendMail({
         to: event.clientEmail,
         subject: `Changes requested for your album "${event.albumTitle}"`,
-        text: `<p>Hi ${name},</p>
-<p>The photographer has reviewed your album and requested some changes.</p>
-<ul>
+        text: `<p style="margin:0 0 12px;">Hi ${name},</p>
+<p style="margin:0 0 16px;">The photographer has reviewed your album and requested some changes.</p>
+<ul style="margin:0 0 16px;padding-left:20px;color:#374151;">
   <li><strong>Album:</strong> ${album}</li>
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
-<p><strong>Feedback:</strong> ${notes}</p>
-<p><a href="${url}">Update your album</a></p>
-<p>— Fotno</p>`,
+<p style="margin:0 0 20px;"><strong>Feedback:</strong> ${notes}</p>
+<a href="${url}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Update Your Album</a>`,
         branding,
+        preheaderText: `Changes requested for "${album}"`,
       });
       break;
     }
@@ -163,16 +163,16 @@ ${notes ? `<p><strong>Note from photographer:</strong> ${notes}</p>` : ""}
       await sendMail({
         to: event.clientEmail,
         subject: `Update on your album "${event.albumTitle}"`,
-        text: `<p>Hi ${name},</p>
-<p>We're sorry, but your album submission was not approved.</p>
-<ul>
+        text: `<p style="margin:0 0 12px;">Hi ${name},</p>
+<p style="margin:0 0 16px;">We're sorry, but your album submission was not approved.</p>
+<ul style="margin:0 0 16px;padding-left:20px;color:#374151;">
   <li><strong>Album:</strong> ${album}</li>
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
-<p><strong>Reason:</strong> ${reason}</p>
-<p>Please contact the photographer if you have questions.</p>
-<p>— Fotno</p>`,
+<p style="margin:0 0 16px;"><strong>Reason:</strong> ${reason}</p>
+<p style="margin:0;color:#6b7280;">Please contact the photographer if you have questions.</p>`,
         branding,
+        preheaderText: `Update on your album "${album}"`,
       });
       break;
     }

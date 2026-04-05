@@ -40,7 +40,7 @@ import {
 } from "@workspace/ui/components/form";
 import { Icons } from "@workspace/ui/components/icons";
 import {
-  forgetPassword,
+  requestPasswordReset,
   getSession,
   sendVerificationOTP,
   signIn,
@@ -496,28 +496,17 @@ function UnifiedAuthFormComponent({
       return;
     }
 
-    const { error } = await forgetPassword.emailOtp({
+    const { error } = await requestPasswordReset({
       email: parsed.data.email,
-      fetchOptions: {
-        onSuccess: () => {
-          setIsResetPassword(true);
-          toast.success("Password reset email sent");
-        },
-        onError: (context: any) => {
-          toast.error(
-            getErrorMessage(context.error, "Failed to send reset email"),
-          );
-        },
-      },
+      redirectTo: "/reset-password",
     });
 
     if (error) {
       toast.error(error.message || "Failed to send reset email");
-      return;
+    } else {
+      setIsResetPassword(true);
+      toast.success("Password reset email sent. Check your inbox.");
     }
-
-    setIsResetPassword(true);
-    toast.success("Password reset email sent");
   };
 
   const handleSocialSignIn = async (provider: "google" | "github") => {

@@ -23,7 +23,7 @@ function initFirebase() {
   }
 }
 
-type NotificationType = "galleryExpiry" | "storageWarning" | "billingFailed";
+type NotificationType = "galleryExpiry" | "storageWarning" | "billingFailed" | "comments";
 
 /**
  * Send a notification to a user via browser push and/or email.
@@ -36,6 +36,11 @@ export async function sendNotification(
   body: string,
   data?: Record<string, string>,
 ) {
+  // Always persist as an in-app notification
+  await (prisma as any).notification.create({
+    data: { userId, type, title, body, data: data ?? undefined },
+  });
+
   const prefs = await (prisma as any).notificationPreference.findUnique({
     where: { userId },
   });
@@ -118,6 +123,14 @@ async function sendBrowserPush(
   }
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 async function sendEmailNotification(
   userId: string,
   title: string,
@@ -130,11 +143,16 @@ async function sendEmailNotification(
 
   if (!user?.email) return;
 
+  const safeTitle = escapeHtml(title);
+  const safeBody = escapeHtml(body);
+
   try {
     await sendMail({
       to: user.email,
       subject: `FOTNO — ${title}`,
-      text: `<p>${body}</p>`,
+      text: `<h2 style="margin:0 0 8px;font-size:18px;font-weight:600;color:#111827;">${safeTitle}</h2>
+<p style="margin:0;color:#374151;">${safeBody}</p>`,
+      preheaderText: body,
     });
     console.log(`[Notification] Sent email to user ${userId}: "${title}"`);
   } catch (err) {

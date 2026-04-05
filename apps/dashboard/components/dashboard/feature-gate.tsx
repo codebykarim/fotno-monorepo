@@ -10,6 +10,7 @@ export const FEATURE_LABELS: Record<string, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
   UNLIMITED_CLIENTS: "Unlimited clients",
   CLIENT_FAVORITES: "Client favorites & notes",
+  COMMENTS: "Gallery comments",
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",

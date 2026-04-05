@@ -17,13 +17,20 @@ export const init = (methods: { [key: string]: MethodInfo }) => {
     }
 
     const executeMethod = async () => {
+      // Use a next that captures errors — the init() function controls the
+      // flow itself. Passing Express's `next` would cause Express to advance
+      // to the next handler while we also continue to run the controller.
+      const guardNext = (err?: any) => {
+        if (err) throw err;
+      };
+
       if (methodInfo.authFunction) {
-        await methodInfo.authFunction(req, res, next);
+        await methodInfo.authFunction(req, res, guardNext as NextFunction);
       }
 
       if (methodInfo.middlewares) {
         for (const middleware of methodInfo.middlewares) {
-          await middleware(req, res, next);
+          await middleware(req, res, guardNext as NextFunction);
         }
       }
 

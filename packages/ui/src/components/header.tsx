@@ -1,5 +1,6 @@
 import React from "react";
 import { NavUser } from "@workspace/ui/components/nav-user";
+import { NotificationBell } from "@workspace/ui/components/notification-bell";
 import { Icons } from "@workspace/ui/components/icons";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { DashboardNavLinks } from "@workspace/ui/components/dashboard-nav-links";
@@ -45,6 +46,7 @@ const Header = async ({ main }: Props) => {
 
       <div className="flex items-center gap-2">
         <ThemeToggle />
+        <NotificationBell />
         <NavUser />
       </div>
     </header>

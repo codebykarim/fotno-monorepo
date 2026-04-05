@@ -60,6 +60,32 @@ const settingsMethods: { [key: string]: MethodInfo } = {
     controllerFunction: SettingsController.removeCustomDomainController,
     authFunction: isAuth,
   },
+  // ── Notification Inbox ──
+  "list-notifications": {
+    httpMethod: "GET",
+    controllerFunction: SettingsController.listNotificationsController,
+    authFunction: isAuth,
+  },
+  "unread-count": {
+    httpMethod: "GET",
+    controllerFunction: SettingsController.getUnreadCountController,
+    authFunction: isAuth,
+  },
+  "mark-notification-read": {
+    httpMethod: "POST",
+    controllerFunction: SettingsController.markNotificationReadController,
+    authFunction: isAuth,
+  },
+  "mark-all-read": {
+    httpMethod: "POST",
+    controllerFunction: SettingsController.markAllNotificationsReadController,
+    authFunction: isAuth,
+  },
+  "archive-all-notifications": {
+    httpMethod: "POST",
+    controllerFunction: SettingsController.archiveAllNotificationsController,
+    authFunction: isAuth,
+  },
 };
 
 const mappedMethods = init(settingsMethods);
@@ -88,5 +114,27 @@ settingsRoutes.get("/settings/domain", handleMethod("domain"));
 settingsRoutes.post("/settings/domain", handleMethod("set-domain"));
 settingsRoutes.post("/settings/domain/verify", handleMethod("verify-domain"));
 settingsRoutes.delete("/settings/domain", handleMethod("remove-domain"));
+
+// Notification Inbox
+settingsRoutes.get(
+  "/settings/notifications/inbox",
+  handleMethod("list-notifications"),
+);
+settingsRoutes.get(
+  "/settings/notifications/unread-count",
+  handleMethod("unread-count"),
+);
+settingsRoutes.post(
+  "/settings/notifications/:notificationId/read",
+  handleMethod("mark-notification-read"),
+);
+settingsRoutes.post(
+  "/settings/notifications/mark-all-read",
+  handleMethod("mark-all-read"),
+);
+settingsRoutes.post(
+  "/settings/notifications/archive-all",
+  handleMethod("archive-all-notifications"),
+);
 
 export default settingsRoutes;

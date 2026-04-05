@@ -25,6 +25,7 @@ const FEATURE_LABELS: Record<string, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
   UNLIMITED_CLIENTS: "Unlimited clients",
   CLIENT_FAVORITES: "Client favorites & notes",
+  COMMENTS: "Gallery comments",
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",
@@ -374,7 +375,8 @@ export default function BillingPage() {
           {hasSubscription ? "Change Plan" : "Choose a Plan"}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Higher tiers unlock more features and storage. Pick the plan that fits your workflow.
+          Higher tiers unlock more features and storage. Pick the plan that fits
+          your workflow.
         </p>
 
         {!paidPlans ? (
@@ -486,7 +488,10 @@ export default function BillingPage() {
                         </li>
                       )}
                       {newFeatures.map((featureKey) => (
-                        <li key={featureKey} className="flex items-start gap-1.5">
+                        <li
+                          key={featureKey}
+                          className="flex items-start gap-1.5"
+                        >
                           <CheckIcon
                             className={cn(
                               "mt-0.5",
@@ -507,10 +512,14 @@ export default function BillingPage() {
                           </span>
                         </li>
                       ))}
-                      {newFeatures.length === 0 && index === 0 && (
+                      {newFeatures.length === 0 &&
+                        index === 0 &&
                         // First paid tier — show all features
                         (tier.features ?? []).map((featureKey) => (
-                          <li key={featureKey} className="flex items-start gap-1.5">
+                          <li
+                            key={featureKey}
+                            className="flex items-start gap-1.5"
+                          >
                             <CheckIcon
                               className={cn(
                                 "mt-0.5",
@@ -530,8 +539,7 @@ export default function BillingPage() {
                               {FEATURE_LABELS[featureKey] ?? featureKey}
                             </span>
                           </li>
-                        ))
-                      )}
+                        ))}
                     </ul>
 
                     {/* CTA */}

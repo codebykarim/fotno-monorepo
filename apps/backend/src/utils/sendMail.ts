@@ -1,4 +1,5 @@
 import Plunk from "@plunk/node";
+import { wrapEmailLayout } from "../emails/layout";
 
 const plunk = new Plunk(process.env.PLUNK_API_KEY!, { baseUrl: process.env.PLUNK_API_URL || "https://plunk.fotno.com/api/v1/" });
 
@@ -12,16 +13,23 @@ export const sendMail = async ({
   subject,
   text,
   branding,
+  showFooterLinks,
+  preheaderText,
 }: {
   to: string;
   subject: string;
   text: string;
   branding?: EmailBranding;
+  showFooterLinks?: boolean;
+  preheaderText?: string;
 }) => {
-  const brandingHeader = branding
-    ? `${branding.logoUrl ? `<img src="${branding.logoUrl}" alt="${branding.photographerName}" style="max-height:60px;margin-bottom:16px;" /><br/>` : `<p style="font-weight:bold;font-size:18px;margin-bottom:16px;">${branding.photographerName}</p>`}`
-    : "";
-  const html = brandingHeader ? `${brandingHeader}${text}` : text;
+  const html = wrapEmailLayout(text, {
+    photographerBranding: branding
+      ? { name: branding.photographerName, logoUrl: branding.logoUrl }
+      : undefined,
+    showFooterLinks,
+    preheaderText,
+  });
 
   try {
     await plunk.emails.send({

@@ -8,6 +8,8 @@ const DEFAULTS = {
   storageWarningEmail: false,
   billingFailedBrowser: false,
   billingFailedEmail: false,
+  commentsBrowser: false,
+  commentsEmail: false,
 };
 
 export const getNotificationPreferences = async (userId: string) => {
@@ -24,6 +26,8 @@ export const getNotificationPreferences = async (userId: string) => {
     storageWarningEmail: prefs.storageWarningEmail,
     billingFailedBrowser: prefs.billingFailedBrowser,
     billingFailedEmail: prefs.billingFailedEmail,
+    commentsBrowser: prefs.commentsBrowser,
+    commentsEmail: prefs.commentsEmail,
   };
 };
 
@@ -36,6 +40,8 @@ export const updateNotificationPreferences = async (
     storageWarningEmail?: boolean;
     billingFailedBrowser?: boolean;
     billingFailedEmail?: boolean;
+    commentsBrowser?: boolean;
+    commentsEmail?: boolean;
   },
 ) => {
   const prefs = await (prisma as any).notificationPreference.upsert({
@@ -51,6 +57,8 @@ export const updateNotificationPreferences = async (
     storageWarningEmail: prefs.storageWarningEmail,
     billingFailedBrowser: prefs.billingFailedBrowser,
     billingFailedEmail: prefs.billingFailedEmail,
+    commentsBrowser: prefs.commentsBrowser,
+    commentsEmail: prefs.commentsEmail,
   };
 };
 

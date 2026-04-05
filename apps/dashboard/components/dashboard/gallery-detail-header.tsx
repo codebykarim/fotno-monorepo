@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Album,
   BookImage,
@@ -12,6 +12,7 @@ import {
   Grid2x2,
   Images,
   Link2,
+  MessageSquare,
   Lock,
   LockOpen,
   QrCode,
@@ -43,6 +44,12 @@ const TABS = [
     icon: BookImage,
     segment: "/smart-albums",
   },
+  {
+    id: "comments",
+    label: "Comments",
+    icon: MessageSquare,
+    segment: "/comments",
+  },
   { id: "share", label: "Share", icon: Share2, segment: "/share" },
   { id: "settings", label: "Settings", icon: Settings2, segment: "/settings" },
 ] as const;
@@ -61,6 +68,56 @@ function formatDate(dateStr: string | null): string {
 }
 
 // getGalleryShareLink is now imported from @/lib/utils/gallery-link
+
+function countAllComments(comments: any[]): number {
+  let total = 0;
+  for (const c of comments) {
+    total += 1;
+    if (c.replies?.length) total += countAllComments(c.replies);
+  }
+  return total;
+}
+
+function useNewCommentCount(galleryId: string, activeTab: string) {
+  const [newCount, setNewCount] = useState(0);
+  const storageKey = `comments-seen-${galleryId}`;
+
+  const fetchCount = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/galleries/${galleryId}/comments`);
+      if (!res.ok) return;
+      const json = await res.json();
+      const total = countAllComments(json.comments ?? []);
+      const seen = parseInt(localStorage.getItem(storageKey) ?? "0", 10);
+      setNewCount(Math.max(0, total - seen));
+    } catch {}
+  }, [galleryId, storageKey]);
+
+  // Fetch on mount and every 30s
+  useEffect(() => {
+    fetchCount();
+    const id = setInterval(fetchCount, 30_000);
+    return () => clearInterval(id);
+  }, [fetchCount]);
+
+  // When user clicks Comments tab, mark all as seen
+  useEffect(() => {
+    if (activeTab === "comments") {
+      // Get current total and store it
+      fetch(`/api/galleries/${galleryId}/comments`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((json) => {
+          if (!json) return;
+          const total = countAllComments(json.comments ?? []);
+          localStorage.setItem(storageKey, String(total));
+          setNewCount(0);
+        })
+        .catch(() => {});
+    }
+  }, [activeTab, galleryId, storageKey]);
+
+  return newCount;
+}
 
 export function GalleryDetailHeader() {
   const { galleryId, data, mutate, isLoading, processingStatus } =
@@ -85,6 +142,8 @@ export function GalleryDetailHeader() {
     }
     return "photos";
   })();
+
+  const newCommentCount = useNewCommentCount(galleryId, activeTab);
 
   if (isLoading || !data) {
     return (
@@ -232,7 +291,7 @@ export function GalleryDetailHeader() {
               <PopoverContent align="end" className="w-auto p-4">
                 <div className="space-y-3">
                   <p className="text-sm font-medium">Gallery QR Code</p>
-                  <div className="flex items-center justify-center rounded-lg border bg-white p-3">
+                  <div id="qr-popover-svg" className="flex items-center justify-center rounded-lg border bg-white p-3">
                     <QRCodeSVG
                       value={shareLink}
                       size={180}
@@ -309,6 +368,11 @@ export function GalleryDetailHeader() {
             >
               <Icon className="h-4 w-4" />
               {tab.label}
+              {tab.id === "comments" && newCommentCount > 0 && (
+                <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+                  {newCommentCount > 99 ? "99+" : newCommentCount}
+                </span>
+              )}
               {isActive && (
                 <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
               )}

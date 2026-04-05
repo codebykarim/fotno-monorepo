@@ -4,8 +4,9 @@ import { use } from "react";
 import { AlbumConfigForm } from "@/components/smart-albums/album-config-form";
 import { ProductList } from "@/components/smart-albums/product-list";
 import { SubmissionList } from "@/components/smart-albums/submission-list";
-import { useHasFeature } from "@/lib/hooks/use-features";
+import { useFeaturesLoaded } from "@/lib/hooks/use-features";
 import { LockedPage } from "@/components/dashboard/feature-gate";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 
 export default function GallerySmartAlbumsPage({
   params,
@@ -13,9 +14,19 @@ export default function GallerySmartAlbumsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: galleryId } = use(params);
-  const hasSmartAlbums = useHasFeature("SMART_ALBUMS");
+  const { features, isLoaded } = useFeaturesLoaded();
 
-  if (!hasSmartAlbums) {
+  if (!isLoaded) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-7 w-40" />
+        <Skeleton className="h-4 w-56" />
+        <Skeleton className="h-24 w-full" />
+      </div>
+    );
+  }
+
+  if (!features.includes("SMART_ALBUMS")) {
     return (
       <LockedPage
         featureKey="SMART_ALBUMS"

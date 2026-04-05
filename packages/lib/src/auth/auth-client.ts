@@ -35,6 +35,7 @@ export const {
   useSession,
   signUp,
   forgetPassword,
+  requestPasswordReset,
   resetPassword,
   linkSocial,
   multiSession,

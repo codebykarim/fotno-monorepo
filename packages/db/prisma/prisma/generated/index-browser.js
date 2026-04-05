@@ -513,6 +513,8 @@ exports.Prisma.NotificationPreferenceScalarFieldEnum = {
   storageWarningEmail: 'storageWarningEmail',
   billingFailedBrowser: 'billingFailedBrowser',
   billingFailedEmail: 'billingFailedEmail',
+  commentsBrowser: 'commentsBrowser',
+  commentsEmail: 'commentsEmail',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -538,12 +540,29 @@ exports.Prisma.CustomDomainScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  data: 'data',
+  isRead: 'isRead',
+  isArchived: 'isArchived',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -690,7 +709,8 @@ exports.Prisma.ModelName = {
   SmartAlbumTransaction: 'SmartAlbumTransaction',
   NotificationPreference: 'NotificationPreference',
   FcmToken: 'FcmToken',
-  CustomDomain: 'CustomDomain'
+  CustomDomain: 'CustomDomain',
+  Notification: 'Notification'
 };
 
 /**

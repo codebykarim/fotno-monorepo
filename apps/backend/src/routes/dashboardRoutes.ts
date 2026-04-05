@@ -190,6 +190,36 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.retryFailedPhotosController,
     authFunction: isAuth,
   },
+  "list-gallery-comments": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.listGalleryCommentsController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("COMMENTS")],
+  },
+  "create-gallery-comment": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.createGalleryCommentController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("COMMENTS")],
+  },
+  "edit-gallery-comment": {
+    httpMethod: "PATCH",
+    controllerFunction: DashboardController.editGalleryCommentController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("COMMENTS")],
+  },
+  "delete-gallery-comment": {
+    httpMethod: "DELETE",
+    controllerFunction: DashboardController.deleteGalleryCommentController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("COMMENTS")],
+  },
+  "toggle-gallery-comment-like": {
+    httpMethod: "POST",
+    controllerFunction: DashboardController.toggleGalleryCommentLikeController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("COMMENTS")],
+  },
 };
 
 const mappedMethods = init(dashboardMethods);
@@ -333,6 +363,28 @@ dashboardRoutes.get(
 dashboardRoutes.post(
   "/dashboard/galleries/:id/photos/retry-failed",
   handleMethod("retry-failed-photos"),
+);
+
+// ─── Gallery Comments ────────────────────────────────────────────────────
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/comments",
+  handleMethod("list-gallery-comments"),
+);
+dashboardRoutes.post(
+  "/dashboard/galleries/:id/comments",
+  handleMethod("create-gallery-comment"),
+);
+dashboardRoutes.patch(
+  "/dashboard/galleries/:id/comments/:commentId",
+  handleMethod("edit-gallery-comment"),
+);
+dashboardRoutes.delete(
+  "/dashboard/galleries/:id/comments/:commentId",
+  handleMethod("delete-gallery-comment"),
+);
+dashboardRoutes.post(
+  "/dashboard/galleries/:id/comments/:commentId/like",
+  handleMethod("toggle-gallery-comment-like"),
 );
 
 export default dashboardRoutes;

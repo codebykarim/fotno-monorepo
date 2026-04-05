@@ -3,6 +3,7 @@ import AppError from "../errors/AppError";
 import * as profileService from "../services/SettingsServices/profileService";
 import * as notificationService from "../services/SettingsServices/notificationService";
 import * as customDomainService from "../services/SettingsServices/customDomainService";
+import * as notificationInboxService from "../services/SettingsServices/notificationInboxService";
 
 function getUserId(req: Request): string {
   const userId = req.user?.id;
@@ -49,6 +50,8 @@ export const updateNotificationPreferencesController = async (
     storageWarningEmail,
     billingFailedBrowser,
     billingFailedEmail,
+    commentsBrowser,
+    commentsEmail,
   } = req.body;
   const prefs = await notificationService.updateNotificationPreferences(
     getUserId(req),
@@ -59,6 +62,8 @@ export const updateNotificationPreferencesController = async (
       storageWarningEmail,
       billingFailedBrowser,
       billingFailedEmail,
+      commentsBrowser,
+      commentsEmail,
     },
   );
   return res.status(200).json({ data: prefs });
@@ -125,4 +130,53 @@ export const removeCustomDomainController = async (
 ) => {
   const result = await customDomainService.removeCustomDomain(getUserId(req));
   return res.status(200).json({ data: result });
+};
+
+// ── Notification Inbox ──────────────────────────────────────────
+
+export const listNotificationsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const archived = req.query.archived === "true";
+  const notifications = await notificationInboxService.listNotifications(
+    getUserId(req),
+    archived,
+  );
+  return res.status(200).json({ data: notifications });
+};
+
+export const getUnreadCountController = async (
+  req: Request,
+  res: Response,
+) => {
+  const count = await notificationInboxService.getUnreadCount(getUserId(req));
+  return res.status(200).json({ data: { count } });
+};
+
+export const markNotificationReadController = async (
+  req: Request,
+  res: Response,
+) => {
+  await notificationInboxService.markAsRead(
+    getUserId(req),
+    req.params.notificationId,
+  );
+  return res.status(200).json({ data: { success: true } });
+};
+
+export const markAllNotificationsReadController = async (
+  req: Request,
+  res: Response,
+) => {
+  await notificationInboxService.markAllAsRead(getUserId(req));
+  return res.status(200).json({ data: { success: true } });
+};
+
+export const archiveAllNotificationsController = async (
+  req: Request,
+  res: Response,
+) => {
+  await notificationInboxService.archiveAll(getUserId(req));
+  return res.status(200).json({ data: { success: true } });
 };

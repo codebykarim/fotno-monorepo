@@ -40,7 +40,7 @@ export const createGallery = async (userId: string, body: any) => {
       };
     }
     // Verify uniqueness
-    const existing = await db.gallery.findUnique({ where: { slug: customSlug } });
+    const existing = await db.gallery.findFirst({ where: { slug: customSlug } });
     if (existing) {
       return {
         error: "This slug is already taken. Please choose a different one.",
@@ -49,9 +49,19 @@ export const createGallery = async (userId: string, body: any) => {
     }
     slug = customSlug;
   } else {
-    // Auto-generate slug from title with random suffix
+    // Auto-generate slug from title with random suffix, retry on collision
     const slugBase = slugify(title);
-    slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const candidate = `${slugBase}-${Math.floor(Math.random() * 1_000_000)}`;
+      const existing = await db.gallery.findFirst({ where: { slug: candidate } });
+      if (!existing) {
+        slug = candidate;
+        break;
+      }
+    }
+    if (!slug!) {
+      slug = `${slugBase}-${Date.now()}`;
+    }
   }
 
   const now = new Date();
@@ -87,7 +97,6 @@ export const createGallery = async (userId: string, body: any) => {
         gallery.expiresAt ? gallery.expiresAt.toISOString() : null,
       ),
       passwordEnabled: Boolean(gallery.passwordHash),
-      password: gallery.passwordHash ?? null,
       isPublished: gallery.isPublished,
       createdAt: gallery.createdAt.toISOString(),
       updatedAt: gallery.updatedAt.toISOString(),

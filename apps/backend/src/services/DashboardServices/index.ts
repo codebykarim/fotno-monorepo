@@ -33,3 +33,8 @@ export { listGalleryFavorites } from "./listGalleryFavorites";
 export { getDownloadActivity } from "./getDownloadActivity";
 export { getGalleryProcessingStatus } from "./getGalleryProcessingStatus";
 export { retryFailedPhotos } from "./retryFailedPhotos";
+export { listGalleryComments } from "./listGalleryComments";
+export { createGalleryComment } from "./createGalleryComment";
+export { editGalleryComment } from "./editGalleryComment";
+export { deleteGalleryComment } from "./deleteGalleryComment";
+export { toggleGalleryCommentLike } from "./toggleGalleryCommentLike";

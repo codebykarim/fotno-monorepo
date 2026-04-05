@@ -536,3 +536,104 @@ export const retryFailedPhotosController = async (
   }
   return res.status(200).json(result);
 };
+
+// ─── Gallery Comments ─────────────────────────────────────────────────────
+
+export const listGalleryCommentsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.listGalleryComments(
+    userId,
+    req.params.id,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};
+
+export const createGalleryCommentController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const { message, photoId, parentId } = req.body;
+  if (!message || typeof message !== "string" || !message.trim()) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+  const result = await DashboardService.createGalleryComment(
+    userId,
+    req.params.id,
+    message.trim(),
+    photoId ?? null,
+    parentId ?? null,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(201).json(result);
+};
+
+export const editGalleryCommentController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const { message } = req.body;
+  if (!message || typeof message !== "string" || !message.trim()) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+  const result = await DashboardService.editGalleryComment(
+    userId,
+    req.params.id,
+    req.params.commentId,
+    message.trim(),
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const deleteGalleryCommentController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.deleteGalleryComment(
+    userId,
+    req.params.id,
+    req.params.commentId,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};
+
+export const toggleGalleryCommentLikeController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const result = await DashboardService.toggleGalleryCommentLike(
+    userId,
+    req.params.id,
+    req.params.commentId,
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  if ("error" in result) {
+    return res.status(result.status).json({ error: result.error });
+  }
+  return res.status(200).json(result);
+};

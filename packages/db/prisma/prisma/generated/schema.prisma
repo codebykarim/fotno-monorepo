@@ -44,6 +44,7 @@ model User {
   notificationPreference NotificationPreference?
   fcmTokens              FcmToken[]
   customDomain           CustomDomain?
+  notifications          Notification[]
 
   @@unique([email])
   @@map("user")
@@ -186,7 +187,7 @@ model Gallery {
   // General settings
   categoryTags         String[]  @default([])
   expiresAt            DateTime?
-  slideshowEnabled     Boolean   @default(true)
+  slideshowEnabled     Boolean   @default(false)
   socialSharingEnabled Boolean   @default(true)
   emailRegistration    Boolean   @default(false)
   language             String    @default("en")
@@ -196,7 +197,7 @@ model Gallery {
   downloadPin          String?
   downloadSizeOriginal Boolean @default(true)
   downloadSizeHighRes  Boolean @default(false)
-  downloadSizeWeb      Boolean @default(true)
+  downloadSizeWeb      Boolean @default(false)
   downloadWebMaxPx     Int     @default(2048)
   downloadHighResMaxPx Int     @default(3600)
   downloadLimit        Int?
@@ -645,6 +646,8 @@ model NotificationPreference {
   storageWarningEmail   Boolean  @default(false)
   billingFailedBrowser  Boolean  @default(false)
   billingFailedEmail    Boolean  @default(false)
+  commentsBrowser       Boolean  @default(false)
+  commentsEmail         Boolean  @default(false)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @default(now()) @updatedAt
 
@@ -686,4 +689,22 @@ model CustomDomain {
   updatedAt            DateTime     @default(now()) @updatedAt
 
   @@map("custom_domain")
+}
+
+// ── In-App Notifications ────────────────────────────────────────
+
+model Notification {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       String // e.g. "comments", "galleryExpiry", etc.
+  title      String
+  body       String
+  data       Json? // optional payload (galleryId, commentId, etc.)
+  isRead     Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([userId, isArchived, createdAt])
+  @@map("notification")
 }

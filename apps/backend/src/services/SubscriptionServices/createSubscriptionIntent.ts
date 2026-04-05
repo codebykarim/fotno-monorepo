@@ -120,6 +120,7 @@ export const createSubscriptionIntent = async ({
       save_default_payment_method: "on_subscription",
       payment_method_types: ["card"],
     },
+    automatic_tax: { enabled: true },
     ...(savedPaymentMethod ? { default_payment_method: savedPaymentMethod } : {}),
   });
 

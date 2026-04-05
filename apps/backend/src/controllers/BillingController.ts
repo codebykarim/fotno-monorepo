@@ -18,7 +18,7 @@ import { setDefaultPaymentMethod } from "../services/SubscriptionServices/setDef
 import { prisma } from "@workspace/db";
 import { detectCountryFromIP } from "../utils/detectCountry";
 import { withSpan, captureWithContext, addBreadcrumb } from "../utils/sentry";
-import { findTierByGb } from "../constants/plans";
+import { findTierByGbFromDB } from "../constants/plans";
 
 /**
  * Resolve country code from: explicit query/body param → CF header → IP geolocation.
@@ -68,7 +68,7 @@ export const getSubscriptionController = async (
   // Include pending downgrade if set
   let serializedSubscription = subscription;
   if (subscription && subscription.pendingTierGb) {
-    const pendingTier = findTierByGb(subscription.pendingTierGb);
+    const pendingTier = await findTierByGbFromDB(subscription.pendingTierGb);
     serializedSubscription = {
       ...subscription,
       pendingDowngrade: pendingTier ? {

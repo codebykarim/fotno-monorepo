@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 import { stripe, Stripe } from "./stripe";
-import { findTierByPriceId, fetchTiersFromDB, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
+import { findTierByPriceIdFromDB, fetchTiersFromDB, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
 import { storageTierToBytes } from "../../constants/storage";
 import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import { sendPushNotification } from "../../utils/fcm";
@@ -194,7 +194,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
 
   // Resolve tier: prefer metadata (always set for new checkouts), then price ID lookup
   const tierGbFromMeta = session.metadata?.tier_gb ? Number(session.metadata.tier_gb) : null;
-  const tier = findTierByPriceId(stripePriceId);
+  const tier = await findTierByPriceIdFromDB(stripePriceId);
   if (!tier && !tierGbFromMeta) {
     console.warn(`[Webhook] No tier found for priceId=${stripePriceId}. Configured prices: ${JSON.stringify(
       STORAGE_TIERS.map(t => ({ gb: t.gb, priceId: t.stripePriceId }))
@@ -359,7 +359,7 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
     });
   } else {
     // No pending change — normal update from Stripe
-    const tier = findTierByPriceId(stripePriceId);
+    const tier = await findTierByPriceIdFromDB(stripePriceId);
     const tierGbFromMeta = (sub as any).metadata?.tier_gb ? Number((sub as any).metadata.tier_gb) : null;
     const tierGb = tier?.gb ?? tierGbFromMeta ?? subscription.storageTierGb;
 

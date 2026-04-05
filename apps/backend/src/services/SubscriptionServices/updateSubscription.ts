@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 import { stripe } from "./stripe";
-import { findTierByGb } from "../../constants/plans";
+import { findTierByGbFromDB } from "../../constants/plans";
 import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import { extractBillingPeriod } from "./handleWebhook";
 import AppError from "../../errors/AppError";
@@ -24,7 +24,8 @@ export const changeTier = async ({
     throw new AppError("No active subscription found", 404);
   }
 
-  const newTier = findTierByGb(newStorageTierGb);
+  const newTier = await findTierByGbFromDB(newStorageTierGb);
+  console.log("newTier", newTier);
   if (!newTier || !newTier.stripePriceId) {
     throw new AppError("Invalid storage tier", 400);
   }

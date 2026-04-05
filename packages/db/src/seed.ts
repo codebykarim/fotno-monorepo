@@ -71,7 +71,7 @@ async function main() {
       gb: 20,
       label: "Solo",
       priceCents: 900,
-      stripePriceId: "price_1TGNnaEuz1yMNGtKYLe4ibiI",
+      stripePriceId: "price_1TGNnaEuz1yMNGtKXH58iYdp",
       galleryLimit: null,
       sortOrder: 0,
     },

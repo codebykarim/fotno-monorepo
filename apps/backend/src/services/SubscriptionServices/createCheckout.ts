@@ -1,5 +1,5 @@
 import { stripe } from "./stripe";
-import { findTierByGb, fetchTiersFromDB } from "../../constants/plans";
+import { fetchTiersFromDB } from "../../constants/plans";
 import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 import { db } from "../DashboardServices/_shared";
@@ -33,11 +33,11 @@ export const createCheckout = async ({
   const findDbTier = (gb: number) => dbTiers.find((t) => t.gb === gb);
 
   // Direct lookup first; if it fails, check if the gb value is a regional override
-  let tier = findDbTier(storageTierGb) ?? findTierByGb(storageTierGb);
+  let tier = findDbTier(storageTierGb);
   if (!tier && regional?.tierStorageOverrides) {
     const originalGb = Object.entries(regional.tierStorageOverrides)
       .find(([, overridden]) => overridden === storageTierGb)?.[0];
-    if (originalGb) tier = findDbTier(Number(originalGb)) ?? findTierByGb(Number(originalGb));
+    if (originalGb) tier = findDbTier(Number(originalGb));
   }
   if (!tier || !tier.stripePriceId) {
     throw new AppError("Invalid storage tier", 400);
@@ -109,6 +109,8 @@ export const createCheckout = async ({
     subscription_data: {
       metadata: sharedMetadata,
     },
+    automatic_tax: { enabled: true },
+    customer_update: { address: "auto" },
     success_url: `${dashboardUrl}/billing?checkout=success`,
     cancel_url: `${dashboardUrl}/billing`,
     allow_promotion_codes: !regionalCheckoutCents, // disable promo codes when using dynamic pricing

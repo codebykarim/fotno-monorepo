@@ -229,3 +229,15 @@ export const findTierByPriceId = (priceId: string): StorageTier | undefined =>
 
 export const findTierByGb = (gb: number): StorageTier | undefined =>
   STORAGE_TIERS.find((t) => t.gb === gb);
+
+/** DB-backed version of findTierByGb. Falls back to hardcoded STORAGE_TIERS. */
+export async function findTierByGbFromDB(gb: number): Promise<DBTier | undefined> {
+  const tiers = await fetchTiersFromDB();
+  return tiers.find((t) => t.gb === gb);
+}
+
+/** DB-backed version of findTierByPriceId. Falls back to hardcoded STORAGE_TIERS. */
+export async function findTierByPriceIdFromDB(priceId: string): Promise<DBTier | undefined> {
+  const tiers = await fetchTiersFromDB();
+  return tiers.find((t) => t.stripePriceId === priceId);
+}

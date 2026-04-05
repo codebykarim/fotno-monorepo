@@ -51,7 +51,7 @@ async function requestFcmPermissionAndRegister(): Promise<boolean> {
     const app = initializeApp({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, // client-side key — will need your Firebase web config
-      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     });
 

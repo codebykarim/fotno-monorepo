@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import * as SmartAlbumController from "../controllers/SmartAlbumController";
 import isAuth from "../middleware/isAuth";
 import isActiveSubscriber from "../middleware/isActiveSubscriber";
+import { requireFeature } from "../middleware/requireFeature";
 import { MethodInfo } from "../interfaces";
 import { init } from "../utils/methods";
 
@@ -13,17 +14,19 @@ const smartAlbumMethods: { [key: string]: MethodInfo } = {
     httpMethod: "GET",
     controllerFunction: SmartAlbumController.getConfigController,
     authFunction: isAuth,
+    middlewares: [requireFeature("SMART_ALBUMS")],
   },
   "upsert-config": {
     httpMethod: "PATCH",
     controllerFunction: SmartAlbumController.upsertConfigController,
     authFunction: isAuth,
+    middlewares: [requireFeature("SMART_ALBUMS")],
   },
   "create-product": {
     httpMethod: "POST",
     controllerFunction: SmartAlbumController.createProductController,
     authFunction: isAuth,
-    middlewares: [isActiveSubscriber],
+    middlewares: [isActiveSubscriber, requireFeature("SMART_ALBUMS")],
   },
   "update-product": {
     httpMethod: "PATCH",

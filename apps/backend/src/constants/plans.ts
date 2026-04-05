@@ -1,5 +1,6 @@
 import { prisma } from "@workspace/db";
 import { storageTierToBytes } from "./storage";
+import { DEFAULT_TIER_FEATURES } from "./features";
 
 // ── DB-backed tier cache (5 min TTL) ───────────────────────────
 type DBTier = {
@@ -73,6 +74,59 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
   }
 }
 
+// ── DB-backed feature cache (5 min TTL) ──────────────────────────
+let _featureCache: Map<number, string[]> | null = null;
+let _featureCacheExpiresAt = 0;
+
+export function invalidateFeatureCache(): void {
+  _featureCache = null;
+  _featureCacheExpiresAt = 0;
+}
+
+/**
+ * Fetch features for a given tier (by GB value).
+ * Loads all tier→feature mappings in one query and caches the result.
+ * Falls back to DEFAULT_TIER_FEATURES if DB has no TierFeature rows.
+ */
+export async function fetchFeaturesForTier(tierGb: number): Promise<string[]> {
+  if (_featureCache && Date.now() < _featureCacheExpiresAt) {
+    return _featureCache.get(tierGb) ?? [];
+  }
+
+  try {
+    const tiers = await (prisma as any).pricingTier.findMany({
+      where: { active: true },
+      include: { features: { select: { featureKey: true } } },
+    });
+
+    const map = new Map<number, string[]>();
+    let hasAnyFeatures = false;
+
+    for (const tier of tiers) {
+      const keys = tier.features.map((f: { featureKey: string }) => f.featureKey);
+      if (keys.length > 0) hasAnyFeatures = true;
+      map.set(tier.gb, keys);
+    }
+
+    // If no TierFeature rows exist yet, fall back to defaults
+    if (!hasAnyFeatures) {
+      for (const tier of tiers) {
+        map.set(tier.gb, DEFAULT_TIER_FEATURES[tier.label] ?? []);
+      }
+    }
+
+    _featureCache = map;
+    _featureCacheExpiresAt = Date.now() + TIER_CACHE_TTL_MS;
+
+    return map.get(tierGb) ?? [];
+  } catch (err) {
+    console.warn("[fetchFeaturesForTier] DB query failed, using hardcoded fallback:", err);
+    // Fall back to default features based on hardcoded tier labels
+    const tier = STORAGE_TIERS.find((t) => t.gb === tierGb);
+    return tier ? (DEFAULT_TIER_FEATURES[tier.label] ?? []) : [];
+  }
+}
+
 // ── Hardcoded fallback tiers ───────────────────────────────────
 
 export const STORAGE_TIERS = [
@@ -114,11 +168,10 @@ export const PLAN_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
   // "AI-powered captions",
-  "Client favorites & selections",
+  "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",
   "Custom gallery slugs",
-  "Bulk upload with auto-retry",
   "Google Drive & Google Photos import",
   "Slideshow & social sharing",
 ];
@@ -134,7 +187,7 @@ export function buildFreeFeatures(freeTier: {
     `${storage} storage`,
     `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
     // "AI-powered captions",
-    "Client favorites & selections",
+    "Client favorites & notes",
     "Download tracking & analytics",
     "Password-protected galleries",
   ];
@@ -145,7 +198,7 @@ export const FREE_PLAN_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
   // "AI-powered captions",
-  "Client favorites & selections",
+  "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",
 ];

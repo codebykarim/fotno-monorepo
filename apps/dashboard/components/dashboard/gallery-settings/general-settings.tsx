@@ -25,6 +25,7 @@ import { useCustomDomain } from "@/lib/hooks/use-custom-domain";
 import { getGalleryBaseUrl } from "@/lib/utils/gallery-link";
 import { GetGalleryResponse } from "@/lib/types/api";
 import { addDays, addMonths, formatDisplayDate, formatLocalDate } from "@/lib/utils/date";
+import { FeatureInlineGate } from "@/components/dashboard/feature-gate";
 
 const QUICK_EXPIRY = [
   { label: "1 week from now", months: 0, days: 7 },
@@ -148,22 +149,24 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="slug" className="text-xs">
-              Slug
-            </Label>
-            <div className="flex">
-              <span className="flex items-center rounded-l-md border border-r-0 border-input bg-muted px-2.5 text-xs text-muted-foreground whitespace-nowrap">
-                {slugPreview}
-              </span>
-              <Input
-                id="slug"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                className="rounded-l-none"
-              />
+          <FeatureInlineGate featureKey="CUSTOM_SLUGS">
+            <div className="space-y-1.5">
+              <Label htmlFor="slug" className="text-xs">
+                Slug
+              </Label>
+              <div className="flex">
+                <span className="flex items-center rounded-l-md border border-r-0 border-input bg-muted px-2.5 text-xs text-muted-foreground whitespace-nowrap">
+                  {slugPreview}
+                </span>
+                <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="rounded-l-none"
+                />
+              </div>
             </div>
-          </div>
+          </FeatureInlineGate>
         </div>
       </section>
 
@@ -306,18 +309,20 @@ export function GeneralSettings({ galleryId, data, mutate }: Props) {
       <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
         <h4 className="text-sm font-medium">Display Options</h4>
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm">Slideshow</p>
-              <p className="text-xs text-muted-foreground">
-                Allow clients to view photos in a slideshow.
-              </p>
+          <FeatureInlineGate featureKey="SLIDESHOW_SHARING">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm">Slideshow</p>
+                <p className="text-xs text-muted-foreground">
+                  Allow clients to view photos in a slideshow.
+                </p>
+              </div>
+              <Switch
+                checked={slideshowEnabled}
+                onCheckedChange={setSlideshowEnabled}
+              />
             </div>
-            <Switch
-              checked={slideshowEnabled}
-              onCheckedChange={setSlideshowEnabled}
-            />
-          </div>
+          </FeatureInlineGate>
           {/* <div className="flex items-center justify-between">
             <div>
               <p className="text-sm">Social Sharing</p>

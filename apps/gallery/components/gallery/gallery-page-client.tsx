@@ -1770,7 +1770,10 @@ export default function GalleryPageClient({
 
     const deltaX = event.clientX - panStartRef.current.startX;
     const deltaY = event.clientY - panStartRef.current.startY;
-    if (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD) {
+    if (
+      Math.abs(deltaX) > DRAG_THRESHOLD ||
+      Math.abs(deltaY) > DRAG_THRESHOLD
+    ) {
       wasDragRef.current = true;
     }
     if (!isDragging) return;
@@ -2111,7 +2114,9 @@ export default function GalleryPageClient({
                     style={{
                       contentVisibility: "auto",
                       aspectRatio: `${w} / ${h}`,
-                      backgroundImage: photo.blurDataUrl ? `url(${photo.blurDataUrl})` : undefined,
+                      backgroundImage: photo.blurDataUrl
+                        ? `url(${photo.blurDataUrl})`
+                        : undefined,
                       backgroundSize: "cover",
                     }}
                   >
@@ -2139,9 +2144,12 @@ export default function GalleryPageClient({
                           const attempt = Number(img.dataset.retry ?? "0");
                           if (attempt < 2) {
                             img.dataset.retry = String(attempt + 1);
-                            setTimeout(() => {
-                              img.src = imageSrc;
-                            }, 1000 * (attempt + 1));
+                            setTimeout(
+                              () => {
+                                img.src = imageSrc;
+                              },
+                              1000 * (attempt + 1),
+                            );
                           }
                         }}
                         className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
@@ -2711,12 +2719,14 @@ export default function GalleryPageClient({
       </footer>
 
       {/* Create Album Button */}
-      <Link href={`/${encodeURIComponent(gallery.shareToken)}/album`}>
-        <Button className="fixed right-5 bottom-20 z-40 gap-2 shadow-lg">
-          <Album className="h-4 w-4" />
-          Create Album
-        </Button>
-      </Link>
+      {gallery.settings?.smartAlbumsEnabled && (
+        <Link href={`/${encodeURIComponent(gallery.shareToken)}/album`}>
+          <Button className="fixed right-5 bottom-20 z-40 gap-2 shadow-lg">
+            <Album className="h-4 w-4" />
+            Create Album
+          </Button>
+        </Link>
+      )}
 
       <Sheet>
         <SheetTrigger asChild>

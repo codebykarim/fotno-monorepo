@@ -38,6 +38,7 @@ export interface GallerySettings {
   downloadLimit: number | null;
   favoritesEnabled: boolean;
   favoriteNotesEnabled: boolean;
+  smartAlbumsEnabled?: boolean;
 }
 
 export interface PublicGallery {

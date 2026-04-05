@@ -149,6 +149,15 @@ function TiersSection({
       ),
     },
     {
+      key: "features",
+      header: "Features",
+      render: (t) => (
+        <span className="text-xs text-muted-foreground">
+          {t.features?.length ? `${t.features.length} enabled` : "None"}
+        </span>
+      ),
+    },
+    {
       key: "stripePriceId",
       header: "Stripe Price ID",
       render: (t) => (
@@ -220,6 +229,38 @@ function TiersSection({
 }
 
 // ---------------------------------------------------------------------------
+// Feature keys and labels for the admin UI
+// ---------------------------------------------------------------------------
+
+const FEATURE_KEYS = [
+  "UNLIMITED_GALLERIES",
+  "UNLIMITED_CLIENTS",
+  "CLIENT_FAVORITES",
+  "PASSWORD_PROTECTION",
+  "CUSTOM_SLUGS",
+  "SLIDESHOW_SHARING",
+  "DOWNLOAD_ANALYTICS",
+  "GOOGLE_IMPORT",
+  "SMART_ALBUMS",
+  "CUSTOM_DOMAINS",
+  "WEBSITE_BUILDER",
+] as const;
+
+const FEATURE_LABELS: Record<string, string> = {
+  UNLIMITED_GALLERIES: "Unlimited galleries",
+  UNLIMITED_CLIENTS: "Unlimited clients",
+  CLIENT_FAVORITES: "Client favorites & notes",
+  PASSWORD_PROTECTION: "Password-protected galleries",
+  CUSTOM_SLUGS: "Custom gallery slugs",
+  SLIDESHOW_SHARING: "Slideshow & social sharing",
+  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  GOOGLE_IMPORT: "Google Drive & Google Photos import",
+  SMART_ALBUMS: "Smart albums",
+  CUSTOM_DOMAINS: "Custom domains",
+  WEBSITE_BUILDER: "Website builder",
+};
+
+// ---------------------------------------------------------------------------
 // Tier Dialog (Add / Edit)
 // ---------------------------------------------------------------------------
 
@@ -246,7 +287,22 @@ function TierDialog({
     tier?.sortOrder?.toString() ?? "0",
   );
   const [active, setActive] = useState(tier?.active ?? true);
+  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(
+    new Set(tier?.features ?? []),
+  );
   const [saving, setSaving] = useState(false);
+
+  const toggleFeature = (key: string) => {
+    setSelectedFeatures((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
 
   const handleSubmit = async () => {
     setSaving(true);
@@ -258,6 +314,7 @@ function TierDialog({
         galleryLimit: galleryLimit.trim() ? Number(galleryLimit) : null,
         sortOrder: Number(sortOrder),
         active,
+        features: Array.from(selectedFeatures),
       };
       if (stripePriceId.trim()) body.stripePriceId = stripePriceId.trim();
 
@@ -285,13 +342,13 @@ function TierDialog({
 
   return (
     <Dialog open onOpenChange={() => onClose()}>
-      <DialogContent>
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{isEdit ? "Edit Tier" : "Add Tier"}</DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update the storage tier details."
-              : "Create a new storage tier."}
+              ? "Update the storage tier details and features."
+              : "Create a new storage tier with features."}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-2">
@@ -337,6 +394,29 @@ function TierDialog({
             />
             Active
           </label>
+
+          {/* Features */}
+          <div className="space-y-2">
+            <p className="text-xs text-muted-foreground font-medium">
+              Plan Features
+            </p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+              {FEATURE_KEYS.map((key) => (
+                <label
+                  key={key}
+                  className="flex items-center gap-2 text-sm cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedFeatures.has(key)}
+                    onChange={() => toggleFeature(key)}
+                    className="rounded"
+                  />
+                  {FEATURE_LABELS[key]}
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
         <DialogFooter>
           <button

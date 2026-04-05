@@ -16,6 +16,7 @@ import {
 } from "@workspace/ui/components/popover";
 import { apiRequest } from "@/lib/api/client";
 import { addDays, addMonths, formatDisplayDate, formatLocalDate } from "@/lib/utils/date";
+import { FeatureInlineGate } from "@/components/dashboard/feature-gate";
 
 const QUICK_EXPIRY = [
   { label: "1 week from now", months: 0, days: 7 },
@@ -85,15 +86,17 @@ export function NewGalleryForm() {
               <Input id="title" value={title} onChange={(event) => setTitle(event.target.value)} required />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="slug">Slug (optional)</Label>
-              <Input
-                id="slug"
-                value={slug}
-                onChange={(event) => setSlug(event.target.value)}
-                placeholder="winter-family-session"
-              />
-            </div>
+            <FeatureInlineGate featureKey="CUSTOM_SLUGS">
+              <div className="space-y-2">
+                <Label htmlFor="slug">Slug (optional)</Label>
+                <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(event) => setSlug(event.target.value)}
+                  placeholder="winter-family-session"
+                />
+              </div>
+            </FeatureInlineGate>
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">

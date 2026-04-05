@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import * as SettingsController from "../controllers/SettingsController";
 import isAuth from "../middleware/isAuth";
+import { requireFeature } from "../middleware/requireFeature";
 import { MethodInfo } from "../interfaces";
 import { init } from "../utils/methods";
 
@@ -46,11 +47,13 @@ const settingsMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: SettingsController.setCustomDomainController,
     authFunction: isAuth,
+    middlewares: [requireFeature("CUSTOM_DOMAINS")],
   },
   "verify-domain": {
     httpMethod: "POST",
     controllerFunction: SettingsController.verifyCustomDomainController,
     authFunction: isAuth,
+    middlewares: [requireFeature("CUSTOM_DOMAINS")],
   },
   "remove-domain": {
     httpMethod: "DELETE",

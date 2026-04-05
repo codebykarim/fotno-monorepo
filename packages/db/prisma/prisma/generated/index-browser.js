@@ -385,6 +385,13 @@ exports.Prisma.PricingTierScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TierFeatureScalarFieldEnum = {
+  id: 'id',
+  tierId: 'tierId',
+  featureKey: 'featureKey',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.RegionalPricingScalarFieldEnum = {
   id: 'id',
   countryCode: 'countryCode',
@@ -672,6 +679,7 @@ exports.Prisma.ModelName = {
   DownloadEvent: 'DownloadEvent',
   DriveImportJob: 'DriveImportJob',
   PricingTier: 'PricingTier',
+  TierFeature: 'TierFeature',
   RegionalPricing: 'RegionalPricing',
   RegionalTierOverride: 'RegionalTierOverride',
   DriveImportItem: 'DriveImportItem',

@@ -18,12 +18,7 @@ const getViewerNameKey = (shareToken: string) =>
 interface Design {
   id: string;
   title: string;
-  status:
-    | "DRAFT"
-    | "SUBMITTED"
-    | "APPROVED"
-    | "CHANGES_REQUESTED"
-    | "REJECTED";
+  status: "DRAFT" | "SUBMITTED" | "APPROVED" | "CHANGES_REQUESTED" | "REJECTED";
   photographerNotes: string | null;
   product: {
     name: string;
@@ -205,8 +200,7 @@ export default function AlbumPage() {
                       )}
 
                     <p className="text-xs text-muted-foreground pt-3 border-t">
-                      Updated{" "}
-                      {new Date(design.updatedAt).toLocaleDateString()}
+                      Updated {new Date(design.updatedAt).toLocaleDateString()}
                     </p>
                   </div>
                 </Card>

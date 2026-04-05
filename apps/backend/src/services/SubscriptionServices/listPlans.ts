@@ -1,4 +1,4 @@
-import { fetchTiersFromDB, PLAN_FEATURES, buildFreeFeatures, invalidateTierCache } from "../../constants/plans";
+import { fetchTiersFromDB, PLAN_FEATURES, buildFreeFeatures, invalidateTierCache, invalidateFeatureCache, fetchFeaturesForTier } from "../../constants/plans";
 import {
   getRegionalPricing,
   fetchRegionalPricingFromDB,
@@ -10,6 +10,7 @@ export type PlanInfo = {
   priceCents: number;
   label: string;
   galleryLimit?: number | null;
+  features: string[];
   /** Price in local currency minor units (only when regional pricing applies) */
   localPriceCents?: number;
   /** PPP-adjusted USD price in cents (what Stripe will charge) */
@@ -79,9 +80,10 @@ async function applyRegionalPricing(
  * When `countryCode` is provided and regional pricing exists, each
  * plan is augmented with local currency prices and PPP info.
  */
-/** Invalidate all pricing caches (tiers, regional, and plans). */
+/** Invalidate all pricing caches (tiers, regional, features, and plans). */
 export function invalidatePricingCaches(): void {
   invalidateTierCache();
+  invalidateFeatureCache();
   invalidateRegionalCache();
   cachedPlans = null;
   cacheExpiresAt = 0;
@@ -106,12 +108,15 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
   }
 
   const dbTiers = await fetchTiersFromDB();
-  const plans: PlanInfo[] = dbTiers.map(({ gb, priceCents, label, galleryLimit }) => ({
-    gb,
-    priceCents,
-    label,
-    galleryLimit: galleryLimit ?? null,
-  }));
+  const plans: PlanInfo[] = await Promise.all(
+    dbTiers.map(async ({ gb, priceCents, label, galleryLimit }) => ({
+      gb,
+      priceCents,
+      label,
+      galleryLimit: galleryLimit ?? null,
+      features: await fetchFeaturesForTier(gb),
+    })),
+  );
 
   // Sort by GB so the order is deterministic (-1 = unlimited goes last)
   plans.sort((a, b) => {

@@ -186,7 +186,7 @@ model Gallery {
   // General settings
   categoryTags         String[]  @default([])
   expiresAt            DateTime?
-  slideshowEnabled     Boolean   @default(true)
+  slideshowEnabled     Boolean   @default(false)
   socialSharingEnabled Boolean   @default(true)
   emailRegistration    Boolean   @default(false)
   language             String    @default("en")
@@ -196,7 +196,7 @@ model Gallery {
   downloadPin          String?
   downloadSizeOriginal Boolean @default(true)
   downloadSizeHighRes  Boolean @default(false)
-  downloadSizeWeb      Boolean @default(true)
+  downloadSizeWeb      Boolean @default(false)
   downloadWebMaxPx     Int     @default(2048)
   downloadHighResMaxPx Int     @default(3600)
   downloadLimit        Int?
@@ -426,18 +426,31 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id            String   @id @default(uuid())
-  gb            Int      @unique // -1 for unlimited, 0 for free
+  id            String        @id @default(uuid())
+  gb            Int           @unique // -1 for unlimited, 0 for free
   label         String
   priceCents    Int // base USD price
   stripePriceId String?
   galleryLimit  Int? // null = unlimited
-  sortOrder     Int      @default(0)
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  sortOrder     Int           @default(0)
+  active        Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  features      TierFeature[]
 
   @@map("pricing_tier")
+}
+
+model TierFeature {
+  id         String      @id @default(uuid())
+  tierId     String
+  tier       PricingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  featureKey String
+  createdAt  DateTime    @default(now())
+
+  @@unique([tierId, featureKey])
+  @@index([tierId])
+  @@map("tier_feature")
 }
 
 model RegionalPricing {

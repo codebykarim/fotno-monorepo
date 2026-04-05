@@ -426,18 +426,31 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id            String   @id @default(uuid())
-  gb            Int      @unique // -1 for unlimited, 0 for free
+  id            String        @id @default(uuid())
+  gb            Int           @unique // -1 for unlimited, 0 for free
   label         String
   priceCents    Int // base USD price
   stripePriceId String?
   galleryLimit  Int? // null = unlimited
-  sortOrder     Int      @default(0)
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  sortOrder     Int           @default(0)
+  active        Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  features      TierFeature[]
 
   @@map("pricing_tier")
+}
+
+model TierFeature {
+  id         String      @id @default(uuid())
+  tierId     String
+  tier       PricingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  featureKey String
+  createdAt  DateTime    @default(now())
+
+  @@unique([tierId, featureKey])
+  @@index([tierId])
+  @@map("tier_feature")
 }
 
 model RegionalPricing {

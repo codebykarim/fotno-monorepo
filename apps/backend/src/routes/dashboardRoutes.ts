@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import * as DashboardController from "../controllers/DashboardController";
 import isAuth from "../middleware/isAuth";
 import isActiveSubscriber from "../middleware/isActiveSubscriber";
+import { requireFeature } from "../middleware/requireFeature";
 import { MethodInfo } from "../interfaces";
 import { init } from "../utils/methods";
 
@@ -115,7 +116,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.gdriveStartImportController,
     authFunction: isAuth,
-    middlewares: [isActiveSubscriber],
+    middlewares: [isActiveSubscriber, requireFeature("GOOGLE_IMPORT")],
   },
   "gdrive-import-status": {
     httpMethod: "GET",
@@ -166,7 +167,7 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.gphotosStartImportController,
     authFunction: isAuth,
-    middlewares: [isActiveSubscriber],
+    middlewares: [isActiveSubscriber, requireFeature("GOOGLE_IMPORT")],
   },
   "list-gallery-favorites": {
     httpMethod: "GET",

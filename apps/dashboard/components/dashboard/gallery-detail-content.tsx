@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR, { mutate as mutateCache } from "swr";
 import useSWRInfinite from "swr/infinite";
@@ -69,6 +68,7 @@ import {
 import { cn } from "@workspace/ui/lib/utils";
 import { withRetry } from "@/lib/utils/retry";
 import { GallerySettings } from "./gallery-settings/settings-layout";
+import { useHasFeature } from "@/lib/hooks/use-features";
 
 const tabs = ["photos", "albums", "settings", "share"] as const;
 type Tab = (typeof tabs)[number];
@@ -404,7 +404,11 @@ type PhotosTabProps = {
   mutate: () => Promise<GetGalleryResponse | undefined>;
 };
 
-export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: PhotosTabProps) {
+export function PhotosTab({
+  galleryId,
+  photoCount,
+  mutate: mutateGallery,
+}: PhotosTabProps) {
   const getKey = useCallback(
     (pageIndex: number, previousPageData: GetGalleryPhotosResponse | null) => {
       if (previousPageData && previousPageData.photos.length === 0) return null;
@@ -449,7 +453,10 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
 
   // Refresh photos when gallery-level mutate triggers (e.g. after upload)
   const mutate = useCallback(async () => {
-    const [galleryResult] = await Promise.all([mutateGallery(), mutatePhotos()]);
+    const [galleryResult] = await Promise.all([
+      mutateGallery(),
+      mutatePhotos(),
+    ]);
     return galleryResult;
   }, [mutateGallery, mutatePhotos]);
   const selected = useGalleryUiStore(
@@ -465,6 +472,7 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
   const uploadQueueRef = useRef<UploadQueueItem[]>([]);
   const activeUploadControllersRef = useRef<Set<AbortController>>(new Set());
   const fileByQueueIdRef = useRef<Map<string, File>>(new Map());
+  const hasSmartAlbums = useHasFeature("SMART_ALBUMS");
   const [createAlbumOpen, setCreateAlbumOpen] = useState(false);
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
@@ -902,7 +910,10 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
                   id: tempId,
                   galleryId,
                   fileName: file.name,
-                  progress: Math.min(85, 20 + Math.floor((completedPartsCount / totalParts) * 65)),
+                  progress: Math.min(
+                    85,
+                    20 + Math.floor((completedPartsCount / totalParts) * 65),
+                  ),
                   status: "uploading",
                   photoId: presigned.photoId,
                   errorMessage: `Retrying chunk ${partNumber}/${totalParts} (attempt ${attempt + 1}/3)...`,
@@ -1343,50 +1354,55 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
 
           {selected.length > 0 && (
             <div className="flex items-center gap-1.5">
-              <Dialog open={createAlbumOpen} onOpenChange={setCreateAlbumOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 text-xs gap-1"
-                  >
-                    <FolderPlus className="h-3.5 w-3.5" />
-                    Album
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create Album</DialogTitle>
-                    <DialogDescription>
-                      Create a new album with {selected.length} selected photo
-                      {selected.length === 1 ? "" : "s"}.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="py-4">
-                    <Label htmlFor="album-title" className="mb-2 block">
-                      Album Title
-                    </Label>
-                    <Input
-                      id="album-title"
-                      value={newAlbumTitle}
-                      onChange={(e) => setNewAlbumTitle(e.target.value)}
-                      placeholder="E.g., Getting Ready, Ceremony..."
-                      autoFocus
-                    />
-                  </div>
-                  <DialogFooter>
+              {hasSmartAlbums && (
+                <Dialog
+                  open={createAlbumOpen}
+                  onOpenChange={setCreateAlbumOpen}
+                >
+                  <DialogTrigger asChild>
                     <Button
+                      size="sm"
                       variant="outline"
-                      onClick={() => setCreateAlbumOpen(false)}
+                      className="h-7 text-xs gap-1"
                     >
-                      Cancel
+                      <FolderPlus className="h-3.5 w-3.5" />
+                      Album
                     </Button>
-                    <Button onClick={createAlbumFromSelected}>
-                      Create Album
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Create Album</DialogTitle>
+                      <DialogDescription>
+                        Create a new album with {selected.length} selected photo
+                        {selected.length === 1 ? "" : "s"}.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <Label htmlFor="album-title" className="mb-2 block">
+                        Album Title
+                      </Label>
+                      <Input
+                        id="album-title"
+                        value={newAlbumTitle}
+                        onChange={(e) => setNewAlbumTitle(e.target.value)}
+                        placeholder="E.g., Getting Ready, Ceremony..."
+                        autoFocus
+                      />
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setCreateAlbumOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={createAlbumFromSelected}>
+                        Create Album
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              )}
 
               <Button
                 size="sm"
@@ -1544,7 +1560,10 @@ export function PhotosTab({ galleryId, photoCount, mutate: mutateGallery }: Phot
 
       {/* Infinite scroll sentinel */}
       {hasMore && (
-        <div ref={sentinelRef} className="flex items-center justify-center py-6">
+        <div
+          ref={sentinelRef}
+          className="flex items-center justify-center py-6"
+        >
           {isValidating && (
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           )}

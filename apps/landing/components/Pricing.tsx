@@ -44,6 +44,7 @@ type PlanTier = {
   priceCents: number;
   label: string;
   galleryLimit?: number | null;
+  features?: string[];
   localPriceCents?: number;
   currency?: string;
   symbol?: string;
@@ -57,22 +58,82 @@ type PlansResponse = {
 };
 
 const FALLBACK_TIERS: PlanTier[] = [
-  { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2 },
-  { gb: 20, priceCents: 900, label: "Solo" },
-  { gb: 100, priceCents: 1900, label: "Studio" },
-  { gb: 500, priceCents: 3500, label: "Pro Studio" },
-  { gb: -1, priceCents: 4900, label: "Unlimited" },
+  { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2, features: [] },
+  {
+    gb: 20,
+    priceCents: 900,
+    label: "Solo",
+    features: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+    ],
+  },
+  {
+    gb: 100,
+    priceCents: 1900,
+    label: "Studio",
+    features: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+    ],
+  },
+  {
+    gb: 500,
+    priceCents: 3500,
+    label: "Pro Studio",
+    features: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+      "WEBSITE_BUILDER",
+    ],
+  },
+  {
+    gb: -1,
+    priceCents: 4900,
+    label: "Unlimited",
+    features: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+      "WEBSITE_BUILDER",
+    ],
+  },
 ];
 
 const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Unlimited clients",
-  // "AI-powered captions",
-  "Client favorites & selections",
+  "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",
   "Custom gallery slugs",
-  "Bulk upload with auto-retry",
   "Google Drive & Google Photos import",
   "Slideshow & social sharing",
 ];
@@ -80,11 +141,25 @@ const FALLBACK_FEATURES = [
 const FALLBACK_FREE_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
-  // "AI-powered captions",
-  "Client favorites & selections",
+  "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",
 ];
+
+/** Map feature keys to human-readable labels */
+const FEATURE_LABELS: Record<string, string> = {
+  UNLIMITED_GALLERIES: "Unlimited galleries",
+  UNLIMITED_CLIENTS: "Unlimited clients",
+  PASSWORD_PROTECTION: "Password-protected galleries",
+  CUSTOM_SLUGS: "Custom gallery slugs",
+  SLIDESHOW_SHARING: "Slideshow & social sharing",
+  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  GOOGLE_IMPORT: "Google Drive & Google Photos import",
+  SMART_ALBUMS: "Smart albums",
+  CUSTOM_DOMAINS: "Custom domains",
+  WEBSITE_BUILDER: "Website builder",
+  CLIENT_FAVORITES: "Client favorites & notes",
+};
 
 const formatTierPrice = (tier: PlanTier) => {
   if (tier.priceCents === 0) return "Free";
@@ -172,8 +247,20 @@ export async function Pricing() {
     undefined;
   const { tiers: allPlans, features, freeFeatures } = await fetchPlans(country);
 
-  const paidPlans = allPlans.filter((t) => t.priceCents > 0);
   const freeTier = allPlans.find((t) => t.priceCents === 0);
+  // Main 3 cards: Solo, Studio (popular), Pro Studio
+  const mainPlans = allPlans.filter(
+    (t) => t.priceCents > 0 && t.gb !== -1,
+  );
+  const unlimitedTier = allPlans.find((t) => t.gb === -1);
+
+  /** Features this tier adds over the previous one */
+  const getNewFeatures = (tier: PlanTier, prevTier?: PlanTier): string[] => {
+    const prev = new Set(prevTier?.features ?? []);
+    return (tier.features ?? []).filter((f) => !prev.has(f));
+  };
+
+  const featureLabel = (key: string): string => FEATURE_LABELS[key] ?? key;
 
   return (
     <section
@@ -199,8 +286,8 @@ export async function Pricing() {
             Start free. Scale when ready.
           </h2>
           <p className="mt-4 text-lg text-background/50">
-            Every feature is included at every tier — only storage differs. Pick
-            the plan that fits your workflow.
+            Pick the plan that fits your workflow. Upgrade anytime to unlock more
+            features and storage.
           </p>
         </div>
 
@@ -219,7 +306,7 @@ export async function Pricing() {
                 {freeTier.galleryLimit === 1
                   ? "1 gallery"
                   : `${freeTier.galleryLimit} galleries`}{" "}
-                &middot; All core features
+                &middot; Core features included
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 {freeFeatures.map((feature) => (
@@ -252,55 +339,54 @@ export async function Pricing() {
           </div>
         )}
 
-        {/* ── Paid storage tier grid ────────────────────────────── */}
-        <div className="mx-auto mt-12 text-center">
-          <p className="text-sm font-medium text-background/40 uppercase tracking-wider">
-            Need more storage?
-          </p>
-        </div>
-        <div className="mx-auto mt-6 grid max-w-4xl grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
-          {paidPlans.map((tier) => {
-            const isPopular = tier.label === "Professional" || tier.gb === 100;
+        {/* ── Main 3-card grid ──────────────────────────────────── */}
+        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+          {mainPlans.map((tier, i) => {
+            const isPopular = tier.label === "Studio" || tier.gb === 100;
+            const prevTier = i === 0 ? freeTier : mainPlans[i - 1];
+            const newFeatures = getNewFeatures(tier, prevTier);
+            const inheritedLabel =
+              i === 0 ? null : `Everything in ${prevTier?.label}`;
+
             return (
-              <TrackRybbitButton
-                eventName="subscribe_to_plan"
-                eventData={{ plan: tier.label }}
+              <div
                 key={tier.gb}
+                className={cn(
+                  "relative flex flex-col rounded-2xl px-6 py-8 transition-all duration-300",
+                  isPopular
+                    ? "bg-primary shadow-xl shadow-primary/20 ring-2 ring-primary md:-my-4 md:py-12"
+                    : "border border-background/10 bg-background/5",
+                )}
               >
-                <a
-                  key={tier.gb}
-                  href={`${signupUrl}/account?plan=${tier.label}`}
-                  className={cn(
-                    "relative flex flex-col items-center rounded-2xl px-5 py-8 text-center transition-all duration-300 hover:-translate-y-1",
-                    isPopular
-                      ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
-                      : "border border-background/10 bg-background/5 hover:border-background/20 hover:bg-background/10",
-                  )}
-                >
-                  {isPopular && (
-                    <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
-                      Most popular
-                    </span>
-                  )}
-                  <span
+                {isPopular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
+                    Most popular
+                  </span>
+                )}
+
+                {/* Header */}
+                <div className="text-center">
+                  <h3
                     className={cn(
-                      "text-base font-semibold",
+                      "text-lg font-semibold",
                       isPopular
                         ? "text-primary-foreground"
                         : "text-background/70",
                     )}
                   >
                     {tier.label}
-                  </span>
-                  <span
+                  </h3>
+                  <p
                     className={cn(
-                      "mt-3 text-4xl font-light tracking-tight",
-                      isPopular ? "text-primary-foreground" : "text-background",
+                      "mt-4 text-4xl font-light tracking-tight",
+                      isPopular
+                        ? "text-primary-foreground"
+                        : "text-background",
                     )}
                   >
                     {formatTierPrice(tier)}
-                  </span>
-                  <span
+                  </p>
+                  <p
                     className={cn(
                       "mt-1 text-sm",
                       isPopular
@@ -309,40 +395,127 @@ export async function Pricing() {
                     )}
                   >
                     /month
-                  </span>
-                  <span
+                  </p>
+                  <p
                     className={cn(
-                      "mt-4 text-sm font-medium",
+                      "mt-3 text-sm font-medium",
                       isPopular
                         ? "text-primary-foreground/90"
                         : "text-background/60",
                     )}
                   >
                     {formatStorage(tier.gb)} storage
-                  </span>
-                </a>
-              </TrackRybbitButton>
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div
+                  className={cn(
+                    "my-6 h-px",
+                    isPopular ? "bg-primary-foreground/20" : "bg-background/10",
+                  )}
+                />
+
+                {/* Features */}
+                <ul
+                  className={cn(
+                    "flex-1 space-y-3 text-sm",
+                    isPopular
+                      ? "text-primary-foreground/85"
+                      : "text-background/70",
+                  )}
+                >
+                  {inheritedLabel && (
+                    <li className="flex items-start gap-2.5">
+                      <CheckIcon
+                        className={cn(
+                          "mt-0.5 shrink-0",
+                          isPopular
+                            ? "text-primary-foreground"
+                            : "text-primary",
+                        )}
+                      />
+                      <span className="font-medium">
+                        {inheritedLabel}, plus:
+                      </span>
+                    </li>
+                  )}
+                  {newFeatures.map((key) => (
+                    <li key={key} className="flex items-start gap-2.5">
+                      <CheckIcon
+                        className={cn(
+                          "mt-0.5 shrink-0",
+                          isPopular
+                            ? "text-primary-foreground"
+                            : "text-primary",
+                        )}
+                      />
+                      <span>{featureLabel(key)}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <div className="mt-8">
+                  <TrackRybbitButton
+                    eventName="subscribe_to_plan"
+                    eventData={{ plan: tier.label }}
+                  >
+                    <Button
+                      href={`${signupUrl}/account?plan=${tier.label}`}
+                      variant={isPopular ? "solid" : "outline"}
+                      color="white"
+                      aria-label={`Choose ${tier.label}`}
+                      className={cn(
+                        "w-full py-2.5 text-sm",
+                        !isPopular &&
+                          "border-background/20 text-background hover:bg-background/10",
+                      )}
+                    >
+                      Choose {tier.label}
+                    </Button>
+                  </TrackRybbitButton>
+                </div>
+              </div>
             );
           })}
         </div>
 
-        {/* Features list */}
-        <div className="mx-auto mt-16 max-w-3xl">
-          <h3 className="text-center text-lg font-semibold text-background">
-            Everything included with every plan
-          </h3>
-          <ul
-            role="list"
-            className="mt-8 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-background/70 sm:grid-cols-2"
-          >
-            {features.map((feature) => (
-              <li key={feature} className="flex items-center">
-                <CheckIcon className="text-primary" />
-                <span className="ml-4">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* ── Unlimited tier banner ─────────────────────────────── */}
+        {unlimitedTier && (
+          <div className="mx-auto mt-10 max-w-5xl">
+            <TrackRybbitButton
+              eventName="subscribe_to_plan"
+              eventData={{ plan: unlimitedTier.label }}
+            >
+              <a
+                href={`${signupUrl}/account?plan=${unlimitedTier.label}`}
+                className="group flex flex-col items-center justify-between gap-4 rounded-2xl border border-background/10 bg-background/5 px-8 py-6 transition-colors hover:border-background/20 hover:bg-background/10 sm:flex-row"
+              >
+                <div className="text-center sm:text-left">
+                  <h3 className="text-lg font-semibold text-background">
+                    Need unlimited storage?
+                  </h3>
+                  <p className="mt-1 text-sm text-background/50">
+                    Everything in Pro Studio with unlimited storage (3 TB fair
+                    use cap) &middot; Perfect for high-volume studios
+                  </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-4">
+                  <div className="text-right">
+                    <span className="text-2xl font-light tracking-tight text-background">
+                      {formatTierPrice(unlimitedTier)}
+                    </span>
+                    <span className="text-sm text-background/50">/mo</span>
+                  </div>
+                  <span className="inline-flex items-center rounded-full bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition-colors group-hover:bg-primary/25">
+                    Choose Unlimited
+                  </span>
+                </div>
+              </a>
+            </TrackRybbitButton>
+          </div>
+        )}
       </Container>
     </section>
   );

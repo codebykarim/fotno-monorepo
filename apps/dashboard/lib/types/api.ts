@@ -79,6 +79,7 @@ export type SubscriptionResponse = {
     storageLimitBytes: string;
     galleryLimit?: number | null;
     galleryCount?: number;
+    features: string[];
     subscription?: {
       id: string;
       source: string;
@@ -113,6 +114,7 @@ export type PlanTier = {
   priceCents: number;
   label: string;
   galleryLimit?: number | null;
+  features: string[];
   /** Price in local currency minor units (only present for regional pricing) */
   localPriceCents?: number;
   /** PPP-adjusted USD price in cents (what Stripe will charge) */

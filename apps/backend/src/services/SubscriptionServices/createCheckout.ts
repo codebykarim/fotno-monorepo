@@ -2,6 +2,7 @@ import { stripe } from "./stripe";
 import { findTierByGb, fetchTiersFromDB } from "../../constants/plans";
 import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
+import { db } from "../DashboardServices/_shared";
 
 export const createCheckout = async ({
   userId,
@@ -74,6 +75,27 @@ export const createCheckout = async ({
     ];
   }
 
+  // Find or create Stripe customer (required for Accounts V2)
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { stripeCustomerId: true },
+  });
+
+  let customerId = user?.stripeCustomerId;
+
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email,
+      name: name || undefined,
+      metadata: { user_id: userId },
+    });
+    customerId = customer.id;
+    await db.user.update({
+      where: { id: userId },
+      data: { stripeCustomerId: customerId },
+    });
+  }
+
   const sharedMetadata = {
     user_id: userId,
     tier_gb: String(tier.gb),
@@ -82,7 +104,7 @@ export const createCheckout = async ({
 
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
-    customer_email: email,
+    customer: customerId,
     line_items: lineItems,
     metadata: sharedMetadata,
     subscription_data: {

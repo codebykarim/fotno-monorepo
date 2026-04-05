@@ -8,6 +8,8 @@ import { Switch } from "@workspace/ui/components/switch";
 import { apiRequest } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
 import Link from "next/link";
+import { FeatureGate } from "@/components/dashboard/feature-gate";
+import { useHasFeature } from "@/lib/hooks/use-features";
 
 type FavoriteViewer = {
   viewerId: string;
@@ -32,6 +34,7 @@ export function FavoritesSettings({ galleryId, data, mutate }: Props) {
   const [enabled, setEnabled] = useState(g.favoritesEnabled);
   const [notesEnabled, setNotesEnabled] = useState(g.favoriteNotesEnabled);
   const [saving, setSaving] = useState(false);
+  const hasFeature = useHasFeature("CLIENT_FAVORITES");
 
   async function onSave() {
     setSaving(true);
@@ -63,52 +66,64 @@ export function FavoritesSettings({ galleryId, data, mutate }: Props) {
         </p>
       </div>
 
-      {/* Master toggle */}
-      <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h4 className="text-sm font-medium">Enable Favorites</h4>
-            <p className="text-xs text-muted-foreground">
-              Allow clients to mark photos as favorites. Favorites are saved
-              server-side and visible to you in the activity view.
-            </p>
-          </div>
-          <Switch checked={enabled} onCheckedChange={setEnabled} />
-        </div>
-      </section>
-
-      {enabled && (
+      <FeatureGate featureKey="CLIENT_FAVORITES">
+        {/* Master toggle */}
         <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="text-sm font-medium">Favorite Notes</h4>
+              <h4 className="text-sm font-medium">Enable Favorites</h4>
               <p className="text-xs text-muted-foreground">
-                Allow clients to add a note when favoriting a photo (e.g.
-                &ldquo;print this one&rdquo; or &ldquo;use as album
-                cover&rdquo;).
+                Allow clients to mark photos as favorites. Favorites are saved
+                server-side and visible to you in the activity view.
               </p>
             </div>
-            <Switch checked={notesEnabled} onCheckedChange={setNotesEnabled} />
+            <Switch checked={enabled} onCheckedChange={setEnabled} />
           </div>
         </section>
-      )}
 
-      <Button onClick={onSave} disabled={saving} className="w-full sm:w-auto">
-        {saving ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
-          </>
-        ) : (
-          "Save favorites settings"
+        {enabled && (
+          <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium">Favorite Notes</h4>
+                <p className="text-xs text-muted-foreground">
+                  Allow clients to add a note when favoriting a photo (e.g.
+                  &ldquo;print this one&rdquo; or &ldquo;use as album
+                  cover&rdquo;).
+                </p>
+              </div>
+              <Switch
+                checked={notesEnabled}
+                onCheckedChange={setNotesEnabled}
+              />
+            </div>
+          </section>
         )}
-      </Button>
 
-      {enabled && <FavoritesActivity galleryId={galleryId} />}
+        <Button onClick={onSave} disabled={saving} className="w-full sm:w-auto">
+          {saving ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
+            </>
+          ) : (
+            "Save favorites settings"
+          )}
+        </Button>
+        {enabled && (
+          <FavoritesActivity galleryId={galleryId} hasFeature={hasFeature} />
+        )}
+      </FeatureGate>
     </div>
   );
 }
 
-function FavoritesActivity({ galleryId }: { galleryId: string }) {
+function FavoritesActivity({
+  galleryId,
+  hasFeature,
+}: {
+  galleryId: string;
+  hasFeature: boolean;
+}) {
   const [viewers, setViewers] = useState<FavoriteViewer[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -125,6 +140,17 @@ function FavoritesActivity({ galleryId }: { galleryId: string }) {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [galleryId]);
+
+  if (!hasFeature) {
+    return (
+      <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
+        <h4 className="text-sm font-medium">Favorites Activity</h4>
+        <p className="text-xs text-muted-foreground">
+          Upgrade your plan to unlock this feature.
+        </p>
+      </section>
+    );
+  }
 
   if (loading) {
     return (

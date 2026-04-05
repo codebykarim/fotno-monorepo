@@ -1,13 +1,29 @@
+"use client";
+
+import { use } from "react";
 import { AlbumConfigForm } from "@/components/smart-albums/album-config-form";
 import { ProductList } from "@/components/smart-albums/product-list";
 import { SubmissionList } from "@/components/smart-albums/submission-list";
+import { useHasFeature } from "@/lib/hooks/use-features";
+import { LockedPage } from "@/components/dashboard/feature-gate";
 
-export default async function GallerySmartAlbumsPage({
+export default function GallerySmartAlbumsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id: galleryId } = await params;
+  const { id: galleryId } = use(params);
+  const hasSmartAlbums = useHasFeature("SMART_ALBUMS");
+
+  if (!hasSmartAlbums) {
+    return (
+      <LockedPage
+        featureKey="SMART_ALBUMS"
+        title="Smart Albums"
+        description="Allow clients to design and order physical photo albums from your galleries."
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

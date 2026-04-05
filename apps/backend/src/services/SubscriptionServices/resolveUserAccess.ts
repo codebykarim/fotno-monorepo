@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 import { storageTierToBytes } from "../../constants/storage";
-import { getFreeTierLimits } from "../../constants/plans";
+import { getFreeTierLimits, fetchFeaturesForTier } from "../../constants/plans";
 
 export type UserAccessStatus =
   | "free"
@@ -16,6 +16,7 @@ export type UserAccess = {
   storageLimitBytes: bigint;
   galleryLimit?: number | null;
   galleryCount?: number;
+  features: string[];
   subscription?: {
     id: string;
     source: string;
@@ -52,6 +53,7 @@ export const resolveUserAccess = async (
     const overStorageLimit = user.storageUsed > storageLimitBytes;
     const galleryLimit = freeLimits.galleryLimit;
     const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
+    const features = await fetchFeaturesForTier(0);
 
     return {
       status: "free",
@@ -60,6 +62,7 @@ export const resolveUserAccess = async (
       storageLimitBytes,
       galleryLimit,
       galleryCount,
+      features,
     };
   }
 
@@ -85,13 +88,16 @@ export const resolveUserAccess = async (
 
     const storageLimitBytes =
       storageTierToBytes(subscription.storageTierGb as number);
+    const features = await fetchFeaturesForTier(subscription.storageTierGb as number);
+    const hasUnlimitedGalleries = features.includes("UNLIMITED_GALLERIES");
 
     return {
       status: "active",
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
-      galleryLimit: null,
+      galleryLimit: hasUnlimitedGalleries ? null : (user.galleryLimit ?? null),
+      features,
       subscription: {
         id: subscription.id,
         source: subscription.source,
@@ -110,13 +116,16 @@ export const resolveUserAccess = async (
     if (periodEnd && new Date(periodEnd) > new Date()) {
       const storageLimitBytes =
         storageTierToBytes(subscription.storageTierGb as number);
+      const features = await fetchFeaturesForTier(subscription.storageTierGb as number);
+      const hasUnlimitedGalleries = features.includes("UNLIMITED_GALLERIES");
 
       return {
         status: "cancelled_grace",
         canUpload: true,
         canCreateGallery: true,
         storageLimitBytes,
-        galleryLimit: null,
+        galleryLimit: hasUnlimitedGalleries ? null : (user.galleryLimit ?? null),
+        features,
         subscription: {
           id: subscription.id,
           source: subscription.source,
@@ -137,13 +146,16 @@ export const resolveUserAccess = async (
   if (subscription && subscription.status === "PAST_DUE") {
     const storageLimitBytes =
       storageTierToBytes(subscription.storageTierGb as number);
+    const features = await fetchFeaturesForTier(subscription.storageTierGb as number);
+    const hasUnlimitedGalleries = features.includes("UNLIMITED_GALLERIES");
 
     return {
       status: "past_due",
       canUpload: true,
       canCreateGallery: true,
       storageLimitBytes,
-      galleryLimit: null,
+      galleryLimit: hasUnlimitedGalleries ? null : (user.galleryLimit ?? null),
+      features,
       subscription: {
         id: subscription.id,
         source: subscription.source,
@@ -166,6 +178,7 @@ function buildNoSubscriptionAccess(): UserAccess {
     canUpload: false,
     canCreateGallery: false,
     storageLimitBytes: 0n,
+    features: [],
   };
 }
 
@@ -179,6 +192,7 @@ async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
   const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
   const storageLimitBytes = freeLimits.storageLimitBytes;
   const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
+  const features = await fetchFeaturesForTier(0);
 
   return {
     status: "free",
@@ -187,6 +201,7 @@ async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
     storageLimitBytes,
     galleryLimit,
     galleryCount,
+    features,
   };
 }
 

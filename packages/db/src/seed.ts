@@ -160,6 +160,77 @@ async function main() {
     `✔ Regional tier overrides seeded (${overrides.length} overrides)`,
   );
 
+  // ── Tier Features ─────────────────────────────────────────────
+  const tierFeatureMap: Record<string, string[]> = {
+    Free: [],
+    Solo: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+    ],
+    Studio: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+    ],
+    "Pro Studio": [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+      "WEBSITE_BUILDER",
+    ],
+    Unlimited: [
+      "UNLIMITED_GALLERIES",
+      "UNLIMITED_CLIENTS",
+      "CLIENT_FAVORITES",
+      "PASSWORD_PROTECTION",
+      "CUSTOM_SLUGS",
+      "SLIDESHOW_SHARING",
+      "DOWNLOAD_ANALYTICS",
+      "GOOGLE_IMPORT",
+      "SMART_ALBUMS",
+      "CUSTOM_DOMAINS",
+      "WEBSITE_BUILDER",
+    ],
+  };
+
+  let totalFeatures = 0;
+  for (const [tierLabel, featureKeys] of Object.entries(tierFeatureMap)) {
+    const tier = await prisma.pricingTier.findFirst({
+      where: { label: tierLabel },
+    });
+    if (!tier) continue;
+
+    for (const featureKey of featureKeys) {
+      await prisma.tierFeature.upsert({
+        where: {
+          tierId_featureKey: { tierId: tier.id, featureKey },
+        },
+        update: {},
+        create: { tierId: tier.id, featureKey },
+      });
+      totalFeatures++;
+    }
+  }
+  console.log(`✔ Tier features seeded (${totalFeatures} feature assignments)`);
+
   console.log("\n✅ Seed complete!");
 }
 

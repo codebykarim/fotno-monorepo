@@ -143,6 +143,7 @@ export interface PricingTier {
   galleryLimit: number | null;
   sortOrder: number;
   active: boolean;
+  features: string[];
   createdAt: string;
   updatedAt: string;
 }

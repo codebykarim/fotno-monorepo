@@ -1,5 +1,6 @@
 import { db, slugify, toDateOnly, toIsoOrNull } from "./_shared";
 import { getFreeTierLimits } from "../../constants/plans";
+import { resolveUserAccess } from "../SubscriptionServices/resolveUserAccess";
 
 export const createGallery = async (userId: string, body: any) => {
   // Check gallery limit
@@ -26,8 +27,32 @@ export const createGallery = async (userId: string, body: any) => {
     return { error: "title is required", status: 400 as const };
   }
 
-  const slugBase = String(body?.slug ?? "").trim() || slugify(title);
-  const slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
+  const customSlug = String(body?.slug ?? "").trim();
+  let slug: string;
+
+  if (customSlug) {
+    // User provided a custom slug — check feature access
+    const access = await resolveUserAccess(userId);
+    if (!access.features.includes("CUSTOM_SLUGS")) {
+      return {
+        error: "Custom slugs require a higher plan. Please upgrade.",
+        status: 403 as const,
+      };
+    }
+    // Verify uniqueness
+    const existing = await db.gallery.findUnique({ where: { slug: customSlug } });
+    if (existing) {
+      return {
+        error: "This slug is already taken. Please choose a different one.",
+        status: 409 as const,
+      };
+    }
+    slug = customSlug;
+  } else {
+    // Auto-generate slug from title with random suffix
+    const slugBase = slugify(title);
+    slug = `${slugBase}-${Math.floor(Math.random() * 1000)}`;
+  }
 
   const now = new Date();
   const defaultDeadline = new Date(now);

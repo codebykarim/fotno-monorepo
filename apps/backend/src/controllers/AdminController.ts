@@ -104,9 +104,10 @@ export const getPaymentsOverviewController = async (req: Request, res: Response)
 // ── Pricing Management ─────────────────────────────────────────
 
 export const getPricingConfigController = async (_req: Request, res: Response) => {
-  const [tiers, regions] = await Promise.all([
+  const [rawTiers, regions] = await Promise.all([
     (prisma as any).pricingTier.findMany({
       orderBy: { sortOrder: "asc" },
+      include: { features: { select: { featureKey: true } } },
     }),
     (prisma as any).regionalPricing.findMany({
       include: { tierOverrides: true },
@@ -114,52 +115,96 @@ export const getPricingConfigController = async (_req: Request, res: Response) =
     }),
   ]);
 
+  const tiers = rawTiers.map((tier: any) => ({
+    ...tier,
+    features: tier.features.map((f: { featureKey: string }) => f.featureKey),
+  }));
+
   return res.status(200).json({ tiers, regions });
 };
 
 export const createPricingTierController = async (req: Request, res: Response) => {
-  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit } = req.body;
+  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit, features } = req.body;
 
   if (gb === undefined || !label || priceCents === undefined) {
     throw new AppError("gb, label, and priceCents are required", 400);
   }
 
-  const tier = await (prisma as any).pricingTier.create({
-    data: {
-      gb: Number(gb),
-      label,
-      priceCents: Number(priceCents),
-      stripePriceId: stripePriceId ?? null,
-      galleryLimit: galleryLimit !== undefined && galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null,
-      sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
-      active: active !== undefined ? Boolean(active) : true,
-    },
+  const tier = await (prisma as any).$transaction(async (tx: any) => {
+    const created = await tx.pricingTier.create({
+      data: {
+        gb: Number(gb),
+        label,
+        priceCents: Number(priceCents),
+        stripePriceId: stripePriceId ?? null,
+        galleryLimit: galleryLimit !== undefined && galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null,
+        sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
+        active: active !== undefined ? Boolean(active) : true,
+      },
+    });
+
+    if (Array.isArray(features) && features.length > 0) {
+      await tx.tierFeature.createMany({
+        data: features.map((featureKey: string) => ({
+          tierId: created.id,
+          featureKey,
+        })),
+      });
+    }
+
+    return tx.pricingTier.findUnique({
+      where: { id: created.id },
+      include: { features: { select: { featureKey: true } } },
+    });
   });
 
   invalidatePricingCaches();
-  return res.status(201).json(tier);
+  return res.status(201).json({
+    ...tier,
+    features: tier.features.map((f: { featureKey: string }) => f.featureKey),
+  });
 };
 
 export const updatePricingTierController = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit } = req.body;
+  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit, features } = req.body;
 
   const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
   if (!existing) {
     throw new AppError("Pricing tier not found", 404);
   }
 
-  const tier = await (prisma as any).pricingTier.update({
-    where: { id },
-    data: {
-      ...(gb !== undefined && { gb: Number(gb) }),
-      ...(label !== undefined && { label }),
-      ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
-      ...(stripePriceId !== undefined && { stripePriceId }),
-      ...(galleryLimit !== undefined && { galleryLimit: galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null }),
-      ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
-      ...(active !== undefined && { active: Boolean(active) }),
-    },
+  const tier = await (prisma as any).$transaction(async (tx: any) => {
+    const updated = await tx.pricingTier.update({
+      where: { id },
+      data: {
+        ...(gb !== undefined && { gb: Number(gb) }),
+        ...(label !== undefined && { label }),
+        ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
+        ...(stripePriceId !== undefined && { stripePriceId }),
+        ...(galleryLimit !== undefined && { galleryLimit: galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null }),
+        ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
+        ...(active !== undefined && { active: Boolean(active) }),
+      },
+    });
+
+    // Replace features if provided
+    if (Array.isArray(features)) {
+      await tx.tierFeature.deleteMany({ where: { tierId: id } });
+      if (features.length > 0) {
+        await tx.tierFeature.createMany({
+          data: features.map((featureKey: string) => ({
+            tierId: id,
+            featureKey,
+          })),
+        });
+      }
+    }
+
+    return tx.pricingTier.findUnique({
+      where: { id },
+      include: { features: { select: { featureKey: true } } },
+    });
   });
 
   invalidatePricingCaches();
@@ -178,7 +223,10 @@ export const updatePricingTierController = async (req: Request, res: Response) =
     console.log(`[Admin] Cascaded free tier update to all FREE users: ${tier.gb} GB, galleryLimit=${newGalleryLimit}`);
   }
 
-  return res.status(200).json(tier);
+  return res.status(200).json({
+    ...tier,
+    features: tier.features.map((f: { featureKey: string }) => f.featureKey),
+  });
 };
 
 export const deletePricingTierController = async (req: Request, res: Response) => {

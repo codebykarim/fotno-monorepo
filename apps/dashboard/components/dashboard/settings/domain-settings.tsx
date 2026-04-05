@@ -18,6 +18,8 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { apiRequest } from "@/lib/api/client";
+import { useHasFeature } from "@/lib/hooks/use-features";
+import { LockedPage } from "@/components/dashboard/feature-gate";
 
 type DomainData = {
   id: string;
@@ -58,6 +60,7 @@ const STATUS_CONFIG = {
 };
 
 export function DomainSettings({ data, mutate }: Props) {
+  const hasCustomDomains = useHasFeature("CUSTOM_DOMAINS");
   const [domain, setDomain] = useState("");
   const [saving, setSaving] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -119,6 +122,16 @@ export function DomainSettings({ data, mutate }: Props) {
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard");
+  }
+
+  if (!hasCustomDomains) {
+    return (
+      <LockedPage
+        featureKey="CUSTOM_DOMAINS"
+        title="Custom Domain"
+        description="Use your own domain for gallery sharing instead of gallery.fotno.com."
+      />
+    );
   }
 
   // ── Domain is configured ──

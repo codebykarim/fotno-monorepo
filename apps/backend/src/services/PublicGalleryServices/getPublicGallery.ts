@@ -76,6 +76,15 @@ export const getPublicGallery = async (shareToken: string) => {
     return { expired: true };
   }
 
+  // Check if smart albums are enabled for this photographer
+  const smartAlbumConfig = gallery.userId
+    ? await db.smartAlbumConfig.findUnique({
+        where: { userId: gallery.userId },
+        select: { enabled: true },
+      })
+    : null;
+  const smartAlbumsEnabled = smartAlbumConfig?.enabled === true;
+
   // Generate signed CloudFront/S3 URLs for thumbnails and previews in parallel.
   // This is fast (just crypto signing, no network calls) and eliminates the
   // need for the gallery app to proxy every single image through its own server.
@@ -128,6 +137,7 @@ export const getPublicGallery = async (shareToken: string) => {
       downloadLimit: gallery.downloadLimit,
       favoritesEnabled: gallery.favoritesEnabled,
       favoriteNotesEnabled: gallery.favoriteNotesEnabled,
+      smartAlbumsEnabled,
     },
     photos: photosWithUrls,
     albums: gallery.albums.map((album: any) => ({

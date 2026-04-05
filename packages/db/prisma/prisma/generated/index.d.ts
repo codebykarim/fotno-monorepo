@@ -104,6 +104,11 @@ export type DriveImportJob = $Result.DefaultSelection<Prisma.$DriveImportJobPayl
  */
 export type PricingTier = $Result.DefaultSelection<Prisma.$PricingTierPayload>
 /**
+ * Model TierFeature
+ * 
+ */
+export type TierFeature = $Result.DefaultSelection<Prisma.$TierFeaturePayload>
+/**
  * Model RegionalPricing
  * 
  */
@@ -669,6 +674,16 @@ export class PrismaClient<
   get pricingTier(): Prisma.PricingTierDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.tierFeature`: Exposes CRUD operations for the **TierFeature** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TierFeatures
+    * const tierFeatures = await prisma.tierFeature.findMany()
+    * ```
+    */
+  get tierFeature(): Prisma.TierFeatureDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.regionalPricing`: Exposes CRUD operations for the **RegionalPricing** model.
     * Example usage:
     * ```ts
@@ -1229,6 +1244,7 @@ export namespace Prisma {
     DownloadEvent: 'DownloadEvent',
     DriveImportJob: 'DriveImportJob',
     PricingTier: 'PricingTier',
+    TierFeature: 'TierFeature',
     RegionalPricing: 'RegionalPricing',
     RegionalTierOverride: 'RegionalTierOverride',
     DriveImportItem: 'DriveImportItem',
@@ -1255,7 +1271,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "tierFeature" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2591,6 +2607,80 @@ export namespace Prisma {
           }
         }
       }
+      TierFeature: {
+        payload: Prisma.$TierFeaturePayload<ExtArgs>
+        fields: Prisma.TierFeatureFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TierFeatureFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TierFeatureFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          findFirst: {
+            args: Prisma.TierFeatureFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TierFeatureFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          findMany: {
+            args: Prisma.TierFeatureFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>[]
+          }
+          create: {
+            args: Prisma.TierFeatureCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          createMany: {
+            args: Prisma.TierFeatureCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TierFeatureCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>[]
+          }
+          delete: {
+            args: Prisma.TierFeatureDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          update: {
+            args: Prisma.TierFeatureUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          deleteMany: {
+            args: Prisma.TierFeatureDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TierFeatureUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TierFeatureUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>[]
+          }
+          upsert: {
+            args: Prisma.TierFeatureUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierFeaturePayload>
+          }
+          aggregate: {
+            args: Prisma.TierFeatureAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTierFeature>
+          }
+          groupBy: {
+            args: Prisma.TierFeatureGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TierFeatureGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TierFeatureCountArgs<ExtArgs>
+            result: $Utils.Optional<TierFeatureCountAggregateOutputType> | number
+          }
+        }
+      }
       RegionalPricing: {
         payload: Prisma.$RegionalPricingPayload<ExtArgs>
         fields: Prisma.RegionalPricingFieldRefs
@@ -3531,6 +3621,7 @@ export namespace Prisma {
     downloadEvent?: DownloadEventOmit
     driveImportJob?: DriveImportJobOmit
     pricingTier?: PricingTierOmit
+    tierFeature?: TierFeatureOmit
     regionalPricing?: RegionalPricingOmit
     regionalTierOverride?: RegionalTierOverrideOmit
     driveImportItem?: DriveImportItemOmit
@@ -3944,6 +4035,37 @@ export namespace Prisma {
    */
   export type DriveImportJobCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DriveImportItemWhereInput
+  }
+
+
+  /**
+   * Count Type PricingTierCountOutputType
+   */
+
+  export type PricingTierCountOutputType = {
+    features: number
+  }
+
+  export type PricingTierCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    features?: boolean | PricingTierCountOutputTypeCountFeaturesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PricingTierCountOutputType without action
+   */
+  export type PricingTierCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTierCountOutputType
+     */
+    select?: PricingTierCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PricingTierCountOutputType without action
+   */
+  export type PricingTierCountOutputTypeCountFeaturesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TierFeatureWhereInput
   }
 
 
@@ -24991,6 +25113,8 @@ export namespace Prisma {
     active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    features?: boolean | PricingTier$featuresArgs<ExtArgs>
+    _count?: boolean | PricingTierCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pricingTier"]>
 
   export type PricingTierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25033,10 +25157,18 @@ export namespace Prisma {
   }
 
   export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "stripePriceId" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
+  export type PricingTierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    features?: boolean | PricingTier$featuresArgs<ExtArgs>
+    _count?: boolean | PricingTierCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PricingTierIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PricingTierIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $PricingTierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PricingTier"
-    objects: {}
+    objects: {
+      features: Prisma.$TierFeaturePayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       gb: number
@@ -25442,6 +25574,7 @@ export namespace Prisma {
    */
   export interface Prisma__PricingTierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    features<T extends PricingTier$featuresArgs<ExtArgs> = {}>(args?: Subset<T, PricingTier$featuresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25498,6 +25631,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * Filter, which PricingTier to fetch.
      */
     where: PricingTierWhereUniqueInput
@@ -25516,6 +25653,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * Filter, which PricingTier to fetch.
      */
     where: PricingTierWhereUniqueInput
@@ -25533,6 +25674,10 @@ export namespace Prisma {
      * Omit specific fields from the PricingTier
      */
     omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
     /**
      * Filter, which PricingTier to fetch.
      */
@@ -25582,6 +25727,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * Filter, which PricingTier to fetch.
      */
     where?: PricingTierWhereInput
@@ -25629,6 +25778,10 @@ export namespace Prisma {
      * Omit specific fields from the PricingTier
      */
     omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
     /**
      * Filter, which PricingTiers to fetch.
      */
@@ -25678,6 +25831,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * The data needed to create a PricingTier.
      */
     data: XOR<PricingTierCreateInput, PricingTierUncheckedCreateInput>
@@ -25725,6 +25882,10 @@ export namespace Prisma {
      * Omit specific fields from the PricingTier
      */
     omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
     /**
      * The data needed to update a PricingTier.
      */
@@ -25792,6 +25953,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * The filter to search for the PricingTier to update in case it exists.
      */
     where: PricingTierWhereUniqueInput
@@ -25818,6 +25983,10 @@ export namespace Prisma {
      */
     omit?: PricingTierOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
      * Filter which PricingTier to delete.
      */
     where: PricingTierWhereUniqueInput
@@ -25838,6 +26007,30 @@ export namespace Prisma {
   }
 
   /**
+   * PricingTier.features
+   */
+  export type PricingTier$featuresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    where?: TierFeatureWhereInput
+    orderBy?: TierFeatureOrderByWithRelationInput | TierFeatureOrderByWithRelationInput[]
+    cursor?: TierFeatureWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TierFeatureScalarFieldEnum | TierFeatureScalarFieldEnum[]
+  }
+
+  /**
    * PricingTier without action
    */
   export type PricingTierDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25849,6 +26042,1060 @@ export namespace Prisma {
      * Omit specific fields from the PricingTier
      */
     omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TierFeature
+   */
+
+  export type AggregateTierFeature = {
+    _count: TierFeatureCountAggregateOutputType | null
+    _min: TierFeatureMinAggregateOutputType | null
+    _max: TierFeatureMaxAggregateOutputType | null
+  }
+
+  export type TierFeatureMinAggregateOutputType = {
+    id: string | null
+    tierId: string | null
+    featureKey: string | null
+    createdAt: Date | null
+  }
+
+  export type TierFeatureMaxAggregateOutputType = {
+    id: string | null
+    tierId: string | null
+    featureKey: string | null
+    createdAt: Date | null
+  }
+
+  export type TierFeatureCountAggregateOutputType = {
+    id: number
+    tierId: number
+    featureKey: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TierFeatureMinAggregateInputType = {
+    id?: true
+    tierId?: true
+    featureKey?: true
+    createdAt?: true
+  }
+
+  export type TierFeatureMaxAggregateInputType = {
+    id?: true
+    tierId?: true
+    featureKey?: true
+    createdAt?: true
+  }
+
+  export type TierFeatureCountAggregateInputType = {
+    id?: true
+    tierId?: true
+    featureKey?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TierFeatureAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TierFeature to aggregate.
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierFeatures to fetch.
+     */
+    orderBy?: TierFeatureOrderByWithRelationInput | TierFeatureOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TierFeatureWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierFeatures from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierFeatures.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TierFeatures
+    **/
+    _count?: true | TierFeatureCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TierFeatureMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TierFeatureMaxAggregateInputType
+  }
+
+  export type GetTierFeatureAggregateType<T extends TierFeatureAggregateArgs> = {
+        [P in keyof T & keyof AggregateTierFeature]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTierFeature[P]>
+      : GetScalarType<T[P], AggregateTierFeature[P]>
+  }
+
+
+
+
+  export type TierFeatureGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TierFeatureWhereInput
+    orderBy?: TierFeatureOrderByWithAggregationInput | TierFeatureOrderByWithAggregationInput[]
+    by: TierFeatureScalarFieldEnum[] | TierFeatureScalarFieldEnum
+    having?: TierFeatureScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TierFeatureCountAggregateInputType | true
+    _min?: TierFeatureMinAggregateInputType
+    _max?: TierFeatureMaxAggregateInputType
+  }
+
+  export type TierFeatureGroupByOutputType = {
+    id: string
+    tierId: string
+    featureKey: string
+    createdAt: Date
+    _count: TierFeatureCountAggregateOutputType | null
+    _min: TierFeatureMinAggregateOutputType | null
+    _max: TierFeatureMaxAggregateOutputType | null
+  }
+
+  type GetTierFeatureGroupByPayload<T extends TierFeatureGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TierFeatureGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TierFeatureGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TierFeatureGroupByOutputType[P]>
+            : GetScalarType<T[P], TierFeatureGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TierFeatureSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tierId?: boolean
+    featureKey?: boolean
+    createdAt?: boolean
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tierFeature"]>
+
+  export type TierFeatureSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tierId?: boolean
+    featureKey?: boolean
+    createdAt?: boolean
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tierFeature"]>
+
+  export type TierFeatureSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tierId?: boolean
+    featureKey?: boolean
+    createdAt?: boolean
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tierFeature"]>
+
+  export type TierFeatureSelectScalar = {
+    id?: boolean
+    tierId?: boolean
+    featureKey?: boolean
+    createdAt?: boolean
+  }
+
+  export type TierFeatureOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tierId" | "featureKey" | "createdAt", ExtArgs["result"]["tierFeature"]>
+  export type TierFeatureInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }
+  export type TierFeatureIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }
+  export type TierFeatureIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tier?: boolean | PricingTierDefaultArgs<ExtArgs>
+  }
+
+  export type $TierFeaturePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TierFeature"
+    objects: {
+      tier: Prisma.$PricingTierPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tierId: string
+      featureKey: string
+      createdAt: Date
+    }, ExtArgs["result"]["tierFeature"]>
+    composites: {}
+  }
+
+  type TierFeatureGetPayload<S extends boolean | null | undefined | TierFeatureDefaultArgs> = $Result.GetResult<Prisma.$TierFeaturePayload, S>
+
+  type TierFeatureCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TierFeatureFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TierFeatureCountAggregateInputType | true
+    }
+
+  export interface TierFeatureDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TierFeature'], meta: { name: 'TierFeature' } }
+    /**
+     * Find zero or one TierFeature that matches the filter.
+     * @param {TierFeatureFindUniqueArgs} args - Arguments to find a TierFeature
+     * @example
+     * // Get one TierFeature
+     * const tierFeature = await prisma.tierFeature.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TierFeatureFindUniqueArgs>(args: SelectSubset<T, TierFeatureFindUniqueArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TierFeature that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TierFeatureFindUniqueOrThrowArgs} args - Arguments to find a TierFeature
+     * @example
+     * // Get one TierFeature
+     * const tierFeature = await prisma.tierFeature.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TierFeatureFindUniqueOrThrowArgs>(args: SelectSubset<T, TierFeatureFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TierFeature that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureFindFirstArgs} args - Arguments to find a TierFeature
+     * @example
+     * // Get one TierFeature
+     * const tierFeature = await prisma.tierFeature.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TierFeatureFindFirstArgs>(args?: SelectSubset<T, TierFeatureFindFirstArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TierFeature that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureFindFirstOrThrowArgs} args - Arguments to find a TierFeature
+     * @example
+     * // Get one TierFeature
+     * const tierFeature = await prisma.tierFeature.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TierFeatureFindFirstOrThrowArgs>(args?: SelectSubset<T, TierFeatureFindFirstOrThrowArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TierFeatures that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TierFeatures
+     * const tierFeatures = await prisma.tierFeature.findMany()
+     * 
+     * // Get first 10 TierFeatures
+     * const tierFeatures = await prisma.tierFeature.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tierFeatureWithIdOnly = await prisma.tierFeature.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TierFeatureFindManyArgs>(args?: SelectSubset<T, TierFeatureFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TierFeature.
+     * @param {TierFeatureCreateArgs} args - Arguments to create a TierFeature.
+     * @example
+     * // Create one TierFeature
+     * const TierFeature = await prisma.tierFeature.create({
+     *   data: {
+     *     // ... data to create a TierFeature
+     *   }
+     * })
+     * 
+     */
+    create<T extends TierFeatureCreateArgs>(args: SelectSubset<T, TierFeatureCreateArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TierFeatures.
+     * @param {TierFeatureCreateManyArgs} args - Arguments to create many TierFeatures.
+     * @example
+     * // Create many TierFeatures
+     * const tierFeature = await prisma.tierFeature.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TierFeatureCreateManyArgs>(args?: SelectSubset<T, TierFeatureCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TierFeatures and returns the data saved in the database.
+     * @param {TierFeatureCreateManyAndReturnArgs} args - Arguments to create many TierFeatures.
+     * @example
+     * // Create many TierFeatures
+     * const tierFeature = await prisma.tierFeature.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TierFeatures and only return the `id`
+     * const tierFeatureWithIdOnly = await prisma.tierFeature.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TierFeatureCreateManyAndReturnArgs>(args?: SelectSubset<T, TierFeatureCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TierFeature.
+     * @param {TierFeatureDeleteArgs} args - Arguments to delete one TierFeature.
+     * @example
+     * // Delete one TierFeature
+     * const TierFeature = await prisma.tierFeature.delete({
+     *   where: {
+     *     // ... filter to delete one TierFeature
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TierFeatureDeleteArgs>(args: SelectSubset<T, TierFeatureDeleteArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TierFeature.
+     * @param {TierFeatureUpdateArgs} args - Arguments to update one TierFeature.
+     * @example
+     * // Update one TierFeature
+     * const tierFeature = await prisma.tierFeature.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TierFeatureUpdateArgs>(args: SelectSubset<T, TierFeatureUpdateArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TierFeatures.
+     * @param {TierFeatureDeleteManyArgs} args - Arguments to filter TierFeatures to delete.
+     * @example
+     * // Delete a few TierFeatures
+     * const { count } = await prisma.tierFeature.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TierFeatureDeleteManyArgs>(args?: SelectSubset<T, TierFeatureDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TierFeatures.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TierFeatures
+     * const tierFeature = await prisma.tierFeature.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TierFeatureUpdateManyArgs>(args: SelectSubset<T, TierFeatureUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TierFeatures and returns the data updated in the database.
+     * @param {TierFeatureUpdateManyAndReturnArgs} args - Arguments to update many TierFeatures.
+     * @example
+     * // Update many TierFeatures
+     * const tierFeature = await prisma.tierFeature.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TierFeatures and only return the `id`
+     * const tierFeatureWithIdOnly = await prisma.tierFeature.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TierFeatureUpdateManyAndReturnArgs>(args: SelectSubset<T, TierFeatureUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TierFeature.
+     * @param {TierFeatureUpsertArgs} args - Arguments to update or create a TierFeature.
+     * @example
+     * // Update or create a TierFeature
+     * const tierFeature = await prisma.tierFeature.upsert({
+     *   create: {
+     *     // ... data to create a TierFeature
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TierFeature we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TierFeatureUpsertArgs>(args: SelectSubset<T, TierFeatureUpsertArgs<ExtArgs>>): Prisma__TierFeatureClient<$Result.GetResult<Prisma.$TierFeaturePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TierFeatures.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureCountArgs} args - Arguments to filter TierFeatures to count.
+     * @example
+     * // Count the number of TierFeatures
+     * const count = await prisma.tierFeature.count({
+     *   where: {
+     *     // ... the filter for the TierFeatures we want to count
+     *   }
+     * })
+    **/
+    count<T extends TierFeatureCountArgs>(
+      args?: Subset<T, TierFeatureCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TierFeatureCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TierFeature.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TierFeatureAggregateArgs>(args: Subset<T, TierFeatureAggregateArgs>): Prisma.PrismaPromise<GetTierFeatureAggregateType<T>>
+
+    /**
+     * Group by TierFeature.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierFeatureGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TierFeatureGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TierFeatureGroupByArgs['orderBy'] }
+        : { orderBy?: TierFeatureGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TierFeatureGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTierFeatureGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TierFeature model
+   */
+  readonly fields: TierFeatureFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TierFeature.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TierFeatureClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tier<T extends PricingTierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PricingTierDefaultArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TierFeature model
+   */
+  interface TierFeatureFieldRefs {
+    readonly id: FieldRef<"TierFeature", 'String'>
+    readonly tierId: FieldRef<"TierFeature", 'String'>
+    readonly featureKey: FieldRef<"TierFeature", 'String'>
+    readonly createdAt: FieldRef<"TierFeature", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TierFeature findUnique
+   */
+  export type TierFeatureFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter, which TierFeature to fetch.
+     */
+    where: TierFeatureWhereUniqueInput
+  }
+
+  /**
+   * TierFeature findUniqueOrThrow
+   */
+  export type TierFeatureFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter, which TierFeature to fetch.
+     */
+    where: TierFeatureWhereUniqueInput
+  }
+
+  /**
+   * TierFeature findFirst
+   */
+  export type TierFeatureFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter, which TierFeature to fetch.
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierFeatures to fetch.
+     */
+    orderBy?: TierFeatureOrderByWithRelationInput | TierFeatureOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TierFeatures.
+     */
+    cursor?: TierFeatureWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierFeatures from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierFeatures.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TierFeatures.
+     */
+    distinct?: TierFeatureScalarFieldEnum | TierFeatureScalarFieldEnum[]
+  }
+
+  /**
+   * TierFeature findFirstOrThrow
+   */
+  export type TierFeatureFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter, which TierFeature to fetch.
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierFeatures to fetch.
+     */
+    orderBy?: TierFeatureOrderByWithRelationInput | TierFeatureOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TierFeatures.
+     */
+    cursor?: TierFeatureWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierFeatures from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierFeatures.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TierFeatures.
+     */
+    distinct?: TierFeatureScalarFieldEnum | TierFeatureScalarFieldEnum[]
+  }
+
+  /**
+   * TierFeature findMany
+   */
+  export type TierFeatureFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter, which TierFeatures to fetch.
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierFeatures to fetch.
+     */
+    orderBy?: TierFeatureOrderByWithRelationInput | TierFeatureOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TierFeatures.
+     */
+    cursor?: TierFeatureWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierFeatures from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierFeatures.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TierFeatures.
+     */
+    distinct?: TierFeatureScalarFieldEnum | TierFeatureScalarFieldEnum[]
+  }
+
+  /**
+   * TierFeature create
+   */
+  export type TierFeatureCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TierFeature.
+     */
+    data: XOR<TierFeatureCreateInput, TierFeatureUncheckedCreateInput>
+  }
+
+  /**
+   * TierFeature createMany
+   */
+  export type TierFeatureCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TierFeatures.
+     */
+    data: TierFeatureCreateManyInput | TierFeatureCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TierFeature createManyAndReturn
+   */
+  export type TierFeatureCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * The data used to create many TierFeatures.
+     */
+    data: TierFeatureCreateManyInput | TierFeatureCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TierFeature update
+   */
+  export type TierFeatureUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TierFeature.
+     */
+    data: XOR<TierFeatureUpdateInput, TierFeatureUncheckedUpdateInput>
+    /**
+     * Choose, which TierFeature to update.
+     */
+    where: TierFeatureWhereUniqueInput
+  }
+
+  /**
+   * TierFeature updateMany
+   */
+  export type TierFeatureUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TierFeatures.
+     */
+    data: XOR<TierFeatureUpdateManyMutationInput, TierFeatureUncheckedUpdateManyInput>
+    /**
+     * Filter which TierFeatures to update
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * Limit how many TierFeatures to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TierFeature updateManyAndReturn
+   */
+  export type TierFeatureUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * The data used to update TierFeatures.
+     */
+    data: XOR<TierFeatureUpdateManyMutationInput, TierFeatureUncheckedUpdateManyInput>
+    /**
+     * Filter which TierFeatures to update
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * Limit how many TierFeatures to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TierFeature upsert
+   */
+  export type TierFeatureUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TierFeature to update in case it exists.
+     */
+    where: TierFeatureWhereUniqueInput
+    /**
+     * In case the TierFeature found by the `where` argument doesn't exist, create a new TierFeature with this data.
+     */
+    create: XOR<TierFeatureCreateInput, TierFeatureUncheckedCreateInput>
+    /**
+     * In case the TierFeature was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TierFeatureUpdateInput, TierFeatureUncheckedUpdateInput>
+  }
+
+  /**
+   * TierFeature delete
+   */
+  export type TierFeatureDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
+    /**
+     * Filter which TierFeature to delete.
+     */
+    where: TierFeatureWhereUniqueInput
+  }
+
+  /**
+   * TierFeature deleteMany
+   */
+  export type TierFeatureDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TierFeatures to delete
+     */
+    where?: TierFeatureWhereInput
+    /**
+     * Limit how many TierFeatures to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TierFeature without action
+   */
+  export type TierFeatureDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierFeature
+     */
+    select?: TierFeatureSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierFeature
+     */
+    omit?: TierFeatureOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TierFeatureInclude<ExtArgs> | null
   }
 
 
@@ -39001,6 +40248,16 @@ export namespace Prisma {
   export type PricingTierScalarFieldEnum = (typeof PricingTierScalarFieldEnum)[keyof typeof PricingTierScalarFieldEnum]
 
 
+  export const TierFeatureScalarFieldEnum: {
+    id: 'id',
+    tierId: 'tierId',
+    featureKey: 'featureKey',
+    createdAt: 'createdAt'
+  };
+
+  export type TierFeatureScalarFieldEnum = (typeof TierFeatureScalarFieldEnum)[keyof typeof TierFeatureScalarFieldEnum]
+
+
   export const RegionalPricingScalarFieldEnum: {
     id: 'id',
     countryCode: 'countryCode',
@@ -41168,6 +42425,7 @@ export namespace Prisma {
     active?: BoolFilter<"PricingTier"> | boolean
     createdAt?: DateTimeFilter<"PricingTier"> | Date | string
     updatedAt?: DateTimeFilter<"PricingTier"> | Date | string
+    features?: TierFeatureListRelationFilter
   }
 
   export type PricingTierOrderByWithRelationInput = {
@@ -41181,6 +42439,7 @@ export namespace Prisma {
     active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    features?: TierFeatureOrderByRelationAggregateInput
   }
 
   export type PricingTierWhereUniqueInput = Prisma.AtLeast<{
@@ -41197,6 +42456,7 @@ export namespace Prisma {
     active?: BoolFilter<"PricingTier"> | boolean
     createdAt?: DateTimeFilter<"PricingTier"> | Date | string
     updatedAt?: DateTimeFilter<"PricingTier"> | Date | string
+    features?: TierFeatureListRelationFilter
   }, "id" | "gb">
 
   export type PricingTierOrderByWithAggregationInput = {
@@ -41231,6 +42491,57 @@ export namespace Prisma {
     active?: BoolWithAggregatesFilter<"PricingTier"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"PricingTier"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PricingTier"> | Date | string
+  }
+
+  export type TierFeatureWhereInput = {
+    AND?: TierFeatureWhereInput | TierFeatureWhereInput[]
+    OR?: TierFeatureWhereInput[]
+    NOT?: TierFeatureWhereInput | TierFeatureWhereInput[]
+    id?: StringFilter<"TierFeature"> | string
+    tierId?: StringFilter<"TierFeature"> | string
+    featureKey?: StringFilter<"TierFeature"> | string
+    createdAt?: DateTimeFilter<"TierFeature"> | Date | string
+    tier?: XOR<PricingTierScalarRelationFilter, PricingTierWhereInput>
+  }
+
+  export type TierFeatureOrderByWithRelationInput = {
+    id?: SortOrder
+    tierId?: SortOrder
+    featureKey?: SortOrder
+    createdAt?: SortOrder
+    tier?: PricingTierOrderByWithRelationInput
+  }
+
+  export type TierFeatureWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tierId_featureKey?: TierFeatureTierIdFeatureKeyCompoundUniqueInput
+    AND?: TierFeatureWhereInput | TierFeatureWhereInput[]
+    OR?: TierFeatureWhereInput[]
+    NOT?: TierFeatureWhereInput | TierFeatureWhereInput[]
+    tierId?: StringFilter<"TierFeature"> | string
+    featureKey?: StringFilter<"TierFeature"> | string
+    createdAt?: DateTimeFilter<"TierFeature"> | Date | string
+    tier?: XOR<PricingTierScalarRelationFilter, PricingTierWhereInput>
+  }, "id" | "tierId_featureKey">
+
+  export type TierFeatureOrderByWithAggregationInput = {
+    id?: SortOrder
+    tierId?: SortOrder
+    featureKey?: SortOrder
+    createdAt?: SortOrder
+    _count?: TierFeatureCountOrderByAggregateInput
+    _max?: TierFeatureMaxOrderByAggregateInput
+    _min?: TierFeatureMinOrderByAggregateInput
+  }
+
+  export type TierFeatureScalarWhereWithAggregatesInput = {
+    AND?: TierFeatureScalarWhereWithAggregatesInput | TierFeatureScalarWhereWithAggregatesInput[]
+    OR?: TierFeatureScalarWhereWithAggregatesInput[]
+    NOT?: TierFeatureScalarWhereWithAggregatesInput | TierFeatureScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TierFeature"> | string
+    tierId?: StringWithAggregatesFilter<"TierFeature"> | string
+    featureKey?: StringWithAggregatesFilter<"TierFeature"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"TierFeature"> | Date | string
   }
 
   export type RegionalPricingWhereInput = {
@@ -44022,6 +45333,7 @@ export namespace Prisma {
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    features?: TierFeatureCreateNestedManyWithoutTierInput
   }
 
   export type PricingTierUncheckedCreateInput = {
@@ -44035,6 +45347,7 @@ export namespace Prisma {
     active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    features?: TierFeatureUncheckedCreateNestedManyWithoutTierInput
   }
 
   export type PricingTierUpdateInput = {
@@ -44048,6 +45361,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    features?: TierFeatureUpdateManyWithoutTierNestedInput
   }
 
   export type PricingTierUncheckedUpdateInput = {
@@ -44061,6 +45375,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    features?: TierFeatureUncheckedUpdateManyWithoutTierNestedInput
   }
 
   export type PricingTierCreateManyInput = {
@@ -44100,6 +45415,54 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureCreateInput = {
+    id?: string
+    featureKey: string
+    createdAt?: Date | string
+    tier: PricingTierCreateNestedOneWithoutFeaturesInput
+  }
+
+  export type TierFeatureUncheckedCreateInput = {
+    id?: string
+    tierId: string
+    featureKey: string
+    createdAt?: Date | string
+  }
+
+  export type TierFeatureUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tier?: PricingTierUpdateOneRequiredWithoutFeaturesNestedInput
+  }
+
+  export type TierFeatureUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierId?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureCreateManyInput = {
+    id?: string
+    tierId: string
+    featureKey: string
+    createdAt?: Date | string
+  }
+
+  export type TierFeatureUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tierId?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegionalPricingCreateInput = {
@@ -46654,6 +48017,16 @@ export namespace Prisma {
     _max?: NestedEnumDriveImportStatusFilter<$PrismaModel>
   }
 
+  export type TierFeatureListRelationFilter = {
+    every?: TierFeatureWhereInput
+    some?: TierFeatureWhereInput
+    none?: TierFeatureWhereInput
+  }
+
+  export type TierFeatureOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PricingTierCountOrderByAggregateInput = {
     id?: SortOrder
     gb?: SortOrder
@@ -46705,6 +48078,37 @@ export namespace Prisma {
     priceCents?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
+  }
+
+  export type PricingTierScalarRelationFilter = {
+    is?: PricingTierWhereInput
+    isNot?: PricingTierWhereInput
+  }
+
+  export type TierFeatureTierIdFeatureKeyCompoundUniqueInput = {
+    tierId: string
+    featureKey: string
+  }
+
+  export type TierFeatureCountOrderByAggregateInput = {
+    id?: SortOrder
+    tierId?: SortOrder
+    featureKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TierFeatureMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tierId?: SortOrder
+    featureKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TierFeatureMinOrderByAggregateInput = {
+    id?: SortOrder
+    tierId?: SortOrder
+    featureKey?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -48901,6 +50305,62 @@ export namespace Prisma {
     update?: DriveImportItemUpdateWithWhereUniqueWithoutJobInput | DriveImportItemUpdateWithWhereUniqueWithoutJobInput[]
     updateMany?: DriveImportItemUpdateManyWithWhereWithoutJobInput | DriveImportItemUpdateManyWithWhereWithoutJobInput[]
     deleteMany?: DriveImportItemScalarWhereInput | DriveImportItemScalarWhereInput[]
+  }
+
+  export type TierFeatureCreateNestedManyWithoutTierInput = {
+    create?: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput> | TierFeatureCreateWithoutTierInput[] | TierFeatureUncheckedCreateWithoutTierInput[]
+    connectOrCreate?: TierFeatureCreateOrConnectWithoutTierInput | TierFeatureCreateOrConnectWithoutTierInput[]
+    createMany?: TierFeatureCreateManyTierInputEnvelope
+    connect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+  }
+
+  export type TierFeatureUncheckedCreateNestedManyWithoutTierInput = {
+    create?: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput> | TierFeatureCreateWithoutTierInput[] | TierFeatureUncheckedCreateWithoutTierInput[]
+    connectOrCreate?: TierFeatureCreateOrConnectWithoutTierInput | TierFeatureCreateOrConnectWithoutTierInput[]
+    createMany?: TierFeatureCreateManyTierInputEnvelope
+    connect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+  }
+
+  export type TierFeatureUpdateManyWithoutTierNestedInput = {
+    create?: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput> | TierFeatureCreateWithoutTierInput[] | TierFeatureUncheckedCreateWithoutTierInput[]
+    connectOrCreate?: TierFeatureCreateOrConnectWithoutTierInput | TierFeatureCreateOrConnectWithoutTierInput[]
+    upsert?: TierFeatureUpsertWithWhereUniqueWithoutTierInput | TierFeatureUpsertWithWhereUniqueWithoutTierInput[]
+    createMany?: TierFeatureCreateManyTierInputEnvelope
+    set?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    disconnect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    delete?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    connect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    update?: TierFeatureUpdateWithWhereUniqueWithoutTierInput | TierFeatureUpdateWithWhereUniqueWithoutTierInput[]
+    updateMany?: TierFeatureUpdateManyWithWhereWithoutTierInput | TierFeatureUpdateManyWithWhereWithoutTierInput[]
+    deleteMany?: TierFeatureScalarWhereInput | TierFeatureScalarWhereInput[]
+  }
+
+  export type TierFeatureUncheckedUpdateManyWithoutTierNestedInput = {
+    create?: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput> | TierFeatureCreateWithoutTierInput[] | TierFeatureUncheckedCreateWithoutTierInput[]
+    connectOrCreate?: TierFeatureCreateOrConnectWithoutTierInput | TierFeatureCreateOrConnectWithoutTierInput[]
+    upsert?: TierFeatureUpsertWithWhereUniqueWithoutTierInput | TierFeatureUpsertWithWhereUniqueWithoutTierInput[]
+    createMany?: TierFeatureCreateManyTierInputEnvelope
+    set?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    disconnect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    delete?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    connect?: TierFeatureWhereUniqueInput | TierFeatureWhereUniqueInput[]
+    update?: TierFeatureUpdateWithWhereUniqueWithoutTierInput | TierFeatureUpdateWithWhereUniqueWithoutTierInput[]
+    updateMany?: TierFeatureUpdateManyWithWhereWithoutTierInput | TierFeatureUpdateManyWithWhereWithoutTierInput[]
+    deleteMany?: TierFeatureScalarWhereInput | TierFeatureScalarWhereInput[]
+  }
+
+  export type PricingTierCreateNestedOneWithoutFeaturesInput = {
+    create?: XOR<PricingTierCreateWithoutFeaturesInput, PricingTierUncheckedCreateWithoutFeaturesInput>
+    connectOrCreate?: PricingTierCreateOrConnectWithoutFeaturesInput
+    connect?: PricingTierWhereUniqueInput
+  }
+
+  export type PricingTierUpdateOneRequiredWithoutFeaturesNestedInput = {
+    create?: XOR<PricingTierCreateWithoutFeaturesInput, PricingTierUncheckedCreateWithoutFeaturesInput>
+    connectOrCreate?: PricingTierCreateOrConnectWithoutFeaturesInput
+    upsert?: PricingTierUpsertWithoutFeaturesInput
+    connect?: PricingTierWhereUniqueInput
+    update?: XOR<XOR<PricingTierUpdateToOneWithWhereWithoutFeaturesInput, PricingTierUpdateWithoutFeaturesInput>, PricingTierUncheckedUpdateWithoutFeaturesInput>
   }
 
   export type RegionalTierOverrideCreateNestedManyWithoutRegionalPricingInput = {
@@ -54592,6 +56052,122 @@ export namespace Prisma {
     data: XOR<DriveImportItemUpdateManyMutationInput, DriveImportItemUncheckedUpdateManyWithoutJobInput>
   }
 
+  export type TierFeatureCreateWithoutTierInput = {
+    id?: string
+    featureKey: string
+    createdAt?: Date | string
+  }
+
+  export type TierFeatureUncheckedCreateWithoutTierInput = {
+    id?: string
+    featureKey: string
+    createdAt?: Date | string
+  }
+
+  export type TierFeatureCreateOrConnectWithoutTierInput = {
+    where: TierFeatureWhereUniqueInput
+    create: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput>
+  }
+
+  export type TierFeatureCreateManyTierInputEnvelope = {
+    data: TierFeatureCreateManyTierInput | TierFeatureCreateManyTierInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TierFeatureUpsertWithWhereUniqueWithoutTierInput = {
+    where: TierFeatureWhereUniqueInput
+    update: XOR<TierFeatureUpdateWithoutTierInput, TierFeatureUncheckedUpdateWithoutTierInput>
+    create: XOR<TierFeatureCreateWithoutTierInput, TierFeatureUncheckedCreateWithoutTierInput>
+  }
+
+  export type TierFeatureUpdateWithWhereUniqueWithoutTierInput = {
+    where: TierFeatureWhereUniqueInput
+    data: XOR<TierFeatureUpdateWithoutTierInput, TierFeatureUncheckedUpdateWithoutTierInput>
+  }
+
+  export type TierFeatureUpdateManyWithWhereWithoutTierInput = {
+    where: TierFeatureScalarWhereInput
+    data: XOR<TierFeatureUpdateManyMutationInput, TierFeatureUncheckedUpdateManyWithoutTierInput>
+  }
+
+  export type TierFeatureScalarWhereInput = {
+    AND?: TierFeatureScalarWhereInput | TierFeatureScalarWhereInput[]
+    OR?: TierFeatureScalarWhereInput[]
+    NOT?: TierFeatureScalarWhereInput | TierFeatureScalarWhereInput[]
+    id?: StringFilter<"TierFeature"> | string
+    tierId?: StringFilter<"TierFeature"> | string
+    featureKey?: StringFilter<"TierFeature"> | string
+    createdAt?: DateTimeFilter<"TierFeature"> | Date | string
+  }
+
+  export type PricingTierCreateWithoutFeaturesInput = {
+    id?: string
+    gb: number
+    label: string
+    priceCents: number
+    stripePriceId?: string | null
+    galleryLimit?: number | null
+    sortOrder?: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PricingTierUncheckedCreateWithoutFeaturesInput = {
+    id?: string
+    gb: number
+    label: string
+    priceCents: number
+    stripePriceId?: string | null
+    galleryLimit?: number | null
+    sortOrder?: number
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PricingTierCreateOrConnectWithoutFeaturesInput = {
+    where: PricingTierWhereUniqueInput
+    create: XOR<PricingTierCreateWithoutFeaturesInput, PricingTierUncheckedCreateWithoutFeaturesInput>
+  }
+
+  export type PricingTierUpsertWithoutFeaturesInput = {
+    update: XOR<PricingTierUpdateWithoutFeaturesInput, PricingTierUncheckedUpdateWithoutFeaturesInput>
+    create: XOR<PricingTierCreateWithoutFeaturesInput, PricingTierUncheckedCreateWithoutFeaturesInput>
+    where?: PricingTierWhereInput
+  }
+
+  export type PricingTierUpdateToOneWithWhereWithoutFeaturesInput = {
+    where?: PricingTierWhereInput
+    data: XOR<PricingTierUpdateWithoutFeaturesInput, PricingTierUncheckedUpdateWithoutFeaturesInput>
+  }
+
+  export type PricingTierUpdateWithoutFeaturesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PricingTierUncheckedUpdateWithoutFeaturesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    gb?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    priceCents?: IntFieldUpdateOperationsInput | number
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RegionalTierOverrideCreateWithoutRegionalPricingInput = {
     id?: string
     tierGb: number
@@ -57615,6 +59191,30 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureCreateManyTierInput = {
+    id?: string
+    featureKey: string
+    createdAt?: Date | string
+  }
+
+  export type TierFeatureUpdateWithoutTierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureUncheckedUpdateWithoutTierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierFeatureUncheckedUpdateManyWithoutTierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    featureKey?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegionalTierOverrideCreateManyRegionalPricingInput = {

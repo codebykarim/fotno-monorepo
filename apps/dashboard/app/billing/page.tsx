@@ -21,18 +21,19 @@ import type {
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 import { useRouter } from "next/navigation";
 
-const FALLBACK_FEATURES = [
-  "Unlimited galleries",
-  "Unlimited clients",
-  // "AI-powered captions",
-  "Client favorites & selections",
-  "Download tracking & analytics",
-  "Password-protected galleries",
-  "Custom gallery slugs",
-  "Bulk upload with auto-retry",
-  "Google Drive & Google Photos import",
-  "Slideshow & social sharing",
-];
+const FEATURE_LABELS: Record<string, string> = {
+  UNLIMITED_GALLERIES: "Unlimited galleries",
+  UNLIMITED_CLIENTS: "Unlimited clients",
+  CLIENT_FAVORITES: "Client favorites & notes",
+  PASSWORD_PROTECTION: "Password-protected galleries",
+  CUSTOM_SLUGS: "Custom gallery slugs",
+  SLIDESHOW_SHARING: "Slideshow & social sharing",
+  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  GOOGLE_IMPORT: "Google Drive & Google Photos import",
+  SMART_ALBUMS: "Smart albums",
+  CUSTOM_DOMAINS: "Custom domains",
+  WEBSITE_BUILDER: "Website builder",
+};
 
 const formatPrice = (cents: number, currency = "USD", locale = "en-US") => {
   try {
@@ -63,7 +64,6 @@ const formatStorage = (gb: number) => {
   return `${gb} GB`;
 };
 
-/** Convert storageLimitBytes (string from API) to human-readable GB */
 const formatBytes = (bytes: string | undefined) => {
   if (!bytes || bytes === "0") return "0 GB";
   const gb = Number(BigInt(bytes) / BigInt(1024 ** 3));
@@ -75,7 +75,7 @@ function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
-      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
+      className={cn("h-4 w-4 flex-none fill-current stroke-current", className)}
       viewBox="0 0 24 24"
     >
       <path
@@ -95,17 +95,21 @@ function CheckIcon({ className }: { className?: string }) {
   );
 }
 
+/** Get features that are new in this tier compared to the previous one */
+function getNewFeatures(tiers: PlanTier[], index: number): string[] {
+  const current = tiers[index]?.features ?? [];
+  if (index === 0) return current;
+  const prev = tiers[index - 1]?.features ?? [];
+  return current.filter((f) => !prev.includes(f));
+}
+
 export default function BillingPage() {
-  // Handle both formats: new { tiers, features } and legacy PlanTier[]
   const { data: plansData } = useSWR<PlansResponse | PlanTier[]>(
     "/api/billing/plans",
     jsonFetcher,
   );
   const plans = Array.isArray(plansData) ? plansData : plansData?.tiers;
   const paidPlans = plans?.filter((t) => t.priceCents > 0);
-  const features =
-    (Array.isArray(plansData) ? null : plansData?.features) ??
-    FALLBACK_FEATURES;
   const { data: billing, mutate } = useSWR<SubscriptionResponse>(
     "/api/billing/subscription",
     jsonFetcher,
@@ -352,7 +356,7 @@ export default function BillingPage() {
         </Card>
       </motion.div>
 
-      {/* ── Storage Tiers — Paid plans grid ────────────────────── */}
+      {/* ── Plan Cards ────────────────────────────────────────── */}
       <motion.div
         id="paid-plans"
         initial={{ opacity: 0, y: 16 }}
@@ -367,109 +371,177 @@ export default function BillingPage() {
         />
 
         <h2 className="text-xl font-semibold tracking-tight">
-          {hasSubscription ? "Change Plan" : "Upgrade to Pro"}
+          {hasSubscription ? "Change Plan" : "Choose a Plan"}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Every feature is included at every tier — only storage differs.
-          Unlimited galleries.
+          Higher tiers unlock more features and storage. Pick the plan that fits your workflow.
         </p>
 
         {!paidPlans ? (
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="h-44 animate-pulse rounded-2xl bg-muted"
+                className="h-72 animate-pulse rounded-2xl bg-muted"
               />
             ))}
           </div>
         ) : (
           <motion.div
-            className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]"
+            className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerContainer}
             initial="hidden"
             animate="show"
           >
-            {paidPlans.map((tier) => {
+            {paidPlans.map((tier, index) => {
               const isCurrent =
                 subscription?.storageTierGb === tier.gb && hasSubscription;
               const isPopular =
-                (tier.label === "Professional" || tier.gb === 100) &&
+                (tier.label === "Studio" || tier.gb === 100) &&
                 !hasSubscription;
               const isLoading = loading === tier.gb;
+              const newFeatures = getNewFeatures(paidPlans, index);
 
               return (
                 <motion.div key={tier.gb} variants={staggerItem}>
                   <div
                     className={cn(
-                      "relative flex flex-col items-center rounded-2xl px-4 py-6 text-center transition-all duration-300",
+                      "relative flex flex-col rounded-2xl px-5 py-6 transition-all duration-300",
                       isCurrent
                         ? "bg-primary shadow-lg shadow-primary/20 ring-2 ring-primary"
                         : isPopular
-                          ? "bg-primary shadow-xl shadow-primary/20 scale-[1.04]"
+                          ? "bg-primary shadow-xl shadow-primary/20 scale-[1.02]"
                           : "bg-card border border-border/50 hover:border-primary/20 hover:-translate-y-1",
                     )}
                   >
                     {isCurrent && (
-                      <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm border border-border">
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm border border-border">
                         Current
                       </span>
                     )}
                     {isPopular && !isCurrent && (
-                      <span className="absolute -top-3 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm">
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground shadow-sm">
                         Popular
                       </span>
                     )}
 
-                    <span
-                      className={cn(
-                        "text-3xl font-light tracking-tight",
-                        isCurrent || isPopular
-                          ? "text-primary-foreground"
-                          : "text-foreground",
-                      )}
-                    >
-                      {formatTierPrice(tier)}
-                    </span>
-                    <span
-                      className={cn(
-                        "mt-1 text-sm",
-                        isCurrent || isPopular
-                          ? "text-primary-foreground/70"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      /month
-                    </span>
+                    {/* Price + tier info */}
+                    <div className="text-center">
+                      <span
+                        className={cn(
+                          "text-xs font-medium uppercase tracking-wider",
+                          isCurrent || isPopular
+                            ? "text-primary-foreground/70"
+                            : "text-muted-foreground",
+                        )}
+                      >
+                        {tier.label}
+                      </span>
+                      <div className="mt-1">
+                        <span
+                          className={cn(
+                            "text-3xl font-light tracking-tight",
+                            isCurrent || isPopular
+                              ? "text-primary-foreground"
+                              : "text-foreground",
+                          )}
+                        >
+                          {formatTierPrice(tier)}
+                        </span>
+                        <span
+                          className={cn(
+                            "text-sm",
+                            isCurrent || isPopular
+                              ? "text-primary-foreground/70"
+                              : "text-muted-foreground",
+                          )}
+                        >
+                          /mo
+                        </span>
+                      </div>
+                      <p
+                        className={cn(
+                          "mt-1 text-sm font-semibold",
+                          isCurrent || isPopular
+                            ? "text-primary-foreground"
+                            : "text-foreground",
+                        )}
+                      >
+                        {formatStorage(tier.gb)}
+                      </p>
+                    </div>
 
-                    <span
-                      className={cn(
-                        "mt-2 text-xs font-medium",
-                        isCurrent || isPopular
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground",
+                    {/* Features for this tier */}
+                    <ul className="mt-4 flex-1 space-y-1.5">
+                      {index > 0 && (
+                        <li
+                          className={cn(
+                            "text-xs italic mb-2",
+                            isCurrent || isPopular
+                              ? "text-primary-foreground/60"
+                              : "text-muted-foreground/70",
+                          )}
+                        >
+                          Everything in {paidPlans[index - 1]?.label}, plus:
+                        </li>
                       )}
-                    >
-                      {tier.label}
-                    </span>
-                    <span
-                      className={cn(
-                        "mt-1 text-base font-semibold",
-                        isCurrent || isPopular
-                          ? "text-primary-foreground"
-                          : "text-foreground",
+                      {newFeatures.map((featureKey) => (
+                        <li key={featureKey} className="flex items-start gap-1.5">
+                          <CheckIcon
+                            className={cn(
+                              "mt-0.5",
+                              isCurrent || isPopular
+                                ? "text-primary-foreground/80"
+                                : "text-primary",
+                            )}
+                          />
+                          <span
+                            className={cn(
+                              "text-xs",
+                              isCurrent || isPopular
+                                ? "text-primary-foreground/90"
+                                : "text-muted-foreground",
+                            )}
+                          >
+                            {FEATURE_LABELS[featureKey] ?? featureKey}
+                          </span>
+                        </li>
+                      ))}
+                      {newFeatures.length === 0 && index === 0 && (
+                        // First paid tier — show all features
+                        (tier.features ?? []).map((featureKey) => (
+                          <li key={featureKey} className="flex items-start gap-1.5">
+                            <CheckIcon
+                              className={cn(
+                                "mt-0.5",
+                                isCurrent || isPopular
+                                  ? "text-primary-foreground/80"
+                                  : "text-primary",
+                              )}
+                            />
+                            <span
+                              className={cn(
+                                "text-xs",
+                                isCurrent || isPopular
+                                  ? "text-primary-foreground/90"
+                                  : "text-muted-foreground",
+                              )}
+                            >
+                              {FEATURE_LABELS[featureKey] ?? featureKey}
+                            </span>
+                          </li>
+                        ))
                       )}
-                    >
-                      {formatStorage(tier.gb)}
-                    </span>
+                    </ul>
 
-                    <div className="mt-4 w-full">
+                    {/* CTA */}
+                    <div className="mt-5">
                       {isCurrent ? (
                         subscription?.pendingDowngrade ? (
                           <Button
                             size="sm"
                             className="w-full text-xs"
-                            variant={"secondary"}
+                            variant="secondary"
                             onClick={() => handleChangeTier(tier.gb)}
                             disabled={isLoading}
                           >
@@ -519,7 +591,7 @@ export default function BillingPage() {
                           onClick={() => handleCheckout(tier)}
                           disabled={isLoading}
                         >
-                          {isLoading ? "..." : "Upgrade"}
+                          {isLoading ? "..." : "Get Started"}
                         </Button>
                       )}
                     </div>
@@ -529,34 +601,6 @@ export default function BillingPage() {
             })}
           </motion.div>
         )}
-      </motion.div>
-
-      {/* ── Features list ──────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        <h3 className="text-center text-lg font-semibold text-foreground">
-          Everything included with Fotno Pro
-        </h3>
-        <ul
-          role="list"
-          className="mt-6 grid grid-cols-1 gap-x-12 gap-y-3 text-sm text-muted-foreground sm:grid-cols-2 max-w-3xl mx-auto"
-        >
-          {features.map((feature, index) => (
-            <motion.li
-              key={feature}
-              className="flex items-center"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.4 + index * 0.04 }}
-            >
-              <CheckIcon className="text-primary" />
-              <span className="ml-3">{feature}</span>
-            </motion.li>
-          ))}
-        </ul>
       </motion.div>
     </div>
   );

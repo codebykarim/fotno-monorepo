@@ -1,12 +1,54 @@
 import { db, toDateOnly, toIsoOrNull } from "./_shared";
+import { resolveUserAccess } from "../SubscriptionServices/resolveUserAccess";
 
 export const updateGallery = async (userId: string, galleryId: string, body: any) => {
   const current = await db.gallery.findFirst({
     where: { id: galleryId, userId },
-    select: { id: true },
+    select: { id: true, slug: true },
   });
   if (!current) {
     return null;
+  }
+
+  // Feature-gated field checks
+  const access = await resolveUserAccess(userId);
+  const features = access.features;
+
+  if (typeof body?.passwordEnabled === "boolean" && body.passwordEnabled && !features.includes("PASSWORD_PROTECTION")) {
+    return { error: "Password-protected galleries require a higher plan.", status: 403 as const };
+  }
+  if (typeof body?.slug === "string" && body.slug.trim() !== current.slug && !features.includes("CUSTOM_SLUGS")) {
+    return { error: "Custom gallery slugs require a higher plan.", status: 403 as const };
+  }
+  if (typeof body?.slideshowEnabled === "boolean" && body.slideshowEnabled && !features.includes("SLIDESHOW_SHARING")) {
+    return { error: "Slideshow & social sharing require a higher plan.", status: 403 as const };
+  }
+  if (typeof body?.socialSharingEnabled === "boolean" && body.socialSharingEnabled && !features.includes("SLIDESHOW_SHARING")) {
+    return { error: "Slideshow & social sharing require a higher plan.", status: 403 as const };
+  }
+
+  // Favorites feature checks
+  if (!features.includes("CLIENT_FAVORITES")) {
+    if (typeof body?.favoritesEnabled === "boolean" && body.favoritesEnabled) {
+      return { error: "Client favorites & notes require a higher plan.", status: 403 as const };
+    }
+    if (typeof body?.favoriteNotesEnabled === "boolean" && body.favoriteNotesEnabled) {
+      return { error: "Client favorites & notes require a higher plan.", status: 403 as const };
+    }
+  }
+
+  // Download feature checks
+  const hasDownload = features.includes("DOWNLOAD_ANALYTICS");
+  if (!hasDownload) {
+    if (typeof body?.downloadEnabled === "boolean" && body.downloadEnabled) {
+      return { error: "Download controls require a higher plan.", status: 403 as const };
+    }
+    if ((typeof body?.downloadPin === "string" && body.downloadPin) || typeof body?.downloadLimit === "number") {
+      return { error: "Download controls require a higher plan.", status: 403 as const };
+    }
+    if (typeof body?.downloadSizeOriginal === "boolean" || typeof body?.downloadSizeWeb === "boolean" || typeof body?.downloadSizeHighRes === "boolean") {
+      return { error: "Download controls require a higher plan.", status: 403 as const };
+    }
   }
 
   const data: Record<string, unknown> = {};

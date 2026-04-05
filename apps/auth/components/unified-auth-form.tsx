@@ -7,7 +7,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,6 +24,7 @@ import {
 
 import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@workspace/ui/components/button";
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
 import {
   InputOTP,
@@ -59,6 +59,7 @@ export interface AuthFormData {
   password: string;
   name: string;
   otp: string;
+  agreedToTerms: boolean;
 }
 
 const emailSchema = z.object({
@@ -96,6 +97,7 @@ const otpSchema = z.object({
 const OTP_RESEND_SECONDS = 60;
 
 const DEFAULT_DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || "/";
+const LANDING_URL = process.env.NEXT_PUBLIC_LANDING_URL || "https://fotno.com";
 
 function UnifiedAuthFormComponent({
   className,
@@ -156,6 +158,7 @@ function UnifiedAuthFormComponent({
       password: "",
       name: "",
       otp: "",
+      agreedToTerms: false,
     },
     mode: "onChange",
   });
@@ -363,6 +366,15 @@ function UnifiedAuthFormComponent({
         return;
       }
 
+      if (!values.agreedToTerms) {
+        form.setError("agreedToTerms", {
+          type: "manual",
+          message:
+            "You must agree to the Terms, Privacy Policy, and Refund Policy",
+        });
+        return;
+      }
+
       setIsLoading(true);
       const result = new Promise<{ email?: string }>((resolve, reject) => {
         signUp.email(
@@ -413,6 +425,14 @@ function UnifiedAuthFormComponent({
           form.setError("name", {
             type: "manual",
             message: "Name must be at least 2 characters",
+          });
+          return;
+        }
+        if (!values.agreedToTerms) {
+          form.setError("agreedToTerms", {
+            type: "manual",
+            message:
+              "You must agree to the Terms, Privacy Policy, and Refund Policy",
           });
           return;
         }
@@ -534,6 +554,7 @@ function UnifiedAuthFormComponent({
     form.setValue("password", "");
     form.setValue("name", "");
     form.setValue("otp", "");
+    form.setValue("agreedToTerms", false);
     form.clearErrors();
     setIsResetPassword(false);
     setIsNewOtpUser(false);
@@ -768,6 +789,58 @@ function UnifiedAuthFormComponent({
                   />
                 )}
 
+                {(authMode === "register" ||
+                  (authMode === "otp" && isNewOtpUser)) && (
+                  <FormField
+                    control={form.control}
+                    name="agreedToTerms"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-start gap-3">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              disabled={isLoading}
+                              className="mt-0.5"
+                            />
+                          </FormControl>
+                          <label className="text-sm leading-snug text-muted-foreground">
+                            I agree to the{" "}
+                            <a
+                              href={`${LANDING_URL}/terms-and-conditions`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-foreground underline underline-offset-2"
+                            >
+                              Terms and Conditions
+                            </a>
+                            ,{" "}
+                            <a
+                              href={`${LANDING_URL}/privacy-policy`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-foreground underline underline-offset-2"
+                            >
+                              Privacy Policy
+                            </a>
+                            , and{" "}
+                            <a
+                              href={`${LANDING_URL}/refund-policy`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-foreground underline underline-offset-2"
+                            >
+                              Refund Policy
+                            </a>
+                          </label>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
                 {authMode === "login" && (
                   <div className="space-y-2 text-right">
                     <p
@@ -891,13 +964,32 @@ function UnifiedAuthFormComponent({
 
             <p className="mt-8 text-center text-xs text-muted-foreground">
               By continuing, you agree to our{" "}
-              <Link href="/terms" className="underline">
+              <a
+                href={`${LANDING_URL}/terms-and-conditions`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
                 Terms
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="underline">
+              </a>
+              ,{" "}
+              <a
+                href={`${LANDING_URL}/privacy-policy`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
                 Privacy Policy
-              </Link>
+              </a>
+              , and{" "}
+              <a
+                href={`${LANDING_URL}/refund-policy`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Refund Policy
+              </a>
               .
             </p>
           </div>

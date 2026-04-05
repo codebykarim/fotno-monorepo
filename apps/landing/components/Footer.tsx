@@ -17,6 +17,7 @@ const footerLinks = {
     { label: "Contact Us", href: "mailto:support@fotno.com" },
     { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Terms and Conditions", href: "/terms-and-conditions" },
+    { label: "Refund Policy", href: "/refund-policy" },
   ],
 };
 

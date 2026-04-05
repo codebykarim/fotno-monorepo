@@ -1,6 +1,5 @@
 import { fetchTiersFromDB, PLAN_FEATURES, buildFreeFeatures, invalidateTierCache, invalidateFeatureCache, fetchFeaturesForTier } from "../../constants/plans";
 import {
-  getRegionalPricing,
   fetchRegionalPricingFromDB,
   invalidateRegionalCache,
 } from "../../constants/regional-pricing";
@@ -40,16 +39,13 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
  * Tiers with `tierStorageOverrides` get their displayed gb value changed.
  * Free tiers (priceCents=0) are always preserved regardless of regional config.
  *
- * Tries DB-backed regional pricing first, falls back to hardcoded constants.
+ * Uses DB-backed regional pricing (admin-managed).
  */
 async function applyRegionalPricing(
   plans: PlanInfo[],
   countryCode: string | null | undefined,
 ): Promise<PlanInfo[]> {
-  // Try DB first, fall back to hardcoded
-  const regional =
-    (await fetchRegionalPricingFromDB(countryCode)) ??
-    getRegionalPricing(countryCode);
+  const regional = await fetchRegionalPricingFromDB(countryCode);
   if (!regional) return plans;
 
   // Always keep free tiers; only filter paid tiers by regional config

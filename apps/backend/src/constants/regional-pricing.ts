@@ -79,8 +79,8 @@ export async function fetchRegionalPricingFromDB(
 
     return cache.get(cc) ?? null;
   } catch (err) {
-    console.warn("[fetchRegionalPricingFromDB] DB query failed, using hardcoded fallback:", err);
-    return REGIONAL_PRICING[cc] ?? null;
+    console.warn("[fetchRegionalPricingFromDB] DB query failed:", err);
+    return null;
   }
 }
 
@@ -121,25 +121,7 @@ export type RegionalPricing = {
  * changes needed — the `pppMultiplier` is applied via Stripe `customPrice`
  * at checkout time.
  */
-export const REGIONAL_PRICING: Record<string, RegionalPricing> = {
-  EG: {
-    currency: "EGP",
-    symbol: "EGP",
-    locale: "en-EG",
-    pppMultiplier: 0.33,
-    tierPrices: {
-      20: 15000,    // 150 EGP
-      100: 30000,   // 300 EGP
-      500: 110000,  // 1,100 EGP
-      // Unlimited (-1) omitted: hidden for this region
-    },
-    tierCheckoutCents: {
-      20: 300,      // $3.00
-      100: 627,     // $6.27
-      500: 2200,    // $22.00 (~1,100 EGP at ~50 EGP/USD)
-    },
-  },
-};
+export const REGIONAL_PRICING: Record<string, RegionalPricing> = {};
 
 export const getRegionalPricing = (
   countryCode: string | null | undefined,

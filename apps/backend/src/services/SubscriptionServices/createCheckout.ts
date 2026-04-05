@@ -1,6 +1,6 @@
 import { stripe } from "./stripe";
 import { findTierByGb, fetchTiersFromDB } from "../../constants/plans";
-import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
+import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 import { db } from "../DashboardServices/_shared";
 
@@ -25,9 +25,8 @@ export const createCheckout = async ({
     throw new AppError("Payment system not configured", 500);
   }
 
-  // Apply PPP-adjusted price for regional users (DB first, hardcoded fallback)
-  const regional =
-    (await fetchRegionalPricingFromDB(countryCode)) ?? getRegionalPricing(countryCode);
+  // Apply PPP-adjusted price for regional users
+  const regional = await fetchRegionalPricingFromDB(countryCode);
 
   // Look up tier from DB-backed tiers
   const dbTiers = await fetchTiersFromDB();

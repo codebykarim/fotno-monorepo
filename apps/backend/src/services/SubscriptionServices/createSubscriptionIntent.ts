@@ -1,6 +1,6 @@
 import { stripe } from "./stripe";
 import { fetchTiersFromDB, STORAGE_TIERS } from "../../constants/plans";
-import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
+import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 import { getActiveSubscription } from "./getSubscription";
 import { prisma } from "@workspace/db";
@@ -57,9 +57,7 @@ export const createSubscriptionIntent = async ({
     });
   }
 
-  const regional =
-    (await fetchRegionalPricingFromDB(countryCode)) ??
-    getRegionalPricing(countryCode);
+  const regional = await fetchRegionalPricingFromDB(countryCode);
 
   const regionalCheckoutCents = regional?.tierCheckoutCents?.[tier.gb];
 

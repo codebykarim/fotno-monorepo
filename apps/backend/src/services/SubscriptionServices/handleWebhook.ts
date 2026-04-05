@@ -2,7 +2,7 @@ import { prisma } from "@workspace/db";
 import { stripe, Stripe } from "./stripe";
 import { findTierByPriceId, fetchTiersFromDB, STORAGE_TIERS, getFreeTierLimits } from "../../constants/plans";
 import { storageTierToBytes } from "../../constants/storage";
-import { getRegionalPricing } from "../../constants/regional-pricing";
+import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import { sendPushNotification } from "../../utils/fcm";
 
 /**
@@ -201,7 +201,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
     )}`);
   }
   const globalTierGb = tierGbFromMeta ?? tier?.gb ?? 50;
-  const regional = getRegionalPricing(countryCode);
+  const regional = await fetchRegionalPricingFromDB(countryCode);
   const storageTierGb = regional?.tierStorageOverrides?.[globalTierGb] ?? globalTierGb;
   const storageLimit = storageTierToBytes(storageTierGb);
 

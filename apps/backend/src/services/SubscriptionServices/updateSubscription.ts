@@ -1,7 +1,7 @@
 import { prisma } from "@workspace/db";
 import { stripe } from "./stripe";
 import { findTierByGb } from "../../constants/plans";
-import { getRegionalPricing, fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
+import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import { extractBillingPeriod } from "./handleWebhook";
 import AppError from "../../errors/AppError";
 
@@ -61,7 +61,7 @@ export const changeTier = async ({
   // Check if user has regional pricing (from subscription metadata)
   const countryCode = (stripeSub as any).metadata?.country_code as string | undefined;
   const regional =
-    (await fetchRegionalPricingFromDB(countryCode)) ?? getRegionalPricing(countryCode);
+    await fetchRegionalPricingFromDB(countryCode);
   const regionalCheckoutCents = regional?.tierCheckoutCents?.[newTier.gb];
 
   // Build the subscription item update: use price_data for regional, price ID for global

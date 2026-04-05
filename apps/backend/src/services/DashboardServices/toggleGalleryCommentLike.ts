@@ -25,19 +25,15 @@ export const toggleGalleryCommentLike = async (
   if (alreadyLiked) {
     await db.$executeRaw`
       UPDATE "gallery_comment"
-      SET "likes" = (
-        SELECT jsonb_agg(elem)
-        FROM jsonb_array_elements("likes") AS elem
-        WHERE elem #>> '{}' != ${userId}
-      )
+      SET "likes" = array_remove("likes", ${userId})
       WHERE "id" = ${commentId}
     `;
   } else {
     await db.$executeRaw`
       UPDATE "gallery_comment"
-      SET "likes" = "likes" || ${JSON.stringify([userId])}::jsonb
+      SET "likes" = array_append("likes", ${userId})
       WHERE "id" = ${commentId}
-      AND NOT ("likes" @> ${JSON.stringify([userId])}::jsonb)
+      AND NOT (${userId} = ANY("likes"))
     `;
   }
 

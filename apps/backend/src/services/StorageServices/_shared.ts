@@ -1,11 +1,10 @@
-import Plunk from "@plunk/node";
+import { Resend } from "resend";
 import { prisma } from "@workspace/db";
 
-export const plunk = process.env.PLUNK_API_KEY
-  ? new Plunk(process.env.PLUNK_API_KEY, {
-      baseUrl: process.env.PLUNK_API_URL || "https://plunk.fotno.com/api/v1/",
-    })
+export const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
   : null;
+export const fromEmail = process.env.RESEND_FROM_EMAIL || "Fotno <noreply@fotno.com>";
 export const safeBigInt = (value: unknown, fallback = 0n): bigint => {
   if (typeof value === "bigint") {
     return value;

@@ -246,10 +246,10 @@ export default function PrivacyPolicyPage() {
 
                 <p>
                   <span className="font-medium text-foreground">
-                    Email delivery (Plunk).
+                    Email delivery (Resend).
                   </span>{" "}
                   Transactional emails (password resets, storage warnings, billing
-                  notifications) are sent through our self-hosted Plunk instance.
+                  notifications) are sent through Resend.
                   Your email address is shared with this service to deliver
                   messages.
                 </p>

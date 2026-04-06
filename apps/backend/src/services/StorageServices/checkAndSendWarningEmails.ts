@@ -14,7 +14,8 @@ import { wrapEmailLayout } from "../../emails/layout";
 import {
   fetchUserStorage,
   prisma,
-  plunk,
+  resend,
+  fromEmail,
   resolvePlanLimit,
   safeBigInt,
 } from "./_shared";
@@ -25,7 +26,7 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
   const rawLimit = safeBigInt(user.storageLimit);
   const storageLimit = rawLimit > 0n ? rawLimit : resolvePlanLimit(user.plan);
 
-  if (storageLimit <= 0n || !plunk || !user.email) {
+  if (storageLimit <= 0n || !resend || !user.email) {
     return;
   }
 
@@ -44,10 +45,11 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       { preheaderText: "You are nearly out of storage space" },
     );
 
-    await plunk.emails.send({
+    await resend.emails.send({
+      from: fromEmail,
       to: user.email,
       subject: STORAGE_WARNING_95_SUBJECT,
-      body: html,
+      html,
     });
 
     await (prisma as any).user.update({
@@ -70,10 +72,11 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       { preheaderText: "You have used most of your storage" },
     );
 
-    await plunk.emails.send({
+    await resend.emails.send({
+      from: fromEmail,
       to: user.email,
       subject: STORAGE_WARNING_80_SUBJECT,
-      body: html,
+      html,
     });
 
     await (prisma as any).user.update({

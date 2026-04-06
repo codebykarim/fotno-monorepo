@@ -41,7 +41,7 @@
     "@aws-sdk/cloudfront-signer": "^3.1012.0",
     "@aws-sdk/s3-request-presigner": "^3.888.0",
     "@hapi/boom": "^10.0.1",
-    "@plunk/node": "^3.0.3",
+    "resend": "^4.0.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@sentry/node": "^10.45.0",
     "@types/body-parser": "^1.19.5",

@@ -34,6 +34,8 @@ export function AlbumConfigForm() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [connectOnboarded, setConnectOnboarded] = useState(false);
+  // Local UI selection — may differ from saved config while awaiting Stripe onboarding
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"OUTSIDE_FOTNO" | "INSIDE_FOTNO">("OUTSIDE_FOTNO");
 
   // Load config on mount
   useEffect(() => {
@@ -44,6 +46,7 @@ export function AlbumConfigForm() {
         const data = await res.json();
         setConfig(data);
         setConnectOnboarded(data.stripeConnectOnboarded ?? false);
+        setSelectedPaymentMethod(data.paymentMethod);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -73,7 +76,7 @@ export function AlbumConfigForm() {
     }
   };
 
-  const handlePaymentMethodChange = async (paymentMethod: string) => {
+  const savePaymentMethod = async (paymentMethod: string) => {
     if (!config) return;
     setSaving(true);
     setError(null);
@@ -86,10 +89,21 @@ export function AlbumConfigForm() {
       if (!res.ok) throw new Error("Failed to update config");
       const updated = await res.json();
       setConfig(updated);
+      setSelectedPaymentMethod(updated.paymentMethod);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePaymentMethodSelect = (paymentMethod: string) => {
+    const method = paymentMethod as "OUTSIDE_FOTNO" | "INSIDE_FOTNO";
+    setSelectedPaymentMethod(method);
+
+    // Only save to backend if selecting OUTSIDE_FOTNO or already onboarded
+    if (method === "OUTSIDE_FOTNO" || connectOnboarded) {
+      savePaymentMethod(method);
     }
   };
 
@@ -147,8 +161,8 @@ export function AlbumConfigForm() {
             <div className="space-y-3">
               <label className="text-sm font-medium">Payment Method</label>
               <Select
-                value={config.paymentMethod}
-                onValueChange={handlePaymentMethodChange}
+                value={selectedPaymentMethod}
+                onValueChange={handlePaymentMethodSelect}
                 disabled={saving}
               >
                 <SelectTrigger>
@@ -158,19 +172,35 @@ export function AlbumConfigForm() {
                   <SelectItem value="OUTSIDE_FOTNO">
                     Client pays directly (outside Fotno)
                   </SelectItem>
-                  <SelectItem value="INSIDE_FOTNO" disabled={!connectOnboarded}>
-                    Client pays through Fotno (requires Stripe Connect)
-                    {!connectOnboarded && " — complete setup below"}
+                  <SelectItem value="INSIDE_FOTNO">
+                    Client pays through Fotno
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-xs text-muted-foreground">
-                {config.paymentMethod === "OUTSIDE_FOTNO"
-                  ? "Clients will pay you directly via link in the submission confirmation"
-                  : "Clients will pay through our platform using Stripe"}
-              </p>
 
-              {config.paymentMethod === "INSIDE_FOTNO" && config.platformFeePercent != null && (
+              <div className="rounded-md border bg-muted/50 px-4 py-3 text-sm space-y-2">
+                {selectedPaymentMethod === "OUTSIDE_FOTNO" ? (
+                  <>
+                    <p className="font-medium">Direct Payment</p>
+                    <p className="text-xs text-muted-foreground">
+                      You handle payments yourself. After album submission, your client receives
+                      a confirmation with your payment link. No platform fees apply — you manage
+                      invoicing, pricing, and collection outside of Fotno.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-medium">Integrated Payment via Stripe</p>
+                    <p className="text-xs text-muted-foreground">
+                      Clients pay directly through Fotno at checkout. Payments are processed via
+                      Stripe Connect and deposited to your connected Stripe account automatically.
+                      No manual invoicing needed.
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {selectedPaymentMethod === "INSIDE_FOTNO" && config.platformFeePercent != null && (
                 <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm">
                   <p className="font-medium text-amber-400">
                     Platform fee: {config.platformFeePercent}%
@@ -184,16 +214,18 @@ export function AlbumConfigForm() {
               )}
             </div>
 
-            {(config.paymentMethod === "INSIDE_FOTNO" || !connectOnboarded) && (
+            {selectedPaymentMethod === "INSIDE_FOTNO" && (
               <StripeConnectSetup
                 onStatusChange={(onboarded) => {
+                  const wasOnboarded = connectOnboarded;
                   setConnectOnboarded(onboarded);
-                  // When disconnected, reload config to pick up payment method reset
-                  if (!onboarded) {
-                    fetch("/api/smart-albums/config")
-                      .then((r) => r.json())
-                      .then((data) => setConfig(data))
-                      .catch(() => {});
+                  if (onboarded && !wasOnboarded) {
+                    // Onboarding just completed — now persist INSIDE_FOTNO to backend
+                    savePaymentMethod("INSIDE_FOTNO");
+                  } else if (!onboarded && wasOnboarded) {
+                    // Was onboarded, now disconnected — switch back to OUTSIDE_FOTNO
+                    setSelectedPaymentMethod("OUTSIDE_FOTNO");
+                    savePaymentMethod("OUTSIDE_FOTNO");
                   }
                 }}
               />

@@ -51,6 +51,7 @@ import {
 
 import PasswordRequirements from "./password-req";
 import { checkEmailExists } from "@/lib/email-check";
+import { identifyUser } from "@/lib/rybbit";
 
 export type AuthMode = "email" | "login" | "register" | "otp";
 
@@ -345,7 +346,8 @@ function UnifiedAuthFormComponent({
 
       toast.promise(result, {
         loading: "Logging you in...",
-        success: async () => {
+        success: async (data) => {
+          if (data?.email) identifyUser(data.email, { email: data.email });
           const allowed = await checkNotAdminThenRedirect();
           if (!allowed) return "Access denied";
           return "Welcome back";
@@ -399,7 +401,8 @@ function UnifiedAuthFormComponent({
 
       toast.promise(result, {
         loading: "Creating your account...",
-        success: () => {
+        success: (data) => {
+          if (data?.email) identifyUser(data.email, { email: data.email });
           redirectToDashboard();
           return "Your account is ready";
         },
@@ -469,6 +472,8 @@ function UnifiedAuthFormComponent({
       toast.promise(result, {
         loading: "Verifying your code...",
         success: async () => {
+          const email = parsed.data.email;
+          identifyUser(email, { email });
           if (isNewOtpUser) {
             const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
             const onboardingUrl = `/onboarding?${planParam}step=stripe`;

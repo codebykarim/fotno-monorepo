@@ -18,6 +18,7 @@ import {
 } from "@workspace/ui/components/form";
 import { signUp } from "@workspace/lib/auth/auth-client";
 import { checkEmailExists } from "@/lib/email-check";
+import { identifyUser } from "@/lib/rybbit";
 import PasswordRequirements from "../password-req";
 import Link from "next/link";
 
@@ -95,6 +96,8 @@ export function AccountInfoStep({ plan, onSuccess }: AccountInfoStepProps) {
       toast.promise(result, {
         loading: "Creating account...",
         success: () => {
+          const email = values.email.toLowerCase();
+          identifyUser(email, { email });
           onSuccess(); // Advance to stripe step
           return "Account created successfully";
         },

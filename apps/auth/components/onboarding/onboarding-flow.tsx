@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { AccountInfoStep } from "./account-info-step";
 import { StripeStep } from "./stripe-step";
 import { Icons } from "@workspace/ui/components/icons";
-import { trackEvent } from "../../lib/rybbit";
+import { trackEvent, identifyUser } from "../../lib/rybbit";
+import { getSession } from "@workspace/lib/auth/auth-client";
 
 export type OnboardingStep = "account" | "stripe";
 
@@ -19,6 +20,12 @@ export function OnboardingFlow({ initialStep, plan, paymentSuccess }: Onboarding
 
   useEffect(() => {
     trackEvent("onboarding_started", { plan, initialStep });
+
+    // Identify user for analytics (covers social sign-in redirects)
+    getSession().then((session) => {
+      const email = session?.data?.user?.email;
+      if (email) identifyUser(email, { email });
+    });
   }, [plan, initialStep]);
 
   // The steps configuration can be extended in the future (FR-015)

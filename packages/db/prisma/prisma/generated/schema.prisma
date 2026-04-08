@@ -708,3 +708,22 @@ model Notification {
   @@index([userId, isArchived, createdAt])
   @@map("notification")
 }
+
+model InboundEmail {
+  id        String   @id @default(uuid())
+  resendId  String   @unique // Resend email_id for deduplication
+  from      String
+  to        String[] // recipient addresses
+  cc        String[]
+  bcc       String[]
+  subject   String
+  text      String? // plain text body
+  html      String? // HTML body
+  isRead    Boolean  @default(false)
+  isStarred Boolean  @default(false)
+  createdAt DateTime @default(now()) // when we received it
+  sentAt    DateTime // when the email was originally sent
+
+  @@index([isRead, createdAt])
+  @@map("inbound_email")
+}

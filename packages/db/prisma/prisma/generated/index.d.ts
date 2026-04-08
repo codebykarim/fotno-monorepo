@@ -168,6 +168,11 @@ export type CustomDomain = $Result.DefaultSelection<Prisma.$CustomDomainPayload>
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model InboundEmail
+ * 
+ */
+export type InboundEmail = $Result.DefaultSelection<Prisma.$InboundEmailPayload>
 
 /**
  * Enums
@@ -807,6 +812,16 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.inboundEmail`: Exposes CRUD operations for the **InboundEmail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InboundEmails
+    * const inboundEmails = await prisma.inboundEmail.findMany()
+    * ```
+    */
+  get inboundEmail(): Prisma.InboundEmailDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -857,8 +872,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.5.0
-   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+   * Prisma Client JS version: 7.7.0
+   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
    */
   export type PrismaVersion = {
     client: string
@@ -1271,7 +1286,8 @@ export namespace Prisma {
     NotificationPreference: 'NotificationPreference',
     FcmToken: 'FcmToken',
     CustomDomain: 'CustomDomain',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    InboundEmail: 'InboundEmail'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1287,7 +1303,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "tierFeature" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain" | "notification"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "driveImportJob" | "pricingTier" | "tierFeature" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain" | "notification" | "inboundEmail"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3585,6 +3601,80 @@ export namespace Prisma {
           }
         }
       }
+      InboundEmail: {
+        payload: Prisma.$InboundEmailPayload<ExtArgs>
+        fields: Prisma.InboundEmailFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InboundEmailFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InboundEmailFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          findFirst: {
+            args: Prisma.InboundEmailFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InboundEmailFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          findMany: {
+            args: Prisma.InboundEmailFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>[]
+          }
+          create: {
+            args: Prisma.InboundEmailCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          createMany: {
+            args: Prisma.InboundEmailCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InboundEmailCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>[]
+          }
+          delete: {
+            args: Prisma.InboundEmailDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          update: {
+            args: Prisma.InboundEmailUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          deleteMany: {
+            args: Prisma.InboundEmailDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InboundEmailUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InboundEmailUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>[]
+          }
+          upsert: {
+            args: Prisma.InboundEmailUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InboundEmailPayload>
+          }
+          aggregate: {
+            args: Prisma.InboundEmailAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInboundEmail>
+          }
+          groupBy: {
+            args: Prisma.InboundEmailGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InboundEmailGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InboundEmailCountArgs<ExtArgs>
+            result: $Utils.Optional<InboundEmailCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3724,6 +3814,7 @@ export namespace Prisma {
     fcmToken?: FcmTokenOmit
     customDomain?: CustomDomainOmit
     notification?: NotificationOmit
+    inboundEmail?: InboundEmailOmit
   }
 
   /* Types for Logging */
@@ -41181,6 +41272,1098 @@ export namespace Prisma {
 
 
   /**
+   * Model InboundEmail
+   */
+
+  export type AggregateInboundEmail = {
+    _count: InboundEmailCountAggregateOutputType | null
+    _min: InboundEmailMinAggregateOutputType | null
+    _max: InboundEmailMaxAggregateOutputType | null
+  }
+
+  export type InboundEmailMinAggregateOutputType = {
+    id: string | null
+    resendId: string | null
+    from: string | null
+    subject: string | null
+    text: string | null
+    html: string | null
+    isRead: boolean | null
+    isStarred: boolean | null
+    createdAt: Date | null
+    sentAt: Date | null
+  }
+
+  export type InboundEmailMaxAggregateOutputType = {
+    id: string | null
+    resendId: string | null
+    from: string | null
+    subject: string | null
+    text: string | null
+    html: string | null
+    isRead: boolean | null
+    isStarred: boolean | null
+    createdAt: Date | null
+    sentAt: Date | null
+  }
+
+  export type InboundEmailCountAggregateOutputType = {
+    id: number
+    resendId: number
+    from: number
+    to: number
+    cc: number
+    bcc: number
+    subject: number
+    text: number
+    html: number
+    isRead: number
+    isStarred: number
+    createdAt: number
+    sentAt: number
+    _all: number
+  }
+
+
+  export type InboundEmailMinAggregateInputType = {
+    id?: true
+    resendId?: true
+    from?: true
+    subject?: true
+    text?: true
+    html?: true
+    isRead?: true
+    isStarred?: true
+    createdAt?: true
+    sentAt?: true
+  }
+
+  export type InboundEmailMaxAggregateInputType = {
+    id?: true
+    resendId?: true
+    from?: true
+    subject?: true
+    text?: true
+    html?: true
+    isRead?: true
+    isStarred?: true
+    createdAt?: true
+    sentAt?: true
+  }
+
+  export type InboundEmailCountAggregateInputType = {
+    id?: true
+    resendId?: true
+    from?: true
+    to?: true
+    cc?: true
+    bcc?: true
+    subject?: true
+    text?: true
+    html?: true
+    isRead?: true
+    isStarred?: true
+    createdAt?: true
+    sentAt?: true
+    _all?: true
+  }
+
+  export type InboundEmailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InboundEmail to aggregate.
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InboundEmails to fetch.
+     */
+    orderBy?: InboundEmailOrderByWithRelationInput | InboundEmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InboundEmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InboundEmails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InboundEmails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InboundEmails
+    **/
+    _count?: true | InboundEmailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InboundEmailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InboundEmailMaxAggregateInputType
+  }
+
+  export type GetInboundEmailAggregateType<T extends InboundEmailAggregateArgs> = {
+        [P in keyof T & keyof AggregateInboundEmail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInboundEmail[P]>
+      : GetScalarType<T[P], AggregateInboundEmail[P]>
+  }
+
+
+
+
+  export type InboundEmailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InboundEmailWhereInput
+    orderBy?: InboundEmailOrderByWithAggregationInput | InboundEmailOrderByWithAggregationInput[]
+    by: InboundEmailScalarFieldEnum[] | InboundEmailScalarFieldEnum
+    having?: InboundEmailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InboundEmailCountAggregateInputType | true
+    _min?: InboundEmailMinAggregateInputType
+    _max?: InboundEmailMaxAggregateInputType
+  }
+
+  export type InboundEmailGroupByOutputType = {
+    id: string
+    resendId: string
+    from: string
+    to: string[]
+    cc: string[]
+    bcc: string[]
+    subject: string
+    text: string | null
+    html: string | null
+    isRead: boolean
+    isStarred: boolean
+    createdAt: Date
+    sentAt: Date
+    _count: InboundEmailCountAggregateOutputType | null
+    _min: InboundEmailMinAggregateOutputType | null
+    _max: InboundEmailMaxAggregateOutputType | null
+  }
+
+  type GetInboundEmailGroupByPayload<T extends InboundEmailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InboundEmailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InboundEmailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InboundEmailGroupByOutputType[P]>
+            : GetScalarType<T[P], InboundEmailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InboundEmailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resendId?: boolean
+    from?: boolean
+    to?: boolean
+    cc?: boolean
+    bcc?: boolean
+    subject?: boolean
+    text?: boolean
+    html?: boolean
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: boolean
+    sentAt?: boolean
+  }, ExtArgs["result"]["inboundEmail"]>
+
+  export type InboundEmailSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resendId?: boolean
+    from?: boolean
+    to?: boolean
+    cc?: boolean
+    bcc?: boolean
+    subject?: boolean
+    text?: boolean
+    html?: boolean
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: boolean
+    sentAt?: boolean
+  }, ExtArgs["result"]["inboundEmail"]>
+
+  export type InboundEmailSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    resendId?: boolean
+    from?: boolean
+    to?: boolean
+    cc?: boolean
+    bcc?: boolean
+    subject?: boolean
+    text?: boolean
+    html?: boolean
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: boolean
+    sentAt?: boolean
+  }, ExtArgs["result"]["inboundEmail"]>
+
+  export type InboundEmailSelectScalar = {
+    id?: boolean
+    resendId?: boolean
+    from?: boolean
+    to?: boolean
+    cc?: boolean
+    bcc?: boolean
+    subject?: boolean
+    text?: boolean
+    html?: boolean
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: boolean
+    sentAt?: boolean
+  }
+
+  export type InboundEmailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "resendId" | "from" | "to" | "cc" | "bcc" | "subject" | "text" | "html" | "isRead" | "isStarred" | "createdAt" | "sentAt", ExtArgs["result"]["inboundEmail"]>
+
+  export type $InboundEmailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InboundEmail"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      resendId: string
+      from: string
+      to: string[]
+      cc: string[]
+      bcc: string[]
+      subject: string
+      text: string | null
+      html: string | null
+      isRead: boolean
+      isStarred: boolean
+      createdAt: Date
+      sentAt: Date
+    }, ExtArgs["result"]["inboundEmail"]>
+    composites: {}
+  }
+
+  type InboundEmailGetPayload<S extends boolean | null | undefined | InboundEmailDefaultArgs> = $Result.GetResult<Prisma.$InboundEmailPayload, S>
+
+  type InboundEmailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InboundEmailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InboundEmailCountAggregateInputType | true
+    }
+
+  export interface InboundEmailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InboundEmail'], meta: { name: 'InboundEmail' } }
+    /**
+     * Find zero or one InboundEmail that matches the filter.
+     * @param {InboundEmailFindUniqueArgs} args - Arguments to find a InboundEmail
+     * @example
+     * // Get one InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InboundEmailFindUniqueArgs>(args: SelectSubset<T, InboundEmailFindUniqueArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InboundEmail that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InboundEmailFindUniqueOrThrowArgs} args - Arguments to find a InboundEmail
+     * @example
+     * // Get one InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InboundEmailFindUniqueOrThrowArgs>(args: SelectSubset<T, InboundEmailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InboundEmail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailFindFirstArgs} args - Arguments to find a InboundEmail
+     * @example
+     * // Get one InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InboundEmailFindFirstArgs>(args?: SelectSubset<T, InboundEmailFindFirstArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InboundEmail that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailFindFirstOrThrowArgs} args - Arguments to find a InboundEmail
+     * @example
+     * // Get one InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InboundEmailFindFirstOrThrowArgs>(args?: SelectSubset<T, InboundEmailFindFirstOrThrowArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InboundEmails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InboundEmails
+     * const inboundEmails = await prisma.inboundEmail.findMany()
+     * 
+     * // Get first 10 InboundEmails
+     * const inboundEmails = await prisma.inboundEmail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inboundEmailWithIdOnly = await prisma.inboundEmail.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InboundEmailFindManyArgs>(args?: SelectSubset<T, InboundEmailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InboundEmail.
+     * @param {InboundEmailCreateArgs} args - Arguments to create a InboundEmail.
+     * @example
+     * // Create one InboundEmail
+     * const InboundEmail = await prisma.inboundEmail.create({
+     *   data: {
+     *     // ... data to create a InboundEmail
+     *   }
+     * })
+     * 
+     */
+    create<T extends InboundEmailCreateArgs>(args: SelectSubset<T, InboundEmailCreateArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InboundEmails.
+     * @param {InboundEmailCreateManyArgs} args - Arguments to create many InboundEmails.
+     * @example
+     * // Create many InboundEmails
+     * const inboundEmail = await prisma.inboundEmail.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InboundEmailCreateManyArgs>(args?: SelectSubset<T, InboundEmailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InboundEmails and returns the data saved in the database.
+     * @param {InboundEmailCreateManyAndReturnArgs} args - Arguments to create many InboundEmails.
+     * @example
+     * // Create many InboundEmails
+     * const inboundEmail = await prisma.inboundEmail.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InboundEmails and only return the `id`
+     * const inboundEmailWithIdOnly = await prisma.inboundEmail.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InboundEmailCreateManyAndReturnArgs>(args?: SelectSubset<T, InboundEmailCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InboundEmail.
+     * @param {InboundEmailDeleteArgs} args - Arguments to delete one InboundEmail.
+     * @example
+     * // Delete one InboundEmail
+     * const InboundEmail = await prisma.inboundEmail.delete({
+     *   where: {
+     *     // ... filter to delete one InboundEmail
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InboundEmailDeleteArgs>(args: SelectSubset<T, InboundEmailDeleteArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InboundEmail.
+     * @param {InboundEmailUpdateArgs} args - Arguments to update one InboundEmail.
+     * @example
+     * // Update one InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InboundEmailUpdateArgs>(args: SelectSubset<T, InboundEmailUpdateArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InboundEmails.
+     * @param {InboundEmailDeleteManyArgs} args - Arguments to filter InboundEmails to delete.
+     * @example
+     * // Delete a few InboundEmails
+     * const { count } = await prisma.inboundEmail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InboundEmailDeleteManyArgs>(args?: SelectSubset<T, InboundEmailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InboundEmails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InboundEmails
+     * const inboundEmail = await prisma.inboundEmail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InboundEmailUpdateManyArgs>(args: SelectSubset<T, InboundEmailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InboundEmails and returns the data updated in the database.
+     * @param {InboundEmailUpdateManyAndReturnArgs} args - Arguments to update many InboundEmails.
+     * @example
+     * // Update many InboundEmails
+     * const inboundEmail = await prisma.inboundEmail.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InboundEmails and only return the `id`
+     * const inboundEmailWithIdOnly = await prisma.inboundEmail.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InboundEmailUpdateManyAndReturnArgs>(args: SelectSubset<T, InboundEmailUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InboundEmail.
+     * @param {InboundEmailUpsertArgs} args - Arguments to update or create a InboundEmail.
+     * @example
+     * // Update or create a InboundEmail
+     * const inboundEmail = await prisma.inboundEmail.upsert({
+     *   create: {
+     *     // ... data to create a InboundEmail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InboundEmail we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InboundEmailUpsertArgs>(args: SelectSubset<T, InboundEmailUpsertArgs<ExtArgs>>): Prisma__InboundEmailClient<$Result.GetResult<Prisma.$InboundEmailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InboundEmails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailCountArgs} args - Arguments to filter InboundEmails to count.
+     * @example
+     * // Count the number of InboundEmails
+     * const count = await prisma.inboundEmail.count({
+     *   where: {
+     *     // ... the filter for the InboundEmails we want to count
+     *   }
+     * })
+    **/
+    count<T extends InboundEmailCountArgs>(
+      args?: Subset<T, InboundEmailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InboundEmailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InboundEmail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InboundEmailAggregateArgs>(args: Subset<T, InboundEmailAggregateArgs>): Prisma.PrismaPromise<GetInboundEmailAggregateType<T>>
+
+    /**
+     * Group by InboundEmail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InboundEmailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InboundEmailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InboundEmailGroupByArgs['orderBy'] }
+        : { orderBy?: InboundEmailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InboundEmailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInboundEmailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InboundEmail model
+   */
+  readonly fields: InboundEmailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InboundEmail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InboundEmailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InboundEmail model
+   */
+  interface InboundEmailFieldRefs {
+    readonly id: FieldRef<"InboundEmail", 'String'>
+    readonly resendId: FieldRef<"InboundEmail", 'String'>
+    readonly from: FieldRef<"InboundEmail", 'String'>
+    readonly to: FieldRef<"InboundEmail", 'String[]'>
+    readonly cc: FieldRef<"InboundEmail", 'String[]'>
+    readonly bcc: FieldRef<"InboundEmail", 'String[]'>
+    readonly subject: FieldRef<"InboundEmail", 'String'>
+    readonly text: FieldRef<"InboundEmail", 'String'>
+    readonly html: FieldRef<"InboundEmail", 'String'>
+    readonly isRead: FieldRef<"InboundEmail", 'Boolean'>
+    readonly isStarred: FieldRef<"InboundEmail", 'Boolean'>
+    readonly createdAt: FieldRef<"InboundEmail", 'DateTime'>
+    readonly sentAt: FieldRef<"InboundEmail", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InboundEmail findUnique
+   */
+  export type InboundEmailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter, which InboundEmail to fetch.
+     */
+    where: InboundEmailWhereUniqueInput
+  }
+
+  /**
+   * InboundEmail findUniqueOrThrow
+   */
+  export type InboundEmailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter, which InboundEmail to fetch.
+     */
+    where: InboundEmailWhereUniqueInput
+  }
+
+  /**
+   * InboundEmail findFirst
+   */
+  export type InboundEmailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter, which InboundEmail to fetch.
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InboundEmails to fetch.
+     */
+    orderBy?: InboundEmailOrderByWithRelationInput | InboundEmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InboundEmails.
+     */
+    cursor?: InboundEmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InboundEmails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InboundEmails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InboundEmails.
+     */
+    distinct?: InboundEmailScalarFieldEnum | InboundEmailScalarFieldEnum[]
+  }
+
+  /**
+   * InboundEmail findFirstOrThrow
+   */
+  export type InboundEmailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter, which InboundEmail to fetch.
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InboundEmails to fetch.
+     */
+    orderBy?: InboundEmailOrderByWithRelationInput | InboundEmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InboundEmails.
+     */
+    cursor?: InboundEmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InboundEmails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InboundEmails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InboundEmails.
+     */
+    distinct?: InboundEmailScalarFieldEnum | InboundEmailScalarFieldEnum[]
+  }
+
+  /**
+   * InboundEmail findMany
+   */
+  export type InboundEmailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter, which InboundEmails to fetch.
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InboundEmails to fetch.
+     */
+    orderBy?: InboundEmailOrderByWithRelationInput | InboundEmailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InboundEmails.
+     */
+    cursor?: InboundEmailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InboundEmails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InboundEmails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InboundEmails.
+     */
+    distinct?: InboundEmailScalarFieldEnum | InboundEmailScalarFieldEnum[]
+  }
+
+  /**
+   * InboundEmail create
+   */
+  export type InboundEmailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * The data needed to create a InboundEmail.
+     */
+    data: XOR<InboundEmailCreateInput, InboundEmailUncheckedCreateInput>
+  }
+
+  /**
+   * InboundEmail createMany
+   */
+  export type InboundEmailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InboundEmails.
+     */
+    data: InboundEmailCreateManyInput | InboundEmailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InboundEmail createManyAndReturn
+   */
+  export type InboundEmailCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * The data used to create many InboundEmails.
+     */
+    data: InboundEmailCreateManyInput | InboundEmailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InboundEmail update
+   */
+  export type InboundEmailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * The data needed to update a InboundEmail.
+     */
+    data: XOR<InboundEmailUpdateInput, InboundEmailUncheckedUpdateInput>
+    /**
+     * Choose, which InboundEmail to update.
+     */
+    where: InboundEmailWhereUniqueInput
+  }
+
+  /**
+   * InboundEmail updateMany
+   */
+  export type InboundEmailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InboundEmails.
+     */
+    data: XOR<InboundEmailUpdateManyMutationInput, InboundEmailUncheckedUpdateManyInput>
+    /**
+     * Filter which InboundEmails to update
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * Limit how many InboundEmails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InboundEmail updateManyAndReturn
+   */
+  export type InboundEmailUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * The data used to update InboundEmails.
+     */
+    data: XOR<InboundEmailUpdateManyMutationInput, InboundEmailUncheckedUpdateManyInput>
+    /**
+     * Filter which InboundEmails to update
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * Limit how many InboundEmails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InboundEmail upsert
+   */
+  export type InboundEmailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * The filter to search for the InboundEmail to update in case it exists.
+     */
+    where: InboundEmailWhereUniqueInput
+    /**
+     * In case the InboundEmail found by the `where` argument doesn't exist, create a new InboundEmail with this data.
+     */
+    create: XOR<InboundEmailCreateInput, InboundEmailUncheckedCreateInput>
+    /**
+     * In case the InboundEmail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InboundEmailUpdateInput, InboundEmailUncheckedUpdateInput>
+  }
+
+  /**
+   * InboundEmail delete
+   */
+  export type InboundEmailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+    /**
+     * Filter which InboundEmail to delete.
+     */
+    where: InboundEmailWhereUniqueInput
+  }
+
+  /**
+   * InboundEmail deleteMany
+   */
+  export type InboundEmailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InboundEmails to delete
+     */
+    where?: InboundEmailWhereInput
+    /**
+     * Limit how many InboundEmails to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InboundEmail without action
+   */
+  export type InboundEmailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InboundEmail
+     */
+    select?: InboundEmailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InboundEmail
+     */
+    omit?: InboundEmailOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -41717,6 +42900,25 @@ export namespace Prisma {
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const InboundEmailScalarFieldEnum: {
+    id: 'id',
+    resendId: 'resendId',
+    from: 'from',
+    to: 'to',
+    cc: 'cc',
+    bcc: 'bcc',
+    subject: 'subject',
+    text: 'text',
+    html: 'html',
+    isRead: 'isRead',
+    isStarred: 'isStarred',
+    createdAt: 'createdAt',
+    sentAt: 'sentAt'
+  };
+
+  export type InboundEmailScalarFieldEnum = (typeof InboundEmailScalarFieldEnum)[keyof typeof InboundEmailScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -44851,6 +46053,98 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
+  export type InboundEmailWhereInput = {
+    AND?: InboundEmailWhereInput | InboundEmailWhereInput[]
+    OR?: InboundEmailWhereInput[]
+    NOT?: InboundEmailWhereInput | InboundEmailWhereInput[]
+    id?: StringFilter<"InboundEmail"> | string
+    resendId?: StringFilter<"InboundEmail"> | string
+    from?: StringFilter<"InboundEmail"> | string
+    to?: StringNullableListFilter<"InboundEmail">
+    cc?: StringNullableListFilter<"InboundEmail">
+    bcc?: StringNullableListFilter<"InboundEmail">
+    subject?: StringFilter<"InboundEmail"> | string
+    text?: StringNullableFilter<"InboundEmail"> | string | null
+    html?: StringNullableFilter<"InboundEmail"> | string | null
+    isRead?: BoolFilter<"InboundEmail"> | boolean
+    isStarred?: BoolFilter<"InboundEmail"> | boolean
+    createdAt?: DateTimeFilter<"InboundEmail"> | Date | string
+    sentAt?: DateTimeFilter<"InboundEmail"> | Date | string
+  }
+
+  export type InboundEmailOrderByWithRelationInput = {
+    id?: SortOrder
+    resendId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    cc?: SortOrder
+    bcc?: SortOrder
+    subject?: SortOrder
+    text?: SortOrderInput | SortOrder
+    html?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    isStarred?: SortOrder
+    createdAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type InboundEmailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    resendId?: string
+    AND?: InboundEmailWhereInput | InboundEmailWhereInput[]
+    OR?: InboundEmailWhereInput[]
+    NOT?: InboundEmailWhereInput | InboundEmailWhereInput[]
+    from?: StringFilter<"InboundEmail"> | string
+    to?: StringNullableListFilter<"InboundEmail">
+    cc?: StringNullableListFilter<"InboundEmail">
+    bcc?: StringNullableListFilter<"InboundEmail">
+    subject?: StringFilter<"InboundEmail"> | string
+    text?: StringNullableFilter<"InboundEmail"> | string | null
+    html?: StringNullableFilter<"InboundEmail"> | string | null
+    isRead?: BoolFilter<"InboundEmail"> | boolean
+    isStarred?: BoolFilter<"InboundEmail"> | boolean
+    createdAt?: DateTimeFilter<"InboundEmail"> | Date | string
+    sentAt?: DateTimeFilter<"InboundEmail"> | Date | string
+  }, "id" | "resendId">
+
+  export type InboundEmailOrderByWithAggregationInput = {
+    id?: SortOrder
+    resendId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    cc?: SortOrder
+    bcc?: SortOrder
+    subject?: SortOrder
+    text?: SortOrderInput | SortOrder
+    html?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    isStarred?: SortOrder
+    createdAt?: SortOrder
+    sentAt?: SortOrder
+    _count?: InboundEmailCountOrderByAggregateInput
+    _max?: InboundEmailMaxOrderByAggregateInput
+    _min?: InboundEmailMinOrderByAggregateInput
+  }
+
+  export type InboundEmailScalarWhereWithAggregatesInput = {
+    AND?: InboundEmailScalarWhereWithAggregatesInput | InboundEmailScalarWhereWithAggregatesInput[]
+    OR?: InboundEmailScalarWhereWithAggregatesInput[]
+    NOT?: InboundEmailScalarWhereWithAggregatesInput | InboundEmailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InboundEmail"> | string
+    resendId?: StringWithAggregatesFilter<"InboundEmail"> | string
+    from?: StringWithAggregatesFilter<"InboundEmail"> | string
+    to?: StringNullableListFilter<"InboundEmail">
+    cc?: StringNullableListFilter<"InboundEmail">
+    bcc?: StringNullableListFilter<"InboundEmail">
+    subject?: StringWithAggregatesFilter<"InboundEmail"> | string
+    text?: StringNullableWithAggregatesFilter<"InboundEmail"> | string | null
+    html?: StringNullableWithAggregatesFilter<"InboundEmail"> | string | null
+    isRead?: BoolWithAggregatesFilter<"InboundEmail"> | boolean
+    isStarred?: BoolWithAggregatesFilter<"InboundEmail"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"InboundEmail"> | Date | string
+    sentAt?: DateTimeWithAggregatesFilter<"InboundEmail"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -47974,6 +49268,118 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InboundEmailCreateInput = {
+    id?: string
+    resendId: string
+    from: string
+    to?: InboundEmailCreatetoInput | string[]
+    cc?: InboundEmailCreateccInput | string[]
+    bcc?: InboundEmailCreatebccInput | string[]
+    subject: string
+    text?: string | null
+    html?: string | null
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: Date | string
+    sentAt: Date | string
+  }
+
+  export type InboundEmailUncheckedCreateInput = {
+    id?: string
+    resendId: string
+    from: string
+    to?: InboundEmailCreatetoInput | string[]
+    cc?: InboundEmailCreateccInput | string[]
+    bcc?: InboundEmailCreatebccInput | string[]
+    subject: string
+    text?: string | null
+    html?: string | null
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: Date | string
+    sentAt: Date | string
+  }
+
+  export type InboundEmailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resendId?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
+    to?: InboundEmailUpdatetoInput | string[]
+    cc?: InboundEmailUpdateccInput | string[]
+    bcc?: InboundEmailUpdatebccInput | string[]
+    subject?: StringFieldUpdateOperationsInput | string
+    text?: NullableStringFieldUpdateOperationsInput | string | null
+    html?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    isStarred?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InboundEmailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resendId?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
+    to?: InboundEmailUpdatetoInput | string[]
+    cc?: InboundEmailUpdateccInput | string[]
+    bcc?: InboundEmailUpdatebccInput | string[]
+    subject?: StringFieldUpdateOperationsInput | string
+    text?: NullableStringFieldUpdateOperationsInput | string | null
+    html?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    isStarred?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InboundEmailCreateManyInput = {
+    id?: string
+    resendId: string
+    from: string
+    to?: InboundEmailCreatetoInput | string[]
+    cc?: InboundEmailCreateccInput | string[]
+    bcc?: InboundEmailCreatebccInput | string[]
+    subject: string
+    text?: string | null
+    html?: string | null
+    isRead?: boolean
+    isStarred?: boolean
+    createdAt?: Date | string
+    sentAt: Date | string
+  }
+
+  export type InboundEmailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resendId?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
+    to?: InboundEmailUpdatetoInput | string[]
+    cc?: InboundEmailUpdateccInput | string[]
+    bcc?: InboundEmailUpdatebccInput | string[]
+    subject?: StringFieldUpdateOperationsInput | string
+    text?: NullableStringFieldUpdateOperationsInput | string | null
+    html?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    isStarred?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InboundEmailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resendId?: StringFieldUpdateOperationsInput | string
+    from?: StringFieldUpdateOperationsInput | string
+    to?: InboundEmailUpdatetoInput | string[]
+    cc?: InboundEmailUpdateccInput | string[]
+    bcc?: InboundEmailUpdatebccInput | string[]
+    subject?: StringFieldUpdateOperationsInput | string
+    text?: NullableStringFieldUpdateOperationsInput | string | null
+    html?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    isStarred?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -50404,6 +51810,48 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type InboundEmailCountOrderByAggregateInput = {
+    id?: SortOrder
+    resendId?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    cc?: SortOrder
+    bcc?: SortOrder
+    subject?: SortOrder
+    text?: SortOrder
+    html?: SortOrder
+    isRead?: SortOrder
+    isStarred?: SortOrder
+    createdAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type InboundEmailMaxOrderByAggregateInput = {
+    id?: SortOrder
+    resendId?: SortOrder
+    from?: SortOrder
+    subject?: SortOrder
+    text?: SortOrder
+    html?: SortOrder
+    isRead?: SortOrder
+    isStarred?: SortOrder
+    createdAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type InboundEmailMinOrderByAggregateInput = {
+    id?: SortOrder
+    resendId?: SortOrder
+    from?: SortOrder
+    subject?: SortOrder
+    text?: SortOrder
+    html?: SortOrder
+    isRead?: SortOrder
+    isStarred?: SortOrder
+    createdAt?: SortOrder
+    sentAt?: SortOrder
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -52395,6 +53843,33 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutNotificationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type InboundEmailCreatetoInput = {
+    set: string[]
+  }
+
+  export type InboundEmailCreateccInput = {
+    set: string[]
+  }
+
+  export type InboundEmailCreatebccInput = {
+    set: string[]
+  }
+
+  export type InboundEmailUpdatetoInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type InboundEmailUpdateccInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type InboundEmailUpdatebccInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {

@@ -17,6 +17,7 @@ import {
   Activity,
   BarChart3,
   Tags,
+  Inbox,
 } from "lucide-react";
 import { NavUser } from "@workspace/ui/components/nav-user";
 
@@ -29,6 +30,7 @@ const navItems = [
   { href: "/storage", label: "Storage", icon: HardDrive },
   { href: "/payments", label: "Subscriptions", icon: CreditCard },
   { href: "/pricing", label: "Pricing", icon: Tags },
+  { href: "/inbox", label: "Inbox", icon: Inbox },
   { href: "/services", label: "Services", icon: Activity },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];

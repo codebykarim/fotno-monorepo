@@ -61,7 +61,10 @@ app.use(
   json({
     verify: (req: any, _res, buf) => {
       // Capture raw body for webhook signature verification
-      if (req.url?.includes("/billing/webhook")) {
+      if (
+        req.url?.includes("/billing/webhook") ||
+        req.url?.includes("/email/webhook")
+      ) {
         req.rawBody = buf;
       }
     },

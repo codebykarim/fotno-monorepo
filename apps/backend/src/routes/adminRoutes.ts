@@ -112,6 +112,26 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.deleteRegionalPricingController,
     authFunction: isAdmin,
   },
+  "list-inbox": {
+    httpMethod: "GET",
+    controllerFunction: AdminController.listInboundEmailsController,
+    authFunction: isAdmin,
+  },
+  "get-inbox-email": {
+    httpMethod: "GET",
+    controllerFunction: AdminController.getInboundEmailController,
+    authFunction: isAdmin,
+  },
+  "update-inbox-email": {
+    httpMethod: "PATCH",
+    controllerFunction: AdminController.updateInboundEmailController,
+    authFunction: isAdmin,
+  },
+  "delete-inbox-email": {
+    httpMethod: "DELETE",
+    controllerFunction: AdminController.deleteInboundEmailController,
+    authFunction: isAdmin,
+  },
 };
 
 const mappedMethods = init(adminMethods);
@@ -145,5 +165,11 @@ adminRoutes.delete("/admin/pricing/tiers/:id", handleMethod("delete-pricing-tier
 adminRoutes.post("/admin/pricing/regions", handleMethod("create-regional-pricing"));
 adminRoutes.put("/admin/pricing/regions/:id", handleMethod("update-regional-pricing"));
 adminRoutes.delete("/admin/pricing/regions/:id", handleMethod("delete-regional-pricing"));
+
+// Inbox
+adminRoutes.get("/admin/inbox", handleMethod("list-inbox"));
+adminRoutes.get("/admin/inbox/:id", handleMethod("get-inbox-email"));
+adminRoutes.patch("/admin/inbox/:id", handleMethod("update-inbox-email"));
+adminRoutes.delete("/admin/inbox/:id", handleMethod("delete-inbox-email"));
 
 export default adminRoutes;

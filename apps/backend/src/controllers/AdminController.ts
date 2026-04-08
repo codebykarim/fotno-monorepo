@@ -348,3 +348,154 @@ export const deleteRegionalPricingController = async (req: Request, res: Respons
   invalidatePricingCaches();
   return res.status(200).json(region);
 };
+
+// ── Inbox (Inbound Emails) ──────────────────────────────────────────
+
+const VALID_INBOX_FILTERS = ["all", "unread", "starred"] as const;
+
+// Simple UUID v4 check
+const isUuid = (s: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s);
+
+export const listInboundEmailsController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 50));
+    const rawFilter = String(req.query.filter ?? "all");
+    const filter = VALID_INBOX_FILTERS.includes(rawFilter as any)
+      ? rawFilter
+      : "all";
+
+    const where: Record<string, unknown> = {};
+    if (filter === "unread") where.isRead = false;
+    if (filter === "starred") where.isStarred = true;
+
+    const [emails, total, unreadCount] = await Promise.all([
+      (prisma as any).inboundEmail.findMany({
+        where,
+        orderBy: { sentAt: "desc" },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      (prisma as any).inboundEmail.count({ where }),
+      (prisma as any).inboundEmail.count({ where: { isRead: false } }),
+    ]);
+
+    return res.status(200).json({
+      data: emails,
+      total,
+      unreadCount,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    });
+  } catch (error) {
+    console.error("[Admin] Error listing inbound emails:", error);
+    return res.status(500).json({ error: "Failed to list emails" });
+  }
+};
+
+export const getInboundEmailController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    if (!isUuid(id)) {
+      return res.status(400).json({ error: "Invalid email ID" });
+    }
+
+    // Atomically mark as read and return in one query
+    const email = await (prisma as any).inboundEmail.findUnique({
+      where: { id },
+    });
+
+    if (!email) {
+      return res.status(404).json({ error: "Email not found" });
+    }
+
+    if (!email.isRead) {
+      await (prisma as any).inboundEmail.update({
+        where: { id },
+        data: { isRead: true },
+      });
+      email.isRead = true;
+    }
+
+    return res.status(200).json(email);
+  } catch (error) {
+    console.error("[Admin] Error getting inbound email:", error);
+    return res.status(500).json({ error: "Failed to get email" });
+  }
+};
+
+export const updateInboundEmailController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    if (!isUuid(id)) {
+      return res.status(400).json({ error: "Invalid email ID" });
+    }
+
+    const { isRead, isStarred } = req.body;
+
+    const data: Record<string, boolean> = {};
+    if (typeof isRead === "boolean") data.isRead = isRead;
+    if (typeof isStarred === "boolean") data.isStarred = isStarred;
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({ error: "No valid fields to update" });
+    }
+
+    // Check existence first to return a clean 404
+    const existing = await (prisma as any).inboundEmail.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!existing) {
+      return res.status(404).json({ error: "Email not found" });
+    }
+
+    const email = await (prisma as any).inboundEmail.update({
+      where: { id },
+      data,
+    });
+
+    return res.status(200).json(email);
+  } catch (error) {
+    console.error("[Admin] Error updating inbound email:", error);
+    return res.status(500).json({ error: "Failed to update email" });
+  }
+};
+
+export const deleteInboundEmailController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    if (!isUuid(id)) {
+      return res.status(400).json({ error: "Invalid email ID" });
+    }
+
+    const existing = await (prisma as any).inboundEmail.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!existing) {
+      return res.status(404).json({ error: "Email not found" });
+    }
+
+    await (prisma as any).inboundEmail.delete({ where: { id } });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("[Admin] Error deleting inbound email:", error);
+    return res.status(500).json({ error: "Failed to delete email" });
+  }
+};

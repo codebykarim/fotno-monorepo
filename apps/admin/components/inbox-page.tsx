@@ -3,9 +3,16 @@
 import { useState, useCallback } from "react";
 import useSWR from "swr";
 import { jsonFetcher, apiRequest } from "@/lib/api/client";
-import { formatDate } from "@/lib/format";
 import { toast } from "sonner";
 import { cn } from "@workspace/ui/lib/utils";
+import {
+  ArrowLeft,
+  Mail,
+  MailOpen,
+  RefreshCw,
+  Star,
+  Trash2,
+} from "lucide-react";
 
 interface InboundEmail {
   id: string;
@@ -37,23 +44,29 @@ export function InboxPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const [page, setPage] = useState(1);
   const [selectedEmail, setSelectedEmail] = useState<InboundEmail | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const queryParams = new URLSearchParams({
     filter,
     page: String(page),
-    pageSize: "30",
+    pageSize: "50",
   }).toString();
 
   const { data, isLoading, mutate } = useSWR<InboxResponse>(
     `/api/inbox?${queryParams}`,
     jsonFetcher,
-    { refreshInterval: 15000 },
+    { revalidateOnFocus: false },
   );
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await mutate();
+    setIsRefreshing(false);
+  }, [mutate]);
 
   const handleSelectEmail = useCallback(
     async (email: InboundEmail) => {
       setSelectedEmail(email);
-
       if (!email.isRead) {
         try {
           await apiRequest(`/api/inbox/${email.id}`, {
@@ -82,7 +95,9 @@ export function InboxPage() {
         }
         mutate();
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Something went wrong");
+        toast.error(
+          err instanceof Error ? err.message : "Something went wrong",
+        );
       }
     },
     [mutate, selectedEmail],
@@ -100,7 +115,9 @@ export function InboxPage() {
         }
         mutate();
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Something went wrong");
+        toast.error(
+          err instanceof Error ? err.message : "Something went wrong",
+        );
       }
     },
     [mutate, selectedEmail],
@@ -115,7 +132,9 @@ export function InboxPage() {
         toast.success("Email deleted");
         mutate();
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Something went wrong");
+        toast.error(
+          err instanceof Error ? err.message : "Something went wrong",
+        );
       }
     },
     [mutate, selectedEmail],
@@ -134,245 +153,319 @@ export function InboxPage() {
   const formatTime = (iso: string) => {
     const date = new Date(iso);
     const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
     const isToday = date.toDateString() === now.toDateString();
+    const isYesterday =
+      new Date(now.getTime() - 86400000).toDateString() === date.toDateString();
+    const isThisYear = date.getFullYear() === now.getFullYear();
+
+    if (diffMs < 60000) return "now";
     if (isToday) {
       return date.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit",
       });
     }
-    return formatDate(iso);
+    if (isYesterday) return "Yesterday";
+    if (isThisYear) {
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    }
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
-  return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Inbox</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {data?.unreadCount
-              ? `${data.unreadCount} unread`
-              : "No unread emails"}
-            {data?.total ? ` \u00B7 ${data.total} total` : ""}
-          </p>
-        </div>
-      </div>
+  const senderInitial = (from: string) => {
+    const name = extractSenderName(from);
+    return name.charAt(0).toUpperCase();
+  };
 
-      {/* Filter tabs */}
-      <div className="mb-4 flex gap-1 rounded-lg border border-border bg-muted/50 p-1 w-fit">
-        {(["all", "unread", "starred"] as Filter[]).map((f) => (
+  // ── Detail view ──
+  if (selectedEmail) {
+    return (
+      <div className="flex flex-col h-[calc(100vh-4rem)]">
+        {/* Toolbar */}
+        <div className="flex items-center gap-1 border-b border-border px-3 py-2">
           <button
-            key={f}
-            onClick={() => {
-              setFilter(f);
-              setPage(1);
-              setSelectedEmail(null);
-            }}
-            className={cn(
-              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors capitalize",
-              filter === f
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground",
-            )}
+            onClick={() => setSelectedEmail(null)}
+            className="rounded-full p-2 hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            title="Back"
           >
-            {f}
+            <ArrowLeft className="h-4 w-4" />
           </button>
-        ))}
-      </div>
 
-      <div className="flex gap-4 min-h-[600px]">
-        {/* Email list */}
-        <div className="w-[420px] shrink-0 rounded-lg border border-border bg-card overflow-hidden">
-          {isLoading ? (
-            <div className="flex items-center justify-center p-8 text-sm text-muted-foreground">
-              Loading...
-            </div>
-          ) : !data?.data.length ? (
-            <div className="flex items-center justify-center p-8 text-sm text-muted-foreground">
-              No emails
-            </div>
-          ) : (
-            <div className="divide-y divide-border">
-              {data.data.map((email) => (
+          <div className="flex items-center gap-1 ml-2">
+            <button
+              onClick={() => handleToggleRead(selectedEmail)}
+              className="rounded-full p-2 hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+              title={
+                selectedEmail.isRead ? "Mark as unread" : "Mark as read"
+              }
+            >
+              {selectedEmail.isRead ? (
+                <Mail className="h-4 w-4" />
+              ) : (
+                <MailOpen className="h-4 w-4" />
+              )}
+            </button>
+            <button
+              onClick={() => handleDelete(selectedEmail)}
+              className="rounded-full p-2 hover:bg-muted transition-colors text-muted-foreground hover:text-destructive"
+              title="Delete"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Subject */}
+        <div className="px-6 pt-5 pb-3">
+          <h1 className="text-xl font-normal text-foreground">
+            {selectedEmail.subject || "(no subject)"}
+          </h1>
+        </div>
+
+        {/* Sender row */}
+        <div className="px-6 pb-4 flex items-start gap-3">
+          <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center text-sm font-semibold text-primary shrink-0 mt-0.5">
+            {senderInitial(selectedEmail.from)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <div className="flex items-baseline gap-2">
+                <span className="font-medium text-sm text-foreground">
+                  {extractSenderName(selectedEmail.from)}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  &lt;{extractSenderEmail(selectedEmail.from)}&gt;
+                </span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-xs text-muted-foreground">
+                  {new Date(selectedEmail.sentAt).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                </span>
                 <button
-                  key={email.id}
-                  onClick={() => handleSelectEmail(email)}
+                  onClick={(e) => handleToggleStar(selectedEmail, e)}
                   className={cn(
-                    "w-full text-left px-4 py-3 transition-colors hover:bg-muted/50",
-                    selectedEmail?.id === email.id && "bg-muted",
-                    !email.isRead && "bg-primary/[0.03]",
+                    "p-1 transition-colors",
+                    selectedEmail.isStarred
+                      ? "text-amber-400"
+                      : "text-muted-foreground/30 hover:text-muted-foreground",
                   )}
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Unread dot */}
-                    <div className="mt-2 shrink-0">
-                      {!email.isRead ? (
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                      ) : (
-                        <div className="h-2 w-2" />
-                      )}
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span
-                          className={cn(
-                            "text-sm truncate",
-                            !email.isRead
-                              ? "font-semibold text-foreground"
-                              : "font-medium text-foreground/80",
-                          )}
-                        >
-                          {extractSenderName(email.from)}
-                        </span>
-                        <span className="text-xs text-muted-foreground shrink-0">
-                          {formatTime(email.sentAt)}
-                        </span>
-                      </div>
-                      <p
-                        className={cn(
-                          "text-sm truncate mt-0.5",
-                          !email.isRead
-                            ? "text-foreground"
-                            : "text-muted-foreground",
-                        )}
-                      >
-                        {email.subject || "(no subject)"}
-                      </p>
-                      {email.text && (
-                        <p className="text-xs text-muted-foreground truncate mt-0.5">
-                          {email.text.slice(0, 100)}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Star */}
-                    <button
-                      onClick={(e) => handleToggleStar(email, e)}
-                      className={cn(
-                        "mt-1 shrink-0 text-sm transition-colors",
-                        email.isStarred
-                          ? "text-amber-500"
-                          : "text-muted-foreground/40 hover:text-muted-foreground",
-                      )}
-                    >
-                      {email.isStarred ? "\u2605" : "\u2606"}
-                    </button>
-                  </div>
+                  <Star
+                    className="h-4 w-4"
+                    fill={selectedEmail.isStarred ? "currentColor" : "none"}
+                  />
                 </button>
-              ))}
+              </div>
             </div>
-          )}
-
-          {/* Pagination */}
-          {data && data.totalPages > 1 && (
-            <div className="flex items-center justify-between border-t border-border px-4 py-2">
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-40"
-              >
-                Previous
-              </button>
-              <span className="text-xs text-muted-foreground">
-                {page} / {data.totalPages}
-              </span>
-              <button
-                onClick={() =>
-                  setPage((p) => Math.min(data.totalPages, p + 1))
-                }
-                disabled={page === data.totalPages}
-                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-40"
-              >
-                Next
-              </button>
-            </div>
-          )}
+            <p className="text-xs text-muted-foreground mt-0.5">
+              to {selectedEmail.to.join(", ")}
+              {selectedEmail.cc.length > 0 &&
+                `, cc: ${selectedEmail.cc.join(", ")}`}
+            </p>
+          </div>
         </div>
 
-        {/* Email detail */}
-        <div className="flex-1 rounded-lg border border-border bg-card overflow-hidden">
-          {selectedEmail ? (
-            <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="border-b border-border p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <h2 className="text-lg font-semibold text-foreground">
-                    {selectedEmail.subject || "(no subject)"}
-                  </h2>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => handleToggleRead(selectedEmail)}
-                      className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded border border-border hover:bg-muted transition-colors"
-                    >
-                      Mark {selectedEmail.isRead ? "unread" : "read"}
-                    </button>
-                    <button
-                      onClick={() => handleDelete(selectedEmail)}
-                      className="text-xs text-destructive hover:text-destructive/80 px-2 py-1 rounded border border-destructive/30 hover:bg-destructive/10 transition-colors"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-                <div className="mt-3 space-y-1">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-muted-foreground w-12">From</span>
-                    <span className="font-medium">
-                      {extractSenderName(selectedEmail.from)}
-                    </span>
-                    <span className="text-muted-foreground">
-                      &lt;{extractSenderEmail(selectedEmail.from)}&gt;
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-muted-foreground w-12">To</span>
-                    <span>{selectedEmail.to.join(", ")}</span>
-                  </div>
-                  {selectedEmail.cc.length > 0 && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-12">CC</span>
-                      <span>{selectedEmail.cc.join(", ")}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-muted-foreground w-12">Date</span>
-                    <span>
-                      {new Date(selectedEmail.sentAt).toLocaleString("en-US", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </span>
-                  </div>
-                </div>
-              </div>
+        {/* Body */}
+        <div className="flex-1 overflow-auto border-t border-border">
+          <div className="px-6 py-4 ml-[52px]">
+            {selectedEmail.html ? (
+              <iframe
+                srcDoc={selectedEmail.html}
+                className="w-full min-h-[500px] border-0"
+                sandbox=""
+                title="Email content"
+              />
+            ) : selectedEmail.text ? (
+              <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">
+                {selectedEmail.text}
+              </pre>
+            ) : (
+              <p className="text-sm text-muted-foreground italic">
+                No content available
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-              {/* Body */}
-              <div className="flex-1 overflow-auto p-5">
-                {selectedEmail.html ? (
-                  <iframe
-                    srcDoc={selectedEmail.html}
-                    className="w-full min-h-[400px] border-0"
-                    sandbox=""
-                    title="Email content"
-                  />
-                ) : selectedEmail.text ? (
-                  <pre className="whitespace-pre-wrap text-sm text-foreground font-sans leading-relaxed">
-                    {selectedEmail.text}
-                  </pre>
-                ) : (
-                  <p className="text-sm text-muted-foreground italic">
-                    No content available
-                  </p>
+  // ── List view ──
+  return (
+    <div className="flex flex-col h-[calc(100vh-4rem)]">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between border-b border-border px-3 py-2">
+        <div className="flex items-center gap-1">
+          {/* Filter tabs */}
+          <div className="flex gap-0.5 rounded-lg bg-muted/60 p-0.5">
+            {(["all", "unread", "starred"] as Filter[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => {
+                  setFilter(f);
+                  setPage(1);
+                }}
+                className={cn(
+                  "rounded-md px-3 py-1 text-xs font-medium transition-colors capitalize",
+                  filter === f
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="rounded-full p-2 hover:bg-muted transition-colors text-muted-foreground hover:text-foreground ml-1"
+            title="Refresh"
+          >
+            <RefreshCw
+              className={cn("h-4 w-4", isRefreshing && "animate-spin")}
+            />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          {data && (
+            <>
+              {data.unreadCount > 0 && (
+                <span className="font-medium text-foreground">
+                  {data.unreadCount} unread
+                </span>
+              )}
+              <span>
+                {(page - 1) * data.pageSize + 1}-
+                {Math.min(page * data.pageSize, data.total)} of {data.total}
+              </span>
+              {data.totalPages > 1 && (
+                <div className="flex items-center gap-0.5">
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    className="rounded p-1 hover:bg-muted disabled:opacity-30"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() =>
+                      setPage((p) => Math.min(data.totalPages, p + 1))
+                    }
+                    disabled={page === data.totalPages}
+                    className="rounded p-1 hover:bg-muted disabled:opacity-30"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Email rows */}
+      <div className="flex-1 overflow-auto">
+        {isLoading ? (
+          <div className="flex items-center justify-center p-12 text-sm text-muted-foreground">
+            <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+            Loading...
+          </div>
+        ) : !data?.data.length ? (
+          <div className="flex flex-col items-center justify-center p-12 text-muted-foreground">
+            <Mail className="h-10 w-10 mb-3 opacity-30" />
+            <p className="text-sm">No emails</p>
+          </div>
+        ) : (
+          data.data.map((email) => (
+            <button
+              key={email.id}
+              onClick={() => handleSelectEmail(email)}
+              className={cn(
+                "w-full text-left flex items-center gap-3 px-3 py-2 border-b border-border/50 transition-colors hover:shadow-[inset_0_0_0_1000px_rgba(0,0,0,0.02)] dark:hover:shadow-[inset_0_0_0_1000px_rgba(255,255,255,0.02)]",
+                !email.isRead && "bg-primary/[0.03]",
+              )}
+            >
+              {/* Star */}
+              <button
+                onClick={(e) => handleToggleStar(email, e)}
+                className={cn(
+                  "shrink-0 p-0.5 transition-colors",
+                  email.isStarred
+                    ? "text-amber-400"
+                    : "text-muted-foreground/20 hover:text-muted-foreground/60",
+                )}
+              >
+                <Star
+                  className="h-4 w-4"
+                  fill={email.isStarred ? "currentColor" : "none"}
+                />
+              </button>
+
+              {/* Sender */}
+              <span
+                className={cn(
+                  "w-[180px] shrink-0 truncate text-sm",
+                  !email.isRead
+                    ? "font-semibold text-foreground"
+                    : "text-foreground/70",
+                )}
+              >
+                {extractSenderName(email.from)}
+              </span>
+
+              {/* Subject + snippet */}
+              <div className="flex-1 min-w-0 flex items-baseline gap-1.5">
+                <span
+                  className={cn(
+                    "truncate text-sm shrink-0 max-w-[50%]",
+                    !email.isRead
+                      ? "font-semibold text-foreground"
+                      : "text-foreground/70",
+                  )}
+                >
+                  {email.subject || "(no subject)"}
+                </span>
+                {email.text && (
+                  <>
+                    <span className="text-muted-foreground/40">-</span>
+                    <span className="text-sm text-muted-foreground/60 truncate">
+                      {email.text.slice(0, 120)}
+                    </span>
+                  </>
                 )}
               </div>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
-              Select an email to read
-            </div>
-          )}
-        </div>
+
+              {/* Date */}
+              <span
+                className={cn(
+                  "shrink-0 text-xs",
+                  !email.isRead
+                    ? "font-semibold text-foreground"
+                    : "text-muted-foreground",
+                )}
+              >
+                {formatTime(email.sentAt)}
+              </span>
+            </button>
+          ))
+        )}
       </div>
     </div>
   );

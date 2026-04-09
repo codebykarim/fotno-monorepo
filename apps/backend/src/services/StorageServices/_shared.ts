@@ -4,7 +4,7 @@ import { prisma } from "@workspace/db";
 export const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
-export const fromEmail = process.env.RESEND_FROM_EMAIL || "Fotno <noreply@fotno.com>";
+export const fromEmail = process.env.RESEND_FROM_EMAIL || "Fotno <hello@fotno.com>";
 export const safeBigInt = (value: unknown, fallback = 0n): bigint => {
   if (typeof value === "bigint") {
     return value;

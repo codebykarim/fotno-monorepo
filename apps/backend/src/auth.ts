@@ -50,11 +50,9 @@ export const auth = betterAuth({
       await sendMail({
         to: user.email,
         subject: "Reset your password",
-        text: `<h2 style="margin:0 0 8px;font-size:18px;font-weight:600;">Reset Your Password</h2>
-<p style="margin:0 0 20px;color:#374151;">We received a request to reset your password. Click the button below to set a new one.</p>
-<a href="${resetUrl}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Reset Password</a>
-<p style="margin:20px 0 0;color:#6b7280;font-size:13px;">If you didn't request this, you can safely ignore this email.</p>`,
-        showFooterLinks: false,
+        text: `<p style="color:rgb(55,65,81);font-size:16px;margin:0 0 24px;line-height:24px;">We received a request to reset your Fotno password. Click the button below to set a new one.</p>
+<a href="${resetUrl}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">Reset Password</a>
+<p style="color:rgb(17,24,39);font-size:15px;margin:24px 0 0;line-height:24px;">If you didn't request this, you can safely ignore this email.</p>`,
         preheaderText: "Reset your Fotno password",
       });
     },
@@ -86,10 +84,11 @@ export const auth = betterAuth({
         await sendMail({
           to: email,
           subject: "Your FOTNO verification code",
-          text: `<h2 style="margin:0 0 16px;font-size:18px;font-weight:600;">Your Verification Code</h2>
-<div style="margin:0 0 20px;padding:16px 24px;background:#f3f4f6;border-radius:8px;text-align:center;font-size:32px;letter-spacing:8px;font-weight:700;font-family:'Courier New',monospace;color:#111827;">${otp}</div>
-<p style="margin:0;color:#6b7280;font-size:13px;">This code expires in 5 minutes.</p>`,
-          showFooterLinks: false,
+          text: `<p style="color:rgb(55,65,81);font-size:16px;margin:0 0 24px;line-height:24px;">Your Fotno verification code is:</p>
+<div style="background-color:rgb(254,247,237);border-radius:8px;padding:16px 24px;display:inline-block;margin-bottom:24px;">
+  <p style="color:rgb(17,24,39);font-size:40px;font-weight:700;margin:0;line-height:48px;letter-spacing:4px;">${otp}</p>
+</div>
+<p style="color:rgb(17,24,39);font-size:15px;margin:0;line-height:24px;">This code will expire in 5 minutes and can only be used once. Never share this code with anyone.</p>`,
           preheaderText: `Your verification code is ${otp}`,
         });
       },

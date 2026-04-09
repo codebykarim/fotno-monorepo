@@ -1,6 +1,4 @@
-import { sendMail, type EmailBranding } from "../../utils/sendMail";
-import { getPresignedDownloadUrl } from "../../utils/s3";
-import { prisma } from "@workspace/db";
+import { sendMail } from "../../utils/sendMail";
 
 function escapeHtml(str: string): string {
   return str
@@ -10,37 +8,6 @@ function escapeHtml(str: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
-const fetchPhotographerBranding = async (
-  photographerId: string,
-): Promise<EmailBranding | undefined> => {
-  try {
-    const user = await (prisma as any).user.findUnique({
-      where: { id: photographerId },
-      select: {
-        name: true,
-        brandingConfig: { select: { logoS3Key: true } },
-      },
-    });
-    if (!user?.name) return undefined;
-
-    let logoUrl: string | null = null;
-    if (user.brandingConfig?.logoS3Key) {
-      try {
-        logoUrl = await getPresignedDownloadUrl(
-          user.brandingConfig.logoS3Key,
-          86400,
-        );
-      } catch {
-        // best-effort
-      }
-    }
-
-    return { photographerName: user.name, logoUrl };
-  } catch {
-    return undefined;
-  }
-};
 
 type NotificationEvent =
   | {
@@ -85,12 +52,6 @@ type NotificationEvent =
 export const sendAlbumNotification = async (
   event: NotificationEvent,
 ): Promise<void> => {
-  const photographerId =
-    "photographerId" in event ? event.photographerId : undefined;
-  const branding = photographerId
-    ? await fetchPhotographerBranding(photographerId)
-    : undefined;
-
   switch (event.type) {
     case "submitted": {
       const name = escapeHtml(event.photographerName);
@@ -108,7 +69,7 @@ export const sendAlbumNotification = async (
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
 <a href="${url}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Review Submission</a>`,
-        branding,
+
         preheaderText: `${client} submitted "${album}" for review`,
       });
       break;
@@ -128,7 +89,7 @@ export const sendAlbumNotification = async (
   <li><strong>Gallery:</strong> ${gallery}</li>
 </ul>
 ${notes ? `<p style="margin:0 0 16px;"><strong>Note from photographer:</strong> ${notes}</p>` : ""}`,
-        branding,
+
         preheaderText: `Your album "${album}" has been approved`,
       });
       break;
@@ -150,7 +111,7 @@ ${notes ? `<p style="margin:0 0 16px;"><strong>Note from photographer:</strong> 
 </ul>
 <p style="margin:0 0 20px;"><strong>Feedback:</strong> ${notes}</p>
 <a href="${url}" style="display:inline-block;padding:12px 24px;background-color:#c97a3a;color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;">Update Your Album</a>`,
-        branding,
+
         preheaderText: `Changes requested for "${album}"`,
       });
       break;
@@ -171,7 +132,7 @@ ${notes ? `<p style="margin:0 0 16px;"><strong>Note from photographer:</strong> 
 </ul>
 <p style="margin:0 0 16px;"><strong>Reason:</strong> ${reason}</p>
 <p style="margin:0;color:#6b7280;">Please contact the photographer if you have questions.</p>`,
-        branding,
+
         preheaderText: `Update on your album "${album}"`,
       });
       break;

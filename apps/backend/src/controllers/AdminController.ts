@@ -180,7 +180,8 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   let syncedStripePriceId = stripePriceId;
   const priceChanged = priceCents !== undefined && Number(priceCents) !== existing.priceCents;
   const isPaidTier = Number(priceCents ?? existing.priceCents) > 0;
-  const shouldSyncStripe = priceChanged && isPaidTier && !stripePriceId && existing.stripePriceId && stripe;
+  const hasManualPriceOverride = stripePriceId && stripePriceId !== existing.stripePriceId;
+  const shouldSyncStripe = priceChanged && isPaidTier && !hasManualPriceOverride && existing.stripePriceId && stripe;
 
   if (shouldSyncStripe) {
     const oldPrice = await stripe.prices.retrieve(existing.stripePriceId);

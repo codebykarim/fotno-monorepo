@@ -44,17 +44,24 @@ export const createSubscriptionIntent = async ({
 
   let stripeCustomerId = user.stripeCustomerId;
 
+  const customerAddress = countryCode
+    ? { address: { country: countryCode } }
+    : {};
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email,
       name: user.name || undefined,
       metadata: { userId },
+      ...customerAddress,
     });
     stripeCustomerId = customer.id;
     await prisma.user.update({
       where: { id: userId },
       data: { stripeCustomerId },
     });
+  } else if (countryCode) {
+    await stripe.customers.update(stripeCustomerId, customerAddress);
   }
 
   const regional = await fetchRegionalPricingFromDB(countryCode);
@@ -120,7 +127,7 @@ export const createSubscriptionIntent = async ({
       save_default_payment_method: "on_subscription",
       payment_method_types: ["card"],
     },
-    automatic_tax: { enabled: true },
+    automatic_tax: { enabled: !!countryCode },
     ...(savedPaymentMethod ? { default_payment_method: savedPaymentMethod } : {}),
   });
 

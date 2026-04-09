@@ -25,7 +25,6 @@ export const changeTier = async ({
   }
 
   const newTier = await findTierByGbFromDB(newStorageTierGb);
-  console.log("newTier", newTier);
   if (!newTier || !newTier.stripePriceId) {
     throw new AppError("Invalid storage tier", 400);
   }
@@ -65,7 +64,6 @@ export const changeTier = async ({
     await fetchRegionalPricingFromDB(countryCode);
   const regionalCheckoutCents = regional?.tierCheckoutCents?.[newTier.gb];
 
-  // Build the subscription item update: use price_data for regional, price ID for global
   let itemUpdate: any;
   if (regionalCheckoutCents) {
     const existingPrice = await stripe.prices.retrieve(currentItem.price.id);
@@ -78,9 +76,6 @@ export const changeTier = async ({
         product: existingPrice.product as string,
       },
     };
-    console.log(
-      `[changeTier] Using regional pricing for ${countryCode}: ${regionalCheckoutCents} cents`,
-    );
   } else {
     itemUpdate = {
       id: currentItem.id,

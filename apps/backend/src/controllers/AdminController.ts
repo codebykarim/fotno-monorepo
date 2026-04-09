@@ -4,6 +4,7 @@ import { prisma } from "@workspace/db";
 import AppError from "../errors/AppError";
 import { invalidatePricingCaches } from "../services/SubscriptionServices/listPlans";
 import { storageTierToBytes } from "../constants/storage";
+import { stripe } from "../services/SubscriptionServices/stripe";
 
 export const getOverviewController = async (_req: Request, res: Response) => {
   const overview = await AdminService.getAdminOverview();
@@ -174,6 +175,46 @@ export const updatePricingTierController = async (req: Request, res: Response) =
     throw new AppError("Pricing tier not found", 404);
   }
 
+  // If priceCents changed on a paid tier, sync with Stripe:
+  // find or create a matching Price, then save its ID alongside the DB update
+  let syncedStripePriceId = stripePriceId;
+  const priceChanged = priceCents !== undefined && Number(priceCents) !== existing.priceCents;
+  const isPaidTier = Number(priceCents ?? existing.priceCents) > 0;
+  const shouldSyncStripe = priceChanged && isPaidTier && !stripePriceId && existing.stripePriceId && stripe;
+
+  if (shouldSyncStripe) {
+    const oldPrice = await stripe.prices.retrieve(existing.stripePriceId);
+    const productId = oldPrice.product as string;
+    const targetAmount = Number(priceCents);
+
+    // Look for an existing Stripe Price that already matches this product + amount
+    const existingPrices = await stripe.prices.list({
+      product: productId,
+      currency: "usd",
+      limit: 100,
+    });
+    const matchingPrice = existingPrices.data.find(
+      (p) => p.type === "recurring" && p.unit_amount === targetAmount && p.recurring?.interval === "month",
+    );
+
+    if (matchingPrice) {
+      if (!matchingPrice.active) {
+        await stripe.prices.update(matchingPrice.id, { active: true });
+      }
+      syncedStripePriceId = matchingPrice.id;
+      console.log(`[Admin] Reusing Stripe Price ${matchingPrice.id} (${targetAmount}¢) for tier "${existing.label}"`);
+    } else {
+      const newStripePrice = await stripe.prices.create({
+        currency: "usd",
+        unit_amount: targetAmount,
+        recurring: { interval: "month" },
+        product: productId,
+      });
+      syncedStripePriceId = newStripePrice.id;
+      console.log(`[Admin] Created new Stripe Price ${newStripePrice.id} (${targetAmount}¢) for tier "${existing.label}"`);
+    }
+  }
+
   const tier = await (prisma as any).$transaction(async (tx: any) => {
     const updated = await tx.pricingTier.update({
       where: { id },
@@ -181,7 +222,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
         ...(gb !== undefined && { gb: Number(gb) }),
         ...(label !== undefined && { label }),
         ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
-        ...(stripePriceId !== undefined && { stripePriceId }),
+        ...(syncedStripePriceId !== undefined && { stripePriceId: syncedStripePriceId }),
         ...(galleryLimit !== undefined && { galleryLimit: galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null }),
         ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
         ...(active !== undefined && { active: Boolean(active) }),
@@ -208,6 +249,11 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   });
 
   invalidatePricingCaches();
+
+  // Deactivate old Stripe Price after DB commit succeeded
+  if (shouldSyncStripe && existing.stripePriceId !== syncedStripePriceId) {
+    await stripe.prices.update(existing.stripePriceId, { active: false });
+  }
 
   // Cascade: if this is the free tier, update all FREE users' limits
   if (tier.priceCents === 0) {

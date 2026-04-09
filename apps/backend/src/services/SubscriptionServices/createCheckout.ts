@@ -47,12 +47,10 @@ export const createCheckout = async ({
   const storageLabel = storageGb === -1 ? "Unlimited storage" : `${storageGb} GB storage`;
   const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
 
-  // Determine line item: use dynamic price for regional pricing, or fixed price ID
   const regionalCheckoutCents = regional?.tierCheckoutCents?.[tier.gb];
   let lineItems: any[];
 
-  if (regionalCheckoutCents && tier.stripePriceId) {
-    // Regional pricing: use price_data with the PPP-adjusted amount
+  if (regionalCheckoutCents) {
     const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
     lineItems = [
       {
@@ -113,7 +111,7 @@ export const createCheckout = async ({
     customer_update: { address: "auto" },
     success_url: `${dashboardUrl}/billing?checkout=success`,
     cancel_url: `${dashboardUrl}/billing`,
-    allow_promotion_codes: !regionalCheckoutCents, // disable promo codes when using dynamic pricing
+    allow_promotion_codes: !regionalCheckoutCents,
   });
 
   if (!session.url) {

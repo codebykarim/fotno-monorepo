@@ -52,7 +52,7 @@ export const createSubscriptionIntent = async ({
     const customer = await stripe.customers.create({
       email: user.email,
       name: user.name || undefined,
-      metadata: { userId },
+      metadata: { user_id: userId },
       ...customerAddress,
     });
     stripeCustomerId = customer.id;
@@ -75,15 +75,15 @@ export const createSubscriptionIntent = async ({
   };
 
   let items: any[] = [];
-  if (regionalCheckoutCents && tier.stripePriceId) {
+  if (regionalCheckoutCents) {
     const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
     items = [
       {
         price_data: {
           currency: "usd",
           unit_amount: regionalCheckoutCents,
-          recurring: { interval: "month" },
-          product: existingPrice.product,
+          recurring: { interval: "month" as const },
+          product: existingPrice.product as string,
         },
       },
     ];

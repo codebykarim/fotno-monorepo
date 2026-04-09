@@ -183,14 +183,16 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   const hasManualPriceOverride = stripePriceId && stripePriceId !== existing.stripePriceId;
   const shouldSyncStripe = priceChanged && isPaidTier && !hasManualPriceOverride && existing.stripePriceId && stripe;
 
+  let stripeProductId: string | null = null;
+
   if (shouldSyncStripe) {
     const oldPrice = await stripe.prices.retrieve(existing.stripePriceId);
-    const productId = oldPrice.product as string;
+    stripeProductId = oldPrice.product as string;
     const targetAmount = Number(priceCents);
 
     // Look for an existing Stripe Price that already matches this product + amount
     const existingPrices = await stripe.prices.list({
-      product: productId,
+      product: stripeProductId,
       currency: "usd",
       limit: 100,
     });
@@ -209,7 +211,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
         currency: "usd",
         unit_amount: targetAmount,
         recurring: { interval: "month" },
-        product: productId,
+        product: stripeProductId,
       });
       syncedStripePriceId = newStripePrice.id;
       console.log(`[Admin] Created new Stripe Price ${newStripePrice.id} (${targetAmount}¢) for tier "${existing.label}"`);
@@ -252,7 +254,10 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   invalidatePricingCaches();
 
   // Deactivate old Stripe Price after DB commit succeeded
-  if (shouldSyncStripe && existing.stripePriceId !== syncedStripePriceId) {
+  if (shouldSyncStripe && existing.stripePriceId !== syncedStripePriceId && stripeProductId) {
+    // Set the new price as the product's default first, otherwise Stripe
+    // won't allow archiving the old price if it's the current default
+    await stripe.products.update(stripeProductId, { default_price: syncedStripePriceId });
     await stripe.prices.update(existing.stripePriceId, { active: false });
   }
 

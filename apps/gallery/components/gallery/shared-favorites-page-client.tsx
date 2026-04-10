@@ -66,6 +66,20 @@ export default function SharedFavoritesPageClient({
     }
   }, [activePhotoId]);
 
+  const navigateModal = useCallback(
+    (dir: 1 | -1) => {
+      if (!activePhotoId) return;
+      const idx = photos.findIndex((p) => p.id === activePhotoId);
+      if (idx < 0) return;
+      const next = idx + dir;
+      if (next < 0 || next >= photos.length) return;
+      setActivePhotoId(photos[next]?.id ?? null);
+      setZoom(MIN_ZOOM);
+      setPan({ x: 0, y: 0 });
+    },
+    [activePhotoId, photos],
+  );
+
   // Keyboard navigation
   useEffect(() => {
     if (!activePhotoId) return;
@@ -82,8 +96,7 @@ export default function SharedFavoritesPageClient({
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activePhotoId, photos]);
+  }, [activePhotoId, navigateModal]);
 
   // Slideshow
   const stopSlideshow = () => {
@@ -136,6 +149,33 @@ export default function SharedFavoritesPageClient({
     return `${src}${sep}favoriteShareToken=${encodeURIComponent(favoriteShareToken)}`;
   };
 
+  // Preload adjacent images so navigation feels instant
+  useEffect(() => {
+    if (!activePhotoId) return;
+
+    const currentIndex = photos.findIndex((p) => p.id === activePhotoId);
+    if (currentIndex < 0) return;
+
+    const adjacentPhotos = [
+      photos[currentIndex - 1],
+      photos[currentIndex + 1],
+    ].filter((p): p is SharedFavoritesPhoto => !!p);
+
+    const preloadImages: HTMLImageElement[] = [];
+    for (const photo of adjacentPhotos) {
+      const img = new window.Image();
+      img.src = withFavoriteShareToken(photo.previewSrc);
+      preloadImages.push(img);
+    }
+
+    return () => {
+      for (const img of preloadImages) {
+        img.src = "";
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePhotoId, photos]);
+
   // Zoom/pan helpers
   const clampZoom = useCallback(
     (v: number) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number(v.toFixed(2)))),
@@ -186,17 +226,6 @@ export default function SharedFavoritesPageClient({
     [clampZoom, setPanClamped, zoom],
   );
 
-  const navigateModal = (dir: 1 | -1) => {
-    if (!activePhotoId) return;
-    const idx = photos.findIndex((p) => p.id === activePhotoId);
-    if (idx < 0) return;
-    const next = idx + dir;
-    if (next < 0 || next >= photos.length) return;
-    setActivePhotoId(photos[next]?.id ?? null);
-    setZoom(MIN_ZOOM);
-    setPan({ x: 0, y: 0 });
-  };
-
   const handleModalWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     setZoomClamped(zoom - e.deltaY * 0.002);
@@ -226,6 +255,99 @@ export default function SharedFavoritesPageClient({
   const stopDrag = () => {
     panStartRef.current = null;
     setIsDragging(false);
+  };
+
+  const swipeStartRef = useRef<{ x: number; y: number; time: number } | null>(
+    null,
+  );
+
+  const handleModalTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length === 2) {
+      swipeStartRef.current = null;
+      panStartRef.current = null;
+      setIsDragging(false);
+      return;
+    }
+
+    swipeStartRef.current = null;
+    if (event.touches.length === 1 && zoom <= MIN_ZOOM) {
+      const touch = event.touches[0];
+      if (touch) {
+        swipeStartRef.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+          time: Date.now(),
+        };
+      }
+    } else if (event.touches.length === 1 && zoom > MIN_ZOOM) {
+      const touch = event.touches[0];
+      if (touch) {
+        setIsDragging(true);
+        panStartRef.current = {
+          startX: touch.clientX,
+          startY: touch.clientY,
+          originX: panRef.current.x,
+          originY: panRef.current.y,
+        };
+      }
+    }
+  };
+
+  const handleModalTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (
+      event.touches.length === 1 &&
+      panStartRef.current &&
+      zoom > MIN_ZOOM
+    ) {
+      const touch = event.touches[0];
+      if (touch) {
+        event.preventDefault();
+        setPanClamped(
+          panStartRef.current.originX + touch.clientX - panStartRef.current.startX,
+          panStartRef.current.originY + touch.clientY - panStartRef.current.startY,
+        );
+      }
+    }
+
+    if (
+      event.touches.length === 1 &&
+      swipeStartRef.current &&
+      zoom <= MIN_ZOOM
+    ) {
+      const touch = event.touches[0];
+      if (touch) {
+        const deltaY = Math.abs(touch.clientY - swipeStartRef.current.y);
+        if (deltaY > 30) {
+          swipeStartRef.current = null;
+        }
+      }
+    }
+  };
+
+  const handleModalTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length === 0) {
+      if (isDragging) {
+        stopDrag();
+      }
+
+      if (swipeStartRef.current && zoom <= MIN_ZOOM) {
+        const end = event.changedTouches[0];
+        if (end) {
+          const deltaX = end.clientX - swipeStartRef.current.x;
+          const deltaY = end.clientY - swipeStartRef.current.y;
+          const elapsed = Date.now() - swipeStartRef.current.time;
+          if (
+            Math.abs(deltaX) > 50 &&
+            Math.abs(deltaX) > Math.abs(deltaY) * 1.5 &&
+            elapsed < 400
+          ) {
+            navigateModal(deltaX < 0 ? 1 : -1);
+          }
+        }
+      }
+
+      swipeStartRef.current = null;
+    }
   };
 
   if (photos.length === 0) {
@@ -343,7 +465,15 @@ export default function SharedFavoritesPageClient({
 
       {/* Photo modal */}
       {activePhoto && (
-        <div className="fixed inset-0 z-50 bg-black/88 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 bg-black/88 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setActivePhotoId(null);
+              setZoomClamped(1);
+            }
+          }}
+        >
           <div className="absolute right-4 top-4 z-10 flex items-center gap-2 md:right-8 md:top-8">
             <button
               type="button"
@@ -381,14 +511,26 @@ export default function SharedFavoritesPageClient({
             </button>
           </div>
 
-          <div className="flex h-full items-center justify-center px-4 py-20 md:px-8">
+          <div
+            className="flex h-full items-center justify-center px-4 py-20 md:px-8"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setActivePhotoId(null);
+                setZoomClamped(1);
+              }
+            }}
+          >
             <button
               type="button"
               onClick={() => navigateModal(-1)}
-              className="mr-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white md:inline-flex"
+              disabled={
+                !activePhotoId ||
+                photos.findIndex((p) => p.id === activePhotoId) <= 0
+              }
+              className="mr-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 disabled:pointer-events-none disabled:opacity-0 md:inline-flex"
               aria-label="Previous"
             >
-              ←
+              <ChevronLeft className="h-5 w-5" />
             </button>
 
             <div
@@ -405,6 +547,10 @@ export default function SharedFavoritesPageClient({
               onMouseMove={handleModalMouseMove}
               onMouseUp={stopDrag}
               onMouseLeave={stopDrag}
+              onTouchStart={handleModalTouchStart}
+              onTouchMove={handleModalTouchMove}
+              onTouchEnd={handleModalTouchEnd}
+              onTouchCancel={handleModalTouchEnd}
               style={{ touchAction: "none" }}
             >
               <Image
@@ -430,10 +576,15 @@ export default function SharedFavoritesPageClient({
             <button
               type="button"
               onClick={() => navigateModal(1)}
-              className="ml-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white md:inline-flex"
+              disabled={
+                !activePhotoId ||
+                photos.findIndex((p) => p.id === activePhotoId) >=
+                  photos.length - 1
+              }
+              className="ml-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 disabled:pointer-events-none disabled:opacity-0 md:inline-flex"
               aria-label="Next"
             >
-              →
+              <ChevronRight className="h-5 w-5" />
             </button>
           </div>
 

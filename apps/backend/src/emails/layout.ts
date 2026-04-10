@@ -35,7 +35,7 @@ export function wrapEmailLayout(
             ${contentHtml}
             <hr style="border-width:0;border-top-width:1px;border-style:solid;border-color:rgb(229,231,235);margin-top:32px;margin-bottom:32px;" />
             <p style="color:rgb(107,114,128);font-size:13px;margin:0 0 8px;line-height:24px;">If you believe you are getting this email in error, please visit fotno.com.</p>
-            <p style="color:rgb(107,114,128);font-size:13px;margin:0;line-height:24px;">Fotno LTD, United Kingdom</p>
+            <p style="color:rgb(107,114,128);font-size:13px;margin:0;line-height:24px;">Fotno Ltd, United Kingdom</p>
           </div>
         </td>
       </tr>

@@ -814,31 +814,6 @@ export default function GalleryPageClient({
     panRef.current = pan;
   }, [pan]);
 
-  useEffect(() => {
-    if (!activePhotoId) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActivePhotoId(null);
-        setZoom(1);
-        setPan({ x: 0, y: 0 });
-        return;
-      }
-      if (event.key === "ArrowRight") {
-        navigateModal(1);
-      }
-      if (event.key === "ArrowLeft") {
-        navigateModal(-1);
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activePhotoId, gallery.photos]);
-
   const photoCountLabel = useMemo(() => {
     const total = gallery.photos.length;
     return `${total} ${total === 1 ? "photo" : "photos"}`;
@@ -862,6 +837,59 @@ export default function GalleryPageClient({
 
     return gallery.photos;
   }, [favorites, filterMode, gallery.photos, gallery.albums]);
+
+  const navigateModal = useCallback(
+    (direction: 1 | -1) => {
+      if (!activePhotoId) {
+        return;
+      }
+
+      const currentIndex = visiblePhotos.findIndex(
+        (photo) => photo.id === activePhotoId,
+      );
+      if (currentIndex < 0) {
+        return;
+      }
+
+      const nextIndex = currentIndex + direction;
+      if (nextIndex < 0 || nextIndex >= visiblePhotos.length) {
+        return;
+      }
+
+      const nextId = visiblePhotos[nextIndex]?.id ?? null;
+      setActivePhotoId(nextId);
+      if (nextId) {
+        setCommentPhotoId(nextId);
+      }
+      setZoom(1);
+      setPan({ x: 0, y: 0 });
+    },
+    [activePhotoId, visiblePhotos],
+  );
+
+  useEffect(() => {
+    if (!activePhotoId) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActivePhotoId(null);
+        setZoom(1);
+        setPan({ x: 0, y: 0 });
+        return;
+      }
+      if (event.key === "ArrowRight") {
+        navigateModal(1);
+      }
+      if (event.key === "ArrowLeft") {
+        navigateModal(-1);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activePhotoId, navigateModal]);
 
   // Slideshow auto-advance effect (needs visiblePhotos)
   useEffect(() => {
@@ -942,6 +970,35 @@ export default function GalleryPageClient({
 
     return `${src}&${queryParts.join("&")}`;
   };
+
+  // Preload adjacent images so navigation feels instant
+  useEffect(() => {
+    if (!activePhotoId) return;
+
+    const currentIndex = visiblePhotos.findIndex(
+      (p) => p.id === activePhotoId,
+    );
+    if (currentIndex < 0) return;
+
+    const adjacentPhotos = [
+      visiblePhotos[currentIndex - 1],
+      visiblePhotos[currentIndex + 1],
+    ].filter((p): p is PublicPhoto => !!p);
+
+    const preloadImages: HTMLImageElement[] = [];
+    for (const photo of adjacentPhotos) {
+      const img = new window.Image();
+      img.src = withOptionalToken(photo.previewSrc);
+      preloadImages.push(img);
+    }
+
+    return () => {
+      for (const img of preloadImages) {
+        img.src = "";
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePhotoId, visiblePhotos]);
 
   const clearLocalSession = () => {
     sessionStorage.removeItem(getSessionTokenKey(gallery.shareToken));
@@ -1524,28 +1581,6 @@ export default function GalleryPageClient({
     }
   };
 
-  const navigateModal = (direction: 1 | -1) => {
-    if (!activePhotoId) {
-      return;
-    }
-
-    const currentIndex = visiblePhotos.findIndex(
-      (photo) => photo.id === activePhotoId,
-    );
-    if (currentIndex < 0) {
-      return;
-    }
-
-    const nextIndex = currentIndex + direction;
-    if (nextIndex < 0 || nextIndex >= visiblePhotos.length) {
-      return;
-    }
-
-    setActivePhotoId(visiblePhotos[nextIndex]?.id ?? null);
-    setZoom(1);
-    setPan({ x: 0, y: 0 });
-  };
-
   const clampZoom = useCallback((value: number) => {
     return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number(value.toFixed(2))));
   }, []);
@@ -1694,10 +1729,15 @@ export default function GalleryPageClient({
     [getPanLimits, zoom],
   );
 
+  const swipeStartRef = useRef<{ x: number; y: number; time: number } | null>(
+    null,
+  );
+
   const handleModalTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     if (event.touches.length === 2) {
       setIsDragging(false);
       panStartRef.current = null;
+      swipeStartRef.current = null;
       pinchStateRef.current = {
         startDistance: distanceBetweenTouches(event.touches),
         startZoom: zoom,
@@ -1711,6 +1751,7 @@ export default function GalleryPageClient({
         return;
       }
       setIsDragging(true);
+      swipeStartRef.current = null;
       panStartRef.current = {
         startX: touch.clientX,
         startY: touch.clientY,
@@ -1720,8 +1761,21 @@ export default function GalleryPageClient({
       return;
     }
 
+    if (event.touches.length === 1 && zoom <= MIN_ZOOM) {
+      const touch = event.touches[0];
+      if (touch) {
+        swipeStartRef.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+          time: Date.now(),
+        };
+      }
+      return;
+    }
+
     panStartRef.current = null;
     pinchStateRef.current = null;
+    swipeStartRef.current = null;
     setIsDragging(false);
   };
 
@@ -1759,6 +1813,20 @@ export default function GalleryPageClient({
       );
       applyTransformDirect(x, y);
     }
+
+    if (
+      event.touches.length === 1 &&
+      swipeStartRef.current &&
+      zoom <= MIN_ZOOM
+    ) {
+      const touch = event.touches[0];
+      if (touch) {
+        const deltaY = Math.abs(touch.clientY - swipeStartRef.current.y);
+        if (deltaY > 30) {
+          swipeStartRef.current = null;
+        }
+      }
+    }
   };
 
   const handleModalTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -1784,7 +1852,25 @@ export default function GalleryPageClient({
       if (isDragging) {
         setPan({ ...panRef.current });
       }
+
+      if (swipeStartRef.current && zoom <= MIN_ZOOM) {
+        const end = event.changedTouches[0];
+        if (end) {
+          const deltaX = end.clientX - swipeStartRef.current.x;
+          const deltaY = end.clientY - swipeStartRef.current.y;
+          const elapsed = Date.now() - swipeStartRef.current.time;
+          if (
+            Math.abs(deltaX) > 50 &&
+            Math.abs(deltaX) > Math.abs(deltaY) * 1.5 &&
+            elapsed < 400
+          ) {
+            navigateModal(deltaX < 0 ? 1 : -1);
+          }
+        }
+      }
+
       panStartRef.current = null;
+      swipeStartRef.current = null;
       setIsDragging(false);
     }
   };
@@ -2279,7 +2365,15 @@ export default function GalleryPageClient({
       </main>
 
       {activePhoto ? (
-        <div className="fixed inset-0 z-50 bg-black/88 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 bg-black/88 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setActivePhotoId(null);
+              setZoomClamped(1);
+            }
+          }}
+        >
           <div className="absolute right-4 top-4 z-10 flex items-center gap-2 md:right-8 md:top-8">
             <button
               type="button"
@@ -2330,14 +2424,26 @@ export default function GalleryPageClient({
             </button>
           </div>
 
-          <div className="flex h-full items-center justify-center px-4 py-20 md:px-8">
+          <div
+            className="flex h-full items-center justify-center px-4 py-20 md:px-8"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setActivePhotoId(null);
+                setZoomClamped(1);
+              }
+            }}
+          >
             <button
               type="button"
               onClick={() => navigateModal(-1)}
-              className="mr-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white md:inline-flex"
+              disabled={
+                !activePhotoId ||
+                visiblePhotos.findIndex((p) => p.id === activePhotoId) <= 0
+              }
+              className="mr-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 disabled:pointer-events-none disabled:opacity-0 md:inline-flex"
               aria-label="Previous photo"
             >
-              ←
+              <ChevronLeft className="h-5 w-5" />
             </button>
 
             <div
@@ -2386,10 +2492,15 @@ export default function GalleryPageClient({
             <button
               type="button"
               onClick={() => navigateModal(1)}
-              className="ml-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/45 text-white md:inline-flex"
+              disabled={
+                !activePhotoId ||
+                visiblePhotos.findIndex((p) => p.id === activePhotoId) >=
+                  visiblePhotos.length - 1
+              }
+              className="ml-3 hidden h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 disabled:pointer-events-none disabled:opacity-0 md:inline-flex"
               aria-label="Next photo"
             >
-              →
+              <ChevronRight className="h-5 w-5" />
             </button>
           </div>
 

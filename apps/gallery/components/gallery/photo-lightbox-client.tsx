@@ -246,6 +246,27 @@ export default function PhotoLightboxClient({
     return `${src}&token=${encodeURIComponent(galleryJwt)}`;
   };
 
+  // Preload adjacent images so navigation feels instant
+  useEffect(() => {
+    const adjacentPhotos = [previousPhoto, nextPhoto].filter(
+      (p): p is PublicPhoto => !!p,
+    );
+
+    const preloadImages: HTMLImageElement[] = [];
+    for (const photo of adjacentPhotos) {
+      const img = new window.Image();
+      img.src = withOptionalToken(photo.previewSrc);
+      preloadImages.push(img);
+    }
+
+    return () => {
+      for (const img of preloadImages) {
+        img.src = "";
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPhotoId]);
+
   const passwordGateCoverImage =
     gallery.photos.find((photo) => photo.id === gallery.coverPhotoId)
       ?.previewSrc ??
@@ -394,10 +415,15 @@ export default function PhotoLightboxClient({
     return Math.hypot(dx, dy);
   };
 
+  const swipeStartRef = useRef<{ x: number; y: number; time: number } | null>(
+    null,
+  );
+
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     if (event.touches.length === 2) {
       setIsDragging(false);
       panStartRef.current = null;
+      swipeStartRef.current = null;
       pinchStateRef.current = {
         startDistance: distanceBetweenTouches(event.touches),
         startZoom: zoom,
@@ -411,6 +437,7 @@ export default function PhotoLightboxClient({
         return;
       }
       setIsDragging(true);
+      swipeStartRef.current = null;
       panStartRef.current = {
         startX: touch.clientX,
         startY: touch.clientY,
@@ -420,8 +447,21 @@ export default function PhotoLightboxClient({
       return;
     }
 
+    if (event.touches.length === 1 && zoom <= MIN_ZOOM) {
+      const touch = event.touches[0];
+      if (touch) {
+        swipeStartRef.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+          time: Date.now(),
+        };
+      }
+      return;
+    }
+
     panStartRef.current = null;
     pinchStateRef.current = null;
+    swipeStartRef.current = null;
     setIsDragging(false);
   };
 
@@ -459,6 +499,20 @@ export default function PhotoLightboxClient({
       );
       applyTransformDirect(x, y);
     }
+
+    if (
+      event.touches.length === 1 &&
+      swipeStartRef.current &&
+      zoom <= MIN_ZOOM
+    ) {
+      const touch = event.touches[0];
+      if (touch) {
+        const deltaY = Math.abs(touch.clientY - swipeStartRef.current.y);
+        if (deltaY > 30) {
+          swipeStartRef.current = null;
+        }
+      }
+    }
   };
 
   const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -484,7 +538,31 @@ export default function PhotoLightboxClient({
       if (isDragging) {
         setPan({ ...panRef.current });
       }
+
+      if (swipeStartRef.current && zoom <= MIN_ZOOM) {
+        const end = event.changedTouches[0];
+        if (end) {
+          const deltaX = end.clientX - swipeStartRef.current.x;
+          const deltaY = end.clientY - swipeStartRef.current.y;
+          const elapsed = Date.now() - swipeStartRef.current.time;
+          if (
+            Math.abs(deltaX) > 50 &&
+            Math.abs(deltaX) > Math.abs(deltaY) * 1.5 &&
+            elapsed < 400
+          ) {
+            const target =
+              deltaX < 0 ? nextPhoto : previousPhoto;
+            if (target) {
+              router.push(
+                `/${gallery.shareToken}/photo/${target.id}`,
+              );
+            }
+          }
+        }
+      }
+
       panStartRef.current = null;
+      swipeStartRef.current = null;
       setIsDragging(false);
     }
   };
@@ -604,7 +682,7 @@ export default function PhotoLightboxClient({
           <button
             type="button"
             onClick={() => router.push(`/${gallery.shareToken}/photo/${previousPhoto.id}`)}
-            className="absolute left-5 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur transition hover:bg-black/55"
+            className="absolute left-5 z-20 hidden h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 md:inline-flex"
             aria-label="Previous photo"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -652,7 +730,7 @@ export default function PhotoLightboxClient({
           <button
             type="button"
             onClick={() => router.push(`/${gallery.shareToken}/photo/${nextPhoto.id}`)}
-            className="absolute right-5 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur transition hover:bg-black/55"
+            className="absolute right-5 z-20 hidden h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-white/20 active:scale-95 md:inline-flex"
             aria-label="Next photo"
           >
             <ChevronRight className="h-5 w-5" />

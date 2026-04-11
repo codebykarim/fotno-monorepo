@@ -14,7 +14,7 @@
     "@types/node": "^20.10.8",
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",
-    "better-auth": "^1.2.3",
+    "better-auth": "^1.5.5",
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.10",

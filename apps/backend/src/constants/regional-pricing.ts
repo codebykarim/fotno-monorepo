@@ -37,7 +37,7 @@ export async function fetchRegionalPricingFromDB(
   }
 
   try {
-    const regions = await (prisma as any).regionalPricing.findMany({
+    const regions = await prisma.regionalPricing.findMany({
       where: { active: true },
       include: { tierOverrides: true },
     });

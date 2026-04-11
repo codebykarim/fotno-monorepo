@@ -31,7 +31,7 @@ export const resolvePlanLimit = (
 export const nonNegative = (value: bigint): bigint => (value < 0n ? 0n : value);
 
 export const fetchUserStorage = async (userId: string) => {
-  const user = await (prisma as any).user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
       id: true,

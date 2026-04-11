@@ -22,7 +22,6 @@ import {
 const STORAGE_TIER_LABELS: Record<number, string> = {
   20: "Solo (20 GB)",
   100: "Studio (100 GB)",
-  500: "Pro Studio (500 GB)",
   [-1]: "Unlimited",
 };
 

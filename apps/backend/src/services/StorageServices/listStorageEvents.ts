@@ -6,13 +6,13 @@ export const listStorageEvents = async (
   offset: number,
 ) => {
   const [events, total] = await Promise.all([
-    (prisma as any).storageEvent.findMany({
+    prisma.storageEvent.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
       take: limit,
       skip: offset,
     }),
-    (prisma as any).storageEvent.count({
+    prisma.storageEvent.count({
       where: { userId },
     }),
   ]);

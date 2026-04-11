@@ -4,7 +4,7 @@ import { extractBillingPeriod } from "./handleWebhook";
 import AppError from "../../errors/AppError";
 
 export const cancelSubscription = async (userId: string): Promise<void> => {
-  const subscription = await (prisma as any).subscription.findFirst({
+  const subscription = await prisma.subscription.findFirst({
     where: {
       userId,
       status: "ACTIVE",
@@ -29,7 +29,7 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
       // Set endsAt now so the grace period check works immediately
       const period = await extractBillingPeriod(stripeSub);
 
-      await (prisma as any).subscription.update({
+      await prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           status: "CANCELLED",
@@ -50,7 +50,7 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
         throw new AppError(`Failed to cancel subscription: ${err.message}`, 500);
       }
       // Stripe sub not found — just mark as cancelled in DB
-      await (prisma as any).subscription.update({
+      await prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           status: "CANCELLED",
@@ -59,7 +59,7 @@ export const cancelSubscription = async (userId: string): Promise<void> => {
       });
     }
   } else {
-    await (prisma as any).subscription.update({
+    await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
         status: "CANCELLED",

@@ -16,7 +16,7 @@
     "@workspace/lib": "workspace:*",
     "@workspace/ui": "workspace:*",
     "autoprefixer": "^10.4.20",
-    "better-auth": "^1.2.3",
+    "better-auth": "^1.5.5",
     "firebase": "^12.11.0",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.10",

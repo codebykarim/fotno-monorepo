@@ -12,7 +12,7 @@ export const changeTier = async ({
   userId: string;
   newStorageTierGb: number;
 }): Promise<void> => {
-  const subscription = await (prisma as any).subscription.findFirst({
+  const subscription = await prisma.subscription.findFirst({
     where: {
       userId,
       status: "ACTIVE",
@@ -96,7 +96,7 @@ export const changeTier = async ({
   // Store as pending change (both upgrades and downgrades take effect at period end)
   const period = await extractBillingPeriod(stripeSub);
 
-  await (prisma as any).subscription.update({
+  await prisma.subscription.update({
     where: { id: subscription.id },
     data: {
       pendingTierGb: newStorageTierGb === subscription.storageTierGb ? null : newStorageTierGb,

@@ -31,7 +31,7 @@ export type UserAccess = {
 export const resolveUserAccess = async (
   userId: string,
 ): Promise<UserAccess> => {
-  const user = await (prisma as any).user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
       id: true,
@@ -52,7 +52,7 @@ export const resolveUserAccess = async (
     const storageLimitBytes = freeLimits.storageLimitBytes;
     const overStorageLimit = user.storageUsed > storageLimitBytes;
     const galleryLimit = freeLimits.galleryLimit;
-    const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
+    const galleryCount = await prisma.gallery.count({ where: { userId } });
     const features = await fetchFeaturesForTier(0);
 
     return {
@@ -67,7 +67,7 @@ export const resolveUserAccess = async (
   }
 
   // Check for active subscription first
-  const subscription = await (prisma as any).subscription.findFirst({
+  const subscription = await prisma.subscription.findFirst({
     where: {
       userId,
       status: { in: ["ACTIVE", "CANCELLED", "PAST_DUE"] },
@@ -189,7 +189,7 @@ function buildNoSubscriptionAccess(): UserAccess {
 async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
   const freeLimits = await getFreeTierLimits();
   const galleryLimit = freeLimits.galleryLimit;
-  const galleryCount = await (prisma as any).gallery.count({ where: { userId } });
+  const galleryCount = await prisma.gallery.count({ where: { userId } });
   const storageLimitBytes = freeLimits.storageLimitBytes;
   const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
   const features = await fetchFeaturesForTier(0);
@@ -211,7 +211,7 @@ async function expireSubscription(
 ): Promise<void> {
   const freeLimits = await getFreeTierLimits();
 
-  await (prisma as any).$transaction(async (tx: any) => {
+  await prisma.$transaction(async (tx: any) => {
     // Expire the subscription record
     await tx.subscription.update({
       where: { id: subscriptionId },

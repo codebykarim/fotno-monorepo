@@ -8,7 +8,7 @@ import {
 } from "../queues/expiryQueue";
 import { sendPushNotification } from "../utils/fcm";
 
-const db = prisma as any;
+const db = prisma;
 
 /**
  * Send notifications to users whose storage usage exceeds 85%.
@@ -69,7 +69,7 @@ async function notifyUpcomingExpiry(): Promise<void> {
 
   for (const gallery of soonExpiring) {
     const daysLeft = Math.ceil(
-      (new Date(gallery.expiresAt).getTime() - now.getTime()) /
+      (new Date(gallery.expiresAt!).getTime() - now.getTime()) /
         (1000 * 60 * 60 * 24),
     );
 

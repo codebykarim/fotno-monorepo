@@ -25,7 +25,7 @@ const startWorker = async () => {
   storageQueue.process(
     "reconcile-all-storage",
     async (_job: Job<Record<string, never>>) => {
-      const users = await (prisma as any).user.findMany({
+      const users = await prisma.user.findMany({
         select: {
           id: true,
           plan: true,
@@ -35,7 +35,7 @@ const startWorker = async () => {
       });
 
       for (const user of users) {
-        const aggregate = await (prisma as any).photo.aggregate({
+        const aggregate = await prisma.photo.aggregate({
           where: {
             gallery: {
               userId: user.id,
@@ -65,7 +65,7 @@ const startWorker = async () => {
         const storageLimit = toBigInt(user.storageLimit);
         const overageBytes = actualUsed > storageLimit ? actualUsed - storageLimit : 0n;
 
-        await (prisma as any).$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: any) => {
           await tx.user.update({
             where: { id: user.id },
             data: {

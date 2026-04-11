@@ -4,7 +4,6 @@ export const ONE_GB_BYTES = BigInt(1024 ** 3);
 export const STORAGE_TIERS = [
   { gb: 20, priceCents: 900, label: "Solo" },
   { gb: 100, priceCents: 1900, label: "Studio" },
-  { gb: 500, priceCents: 3500, label: "Pro Studio" },
   { gb: -1, priceCents: 4900, label: "Unlimited" },
 ] as const;
 
@@ -29,7 +28,6 @@ export const STORAGE_TIER_LIMITS: Record<number, bigint> = {
   20: BigInt(20) * ONE_GB_BYTES,
   100: BigInt(100) * ONE_GB_BYTES,
   250: BigInt(250) * ONE_GB_BYTES,
-  500: BigInt(500) * ONE_GB_BYTES,
   [-1]: UNLIMITED_BYTES,
 };
 

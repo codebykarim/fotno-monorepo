@@ -84,20 +84,12 @@ async function main() {
       sortOrder: 1,
     },
     {
-      gb: 500,
-      label: "Pro Studio",
-      priceCents: 3500,
-      stripePriceId: "price_1TGNnaEuz1yMNGtKYLe4ibiI",
-      galleryLimit: null,
-      sortOrder: 2,
-    },
-    {
       gb: -1,
       label: "Unlimited",
       priceCents: 4900,
       stripePriceId: "price_1TGNnaEuz1yMNGtK3ZAQs9w2",
       galleryLimit: null,
-      sortOrder: 3,
+      sortOrder: 2,
     },
   ];
 
@@ -135,7 +127,6 @@ async function main() {
   const overrides = [
     { tierGb: 20, localPriceCents: 15000, checkoutCents: 300 },
     { tierGb: 100, localPriceCents: 30000, checkoutCents: 627 },
-    { tierGb: 500, localPriceCents: 110000, checkoutCents: 2200 },
   ];
 
   for (const override of overrides) {
@@ -165,7 +156,6 @@ async function main() {
     Free: [],
     Solo: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "COMMENTS",
       "PASSWORD_PROTECTION",
@@ -174,7 +164,6 @@ async function main() {
     ],
     Studio: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "COMMENTS",
       "PASSWORD_PROTECTION",
@@ -184,24 +173,9 @@ async function main() {
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
       "CUSTOM_DOMAINS",
-    ],
-    "Pro Studio": [
-      "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
-      "CLIENT_FAVORITES",
-      "COMMENTS",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "DOWNLOAD_ANALYTICS",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-      "WEBSITE_BUILDER",
     ],
     Unlimited: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "COMMENTS",
       "PASSWORD_PROTECTION",

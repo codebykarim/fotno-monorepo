@@ -234,7 +234,6 @@ function TiersSection({
 
 const FEATURE_KEYS = [
   "UNLIMITED_GALLERIES",
-  "UNLIMITED_CLIENTS",
   "CLIENT_FAVORITES",
   "COMMENTS",
   "PASSWORD_PROTECTION",
@@ -249,7 +248,6 @@ const FEATURE_KEYS = [
 
 const FEATURE_LABELS: Record<string, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
-  UNLIMITED_CLIENTS: "Unlimited clients",
   CLIENT_FAVORITES: "Client favorites & notes",
   COMMENTS: "Gallery comments",
   PASSWORD_PROTECTION: "Password-protected galleries",

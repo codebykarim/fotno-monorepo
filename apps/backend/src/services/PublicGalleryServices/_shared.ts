@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 
-export const db = prisma as any;
+export const db = prisma;
 
 export const publishedGalleryWhere = (token: string) => ({
   OR: [{ shareToken: token }, { slug: token }],

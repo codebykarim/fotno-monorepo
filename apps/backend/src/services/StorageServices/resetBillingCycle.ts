@@ -1,7 +1,7 @@
 import { prisma } from "./_shared";
 
 export const resetBillingCycle = async (userId: string): Promise<void> => {
-  await (prisma as any).$transaction(async (tx: any) => {
+  await prisma.$transaction(async (tx: any) => {
     await tx.user.update({
       where: { id: userId },
       data: {

@@ -9,7 +9,7 @@ export const removeStorage = async (
 ) => {
   const normalized = nonNegative(bytes);
 
-  return (prisma as any).$transaction(async (tx: any) => {
+  return prisma.$transaction(async (tx: any) => {
     const user = await tx.user.findUnique({
       where: { id: userId },
       select: {

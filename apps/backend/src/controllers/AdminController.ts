@@ -106,11 +106,11 @@ export const getPaymentsOverviewController = async (req: Request, res: Response)
 
 export const getPricingConfigController = async (_req: Request, res: Response) => {
   const [rawTiers, regions] = await Promise.all([
-    (prisma as any).pricingTier.findMany({
+    prisma.pricingTier.findMany({
       orderBy: { sortOrder: "asc" },
       include: { features: { select: { featureKey: true } } },
     }),
-    (prisma as any).regionalPricing.findMany({
+    prisma.regionalPricing.findMany({
       include: { tierOverrides: true },
       orderBy: { countryCode: "asc" },
     }),
@@ -131,7 +131,7 @@ export const createPricingTierController = async (req: Request, res: Response) =
     throw new AppError("gb, label, and priceCents are required", 400);
   }
 
-  const tier = await (prisma as any).$transaction(async (tx: any) => {
+  const tier = await prisma.$transaction(async (tx: any) => {
     const created = await tx.pricingTier.create({
       data: {
         gb: Number(gb),
@@ -170,7 +170,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   const { id } = req.params;
   const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit, features } = req.body;
 
-  const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
+  const existing = await prisma.pricingTier.findUnique({ where: { id } });
   if (!existing) {
     throw new AppError("Pricing tier not found", 404);
   }
@@ -186,7 +186,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
   let stripeProductId: string | null = null;
 
   if (shouldSyncStripe) {
-    const oldPrice = await stripe.prices.retrieve(existing.stripePriceId);
+    const oldPrice = await stripe.prices.retrieve(existing.stripePriceId!);
     stripeProductId = oldPrice.product as string;
     const targetAmount = Number(priceCents);
 
@@ -218,7 +218,7 @@ export const updatePricingTierController = async (req: Request, res: Response) =
     }
   }
 
-  const tier = await (prisma as any).$transaction(async (tx: any) => {
+  const tier = await prisma.$transaction(async (tx: any) => {
     const updated = await tx.pricingTier.update({
       where: { id },
       data: {
@@ -258,14 +258,14 @@ export const updatePricingTierController = async (req: Request, res: Response) =
     // Set the new price as the product's default first, otherwise Stripe
     // won't allow archiving the old price if it's the current default
     await stripe.products.update(stripeProductId, { default_price: syncedStripePriceId });
-    await stripe.prices.update(existing.stripePriceId, { active: false });
+    await stripe.prices.update(existing.stripePriceId!, { active: false });
   }
 
   // Cascade: if this is the free tier, update all FREE users' limits
   if (tier.priceCents === 0) {
     const newStorageLimit = storageTierToBytes(tier.gb);
     const newGalleryLimit = tier.galleryLimit;
-    await (prisma as any).user.updateMany({
+    await prisma.user.updateMany({
       where: { plan: "FREE" },
       data: {
         storageLimit: newStorageLimit,
@@ -284,12 +284,12 @@ export const updatePricingTierController = async (req: Request, res: Response) =
 export const deletePricingTierController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const existing = await (prisma as any).pricingTier.findUnique({ where: { id } });
+  const existing = await prisma.pricingTier.findUnique({ where: { id } });
   if (!existing) {
     throw new AppError("Pricing tier not found", 404);
   }
 
-  const tier = await (prisma as any).pricingTier.update({
+  const tier = await prisma.pricingTier.update({
     where: { id },
     data: { active: false },
   });
@@ -305,7 +305,7 @@ export const createRegionalPricingController = async (req: Request, res: Respons
     throw new AppError("countryCode, currency, symbol, locale, and pppMultiplier are required", 400);
   }
 
-  const region = await (prisma as any).regionalPricing.create({
+  const region = await prisma.regionalPricing.create({
     data: {
       countryCode: countryCode.toUpperCase(),
       currency,
@@ -335,12 +335,12 @@ export const updateRegionalPricingController = async (req: Request, res: Respons
   const { id } = req.params;
   const { countryCode, currency, symbol, locale, pppMultiplier, active, tierOverrides } = req.body;
 
-  const existing = await (prisma as any).regionalPricing.findUnique({ where: { id } });
+  const existing = await prisma.regionalPricing.findUnique({ where: { id } });
   if (!existing) {
     throw new AppError("Regional pricing config not found", 404);
   }
 
-  const region = await (prisma as any).$transaction(async (tx: any) => {
+  const region = await prisma.$transaction(async (tx: any) => {
     // Update the regional pricing record
     const updated = await tx.regionalPricing.update({
       where: { id },
@@ -386,12 +386,12 @@ export const updateRegionalPricingController = async (req: Request, res: Respons
 export const deleteRegionalPricingController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const existing = await (prisma as any).regionalPricing.findUnique({ where: { id } });
+  const existing = await prisma.regionalPricing.findUnique({ where: { id } });
   if (!existing) {
     throw new AppError("Regional pricing config not found", 404);
   }
 
-  const region = await (prisma as any).regionalPricing.update({
+  const region = await prisma.regionalPricing.update({
     where: { id },
     data: { active: false },
     include: { tierOverrides: true },
@@ -426,14 +426,14 @@ export const listInboundEmailsController = async (
     if (filter === "starred") where.isStarred = true;
 
     const [emails, total, unreadCount] = await Promise.all([
-      (prisma as any).inboundEmail.findMany({
+      prisma.inboundEmail.findMany({
         where,
         orderBy: { sentAt: "desc" },
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
-      (prisma as any).inboundEmail.count({ where }),
-      (prisma as any).inboundEmail.count({ where: { isRead: false } }),
+      prisma.inboundEmail.count({ where }),
+      prisma.inboundEmail.count({ where: { isRead: false } }),
     ]);
 
     return res.status(200).json({
@@ -461,7 +461,7 @@ export const getInboundEmailController = async (
     }
 
     // Atomically mark as read and return in one query
-    const email = await (prisma as any).inboundEmail.findUnique({
+    const email = await prisma.inboundEmail.findUnique({
       where: { id },
     });
 
@@ -470,7 +470,7 @@ export const getInboundEmailController = async (
     }
 
     if (!email.isRead) {
-      await (prisma as any).inboundEmail.update({
+      await prisma.inboundEmail.update({
         where: { id },
         data: { isRead: true },
       });
@@ -505,7 +505,7 @@ export const updateInboundEmailController = async (
     }
 
     // Check existence first to return a clean 404
-    const existing = await (prisma as any).inboundEmail.findUnique({
+    const existing = await prisma.inboundEmail.findUnique({
       where: { id },
       select: { id: true },
     });
@@ -513,7 +513,7 @@ export const updateInboundEmailController = async (
       return res.status(404).json({ error: "Email not found" });
     }
 
-    const email = await (prisma as any).inboundEmail.update({
+    const email = await prisma.inboundEmail.update({
       where: { id },
       data,
     });
@@ -535,7 +535,7 @@ export const deleteInboundEmailController = async (
       return res.status(400).json({ error: "Invalid email ID" });
     }
 
-    const existing = await (prisma as any).inboundEmail.findUnique({
+    const existing = await prisma.inboundEmail.findUnique({
       where: { id },
       select: { id: true },
     });
@@ -543,7 +543,7 @@ export const deleteInboundEmailController = async (
       return res.status(404).json({ error: "Email not found" });
     }
 
-    await (prisma as any).inboundEmail.delete({ where: { id } });
+    await prisma.inboundEmail.delete({ where: { id } });
 
     return res.status(200).json({ success: true });
   } catch (error) {

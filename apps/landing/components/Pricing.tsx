@@ -4,13 +4,11 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import TrackRybbitButton from "./TrackRybbitButton";
 
-// Declare rybbit on window for TypeScript if you're using it
 declare global {
   interface Window {
     rybbit?: {
       event: (eventName: string, eventData?: Record<string, any>) => void;
       pageview: () => void;
-      // Add other methods if you use them
     };
   }
 }
@@ -19,7 +17,10 @@ function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
-      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
+      className={cn(
+        "h-5 w-5 flex-none fill-current stroke-current",
+        className,
+      )}
       viewBox="0 0 24 24"
     >
       <path
@@ -51,12 +52,6 @@ type PlanTier = {
   locale?: string;
 };
 
-type PlansResponse = {
-  tiers: PlanTier[];
-  features: string[];
-  freeFeatures: string[];
-};
-
 const FALLBACK_TIERS: PlanTier[] = [
   { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2, features: [] },
   {
@@ -65,11 +60,12 @@ const FALLBACK_TIERS: PlanTier[] = [
     label: "Solo",
     features: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
+      "COMMENTS",
+      "DOWNLOAD_ANALYTICS",
     ],
   },
   {
@@ -78,33 +74,14 @@ const FALLBACK_TIERS: PlanTier[] = [
     label: "Studio",
     features: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
+      "COMMENTS",
       "DOWNLOAD_ANALYTICS",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-    ],
-  },
-  {
-    gb: 500,
-    priceCents: 3500,
-    label: "Pro Studio",
-    features: [
-      "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
-      "CLIENT_FAVORITES",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "DOWNLOAD_ANALYTICS",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-      "WEBSITE_BUILDER",
     ],
   },
   {
@@ -113,23 +90,20 @@ const FALLBACK_TIERS: PlanTier[] = [
     label: "Unlimited",
     features: [
       "UNLIMITED_GALLERIES",
-      "UNLIMITED_CLIENTS",
       "CLIENT_FAVORITES",
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
+      "COMMENTS",
       "DOWNLOAD_ANALYTICS",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-      "WEBSITE_BUILDER",
     ],
   },
 ];
 
 const FALLBACK_FEATURES = [
   "Unlimited galleries",
-  "Unlimited clients",
   "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",
@@ -149,7 +123,6 @@ const FALLBACK_FREE_FEATURES = [
 /** Map feature keys to human-readable labels */
 const FEATURE_LABELS: Record<string, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
-  UNLIMITED_CLIENTS: "Unlimited clients",
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",
@@ -159,6 +132,7 @@ const FEATURE_LABELS: Record<string, string> = {
   CUSTOM_DOMAINS: "Custom domains",
   WEBSITE_BUILDER: "Website builder",
   CLIENT_FAVORITES: "Client favorites & notes",
+  COMMENTS: "Gallery comments",
 };
 
 const formatTierPrice = (tier: PlanTier) => {
@@ -211,7 +185,6 @@ async function fetchPlans(
         freeFeatures: FALLBACK_FREE_FEATURES,
       };
     const data = await res.json();
-    // Handle both formats: new { tiers, features } and legacy PlanTier[]
     const tiers: PlanTier[] = Array.isArray(data)
       ? data
       : Array.isArray(data?.tiers)
@@ -245,14 +218,11 @@ export async function Pricing() {
     headerStore.get("cf-ipcountry") ||
     headerStore.get("x-vercel-ip-country") ||
     undefined;
-  const { tiers: allPlans, features, freeFeatures } = await fetchPlans(country);
+  const { tiers: allPlans, freeFeatures } = await fetchPlans(country);
 
   const freeTier = allPlans.find((t) => t.priceCents === 0);
-  // Main 3 cards: Solo, Studio (popular), Pro Studio
-  const mainPlans = allPlans.filter(
-    (t) => t.priceCents > 0 && t.gb !== -1,
-  );
-  const unlimitedTier = allPlans.find((t) => t.gb === -1);
+  // Main 3 cards: Solo, Studio (popular), Unlimited
+  const mainPlans = allPlans.filter((t) => t.priceCents > 0);
 
   /** Features this tier adds over the previous one */
   const getNewFeatures = (tier: PlanTier, prevTier?: PlanTier): string[] => {
@@ -343,6 +313,7 @@ export async function Pricing() {
         <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {mainPlans.map((tier, i) => {
             const isPopular = tier.label === "Studio" || tier.gb === 100;
+            const isUnlimited = tier.gb === -1;
             const prevTier = i === 0 ? freeTier : mainPlans[i - 1];
             const newFeatures = getNewFeatures(tier, prevTier);
             const inheritedLabel =
@@ -379,9 +350,7 @@ export async function Pricing() {
                   <p
                     className={cn(
                       "mt-4 text-4xl font-light tracking-tight",
-                      isPopular
-                        ? "text-primary-foreground"
-                        : "text-background",
+                      isPopular ? "text-primary-foreground" : "text-background",
                     )}
                   >
                     {formatTierPrice(tier)}
@@ -404,7 +373,9 @@ export async function Pricing() {
                         : "text-background/60",
                     )}
                   >
-                    {formatStorage(tier.gb)} storage
+                    {isUnlimited
+                      ? "Unlimited storage"
+                      : `${formatStorage(tier.gb)} storage`}
                   </p>
                 </div>
 
@@ -436,7 +407,9 @@ export async function Pricing() {
                         )}
                       />
                       <span className="font-medium">
-                        {inheritedLabel}, plus:
+                        {newFeatures.length > 0
+                          ? `${inheritedLabel}, plus:`
+                          : inheritedLabel}
                       </span>
                     </li>
                   )}
@@ -453,6 +426,28 @@ export async function Pricing() {
                       <span>{featureLabel(key)}</span>
                     </li>
                   ))}
+                  {isUnlimited && (
+                    <>
+                      <li className="flex items-start gap-2.5 opacity-60">
+                        <CheckIcon className="mt-0.5 shrink-0 text-primary" />
+                        <span>
+                          Custom domains{" "}
+                          <span className="rounded bg-background/10 px-1.5 py-0.5 text-xs">
+                            soon
+                          </span>
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2.5 opacity-60">
+                        <CheckIcon className="mt-0.5 shrink-0 text-primary" />
+                        <span>
+                          Website builder{" "}
+                          <span className="rounded bg-background/10 px-1.5 py-0.5 text-xs">
+                            soon
+                          </span>
+                        </span>
+                      </li>
+                    </>
+                  )}
                 </ul>
 
                 {/* CTA */}
@@ -480,42 +475,6 @@ export async function Pricing() {
             );
           })}
         </div>
-
-        {/* ── Unlimited tier banner ─────────────────────────────── */}
-        {unlimitedTier && (
-          <div className="mx-auto mt-10 max-w-5xl">
-            <TrackRybbitButton
-              eventName="subscribe_to_plan"
-              eventData={{ plan: unlimitedTier.label }}
-            >
-              <a
-                href={`${signupUrl}/account?plan=${unlimitedTier.label}`}
-                className="group flex flex-col items-center justify-between gap-4 rounded-2xl border border-background/10 bg-background/5 px-8 py-6 transition-colors hover:border-background/20 hover:bg-background/10 sm:flex-row"
-              >
-                <div className="text-center sm:text-left">
-                  <h3 className="text-lg font-semibold text-background">
-                    Need unlimited storage?
-                  </h3>
-                  <p className="mt-1 text-sm text-background/50">
-                    Everything in Pro Studio with unlimited storage (3 TB fair
-                    use cap) &middot; Perfect for high-volume studios
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-4">
-                  <div className="text-right">
-                    <span className="text-2xl font-light tracking-tight text-background">
-                      {formatTierPrice(unlimitedTier)}
-                    </span>
-                    <span className="text-sm text-background/50">/mo</span>
-                  </div>
-                  <span className="inline-flex items-center rounded-full bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition-colors group-hover:bg-primary/25">
-                    Choose Unlimited
-                  </span>
-                </div>
-              </a>
-            </TrackRybbitButton>
-          </div>
-        )}
       </Container>
     </section>
   );

@@ -52,7 +52,7 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       html,
     });
 
-    await (prisma as any).user.update({
+    await prisma.user.update({
       where: { id: userId },
       data: { warningEmailSent95: true },
     });
@@ -79,7 +79,7 @@ export const checkAndSendWarningEmails = async (userId: string): Promise<void> =
       html,
     });
 
-    await (prisma as any).user.update({
+    await prisma.user.update({
       where: { id: userId },
       data: { warningEmailSent80: true },
     });

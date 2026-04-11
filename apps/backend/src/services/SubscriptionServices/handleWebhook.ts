@@ -145,7 +145,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   }
 
   // Idempotency: check if subscription already exists
-  const existing = await (prisma as any).subscription.findUnique({
+  const existing = await prisma.subscription.findUnique({
     where: { stripeSubscriptionId },
   });
   if (existing) {
@@ -169,17 +169,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   let resolvedBy = "";
 
   if (userId) {
-    user = await (prisma as any).user.findUnique({ where: { id: userId } });
+    user = await prisma.user.findUnique({ where: { id: userId } });
     if (user) resolvedBy = `metadata.user_id=${userId}`;
   }
 
   if (!user && stripeCustomerId) {
-    user = await (prisma as any).user.findUnique({ where: { stripeCustomerId } });
+    user = await prisma.user.findUnique({ where: { stripeCustomerId } });
     if (user) resolvedBy = `stripeCustomerId=${stripeCustomerId}`;
   }
 
   if (!user && session.customer_email) {
-    user = await (prisma as any).user.findFirst({ where: { email: session.customer_email } });
+    user = await prisma.user.findFirst({ where: { email: session.customer_email } });
     if (user) resolvedBy = `email=${session.customer_email}`;
   }
 
@@ -212,8 +212,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   console.log(`[Webhook] Creating subscription: userId=${resolvedUserId}, tier=${storageTierGb}GB, price=${priceCents}cents`);
 
   try {
-    await (prisma as any).$transaction([
-      (prisma as any).subscription.create({
+    await prisma.$transaction([
+      prisma.subscription.create({
         data: {
           userId: resolvedUserId,
           source: "STRIPE",
@@ -226,7 +226,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
           currentPeriodEnd: period.end,
         },
       }),
-      (prisma as any).user.update({
+      prisma.user.update({
         where: { id: resolvedUserId },
         data: {
           plan: "PRO",
@@ -259,15 +259,15 @@ async function findSubscriptionWithFallback(
   stripeCustomerId: string | null,
   eventName: string,
 ): Promise<any | null> {
-  let subscription = await (prisma as any).subscription.findUnique({
+  let subscription = await prisma.subscription.findUnique({
     where: { stripeSubscriptionId },
   });
   if (subscription) return subscription;
 
   if (stripeCustomerId) {
-    const user = await (prisma as any).user.findUnique({ where: { stripeCustomerId } });
+    const user = await prisma.user.findUnique({ where: { stripeCustomerId } });
     if (user) {
-      subscription = await (prisma as any).subscription.findFirst({
+      subscription = await prisma.subscription.findFirst({
         where: { userId: user.id, source: "STRIPE" },
         orderBy: { createdAt: "desc" },
       });
@@ -275,7 +275,7 @@ async function findSubscriptionWithFallback(
         console.warn(
           `[Webhook] ${eventName}: found via stripeCustomerId fallback -> subscriptionId=${subscription.id}`,
         );
-        await (prisma as any).subscription.update({
+        await prisma.subscription.update({
           where: { id: subscription.id },
           data: { stripeSubscriptionId },
         });
@@ -320,8 +320,8 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
       `${subscription.storageTierGb}GB -> ${newTierGb}GB`,
     );
 
-    await (prisma as any).$transaction([
-      (prisma as any).subscription.update({
+    await prisma.$transaction([
+      prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           storageTierGb: newTierGb,
@@ -335,7 +335,7 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
           ...(isCancelled ? { cancelledAt: new Date(), endsAt: period.end } : { cancelledAt: null, endsAt: null }),
         },
       }),
-      (prisma as any).user.update({
+      prisma.user.update({
         where: { id: subscription.userId },
         data: { storageLimit },
       }),
@@ -348,7 +348,7 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
       `pendingTier=${subscription.pendingTierGb}GB`,
     );
 
-    await (prisma as any).subscription.update({
+    await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
         stripeSubscriptionId,
@@ -374,8 +374,8 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
 
     console.log(`[Webhook] customer.subscription.updated: userId=${subscription.userId}, tier=${tierGb}GB, status=${status}`);
 
-    await (prisma as any).$transaction([
-      (prisma as any).subscription.update({
+    await prisma.$transaction([
+      prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           storageTierGb: tierGb,
@@ -387,7 +387,7 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription): Promise<void
           ...(isCancelled ? { cancelledAt: new Date(), endsAt: period.end } : { cancelledAt: null, endsAt: null }),
         },
       }),
-      (prisma as any).user.update({
+      prisma.user.update({
         where: { id: subscription.userId },
         data: { storageLimit },
       }),
@@ -405,7 +405,7 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription): Promise<void
   const freeLimits = await getFreeTierLimits();
   console.log(`[Webhook] customer.subscription.deleted: userId=${subscription.userId}`);
 
-  await (prisma as any).$transaction(async (tx: any) => {
+  await prisma.$transaction(async (tx: any) => {
     await tx.subscription.update({
       where: { id: subscription.id },
       data: { status: "EXPIRED", stripeSubscriptionId },
@@ -452,8 +452,8 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
   const sub = await stripe.subscriptions.retrieve(stripeSubscriptionId);
   const period = await extractBillingPeriod(sub);
 
-  await (prisma as any).$transaction([
-    (prisma as any).subscription.update({
+  await prisma.$transaction([
+    prisma.subscription.update({
       where: { id: subscription.id },
       data: {
         status: "ACTIVE",
@@ -461,7 +461,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
         currentPeriodEnd: period.end,
       },
     }),
-    (prisma as any).user.update({
+    prisma.user.update({
       where: { id: subscription.userId },
       data: { plan: "PRO", subscribed: true, galleryLimit: null, downgradedAt: null },
     }),
@@ -475,7 +475,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   const stripeCustomerId = invoice.customer as string;
   console.log(`[Webhook] invoice.payment_failed: stripeSubscriptionId=${stripeSubscriptionId}`);
 
-  const result = await (prisma as any).subscription.updateMany({
+  const result = await prisma.subscription.updateMany({
     where: { stripeSubscriptionId },
     data: { status: "PAST_DUE" },
   });
@@ -484,10 +484,10 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   let notifyUserId: string | null = null;
 
   if (result.count === 0 && stripeCustomerId) {
-    const user = await (prisma as any).user.findUnique({ where: { stripeCustomerId } });
+    const user = await prisma.user.findUnique({ where: { stripeCustomerId } });
     if (user) {
       notifyUserId = user.id;
-      const fallbackResult = await (prisma as any).subscription.updateMany({
+      const fallbackResult = await prisma.subscription.updateMany({
         where: { userId: user.id, source: "STRIPE" },
         data: { status: "PAST_DUE" },
       });
@@ -500,7 +500,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   } else if (result.count > 0) {
     console.log(`[Webhook] invoice.payment_failed: marked ${result.count} subscription(s) as PAST_DUE`);
     // Find the user from the subscription
-    const sub = await (prisma as any).subscription.findFirst({
+    const sub = await prisma.subscription.findFirst({
       where: { stripeSubscriptionId },
       select: { userId: true },
     });
@@ -532,7 +532,7 @@ async function handleAlbumPaymentIntentSucceeded(paymentIntent: Stripe.PaymentIn
 
   console.log(`[Webhook] payment_intent.succeeded (album): submissionId=${submissionId}, pi=${paymentIntent.id}`);
 
-  const existingTx = await (prisma as any).smartAlbumTransaction.findUnique({
+  const existingTx = await prisma.smartAlbumTransaction.findUnique({
     where: { stripePaymentIntentId: paymentIntent.id },
   });
 
@@ -547,7 +547,7 @@ async function handleAlbumPaymentIntentSucceeded(paymentIntent: Stripe.PaymentIn
   const netCents = amountCents - feeCents;
   const currency = paymentIntent.currency?.toUpperCase() || "USD";
 
-  await (prisma as any).smartAlbumTransaction.upsert({
+  await prisma.smartAlbumTransaction.upsert({
     where: { submissionId },
     create: {
       submissionId,
@@ -556,12 +556,12 @@ async function handleAlbumPaymentIntentSucceeded(paymentIntent: Stripe.PaymentIn
       feeCents,
       netCents,
       currency,
-      status: "COMPLETED",
+      status: "SUCCEEDED",
       paidAt: new Date(),
     },
     update: {
       stripePaymentIntentId: paymentIntent.id,
-      status: "COMPLETED",
+      status: "SUCCEEDED",
       paidAt: new Date(),
     },
   });
@@ -584,7 +584,7 @@ async function handleConnectAccountUpdated(account: Stripe.Account): Promise<voi
 
   if (!chargesEnabled || !payoutsEnabled) return;
 
-  const updated = await (prisma as any).smartAlbumConfig.updateMany({
+  const updated = await prisma.smartAlbumConfig.updateMany({
     where: { stripeConnectAccountId: accountId, stripeConnectOnboarded: false },
     data: { stripeConnectOnboarded: true },
   });

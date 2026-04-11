@@ -36,6 +36,10 @@ export const updateAlbum = async (
     include: { photos: true },
   });
 
+  if (!fresh) {
+    throw new Error("Album not found after update");
+  }
+
   return {
     album: {
       id: fresh.id,

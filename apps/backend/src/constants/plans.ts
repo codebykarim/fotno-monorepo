@@ -34,7 +34,7 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
   }
 
   try {
-    const tiers: DBTier[] = await (prisma as any).pricingTier.findMany({
+    const tiers: DBTier[] = await prisma.pricingTier.findMany({
       where: { active: true },
       orderBy: { sortOrder: "asc" },
     });
@@ -94,7 +94,7 @@ export async function fetchFeaturesForTier(tierGb: number): Promise<string[]> {
   }
 
   try {
-    const tiers = await (prisma as any).pricingTier.findMany({
+    const tiers = await prisma.pricingTier.findMany({
       where: { active: true },
       include: { features: { select: { featureKey: true } } },
     });
@@ -149,12 +149,6 @@ export const STORAGE_TIERS = [
     stripePriceId: process.env.STRIPE_PRICE_PROFESSIONAL || "",
   },
   {
-    gb: 500,
-    priceCents: 3500,
-    label: "Pro Studio",
-    stripePriceId: process.env.STRIPE_PRICE_BUSINESS || "",
-  },
-  {
     gb: -1,
     priceCents: 4900,
     label: "Unlimited",
@@ -166,8 +160,6 @@ export type StorageTier = (typeof STORAGE_TIERS)[number];
 
 export const PLAN_FEATURES = [
   "Unlimited galleries",
-  "Unlimited clients",
-  // "AI-powered captions",
   "Client favorites & notes",
   "Download tracking & analytics",
   "Password-protected galleries",

@@ -1,6 +1,5 @@
 export const FEATURE_KEYS = [
   "UNLIMITED_GALLERIES",
-  "UNLIMITED_CLIENTS",
   "CLIENT_FAVORITES",
   "COMMENTS",
   "PASSWORD_PROTECTION",
@@ -18,7 +17,6 @@ export type FeatureKey = (typeof FEATURE_KEYS)[number];
 /** Human-readable labels for admin UI and error messages */
 export const FEATURE_LABELS: Record<FeatureKey, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
-  UNLIMITED_CLIENTS: "Unlimited clients",
   CLIENT_FAVORITES: "Client favorites & notes",
   COMMENTS: "Gallery comments",
   PASSWORD_PROTECTION: "Password-protected galleries",
@@ -36,16 +34,15 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
   Free: [],
   Solo: [
     "UNLIMITED_GALLERIES",
-    "UNLIMITED_CLIENTS",
     "CLIENT_FAVORITES",
     "COMMENTS",
     "PASSWORD_PROTECTION",
     "CUSTOM_SLUGS",
     "SLIDESHOW_SHARING",
+    "DOWNLOAD_ANALYTICS",
   ],
   Studio: [
     "UNLIMITED_GALLERIES",
-    "UNLIMITED_CLIENTS",
     "CLIENT_FAVORITES",
     "COMMENTS",
     "PASSWORD_PROTECTION",
@@ -54,25 +51,9 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "DOWNLOAD_ANALYTICS",
     "GOOGLE_IMPORT",
     "SMART_ALBUMS",
-    "CUSTOM_DOMAINS",
-  ],
-  "Pro Studio": [
-    "UNLIMITED_GALLERIES",
-    "UNLIMITED_CLIENTS",
-    "CLIENT_FAVORITES",
-    "COMMENTS",
-    "PASSWORD_PROTECTION",
-    "CUSTOM_SLUGS",
-    "SLIDESHOW_SHARING",
-    "DOWNLOAD_ANALYTICS",
-    "GOOGLE_IMPORT",
-    "SMART_ALBUMS",
-    "CUSTOM_DOMAINS",
-    "WEBSITE_BUILDER",
   ],
   Unlimited: [
     "UNLIMITED_GALLERIES",
-    "UNLIMITED_CLIENTS",
     "CLIENT_FAVORITES",
     "COMMENTS",
     "PASSWORD_PROTECTION",

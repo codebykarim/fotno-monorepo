@@ -9,7 +9,7 @@ export default async function OnboardingPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
-  const VALID_PLANS = ["Free", "Solo", "Studio", "Pro Studio", "Unlimited"];
+  const VALID_PLANS = ["Free", "Solo", "Studio", "Unlimited"];
   const rawPlan = typeof params.plan === "string" ? params.plan : "Free";
   const plan = VALID_PLANS.includes(rawPlan) ? rawPlan : "Free";
   const paymentSuccess = params.payment_status === "success";

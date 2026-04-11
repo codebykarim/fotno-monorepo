@@ -37,11 +37,11 @@ export async function sendNotification(
   data?: Record<string, string>,
 ) {
   // Always persist as an in-app notification
-  await (prisma as any).notification.create({
+  await prisma.notification.create({
     data: { userId, type, title, body, data: data ?? undefined },
   });
 
-  const prefs = await (prisma as any).notificationPreference.findUnique({
+  const prefs = await prisma.notificationPreference.findUnique({
     where: { userId },
   });
 
@@ -76,7 +76,7 @@ async function sendBrowserPush(
   initFirebase();
   if (!firebaseInitialized) return;
 
-  const tokens = await (prisma as any).fcmToken.findMany({
+  const tokens = await prisma.fcmToken.findMany({
     where: { userId },
     select: { token: true },
   });
@@ -109,7 +109,7 @@ async function sendBrowserPush(
     });
 
     if (tokensToRemove.length > 0) {
-      await (prisma as any).fcmToken.deleteMany({
+      await prisma.fcmToken.deleteMany({
         where: { userId, token: { in: tokensToRemove } },
       });
       console.log(`[FCM] Removed ${tokensToRemove.length} stale token(s) for user ${userId}`);
@@ -136,7 +136,7 @@ async function sendEmailNotification(
   title: string,
   body: string,
 ) {
-  const user = await (prisma as any).user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { email: true },
   });

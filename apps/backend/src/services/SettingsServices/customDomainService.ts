@@ -14,7 +14,7 @@ const resolver = new Resolver();
 resolver.setServers(["1.1.1.1", "8.8.8.8"]);
 
 export const getCustomDomain = async (userId: string) => {
-  const domain = await (prisma as any).customDomain.findUnique({
+  const domain = await prisma.customDomain.findUnique({
     where: { userId },
   });
 
@@ -45,14 +45,14 @@ export const setCustomDomain = async (userId: string, domainName: string) => {
   }
 
   // Check if domain is already taken by another user
-  const existing = await (prisma as any).customDomain.findUnique({
+  const existing = await prisma.customDomain.findUnique({
     where: { domain: domainName },
   });
   if (existing && existing.userId !== userId) {
     throw new AppError("Domain is already in use by another account", 409);
   }
 
-  const domain = await (prisma as any).customDomain.upsert({
+  const domain = await prisma.customDomain.upsert({
     where: { userId },
     create: {
       userId,
@@ -76,7 +76,7 @@ export const setCustomDomain = async (userId: string, domainName: string) => {
 };
 
 export const verifyCustomDomain = async (userId: string) => {
-  const domain = await (prisma as any).customDomain.findUnique({
+  const domain = await prisma.customDomain.findUnique({
     where: { userId },
   });
 
@@ -120,7 +120,7 @@ export const verifyCustomDomain = async (userId: string) => {
   }
 
   if (!cnameValid) {
-    await (prisma as any).customDomain.update({
+    await prisma.customDomain.update({
       where: { userId },
       data: { status: "FAILED" },
     });
@@ -131,7 +131,7 @@ export const verifyCustomDomain = async (userId: string) => {
   }
 
   if (!txtValid) {
-    await (prisma as any).customDomain.update({
+    await prisma.customDomain.update({
       where: { userId },
       data: { status: "FAILED" },
     });
@@ -147,7 +147,7 @@ export const verifyCustomDomain = async (userId: string) => {
     cloudflareHostnameId = await createCustomHostname(domain.domain);
   }
 
-  const updated = await (prisma as any).customDomain.update({
+  const updated = await prisma.customDomain.update({
     where: { userId },
     data: {
       status: "VERIFIED",
@@ -165,7 +165,7 @@ export const verifyCustomDomain = async (userId: string) => {
 };
 
 export const removeCustomDomain = async (userId: string) => {
-  const domain = await (prisma as any).customDomain.findUnique({
+  const domain = await prisma.customDomain.findUnique({
     where: { userId },
   });
 
@@ -176,7 +176,7 @@ export const removeCustomDomain = async (userId: string) => {
     await deleteCustomHostname(domain.cloudflareHostnameId);
   }
 
-  await (prisma as any).customDomain.delete({ where: { userId } });
+  await prisma.customDomain.delete({ where: { userId } });
 
   return { removed: true };
 };

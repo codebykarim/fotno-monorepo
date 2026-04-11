@@ -13,7 +13,7 @@ const DEFAULTS = {
 };
 
 export const getNotificationPreferences = async (userId: string) => {
-  const prefs = await (prisma as any).notificationPreference.findUnique({
+  const prefs = await prisma.notificationPreference.findUnique({
     where: { userId },
   });
 
@@ -44,7 +44,7 @@ export const updateNotificationPreferences = async (
     commentsEmail?: boolean;
   },
 ) => {
-  const prefs = await (prisma as any).notificationPreference.upsert({
+  const prefs = await prisma.notificationPreference.upsert({
     where: { userId },
     create: { userId, ...data },
     update: data,
@@ -69,7 +69,7 @@ export const registerFcmToken = async (
 ) => {
   if (!token) throw new AppError("FCM token is required", 400);
 
-  await (prisma as any).fcmToken.upsert({
+  await prisma.fcmToken.upsert({
     where: {
       userId_token: { userId, token },
     },
@@ -81,7 +81,7 @@ export const registerFcmToken = async (
 };
 
 export const removeFcmToken = async (userId: string, token: string) => {
-  await (prisma as any).fcmToken.deleteMany({
+  await prisma.fcmToken.deleteMany({
     where: { userId, token },
   });
 

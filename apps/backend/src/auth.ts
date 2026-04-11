@@ -26,7 +26,7 @@ export const auth = betterAuth({
         after: async (user) => {
           // New users start on the Free tier — limits read from PricingTier DB
           const freeLimits = await getFreeTierLimits();
-          await (prisma as any).user.update({
+          await prisma.user.update({
             where: { id: user.id },
             data: {
               plan: "FREE",

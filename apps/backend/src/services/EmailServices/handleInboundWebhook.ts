@@ -30,7 +30,7 @@ export async function handleInboundEmailWebhook(
   const { data } = payload;
 
   // Idempotency: skip if we already stored this email
-  const existing = await (prisma as any).inboundEmail.findUnique({
+  const existing = await prisma.inboundEmail.findUnique({
     where: { resendId: data.email_id },
     select: { id: true },
   });
@@ -79,7 +79,7 @@ export async function handleInboundEmailWebhook(
     return { status: "error", reason: "invalid date" };
   }
 
-  const inboundEmail = await (prisma as any).inboundEmail.create({
+  const inboundEmail = await prisma.inboundEmail.create({
     data: {
       resendId: data.email_id,
       from: data.from,

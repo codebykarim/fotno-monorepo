@@ -94,17 +94,17 @@ export const gphotosStartImport = async (
       const name =
         body.newGallery.clientName || email.split("@")[0] || "New Client";
 
-      let client = await db.client.findFirst({
+      let client = await (db as any).client.findFirst({
         where: { userId, email },
       });
 
       if (!client) {
-        client = await db.client.create({
+        client = await (db as any).client.create({
           data: { userId, email, name },
         });
       }
 
-      await db.galleryClient.upsert({
+      await (db as any).galleryClient.upsert({
         where: {
           galleryId_clientId: {
             galleryId: gallery.id,

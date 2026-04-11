@@ -66,7 +66,7 @@ export const getSubscriptionController = async (
   };
 
   // Include pending downgrade if set
-  let serializedSubscription = subscription;
+  let serializedSubscription: any = subscription;
   if (subscription && subscription.pendingTierGb) {
     const pendingTier = await findTierByGbFromDB(subscription.pendingTierGb);
     serializedSubscription = {
@@ -96,7 +96,7 @@ export const createCheckoutController = async (
     "subscription.checkout",
     { userId, tierGb: storageTierGb, countryCode },
     async () => {
-      const user = await (prisma as any).user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { email: true, name: true },
       });
@@ -241,7 +241,7 @@ export const getPortalUrlController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  const user = await (prisma as any).user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { stripeCustomerId: true },
   });

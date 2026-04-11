@@ -10,7 +10,7 @@ export const addStorage = async (
 ) => {
   const normalized = nonNegative(bytes);
 
-  const updated = await (prisma as any).$transaction(async (tx: any) => {
+  const updated = await prisma.$transaction(async (tx: any) => {
     const user = await tx.user.findUnique({
       where: { id: userId },
       select: {

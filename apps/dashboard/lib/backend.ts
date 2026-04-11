@@ -42,9 +42,24 @@ export const backendJsonFetch = async (
     headers.set("Content-Type", "application/json");
   }
 
-  return fetch(buildBackendUrl(path), {
+  const response = await fetch(buildBackendUrl(path), {
     ...init,
     headers,
     cache: "no-store",
   });
+
+  // If the response isn't JSON (e.g. reverse-proxy HTML error page),
+  // convert it into a JSON error response so callers can safely call .json()
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!response.ok && !contentType.includes("application/json")) {
+    return new Response(
+      JSON.stringify({ error: `Backend returned ${response.status}` }),
+      {
+        status: response.status,
+        headers: { "content-type": "application/json" },
+      },
+    );
+  }
+
+  return response;
 };

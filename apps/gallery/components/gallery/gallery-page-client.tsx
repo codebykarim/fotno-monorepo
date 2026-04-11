@@ -111,6 +111,7 @@ const getViewerNameKey = (shareToken: string) =>
   `fotno_gallery_viewer_name_${shareToken}`;
 
 const readStoredToken = (shareToken: string): string | null => {
+  if (typeof window === "undefined") return null;
   const token = sessionStorage.getItem(getSessionTokenKey(shareToken));
   if (!token) {
     return null;
@@ -125,6 +126,7 @@ const readStoredToken = (shareToken: string): string | null => {
 };
 
 const readStoredValidationToken = (shareToken: string): string | null => {
+  if (typeof window === "undefined") return null;
   const token = sessionStorage.getItem(getSessionValidationKey(shareToken));
   if (!token) {
     return null;

@@ -37,6 +37,7 @@ const readErrorText = async (response: Response): Promise<string> => {
 };
 
 const getStoredToken = (shareToken: string): string | null => {
+  if (typeof window === "undefined") return null;
   const token = sessionStorage.getItem(getSessionTokenKey(shareToken));
   if (!token) {
     return null;

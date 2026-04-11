@@ -66,14 +66,18 @@ export const changeTier = async ({
 
   let itemUpdate: any;
   if (regionalCheckoutCents) {
-    const existingPrice = await stripe.prices.retrieve(currentItem.price.id);
+    // Use the product directly from the subscription item instead of retrieving
+    // the price separately — avoids "No such price" errors for archived prices
+    const productId = typeof currentItem.price.product === "string"
+      ? currentItem.price.product
+      : currentItem.price.product.id;
     itemUpdate = {
       id: currentItem.id,
       price_data: {
         currency: "usd",
         unit_amount: regionalCheckoutCents,
         recurring: { interval: "month" as const },
-        product: existingPrice.product as string,
+        product: productId,
       },
     };
   } else {

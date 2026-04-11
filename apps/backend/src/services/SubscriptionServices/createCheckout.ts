@@ -51,14 +51,24 @@ export const createCheckout = async ({
   let lineItems: any[];
 
   if (regionalCheckoutCents) {
-    const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
+    // Retrieve the price to get the product ID; handle archived/missing prices gracefully
+    let productId: string;
+    try {
+      const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
+      productId = existingPrice.product as string;
+    } catch {
+      throw new AppError(
+        "Stripe price for this tier is no longer valid. Please contact support.",
+        500,
+      );
+    }
     lineItems = [
       {
         price_data: {
           currency: "usd",
           unit_amount: regionalCheckoutCents,
           recurring: { interval: "month" as const },
-          product: existingPrice.product as string,
+          product: productId,
         },
         quantity: 1,
       },

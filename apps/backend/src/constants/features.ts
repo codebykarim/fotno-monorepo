@@ -5,11 +5,12 @@ export const FEATURE_KEYS = [
   "PASSWORD_PROTECTION",
   "CUSTOM_SLUGS",
   "SLIDESHOW_SHARING",
-  "DOWNLOAD_ANALYTICS",
+  "DOWNLOAD",
   "GOOGLE_IMPORT",
   "SMART_ALBUMS",
   "CUSTOM_DOMAINS",
   "WEBSITE_BUILDER",
+  "ANALYTICS",
 ] as const;
 
 export type FeatureKey = (typeof FEATURE_KEYS)[number];
@@ -22,16 +23,21 @@ export const FEATURE_LABELS: Record<FeatureKey, string> = {
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  DOWNLOAD: "Download Gallery",
   GOOGLE_IMPORT: "Google Drive & Google Photos import",
   SMART_ALBUMS: "Smart albums",
   CUSTOM_DOMAINS: "Custom domains",
   WEBSITE_BUILDER: "Website builder",
+  ANALYTICS: "Gallery analytics",
 };
 
 /** Default feature mapping per tier label — used as fallback when DB has no TierFeature rows */
 export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
-  Free: [],
+  Free: [
+    "CLIENT_FAVORITES",
+    "PASSWORD_PROTECTION",
+    "DOWNLOAD",
+  ],
   Solo: [
     "UNLIMITED_GALLERIES",
     "CLIENT_FAVORITES",
@@ -39,7 +45,8 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "PASSWORD_PROTECTION",
     "CUSTOM_SLUGS",
     "SLIDESHOW_SHARING",
-    "DOWNLOAD_ANALYTICS",
+    "DOWNLOAD",
+    "ANALYTICS",
   ],
   Studio: [
     "UNLIMITED_GALLERIES",
@@ -48,9 +55,10 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "PASSWORD_PROTECTION",
     "CUSTOM_SLUGS",
     "SLIDESHOW_SHARING",
-    "DOWNLOAD_ANALYTICS",
+    "DOWNLOAD",
     "GOOGLE_IMPORT",
     "SMART_ALBUMS",
+    "ANALYTICS",
   ],
   Unlimited: [
     "UNLIMITED_GALLERIES",
@@ -59,10 +67,11 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "PASSWORD_PROTECTION",
     "CUSTOM_SLUGS",
     "SLIDESHOW_SHARING",
-    "DOWNLOAD_ANALYTICS",
+    "DOWNLOAD",
     "GOOGLE_IMPORT",
     "SMART_ALBUMS",
     "CUSTOM_DOMAINS",
     "WEBSITE_BUILDER",
+    "ANALYTICS",
   ],
 };

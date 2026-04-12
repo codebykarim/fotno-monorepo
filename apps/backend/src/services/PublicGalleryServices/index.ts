@@ -13,3 +13,4 @@ export { verifyDownloadPin } from "./verifyDownloadPin";
 export { trackDownload } from "./trackDownload";
 export { createFavoriteShare } from "./createFavoriteShare";
 export { getSharedFavorites } from "./getSharedFavorites";
+export { trackGalleryView } from "./trackGalleryView";

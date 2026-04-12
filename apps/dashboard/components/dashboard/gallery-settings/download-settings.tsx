@@ -72,7 +72,7 @@ export function DownloadSettings({ galleryId, data, mutate }: Props) {
       </div>
 
       {/* Master toggle */}
-      <FeatureGate featureKey="DOWNLOAD_ANALYTICS">
+      <FeatureGate featureKey="DOWNLOAD">
         <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
           <div className="flex items-center justify-between">
             <div>

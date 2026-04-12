@@ -53,7 +53,7 @@ export const resolveUserAccess = async (
     const overStorageLimit = user.storageUsed > storageLimitBytes;
     const galleryLimit = freeLimits.galleryLimit;
     const galleryCount = await prisma.gallery.count({ where: { userId } });
-    const features = await fetchFeaturesForTier(0);
+    const features = await fetchFeaturesForTier(freeLimits.gb);
 
     return {
       status: "free",
@@ -192,7 +192,7 @@ async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
   const galleryCount = await prisma.gallery.count({ where: { userId } });
   const storageLimitBytes = freeLimits.storageLimitBytes;
   const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
-  const features = await fetchFeaturesForTier(0);
+  const features = await fetchFeaturesForTier(freeLimits.gb);
 
   return {
     status: "free",

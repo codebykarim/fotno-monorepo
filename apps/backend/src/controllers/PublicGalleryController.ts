@@ -287,6 +287,22 @@ export const getSharedFavoritesController = async (
   return res.status(200).json(result);
 };
 
+export const trackGalleryViewController = async (req: Request, res: Response) => {
+  const result = await withSpan(
+    "public_gallery.track_view",
+    { shareToken: req.params.shareToken, viewerIp: req.ip },
+    () =>
+      PublicGalleryServices.trackGalleryView(req.params.shareToken, {
+        viewerIp: req.ip,
+        userAgent: req.headers["user-agent"],
+      }),
+  );
+  if ("error" in result) {
+    return res.status(asStatusCode(result.status, 400)).json({ error: result.error });
+  }
+  return res.status(201).json(result);
+};
+
 export const trackDownloadController = async (req: Request, res: Response) => {
   const downloadType = req.body?.type || "single";
   const result = await withSpan(
@@ -304,6 +320,7 @@ export const trackDownloadController = async (req: Request, res: Response) => {
         viewerName: req.body?.viewerName,
         viewerIp: req.ip,
         type: downloadType,
+        checkOnly: req.body?.checkOnly === true,
       }),
   );
   if ("error" in result) {

@@ -505,6 +505,28 @@ export const getDownloadActivityController = async (
   return res.status(200).json(result);
 };
 
+// ─── Gallery Analytics ─────────────────────────────────────────────────────
+
+export const getGalleryAnalyticsController = async (
+  req: Request,
+  res: Response,
+) => {
+  const userId = getUserId(req);
+  const period = (req.query.period as string) || "30d";
+  if (!["7d", "30d", "90d", "all"].includes(period)) {
+    return res.status(400).json({ error: "Invalid period" });
+  }
+  const result = await DashboardService.getGalleryAnalytics(
+    userId,
+    req.params.id,
+    period as "7d" | "30d" | "90d" | "all",
+  );
+  if (!result) {
+    return res.status(404).json({ error: "Gallery not found" });
+  }
+  return res.status(200).json(result);
+};
+
 // ─── Photo Processing Status ───────────────────────────────────────────────
 
 export const getGalleryProcessingStatusController = async (

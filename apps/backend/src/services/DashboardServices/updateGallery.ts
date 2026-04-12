@@ -38,7 +38,7 @@ export const updateGallery = async (userId: string, galleryId: string, body: any
   }
 
   // Download feature checks
-  const hasDownload = features.includes("DOWNLOAD_ANALYTICS");
+  const hasDownload = features.includes("DOWNLOAD");
   if (!hasDownload) {
     if (typeof body?.downloadEnabled === "boolean" && body.downloadEnabled) {
       return { error: "Download controls require a higher plan.", status: 403 as const };

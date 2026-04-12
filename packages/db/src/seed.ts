@@ -161,6 +161,8 @@ async function main() {
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
+      "DOWNLOAD",
+      "ANALYTICS",
     ],
     Studio: [
       "UNLIMITED_GALLERIES",
@@ -169,10 +171,11 @@ async function main() {
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
-      "DOWNLOAD_ANALYTICS",
+      "DOWNLOAD",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
       "CUSTOM_DOMAINS",
+      "ANALYTICS",
     ],
     Unlimited: [
       "UNLIMITED_GALLERIES",
@@ -181,11 +184,12 @@ async function main() {
       "PASSWORD_PROTECTION",
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
-      "DOWNLOAD_ANALYTICS",
+      "DOWNLOAD",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
       "CUSTOM_DOMAINS",
       "WEBSITE_BUILDER",
+      "ANALYTICS",
     ],
   };
 

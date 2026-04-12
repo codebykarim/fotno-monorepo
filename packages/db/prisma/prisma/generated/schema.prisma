@@ -213,6 +213,7 @@ model Gallery {
   driveImportItems  DriveImportItem[]
   favorites         GalleryFavorite[]
   downloadEvents    DownloadEvent[]
+  galleryViews      GalleryView[]
   favoriteShares    FavoriteShare[]
   smartAlbumDesigns SmartAlbumDesign[]
 
@@ -377,6 +378,19 @@ model DownloadEvent {
 
   @@index([galleryId])
   @@map("download_event")
+}
+
+model GalleryView {
+  id        String   @id @default(uuid())
+  galleryId String
+  gallery   Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  viewerIp  String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([galleryId])
+  @@index([galleryId, createdAt])
+  @@map("gallery_view")
 }
 
 enum ImportSource {

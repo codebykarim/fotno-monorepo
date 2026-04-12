@@ -7,6 +7,7 @@ import {
   Download,
   Heart,
   AlertTriangle,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
 import { GetGalleryResponse } from "@/lib/types/api";
@@ -15,8 +16,9 @@ import { PrivacySettings } from "./privacy-settings";
 import { DownloadSettings } from "./download-settings";
 import { FavoritesSettings } from "./favorites-settings";
 import { DangerZone } from "./danger-zone";
+import { AnalyticsSettings } from "./analytics-settings";
 
-type Section = "general" | "privacy" | "download" | "favorites" | "danger";
+type Section = "general" | "privacy" | "download" | "favorites" | "analytics" | "danger";
 
 const SECTIONS: {
   id: Section;
@@ -28,6 +30,7 @@ const SECTIONS: {
   { id: "privacy", label: "Privacy", icon: Shield },
   { id: "download", label: "Download", icon: Download },
   { id: "favorites", label: "Favorites", icon: Heart },
+  { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "danger", label: "Danger Zone", icon: AlertTriangle, danger: true },
 ];
 
@@ -144,6 +147,9 @@ export function GallerySettings({ galleryId, data, mutate }: Props) {
             data={data}
             mutate={mutate}
           />
+        )}
+        {active === "analytics" && (
+          <AnalyticsSettings galleryId={galleryId} />
         )}
         {active === "danger" && (
           <DangerZone galleryId={galleryId} data={data} />

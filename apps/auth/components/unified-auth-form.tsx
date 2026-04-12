@@ -2,12 +2,11 @@
 
 import {
   type ComponentProps,
-  Suspense,
   useEffect,
   useMemo,
   useState,
 } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -104,11 +103,15 @@ function UnifiedAuthFormComponent({
   className,
   resetEmail,
   addAccountMode = false,
+  plan,
+  callbackURL,
   ...props
 }: ComponentProps<"div"> & {
   resetEmail?: string | string[] | undefined;
   /** Multi-session: sign in with another account while already signed in */
   addAccountMode?: boolean;
+  plan?: string;
+  callbackURL?: string;
 }) {
   const [authMode, setAuthMode] = useState<AuthMode>("email");
   const [isLoading, setIsLoading] = useState(false);
@@ -119,8 +122,6 @@ function UnifiedAuthFormComponent({
   const [isNewOtpUser, setIsNewOtpUser] = useState(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const plan = searchParams.get("plan");
 
   const postAuthRedirectUrl = useMemo(() => {
     // When registering, redirect to onboarding (same auth app, not dashboard)
@@ -129,8 +130,7 @@ function UnifiedAuthFormComponent({
       return `/onboarding?${planParam}step=stripe`;
     }
 
-    let baseRaw = searchParams.get("callbackURL");
-    const raw = baseRaw;
+    const raw = callbackURL;
 
     if (!raw) return DEFAULT_DASHBOARD_URL;
     try {
@@ -151,7 +151,7 @@ function UnifiedAuthFormComponent({
       /* ignore invalid callback */
     }
     return DEFAULT_DASHBOARD_URL;
-  }, [searchParams, authMode, plan]);
+  }, [callbackURL, authMode, plan]);
 
   const form = useForm<AuthFormData>({
     defaultValues: {
@@ -1041,21 +1041,24 @@ export function UnifiedAuthForm({
   className,
   resetEmail,
   addAccountMode = false,
+  plan,
+  callbackURL,
   ...props
 }: ComponentProps<"div"> & {
   resetEmail?: string | string[] | undefined;
   /** Multi-session: sign in with another account while already signed in */
   addAccountMode?: boolean;
+  plan?: string;
+  callbackURL?: string;
 }) {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      {" "}
-      <UnifiedAuthFormComponent
-        className={className}
-        resetEmail={resetEmail}
-        addAccountMode={addAccountMode}
-        {...props}
-      />
-    </Suspense>
+    <UnifiedAuthFormComponent
+      className={className}
+      resetEmail={resetEmail}
+      addAccountMode={addAccountMode}
+      plan={plan}
+      callbackURL={callbackURL}
+      {...props}
+    />
   );
 }

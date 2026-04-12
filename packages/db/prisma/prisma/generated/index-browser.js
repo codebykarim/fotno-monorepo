@@ -356,6 +356,14 @@ exports.Prisma.DownloadEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.GalleryViewScalarFieldEnum = {
+  id: 'id',
+  galleryId: 'galleryId',
+  viewerIp: 'viewerIp',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.DriveImportJobScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -712,6 +720,7 @@ exports.Prisma.ModelName = {
   GalleryFavorite: 'GalleryFavorite',
   FavoriteShare: 'FavoriteShare',
   DownloadEvent: 'DownloadEvent',
+  GalleryView: 'GalleryView',
   DriveImportJob: 'DriveImportJob',
   PricingTier: 'PricingTier',
   TierFeature: 'TierFeature',

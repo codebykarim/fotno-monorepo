@@ -4,7 +4,7 @@ import { Lock, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
-import { useHasFeature } from "@/lib/hooks/use-features";
+import { useFeaturesLoaded } from "@/lib/hooks/use-features";
 
 export const FEATURE_LABELS: Record<string, string> = {
   UNLIMITED_GALLERIES: "Unlimited galleries",
@@ -13,11 +13,12 @@ export const FEATURE_LABELS: Record<string, string> = {
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  DOWNLOAD: "Download Gallery",
   GOOGLE_IMPORT: "Google Drive & Google Photos import",
   SMART_ALBUMS: "Smart albums",
   CUSTOM_DOMAINS: "Custom domains",
   WEBSITE_BUILDER: "Website builder",
+  ANALYTICS: "Gallery analytics",
 };
 
 /**
@@ -33,9 +34,11 @@ export function FeatureGate({
   children: React.ReactNode;
   className?: string;
 }) {
-  const hasFeature = useHasFeature(featureKey);
+  const { features, isLoaded } = useFeaturesLoaded();
+  const hasFeature = features.includes(featureKey);
 
-  if (hasFeature) return <>{children}</>;
+  // Don't show the gate while still loading features
+  if (!isLoaded || hasFeature) return <>{children}</>;
 
   const label = FEATURE_LABELS[featureKey] ?? featureKey;
 
@@ -86,9 +89,10 @@ export function FeatureInlineGate({
   children: React.ReactNode;
   noUpgrade?: boolean;
 }) {
-  const hasFeature = useHasFeature(featureKey);
+  const { features, isLoaded } = useFeaturesLoaded();
+  const hasFeature = features.includes(featureKey);
 
-  if (hasFeature) return <>{children}</>;
+  if (!isLoaded || hasFeature) return <>{children}</>;
 
   if (noUpgrade) {
     return (

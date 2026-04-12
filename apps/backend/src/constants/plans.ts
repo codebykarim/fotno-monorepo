@@ -100,19 +100,11 @@ export async function fetchFeaturesForTier(tierGb: number): Promise<string[]> {
     });
 
     const map = new Map<number, string[]>();
-    let hasAnyFeatures = false;
 
     for (const tier of tiers) {
       const keys = tier.features.map((f: { featureKey: string }) => f.featureKey);
-      if (keys.length > 0) hasAnyFeatures = true;
-      map.set(tier.gb, keys);
-    }
-
-    // If no TierFeature rows exist yet, fall back to defaults
-    if (!hasAnyFeatures) {
-      for (const tier of tiers) {
-        map.set(tier.gb, DEFAULT_TIER_FEATURES[tier.label] ?? []);
-      }
+      // Use DB features if present, otherwise fall back to defaults for this tier
+      map.set(tier.gb, keys.length > 0 ? keys : (DEFAULT_TIER_FEATURES[tier.label] ?? []));
     }
 
     _featureCache = map;
@@ -161,7 +153,7 @@ export type StorageTier = (typeof STORAGE_TIERS)[number];
 export const PLAN_FEATURES = [
   "Unlimited galleries",
   "Client favorites & notes",
-  "Download tracking & analytics",
+  "Download Gallery",
   "Password-protected galleries",
   "Custom gallery slugs",
   "Google Drive & Google Photos import",
@@ -180,7 +172,7 @@ export function buildFreeFeatures(freeTier: {
     `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
     // "AI-powered captions",
     "Client favorites & notes",
-    "Download tracking & analytics",
+    "Download Gallery",
     "Password-protected galleries",
   ];
 }
@@ -191,7 +183,7 @@ export const FREE_PLAN_FEATURES = [
   "Up to 2 galleries",
   // "AI-powered captions",
   "Client favorites & notes",
-  "Download tracking & analytics",
+  "Download Gallery",
   "Password-protected galleries",
 ];
 

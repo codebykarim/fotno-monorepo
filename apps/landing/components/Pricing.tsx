@@ -17,10 +17,7 @@ function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
-      className={cn(
-        "h-5 w-5 flex-none fill-current stroke-current",
-        className,
-      )}
+      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
       viewBox="0 0 24 24"
     >
       <path
@@ -65,7 +62,8 @@ const FALLBACK_TIERS: PlanTier[] = [
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
       "COMMENTS",
-      "DOWNLOAD_ANALYTICS",
+      "DOWNLOAD",
+      "ANALYTICS",
     ],
   },
   {
@@ -79,9 +77,10 @@ const FALLBACK_TIERS: PlanTier[] = [
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
       "COMMENTS",
-      "DOWNLOAD_ANALYTICS",
+      "DOWNLOAD",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
+      "ANALYTICS",
     ],
   },
   {
@@ -95,9 +94,10 @@ const FALLBACK_TIERS: PlanTier[] = [
       "CUSTOM_SLUGS",
       "SLIDESHOW_SHARING",
       "COMMENTS",
-      "DOWNLOAD_ANALYTICS",
+      "DOWNLOAD",
       "GOOGLE_IMPORT",
       "SMART_ALBUMS",
+      "ANALYTICS",
     ],
   },
 ];
@@ -105,19 +105,21 @@ const FALLBACK_TIERS: PlanTier[] = [
 const FALLBACK_FEATURES = [
   "Unlimited galleries",
   "Client favorites & notes",
-  "Download tracking & analytics",
+  "Download Gallery",
   "Password-protected galleries",
   "Custom gallery slugs",
   "Google Drive & Google Photos import",
   "Slideshow & social sharing",
+  "Gallery analytics",
 ];
 
 const FALLBACK_FREE_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
   "Client favorites & notes",
-  "Download tracking & analytics",
+  "Download Gallery",
   "Password-protected galleries",
+  "Gallery analytics",
 ];
 
 /** Map feature keys to human-readable labels */
@@ -126,13 +128,14 @@ const FEATURE_LABELS: Record<string, string> = {
   PASSWORD_PROTECTION: "Password-protected galleries",
   CUSTOM_SLUGS: "Custom gallery slugs",
   SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD_ANALYTICS: "Download tracking & analytics",
+  DOWNLOAD: "Download Gallery",
   GOOGLE_IMPORT: "Google Drive & Google Photos import",
   SMART_ALBUMS: "Smart albums",
   CUSTOM_DOMAINS: "Custom domains",
   WEBSITE_BUILDER: "Website builder",
   CLIENT_FAVORITES: "Client favorites & notes",
   COMMENTS: "Gallery comments",
+  ANALYTICS: "Gallery analytics",
 };
 
 const formatTierPrice = (tier: PlanTier) => {
@@ -256,8 +259,8 @@ export async function Pricing() {
             Start free. Scale when ready.
           </h2>
           <p className="mt-4 text-lg text-background/50">
-            Pick the plan that fits your workflow. Upgrade anytime to unlock more
-            features and storage.
+            Pick the plan that fits your workflow. Upgrade anytime to unlock
+            more features and storage.
           </p>
         </div>
 

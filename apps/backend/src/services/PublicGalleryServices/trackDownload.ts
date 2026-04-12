@@ -8,6 +8,7 @@ export const trackDownload = async (
     viewerName?: string;
     viewerIp?: string;
     type: string;
+    checkOnly?: boolean;
   },
 ) => {
   const gallery = await db.gallery.findFirst({
@@ -36,6 +37,11 @@ export const trackDownload = async (
         limitReached: true,
       };
     }
+  }
+
+  // checkOnly mode: only verify limit, don't record the event yet
+  if (body.checkOnly) {
+    return { success: true, allowed: true };
   }
 
   await db.downloadEvent.create({

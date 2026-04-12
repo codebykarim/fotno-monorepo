@@ -38,3 +38,4 @@ export { createGalleryComment } from "./createGalleryComment";
 export { editGalleryComment } from "./editGalleryComment";
 export { deleteGalleryComment } from "./deleteGalleryComment";
 export { toggleGalleryCommentLike } from "./toggleGalleryCommentLike";
+export { getGalleryAnalytics } from "./getGalleryAnalytics";

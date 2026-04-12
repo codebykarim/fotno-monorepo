@@ -5,6 +5,16 @@ export default async function AccountPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const email = await searchParams.then((params) => params.email);
-  return <UnifiedAuthForm resetEmail={email} />;
+  const params = await searchParams;
+  const email = params.email;
+  const plan = typeof params.plan === "string" ? params.plan : undefined;
+  const callbackURL =
+    typeof params.callbackURL === "string" ? params.callbackURL : undefined;
+  return (
+    <UnifiedAuthForm
+      resetEmail={email}
+      plan={plan}
+      callbackURL={callbackURL}
+    />
+  );
 }

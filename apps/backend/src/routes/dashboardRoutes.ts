@@ -179,6 +179,12 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     controllerFunction: DashboardController.getDownloadActivityController,
     authFunction: isAuth,
   },
+  "get-gallery-analytics": {
+    httpMethod: "GET",
+    controllerFunction: DashboardController.getGalleryAnalyticsController,
+    authFunction: isAuth,
+    middlewares: [requireFeature("ANALYTICS")],
+  },
   "gallery-processing-status": {
     httpMethod: "GET",
     controllerFunction:
@@ -353,6 +359,10 @@ dashboardRoutes.get(
 dashboardRoutes.get(
   "/dashboard/galleries/:id/download-activity",
   handleMethod("get-download-activity"),
+);
+dashboardRoutes.get(
+  "/dashboard/galleries/:id/analytics",
+  handleMethod("get-gallery-analytics"),
 );
 
 // ─── Photo Processing Status ──────────────────────────────────────────────

@@ -613,6 +613,15 @@ export default function GalleryPageClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gallery.shareToken, gallery.hasPassword]);
 
+  // Track gallery view (fire-and-forget)
+  useEffect(() => {
+    fetch(
+      `/api/gallery/${encodeURIComponent(gallery.shareToken)}/view`,
+      { method: "POST", headers: { "Content-Type": "application/json" } },
+    ).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gallery.shareToken]);
+
   useEffect(() => {
     if (favoritesEnabled) {
       // Server-side favorites: load from API only if viewer already identified
@@ -1086,7 +1095,7 @@ export default function GalleryPageClient({
 
   const downloadLimit = settings?.downloadLimit ?? null;
 
-  const trackDownloadEvent = async (
+  const checkDownloadLimit = async (
     type: string,
     photoId?: string,
   ): Promise<boolean> => {
@@ -1104,6 +1113,7 @@ export default function GalleryPageClient({
             photoId: photoId ?? null,
             viewerId: viewerId ?? undefined,
             viewerName: viewerDisplayName,
+            checkOnly: true,
           }),
         },
       );
@@ -1117,6 +1127,32 @@ export default function GalleryPageClient({
       return true;
     } catch {
       return true;
+    }
+  };
+
+  const trackDownloadEvent = async (
+    type: string,
+    photoId?: string,
+  ): Promise<void> => {
+    try {
+      const viewerId = sessionStorage.getItem(
+        getViewerIdKey(gallery.shareToken),
+      );
+      await fetch(
+        `/api/gallery/${encodeURIComponent(gallery.shareToken)}/download-event`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type,
+            photoId: photoId ?? null,
+            viewerId: viewerId ?? undefined,
+            viewerName: viewerDisplayName,
+          }),
+        },
+      );
+    } catch {
+      // best-effort tracking
     }
   };
 
@@ -1178,8 +1214,8 @@ export default function GalleryPageClient({
     setDownloadingPhotoId(photo.id);
     setSizePickerPhoto(null);
     try {
-      // Track + enforce limit before downloading
-      const allowed = await trackDownloadEvent("single", photo.id);
+      // Check limit before downloading
+      const allowed = await checkDownloadLimit("single", photo.id);
       if (!allowed) return;
 
       const response = await fetch(
@@ -1203,6 +1239,9 @@ export default function GalleryPageClient({
       link.download = photo.originalFilename;
       link.click();
       URL.revokeObjectURL(objectUrl);
+
+      // Track only after successful download (file fully received)
+      void trackDownloadEvent("single", photo.id);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Download failed";

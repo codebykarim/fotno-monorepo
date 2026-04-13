@@ -35,16 +35,20 @@ export async function detectCountryFromIP(
   }
 
   try {
-    const res = await fetch(`https://ipapi.co/${cleanIp}/country/`, {
-      signal: AbortSignal.timeout(3000),
-    });
-    const text = await res.text();
+    // ip-api.com: free tier, 45 req/min, no Cloudflare blocking
+    const res = await fetch(
+      `http://ip-api.com/json/${cleanIp}?fields=status,countryCode`,
+      { signal: AbortSignal.timeout(3000) },
+    );
+    const json = await res.json();
     const country =
-      text && text.length === 2 ? text.toUpperCase() : null;
+      json.status === "success" && json.countryCode?.length === 2
+        ? json.countryCode.toUpperCase()
+        : null;
     countryCache.set(cleanIp, country);
     return country;
   } catch {
-    // Don't block pricing on geo-IP failure
+    // Don't block on geo-IP failure
     countryCache.set(cleanIp, null);
     return null;
   }

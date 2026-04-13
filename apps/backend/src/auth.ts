@@ -40,25 +40,45 @@ export const auth = betterAuth({
     },
     session: {
       create: {
-        after: async (session) => {
-          // Auto-detect country from session IP if user doesn't have one yet
-          const ip = session.ipAddress;
-          console.log("[country-detect] session created, ip:", ip, "userId:", session.userId);
-          if (ip) {
+        after: async (session: any, ctx: any) => {
+          // Auto-detect country from CF header, cookie, or IP geo-lookup
+          try {
             const user = await prisma.user.findUnique({
               where: { id: session.userId },
               select: { country: true },
             });
-            if (!user?.country) {
-              const country = await detectCountryFromIP(ip);
-              console.log("[country-detect] resolved country:", country, "for ip:", ip);
-              if (country) {
-                await prisma.user.update({
-                  where: { id: session.userId },
-                  data: { country },
-                });
-              }
+            if (user?.country) return; // already set
+
+            const headers = ctx?.headers ?? ctx?.request?.headers;
+
+            // 1. Try Cloudflare / Vercel edge header
+            let country =
+              headers?.get?.("cf-ipcountry") ||
+              headers?.get?.("x-vercel-ip-country") ||
+              null;
+
+            // 2. Try user_country cookie
+            if (!country) {
+              const cookieHeader = headers?.get?.("cookie") ?? "";
+              const match = cookieHeader.match(/user_country=([A-Z]{2})/);
+              if (match) country = match[1];
             }
+
+            // 3. Fallback to IP geo-lookup
+            if (!country && session.ipAddress) {
+              country = await detectCountryFromIP(session.ipAddress);
+            }
+
+            console.log("[country-detect] userId:", session.userId, "country:", country);
+
+            if (country && country.length === 2 && country !== "XX") {
+              await prisma.user.update({
+                where: { id: session.userId },
+                data: { country: country.toUpperCase() },
+              });
+            }
+          } catch (err) {
+            console.error("[country-detect] error:", err);
           }
         },
       },

@@ -3,6 +3,7 @@
     "target": "ES2020",
     "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
@@ -11,12 +12,7 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@workspace/lib": ["../../packages/lib/src/index.ts"],
-      "@workspace/lib/*": ["../../packages/lib/src/*"]
-    }
+    "resolveJsonModule": true
   },
   "include": ["src/**/*", "prisma"]
 }

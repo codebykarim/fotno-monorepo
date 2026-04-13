@@ -887,8 +887,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.5.0
-   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+   * Prisma Client JS version: 7.7.0
+   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
    */
   export type PrismaVersion = {
     client: string
@@ -4539,6 +4539,7 @@ export namespace Prisma {
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
+    country: string | null
     subscribed: boolean | null
     finishOnboarding: boolean | null
   }
@@ -4566,6 +4567,7 @@ export namespace Prisma {
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
+    country: string | null
     subscribed: boolean | null
     finishOnboarding: boolean | null
   }
@@ -4593,6 +4595,7 @@ export namespace Prisma {
     banned: number
     banReason: number
     banExpires: number
+    country: number
     subscribed: number
     finishOnboarding: number
     _all: number
@@ -4638,6 +4641,7 @@ export namespace Prisma {
     banned?: true
     banReason?: true
     banExpires?: true
+    country?: true
     subscribed?: true
     finishOnboarding?: true
   }
@@ -4665,6 +4669,7 @@ export namespace Prisma {
     banned?: true
     banReason?: true
     banExpires?: true
+    country?: true
     subscribed?: true
     finishOnboarding?: true
   }
@@ -4692,6 +4697,7 @@ export namespace Prisma {
     banned?: true
     banReason?: true
     banExpires?: true
+    country?: true
     subscribed?: true
     finishOnboarding?: true
     _all?: true
@@ -4806,6 +4812,7 @@ export namespace Prisma {
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
+    country: string | null
     subscribed: boolean | null
     finishOnboarding: boolean | null
     _count: UserCountAggregateOutputType | null
@@ -4852,6 +4859,7 @@ export namespace Prisma {
     banned?: boolean
     banReason?: boolean
     banExpires?: boolean
+    country?: boolean
     subscribed?: boolean
     finishOnboarding?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -4892,6 +4900,7 @@ export namespace Prisma {
     banned?: boolean
     banReason?: boolean
     banExpires?: boolean
+    country?: boolean
     subscribed?: boolean
     finishOnboarding?: boolean
   }, ExtArgs["result"]["user"]>
@@ -4919,6 +4928,7 @@ export namespace Prisma {
     banned?: boolean
     banReason?: boolean
     banExpires?: boolean
+    country?: boolean
     subscribed?: boolean
     finishOnboarding?: boolean
   }, ExtArgs["result"]["user"]>
@@ -4946,11 +4956,12 @@ export namespace Prisma {
     banned?: boolean
     banReason?: boolean
     banExpires?: boolean
+    country?: boolean
     subscribed?: boolean
     finishOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "plan" | "storageUsed" | "storageLimit" | "galleryLimit" | "downgradedAt" | "storageReserved" | "overageBytes" | "overageResetAt" | "stripeCustomerId" | "warningEmailSent80" | "warningEmailSent95" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role" | "banned" | "banReason" | "banExpires" | "country" | "subscribed" | "finishOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -5008,6 +5019,7 @@ export namespace Prisma {
       banned: boolean | null
       banReason: string | null
       banExpires: Date | null
+      country: string | null
       subscribed: boolean | null
       finishOnboarding: boolean | null
     }, ExtArgs["result"]["user"]>
@@ -5467,6 +5479,7 @@ export namespace Prisma {
     readonly banned: FieldRef<"User", 'Boolean'>
     readonly banReason: FieldRef<"User", 'String'>
     readonly banExpires: FieldRef<"User", 'DateTime'>
+    readonly country: FieldRef<"User", 'String'>
     readonly subscribed: FieldRef<"User", 'Boolean'>
     readonly finishOnboarding: FieldRef<"User", 'Boolean'>
   }
@@ -43591,6 +43604,7 @@ export namespace Prisma {
     banned: 'banned',
     banReason: 'banReason',
     banExpires: 'banExpires',
+    country: 'country',
     subscribed: 'subscribed',
     finishOnboarding: 'finishOnboarding'
   };
@@ -44506,6 +44520,7 @@ export namespace Prisma {
     banned?: BoolNullableFilter<"User"> | boolean | null
     banReason?: StringNullableFilter<"User"> | string | null
     banExpires?: DateTimeNullableFilter<"User"> | Date | string | null
+    country?: StringNullableFilter<"User"> | string | null
     subscribed?: BoolNullableFilter<"User"> | boolean | null
     finishOnboarding?: BoolNullableFilter<"User"> | boolean | null
     sessions?: SessionListRelationFilter
@@ -44545,6 +44560,7 @@ export namespace Prisma {
     banned?: SortOrderInput | SortOrder
     banReason?: SortOrderInput | SortOrder
     banExpires?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
     subscribed?: SortOrderInput | SortOrder
     finishOnboarding?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
@@ -44587,6 +44603,7 @@ export namespace Prisma {
     banned?: BoolNullableFilter<"User"> | boolean | null
     banReason?: StringNullableFilter<"User"> | string | null
     banExpires?: DateTimeNullableFilter<"User"> | Date | string | null
+    country?: StringNullableFilter<"User"> | string | null
     subscribed?: BoolNullableFilter<"User"> | boolean | null
     finishOnboarding?: BoolNullableFilter<"User"> | boolean | null
     sessions?: SessionListRelationFilter
@@ -44626,6 +44643,7 @@ export namespace Prisma {
     banned?: SortOrderInput | SortOrder
     banReason?: SortOrderInput | SortOrder
     banExpires?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
     subscribed?: SortOrderInput | SortOrder
     finishOnboarding?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -44661,6 +44679,7 @@ export namespace Prisma {
     banned?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
     banReason?: StringNullableWithAggregatesFilter<"User"> | string | null
     banExpires?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    country?: StringNullableWithAggregatesFilter<"User"> | string | null
     subscribed?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
     finishOnboarding?: BoolNullableWithAggregatesFilter<"User"> | boolean | null
   }
@@ -47428,6 +47447,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -47467,6 +47487,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -47506,6 +47527,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -47545,6 +47567,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47584,6 +47607,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
   }
@@ -47611,6 +47635,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -47638,6 +47663,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -50918,6 +50944,7 @@ export namespace Prisma {
     banned?: SortOrder
     banReason?: SortOrder
     banExpires?: SortOrder
+    country?: SortOrder
     subscribed?: SortOrder
     finishOnboarding?: SortOrder
   }
@@ -50953,6 +50980,7 @@ export namespace Prisma {
     banned?: SortOrder
     banReason?: SortOrder
     banExpires?: SortOrder
+    country?: SortOrder
     subscribed?: SortOrder
     finishOnboarding?: SortOrder
   }
@@ -50980,6 +51008,7 @@ export namespace Prisma {
     banned?: SortOrder
     banReason?: SortOrder
     banExpires?: SortOrder
+    country?: SortOrder
     subscribed?: SortOrder
     finishOnboarding?: SortOrder
   }
@@ -56727,6 +56756,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -56765,6 +56795,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -56819,6 +56850,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -56857,6 +56889,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -56895,6 +56928,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -56933,6 +56967,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -56987,6 +57022,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -57025,6 +57061,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -57063,6 +57100,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -57101,6 +57139,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -57155,6 +57194,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -57193,6 +57233,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -57231,6 +57272,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -57269,6 +57311,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -57323,6 +57366,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -57361,6 +57405,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -57399,6 +57444,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -57437,6 +57483,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -57876,6 +57923,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -57914,6 +57962,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -58930,6 +58979,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -58968,6 +59018,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -59022,6 +59073,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -59060,6 +59112,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -60740,6 +60793,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -60778,6 +60832,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -60874,6 +60929,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -60912,6 +60968,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -61458,6 +61515,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -61496,6 +61554,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -61604,6 +61663,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -61642,6 +61702,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -62377,6 +62438,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -62415,6 +62477,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -62469,6 +62532,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -62507,6 +62571,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -62545,6 +62610,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -62583,6 +62649,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -62637,6 +62704,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -62675,6 +62743,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -62713,6 +62782,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -62751,6 +62821,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -62805,6 +62876,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -62843,6 +62915,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -62881,6 +62954,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -62919,6 +62993,7 @@ export namespace Prisma {
     banned?: boolean | null
     banReason?: string | null
     banExpires?: Date | string | null
+    country?: string | null
     subscribed?: boolean | null
     finishOnboarding?: boolean | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -62973,6 +63048,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -63011,6 +63087,7 @@ export namespace Prisma {
     banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput

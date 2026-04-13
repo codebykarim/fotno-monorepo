@@ -13,6 +13,7 @@ export const getAnalytics = async (period: string) => {
     uploadVolume,
     revenueByMonth,
     planDistribution,
+    countryDistribution,
     storageGrowth,
     totalRevenue,
     activeSubCount,
@@ -58,6 +59,14 @@ export const getAnalytics = async (period: string) => {
     `,
     db.user.groupBy({ by: ["plan"], _count: { plan: true }, where: notAdmin }),
     db.$queryRaw`
+      SELECT "country", COUNT(*)::int as count
+      FROM "user"
+      WHERE "role" IS DISTINCT FROM 'admin'
+        AND "country" IS NOT NULL
+      GROUP BY "country"
+      ORDER BY count DESC
+    `,
+    db.$queryRaw`
       SELECT DATE(se."createdAt") as date, SUM(se."delta") as delta
       FROM "storage_event" se
       JOIN "user" u ON se."userId" = u."id"
@@ -99,6 +108,10 @@ export const getAnalytics = async (period: string) => {
     planDistribution: (planDistribution as any[]).map((p) => ({
       plan: p.plan,
       count: p._count.plan,
+    })),
+    countryDistribution: (countryDistribution as any[]).map((r) => ({
+      country: r.country,
+      count: Number(r.count),
     })),
     storageGrowth: (storageGrowth as any[]).map((r) => ({
       date: r.date instanceof Date ? r.date.toISOString().slice(0, 10) : String(r.date),

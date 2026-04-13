@@ -31,6 +31,7 @@ model User {
   banned                 Boolean?
   banReason              String?
   banExpires             DateTime?
+  country                String? // ISO 3166-1 alpha-2 country code (auto-detected from IP)
   subscribed             Boolean?
   finishOnboarding       Boolean?
   sessions               Session[]

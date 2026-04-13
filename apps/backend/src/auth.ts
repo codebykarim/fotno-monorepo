@@ -4,6 +4,7 @@ import { admin, emailOTP, multiSession, openAPI } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@workspace/db";
 import { getFreeTierLimits } from "./constants/plans";
+import { detectCountryFromIP } from "./utils/detectCountry";
 
 const hasGoogleOAuth =
   Boolean(process.env.GOOGLE_CLIENT_ID) &&
@@ -34,6 +35,28 @@ export const auth = betterAuth({
               galleryLimit: freeLimits.galleryLimit,
             },
           });
+        },
+      },
+    },
+    session: {
+      create: {
+        after: async (session) => {
+          // Auto-detect country from session IP if user doesn't have one yet
+          if (session.ipAddress) {
+            const user = await prisma.user.findUnique({
+              where: { id: session.userId },
+              select: { country: true },
+            });
+            if (!user?.country) {
+              const country = await detectCountryFromIP(session.ipAddress);
+              if (country) {
+                await prisma.user.update({
+                  where: { id: session.userId },
+                  data: { country },
+                });
+              }
+            }
+          }
         },
       },
     },

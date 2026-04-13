@@ -11,6 +11,14 @@ import { toast } from "sonner";
 
 const PLANS = ["all", "FREE", "PRO", "EXPIRED"];
 
+function getCountryFlag(countryCode: string): string {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((c) => 0x1f1e6 + c.charCodeAt(0) - 65);
+  return String.fromCodePoint(...codePoints);
+}
+
 export function UsersPage() {
   const [search, setSearch] = useState("");
   const [plan, setPlan] = useState("all");
@@ -94,6 +102,21 @@ export function UsersPage() {
       key: "role",
       header: "Role",
       render: (u) => <StatusBadge status={u.banned ? "banned" : (u.role ?? "user")} />,
+    },
+    {
+      key: "country",
+      header: "Country",
+      render: (u) => (
+        <span className="text-sm">
+          {u.country ? (
+            <span title={u.country}>
+              {getCountryFlag(u.country)} {u.country}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">—</span>
+          )}
+        </span>
+      ),
     },
     {
       key: "storage",

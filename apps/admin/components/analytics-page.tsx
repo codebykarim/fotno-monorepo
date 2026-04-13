@@ -1,16 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useSWR from "swr";
 import { jsonFetcher } from "@/lib/api/client";
 import { StatCard } from "@/components/stat-card";
 import { formatCurrency, formatBytes } from "@/lib/format";
 import type { AnalyticsData } from "@/lib/types/admin";
 import { cn } from "@workspace/ui/lib/utils";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Label,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+} from "@workspace/ui/components/chart";
 
 const PERIODS = ["7d", "30d", "90d", "1y"] as const;
 
-function BarChart({
+const COUNTRY_COLORS = [
+  "hsl(221, 83%, 53%)",
+  "hsl(142, 71%, 45%)",
+  "hsl(47, 96%, 53%)",
+  "hsl(0, 72%, 51%)",
+  "hsl(271, 76%, 53%)",
+  "hsl(200, 95%, 39%)",
+  "hsl(24, 95%, 53%)",
+  "hsl(174, 72%, 40%)",
+  "hsl(314, 72%, 51%)",
+  "hsl(33, 100%, 50%)",
+];
+
+function getCountryFlag(countryCode: string): string {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((c) => 0x1f1e6 + c.charCodeAt(0) - 65);
+  return String.fromCodePoint(...codePoints);
+}
+
+// --- Chart wrapper components ---
+
+function TimeSeriesAreaChart({
   title,
   data,
   valueKey = "count",
@@ -21,6 +63,10 @@ function BarChart({
   valueKey?: string;
   formatValue?: (v: number) => string;
 }) {
+  const chartConfig: ChartConfig = {
+    [valueKey]: { label: title, color: "hsl(221, 83%, 53%)" },
+  };
+
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-5">
@@ -30,53 +76,280 @@ function BarChart({
     );
   }
 
-  const values = data.map((d) => Number(d[valueKey] ?? 0));
-  const max = Math.max(...values, 1);
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+      <ChartContainer config={chartConfig} className="h-48 w-full">
+        <AreaChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+          <CartesianGrid vertical={false} strokeDasharray="3 3" />
+          <XAxis
+            dataKey={data[0]?.date !== undefined ? "date" : "month"}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            tickFormatter={(v: string) => v.slice(-5)}
+            fontSize={11}
+          />
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            tickMargin={4}
+            fontSize={11}
+            tickFormatter={formatValue}
+            width={50}
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                formatter={
+                  formatValue
+                    ? (value: number) => formatValue(value)
+                    : undefined
+                }
+              />
+            }
+          />
+          <defs>
+            <linearGradient id={`fill-${valueKey}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={`var(--color-${valueKey})`} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={`var(--color-${valueKey})`} stopOpacity={0.05} />
+            </linearGradient>
+          </defs>
+          <Area
+            type="monotone"
+            dataKey={valueKey}
+            stroke={`var(--color-${valueKey})`}
+            fill={`url(#fill-${valueKey})`}
+            strokeWidth={2}
+          />
+        </AreaChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+function TimeSeriesBarChart({
+  title,
+  data,
+  valueKey = "count",
+  formatValue,
+}: {
+  title: string;
+  data: { date?: string; month?: string; [key: string]: any }[];
+  valueKey?: string;
+  formatValue?: (v: number) => string;
+}) {
+  const chartConfig: ChartConfig = {
+    [valueKey]: { label: title, color: "hsl(142, 71%, 45%)" },
+  };
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-5">
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+        <p className="text-sm text-muted-foreground">No data for this period</p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border border-border bg-card p-5">
       <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
-      <div className="flex items-end gap-1 h-32">
-        {data.map((d, i) => {
-          const value = Number(d[valueKey] ?? 0);
-          const heightPct = (value / max) * 100;
-          const label = d.date ?? d.month ?? "";
-          return (
-            <div
-              key={i}
-              className="flex-1 flex flex-col items-center gap-1 group relative"
-            >
-              <div className="w-full flex flex-col items-center justify-end h-28">
-                <div
-                  className="w-full max-w-[24px] rounded-t bg-primary/80 hover:bg-primary transition-colors"
-                  style={{ height: `${Math.max(2, heightPct)}%` }}
-                />
-              </div>
-              {/* Tooltip on hover */}
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-foreground text-background text-xs rounded px-2 py-1 whitespace-nowrap z-10">
-                {formatValue ? formatValue(value) : value} — {label}
-              </div>
-            </div>
-          );
-        })}
+      <ChartContainer config={chartConfig} className="h-48 w-full">
+        <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+          <CartesianGrid vertical={false} strokeDasharray="3 3" />
+          <XAxis
+            dataKey={data[0]?.date !== undefined ? "date" : "month"}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            tickFormatter={(v: string) => v.slice(-5)}
+            fontSize={11}
+          />
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            tickMargin={4}
+            fontSize={11}
+            tickFormatter={formatValue}
+            width={50}
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                formatter={
+                  formatValue
+                    ? (value: number) => formatValue(value)
+                    : undefined
+                }
+              />
+            }
+          />
+          <Bar
+            dataKey={valueKey}
+            fill={`var(--color-${valueKey})`}
+            radius={[4, 4, 0, 0]}
+          />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+function CountryPieChart({
+  data,
+}: {
+  data: { country: string; count: number }[];
+}) {
+  const chartConfig = useMemo(() => {
+    const config: ChartConfig = {};
+    data.forEach((d, i) => {
+      config[d.country] = {
+        label: `${getCountryFlag(d.country)} ${d.country}`,
+        color: COUNTRY_COLORS[i % COUNTRY_COLORS.length],
+      };
+    });
+    return config;
+  }, [data]);
+
+  const totalUsers = useMemo(
+    () => data.reduce((sum, d) => sum + d.count, 0),
+    [data],
+  );
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-5">
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">Users by Country</h3>
+        <p className="text-sm text-muted-foreground">No country data available</p>
       </div>
-      {/* X-axis labels - show first, middle, last */}
-      <div className="flex justify-between text-xs text-muted-foreground mt-1">
-        <span>{data[0]?.date ?? data[0]?.month ?? ""}</span>
-        {data.length > 2 && (
-          <span>
-            {data[Math.floor(data.length / 2)]?.date ??
-              data[Math.floor(data.length / 2)]?.month ??
-              ""}
-          </span>
-        )}
-        <span>
-          {data[data.length - 1]?.date ?? data[data.length - 1]?.month ?? ""}
-        </span>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">Users by Country</h3>
+      <div className="flex items-start gap-6">
+        <ChartContainer config={chartConfig} className="h-52 w-52 shrink-0">
+          <PieChart>
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <Pie
+              data={data}
+              dataKey="count"
+              nameKey="country"
+              innerRadius={50}
+              outerRadius={80}
+              strokeWidth={2}
+            >
+              {data.map((d, i) => (
+                <Cell
+                  key={d.country}
+                  fill={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                />
+              ))}
+              <Label
+                content={({ viewBox }: any) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-2xl font-bold"
+                        >
+                          {totalUsers}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 20}
+                          className="fill-muted-foreground text-xs"
+                        >
+                          users
+                        </tspan>
+                      </text>
+                    );
+                  }
+                }}
+              />
+            </Pie>
+          </PieChart>
+        </ChartContainer>
+        <div className="flex flex-col gap-1.5 pt-2 min-w-0">
+          {data.slice(0, 10).map((d, i) => (
+            <div key={d.country} className="flex items-center gap-2 text-sm">
+              <div
+                className="h-2.5 w-2.5 rounded-sm shrink-0"
+                style={{ backgroundColor: COUNTRY_COLORS[i % COUNTRY_COLORS.length] }}
+              />
+              <span className="truncate">
+                {getCountryFlag(d.country)} {d.country}
+              </span>
+              <span className="ml-auto font-medium tabular-nums">{d.count}</span>
+            </div>
+          ))}
+          {data.length > 10 && (
+            <span className="text-xs text-muted-foreground">
+              +{data.length - 10} more
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
 }
+
+function CountryBarChart({
+  data,
+}: {
+  data: { country: string; count: number }[];
+}) {
+  const top10 = data.slice(0, 10).map((d) => ({
+    ...d,
+    label: `${getCountryFlag(d.country)} ${d.country}`,
+  }));
+
+  const chartConfig: ChartConfig = {
+    count: { label: "Users", color: "hsl(221, 83%, 53%)" },
+  };
+
+  if (!top10.length) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-5">
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">Top Countries</h3>
+        <p className="text-sm text-muted-foreground">No country data available</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">Top Countries</h3>
+      <ChartContainer config={chartConfig} className="h-64 w-full">
+        <BarChart data={top10} layout="vertical" margin={{ top: 4, right: 4, bottom: 0, left: 60 }}>
+          <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+          <XAxis type="number" tickLine={false} axisLine={false} fontSize={11} />
+          <YAxis
+            type="category"
+            dataKey="label"
+            tickLine={false}
+            axisLine={false}
+            fontSize={12}
+            width={60}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <Bar dataKey="count" fill="var(--color-count)" radius={[0, 4, 4, 0]} />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  );
+}
+
+// --- Main page ---
 
 export function AnalyticsPage() {
   const [period, setPeriod] = useState<string>("30d");
@@ -151,24 +424,30 @@ export function AnalyticsPage() {
             </div>
           </div>
 
-          {/* Charts */}
+          {/* Country stats */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <BarChart title="User Signups" data={data.userSignups} />
-            <BarChart title="Gallery Creations" data={data.galleryCreations} />
-            <BarChart title="Upload Volume (count)" data={data.uploadVolume} />
-            <BarChart
+            <CountryPieChart data={data.countryDistribution} />
+            <CountryBarChart data={data.countryDistribution} />
+          </div>
+
+          {/* Time series charts */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <TimeSeriesAreaChart title="User Signups" data={data.userSignups} />
+            <TimeSeriesAreaChart title="Gallery Creations" data={data.galleryCreations} />
+            <TimeSeriesBarChart title="Upload Volume (count)" data={data.uploadVolume} />
+            <TimeSeriesAreaChart
               title="Upload Volume (bytes)"
               data={data.uploadVolume}
               valueKey="bytes"
               formatValue={(v) => formatBytes(v)}
             />
-            <BarChart
+            <TimeSeriesBarChart
               title="Revenue by Month"
               data={data.revenueByMonth}
               valueKey="total_cents"
               formatValue={(v) => formatCurrency(v)}
             />
-            <BarChart
+            <TimeSeriesAreaChart
               title="Storage Growth"
               data={data.storageGrowth}
               valueKey="delta"

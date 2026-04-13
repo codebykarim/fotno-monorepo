@@ -17,6 +17,7 @@ export interface AdminUser {
   plan: string;
   role: string | null;
   banned: boolean;
+  country: string | null;
   storageUsed: string;
   storageLimit: string;
   galleryCount: number;
@@ -113,6 +114,7 @@ export interface AnalyticsData {
   uploadVolume: { date: string; count: number; bytes: string }[];
   revenueByMonth: { month: string; total_cents: number }[];
   planDistribution: { plan: string; count: number }[];
+  countryDistribution: { country: string; count: number }[];
   storageGrowth: { date: string; delta: string }[];
   summary: {
     totalRevenue: number;

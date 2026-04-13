@@ -22,6 +22,7 @@ export const getUser = async (userId: string) => {
     plan: user.plan,
     role: user.role,
     banned: Boolean(user.banned),
+    country: user.country ?? null,
     banReason: user.banReason,
     banExpires: toIsoOrNull(user.banExpires),
     subscribed: user.subscribed,

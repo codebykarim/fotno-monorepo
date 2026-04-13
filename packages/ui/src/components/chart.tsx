@@ -320,8 +320,12 @@ export {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
+  Label,
   Line,
   LineChart,
+  Pie,
+  PieChart,
   XAxis,
   YAxis,
 } from "recharts";

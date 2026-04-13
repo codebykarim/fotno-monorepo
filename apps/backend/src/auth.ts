@@ -42,13 +42,16 @@ export const auth = betterAuth({
       create: {
         after: async (session) => {
           // Auto-detect country from session IP if user doesn't have one yet
-          if (session.ipAddress) {
+          const ip = session.ipAddress;
+          console.log("[country-detect] session created, ip:", ip, "userId:", session.userId);
+          if (ip) {
             const user = await prisma.user.findUnique({
               where: { id: session.userId },
               select: { country: true },
             });
             if (!user?.country) {
-              const country = await detectCountryFromIP(session.ipAddress);
+              const country = await detectCountryFromIP(ip);
+              console.log("[country-detect] resolved country:", country, "for ip:", ip);
               if (country) {
                 await prisma.user.update({
                   where: { id: session.userId },

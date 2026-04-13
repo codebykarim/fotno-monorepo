@@ -4,6 +4,13 @@
  */
 const countryCache = new Map<string, string | null>();
 
+/** Check if IP is in the 172.16.0.0/12 private range (172.16.x.x – 172.31.x.x) */
+function isPrivate172(ip: string): boolean {
+  if (!ip.startsWith("172.")) return false;
+  const second = parseInt(ip.split(".")[1], 10);
+  return second >= 16 && second <= 31;
+}
+
 export async function detectCountryFromIP(
   ip: string | undefined,
 ): Promise<string | null> {
@@ -12,13 +19,13 @@ export async function detectCountryFromIP(
   // Strip IPv6-mapped IPv4 prefix
   const cleanIp = ip.replace(/^::ffff:/, "");
 
-  // Skip private/local IPs
+  // Skip private/local IPs (RFC 1918 + loopback)
   if (
     cleanIp === "127.0.0.1" ||
     cleanIp === "::1" ||
     cleanIp.startsWith("192.168.") ||
     cleanIp.startsWith("10.") ||
-    cleanIp.startsWith("172.")
+    isPrivate172(cleanIp)
   ) {
     return null;
   }

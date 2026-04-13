@@ -7,4 +7,13 @@ export {
   WARNING_THRESHOLD_95,
   ONE_GB_BYTES,
   ONE_MB_BYTES,
-} from './constants/storage.js'
+} from './constants/storage'
+
+export {
+  FEATURE_KEYS,
+  FEATURE_LABELS,
+  DEFAULT_TIER_FEATURES,
+  featureLabel,
+} from './constants/features'
+
+export type { FeatureKey } from './constants/features'

@@ -4,6 +4,7 @@ import { hashPassword } from "better-auth/crypto";
 import { config as loadEnv } from "dotenv";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { DEFAULT_TIER_FEATURES } from "@workspace/lib";
 
 // Load .env
 for (const p of [
@@ -151,47 +152,8 @@ async function main() {
     `✔ Regional tier overrides seeded (${overrides.length} overrides)`,
   );
 
-  // ── Tier Features ─────────────────────────────────────────────
-  const tierFeatureMap: Record<string, string[]> = {
-    Free: [],
-    Solo: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "COMMENTS",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "DOWNLOAD",
-      "ANALYTICS",
-    ],
-    Studio: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "COMMENTS",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "DOWNLOAD",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-      "ANALYTICS",
-    ],
-    Unlimited: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "COMMENTS",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "DOWNLOAD",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "CUSTOM_DOMAINS",
-      "WEBSITE_BUILDER",
-      "ANALYTICS",
-    ],
-  };
+  // ── Tier Features (from @workspace/lib single source of truth) ──
+  const tierFeatureMap = DEFAULT_TIER_FEATURES;
 
   let totalFeatures = 0;
   for (const [tierLabel, featureKeys] of Object.entries(tierFeatureMap)) {

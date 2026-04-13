@@ -3,6 +3,11 @@ import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import TrackRybbitButton from "./TrackRybbitButton";
+import {
+  FEATURE_LABELS,
+  DEFAULT_TIER_FEATURES,
+  featureLabel,
+} from "@workspace/lib";
 
 declare global {
   interface Window {
@@ -50,93 +55,51 @@ type PlanTier = {
 };
 
 const FALLBACK_TIERS: PlanTier[] = [
-  { gb: 0, priceCents: 0, label: "Free", galleryLimit: 2, features: [] },
+  {
+    gb: 0,
+    priceCents: 0,
+    label: "Free",
+    galleryLimit: 2,
+    features: DEFAULT_TIER_FEATURES.Free,
+  },
   {
     gb: 20,
     priceCents: 900,
     label: "Solo",
-    features: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "COMMENTS",
-      "DOWNLOAD",
-      "ANALYTICS",
-    ],
+    features: DEFAULT_TIER_FEATURES.Solo,
   },
   {
     gb: 100,
     priceCents: 1900,
     label: "Studio",
-    features: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "COMMENTS",
-      "DOWNLOAD",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "ANALYTICS",
-    ],
+    features: DEFAULT_TIER_FEATURES.Studio,
   },
   {
     gb: -1,
     priceCents: 4900,
     label: "Unlimited",
-    features: [
-      "UNLIMITED_GALLERIES",
-      "CLIENT_FAVORITES",
-      "PASSWORD_PROTECTION",
-      "CUSTOM_SLUGS",
-      "SLIDESHOW_SHARING",
-      "COMMENTS",
-      "DOWNLOAD",
-      "GOOGLE_IMPORT",
-      "SMART_ALBUMS",
-      "ANALYTICS",
-    ],
+    features: DEFAULT_TIER_FEATURES.Unlimited,
   },
 ];
 
 const FALLBACK_FEATURES = [
-  "Unlimited galleries",
-  "Client favorites & notes",
-  "Download Gallery",
-  "Password-protected galleries",
-  "Custom gallery slugs",
-  "Google Drive & Google Photos import",
-  "Slideshow & social sharing",
-  "Gallery analytics",
+  FEATURE_LABELS.UNLIMITED_GALLERIES,
+  FEATURE_LABELS.CLIENT_FAVORITES,
+  FEATURE_LABELS.DOWNLOAD,
+  FEATURE_LABELS.PASSWORD_PROTECTION,
+  FEATURE_LABELS.CUSTOM_SLUGS,
+  FEATURE_LABELS.GOOGLE_IMPORT,
+  FEATURE_LABELS.SLIDESHOW_SHARING,
+  FEATURE_LABELS.ANALYTICS,
 ];
 
 const FALLBACK_FREE_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
-  "Client favorites & notes",
-  "Download Gallery",
-  "Password-protected galleries",
-  "Gallery analytics",
+  FEATURE_LABELS.CLIENT_FAVORITES,
+  FEATURE_LABELS.DOWNLOAD,
+  FEATURE_LABELS.PASSWORD_PROTECTION,
 ];
-
-/** Map feature keys to human-readable labels */
-const FEATURE_LABELS: Record<string, string> = {
-  UNLIMITED_GALLERIES: "Unlimited galleries",
-  PASSWORD_PROTECTION: "Password-protected galleries",
-  CUSTOM_SLUGS: "Custom gallery slugs",
-  SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD: "Download Gallery",
-  GOOGLE_IMPORT: "Google Drive & Google Photos import",
-  SMART_ALBUMS: "Smart albums",
-  CUSTOM_DOMAINS: "Custom domains",
-  WEBSITE_BUILDER: "Website builder",
-  CLIENT_FAVORITES: "Client favorites & notes",
-  COMMENTS: "Gallery comments",
-  ANALYTICS: "Gallery analytics",
-};
 
 const formatTierPrice = (tier: PlanTier) => {
   if (tier.priceCents === 0) return "Free";
@@ -232,8 +195,6 @@ export async function Pricing() {
     const prev = new Set(prevTier?.features ?? []);
     return (tier.features ?? []).filter((f) => !prev.has(f));
   };
-
-  const featureLabel = (key: string): string => FEATURE_LABELS[key] ?? key;
 
   return (
     <section

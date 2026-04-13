@@ -5,21 +5,7 @@ import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
 import { useFeaturesLoaded } from "@/lib/hooks/use-features";
-
-export const FEATURE_LABELS: Record<string, string> = {
-  UNLIMITED_GALLERIES: "Unlimited galleries",
-  CLIENT_FAVORITES: "Client favorites & notes",
-  COMMENTS: "Gallery comments",
-  PASSWORD_PROTECTION: "Password-protected galleries",
-  CUSTOM_SLUGS: "Custom gallery slugs",
-  SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD: "Download Gallery",
-  GOOGLE_IMPORT: "Google Drive & Google Photos import",
-  SMART_ALBUMS: "Smart albums",
-  CUSTOM_DOMAINS: "Custom domains",
-  WEBSITE_BUILDER: "Website builder",
-  ANALYTICS: "Gallery analytics",
-};
+import { featureLabel } from "@workspace/lib";
 
 /**
  * Wraps children with an upgrade overlay when the user's plan
@@ -40,7 +26,7 @@ export function FeatureGate({
   // Don't show the gate while still loading features
   if (!isLoaded || hasFeature) return <>{children}</>;
 
-  const label = FEATURE_LABELS[featureKey] ?? featureKey;
+  const label = featureLabel(featureKey);
 
   return (
     <div className={cn("relative", className)}>
@@ -102,7 +88,7 @@ export function FeatureInlineGate({
     );
   }
 
-  const label = FEATURE_LABELS[featureKey] ?? featureKey;
+  const label = featureLabel(featureKey);
 
   return (
     <Link
@@ -140,7 +126,7 @@ export function LockedPage({
   title: string;
   description: string;
 }) {
-  const label = FEATURE_LABELS[featureKey] ?? featureKey;
+  const label = featureLabel(featureKey);
 
   return (
     <div className="flex flex-col items-center justify-center py-20">

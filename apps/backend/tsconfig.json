@@ -11,7 +11,12 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/lib": ["../../packages/lib/src/index.ts"],
+      "@workspace/lib/*": ["../../packages/lib/src/*"]
+    }
   },
   "include": ["src/**/*", "prisma"]
 }

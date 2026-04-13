@@ -1,6 +1,6 @@
 import { prisma } from "@workspace/db";
 import { storageTierToBytes } from "./storage";
-import { DEFAULT_TIER_FEATURES } from "./features";
+import { DEFAULT_TIER_FEATURES, FEATURE_LABELS } from "./features";
 
 // ── DB-backed tier cache (5 min TTL) ───────────────────────────
 type DBTier = {
@@ -151,13 +151,13 @@ export const STORAGE_TIERS = [
 export type StorageTier = (typeof STORAGE_TIERS)[number];
 
 export const PLAN_FEATURES = [
-  "Unlimited galleries",
-  "Client favorites & notes",
-  "Download Gallery",
-  "Password-protected galleries",
-  "Custom gallery slugs",
-  "Google Drive & Google Photos import",
-  "Slideshow & social sharing",
+  FEATURE_LABELS.UNLIMITED_GALLERIES,
+  FEATURE_LABELS.CLIENT_FAVORITES,
+  FEATURE_LABELS.DOWNLOAD,
+  FEATURE_LABELS.PASSWORD_PROTECTION,
+  FEATURE_LABELS.CUSTOM_SLUGS,
+  FEATURE_LABELS.GOOGLE_IMPORT,
+  FEATURE_LABELS.SLIDESHOW_SHARING,
 ];
 
 /** Build free-tier feature list dynamically from actual tier data */
@@ -170,10 +170,9 @@ export function buildFreeFeatures(freeTier: {
   return [
     `${storage} storage`,
     `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
-    // "AI-powered captions",
-    "Client favorites & notes",
-    "Download Gallery",
-    "Password-protected galleries",
+    FEATURE_LABELS.CLIENT_FAVORITES,
+    FEATURE_LABELS.DOWNLOAD,
+    FEATURE_LABELS.PASSWORD_PROTECTION,
   ];
 }
 
@@ -181,10 +180,9 @@ export function buildFreeFeatures(freeTier: {
 export const FREE_PLAN_FEATURES = [
   "1 GB storage",
   "Up to 2 galleries",
-  // "AI-powered captions",
-  "Client favorites & notes",
-  "Download Gallery",
-  "Password-protected galleries",
+  FEATURE_LABELS.CLIENT_FAVORITES,
+  FEATURE_LABELS.DOWNLOAD,
+  FEATURE_LABELS.PASSWORD_PROTECTION,
 ];
 
 /**

@@ -1,77 +1,17 @@
-export const FEATURE_KEYS = [
-  "UNLIMITED_GALLERIES",
-  "CLIENT_FAVORITES",
-  "COMMENTS",
-  "PASSWORD_PROTECTION",
-  "CUSTOM_SLUGS",
-  "SLIDESHOW_SHARING",
-  "DOWNLOAD",
-  "GOOGLE_IMPORT",
-  "SMART_ALBUMS",
-  "CUSTOM_DOMAINS",
-  "WEBSITE_BUILDER",
-  "ANALYTICS",
-] as const;
+// Single source of truth lives in packages/lib/src/constants/features.ts.
+// The backend is CJS but @workspace/lib is ESM ("type": "module"), so we
+// can't require() through the package. Instead we load the raw .ts file
+// directly — tsx resolves it at runtime, and the tsconfig "paths" alias
+// handles type-checking.
+//
+// If you need to add/remove/rename a feature, edit:
+//   packages/lib/src/constants/features.ts
+//
+export {
+  FEATURE_KEYS,
+  FEATURE_LABELS,
+  DEFAULT_TIER_FEATURES,
+  featureLabel,
+} from "@workspace/lib/constants/features";
 
-export type FeatureKey = (typeof FEATURE_KEYS)[number];
-
-/** Human-readable labels for admin UI and error messages */
-export const FEATURE_LABELS: Record<FeatureKey, string> = {
-  UNLIMITED_GALLERIES: "Unlimited galleries",
-  CLIENT_FAVORITES: "Client favorites & notes",
-  COMMENTS: "Gallery comments",
-  PASSWORD_PROTECTION: "Password-protected galleries",
-  CUSTOM_SLUGS: "Custom gallery slugs",
-  SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD: "Download Gallery",
-  GOOGLE_IMPORT: "Google Drive & Google Photos import",
-  SMART_ALBUMS: "Smart albums",
-  CUSTOM_DOMAINS: "Custom domains",
-  WEBSITE_BUILDER: "Website builder",
-  ANALYTICS: "Gallery analytics",
-};
-
-/** Default feature mapping per tier label — used as fallback when DB has no TierFeature rows */
-export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
-  Free: [
-    "CLIENT_FAVORITES",
-    "PASSWORD_PROTECTION",
-    "DOWNLOAD",
-  ],
-  Solo: [
-    "UNLIMITED_GALLERIES",
-    "CLIENT_FAVORITES",
-    "COMMENTS",
-    "PASSWORD_PROTECTION",
-    "CUSTOM_SLUGS",
-    "SLIDESHOW_SHARING",
-    "DOWNLOAD",
-    "ANALYTICS",
-  ],
-  Studio: [
-    "UNLIMITED_GALLERIES",
-    "CLIENT_FAVORITES",
-    "COMMENTS",
-    "PASSWORD_PROTECTION",
-    "CUSTOM_SLUGS",
-    "SLIDESHOW_SHARING",
-    "DOWNLOAD",
-    "GOOGLE_IMPORT",
-    "SMART_ALBUMS",
-    "ANALYTICS",
-  ],
-  Unlimited: [
-    "UNLIMITED_GALLERIES",
-    "CLIENT_FAVORITES",
-    "COMMENTS",
-    "PASSWORD_PROTECTION",
-    "CUSTOM_SLUGS",
-    "SLIDESHOW_SHARING",
-    "DOWNLOAD",
-    "GOOGLE_IMPORT",
-    "SMART_ALBUMS",
-    "CUSTOM_DOMAINS",
-    "WEBSITE_BUILDER",
-    "ANALYTICS",
-  ],
-};
+export type { FeatureKey } from "@workspace/lib/constants/features";

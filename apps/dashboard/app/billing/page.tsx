@@ -20,21 +20,7 @@ import type {
 } from "@/lib/types/api";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion";
 import { useRouter } from "next/navigation";
-
-const FEATURE_LABELS: Record<string, string> = {
-  UNLIMITED_GALLERIES: "Unlimited galleries",
-  CLIENT_FAVORITES: "Client favorites & notes",
-  COMMENTS: "Gallery comments",
-  PASSWORD_PROTECTION: "Password-protected galleries",
-  CUSTOM_SLUGS: "Custom gallery slugs",
-  SLIDESHOW_SHARING: "Slideshow & social sharing",
-  DOWNLOAD: "Download Gallery",
-  GOOGLE_IMPORT: "Google Drive & Google Photos import",
-  SMART_ALBUMS: "Smart albums",
-  CUSTOM_DOMAINS: "Custom domains",
-  WEBSITE_BUILDER: "Website builder",
-  ANALYTICS: "Gallery analytics",
-};
+import { featureLabel } from "@workspace/lib";
 
 const formatPrice = (cents: number, currency = "USD", locale = "en-US") => {
   try {
@@ -508,7 +494,7 @@ export default function BillingPage() {
                                 : "text-muted-foreground",
                             )}
                           >
-                            {FEATURE_LABELS[featureKey] ?? featureKey}
+                            {featureLabel(featureKey)}
                           </span>
                         </li>
                       ))}
@@ -536,7 +522,7 @@ export default function BillingPage() {
                                   : "text-muted-foreground",
                               )}
                             >
-                              {FEATURE_LABELS[featureKey] ?? featureKey}
+                              {featureLabel(featureKey)}
                             </span>
                           </li>
                         ))}

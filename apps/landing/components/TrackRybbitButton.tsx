@@ -2,6 +2,15 @@
 import React from "react";
 import { Button } from "./Button";
 
+declare global {
+  interface Window {
+    rybbit?: {
+      event: (eventName: string, eventData?: Record<string, any>) => void;
+      pageview: () => void;
+    };
+  }
+}
+
 type Props = {
   children: React.ReactNode;
   eventName: string;

@@ -12,8 +12,10 @@ export {
 export {
   FEATURE_KEYS,
   FEATURE_LABELS,
+  FEATURE_BLURBS,
   DEFAULT_TIER_FEATURES,
   featureLabel,
+  featureBlurb,
 } from './constants/features'
 
 export type { FeatureKey } from './constants/features'

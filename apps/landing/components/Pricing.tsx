@@ -1,46 +1,13 @@
 import { cookies, headers } from "next/headers";
-import { cn } from "@workspace/ui/lib/utils";
+import {
+  FEATURE_KEYS,
+  FEATURE_LABELS,
+  FEATURE_BLURBS,
+  type FeatureKey,
+} from "@workspace/lib";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import TrackRybbitButton from "./TrackRybbitButton";
-import {
-  FEATURE_LABELS,
-  DEFAULT_TIER_FEATURES,
-  featureLabel,
-} from "@workspace/lib";
-
-declare global {
-  interface Window {
-    rybbit?: {
-      event: (eventName: string, eventData?: Record<string, any>) => void;
-      pageview: () => void;
-    };
-  }
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={cn("h-5 w-5 flex-none fill-current stroke-current", className)}
-      viewBox="0 0 24 24"
-    >
-      <path
-        d="M9.307 12.248a.75.75 0 1 0-1.114 1.004l1.114-1.004ZM11 15.25l-.557.502a.75.75 0 0 0 1.15-.043L11 15.25Zm4.844-5.041a.75.75 0 0 0-1.188-.918l1.188.918Zm-7.651 3.043 2.25 2.5 1.114-1.004-2.25-2.5-1.114 1.004Zm3.4 2.457 4.25-5.5-1.187-.918-4.25 5.5 1.188.918Z"
-        strokeWidth={0}
-      />
-      <circle
-        cx={12}
-        cy={12}
-        r={8.25}
-        fill="none"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 type PlanTier = {
   gb: number;
@@ -48,129 +15,163 @@ type PlanTier = {
   label: string;
   galleryLimit?: number | null;
   features?: string[];
-  localPriceCents?: number;
-  currency?: string;
-  symbol?: string;
-  locale?: string;
 };
 
-const FALLBACK_TIERS: PlanTier[] = [
-  {
-    gb: 0,
-    priceCents: 0,
-    label: "Free",
-    galleryLimit: 2,
-    features: DEFAULT_TIER_FEATURES.Free,
-  },
-  {
-    gb: 20,
-    priceCents: 900,
-    label: "Solo",
-    features: DEFAULT_TIER_FEATURES.Solo,
-  },
-  {
-    gb: 100,
-    priceCents: 1900,
-    label: "Studio",
-    features: DEFAULT_TIER_FEATURES.Studio,
-  },
-  {
-    gb: -1,
-    priceCents: 4900,
-    label: "Unlimited",
-    features: DEFAULT_TIER_FEATURES.Unlimited,
-  },
-];
+const FALLBACK_FREE: PlanTier = {
+  gb: 5,
+  priceCents: 0,
+  label: "Free",
+  galleryLimit: 2,
+  features: [
+    "CLIENT_FAVORITES",
+    "PASSWORD_PROTECTION",
+    "DOWNLOAD",
+  ],
+};
 
-const FALLBACK_FEATURES = [
-  FEATURE_LABELS.UNLIMITED_GALLERIES,
-  FEATURE_LABELS.CLIENT_FAVORITES,
-  FEATURE_LABELS.DOWNLOAD,
-  FEATURE_LABELS.PASSWORD_PROTECTION,
-  FEATURE_LABELS.CUSTOM_SLUGS,
-  FEATURE_LABELS.GOOGLE_IMPORT,
-  FEATURE_LABELS.SLIDESHOW_SHARING,
-  FEATURE_LABELS.ANALYTICS,
-];
+const ALL_FEATURES: { key: FeatureKey; label: string; blurb: string }[] =
+  FEATURE_KEYS.map((key) => ({
+    key,
+    label: FEATURE_LABELS[key],
+    blurb: FEATURE_BLURBS[key],
+  }));
 
-const FALLBACK_FREE_FEATURES = [
-  "1 GB storage",
-  "Up to 2 galleries",
-  FEATURE_LABELS.CLIENT_FAVORITES,
-  FEATURE_LABELS.DOWNLOAD,
-  FEATURE_LABELS.PASSWORD_PROTECTION,
-];
-
-const formatTierPrice = (tier: PlanTier) => {
-  if (tier.priceCents === 0) return "Free";
-  const cents = tier.localPriceCents ?? tier.priceCents;
-  const currency = tier.currency ?? "USD";
-  const locale = tier.locale ?? "en-US";
-  try {
-    return new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
-    }).format(cents / 100);
-  } catch {
-    return `$${(tier.priceCents / 100).toFixed(0)}`;
+function FeatureIcon({ name }: { name: string }) {
+  const common = {
+    width: 22,
+    height: 22,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (name) {
+    case "UNLIMITED_GALLERIES":
+      return (
+        <svg {...common}>
+          <rect x="3" y="4" width="8" height="7" rx="1.2" />
+          <rect x="13" y="4" width="8" height="7" rx="1.2" />
+          <rect x="3" y="13" width="8" height="7" rx="1.2" />
+          <rect x="13" y="13" width="8" height="7" rx="1.2" />
+        </svg>
+      );
+    case "CLIENT_FAVORITES":
+      return (
+        <svg {...common}>
+          <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />
+        </svg>
+      );
+    case "COMMENTS":
+      return (
+        <svg {...common}>
+          <path d="M4 5h16v11H9l-4 4V5z" />
+        </svg>
+      );
+    case "PASSWORD_PROTECTION":
+      return (
+        <svg {...common}>
+          <rect x="5" y="11" width="14" height="9" rx="1.5" />
+          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+        </svg>
+      );
+    case "CUSTOM_SLUGS":
+      return (
+        <svg {...common}>
+          <path d="M10 14a4 4 0 0 1 0-5.6l2-2a4 4 0 1 1 5.6 5.6L16 13.5" />
+          <path d="M14 10a4 4 0 0 1 0 5.6l-2 2a4 4 0 1 1-5.6-5.6L8 10.5" />
+        </svg>
+      );
+    case "SLIDESHOW_SHARING":
+      return (
+        <svg {...common}>
+          <circle cx="18" cy="5" r="2.5" />
+          <circle cx="6" cy="12" r="2.5" />
+          <circle cx="18" cy="19" r="2.5" />
+          <path d="M8 10.5l8-4.2M8 13.5l8 4.2" />
+        </svg>
+      );
+    case "DOWNLOAD":
+      return (
+        <svg {...common}>
+          <path d="M12 4v11" />
+          <path d="M7 11l5 5 5-5" />
+          <path d="M4 20h16" />
+        </svg>
+      );
+    case "GOOGLE_IMPORT":
+      return (
+        <svg {...common}>
+          <path d="M12 4v16" />
+          <path d="M4 10l8-6 8 6" />
+          <path d="M6 14l6 6 6-6" />
+        </svg>
+      );
+    case "SMART_ALBUMS":
+      return (
+        <svg {...common}>
+          <path d="M3 6h10l2 3h6v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6z" />
+          <path d="M12 13l1.2 2.4 2.6.3-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6L8.2 15.7l2.6-.3z" />
+        </svg>
+      );
+    case "CUSTOM_DOMAINS":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M4 12h16" />
+          <path d="M12 4c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8c-2.5-2.5-4-5.5-4-8s1.5-5.5 4-8z" />
+        </svg>
+      );
+    case "WEBSITE_BUILDER":
+      return (
+        <svg {...common}>
+          <rect x="3" y="4" width="18" height="16" rx="1.5" />
+          <path d="M3 9h18" />
+          <path d="M7 6.5h.01M10 6.5h.01" />
+        </svg>
+      );
+    case "ANALYTICS":
+      return (
+        <svg {...common}>
+          <path d="M4 20V10" />
+          <path d="M10 20V4" />
+          <path d="M16 20v-7" />
+          <path d="M22 20H2" />
+        </svg>
+      );
+    default:
+      return null;
   }
-};
+}
 
 const formatStorage = (gb: number) => {
   if (gb === -1) return "Unlimited";
-  if (gb === 0) return "Free";
+  if (gb <= 0) return "1 GB";
   if (gb >= 1000) return `${gb / 1000} TB`;
   return `${gb} GB`;
 };
 
-async function fetchPlans(
-  country?: string,
-): Promise<{ tiers: PlanTier[]; features: string[]; freeFeatures: string[] }> {
+async function fetchFreeTier(country?: string): Promise<PlanTier> {
   const backendUrl =
     process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
-  if (!backendUrl)
-    return {
-      tiers: FALLBACK_TIERS,
-      features: FALLBACK_FEATURES,
-      freeFeatures: FALLBACK_FREE_FEATURES,
-    };
+  if (!backendUrl) return FALLBACK_FREE;
 
   try {
     const url = country
       ? `${backendUrl}/api/billing/plans?country=${encodeURIComponent(country)}`
       : `${backendUrl}/api/billing/plans`;
-    const res = await fetch(url, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok)
-      return {
-        tiers: FALLBACK_TIERS,
-        features: FALLBACK_FEATURES,
-        freeFeatures: FALLBACK_FREE_FEATURES,
-      };
+    const res = await fetch(url, { next: { revalidate: 300 } });
+    if (!res.ok) return FALLBACK_FREE;
     const data = await res.json();
     const tiers: PlanTier[] = Array.isArray(data)
       ? data
       : Array.isArray(data?.tiers)
         ? data.tiers
         : [];
-    const features: string[] = data?.features ?? FALLBACK_FEATURES;
-    const freeFeatures: string[] = data?.freeFeatures ?? FALLBACK_FREE_FEATURES;
-    if (tiers.length === 0)
-      return {
-        tiers: FALLBACK_TIERS,
-        features: FALLBACK_FEATURES,
-        freeFeatures: FALLBACK_FREE_FEATURES,
-      };
-    return { tiers, features, freeFeatures };
+    return tiers.find((t) => t.priceCents === 0) ?? FALLBACK_FREE;
   } catch {
-    return {
-      tiers: FALLBACK_TIERS,
-      features: FALLBACK_FEATURES,
-      freeFeatures: FALLBACK_FREE_FEATURES,
-    };
+    return FALLBACK_FREE;
   }
 }
 
@@ -184,260 +185,121 @@ export async function Pricing() {
     headerStore.get("cf-ipcountry") ||
     headerStore.get("x-vercel-ip-country") ||
     undefined;
-  const { tiers: allPlans, freeFeatures } = await fetchPlans(country);
-
-  const freeTier = allPlans.find((t) => t.priceCents === 0);
-  // Main 3 cards: Solo, Studio (popular), Unlimited
-  const mainPlans = allPlans.filter((t) => t.priceCents > 0);
-
-  /** Features this tier adds over the previous one */
-  const getNewFeatures = (tier: PlanTier, prevTier?: PlanTier): string[] => {
-    const prev = new Set(prevTier?.features ?? []);
-    return (tier.features ?? []).filter((f) => !prev.has(f));
-  };
+  const free = await fetchFreeTier(country);
+  const galleryLimit = free.galleryLimit ?? 2;
+  const galleriesLabel =
+    galleryLimit === 1 ? "1 gallery" : `${galleryLimit} galleries`;
+  const enabledKeys = new Set(free.features ?? []);
+  const visibleFeatures = ALL_FEATURES.filter((f) => enabledKeys.has(f.key));
+  const featureCount = visibleFeatures.length;
+  const featureCountLabel =
+    featureCount === 1 ? "1 feature" : `All ${featureCount} features`;
 
   return (
     <section
       id="pricing"
       aria-label="Pricing"
-      className="relative overflow-hidden bg-foreground py-24 sm:py-32"
+      className="bg-background py-24 sm:py-32"
     >
-      {/* Decorative gradient */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-0 h-96 w-[140%] -translate-x-1/2 opacity-20 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, oklch(0.78 0.14 65 / 0.2) 0%, transparent 70%)",
-        }}
-      />
-
-      <Container className="relative">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+      <Container>
+        {/* Header */}
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.14em] text-primary">
             Pricing
           </p>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-background sm:text-4xl lg:text-5xl">
-            Start free. Scale when ready.
+          <h2 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Free. And we mean free.
           </h2>
-          <p className="mt-4 text-lg text-background/50">
-            Pick the plan that fits your workflow. Upgrade anytime to unlock
-            more features and storage.
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Every Fotno feature available, forever, at zero cost. We&apos;ll add
+            paid tiers later — but everything built today is yours.
           </p>
         </div>
 
-        {/* ── Free tier callout ──────────────────────────────────── */}
-        {freeTier && (
-          <div className="mx-auto mt-16 max-w-2xl">
-            <div className="rounded-2xl border border-background/10 bg-background/5 px-8 py-8 text-center">
-              <span className="inline-flex items-center rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary">
+        {/* Panel */}
+        <div className="mx-auto mt-14 max-w-[1120px] rounded-3xl border border-foreground/10 bg-foreground/[0.03] px-6 py-10 sm:px-12 sm:py-12">
+          {/* Hero: claim on left, signature $0 on right */}
+          <div className="grid items-center gap-10 md:grid-cols-[1.2fr_1fr]">
+            <div>
+              <span className="inline-flex items-center rounded-full bg-primary/15 px-3.5 py-1 text-xs font-medium text-primary">
                 Free forever
               </span>
-              <h3 className="mt-4 text-2xl font-bold text-background">
-                Get started for free
+              <h3 className="mt-5 text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-foreground sm:text-5xl">
+                Every tool.
+                <br />
+                Zero dollars.
               </h3>
-              <p className="mt-2 text-background/50">
-                {formatStorage(freeTier.gb)} storage &middot;{" "}
-                {freeTier.galleryLimit === 1
-                  ? "1 gallery"
-                  : `${freeTier.galleryLimit} galleries`}{" "}
-                &middot; Core features included
+              <p className="mt-4 text-base text-muted-foreground">
+                {formatStorage(free.gb)} storage · {galleriesLabel} ·{" "}
+                {featureCountLabel}
               </p>
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
-                {freeFeatures.map((feature) => (
-                  <span
-                    key={feature}
-                    className="inline-flex items-center gap-1.5 text-sm text-background/70"
-                  >
-                    <CheckIcon className="text-primary" />
-                    {feature}
-                  </span>
-                ))}
-              </div>
               <div className="mt-6">
                 <TrackRybbitButton
                   eventName="free_tier_clicked"
-                  eventData={{ plan: freeTier.label }}
+                  eventData={{ plan: free.label }}
                 >
                   <Button
                     href={`${signupUrl}/account?plan=Free`}
                     variant="solid"
-                    color="white"
                     aria-label="Get started free"
-                    className="px-8 py-3 text-base"
+                    className="rounded-full px-8 py-3.5 text-base"
                   >
                     Get started free
                   </Button>
                 </TrackRybbitButton>
               </div>
+              <p className="mt-3 text-xs text-muted-foreground/80">
+                No credit card required
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex items-start justify-center">
+                <span className="mt-5 text-4xl font-semibold text-foreground/70 sm:text-5xl">
+                  $
+                </span>
+                <span className="text-[140px] font-bold leading-[0.85] tracking-[-0.05em] text-foreground sm:text-[180px]">
+                  0
+                </span>
+              </div>
+              <p className="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                per month, forever
+              </p>
             </div>
           </div>
-        )}
 
-        {/* ── Main 3-card grid ──────────────────────────────────── */}
-        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
-          {mainPlans.map((tier, i) => {
-            const isPopular = tier.label === "Studio" || tier.gb === 100;
-            const isUnlimited = tier.gb === -1;
-            const prevTier = i === 0 ? freeTier : mainPlans[i - 1];
-            const newFeatures = getNewFeatures(tier, prevTier);
-            const inheritedLabel =
-              i === 0 ? null : `Everything in ${prevTier?.label}`;
+          {/* Divider */}
+          <div className="my-8 h-px bg-foreground/10" />
 
-            return (
+          {/* Feature header */}
+          <div className="flex items-baseline justify-between">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              Everything included
+            </p>
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-primary">
+              {featureCountLabel}
+            </p>
+          </div>
+
+          {/* Feature tiles */}
+          <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+            {visibleFeatures.map((f) => (
               <div
-                key={tier.gb}
-                className={cn(
-                  "relative flex flex-col rounded-2xl px-6 py-8 transition-all duration-300",
-                  isPopular
-                    ? "bg-primary shadow-xl shadow-primary/20 ring-2 ring-primary md:-my-4 md:py-12"
-                    : "border border-background/10 bg-background/5",
-                )}
+                key={f.key}
+                className="flex min-h-[142px] flex-col gap-2.5 rounded-2xl border border-foreground/10 bg-foreground/[0.02] px-5 py-5"
               >
-                {isPopular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3 py-0.5 text-xs font-semibold text-foreground">
-                    Most popular
-                  </span>
-                )}
-
-                {/* Header */}
-                <div className="text-center">
-                  <h3
-                    className={cn(
-                      "text-lg font-semibold",
-                      isPopular
-                        ? "text-primary-foreground"
-                        : "text-background/70",
-                    )}
-                  >
-                    {tier.label}
-                  </h3>
-                  <p
-                    className={cn(
-                      "mt-4 text-4xl font-light tracking-tight",
-                      isPopular ? "text-primary-foreground" : "text-background",
-                    )}
-                  >
-                    {formatTierPrice(tier)}
-                  </p>
-                  <p
-                    className={cn(
-                      "mt-1 text-sm",
-                      isPopular
-                        ? "text-primary-foreground/70"
-                        : "text-background/50",
-                    )}
-                  >
-                    /month
-                  </p>
-                  <p
-                    className={cn(
-                      "mt-3 text-sm font-medium",
-                      isPopular
-                        ? "text-primary-foreground/90"
-                        : "text-background/60",
-                    )}
-                  >
-                    {isUnlimited
-                      ? "Unlimited storage"
-                      : `${formatStorage(tier.gb)} storage`}
-                  </p>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <FeatureIcon name={f.key} />
                 </div>
-
-                {/* Divider */}
-                <div
-                  className={cn(
-                    "my-6 h-px",
-                    isPopular ? "bg-primary-foreground/20" : "bg-background/10",
-                  )}
-                />
-
-                {/* Features */}
-                <ul
-                  className={cn(
-                    "flex-1 space-y-3 text-sm",
-                    isPopular
-                      ? "text-primary-foreground/85"
-                      : "text-background/70",
-                  )}
-                >
-                  {inheritedLabel && (
-                    <li className="flex items-start gap-2.5">
-                      <CheckIcon
-                        className={cn(
-                          "mt-0.5 shrink-0",
-                          isPopular
-                            ? "text-primary-foreground"
-                            : "text-primary",
-                        )}
-                      />
-                      <span className="font-medium">
-                        {newFeatures.length > 0
-                          ? `${inheritedLabel}, plus:`
-                          : inheritedLabel}
-                      </span>
-                    </li>
-                  )}
-                  {newFeatures.map((key) => (
-                    <li key={key} className="flex items-start gap-2.5">
-                      <CheckIcon
-                        className={cn(
-                          "mt-0.5 shrink-0",
-                          isPopular
-                            ? "text-primary-foreground"
-                            : "text-primary",
-                        )}
-                      />
-                      <span>{featureLabel(key)}</span>
-                    </li>
-                  ))}
-                  {isUnlimited && (
-                    <>
-                      <li className="flex items-start gap-2.5 opacity-60">
-                        <CheckIcon className="mt-0.5 shrink-0 text-primary" />
-                        <span>
-                          Custom domains{" "}
-                          <span className="rounded bg-background/10 px-1.5 py-0.5 text-xs">
-                            soon
-                          </span>
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2.5 opacity-60">
-                        <CheckIcon className="mt-0.5 shrink-0 text-primary" />
-                        <span>
-                          Website builder{" "}
-                          <span className="rounded bg-background/10 px-1.5 py-0.5 text-xs">
-                            soon
-                          </span>
-                        </span>
-                      </li>
-                    </>
-                  )}
-                </ul>
-
-                {/* CTA */}
-                <div className="mt-8">
-                  <TrackRybbitButton
-                    eventName="subscribe_to_plan"
-                    eventData={{ plan: tier.label }}
-                  >
-                    <Button
-                      href={`${signupUrl}/account?plan=${tier.label}`}
-                      variant={isPopular ? "solid" : "outline"}
-                      color="white"
-                      aria-label={`Choose ${tier.label}`}
-                      className={cn(
-                        "w-full py-2.5 text-sm",
-                        !isPopular &&
-                          "border-background/20 text-background hover:bg-background/10",
-                      )}
-                    >
-                      Choose {tier.label}
-                    </Button>
-                  </TrackRybbitButton>
-                </div>
+                <p className="text-[15px] font-semibold leading-snug tracking-[-0.005em] text-foreground">
+                  {f.label}
+                </p>
+                <p className="text-[13px] leading-[1.45] text-muted-foreground">
+                  {f.blurb}
+                </p>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </Container>
     </section>

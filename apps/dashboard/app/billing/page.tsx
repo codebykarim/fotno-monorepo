@@ -232,17 +232,6 @@ export default function BillingPage() {
                     to upload again.
                   </p>
                 )}
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={() => {
-                    document
-                      .getElementById("paid-plans")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  Upgrade
-                </Button>
               </div>
             ) : access.status === "active" ||
               access.status === "cancelled_grace" ? (
@@ -357,23 +346,25 @@ export default function BillingPage() {
           aria-hidden="true"
         />
 
-        <h2 className="text-xl font-semibold tracking-tight">
-          {hasSubscription ? "Change Plan" : "Choose a Plan"}
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Higher tiers unlock more features and storage. Pick the plan that fits
-          your workflow.
-        </p>
-
         {!paidPlans ? (
-          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-72 animate-pulse rounded-2xl bg-muted"
-              />
-            ))}
-          </div>
+          <>
+            <h2 className="text-xl font-semibold tracking-tight">
+              {hasSubscription ? "Change Plan" : "Choose a Plan"}
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Higher tiers unlock more features and storage. Pick the plan that
+              fits your workflow.
+            </p>
+
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-72 animate-pulse rounded-2xl bg-muted"
+                />
+              ))}
+            </div>
+          </>
         ) : (
           <motion.div
             className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"

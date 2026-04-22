@@ -4,8 +4,10 @@
 export {
   FEATURE_KEYS,
   FEATURE_LABELS,
+  FEATURE_BLURBS,
   DEFAULT_TIER_FEATURES,
   featureLabel,
+  featureBlurb,
 } from "@workspace/lib";
 
 export type { FeatureKey } from "@workspace/lib";

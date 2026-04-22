@@ -255,6 +255,10 @@ export function GalleryDetailHeader() {
                 href={getGalleryShareLink(data.gallery.slug)}
                 target="_blank"
                 rel="noopener noreferrer"
+                className={cn(
+                  "flex items-center gap-1.5",
+                  !data.gallery.isPublished && "opacity-50 pointer-events-none",
+                )}
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline text-xs">Preview</span>
@@ -291,7 +295,10 @@ export function GalleryDetailHeader() {
               <PopoverContent align="end" className="w-auto p-4">
                 <div className="space-y-3">
                   <p className="text-sm font-medium">Gallery QR Code</p>
-                  <div id="qr-popover-svg" className="flex items-center justify-center rounded-lg border bg-white p-3">
+                  <div
+                    id="qr-popover-svg"
+                    className="flex items-center justify-center rounded-lg border bg-white p-3"
+                  >
                     <QRCodeSVG
                       value={shareLink}
                       size={180}

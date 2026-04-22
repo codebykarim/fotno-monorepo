@@ -160,19 +160,21 @@ export const PLAN_FEATURES = [
   FEATURE_LABELS.SLIDESHOW_SHARING,
 ];
 
-/** Build free-tier feature list dynamically from actual tier data */
-export function buildFreeFeatures(freeTier: {
+/** Build free-tier feature list dynamically from actual tier data + admin-toggled features */
+export async function buildFreeFeatures(freeTier: {
   gb: number;
   galleryLimit: number | null;
-}): string[] {
+}): Promise<string[]> {
   const storage = freeTier.gb <= 0 ? "1 GB" : `${freeTier.gb} GB`;
   const galleries = freeTier.galleryLimit ?? 2;
+  const featureKeys = await fetchFeaturesForTier(freeTier.gb);
+  const featureLabels = featureKeys
+    .map((key) => FEATURE_LABELS[key as keyof typeof FEATURE_LABELS])
+    .filter((label): label is string => Boolean(label));
   return [
     `${storage} storage`,
     `Up to ${galleries} ${galleries === 1 ? "gallery" : "galleries"}`,
-    FEATURE_LABELS.CLIENT_FAVORITES,
-    FEATURE_LABELS.DOWNLOAD,
-    FEATURE_LABELS.PASSWORD_PROTECTION,
+    ...featureLabels,
   ];
 }
 

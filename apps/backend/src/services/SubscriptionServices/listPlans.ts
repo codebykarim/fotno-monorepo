@@ -92,8 +92,8 @@ export const fetchPlans = async (
   const tiers = await applyRegionalPricing(basePlans, countryCode);
   const freeTier = tiers.find((t) => t.priceCents === 0);
   const freeFeatures = freeTier
-    ? buildFreeFeatures({ gb: freeTier.gb, galleryLimit: freeTier.galleryLimit ?? null })
-    : buildFreeFeatures({ gb: 1, galleryLimit: 2 });
+    ? await buildFreeFeatures({ gb: freeTier.gb, galleryLimit: freeTier.galleryLimit ?? null })
+    : await buildFreeFeatures({ gb: 1, galleryLimit: 2 });
   return { tiers, features: PLAN_FEATURES, freeFeatures };
 };
 

@@ -22,11 +22,7 @@ const FALLBACK_FREE: PlanTier = {
   priceCents: 0,
   label: "Free",
   galleryLimit: 2,
-  features: [
-    "CLIENT_FAVORITES",
-    "PASSWORD_PROTECTION",
-    "DOWNLOAD",
-  ],
+  features: ["CLIENT_FAVORITES", "PASSWORD_PROTECTION", "DOWNLOAD"],
 };
 
 const ALL_FEATURES: { key: FeatureKey; label: string; blurb: string }[] =
@@ -161,7 +157,9 @@ async function fetchFreeTier(country?: string): Promise<PlanTier> {
     const url = country
       ? `${backendUrl}/api/billing/plans?country=${encodeURIComponent(country)}`
       : `${backendUrl}/api/billing/plans`;
-    const res = await fetch(url, { next: { revalidate: 300 } });
+    const res = await fetch(url, {
+      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 300 },
+    });
     if (!res.ok) return FALLBACK_FREE;
     const data = await res.json();
     const tiers: PlanTier[] = Array.isArray(data)
@@ -186,7 +184,7 @@ export async function Pricing() {
     headerStore.get("x-vercel-ip-country") ||
     undefined;
   const free = await fetchFreeTier(country);
-  const galleryLimit = free.galleryLimit ?? 2;
+  const galleryLimit = free.galleryLimit ?? "Unlimited";
   const galleriesLabel =
     galleryLimit === 1 ? "1 gallery" : `${galleryLimit} galleries`;
   const enabledKeys = new Set(free.features ?? []);

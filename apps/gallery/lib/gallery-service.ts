@@ -271,7 +271,7 @@ export const getGalleryByShareToken = async (
       cache: opts?.cache,
       next:
         typeof opts?.revalidate === "number"
-          ? { revalidate: opts.revalidate }
+          ? { revalidate: process.env.NODE_ENV === "development" ? 0 : opts.revalidate }
           : undefined,
     });
 

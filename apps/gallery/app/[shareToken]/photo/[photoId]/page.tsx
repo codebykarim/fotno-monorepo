@@ -9,20 +9,24 @@ type PhotoPageProps = {
   params: Promise<{ shareToken: string; photoId: string }>;
 };
 
-export async function generateMetadata({ params }: PhotoPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PhotoPageProps): Promise<Metadata> {
   const { shareToken, photoId } = await params;
   const galleryBaseUrl =
     process.env.NEXT_PUBLIC_GALLERY_URL ?? "https://gallery.fotno.com";
 
   try {
     const { gallery } = await getGalleryByShareToken(shareToken, {
-      revalidate: 60,
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 60,
       cache: "force-cache",
     });
     const current = gallery.photos.find((photo) => photo.id === photoId);
 
     return {
-      title: current ? `${gallery.title} • Photo` : `${gallery.title} | FOTNO Gallery`,
+      title: current
+        ? `${gallery.title} • Photo`
+        : `${gallery.title} | FOTNO Gallery`,
       description: `Photo from ${gallery.title}`,
       openGraph: {
         title: gallery.title,
@@ -47,15 +51,20 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
   const { shareToken, photoId } = await params;
   try {
     const { gallery } = await getGalleryByShareToken(shareToken, {
-      revalidate: 60,
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 60,
       cache: "force-cache",
     });
 
-    if (!gallery.hasPassword && !gallery.photos.some((photo) => photo.id === photoId)) {
+    if (
+      !gallery.hasPassword &&
+      !gallery.photos.some((photo) => photo.id === photoId)
+    ) {
       notFound();
     }
 
-    return <PhotoLightboxClient initialGallery={gallery} currentPhotoId={photoId} />;
+    return (
+      <PhotoLightboxClient initialGallery={gallery} currentPhotoId={photoId} />
+    );
   } catch {
     notFound();
   }

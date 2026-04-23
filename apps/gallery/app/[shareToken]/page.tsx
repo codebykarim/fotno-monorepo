@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   try {
     const { gallery } = await getGalleryByShareToken(shareToken, {
-      revalidate: 60,
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 60,
       cache: "force-cache",
     });
 
@@ -59,7 +59,7 @@ export default async function ShareTokenPage({ params }: ShareTokenPageProps) {
   const { shareToken } = await params;
   try {
     const { gallery } = await getGalleryByShareToken(shareToken, {
-      revalidate: 60,
+      revalidate: process.env.NODE_ENV === "development" ? 0 : 60,
       cache: "force-cache",
     });
 

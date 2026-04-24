@@ -104,11 +104,21 @@ function FeatureIcon({ name }: { name: string }) {
           <path d="M6 14l6 6 6-6" />
         </svg>
       );
+    case "ALBUMS":
+      return (
+        <svg {...common}>
+          <rect x="3" y="6" width="14" height="14" rx="1.5" />
+          <path d="M7 3h14v14" />
+          <path d="M6 14l3-3 3 3 2-2 3 3" />
+          <circle cx="8" cy="10" r="1" />
+        </svg>
+      );
     case "SMART_ALBUMS":
       return (
         <svg {...common}>
-          <path d="M3 6h10l2 3h6v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6z" />
-          <path d="M12 13l1.2 2.4 2.6.3-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6L8.2 15.7l2.6-.3z" />
+          <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4z" />
+          <path d="M5 17a3 3 0 0 1 3-3h11" />
+          <path d="M9 8h6" />
         </svg>
       );
     case "CUSTOM_DOMAINS":

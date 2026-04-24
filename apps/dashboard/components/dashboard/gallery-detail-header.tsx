@@ -37,10 +37,10 @@ import { useGalleryDetail } from "./gallery-detail-provider";
 
 const TABS = [
   { id: "photos", label: "Photos", icon: Grid2x2, segment: "" },
-  // { id: "albums", label: "Albums", icon: Album, segment: "/albums" },
+  { id: "albums", label: "Albums", icon: Album, segment: "/albums" },
   {
     id: "smart-albums",
-    label: "Smart Albums",
+    label: "Print Albums",
     icon: BookImage,
     segment: "/smart-albums",
   },

@@ -76,16 +76,19 @@ const dashboardMethods: { [key: string]: MethodInfo } = {
     httpMethod: "POST",
     controllerFunction: DashboardController.createAlbumController,
     authFunction: isAuth,
+    middlewares: [requireFeature("ALBUMS")],
   },
   "update-album": {
     httpMethod: "PATCH",
     controllerFunction: DashboardController.updateAlbumController,
     authFunction: isAuth,
+    middlewares: [requireFeature("ALBUMS")],
   },
   "delete-album": {
     httpMethod: "DELETE",
     controllerFunction: DashboardController.deleteAlbumController,
     authFunction: isAuth,
+    middlewares: [requireFeature("ALBUMS")],
   },
   "update-photo": {
     httpMethod: "PATCH",

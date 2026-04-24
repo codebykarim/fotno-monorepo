@@ -180,7 +180,7 @@ export function PhotosTab({
   const uploadQueueRef = useRef<UploadQueueItem[]>([]);
   const activeUploadControllersRef = useRef<Set<AbortController>>(new Set());
   const fileByQueueIdRef = useRef<Map<string, File>>(new Map());
-  const hasSmartAlbums = useHasFeature("SMART_ALBUMS");
+  const hasAlbums = useHasFeature("ALBUMS");
   const [createAlbumOpen, setCreateAlbumOpen] = useState(false);
   const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
@@ -1062,7 +1062,7 @@ export function PhotosTab({
 
           {selected.length > 0 && (
             <div className="flex items-center gap-1.5">
-              {hasSmartAlbums && (
+              {hasAlbums && (
                 <Dialog
                   open={createAlbumOpen}
                   onOpenChange={setCreateAlbumOpen}
@@ -1339,6 +1339,96 @@ export function AlbumsTab({
   } | null>(null);
   const [newTitle, setNewTitle] = useState("");
 
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createTitle, setCreateTitle] = useState("");
+  const [createSelected, setCreateSelected] = useState<Set<string>>(new Set());
+  const [creating, setCreating] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [editAlbumId, setEditAlbumId] = useState<string | null>(null);
+  const [editAlbumTitle, setEditAlbumTitle] = useState("");
+  const [editSelected, setEditSelected] = useState<Set<string>>(new Set());
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const togglePhotoSelected = (photoId: string) => {
+    setCreateSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(photoId)) next.delete(photoId);
+      else next.add(photoId);
+      return next;
+    });
+  };
+
+  const openCreateDialog = () => {
+    setCreateTitle("");
+    setCreateSelected(new Set());
+    setCreateOpen(true);
+  };
+
+  const toggleEditSelected = (photoId: string) => {
+    setEditSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(photoId)) next.delete(photoId);
+      else next.add(photoId);
+      return next;
+    });
+  };
+
+  const openEditDialog = (album: {
+    id: string;
+    title: string;
+    photoIds: string[];
+  }) => {
+    setEditAlbumId(album.id);
+    setEditAlbumTitle(album.title);
+    setEditSelected(new Set(album.photoIds));
+    setEditOpen(true);
+  };
+
+  const submitEditAlbum = async () => {
+    if (!editAlbumId) return;
+    setSavingEdit(true);
+    try {
+      await apiRequest(`/api/galleries/${galleryId}/albums/${editAlbumId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ photoIds: Array.from(editSelected) }),
+      });
+      await mutate();
+      toast.success("Album updated");
+      setEditOpen(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update album",
+      );
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
+  const submitCreateAlbum = async () => {
+    const title = createTitle.trim();
+    if (!title || createSelected.size === 0) return;
+    setCreating(true);
+    try {
+      await apiRequest(`/api/galleries/${galleryId}/albums`, {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          photoIds: Array.from(createSelected),
+        }),
+      });
+      await mutate();
+      toast.success("Album created");
+      setCreateOpen(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create album",
+      );
+    } finally {
+      setCreating(false);
+    }
+  };
+
   const handleRenameClick = (album: { id: string; title: string }) => {
     setAlbumToRename(album);
     setNewTitle(album.title);
@@ -1386,23 +1476,239 @@ export function AlbumsTab({
     }
   };
 
+  const createDialog = (
+    <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle>Create Album</DialogTitle>
+          <DialogDescription>
+            Name your album and pick photos to include.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          <div>
+            <Label htmlFor="new-album-title" className="mb-2 block">
+              Album Title
+            </Label>
+            <Input
+              id="new-album-title"
+              value={createTitle}
+              onChange={(e) => setCreateTitle(e.target.value)}
+              placeholder="e.g. Highlights"
+              autoFocus
+            />
+          </div>
+          <div>
+            <div className="mb-2 flex items-center justify-between">
+              <Label>
+                Photos{" "}
+                <span className="text-muted-foreground">
+                  ({createSelected.size} selected)
+                </span>
+              </Label>
+              {photos.length > 0 && (
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() =>
+                    setCreateSelected(
+                      createSelected.size === photos.length
+                        ? new Set()
+                        : new Set(photos.map((p) => p.id)),
+                    )
+                  }
+                >
+                  {createSelected.size === photos.length
+                    ? "Clear all"
+                    : "Select all"}
+                </button>
+              )}
+            </div>
+            {photos.length === 0 ? (
+              <p className="rounded-lg border border-dashed border-border/60 px-4 py-8 text-center text-xs text-muted-foreground">
+                Upload photos to this gallery first.
+              </p>
+            ) : (
+              <div className="grid max-h-[360px] grid-cols-4 gap-2 overflow-y-auto rounded-lg border border-border/60 p-2 sm:grid-cols-6">
+                {photos.map((photo) => {
+                  const thumb =
+                    photo.thumbnailUrl ?? photo.previewUrl ?? photo.url;
+                  const isSelected = createSelected.has(photo.id);
+                  return (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      onClick={() => togglePhotoSelected(photo.id)}
+                      className={cn(
+                        "group relative aspect-square overflow-hidden rounded-md border-2 transition",
+                        isSelected
+                          ? "border-primary ring-2 ring-primary/30"
+                          : "border-transparent hover:border-border",
+                      )}
+                    >
+                      <img
+                        src={thumb}
+                        alt=""
+                        decoding="async"
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                      {isSelected && (
+                        <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                          <Check className="h-3 w-3" />
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setCreateOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={submitCreateAlbum}
+            disabled={
+              creating ||
+              !createTitle.trim() ||
+              createSelected.size === 0
+            }
+          >
+            {creating ? "Creating..." : "Create Album"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const editDialog = (
+    <Dialog open={editOpen} onOpenChange={setEditOpen}>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle>
+            {editAlbumTitle ? `Edit "${editAlbumTitle}"` : "Edit Album"}
+          </DialogTitle>
+          <DialogDescription>
+            Add or remove photos from this album.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-2">
+          <div className="flex items-center justify-between">
+            <Label>
+              Photos{" "}
+              <span className="text-muted-foreground">
+                ({editSelected.size} selected)
+              </span>
+            </Label>
+            {photos.length > 0 && (
+              <button
+                type="button"
+                className="text-xs text-muted-foreground hover:text-foreground"
+                onClick={() =>
+                  setEditSelected(
+                    editSelected.size === photos.length
+                      ? new Set()
+                      : new Set(photos.map((p) => p.id)),
+                  )
+                }
+              >
+                {editSelected.size === photos.length
+                  ? "Clear all"
+                  : "Select all"}
+              </button>
+            )}
+          </div>
+          {photos.length === 0 ? (
+            <p className="rounded-lg border border-dashed border-border/60 px-4 py-8 text-center text-xs text-muted-foreground">
+              This gallery has no photos.
+            </p>
+          ) : (
+            <div className="grid max-h-[360px] grid-cols-4 gap-2 overflow-y-auto rounded-lg border border-border/60 p-2 sm:grid-cols-6">
+              {photos.map((photo) => {
+                const thumb =
+                  photo.thumbnailUrl ?? photo.previewUrl ?? photo.url;
+                const isSelected = editSelected.has(photo.id);
+                return (
+                  <button
+                    key={photo.id}
+                    type="button"
+                    onClick={() => toggleEditSelected(photo.id)}
+                    className={cn(
+                      "group relative aspect-square overflow-hidden rounded-md border-2 transition",
+                      isSelected
+                        ? "border-primary ring-2 ring-primary/30"
+                        : "border-transparent hover:border-border",
+                    )}
+                  >
+                    <img
+                      src={thumb}
+                      alt=""
+                      decoding="async"
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                    {isSelected && (
+                      <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setEditOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={submitEditAlbum} disabled={savingEdit}>
+            {savingEdit ? "Saving..." : "Save changes"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
   if (albums.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-primary/20 bg-primary/4 py-16 text-center">
-        <FolderKanban className="h-10 w-10 text-muted-foreground/40" />
-        <div>
-          <p className="text-sm font-medium text-foreground">No albums yet</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Select photos in the Photos tab and click &ldquo;Album&rdquo; to
-            create your first album.
-          </p>
+      <>
+        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-primary/20 bg-primary/4 py-16 text-center">
+          <FolderKanban className="h-10 w-10 text-muted-foreground/40" />
+          <div>
+            <p className="text-sm font-medium text-foreground">No albums yet</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Group photos into a curated album for easier sharing.
+            </p>
+          </div>
+          <Button onClick={openCreateDialog} className="mt-2 gap-1.5">
+            <Album className="h-4 w-4" />
+            Create Album
+          </Button>
         </div>
-      </div>
+        {createDialog}
+        {editDialog}
+      </>
     );
   }
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">Albums</h2>
+          <p className="text-xs text-muted-foreground">
+            {albums.length} album{albums.length === 1 ? "" : "s"}
+          </p>
+        </div>
+        <Button onClick={openCreateDialog} size="sm" className="gap-1.5">
+          <Album className="h-4 w-4" />
+          Create Album
+        </Button>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {albums.map((album) => {
           const albumPhotos = album.photoIds
@@ -1416,7 +1722,14 @@ export function AlbumsTab({
           return (
             <div
               key={album.id}
-              className="group overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm"
+              className="group cursor-pointer overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition hover:border-primary/40 hover:shadow-md"
+              onClick={() =>
+                openEditDialog({
+                  id: album.id,
+                  title: album.title,
+                  photoIds: album.photoIds,
+                })
+              }
             >
               {/* Hero image */}
               <div className="relative aspect-[16/10] bg-muted overflow-hidden">
@@ -1476,18 +1789,43 @@ export function AlbumsTab({
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7 text-muted-foreground"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-32">
-                    <DropdownMenuItem onClick={() => handleRenameClick(album)}>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-40"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEditDialog({
+                          id: album.id,
+                          title: album.title,
+                          photoIds: album.photoIds,
+                        });
+                      }}
+                    >
+                      Edit photos
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRenameClick(album);
+                      }}
+                    >
                       Rename
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"
-                      onClick={() => void deleteAlbum(album.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void deleteAlbum(album.id);
+                      }}
                     >
                       Delete
                     </DropdownMenuItem>
@@ -1527,6 +1865,9 @@ export function AlbumsTab({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {createDialog}
+      {editDialog}
     </div>
   );
 }

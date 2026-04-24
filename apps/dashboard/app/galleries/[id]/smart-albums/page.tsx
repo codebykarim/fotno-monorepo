@@ -30,8 +30,8 @@ export default function GallerySmartAlbumsPage({
     return (
       <LockedPage
         featureKey="SMART_ALBUMS"
-        title="Smart Albums"
-        description="Allow clients to design and order physical photo albums from your galleries."
+        title="Print Albums"
+        description="Allow clients to design and order printed photo albums from your galleries."
       />
     );
   }
@@ -39,9 +39,9 @@ export default function GallerySmartAlbumsPage({
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold tracking-tight">Smart Albums</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Print Albums</h2>
         <p className="text-muted-foreground text-sm mt-1">
-          Allow clients to design and order physical photo albums from this gallery
+          Allow clients to design and order printed photo albums from this gallery
         </p>
       </div>
 

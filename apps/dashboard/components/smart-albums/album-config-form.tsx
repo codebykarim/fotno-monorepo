@@ -18,6 +18,7 @@ import {
 } from "@workspace/ui/components/card";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { StripeConnectSetup } from "./stripe-connect-setup";
+import { STRIPE_CONNECT_ENABLED } from "@/lib/feature-flags";
 
 interface SmartAlbumConfig {
   id: string;
@@ -158,77 +159,96 @@ export function AlbumConfigForm() {
 
         {config.enabled && (
           <div className="space-y-4">
-            <div className="space-y-3">
-              <label className="text-sm font-medium">Payment Method</label>
-              <Select
-                value={selectedPaymentMethod}
-                onValueChange={handlePaymentMethodSelect}
-                disabled={saving}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="OUTSIDE_FOTNO">
-                    Client pays directly (outside Fotno)
-                  </SelectItem>
-                  <SelectItem value="INSIDE_FOTNO">
-                    Client pays through Fotno
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+            {STRIPE_CONNECT_ENABLED ? (
+              <>
+                <div className="space-y-3">
+                  <label className="text-sm font-medium">Payment Method</label>
+                  <Select
+                    value={selectedPaymentMethod}
+                    onValueChange={handlePaymentMethodSelect}
+                    disabled={saving}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="OUTSIDE_FOTNO">
+                        Client pays directly (outside Fotno)
+                      </SelectItem>
+                      <SelectItem value="INSIDE_FOTNO">
+                        Client pays through Fotno
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              <div className="rounded-md border bg-muted/50 px-4 py-3 text-sm space-y-2">
-                {selectedPaymentMethod === "OUTSIDE_FOTNO" ? (
-                  <>
-                    <p className="font-medium">Direct Payment</p>
-                    <p className="text-xs text-muted-foreground">
-                      You handle payments yourself. After album submission, your client receives
-                      a confirmation with your payment link. No platform fees apply — you manage
-                      invoicing, pricing, and collection outside of Fotno.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="font-medium">Integrated Payment via Stripe</p>
-                    <p className="text-xs text-muted-foreground">
-                      Clients pay directly through Fotno at checkout. Payments are processed via
-                      Stripe Connect and deposited to your connected Stripe account automatically.
-                      No manual invoicing needed.
-                    </p>
-                  </>
+                  <div className="rounded-md border bg-muted/50 px-4 py-3 text-sm space-y-2">
+                    {selectedPaymentMethod === "OUTSIDE_FOTNO" ? (
+                      <>
+                        <p className="font-medium">Direct Payment</p>
+                        <p className="text-xs text-muted-foreground">
+                          You handle payments yourself. After album submission, your client receives
+                          a confirmation with your payment link. No platform fees apply — you manage
+                          invoicing, pricing, and collection outside of Fotno.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="font-medium">Integrated Payment via Stripe</p>
+                        <p className="text-xs text-muted-foreground">
+                          Clients pay directly through Fotno at checkout. Payments are processed via
+                          Stripe Connect and deposited to your connected Stripe account automatically.
+                          No manual invoicing needed.
+                        </p>
+                      </>
+                    )}
+                  </div>
+
+                  {selectedPaymentMethod === "INSIDE_FOTNO" && config.platformFeePercent != null && (
+                    <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm">
+                      <p className="font-medium text-amber-400">
+                        Platform fee: {config.platformFeePercent}%
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        A {config.platformFeePercent}% service fee is deducted from each album payment.
+                        Your client pays the full price, and you receive{" "}
+                        {100 - config.platformFeePercent}% of each sale directly to your Stripe account.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {selectedPaymentMethod === "INSIDE_FOTNO" && (
+                  <StripeConnectSetup
+                    onStatusChange={(onboarded) => {
+                      const wasOnboarded = connectOnboarded;
+                      setConnectOnboarded(onboarded);
+                      if (onboarded && !wasOnboarded) {
+                        // Onboarding just completed — now persist INSIDE_FOTNO to backend
+                        savePaymentMethod("INSIDE_FOTNO");
+                      } else if (!onboarded && wasOnboarded) {
+                        // Was onboarded, now disconnected — switch back to OUTSIDE_FOTNO
+                        setSelectedPaymentMethod("OUTSIDE_FOTNO");
+                        savePaymentMethod("OUTSIDE_FOTNO");
+                      }
+                    }}
+                  />
                 )}
-              </div>
-
-              {selectedPaymentMethod === "INSIDE_FOTNO" && config.platformFeePercent != null && (
-                <div className="rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm">
-                  <p className="font-medium text-amber-400">
-                    Platform fee: {config.platformFeePercent}%
+              </>
+            ) : (
+              <div className="space-y-3">
+                <label className="text-sm font-medium">Payment Method</label>
+                <div className="rounded-md border bg-muted/50 px-4 py-3 text-sm space-y-2">
+                  <p className="font-medium">Direct Payment</p>
+                  <p className="text-xs text-muted-foreground">
+                    You handle payments yourself. After album submission, your client receives
+                    a confirmation with your payment link. No platform fees apply — you manage
+                    invoicing, pricing, and collection outside of Fotno.
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    A {config.platformFeePercent}% service fee is deducted from each album payment.
-                    Your client pays the full price, and you receive{" "}
-                    {100 - config.platformFeePercent}% of each sale directly to your Stripe account.
+                  <p className="text-xs text-muted-foreground italic pt-1">
+                    Integrated payments via Stripe are coming soon.
                   </p>
                 </div>
-              )}
-            </div>
-
-            {selectedPaymentMethod === "INSIDE_FOTNO" && (
-              <StripeConnectSetup
-                onStatusChange={(onboarded) => {
-                  const wasOnboarded = connectOnboarded;
-                  setConnectOnboarded(onboarded);
-                  if (onboarded && !wasOnboarded) {
-                    // Onboarding just completed — now persist INSIDE_FOTNO to backend
-                    savePaymentMethod("INSIDE_FOTNO");
-                  } else if (!onboarded && wasOnboarded) {
-                    // Was onboarded, now disconnected — switch back to OUTSIDE_FOTNO
-                    setSelectedPaymentMethod("OUTSIDE_FOTNO");
-                    savePaymentMethod("OUTSIDE_FOTNO");
-                  }
-                }}
-              />
+              </div>
             )}
           </div>
         )}

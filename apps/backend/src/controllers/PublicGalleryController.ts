@@ -5,6 +5,11 @@ import { withSpan, captureWithContext } from "../utils/sentry";
 const asStatusCode = (value: unknown, fallback: number): number =>
   typeof value === "number" && Number.isFinite(value) ? value : fallback;
 
+export const getPublicStatsController = async (_req: Request, res: Response) => {
+  const stats = await PublicGalleryServices.getPublicStats();
+  return res.status(200).json(stats);
+};
+
 export const getPublicGalleryController = async (req: Request, res: Response) => {
   const shareToken = req.params.shareToken;
   const gallery = await withSpan(

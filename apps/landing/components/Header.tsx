@@ -101,7 +101,7 @@ function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
 
 const navLinks = [
   { label: "Features", href: "/#features" },
-  { label: "Testimonials", href: "/#testimonials" },
+  // { label: "Testimonials", href: "/#testimonials" },
   { label: "Pricing", href: "/#pricing" },
   { label: "FAQ", href: "/#faq" },
 ];

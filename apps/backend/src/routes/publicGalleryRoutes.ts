@@ -11,6 +11,10 @@ const publicGalleryMethods: { [key: string]: MethodInfo } = {
     httpMethod: "GET",
     controllerFunction: PublicGalleryController.getPublicGalleryController,
   },
+  "get-public-stats": {
+    httpMethod: "GET",
+    controllerFunction: PublicGalleryController.getPublicStatsController,
+  },
   "unlock-public-gallery": {
     httpMethod: "POST",
     controllerFunction: PublicGalleryController.unlockPublicGalleryController,
@@ -86,6 +90,7 @@ const handleMethod =
     return mappedMethods(req, res, next);
   };
 
+publicGalleryRoutes.get("/public/stats", handleMethod("get-public-stats"));
 publicGalleryRoutes.get(
   "/public/gallery/:shareToken",
   handleMethod("get-public-gallery"),

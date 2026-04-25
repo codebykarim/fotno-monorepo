@@ -5,13 +5,35 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { TextRotate } from "@workspace/ui/components/text-rotate";
 
-const stats = [
-  { value: "10K+", label: "Photos delivered" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "4.9/5", label: "User rating" },
-];
+function formatCount(count: number): string {
+  if (count >= 1_000_000)
+    return `${(count / 1_000_000).toFixed(count >= 10_000_000 ? 0 : 1).replace(/\.0$/, "")}M+`;
+  if (count >= 1_000)
+    return `${(count / 1_000).toFixed(count >= 10_000 ? 0 : 1).replace(/\.0$/, "")}K+`;
+  return `${count}`;
+}
 
-export function Hero() {
+export type HeroStats = {
+  photoCount: number;
+  galleryCount: number;
+  photographerCount: number;
+  favoriteCount: number;
+};
+
+export function Hero({
+  photoCount,
+  galleryCount,
+  photographerCount,
+  favoriteCount,
+}: HeroStats) {
+  const stats = [
+    { value: formatCount(photoCount), label: "Photos delivered" },
+    { value: formatCount(galleryCount), label: "Galleries" },
+    // { value: formatCount(photographerCount), label: "Photographers" },
+    // { value: formatCount(favoriteCount), label: "Favorites picked" },
+    { value: "99.9%", label: "Uptime" },
+    { value: "4.9/5", label: "User rating" },
+  ];
   return (
     <div className="relative isolate overflow-hidden bg-background">
       {/* Gradient mesh background */}
@@ -39,12 +61,12 @@ export function Hero() {
           transition={{ duration: 0.6 }}
           className="flex justify-center"
         >
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-border/80 bg-background/60 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+          <div className="inline-flex items-center text-xs gap-2.5 rounded-full border border-border/80 bg-background/60 px-4 py-1.5 md:text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/80 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            Built for professional photographers
+            Built for professional photographers.
           </div>
         </motion.div>
 
@@ -148,11 +170,11 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mx-auto mt-20 max-w-lg sm:mt-24"
+          className="mx-auto mt-20 max-w-3xl sm:mt-24"
         >
-          <div className="flex items-center justify-center divide-x divide-border">
+          <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-8">
             {stats.map((stat) => (
-              <div key={stat.label} className="px-5 text-center sm:px-8">
+              <div key={stat.label} className="px-3 text-center sm:px-4">
                 <div className="text-2xl font-bold tracking-tight sm:text-3xl">
                   {stat.value}
                 </div>

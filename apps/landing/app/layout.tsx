@@ -1,12 +1,21 @@
 import "@workspace/ui/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import type React from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { ThemeProvider } from "@workspace/ui/components/theme-provider";
 import Script from "next/script";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  axes: ["opsz"],
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+});
 
 const SITE_URL = process.env.NEXT_PUBLIC_LANDING_URL ?? "https://fotno.com";
 
@@ -143,7 +152,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("scroll-smooth antialiased focus:scroll-auto")}
+      className={cn(
+        "scroll-smooth antialiased focus:scroll-auto",
+        inter.variable,
+        fraunces.variable,
+        jetbrainsMono.variable,
+      )}
     >
       <head>
         <link rel="dns-prefetch" href="//api.fotno.com" />

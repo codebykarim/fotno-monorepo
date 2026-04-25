@@ -14,3 +14,4 @@ export { trackDownload } from "./trackDownload";
 export { createFavoriteShare } from "./createFavoriteShare";
 export { getSharedFavorites } from "./getSharedFavorites";
 export { trackGalleryView } from "./trackGalleryView";
+export { getPublicStats } from "./getPublicStats";

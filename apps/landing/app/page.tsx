@@ -10,6 +10,46 @@ import Script from "next/script";
 
 const SITE_URL = process.env.NEXT_PUBLIC_LANDING_URL ?? "https://fotno.com";
 
+type PublicStats = {
+  photoCount: number;
+  galleryCount: number;
+  photographerCount: number;
+  favoriteCount: number;
+};
+
+const EMPTY_STATS: PublicStats = {
+  photoCount: 0,
+  galleryCount: 0,
+  photographerCount: 0,
+  favoriteCount: 0,
+};
+
+async function fetchPublicStats(): Promise<PublicStats> {
+  const backendUrl =
+    process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
+  if (!backendUrl) return EMPTY_STATS;
+  try {
+    const res = await fetch(`${backendUrl}/api/public/stats`, {
+      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
+    });
+    if (!res.ok) return EMPTY_STATS;
+    const data = await res.json();
+    return {
+      photoCount: typeof data?.photoCount === "number" ? data.photoCount : 0,
+      galleryCount:
+        typeof data?.galleryCount === "number" ? data.galleryCount : 0,
+      photographerCount:
+        typeof data?.photographerCount === "number"
+          ? data.photographerCount
+          : 0,
+      favoriteCount:
+        typeof data?.favoriteCount === "number" ? data.favoriteCount : 0,
+    };
+  } catch {
+    return EMPTY_STATS;
+  }
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -161,7 +201,8 @@ const jsonLd = {
   ],
 };
 
-export default function Home() {
+export default async function Home() {
+  const stats = await fetchPublicStats();
   return (
     <>
       <Script
@@ -172,10 +213,10 @@ export default function Home() {
       />
       <Header />
       <main>
-        <Hero />
+        <Hero {...stats} />
         <PrimaryFeatures />
         <CallToAction />
-        <Testimonials />
+        {/* <Testimonials /> */}
         <Pricing />
         <Faqs />
       </main>

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  type ComponentProps,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { type ComponentProps, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -47,6 +42,7 @@ import {
   signUp,
   updateUser,
 } from "@workspace/lib/auth/auth-client";
+import Logo from "@workspace/ui/components/logo";
 
 import PasswordRequirements from "./password-req";
 import { checkEmailExists } from "@/lib/email-check";
@@ -587,12 +583,7 @@ function UnifiedAuthFormComponent({
 
           <div className="relative">
             <div className="mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Icons.logo className="h-8 w-8 text-primary" />
-                <span className="text-xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-                  FOTNO
-                </span>
-              </div>
+              <Logo />
               <span className="rounded-full border border-primary/30 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
                 For Photographers
               </span>

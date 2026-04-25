@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Icons } from "@workspace/ui/components/icons";
+import Logo from "@workspace/ui/components/logo";
 
 const footerLinks = {
   Product: [
@@ -28,10 +29,7 @@ export function Footer() {
         <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2">
-              <Icons.logo className="h-7 w-auto text-primary" />
-              <span className="text-xl font-bold text-background">FOTNO</span>
-            </div>
+            <Logo invert />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/40">
               FOTNO (also known as Photno &amp; Photnoo) is the modern photo
               gallery delivery platform. Create password-protected client

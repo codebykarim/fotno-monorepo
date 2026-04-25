@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { LockKeyhole } from "lucide-react";
 import Image from "next/image";
+import Logo from "@workspace/ui/components/logo";
 
 type PasswordGateProps = {
   title: string;
@@ -32,7 +33,10 @@ export default function PasswordGate({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden px-5 py-6 text-white sm:px-8 sm:py-10" style={{ background: "oklch(0.14 0.01 50)" }}>
+    <div
+      className="relative min-h-screen overflow-hidden px-5 py-6 text-white sm:px-8 sm:py-10"
+      style={{ background: "oklch(0.14 0.01 50)" }}
+    >
       <div className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
@@ -63,15 +67,10 @@ export default function PasswordGate({
         </section>
 
         <section className="flex w-full flex-col justify-between p-6 sm:p-10 lg:max-w-[32rem]">
-          <div>
-            <Image
-              src="/logo.png"
-              alt="Fotno logo"
-              width={124}
-              height={40}
-              className="h-auto w-28 sm:w-32"
-              priority
-            />
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex items-center justify-center">
+              <Logo invert />
+            </div>
 
             <div className="mt-10 rounded-3xl border border-white/15 bg-white/[0.05] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-md sm:p-8">
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">

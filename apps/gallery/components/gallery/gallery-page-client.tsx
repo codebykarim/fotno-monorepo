@@ -71,7 +71,7 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import { useSession } from "@workspace/lib/auth/auth-client";
-
+import { Logo } from "@workspace/ui/components/logo";
 type GalleryPageClientProps = {
   initialGallery: PublicGallery;
 };
@@ -615,10 +615,10 @@ export default function GalleryPageClient({
 
   // Track gallery view (fire-and-forget)
   useEffect(() => {
-    fetch(
-      `/api/gallery/${encodeURIComponent(gallery.shareToken)}/view`,
-      { method: "POST", headers: { "Content-Type": "application/json" } },
-    ).catch(() => {});
+    fetch(`/api/gallery/${encodeURIComponent(gallery.shareToken)}/view`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gallery.shareToken]);
 
@@ -986,9 +986,7 @@ export default function GalleryPageClient({
   useEffect(() => {
     if (!activePhotoId) return;
 
-    const currentIndex = visiblePhotos.findIndex(
-      (p) => p.id === activePhotoId,
-    );
+    const currentIndex = visiblePhotos.findIndex((p) => p.id === activePhotoId);
     if (currentIndex < 0) return;
 
     const adjacentPhotos = [
@@ -2938,8 +2936,8 @@ export default function GalleryPageClient({
         </DialogContent>
       </Dialog>
 
-      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
-        Powered by <span className="font-semibold text-primary">FOTNO</span>
+      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8 flex items-center justify-center">
+        Powered by <Logo size="xs" />
       </footer>
 
       {/* Create Album Button */}

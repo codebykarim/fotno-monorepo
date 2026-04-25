@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { SlimLayout } from "@/components/SlimLayout";
 import { Icons } from "@workspace/ui/components/icons";
+import Logo from "@workspace/ui/components/logo";
 
 export default function NotFound() {
   return (
@@ -10,10 +11,7 @@ export default function NotFound() {
       <div className="flex">
         <Link href="/" aria-label="Home">
           <div className="flex items-center justify-center gap-2">
-            <Icons.logo className="h-8 w-auto text-primary" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-              FOTNO
-            </h1>
+            <Logo />
           </div>
         </Link>
       </div>

@@ -12,7 +12,11 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import type { SharedFavoritesData, SharedFavoritesPhoto } from "@/lib/gallery-types";
+import type {
+  SharedFavoritesData,
+  SharedFavoritesPhoto,
+} from "@/lib/gallery-types";
+import { Logo } from "@workspace/ui/components/logo";
 
 type Props = {
   data: SharedFavoritesData;
@@ -294,17 +298,17 @@ export default function SharedFavoritesPageClient({
   };
 
   const handleModalTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    if (
-      event.touches.length === 1 &&
-      panStartRef.current &&
-      zoom > MIN_ZOOM
-    ) {
+    if (event.touches.length === 1 && panStartRef.current && zoom > MIN_ZOOM) {
       const touch = event.touches[0];
       if (touch) {
         event.preventDefault();
         setPanClamped(
-          panStartRef.current.originX + touch.clientX - panStartRef.current.startX,
-          panStartRef.current.originY + touch.clientY - panStartRef.current.startY,
+          panStartRef.current.originX +
+            touch.clientX -
+            panStartRef.current.startX,
+          panStartRef.current.originY +
+            touch.clientY -
+            panStartRef.current.startY,
         );
       }
     }
@@ -404,59 +408,64 @@ export default function SharedFavoritesPageClient({
               const h = photo.height ?? 3;
 
               return (
-              <article
-                key={photo.id}
-                className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-muted md:mb-4"
-                style={{
-                  contentVisibility: "auto",
-                  aspectRatio: `${w} / ${h}`,
-                  backgroundImage: photo.blurDataUrl ? `url(${photo.blurDataUrl})` : undefined,
-                  backgroundSize: "cover",
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActivePhotoId(photo.id);
-                    setZoom(MIN_ZOOM);
-                    setPan({ x: 0, y: 0 });
+                <article
+                  key={photo.id}
+                  className="group relative mb-3 break-inside-avoid overflow-hidden rounded-2xl bg-muted md:mb-4"
+                  style={{
+                    contentVisibility: "auto",
+                    aspectRatio: `${w} / ${h}`,
+                    backgroundImage: photo.blurDataUrl
+                      ? `url(${photo.blurDataUrl})`
+                      : undefined,
+                    backgroundSize: "cover",
                   }}
-                  className="block w-full"
                 >
-                  <img
-                    src={imgSrc}
-                    alt={photo.originalFilename}
-                    width={w}
-                    height={h}
-                    loading={index < 8 ? "eager" : "lazy"}
-                    decoding="async"
-                    draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      const attempt = Number(img.dataset.retry ?? "0");
-                      if (attempt < 2) {
-                        img.dataset.retry = String(attempt + 1);
-                        setTimeout(() => {
-                          img.src = imgSrc;
-                        }, 1000 * (attempt + 1));
-                      }
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActivePhotoId(photo.id);
+                      setZoom(MIN_ZOOM);
+                      setPan({ x: 0, y: 0 });
                     }}
-                    className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                  />
-                </button>
+                    className="block w-full"
+                  >
+                    <img
+                      src={imgSrc}
+                      alt={photo.originalFilename}
+                      width={w}
+                      height={h}
+                      loading={index < 8 ? "eager" : "lazy"}
+                      decoding="async"
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        const attempt = Number(img.dataset.retry ?? "0");
+                        if (attempt < 2) {
+                          img.dataset.retry = String(attempt + 1);
+                          setTimeout(
+                            () => {
+                              img.src = imgSrc;
+                            },
+                            1000 * (attempt + 1),
+                          );
+                        }
+                      }}
+                      className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                    />
+                  </button>
 
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                {/* Note badge */}
-                {photo.note && (
-                  <div className="absolute left-3 bottom-3 max-w-[calc(100%-4rem)] pointer-events-none">
-                    <span className="inline-block truncate rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white/90 backdrop-blur">
-                      &ldquo;{photo.note}&rdquo;
-                    </span>
-                  </div>
-                )}
-              </article>
+                  {/* Note badge */}
+                  {photo.note && (
+                    <div className="absolute left-3 bottom-3 max-w-[calc(100%-4rem)] pointer-events-none">
+                      <span className="inline-block truncate rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white/90 backdrop-blur">
+                        &ldquo;{photo.note}&rdquo;
+                      </span>
+                    </div>
+                  )}
+                </article>
               );
             })}
           </div>
@@ -665,8 +674,8 @@ export default function SharedFavoritesPageClient({
         </div>
       )}
 
-      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8">
-        Powered by <span className="font-semibold text-primary">FOTNO</span>
+      <footer className="border-t border-border/70 px-4 py-6 text-center text-sm text-muted-foreground md:px-8 flex items-center justify-center">
+        Powered by <Logo size="xs" />
       </footer>
     </div>
   );

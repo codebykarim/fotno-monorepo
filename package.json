@@ -5,7 +5,7 @@
   "scripts": {
     "build": "nx run-many -t build",
     "dev": "nx run-many -t dev --parallel=10",
-    "dev:ess": "nx run-many -t dev --parallel=10 --projects=dashboard,backend,admin,gallery,landing",
+    "dev:ess": "nx run-many -t dev --parallel=10 --projects=dashboard,backend,admin,gallery,landing,auth",
     "dev:image-processor": "pnpm --filter image-processor dev",
     "db:generate": "pnpm --filter db db:generate",
     "db:deploy": "pnpm --filter db db:deploy",

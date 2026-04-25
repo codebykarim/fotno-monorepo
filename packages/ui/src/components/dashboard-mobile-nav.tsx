@@ -13,6 +13,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@workspace/ui/components/sheet";
+import Logo from "./logo";
 
 type NavItem = {
   title: string;
@@ -43,10 +44,7 @@ export function DashboardMobileNav({ items }: { items: NavItem[] }) {
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <div className="flex flex-col h-full">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-border/40">
-              <Icons.logo className="h-6 w-6 text-primary" />
-              <span className="text-base font-bold tracking-tight bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-                FOTNO
-              </span>
+              <Logo size="xs" />
             </div>
 
             <nav className="flex-1 px-3 py-4 space-y-1">
@@ -55,7 +53,8 @@ export function DashboardMobileNav({ items }: { items: NavItem[] }) {
                   item.href === "/"
                     ? pathname === "/"
                     : pathname === item.href ||
-                      (item.href !== "/" && pathname.startsWith(item.href + "/"));
+                      (item.href !== "/" &&
+                        pathname.startsWith(item.href + "/"));
 
                 return (
                   <Link

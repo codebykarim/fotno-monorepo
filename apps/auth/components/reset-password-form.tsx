@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import PasswordRequirements from "./password-req";
+import Logo from "@workspace/ui/components/logo";
 type Props = {
   token: string | string[];
   email: string | string[] | undefined;
@@ -34,7 +35,7 @@ const formSchema = z
       .regex(/[0-9]/, "Password must contain at least one number")
       .regex(
         /[^A-Za-z0-9]/,
-        "Password must contain at least one special character"
+        "Password must contain at least one special character",
       ),
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
@@ -53,11 +54,11 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const safeToken = useMemo(
     () => (Array.isArray(token) ? token[0] : token),
-    [token]
+    [token],
   );
   const safeEmail = useMemo(
     () => (Array.isArray(email) ? email[0] : email),
-    [email]
+    [email],
   );
 
   const form = useForm<ResetPasswordFormData>({
@@ -88,7 +89,7 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
           onError: (context: any) => {
             reject({ message: context.error.message ?? "Unknown error" });
           },
-        }
+        },
       );
     });
 
@@ -110,10 +111,7 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
       <div className="min-h-screen flex-1 bg-card/90 px-4 py-8 sm:px-6 lg:min-h-0 lg:px-20 xl:px-24 flex flex-col justify-center">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="flex items-center justify-center gap-2 mb-8">
-            <Icons.logo className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-              FOTNO
-            </span>
+            <Logo />
           </div>
 
           <div className="mb-8">
@@ -179,7 +177,9 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
 
               {/* Back to account link */}
               <div className="text-center">
-                <span className="text-muted-foreground">Remember your password? </span>
+                <span className="text-muted-foreground">
+                  Remember your password?{" "}
+                </span>
                 <Link
                   href="/account"
                   className="cursor-pointer font-medium text-foreground hover:underline"
@@ -206,17 +206,24 @@ export const ResetPasswordForm = ({ token, email }: Props) => {
       </div>
 
       <div className="hidden lg:block relative w-0 flex-1">
-        <div className="absolute inset-0 overflow-hidden" style={{ background: "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)" }}>
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(145deg, oklch(0.16 0.01 50) 0%, oklch(0.20 0.01 50) 40%, oklch(0.25 0.01 50) 100%)",
+          }}
+        >
           <div className="absolute -left-16 top-8 h-72 w-72 rounded-full bg-primary/25 blur-3xl" />
           <div className="absolute -bottom-16 right-10 h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
           <div className="relative flex h-full flex-col items-center justify-center text-white p-10">
-            <Icons.logo className="h-16 w-16 text-primary mb-6" />
+            <Logo />
             <h2 className="max-w-md text-3xl font-semibold leading-tight text-center">
               Secure your account, protect your work.
             </h2>
             <p className="mt-4 max-w-sm text-sm text-white/60 text-center">
-              A strong password keeps your galleries, clients, and billing information safe.
+              A strong password keeps your galleries, clients, and billing
+              information safe.
             </p>
           </div>
         </div>

@@ -147,23 +147,17 @@ app.get("/favicon.ico", (req: Request, res: Response) => {
 
 const port = process.env.PORT ?? 8000;
 
-// Start Server
-const startServer = async () => {
-  try {
-    if (process.env.PHOTO_WORKER_IN_API !== "false") {
-      await startCleanupWorker();
-      await startExpiryWorker();
-    }
+app.listen(port, () => {
+  console.log(`Server started on port: ${port}`);
+});
 
-    app.listen(port, () => {
-      console.log(`Server started on port: ${port}`);
-    });
-  } catch (error) {
-    console.error("Failed to Start Server", error);
-    process.exit(1); // Stop the process if DB connection fails
-  }
-};
-
-startServer();
+if (process.env.PHOTO_WORKER_IN_API !== "false") {
+  startCleanupWorker().catch((error) => {
+    console.error("Failed to start cleanup worker", error);
+  });
+  startExpiryWorker().catch((error) => {
+    console.error("Failed to start expiry worker", error);
+  });
+}
 
 module.exports = app;

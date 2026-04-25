@@ -15,6 +15,7 @@ import { Container } from "@/components/Container";
 import { Icons } from "@workspace/ui/components/icons";
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { useSession } from "@workspace/lib/auth/auth-client";
+import { Logo } from "@workspace/ui/components/logo";
 
 function MobileNavLink({
   href,
@@ -87,7 +88,9 @@ function MobileNavigation({ isUserLoggedIn }: { isUserLoggedIn: boolean }) {
             My Dashboard
           </MobileNavLink>
         ) : (
-          <MobileNavLink href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}>
+          <MobileNavLink
+            href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}
+          >
             Get started
           </MobileNavLink>
         )}
@@ -129,20 +132,21 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full overflow-visible transition-all duration-300",
         scrolled
           ? "border-b border-border/50 bg-background/80 py-4 backdrop-blur-xl"
           : "bg-transparent py-6",
       )}
     >
-      <Container>
-        <nav className="relative z-50 flex items-center justify-between">
-          <div className="flex items-center md:gap-x-12">
-            <Link href="/" aria-label="Home" className="group">
-              <div className="flex items-center gap-2">
-                <Icons.logo className="h-7 w-auto text-primary transition-transform duration-300 group-hover:scale-110" />
-                <span className="text-xl font-bold tracking-tight">FOTNO</span>
-              </div>
+      <Container className="overflow-visible">
+        <nav className="relative z-50 flex items-center justify-between overflow-visible">
+          <div className="flex items-center md:gap-x-20 lg:gap-x-24">
+            <Link
+              href="/"
+              aria-label="Home"
+              className="group inline-flex shrink-0 items-center overflow-visible"
+            >
+              <Logo size="sm" />
             </Link>
             <div className="hidden md:flex md:gap-x-1">
               {navLinks.map((link) => (

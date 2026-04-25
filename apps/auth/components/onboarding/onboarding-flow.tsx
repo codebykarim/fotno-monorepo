@@ -6,6 +6,7 @@ import { StripeStep } from "./stripe-step";
 import { Icons } from "@workspace/ui/components/icons";
 import { trackEvent, identifyUser } from "../../lib/rybbit";
 import { getSession } from "@workspace/lib/auth/auth-client";
+import Logo from "@workspace/ui/components/logo";
 
 export type OnboardingStep = "account" | "stripe";
 
@@ -15,7 +16,11 @@ interface OnboardingFlowProps {
   paymentSuccess?: boolean;
 }
 
-export function OnboardingFlow({ initialStep, plan, paymentSuccess }: OnboardingFlowProps) {
+export function OnboardingFlow({
+  initialStep,
+  plan,
+  paymentSuccess,
+}: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState<OnboardingStep>(initialStep);
 
   useEffect(() => {
@@ -57,10 +62,7 @@ export function OnboardingFlow({ initialStep, plan, paymentSuccess }: Onboarding
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 sm:p-8">
       <div className="w-full max-w-md">
         <div className="mb-8 flex items-center justify-center gap-2">
-          <Icons.logo className="h-10 w-10 text-primary" />
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-            FOTNO
-          </span>
+          <Logo />
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8 relative overflow-hidden">

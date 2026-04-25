@@ -6,6 +6,7 @@ import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 import { DashboardNavLinks } from "@workspace/ui/components/dashboard-nav-links";
 import { DashboardMobileNav } from "@workspace/ui/components/dashboard-mobile-nav";
 import Link from "next/link";
+import Logo from "./logo";
 
 type Main = "GALLERY" | "MANAGER" | "WEBSITE" | "DASHBOARD";
 
@@ -33,10 +34,7 @@ const Header = async ({ main }: Props) => {
           aria-label="Home"
           className="flex items-center gap-2 shrink-0"
         >
-          <Icons.logo className="h-6 w-6 text-primary" />
-          <span className="text-base font-bold tracking-tight bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
-            FOTNO
-          </span>
+          <Logo size="xs" />
         </Link>
 
         {main === "DASHBOARD" && (

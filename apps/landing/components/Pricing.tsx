@@ -245,6 +245,7 @@ export async function Pricing() {
                 <TrackRybbitButton
                   eventName="free_tier_clicked"
                   eventData={{ plan: free.label }}
+                  fireGtagSignupConversion
                 >
                   <Button
                     href={`${signupUrl}/account?plan=Free`}

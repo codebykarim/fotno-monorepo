@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Button } from "./Button";
+import { fireSignupConversion } from "../lib/gtag";
 
 declare global {
   interface Window {
@@ -15,9 +16,15 @@ type Props = {
   children: React.ReactNode;
   eventName: string;
   eventData?: Record<string, any>;
+  fireGtagSignupConversion?: boolean;
 };
 
-const TrackRybbitButton = ({ children, eventName, eventData }: Props) => {
+const TrackRybbitButton = ({
+  children,
+  eventName,
+  eventData,
+  fireGtagSignupConversion,
+}: Props) => {
   return (
     <button
       onClick={() => {
@@ -29,6 +36,9 @@ const TrackRybbitButton = ({ children, eventName, eventData }: Props) => {
           window.rybbit.event(eventName, eventData);
         } else {
           console.warn("Rybbit tracking not available.");
+        }
+        if (fireGtagSignupConversion) {
+          fireSignupConversion();
         }
       }}
     >

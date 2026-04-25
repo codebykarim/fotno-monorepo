@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { fireSignupConversion } from "@/lib/gtag";
 
 export function CallToAction() {
   return (
@@ -39,6 +40,7 @@ export function CallToAction() {
               href={`${process.env.NEXT_PUBLIC_AUTH_URL}/account?plan=Free`}
               color="white"
               className="w-full px-8 py-3 text-base sm:w-auto"
+              onClick={() => fireSignupConversion()}
             >
               Get started free
             </Button>

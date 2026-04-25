@@ -58,6 +58,18 @@ export default function RootLayout({
           data-site-id={process.env.NEXT_PUBLIC_RYBBIT_SITE_ID}
           strategy="afterInteractive"
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18119477393"
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-18119477393');
+          `}
+        </Script>
       </body>
     </html>
   );

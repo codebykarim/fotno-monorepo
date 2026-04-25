@@ -10,6 +10,7 @@ import { useTheme } from "next-themes";
 import { PaymentForm } from "./payment-form";
 import type { Appearance } from "@stripe/stripe-js";
 import { trackEvent } from "../../lib/rybbit";
+import { fireSignupConversion } from "../../lib/gtag";
 
 // Only load stripe outside of component render
 const stripePromise = loadStripe(
@@ -156,6 +157,7 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
 
       toast.success("Welcome to FOTNO!");
       trackEvent("onboarding_completed", { outcome, plan });
+      fireSignupConversion();
       window.location.href =
         process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://dashboard.fotno.com";
       return true;

@@ -195,7 +195,7 @@ export function GalleryDetailHeader() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 sm:shrink-0">
             {/* Publish toggle */}
             <div
               className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5"
@@ -358,7 +358,7 @@ export function GalleryDetailHeader() {
       </section>
 
       {/* ── Tabs ── */}
-      <div className="flex gap-1 border-b border-border">
+      <div className="flex gap-1 overflow-x-auto border-b border-border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
@@ -367,7 +367,7 @@ export function GalleryDetailHeader() {
               key={tab.id}
               href={`${basePath}${tab.segment}`}
               className={cn(
-                "relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors",
+                "relative flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",

@@ -163,6 +163,18 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//api.fotno.com" />
         <link rel="dns-prefetch" href="//auth.fotno.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18119477393"
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-18119477393');
+          `}
+        </Script>
       </head>
       <body
         className={cn(

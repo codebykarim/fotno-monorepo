@@ -2296,7 +2296,7 @@ export default function GalleryPageClient({
               </p>
             </div>
           ) : (
-            <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
+            <div className="columns-1 gap-3 space-y-3 min-[400px]:columns-2 md:columns-3 md:gap-4 md:space-y-4">
               {visiblePhotos.map((photo, index) => {
                 const imageSrc = withOptionalToken(photo.thumbnailSrc);
                 const loved = favorites.includes(photo.id);

@@ -401,7 +401,7 @@ export default function SharedFavoritesPageClient({
 
       <main className="mx-auto grid w-full max-w-[1500px] gap-6 px-4 py-6 md:px-8 md:py-10">
         <section className="min-w-0">
-          <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 xl:columns-3">
+          <div className="columns-1 gap-3 space-y-3 min-[400px]:columns-2 md:columns-3 md:gap-4 md:space-y-4">
             {photos.map((photo, index) => {
               const imgSrc = withFavoriteShareToken(photo.thumbnailSrc);
               const w = photo.width ?? 4;

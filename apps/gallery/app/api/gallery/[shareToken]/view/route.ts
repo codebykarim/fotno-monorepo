@@ -9,16 +9,20 @@ export async function POST(
 ) {
   const { shareToken } = await context.params;
 
-  const response = await backendFetch(
-    `/api/public/gallery/${encodeURIComponent(shareToken)}/view`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-      cache: "no-store",
-    },
-  );
+  try {
+    const response = await backendFetch(
+      `/api/public/gallery/${encodeURIComponent(shareToken)}/view`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+        cache: "no-store",
+      },
+    );
 
-  const body = await response.json();
-  return NextResponse.json(body, { status: response.status });
+    const body = await response.json();
+    return NextResponse.json(body, { status: response.status });
+  } catch {
+    return new NextResponse(null, { status: 204 });
+  }
 }

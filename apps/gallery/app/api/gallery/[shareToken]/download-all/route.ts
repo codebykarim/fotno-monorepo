@@ -76,9 +76,16 @@ export async function GET(
 
     archive.pipe(archiveStream);
 
+    const abortDownload = () => {
+      archive.destroy();
+      archiveStream.destroy();
+    };
+    request.signal.addEventListener("abort", abortDownload);
+
     void (async () => {
       try {
         for (const photo of gallery.photos) {
+          if (request.signal.aborted) return;
           const signedUrl = await getPhotoPresignedUrl(
             photo.id,
             shareToken,
@@ -86,7 +93,9 @@ export async function GET(
             galleryJwt
           );
 
-          const fileResponse = await fetch(signedUrl);
+          const fileResponse = await fetch(signedUrl, {
+            signal: request.signal,
+          });
           if (!fileResponse.ok || !fileResponse.body) {
             throw new Error(`Unable to read ${photo.originalFilename}`);
           }
@@ -98,20 +107,20 @@ export async function GET(
 
         await archive.finalize();
       } catch (error) {
+        if (request.signal.aborted) return;
         archive.destroy(error as Error);
       }
     })();
 
-    return new NextResponse(
-      Readable.toWeb(archiveStream) as unknown as BodyInit,
-      {
-        headers: {
-          "Content-Type": "application/zip",
-          "Content-Disposition": `attachment; filename="${slugify(gallery.title)}.zip"`,
-          "Cache-Control": "no-store",
-        },
-      }
-    );
+    const webStream = Readable.toWeb(archiveStream) as unknown as ReadableStream;
+
+    return new NextResponse(webStream as unknown as BodyInit, {
+      headers: {
+        "Content-Type": "application/zip",
+        "Content-Disposition": `attachment; filename="${slugify(gallery.title)}.zip"`,
+        "Cache-Control": "no-store",
+      },
+    });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unable to create download";

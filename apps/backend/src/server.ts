@@ -59,6 +59,7 @@ app.all("/api/auth/*", toNodeHandler(auth));
 app.use(urlencoded({ extended: true }));
 app.use(
   json({
+    strict: false,
     verify: (req: any, _res, buf) => {
       // Capture raw body for webhook signature verification
       if (

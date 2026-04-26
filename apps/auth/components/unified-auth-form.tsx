@@ -100,6 +100,7 @@ function UnifiedAuthFormComponent({
   resetEmail,
   addAccountMode = false,
   plan,
+  interval,
   callbackURL,
   ...props
 }: ComponentProps<"div"> & {
@@ -107,6 +108,7 @@ function UnifiedAuthFormComponent({
   /** Multi-session: sign in with another account while already signed in */
   addAccountMode?: boolean;
   plan?: string;
+  interval?: "monthly" | "annual";
   callbackURL?: string;
 }) {
   const [authMode, setAuthMode] = useState<AuthMode>("email");
@@ -119,11 +121,18 @@ function UnifiedAuthFormComponent({
 
   const router = useRouter();
 
+  const onboardingQuery = useMemo(() => {
+    const parts: string[] = [];
+    if (plan) parts.push(`plan=${encodeURIComponent(plan)}`);
+    if (interval) parts.push(`interval=${interval}`);
+    parts.push("step=stripe");
+    return parts.join("&");
+  }, [plan, interval]);
+
   const postAuthRedirectUrl = useMemo(() => {
     // When registering, redirect to onboarding (same auth app, not dashboard)
     if (authMode === "register") {
-      const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
-      return `/onboarding?${planParam}step=stripe`;
+      return `/onboarding?${onboardingQuery}`;
     }
 
     const raw = callbackURL;
@@ -147,7 +156,7 @@ function UnifiedAuthFormComponent({
       /* ignore invalid callback */
     }
     return DEFAULT_DASHBOARD_URL;
-  }, [callbackURL, authMode, plan]);
+  }, [callbackURL, authMode, onboardingQuery]);
 
   const form = useForm<AuthFormData>({
     defaultValues: {
@@ -471,9 +480,7 @@ function UnifiedAuthFormComponent({
           const email = parsed.data.email;
           identifyUser(email, { email });
           if (isNewOtpUser) {
-            const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
-            const onboardingUrl = `/onboarding?${planParam}step=stripe`;
-            router.push(onboardingUrl);
+            router.push(`/onboarding?${onboardingQuery}`);
             return "Account created successfully";
           }
           const allowed = await checkNotAdminThenRedirect();
@@ -515,8 +522,7 @@ function UnifiedAuthFormComponent({
 
     try {
       const origin = window.location.origin;
-      const planParam = plan ? `plan=${encodeURIComponent(plan)}&` : "";
-      const oauthRedirectUrl = `${origin}/onboarding?${planParam}step=stripe`;
+      const oauthRedirectUrl = `${origin}/onboarding?${onboardingQuery}`;
 
       const response = await signIn.social({
         provider,
@@ -1033,6 +1039,7 @@ export function UnifiedAuthForm({
   resetEmail,
   addAccountMode = false,
   plan,
+  interval,
   callbackURL,
   ...props
 }: ComponentProps<"div"> & {
@@ -1040,6 +1047,7 @@ export function UnifiedAuthForm({
   /** Multi-session: sign in with another account while already signed in */
   addAccountMode?: boolean;
   plan?: string;
+  interval?: "monthly" | "annual";
   callbackURL?: string;
 }) {
   return (
@@ -1048,6 +1056,7 @@ export function UnifiedAuthForm({
       resetEmail={resetEmail}
       addAccountMode={addAccountMode}
       plan={plan}
+      interval={interval}
       callbackURL={callbackURL}
       {...props}
     />

@@ -420,19 +420,23 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription): Promise<void
         downgradedAt: new Date(),
       },
     });
-    // Auto-draft galleries beyond free tier limit
-    const publishedGalleries = await tx.gallery.findMany({
-      where: { userId: subscription.userId, isPublished: true },
-      orderBy: { updatedAt: "desc" },
-      select: { id: true },
-    });
-    if (publishedGalleries.length > freeLimits.galleryLimit) {
-      const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
-      await tx.gallery.updateMany({
-        where: { id: { in: toDraft } },
-        data: { isPublished: false },
+    // Auto-draft galleries beyond free tier limit (skip if unlimited)
+    if (freeLimits.galleryLimit != null) {
+      const publishedGalleries = await tx.gallery.findMany({
+        where: { userId: subscription.userId, isPublished: true },
+        orderBy: { updatedAt: "desc" },
+        select: { id: true },
       });
-      console.log(`[Webhook] customer.subscription.deleted: auto-drafted ${toDraft.length} galleries for userId=${subscription.userId}`);
+      if (publishedGalleries.length > freeLimits.galleryLimit) {
+        const toDraft = publishedGalleries
+          .slice(freeLimits.galleryLimit)
+          .map((g: any) => g.id);
+        await tx.gallery.updateMany({
+          where: { id: { in: toDraft } },
+          data: { isPublished: false },
+        });
+        console.log(`[Webhook] customer.subscription.deleted: auto-drafted ${toDraft.length} galleries for userId=${subscription.userId}`);
+      }
     }
   });
   console.log(`[Webhook] customer.subscription.deleted: downgraded to FREE for userId=${subscription.userId}`);

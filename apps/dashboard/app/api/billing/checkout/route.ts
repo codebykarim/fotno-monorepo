@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
     method: "POST",
     body: JSON.stringify({
       ...body,
+      // body already contains storageTierGb and (optionally) interval from the client;
+      // we only inject countryCode here.
       ...(country ? { countryCode: country } : {}),
     }),
   });

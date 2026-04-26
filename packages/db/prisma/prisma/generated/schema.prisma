@@ -442,17 +442,19 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id            String        @id @default(uuid())
-  gb            Int           @unique // -1 for unlimited, 0 for free
-  label         String
-  priceCents    Int // base USD price
-  stripePriceId String?
-  galleryLimit  Int? // null = unlimited
-  sortOrder     Int           @default(0)
-  active        Boolean       @default(true)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
-  features      TierFeature[]
+  id                  String        @id @default(uuid())
+  gb                  Int           @unique // -1 for unlimited, 0 for free
+  label               String
+  priceCents          Int // base USD price (monthly)
+  priceCentsAnnual    Int? // annual USD price (full year, in cents); null = no annual option
+  stripePriceId       String? // monthly recurring price ID
+  stripePriceIdAnnual String? // annual recurring price ID
+  galleryLimit        Int? // null = unlimited
+  sortOrder           Int           @default(0)
+  active              Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @default(now()) @updatedAt
+  features            TierFeature[]
 
   @@map("pricing_tier")
 }

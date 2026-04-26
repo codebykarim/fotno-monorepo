@@ -8,12 +8,17 @@ export default async function AccountPage({
   const params = await searchParams;
   const email = params.email;
   const plan = typeof params.plan === "string" ? params.plan : undefined;
+  const rawInterval =
+    typeof params.interval === "string" ? params.interval : undefined;
+  const interval =
+    rawInterval === "annual" ? "annual" : rawInterval === "monthly" ? "monthly" : undefined;
   const callbackURL =
     typeof params.callbackURL === "string" ? params.callbackURL : undefined;
   return (
     <UnifiedAuthForm
       resetEmail={email}
       plan={plan}
+      interval={interval}
       callbackURL={callbackURL}
     />
   );

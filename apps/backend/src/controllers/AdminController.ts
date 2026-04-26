@@ -125,7 +125,18 @@ export const getPricingConfigController = async (_req: Request, res: Response) =
 };
 
 export const createPricingTierController = async (req: Request, res: Response) => {
-  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit, features } = req.body;
+  const {
+    gb,
+    label,
+    priceCents,
+    priceCentsAnnual,
+    stripePriceId,
+    stripePriceIdAnnual,
+    sortOrder,
+    active,
+    galleryLimit,
+    features,
+  } = req.body;
 
   if (gb === undefined || !label || priceCents === undefined) {
     throw new AppError("gb, label, and priceCents are required", 400);
@@ -137,7 +148,12 @@ export const createPricingTierController = async (req: Request, res: Response) =
         gb: Number(gb),
         label,
         priceCents: Number(priceCents),
+        priceCentsAnnual:
+          priceCentsAnnual !== undefined && priceCentsAnnual !== null && priceCentsAnnual !== ""
+            ? Number(priceCentsAnnual)
+            : null,
         stripePriceId: stripePriceId ?? null,
+        stripePriceIdAnnual: stripePriceIdAnnual ?? null,
         galleryLimit: galleryLimit !== undefined && galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null,
         sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
         active: active !== undefined ? Boolean(active) : true,
@@ -168,7 +184,18 @@ export const createPricingTierController = async (req: Request, res: Response) =
 
 export const updatePricingTierController = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { gb, label, priceCents, stripePriceId, sortOrder, active, galleryLimit, features } = req.body;
+  const {
+    gb,
+    label,
+    priceCents,
+    priceCentsAnnual,
+    stripePriceId,
+    stripePriceIdAnnual,
+    sortOrder,
+    active,
+    galleryLimit,
+    features,
+  } = req.body;
 
   const existing = await prisma.pricingTier.findUnique({ where: { id } });
   if (!existing) {
@@ -225,7 +252,17 @@ export const updatePricingTierController = async (req: Request, res: Response) =
         ...(gb !== undefined && { gb: Number(gb) }),
         ...(label !== undefined && { label }),
         ...(priceCents !== undefined && { priceCents: Number(priceCents) }),
+        ...(priceCentsAnnual !== undefined && {
+          priceCentsAnnual:
+            priceCentsAnnual === null || priceCentsAnnual === ""
+              ? null
+              : Number(priceCentsAnnual),
+        }),
         ...(syncedStripePriceId !== undefined && { stripePriceId: syncedStripePriceId }),
+        ...(stripePriceIdAnnual !== undefined && {
+          stripePriceIdAnnual:
+            stripePriceIdAnnual === "" ? null : stripePriceIdAnnual,
+        }),
         ...(galleryLimit !== undefined && { galleryLimit: galleryLimit !== null && galleryLimit !== "" ? Number(galleryLimit) : null }),
         ...(sortOrder !== undefined && { sortOrder: Number(sortOrder) }),
         ...(active !== undefined && { active: Boolean(active) }),

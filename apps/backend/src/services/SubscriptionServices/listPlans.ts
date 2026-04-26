@@ -7,6 +7,10 @@ import {
 export type PlanInfo = {
   gb: number;
   priceCents: number;
+  /** Annual price in USD cents (full year). null = no annual option configured. */
+  priceCentsAnnual: number | null;
+  /** Whether an annual Stripe price is configured (drives whether the toggle is active for this tier) */
+  hasAnnual: boolean;
   label: string;
   galleryLimit?: number | null;
   features: string[];
@@ -105,9 +109,11 @@ async function fetchBasePlans(): Promise<PlanInfo[]> {
 
   const dbTiers = await fetchTiersFromDB();
   const plans: PlanInfo[] = await Promise.all(
-    dbTiers.map(async ({ gb, priceCents, label, galleryLimit }) => ({
+    dbTiers.map(async ({ gb, priceCents, priceCentsAnnual, stripePriceIdAnnual, label, galleryLimit }) => ({
       gb,
       priceCents,
+      priceCentsAnnual: priceCentsAnnual ?? null,
+      hasAnnual: Boolean(stripePriceIdAnnual),
       label,
       galleryLimit: galleryLimit ?? null,
       features: await fetchFeaturesForTier(gb),

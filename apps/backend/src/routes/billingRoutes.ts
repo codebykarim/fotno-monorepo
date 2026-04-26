@@ -48,6 +48,7 @@ const billingMethods: { [key: string]: MethodInfo } = {
     bodyValidation: {
       tierLabel: joi.string().required(),
       countryCode: joi.string().optional().allow(null, ""),
+      interval: joi.string().valid("monthly", "annual").optional(),
     },
   },
   "create-setup-intent": {

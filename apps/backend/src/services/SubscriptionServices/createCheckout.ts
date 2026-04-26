@@ -1,5 +1,9 @@
 import { stripe } from "./stripe";
-import { fetchTiersFromDB } from "../../constants/plans";
+import {
+  fetchTiersFromDB,
+  priceIdForInterval,
+  type BillingInterval,
+} from "../../constants/plans";
 import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 import { db } from "../DashboardServices/_shared";
@@ -10,12 +14,14 @@ export const createCheckout = async ({
   name,
   storageTierGb,
   countryCode,
+  interval = "monthly",
 }: {
   userId: string;
   email: string;
   name?: string;
   storageTierGb: number;
   countryCode?: string;
+  interval?: BillingInterval;
 }): Promise<{ checkoutUrl: string }> => {
   if (storageTierGb === 0) {
     throw new AppError("Cannot create a checkout for the free tier", 400);
@@ -39,22 +45,34 @@ export const createCheckout = async ({
       .find(([, overridden]) => overridden === storageTierGb)?.[0];
     if (originalGb) tier = findDbTier(Number(originalGb));
   }
-  if (!tier || !tier.stripePriceId) {
+  if (!tier) {
     throw new AppError("Invalid storage tier", 400);
   }
 
-  const storageGb = regional?.tierStorageOverrides?.[tier.gb] ?? tier.gb;
-  const storageLabel = storageGb === -1 ? "Unlimited storage" : `${storageGb} GB storage`;
-  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
+  const stripePriceId = priceIdForInterval(tier, interval);
+  if (!stripePriceId) {
+    throw new AppError(
+      interval === "annual"
+        ? "Annual billing is not yet configured for this plan."
+        : "Invalid storage tier",
+      400,
+    );
+  }
 
-  const regionalCheckoutCents = regional?.tierCheckoutCents?.[tier.gb];
+  const dashboardUrl =
+    process.env.NEXT_PUBLIC_DASHBOARD_URL || "https://app.fotno.com";
+
+  // Regional PPP-adjusted prices are configured per-tier on monthly only.
+  // Annual checkout always uses the configured annual Stripe price ID directly.
+  const regionalCheckoutCents =
+    interval === "monthly" ? regional?.tierCheckoutCents?.[tier.gb] : undefined;
   let lineItems: any[];
 
   if (regionalCheckoutCents) {
     // Retrieve the price to get the product ID; handle archived/missing prices gracefully
     let productId: string;
     try {
-      const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
+      const existingPrice = await stripe.prices.retrieve(stripePriceId);
       productId = existingPrice.product as string;
     } catch {
       throw new AppError(
@@ -76,7 +94,7 @@ export const createCheckout = async ({
   } else {
     lineItems = [
       {
-        price: tier.stripePriceId,
+        price: stripePriceId,
         quantity: 1,
       },
     ];
@@ -106,6 +124,7 @@ export const createCheckout = async ({
   const sharedMetadata = {
     user_id: userId,
     tier_gb: String(tier.gb),
+    interval,
     ...(countryCode ? { country_code: countryCode } : {}),
   };
 
@@ -117,8 +136,7 @@ export const createCheckout = async ({
     subscription_data: {
       metadata: sharedMetadata,
     },
-    automatic_tax: { enabled: true },
-    customer_update: { address: "auto" },
+    automatic_tax: { enabled: false },
     success_url: `${dashboardUrl}/billing?checkout=success`,
     cancel_url: `${dashboardUrl}/billing`,
     allow_promotion_codes: !regionalCheckoutCents,

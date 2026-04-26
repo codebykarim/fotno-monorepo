@@ -26301,6 +26301,7 @@ export namespace Prisma {
   export type PricingTierAvgAggregateOutputType = {
     gb: number | null
     priceCents: number | null
+    priceCentsAnnual: number | null
     galleryLimit: number | null
     sortOrder: number | null
   }
@@ -26308,6 +26309,7 @@ export namespace Prisma {
   export type PricingTierSumAggregateOutputType = {
     gb: number | null
     priceCents: number | null
+    priceCentsAnnual: number | null
     galleryLimit: number | null
     sortOrder: number | null
   }
@@ -26317,7 +26319,9 @@ export namespace Prisma {
     gb: number | null
     label: string | null
     priceCents: number | null
+    priceCentsAnnual: number | null
     stripePriceId: string | null
+    stripePriceIdAnnual: string | null
     galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
@@ -26330,7 +26334,9 @@ export namespace Prisma {
     gb: number | null
     label: string | null
     priceCents: number | null
+    priceCentsAnnual: number | null
     stripePriceId: string | null
+    stripePriceIdAnnual: string | null
     galleryLimit: number | null
     sortOrder: number | null
     active: boolean | null
@@ -26343,7 +26349,9 @@ export namespace Prisma {
     gb: number
     label: number
     priceCents: number
+    priceCentsAnnual: number
     stripePriceId: number
+    stripePriceIdAnnual: number
     galleryLimit: number
     sortOrder: number
     active: number
@@ -26356,6 +26364,7 @@ export namespace Prisma {
   export type PricingTierAvgAggregateInputType = {
     gb?: true
     priceCents?: true
+    priceCentsAnnual?: true
     galleryLimit?: true
     sortOrder?: true
   }
@@ -26363,6 +26372,7 @@ export namespace Prisma {
   export type PricingTierSumAggregateInputType = {
     gb?: true
     priceCents?: true
+    priceCentsAnnual?: true
     galleryLimit?: true
     sortOrder?: true
   }
@@ -26372,7 +26382,9 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
+    priceCentsAnnual?: true
     stripePriceId?: true
+    stripePriceIdAnnual?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26385,7 +26397,9 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
+    priceCentsAnnual?: true
     stripePriceId?: true
+    stripePriceIdAnnual?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26398,7 +26412,9 @@ export namespace Prisma {
     gb?: true
     label?: true
     priceCents?: true
+    priceCentsAnnual?: true
     stripePriceId?: true
+    stripePriceIdAnnual?: true
     galleryLimit?: true
     sortOrder?: true
     active?: true
@@ -26498,7 +26514,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual: number | null
     stripePriceId: string | null
+    stripePriceIdAnnual: string | null
     galleryLimit: number | null
     sortOrder: number
     active: boolean
@@ -26530,7 +26548,9 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
+    priceCentsAnnual?: boolean
     stripePriceId?: boolean
+    stripePriceIdAnnual?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26545,7 +26565,9 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
+    priceCentsAnnual?: boolean
     stripePriceId?: boolean
+    stripePriceIdAnnual?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26558,7 +26580,9 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
+    priceCentsAnnual?: boolean
     stripePriceId?: boolean
+    stripePriceIdAnnual?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26571,7 +26595,9 @@ export namespace Prisma {
     gb?: boolean
     label?: boolean
     priceCents?: boolean
+    priceCentsAnnual?: boolean
     stripePriceId?: boolean
+    stripePriceIdAnnual?: boolean
     galleryLimit?: boolean
     sortOrder?: boolean
     active?: boolean
@@ -26579,7 +26605,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "stripePriceId" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
+  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gb" | "label" | "priceCents" | "priceCentsAnnual" | "stripePriceId" | "stripePriceIdAnnual" | "galleryLimit" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["pricingTier"]>
   export type PricingTierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     features?: boolean | PricingTier$featuresArgs<ExtArgs>
     _count?: boolean | PricingTierCountOutputTypeDefaultArgs<ExtArgs>
@@ -26597,7 +26623,9 @@ export namespace Prisma {
       gb: number
       label: string
       priceCents: number
+      priceCentsAnnual: number | null
       stripePriceId: string | null
+      stripePriceIdAnnual: string | null
       galleryLimit: number | null
       sortOrder: number
       active: boolean
@@ -27031,7 +27059,9 @@ export namespace Prisma {
     readonly gb: FieldRef<"PricingTier", 'Int'>
     readonly label: FieldRef<"PricingTier", 'String'>
     readonly priceCents: FieldRef<"PricingTier", 'Int'>
+    readonly priceCentsAnnual: FieldRef<"PricingTier", 'Int'>
     readonly stripePriceId: FieldRef<"PricingTier", 'String'>
+    readonly stripePriceIdAnnual: FieldRef<"PricingTier", 'String'>
     readonly galleryLimit: FieldRef<"PricingTier", 'Int'>
     readonly sortOrder: FieldRef<"PricingTier", 'Int'>
     readonly active: FieldRef<"PricingTier", 'Boolean'>
@@ -43901,7 +43931,9 @@ export namespace Prisma {
     gb: 'gb',
     label: 'label',
     priceCents: 'priceCents',
+    priceCentsAnnual: 'priceCentsAnnual',
     stripePriceId: 'stripePriceId',
+    stripePriceIdAnnual: 'stripePriceIdAnnual',
     galleryLimit: 'galleryLimit',
     sortOrder: 'sortOrder',
     active: 'active',
@@ -46193,7 +46225,9 @@ export namespace Prisma {
     gb?: IntFilter<"PricingTier"> | number
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
+    priceCentsAnnual?: IntNullableFilter<"PricingTier"> | number | null
     stripePriceId?: StringNullableFilter<"PricingTier"> | string | null
+    stripePriceIdAnnual?: StringNullableFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
@@ -46207,7 +46241,9 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrderInput | SortOrder
     stripePriceId?: SortOrderInput | SortOrder
+    stripePriceIdAnnual?: SortOrderInput | SortOrder
     galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -46224,7 +46260,9 @@ export namespace Prisma {
     NOT?: PricingTierWhereInput | PricingTierWhereInput[]
     label?: StringFilter<"PricingTier"> | string
     priceCents?: IntFilter<"PricingTier"> | number
+    priceCentsAnnual?: IntNullableFilter<"PricingTier"> | number | null
     stripePriceId?: StringNullableFilter<"PricingTier"> | string | null
+    stripePriceIdAnnual?: StringNullableFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableFilter<"PricingTier"> | number | null
     sortOrder?: IntFilter<"PricingTier"> | number
     active?: BoolFilter<"PricingTier"> | boolean
@@ -46238,7 +46276,9 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrderInput | SortOrder
     stripePriceId?: SortOrderInput | SortOrder
+    stripePriceIdAnnual?: SortOrderInput | SortOrder
     galleryLimit?: SortOrderInput | SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -46259,7 +46299,9 @@ export namespace Prisma {
     gb?: IntWithAggregatesFilter<"PricingTier"> | number
     label?: StringWithAggregatesFilter<"PricingTier"> | string
     priceCents?: IntWithAggregatesFilter<"PricingTier"> | number
+    priceCentsAnnual?: IntNullableWithAggregatesFilter<"PricingTier"> | number | null
     stripePriceId?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
+    stripePriceIdAnnual?: StringNullableWithAggregatesFilter<"PricingTier"> | string | null
     galleryLimit?: IntNullableWithAggregatesFilter<"PricingTier"> | number | null
     sortOrder?: IntWithAggregatesFilter<"PricingTier"> | number
     active?: BoolWithAggregatesFilter<"PricingTier"> | boolean
@@ -49348,7 +49390,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual?: number | null
     stripePriceId?: string | null
+    stripePriceIdAnnual?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -49362,7 +49406,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual?: number | null
     stripePriceId?: string | null
+    stripePriceIdAnnual?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -49376,7 +49422,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -49390,7 +49438,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -49404,7 +49454,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual?: number | null
     stripePriceId?: string | null
+    stripePriceIdAnnual?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -49417,7 +49469,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -49430,7 +49484,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -52309,7 +52365,9 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrder
     stripePriceId?: SortOrder
+    stripePriceIdAnnual?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -52320,6 +52378,7 @@ export namespace Prisma {
   export type PricingTierAvgOrderByAggregateInput = {
     gb?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
   }
@@ -52329,7 +52388,9 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrder
     stripePriceId?: SortOrder
+    stripePriceIdAnnual?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -52342,7 +52403,9 @@ export namespace Prisma {
     gb?: SortOrder
     label?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrder
     stripePriceId?: SortOrder
+    stripePriceIdAnnual?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
     active?: SortOrder
@@ -52353,6 +52416,7 @@ export namespace Prisma {
   export type PricingTierSumOrderByAggregateInput = {
     gb?: SortOrder
     priceCents?: SortOrder
+    priceCentsAnnual?: SortOrder
     galleryLimit?: SortOrder
     sortOrder?: SortOrder
   }
@@ -61053,7 +61117,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual?: number | null
     stripePriceId?: string | null
+    stripePriceIdAnnual?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -61066,7 +61132,9 @@ export namespace Prisma {
     gb: number
     label: string
     priceCents: number
+    priceCentsAnnual?: number | null
     stripePriceId?: string | null
+    stripePriceIdAnnual?: string | null
     galleryLimit?: number | null
     sortOrder?: number
     active?: boolean
@@ -61095,7 +61163,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -61108,7 +61178,9 @@ export namespace Prisma {
     gb?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
     priceCents?: IntFieldUpdateOperationsInput | number
+    priceCentsAnnual?: NullableIntFieldUpdateOperationsInput | number | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripePriceIdAnnual?: NullableStringFieldUpdateOperationsInput | string | null
     galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     active?: BoolFieldUpdateOperationsInput | boolean

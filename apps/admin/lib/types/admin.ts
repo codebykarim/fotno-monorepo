@@ -141,7 +141,11 @@ export interface PricingTier {
   gb: number;
   label: string;
   priceCents: number;
+  /** Annual USD price in cents (full year). null = no annual option. */
+  priceCentsAnnual: number | null;
   stripePriceId: string | null;
+  /** Stripe price ID for the annual recurring price (interval=year) */
+  stripePriceIdAnnual: string | null;
   galleryLimit: number | null;
   sortOrder: number;
   active: boolean;

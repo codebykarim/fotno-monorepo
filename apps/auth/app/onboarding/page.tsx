@@ -3,15 +3,43 @@ import { getSession } from "@workspace/lib/auth/auth-client";
 import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
 import { headers } from "next/headers";
 
+async function fetchValidPlanLabels(): Promise<string[]> {
+  const backendUrl =
+    process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
+  if (!backendUrl) return ["Free"];
+  try {
+    const res = await fetch(`${backendUrl}/api/billing/plans`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return ["Free"];
+    const data = await res.json();
+    const tiers = Array.isArray(data) ? data : data?.tiers;
+    if (!Array.isArray(tiers)) return ["Free"];
+    const labels = tiers
+      .map((t: { label?: string }) => t.label)
+      .filter((l): l is string => typeof l === "string");
+    return labels.length > 0 ? labels : ["Free"];
+  } catch {
+    return ["Free"];
+  }
+}
+
 export default async function OnboardingPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
-  const VALID_PLANS = ["Free", "Solo", "Studio", "Unlimited"];
+  const validLabels = await fetchValidPlanLabels();
+  // Always allow "Free" in case the backend is unreachable mid-onboarding.
+  const allowed = new Set([...validLabels, "Free"]);
   const rawPlan = typeof params.plan === "string" ? params.plan : "Free";
-  const plan = VALID_PLANS.includes(rawPlan) ? rawPlan : "Free";
+  const plan = allowed.has(rawPlan) ? rawPlan : "Free";
+
+  const rawInterval = typeof params.interval === "string" ? params.interval : "monthly";
+  const interval: "monthly" | "annual" =
+    rawInterval === "annual" ? "annual" : "monthly";
+
   const paymentSuccess = params.payment_status === "success";
 
   // Check auth status
@@ -43,6 +71,7 @@ export default async function OnboardingPage({
     <OnboardingFlow
       initialStep={initialStep}
       plan={plan}
+      interval={interval}
       paymentSuccess={paymentSuccess}
     />
   );

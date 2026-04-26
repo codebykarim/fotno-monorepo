@@ -8,13 +8,21 @@ import { Button } from "@workspace/ui/components/button";
 
 interface PaymentFormProps {
   plan: string;
+  interval?: "monthly" | "annual";
   mode?: "payment" | "setup";
   onSuccess: () => void | Promise<void>;
   onSkipClick: () => void;
   displayPrice?: string | null;
 }
 
-export function PaymentForm({ plan, mode = "payment", onSuccess, onSkipClick, displayPrice }: PaymentFormProps) {
+export function PaymentForm({
+  plan,
+  interval = "monthly",
+  mode = "payment",
+  onSuccess,
+  onSkipClick,
+  displayPrice,
+}: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -31,7 +39,7 @@ export function PaymentForm({ plan, mode = "payment", onSuccess, onSkipClick, di
     // return_url is required for cards that trigger redirect-based 3D Secure.
     // On return, the onboarding page server component will detect the session
     // and resume at the stripe step, where completeOnboarding runs automatically.
-    const returnUrl = `${window.location.origin}/onboarding?plan=${encodeURIComponent(plan)}&step=stripe&payment_status=success`;
+    const returnUrl = `${window.location.origin}/onboarding?plan=${encodeURIComponent(plan)}&interval=${interval}&step=stripe&payment_status=success`;
 
     let errorMsg: string | undefined;
     let paymentSuccessStatus: boolean | undefined;
@@ -105,7 +113,13 @@ export function PaymentForm({ plan, mode = "payment", onSuccess, onSkipClick, di
           {isProcessing ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}
-          {mode === "setup" ? "Save card & Start Free Plan" : `Subscribe to ${plan}${displayPrice ? ` — ${displayPrice}/mo` : ""}`}
+          {mode === "setup"
+            ? "Save card & Start Free Plan"
+            : `Subscribe to ${plan}${
+                displayPrice
+                  ? ` — ${displayPrice}${interval === "annual" ? "/yr" : "/mo"}`
+                  : ""
+              }`}
         </Button>
         <Button
           type="button"

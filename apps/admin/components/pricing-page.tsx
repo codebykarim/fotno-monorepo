@@ -137,7 +137,14 @@ function TiersSection({
       key: "price",
       header: "Price (USD)",
       render: (t) => (
-        <span className="font-medium">{formatCurrency(t.priceCents)}/mo</span>
+        <div className="flex flex-col">
+          <span className="font-medium">{formatCurrency(t.priceCents)}/mo</span>
+          {t.priceCentsAnnual != null && (
+            <span className="text-xs text-muted-foreground">
+              {formatCurrency(t.priceCentsAnnual)}/yr
+            </span>
+          )}
+        </div>
       ),
     },
     {
@@ -160,11 +167,18 @@ function TiersSection({
     },
     {
       key: "stripePriceId",
-      header: "Stripe Price ID",
+      header: "Stripe Prices",
       render: (t) => (
-        <span className="text-xs text-muted-foreground font-mono">
-          {t.stripePriceId ?? "—"}
-        </span>
+        <div className="flex flex-col font-mono text-xs text-muted-foreground">
+          <span>
+            <span className="text-foreground/70">mo:</span>{" "}
+            {t.stripePriceId ?? "—"}
+          </span>
+          <span>
+            <span className="text-foreground/70">yr:</span>{" "}
+            {t.stripePriceIdAnnual ?? "—"}
+          </span>
+        </div>
       ),
     },
     {
@@ -250,7 +264,15 @@ function TierDialog({
   const [priceCents, setPriceCents] = useState(
     tier?.priceCents?.toString() ?? "",
   );
-  const [stripePriceId, setLsVariantId] = useState(tier?.stripePriceId ?? "");
+  const [priceCentsAnnual, setPriceCentsAnnual] = useState(
+    tier?.priceCentsAnnual?.toString() ?? "",
+  );
+  const [stripePriceId, setStripePriceId] = useState(
+    tier?.stripePriceId ?? "",
+  );
+  const [stripePriceIdAnnual, setStripePriceIdAnnual] = useState(
+    tier?.stripePriceIdAnnual ?? "",
+  );
   const [galleryLimit, setGalleryLimit] = useState(
     tier?.galleryLimit?.toString() ?? "",
   );
@@ -282,12 +304,16 @@ function TierDialog({
         gb: Number(gb),
         label,
         priceCents: Number(priceCents),
+        priceCentsAnnual: priceCentsAnnual.trim()
+          ? Number(priceCentsAnnual)
+          : null,
         galleryLimit: galleryLimit.trim() ? Number(galleryLimit) : null,
         sortOrder: Number(sortOrder),
         active,
         features: Array.from(selectedFeatures),
+        stripePriceId: stripePriceId.trim() || null,
+        stripePriceIdAnnual: stripePriceIdAnnual.trim() || null,
       };
-      if (stripePriceId.trim()) body.stripePriceId = stripePriceId.trim();
 
       if (isEdit) {
         await apiRequest(`/api/pricing/tiers/${tier!.id}`, {
@@ -329,16 +355,32 @@ function TierDialog({
           </div>
           <div className="grid grid-cols-2 gap-4">
             <FieldInput
-              label="Price (cents)"
+              label="Monthly Price (cents)"
               value={priceCents}
               onChange={setPriceCents}
               type="number"
+              placeholder="e.g. 700 for $7"
             />
             <FieldInput
-              label="Sort Order"
-              value={sortOrder}
-              onChange={setSortOrder}
+              label="Annual Price (cents)"
+              value={priceCentsAnnual}
+              onChange={setPriceCentsAnnual}
               type="number"
+              placeholder="Optional · e.g. 7000 for $70/yr"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <FieldInput
+              label="Stripe Price ID (monthly)"
+              value={stripePriceId}
+              onChange={setStripePriceId}
+              placeholder="price_..."
+            />
+            <FieldInput
+              label="Stripe Price ID (annual)"
+              value={stripePriceIdAnnual}
+              onChange={setStripePriceIdAnnual}
+              placeholder="price_... · Optional"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -350,10 +392,10 @@ function TierDialog({
               placeholder="Empty = unlimited"
             />
             <FieldInput
-              label="Stripe Price ID"
-              value={stripePriceId}
-              onChange={setLsVariantId}
-              placeholder="Optional"
+              label="Sort Order"
+              value={sortOrder}
+              onChange={setSortOrder}
+              type="number"
             />
           </div>
           <label className="flex items-center gap-2 text-sm">

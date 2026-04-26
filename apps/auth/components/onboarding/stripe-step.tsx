@@ -24,10 +24,11 @@ const stripePromise = loadStripe(
 
 interface StripeStepProps {
   plan: string;
+  interval?: "monthly" | "annual";
   paymentSuccess?: boolean;
 }
 
-export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
+export function StripeStep({ plan, interval = "monthly", paymentSuccess }: StripeStepProps) {
   const [isSkipping, setIsSkipping] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isLoadingSecret, setIsLoadingSecret] = useState(!paymentSuccess);
@@ -99,7 +100,7 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
             body:
               plan === "Free"
                 ? undefined
-                : JSON.stringify({ tierLabel: plan, countryCode }),
+                : JSON.stringify({ tierLabel: plan, countryCode, interval }),
           },
         );
 
@@ -218,11 +219,21 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
         {plan === "Free" ? "Add a payment method" : "Set up your subscription"}
       </h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        You selected the <strong>{plan}</strong> plan.
+        You selected the <strong>{plan}</strong> plan
+        {plan !== "Free" ? (
+          <>
+            {" "}
+            ({interval === "annual" ? "billed annually" : "billed monthly"})
+          </>
+        ) : null}
+        .
         {plan !== "Free" && displayPrice && (
           <>
             {" "}
-            <strong>{displayPrice}/mo</strong>
+            <strong>
+              {displayPrice}
+              {interval === "annual" ? "/yr" : "/mo"}
+            </strong>
           </>
         )}
       </p>
@@ -296,6 +307,7 @@ export function StripeStep({ plan, paymentSuccess }: StripeStepProps) {
             >
               <PaymentForm
                 plan={plan}
+                interval={interval}
                 mode={plan === "Free" ? "setup" : "payment"}
                 onSuccess={handlePaymentSuccess}
                 onSkipClick={handleSkip}

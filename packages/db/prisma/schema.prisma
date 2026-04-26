@@ -9,38 +9,38 @@ datasource db {
 }
 
 model User {
-  id                 String           @id @unique @default(uuid())
-  name               String
-  email              String
-  plan               Plan             @default(FREE)
-  storageUsed        BigInt           @default(0)
-  storageLimit       BigInt           @default(1073741824) // 1 GB
-  galleryLimit       Int? // null = unlimited
-  downgradedAt       DateTime? // tracks subscription expiry for 90-day retention
-  storageReserved    BigInt           @default(0)
-  overageBytes       BigInt           @default(0)
-  overageResetAt     DateTime?
-  stripeCustomerId   String?          @unique
-  warningEmailSent80 Boolean          @default(false)
-  warningEmailSent95 Boolean          @default(false)
-  emailVerified      Boolean
-  image              String?
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now()) @updatedAt
-  role               String?
-  banned             Boolean?
-  banReason          String?
-  banExpires         DateTime?
-  country            String? // ISO 3166-1 alpha-2 country code (auto-detected from IP)
-  subscribed         Boolean?
-  finishOnboarding   Boolean?
-  sessions           Session[]
-  accounts           Account[]
-  subscriptions      Subscription[]
-  userOnboarding     UserOnboarding?
-  galleries          Gallery[]
-  storageEvents      StorageEvent[]
-  driveImportJobs    DriveImportJob[]
+  id                     String                  @id @unique @default(uuid())
+  name                   String
+  email                  String
+  plan                   Plan                    @default(FREE)
+  storageUsed            BigInt                  @default(0)
+  storageLimit           BigInt                  @default(1073741824) // 1 GB
+  galleryLimit           Int? // null = unlimited
+  downgradedAt           DateTime? // tracks subscription expiry for 90-day retention
+  storageReserved        BigInt                  @default(0)
+  overageBytes           BigInt                  @default(0)
+  overageResetAt         DateTime?
+  stripeCustomerId       String?                 @unique
+  warningEmailSent80     Boolean                 @default(false)
+  warningEmailSent95     Boolean                 @default(false)
+  emailVerified          Boolean
+  image                  String?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @default(now()) @updatedAt
+  role                   String?
+  banned                 Boolean?
+  banReason              String?
+  banExpires             DateTime?
+  country                String? // ISO 3166-1 alpha-2 country code (auto-detected from IP)
+  subscribed             Boolean?
+  finishOnboarding       Boolean?
+  sessions               Session[]
+  accounts               Account[]
+  subscriptions          Subscription[]
+  userOnboarding         UserOnboarding?
+  galleries              Gallery[]
+  storageEvents          StorageEvent[]
+  driveImportJobs        DriveImportJob[]
   smartAlbumConfig       SmartAlbumConfig?
   notificationPreference NotificationPreference?
   fcmTokens              FcmToken[]
@@ -206,17 +206,17 @@ model Gallery {
   favoritesEnabled     Boolean @default(true)
   favoriteNotesEnabled Boolean @default(true)
 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @default(now()) @updatedAt
-  photos             Photo[]              @relation("GalleryPhotos")
-  albums             Album[]
-  comments           GalleryComment[]
-  driveImportItems   DriveImportItem[]
-  favorites          GalleryFavorite[]
-  downloadEvents     DownloadEvent[]
-  galleryViews       GalleryView[]
-  favoriteShares     FavoriteShare[]
-  smartAlbumDesigns  SmartAlbumDesign[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  photos            Photo[]            @relation("GalleryPhotos")
+  albums            Album[]
+  comments          GalleryComment[]
+  driveImportItems  DriveImportItem[]
+  favorites         GalleryFavorite[]
+  downloadEvents    DownloadEvent[]
+  galleryViews      GalleryView[]
+  favoriteShares    FavoriteShare[]
+  smartAlbumDesigns SmartAlbumDesign[]
 
   @@unique([userId, slug])
   @@map("gallery")
@@ -442,17 +442,19 @@ model DriveImportJob {
 // ── Pricing Config (admin-managed) ──────────────────────────────
 
 model PricingTier {
-  id            String        @id @default(uuid())
-  gb            Int           @unique // -1 for unlimited, 0 for free
-  label         String
-  priceCents    Int // base USD price
-  stripePriceId String?
-  galleryLimit  Int? // null = unlimited
-  sortOrder     Int           @default(0)
-  active        Boolean       @default(true)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
-  features      TierFeature[]
+  id                  String        @id @default(uuid())
+  gb                  Int           @unique // -1 for unlimited, 0 for free
+  label               String
+  priceCents          Int // base USD price (monthly)
+  priceCentsAnnual    Int? // annual USD price (full year, in cents); null = no annual option
+  stripePriceId       String? // monthly recurring price ID
+  stripePriceIdAnnual String? // annual recurring price ID
+  galleryLimit        Int? // null = unlimited
+  sortOrder           Int           @default(0)
+  active              Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @default(now()) @updatedAt
+  features            TierFeature[]
 
   @@map("pricing_tier")
 }
@@ -552,42 +554,42 @@ enum SmartAlbumTransactionStatus {
 }
 
 model SmartAlbumConfig {
-  id                        String                    @id @default(uuid())
-  userId                    String                    @unique
-  user                      User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  enabled                   Boolean                   @default(false)
-  paymentMethod             SmartAlbumPaymentMethod   @default(OUTSIDE_FOTNO)
-  stripeConnectAccountId    String?
-  stripeConnectOnboarded    Boolean                   @default(false)
-  createdAt                 DateTime                  @default(now())
-  updatedAt                 DateTime                  @updatedAt
-  products                  SmartAlbumProduct[]
+  id                     String                  @id @default(uuid())
+  userId                 String                  @unique
+  user                   User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enabled                Boolean                 @default(false)
+  paymentMethod          SmartAlbumPaymentMethod @default(OUTSIDE_FOTNO)
+  stripeConnectAccountId String?
+  stripeConnectOnboarded Boolean                 @default(false)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  products               SmartAlbumProduct[]
 
   @@map("smart_album_config")
 }
 
 model SmartAlbumProduct {
-  id                 String             @id @default(uuid())
-  configId           String
-  config             SmartAlbumConfig   @relation(fields: [configId], references: [id], onDelete: Cascade)
-  name               String
-  widthCm            Float
-  heightCm           Float
-  coverType          String
-  paperType          String
-  maxSpreads         Int
-  minSpreads         Int?
-  allowFewerSpreads  Boolean            @default(false)
-  hasCover           Boolean            @default(true)
-  hasFirstPage       Boolean            @default(true)
-  hasLastPage        Boolean            @default(true)
-  images             Json               @default("[]")
-  priceCents         Int
-  currency           String             @default("USD")
-  isActive           Boolean            @default(true)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  designs            SmartAlbumDesign[]
+  id                String             @id @default(uuid())
+  configId          String
+  config            SmartAlbumConfig   @relation(fields: [configId], references: [id], onDelete: Cascade)
+  name              String
+  widthCm           Float
+  heightCm          Float
+  coverType         String
+  paperType         String
+  maxSpreads        Int
+  minSpreads        Int?
+  allowFewerSpreads Boolean            @default(false)
+  hasCover          Boolean            @default(true)
+  hasFirstPage      Boolean            @default(true)
+  hasLastPage       Boolean            @default(true)
+  images            Json               @default("[]")
+  priceCents        Int
+  currency          String             @default("USD")
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  designs           SmartAlbumDesign[]
 
   @@unique([configId, widthCm, heightCm, coverType, paperType])
   @@index([configId])
@@ -595,19 +597,19 @@ model SmartAlbumProduct {
 }
 
 model SmartAlbumDesign {
-  id               String                     @id @default(uuid())
-  galleryId        String
-  gallery          Gallery                    @relation(fields: [galleryId], references: [id], onDelete: Cascade)
-  productId        String
-  product          SmartAlbumProduct          @relation(fields: [productId], references: [id], onDelete: Restrict)
-  clientName       String
-  clientEmail      String
-  title            String                     @default("Untitled Album")
-  designData       Json                       @default("{}")
-  status           SmartAlbumDesignStatus     @default(DRAFT)
-  createdAt        DateTime                   @default(now())
-  updatedAt        DateTime                   @updatedAt
-  submissions      SmartAlbumSubmission[]
+  id          String                 @id @default(uuid())
+  galleryId   String
+  gallery     Gallery                @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  productId   String
+  product     SmartAlbumProduct      @relation(fields: [productId], references: [id], onDelete: Restrict)
+  clientName  String
+  clientEmail String
+  title       String                 @default("Untitled Album")
+  designData  Json                   @default("{}")
+  status      SmartAlbumDesignStatus @default(DRAFT)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+  submissions SmartAlbumSubmission[]
 
   @@index([galleryId, status])
   @@index([galleryId, clientEmail])
@@ -615,18 +617,18 @@ model SmartAlbumDesign {
 }
 
 model SmartAlbumSubmission {
-  id                  String                       @id @default(uuid())
-  designId            String
-  design              SmartAlbumDesign             @relation(fields: [designId], references: [id], onDelete: Cascade)
-  version             Int                          @default(1)
-  designSnapshot      Json
-  status              SmartAlbumSubmissionStatus   @default(PENDING)
-  photographerNotes   String?
-  reviewedAt          DateTime?
-  submittedAt         DateTime                     @default(now())
-  exportReady         Boolean                      @default(false)
-  exportUrl           String?
-  transaction         SmartAlbumTransaction?
+  id                String                     @id @default(uuid())
+  designId          String
+  design            SmartAlbumDesign           @relation(fields: [designId], references: [id], onDelete: Cascade)
+  version           Int                        @default(1)
+  designSnapshot    Json
+  status            SmartAlbumSubmissionStatus @default(PENDING)
+  photographerNotes String?
+  reviewedAt        DateTime?
+  submittedAt       DateTime                   @default(now())
+  exportReady       Boolean                    @default(false)
+  exportUrl         String?
+  transaction       SmartAlbumTransaction?
 
   @@unique([designId, version])
   @@index([designId, status])
@@ -634,17 +636,17 @@ model SmartAlbumSubmission {
 }
 
 model SmartAlbumTransaction {
-  id                       String                      @id @default(uuid())
-  submissionId             String                      @unique
-  submission               SmartAlbumSubmission        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  stripePaymentIntentId    String                      @unique
-  amountCents              Int
-  feeCents                 Int
-  netCents                 Int
-  currency                 String                      @default("USD")
-  status                   SmartAlbumTransactionStatus @default(PENDING)
-  paidAt                   DateTime?
-  createdAt                DateTime                    @default(now())
+  id                    String                      @id @default(uuid())
+  submissionId          String                      @unique
+  submission            SmartAlbumSubmission        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  stripePaymentIntentId String                      @unique
+  amountCents           Int
+  feeCents              Int
+  netCents              Int
+  currency              String                      @default("USD")
+  status                SmartAlbumTransactionStatus @default(PENDING)
+  paidAt                DateTime?
+  createdAt             DateTime                    @default(now())
 
   @@map("smart_album_transaction")
 }
@@ -652,19 +654,19 @@ model SmartAlbumTransaction {
 // ── Settings: Notification Preferences ──────────────────────────
 
 model NotificationPreference {
-  id                       String   @id @default(uuid())
-  userId                   String   @unique
-  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  galleryExpiryBrowser     Boolean  @default(false)
-  galleryExpiryEmail       Boolean  @default(false)
-  storageWarningBrowser    Boolean  @default(false)
-  storageWarningEmail      Boolean  @default(false)
-  billingFailedBrowser     Boolean  @default(false)
-  billingFailedEmail       Boolean  @default(false)
-  commentsBrowser          Boolean  @default(false)
-  commentsEmail            Boolean  @default(false)
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @default(now()) @updatedAt
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  galleryExpiryBrowser  Boolean  @default(false)
+  galleryExpiryEmail    Boolean  @default(false)
+  storageWarningBrowser Boolean  @default(false)
+  storageWarningEmail   Boolean  @default(false)
+  billingFailedBrowser  Boolean  @default(false)
+  billingFailedEmail    Boolean  @default(false)
+  commentsBrowser       Boolean  @default(false)
+  commentsEmail         Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
 
   @@map("notification_preference")
 }
@@ -712,10 +714,10 @@ model Notification {
   id         String   @id @default(uuid())
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type       String   // e.g. "comments", "galleryExpiry", etc.
+  type       String // e.g. "comments", "galleryExpiry", etc.
   title      String
   body       String
-  data       Json?    // optional payload (galleryId, commentId, etc.)
+  data       Json? // optional payload (galleryId, commentId, etc.)
   isRead     Boolean  @default(false)
   isArchived Boolean  @default(false)
   createdAt  DateTime @default(now())
@@ -732,8 +734,8 @@ model InboundEmail {
   cc        String[]
   bcc       String[]
   subject   String
-  text      String?  // plain text body
-  html      String?  // HTML body
+  text      String? // plain text body
+  html      String? // HTML body
   isRead    Boolean  @default(false)
   isStarred Boolean  @default(false)
   createdAt DateTime @default(now()) // when we received it

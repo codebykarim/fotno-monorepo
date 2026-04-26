@@ -51,14 +51,14 @@ export const resolveUserAccess = async (
     const freeLimits = await getFreeTierLimits();
     const storageLimitBytes = freeLimits.storageLimitBytes;
     const overStorageLimit = user.storageUsed > storageLimitBytes;
-    const galleryLimit = freeLimits.galleryLimit;
+    const galleryLimit = freeLimits.galleryLimit; // null = unlimited
     const galleryCount = await prisma.gallery.count({ where: { userId } });
     const features = await fetchFeaturesForTier(freeLimits.gb);
 
     return {
       status: "free",
       canUpload: !overStorageLimit,
-      canCreateGallery: galleryCount < galleryLimit,
+      canCreateGallery: galleryLimit == null || galleryCount < galleryLimit,
       storageLimitBytes,
       galleryLimit,
       galleryCount,
@@ -188,7 +188,7 @@ function buildNoSubscriptionAccess(): UserAccess {
  */
 async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
   const freeLimits = await getFreeTierLimits();
-  const galleryLimit = freeLimits.galleryLimit;
+  const galleryLimit = freeLimits.galleryLimit; // null = unlimited
   const galleryCount = await prisma.gallery.count({ where: { userId } });
   const storageLimitBytes = freeLimits.storageLimitBytes;
   const overStorageLimit = (user.storageUsed ?? 0n) > storageLimitBytes;
@@ -197,7 +197,7 @@ async function buildFreeAccess(userId: string, user: any): Promise<UserAccess> {
   return {
     status: "free",
     canUpload: !overStorageLimit,
-    canCreateGallery: galleryCount < galleryLimit,
+    canCreateGallery: galleryLimit == null || galleryCount < galleryLimit,
     storageLimitBytes,
     galleryLimit,
     galleryCount,
@@ -230,19 +230,23 @@ async function expireSubscription(
       },
     });
 
-    // Auto-draft galleries beyond the free tier gallery limit
-    const publishedGalleries = await tx.gallery.findMany({
-      where: { userId, isPublished: true },
-      orderBy: { updatedAt: "desc" },
-      select: { id: true },
-    });
-
-    if (publishedGalleries.length > freeLimits.galleryLimit) {
-      const toDraft = publishedGalleries.slice(freeLimits.galleryLimit).map((g: any) => g.id);
-      await tx.gallery.updateMany({
-        where: { id: { in: toDraft } },
-        data: { isPublished: false },
+    // Auto-draft galleries beyond the free tier gallery limit (skip if unlimited)
+    if (freeLimits.galleryLimit != null) {
+      const publishedGalleries = await tx.gallery.findMany({
+        where: { userId, isPublished: true },
+        orderBy: { updatedAt: "desc" },
+        select: { id: true },
       });
+
+      if (publishedGalleries.length > freeLimits.galleryLimit) {
+        const toDraft = publishedGalleries
+          .slice(freeLimits.galleryLimit)
+          .map((g: any) => g.id);
+        await tx.gallery.updateMany({
+          where: { id: { in: toDraft } },
+          data: { isPublished: false },
+        });
+      }
     }
   });
 }

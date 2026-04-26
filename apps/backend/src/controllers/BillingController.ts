@@ -89,12 +89,15 @@ export const createCheckoutController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  const { storageTierGb, countryCode } = req.body;
+  const { storageTierGb, countryCode, interval } = req.body;
   if (!storageTierGb) throw new AppError("storageTierGb is required", 400);
+
+  const billingInterval =
+    interval === "annual" ? "annual" : "monthly";
 
   const result = await withSpan(
     "subscription.checkout",
-    { userId, tierGb: storageTierGb, countryCode },
+    { userId, tierGb: storageTierGb, countryCode, interval: billingInterval },
     async () => {
       const user = await prisma.user.findUnique({
         where: { id: userId },
@@ -107,6 +110,7 @@ export const createCheckoutController = async (
       addBreadcrumb("subscription", "creating checkout", {
         tierGb: storageTierGb,
         country: resolvedCountry ?? "unknown",
+        interval: billingInterval,
       });
 
       return createCheckout({
@@ -115,6 +119,7 @@ export const createCheckoutController = async (
         name: user.name || undefined,
         storageTierGb,
         countryCode: resolvedCountry || undefined,
+        interval: billingInterval,
       });
     },
   );
@@ -143,15 +148,25 @@ export const createSubscriptionIntentController = async (
   const userId = req.user?.id;
   if (!userId) throw new AppError("Unauthorized", 401);
 
-  const { tierLabel, countryCode: explicitCountry } = req.body;
+  const { tierLabel, countryCode: explicitCountry, interval } = req.body;
   const countryCode = await resolveCountry(req, explicitCountry);
+  const billingInterval = interval === "annual" ? "annual" : "monthly";
 
   const result = await withSpan(
     "subscription.create_intent",
-    { userId, tierLabel, countryCode },
+    { userId, tierLabel, countryCode, interval: billingInterval },
     async () => {
-      addBreadcrumb("subscription", "creating subscription intent", { tierLabel, countryCode });
-      return createSubscriptionIntent({ userId, tierLabel, countryCode });
+      addBreadcrumb("subscription", "creating subscription intent", {
+        tierLabel,
+        countryCode,
+        interval: billingInterval,
+      });
+      return createSubscriptionIntent({
+        userId,
+        tierLabel,
+        countryCode,
+        interval: billingInterval,
+      });
     },
   );
 

@@ -8,11 +8,15 @@ type DBTier = {
   gb: number;
   label: string;
   priceCents: number;
+  priceCentsAnnual: number | null;
   stripePriceId: string | null;
+  stripePriceIdAnnual: string | null;
   galleryLimit: number | null;
   sortOrder: number;
   active: boolean;
 };
+
+export type BillingInterval = "monthly" | "annual";
 
 let _tierCache: DBTier[] | null = null;
 let _tierCacheExpiresAt = 0;
@@ -41,14 +45,16 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
 
     if (tiers.length === 0) {
       // DB has no rows yet — fall back to constants
-      return STORAGE_TIERS.map((t) => ({
+      return STORAGE_TIERS.map((t, i) => ({
         id: "",
         gb: t.gb,
         label: t.label,
         priceCents: t.priceCents,
+        priceCentsAnnual: t.priceCentsAnnual,
         stripePriceId: t.stripePriceId || null,
-        galleryLimit: t.gb === 0 ? 2 : null,
-        sortOrder: 0,
+        stripePriceIdAnnual: t.stripePriceIdAnnual || null,
+        galleryLimit: t.gb === 10 ? 2 : null,
+        sortOrder: i,
         active: true,
       }));
     }
@@ -61,14 +67,16 @@ export async function fetchTiersFromDB(): Promise<DBTier[]> {
       "[fetchTiersFromDB] DB query failed, using hardcoded fallback:",
       err,
     );
-    return STORAGE_TIERS.map((t) => ({
+    return STORAGE_TIERS.map((t, i) => ({
       id: "",
       gb: t.gb,
       label: t.label,
       priceCents: t.priceCents,
+      priceCentsAnnual: t.priceCentsAnnual,
       stripePriceId: t.stripePriceId || null,
-      galleryLimit: t.gb === 0 ? 2 : null,
-      sortOrder: 0,
+      stripePriceIdAnnual: t.stripePriceIdAnnual || null,
+      galleryLimit: t.gb === 10 ? 2 : null,
+      sortOrder: i,
       active: true,
     }));
   }
@@ -123,28 +131,36 @@ export async function fetchFeaturesForTier(tierGb: number): Promise<string[]> {
 
 export const STORAGE_TIERS = [
   {
-    gb: 0,
+    gb: 10,
     priceCents: 0,
+    priceCentsAnnual: 0,
     label: "Free",
     stripePriceId: "",
+    stripePriceIdAnnual: "",
   },
   {
-    gb: 20,
-    priceCents: 900,
+    gb: 30,
+    priceCents: 700,
+    priceCentsAnnual: 7000,
     label: "Solo",
-    stripePriceId: process.env.STRIPE_PRICE_STARTER || "",
+    stripePriceId: process.env.STRIPE_PRICE_SOLO_MONTHLY || "",
+    stripePriceIdAnnual: process.env.STRIPE_PRICE_SOLO_ANNUAL || "",
   },
   {
-    gb: 100,
-    priceCents: 1900,
+    gb: 150,
+    priceCents: 1700,
+    priceCentsAnnual: 17000,
     label: "Studio",
-    stripePriceId: process.env.STRIPE_PRICE_PROFESSIONAL || "",
+    stripePriceId: process.env.STRIPE_PRICE_STUDIO_MONTHLY || "",
+    stripePriceIdAnnual: process.env.STRIPE_PRICE_STUDIO_ANNUAL || "",
   },
   {
-    gb: -1,
-    priceCents: 4900,
-    label: "Unlimited",
-    stripePriceId: process.env.STRIPE_PRICE_UNLIMITED || "",
+    gb: 600,
+    priceCents: 3500,
+    priceCentsAnnual: 35000,
+    label: "Pro Studio",
+    stripePriceId: process.env.STRIPE_PRICE_PRO_STUDIO_MONTHLY || "",
+    stripePriceIdAnnual: process.env.STRIPE_PRICE_PRO_STUDIO_ANNUAL || "",
   },
 ] as const;
 
@@ -190,10 +206,13 @@ export const FREE_PLAN_FEATURES = [
 /**
  * Get the current free tier limits from DB (cached).
  * Used by resolveUserAccess, createGallery, auth signup, etc.
+ *
+ * `galleryLimit` is `null` when the admin has left the field empty
+ * (= unlimited galleries on the free tier).
  */
 export async function getFreeTierLimits(): Promise<{
   storageLimitBytes: bigint;
-  galleryLimit: number;
+  galleryLimit: number | null;
   gb: number;
 }> {
   const tiers = await fetchTiersFromDB();
@@ -201,7 +220,7 @@ export async function getFreeTierLimits(): Promise<{
   if (freeTier) {
     return {
       storageLimitBytes: storageTierToBytes(freeTier.gb),
-      galleryLimit: freeTier.galleryLimit ?? 2,
+      galleryLimit: freeTier.galleryLimit,
       gb: freeTier.gb,
     };
   }
@@ -220,8 +239,53 @@ export async function findTierByGbFromDB(gb: number): Promise<DBTier | undefined
   return tiers.find((t) => t.gb === gb);
 }
 
-/** DB-backed version of findTierByPriceId. Falls back to hardcoded STORAGE_TIERS. */
+/** DB-backed version of findTierByPriceId. Matches both monthly and annual price IDs. */
 export async function findTierByPriceIdFromDB(priceId: string): Promise<DBTier | undefined> {
   const tiers = await fetchTiersFromDB();
-  return tiers.find((t) => t.stripePriceId === priceId);
+  return tiers.find(
+    (t) => t.stripePriceId === priceId || t.stripePriceIdAnnual === priceId,
+  );
+}
+
+/**
+ * Look up a tier by gb regardless of `active` flag — for resolving an
+ * existing subscriber's tier even after the tier has been retired from
+ * the public pricing page. Always queries the DB directly.
+ */
+export async function findAnyTierByGbFromDB(gb: number): Promise<DBTier | undefined> {
+  try {
+    const tier = await prisma.pricingTier.findFirst({ where: { gb } });
+    return tier ?? undefined;
+  } catch (err) {
+    console.warn("[findAnyTierByGbFromDB] DB query failed:", err);
+    return undefined;
+  }
+}
+
+/**
+ * Look up a tier by Stripe price ID (monthly OR annual) regardless of
+ * `active` flag — for webhook resolution of subscribers on retired tiers.
+ */
+export async function findAnyTierByPriceIdFromDB(priceId: string): Promise<DBTier | undefined> {
+  try {
+    const tier = await prisma.pricingTier.findFirst({
+      where: {
+        OR: [{ stripePriceId: priceId }, { stripePriceIdAnnual: priceId }],
+      },
+    });
+    return tier ?? undefined;
+  } catch (err) {
+    console.warn("[findAnyTierByPriceIdFromDB] DB query failed:", err);
+    return undefined;
+  }
+}
+
+/** Pick the right Stripe price ID for the chosen billing interval */
+export function priceIdForInterval(
+  tier: Pick<DBTier, "stripePriceId" | "stripePriceIdAnnual">,
+  interval: BillingInterval,
+): string | null {
+  return interval === "annual"
+    ? (tier.stripePriceIdAnnual ?? null)
+    : (tier.stripePriceId ?? null);
 }

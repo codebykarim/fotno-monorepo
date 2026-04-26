@@ -65,9 +65,10 @@ export function featureBlurb(key: string): string {
 /** Default feature mapping per tier label — used as fallback when DB has no TierFeature rows */
 export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
   Free: [
-    "CLIENT_FAVORITES",
+    "UNLIMITED_GALLERIES",
+    "COMMENTS",
     "PASSWORD_PROTECTION",
-    "DOWNLOAD",
+    "SLIDESHOW_SHARING",
   ],
   Solo: [
     "UNLIMITED_GALLERIES",
@@ -77,8 +78,6 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "CUSTOM_SLUGS",
     "SLIDESHOW_SHARING",
     "DOWNLOAD",
-    "ALBUMS",
-    "ANALYTICS",
   ],
   Studio: [
     "UNLIMITED_GALLERIES",
@@ -91,9 +90,8 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "GOOGLE_IMPORT",
     "ALBUMS",
     "SMART_ALBUMS",
-    "ANALYTICS",
   ],
-  Unlimited: [
+  "Pro Studio": [
     "UNLIMITED_GALLERIES",
     "CLIENT_FAVORITES",
     "COMMENTS",
@@ -104,8 +102,6 @@ export const DEFAULT_TIER_FEATURES: Record<string, FeatureKey[]> = {
     "GOOGLE_IMPORT",
     "ALBUMS",
     "SMART_ALBUMS",
-    "CUSTOM_DOMAINS",
-    "WEBSITE_BUILDER",
     "ANALYTICS",
   ],
 };

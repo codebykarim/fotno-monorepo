@@ -1,5 +1,10 @@
 import { stripe } from "./stripe";
-import { fetchTiersFromDB, STORAGE_TIERS } from "../../constants/plans";
+import {
+  fetchTiersFromDB,
+  STORAGE_TIERS,
+  priceIdForInterval,
+  type BillingInterval,
+} from "../../constants/plans";
 import { fetchRegionalPricingFromDB } from "../../constants/regional-pricing";
 import AppError from "../../errors/AppError";
 import { getActiveSubscription } from "./getSubscription";
@@ -12,10 +17,12 @@ export const createSubscriptionIntent = async ({
   userId,
   tierLabel,
   countryCode,
+  interval = "monthly",
 }: {
   userId: string;
   tierLabel: string;
   countryCode?: string | null;
+  interval?: BillingInterval;
 }) => {
   const activeSub = await getActiveSubscription(userId);
   if (activeSub && activeSub.status === "ACTIVE") {
@@ -27,12 +34,22 @@ export const createSubscriptionIntent = async ({
     dbTiers.find((t) => t.label.toLowerCase() === tierLabel.toLowerCase()) ??
     findTierByLabel(tierLabel);
 
-  if (!tier || !tier.stripePriceId) {
+  if (!tier) {
     throw new AppError("Invalid tier", 400);
   }
 
   if (tier.gb === 0 || tier.priceCents === 0) {
     throw new AppError("Cannot create subscription for free tier", 400);
+  }
+
+  const stripePriceId = priceIdForInterval(tier, interval);
+  if (!stripePriceId) {
+    throw new AppError(
+      interval === "annual"
+        ? "Annual billing is not yet configured for this plan."
+        : "Invalid tier",
+      400,
+    );
   }
 
   const user = await prisma.user.findUnique({
@@ -66,11 +83,15 @@ export const createSubscriptionIntent = async ({
 
   const regional = await fetchRegionalPricingFromDB(countryCode);
 
-  const regionalCheckoutCents = regional?.tierCheckoutCents?.[tier.gb];
+  // Regional PPP-adjusted prices are configured monthly only.
+  // Annual checkout always uses the configured annual Stripe price ID directly.
+  const regionalCheckoutCents =
+    interval === "monthly" ? regional?.tierCheckoutCents?.[tier.gb] : undefined;
 
   const sharedMetadata = {
     user_id: userId,
     tier_gb: String(tier.gb),
+    interval,
     ...(countryCode ? { country_code: countryCode } : {}),
   };
 
@@ -78,7 +99,7 @@ export const createSubscriptionIntent = async ({
   if (regionalCheckoutCents) {
     let productId: string;
     try {
-      const existingPrice = await stripe.prices.retrieve(tier.stripePriceId);
+      const existingPrice = await stripe.prices.retrieve(stripePriceId);
       productId = existingPrice.product as string;
     } catch {
       throw new AppError(
@@ -97,13 +118,20 @@ export const createSubscriptionIntent = async ({
       },
     ];
   } else {
-    items = [{ price: tier.stripePriceId }];
+    items = [{ price: stripePriceId }];
   }
 
   // Build display price info for the frontend
-  // For regional users, show the local currency price (e.g. "EGP 300")
-  // For everyone else, show the base USD price
-  const displayCents = regional?.tierPrices?.[tier.gb] ?? tier.priceCents;
+  // For regional users on monthly, show the local currency price (e.g. "EGP 300")
+  // For annual or non-regional users, show USD (annual = full year, monthly = per month)
+  const baseDisplayCents =
+    interval === "annual"
+      ? (tier.priceCentsAnnual ?? tier.priceCents * 12)
+      : tier.priceCents;
+  const displayCents =
+    interval === "monthly"
+      ? (regional?.tierPrices?.[tier.gb] ?? baseDisplayCents)
+      : baseDisplayCents;
   const displayCurrency = regional?.currency ?? "USD";
   const displayLocale = regional?.locale ?? "en-US";
   const displayPrice = {
@@ -136,7 +164,7 @@ export const createSubscriptionIntent = async ({
       save_default_payment_method: "on_subscription",
       payment_method_types: ["card"],
     },
-    automatic_tax: { enabled: !!countryCode },
+    automatic_tax: { enabled: false },
     ...(savedPaymentMethod ? { default_payment_method: savedPaymentMethod } : {}),
   });
 

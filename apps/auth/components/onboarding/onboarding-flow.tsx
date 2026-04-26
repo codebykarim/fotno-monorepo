@@ -13,12 +13,14 @@ export type OnboardingStep = "account" | "stripe";
 interface OnboardingFlowProps {
   initialStep: OnboardingStep;
   plan: string;
+  interval?: "monthly" | "annual";
   paymentSuccess?: boolean;
 }
 
 export function OnboardingFlow({
   initialStep,
   plan,
+  interval = "monthly",
   paymentSuccess,
 }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState<OnboardingStep>(initialStep);
@@ -46,7 +48,13 @@ export function OnboardingFlow({
     },
     {
       id: "stripe",
-      component: <StripeStep plan={plan} paymentSuccess={paymentSuccess} />,
+      component: (
+        <StripeStep
+          plan={plan}
+          interval={interval}
+          paymentSuccess={paymentSuccess}
+        />
+      ),
     },
   ];
 

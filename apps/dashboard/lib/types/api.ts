@@ -112,6 +112,10 @@ export type SubscriptionResponse = {
 export type PlanTier = {
   gb: number;
   priceCents: number;
+  /** Annual USD price in cents (full year). null = no annual option */
+  priceCentsAnnual?: number | null;
+  /** True when an annual Stripe price is configured for this tier */
+  hasAnnual?: boolean;
   label: string;
   galleryLimit?: number | null;
   features: string[];
@@ -126,6 +130,8 @@ export type PlanTier = {
   /** BCP 47 locale for Intl.NumberFormat */
   locale?: string;
 };
+
+export type BillingInterval = "monthly" | "annual";
 
 export type PlansResponse = {
   tiers: PlanTier[];

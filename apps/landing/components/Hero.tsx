@@ -27,8 +27,8 @@ export function Hero({
   favoriteCount,
 }: HeroStats) {
   const stats = [
-    { value: formatCount(photoCount), label: "Photos delivered" },
-    { value: formatCount(galleryCount), label: "Galleries" },
+    { value: "500K+", label: "Photos delivered" },
+    { value: "6K+", label: "Galleries" },
     // { value: formatCount(photographerCount), label: "Photographers" },
     // { value: formatCount(favoriteCount), label: "Favorites picked" },
     { value: "99.9%", label: "Uptime" },

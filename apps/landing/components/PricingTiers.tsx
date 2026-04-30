@@ -325,8 +325,8 @@ function TierCard({
   if (!isFree) {
     wasLabel =
       interval === "annual"
-        ? `$${Math.round((tier.priceCents * 12) / 100)}/yr`
-        : `$${Math.round(tier.priceCents / 100)}/mo · billed monthly`;
+        ? `$${Math.round((tier.priceCents * 12) / 80)}/yr`
+        : `$${Math.round(tier.priceCents / 80)}/mo · billed monthly`;
   }
 
   let perTop: string;

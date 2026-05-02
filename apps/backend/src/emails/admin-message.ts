@@ -6,7 +6,7 @@ export type AdminPresetId =
   | "promo"
   | "feature"
   | "listening"
-  | "correction"; // TEMPORARY: remove once LAUNCH30 follow-ups are done
+  // | "correction"; // TEMPORARY: remove once LAUNCH30 follow-ups are done
 
 export type AdminMessageParams = {
   preset: AdminPresetId;
@@ -82,26 +82,26 @@ const renderListening = (p: AdminMessageParams) =>
   ) +
   signoff;
 
-// TEMPORARY: one-off correction for users who got the LAUNCH30 promo from the
-// dev environment with a broken link. Remove this preset (and its entries in
-// AdminPresetId, ADMIN_PRESETS, the controller validator, and the modal
-// PRESETS list) once all affected users have been re-emailed.
-const CORRECTION_CODE = "LAUNCH30";
-const CORRECTION_DISCOUNT = "30% off any paid plan";
-const CORRECTION_VALID_UNTIL = "June 1";
-const renderCorrection = (p: AdminMessageParams) =>
-  greeting(p.userName) +
-  paragraph(
-    "Small confession: the email I sent you earlier had a broken link (sent it from my dev environment by mistake). Sorry about that!"
-  ) +
-  paragraph("Here's the working version. same code, same offer:") +
-  `<div style="background-color:rgb(254,247,237);border-radius:8px;padding:16px 24px;display:inline-block;margin-bottom:24px;">
-    <p style="color:rgb(17,24,39);font-size:24px;font-weight:700;margin:0;line-height:32px;letter-spacing:2px;">${CORRECTION_CODE}</p>
-    <p style="color:rgb(55,65,81);font-size:14px;margin:4px 0 0;line-height:20px;">${CORRECTION_DISCOUNT}</p>
-  </div>` +
-  paragraph(`Valid until ${CORRECTION_VALID_UNTIL}.`) +
-  `<div style="margin:0 0 24px;">${emailButton("Claim 30% off →", `${dashboardUrl}/billing`)}</div>` +
-  `<p style="color:rgb(55,65,81);font-size:16px;margin:0 0 24px;line-height:24px;">Thanks for bearing with me,<br />Karim<br />Fotno</p>`;
+// // TEMPORARY: one-off correction for users who got the LAUNCH30 promo from the
+// // dev environment with a broken link. Remove this preset (and its entries in
+// // AdminPresetId, ADMIN_PRESETS, the controller validator, and the modal
+// // PRESETS list) once all affected users have been re-emailed.
+// const CORRECTION_CODE = "LAUNCH30";
+// const CORRECTION_DISCOUNT = "30% off any paid plan";
+// const CORRECTION_VALID_UNTIL = "June 1";
+// const renderCorrection = (p: AdminMessageParams) =>
+//   greeting(p.userName) +
+//   paragraph(
+//     "Small confession: the email I sent you earlier had a broken link (sent it from my dev environment by mistake). Sorry about that!"
+//   ) +
+//   paragraph("Here's the working version. same code, same offer:") +
+//   `<div style="background-color:rgb(254,247,237);border-radius:8px;padding:16px 24px;display:inline-block;margin-bottom:24px;">
+//     <p style="color:rgb(17,24,39);font-size:24px;font-weight:700;margin:0;line-height:32px;letter-spacing:2px;">${CORRECTION_CODE}</p>
+//     <p style="color:rgb(55,65,81);font-size:14px;margin:4px 0 0;line-height:20px;">${CORRECTION_DISCOUNT}</p>
+//   </div>` +
+//   paragraph(`Valid until ${CORRECTION_VALID_UNTIL}.`) +
+//   `<div style="margin:0 0 24px;">${emailButton("Claim 30% off →", `${dashboardUrl}/billing`)}</div>` +
+//   `<p style="color:rgb(55,65,81);font-size:16px;margin:0 0 24px;line-height:24px;">Thanks for bearing with me,<br />Karim<br />Fotno</p>`;
 
 export const ADMIN_PRESETS: Record<
   AdminPresetId,
@@ -146,14 +146,14 @@ export const ADMIN_PRESETS: Record<
     subject: "We're listening. what would help?",
     render: renderListening,
   },
-  // TEMPORARY: see renderCorrection above. Remove this entry too.
-  correction: {
-    label: "Promo correction (LAUNCH30)",
-    description:
-      "One-off: re-send the LAUNCH30 promo with a working link to users who got the broken localhost version.",
-    subject: "Quick correction on that promo email",
-    render: renderCorrection,
-  },
+  // // TEMPORARY: see renderCorrection above. Remove this entry too.
+  // correction: {
+  //   label: "Promo correction (LAUNCH30)",
+  //   description:
+  //     "One-off: re-send the LAUNCH30 promo with a working link to users who got the broken localhost version.",
+  //   subject: "Quick correction on that promo email",
+  //   render: renderCorrection,
+  // },
 };
 
 export const renderAdminMessageEmail = (

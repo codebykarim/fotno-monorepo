@@ -25,7 +25,7 @@ export function GalleriesPage() {
   const { data, isLoading } = useSWR<PaginatedResponse<AdminGallery>>(
     `/api/galleries?${queryParams}`,
     jsonFetcher,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000, revalidateOnFocus: false },
   );
 
   const columns: Column<AdminGallery>[] = [
@@ -90,18 +90,26 @@ export function GalleriesPage() {
         pageSize={50}
         onPageChange={setPage}
         searchValue={search}
-        onSearchChange={(v) => { setSearch(v); setPage(1); }}
+        onSearchChange={(v) => {
+          setSearch(v);
+          setPage(1);
+        }}
         searchPlaceholder="Search by title or owner..."
         isLoading={isLoading}
         filters={
           <select
             value={status}
-            onChange={(e) => { setStatus(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPage(1);
+            }}
             className="h-9 rounded-lg border border-border bg-background px-3 text-sm"
           >
             {STATUSES.map((s) => (
               <option key={s} value={s}>
-                {s === "all" ? "All Statuses" : s.charAt(0).toUpperCase() + s.slice(1)}
+                {s === "all"
+                  ? "All Statuses"
+                  : s.charAt(0).toUpperCase() + s.slice(1)}
               </option>
             ))}
           </select>

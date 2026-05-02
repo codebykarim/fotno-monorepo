@@ -12,3 +12,8 @@ export { getUserSubscriptions } from "./getUserPayments";
 export { getServiceHealth } from "./getServiceHealth";
 export { getAnalytics } from "./getAnalytics";
 export { getPaymentsOverview } from "./getPaymentsOverview";
+export {
+  sendUserEmail,
+  previewUserEmail,
+  listUserEmails,
+} from "./sendUserEmail";

@@ -588,3 +588,84 @@ export const deleteInboundEmailController = async (
     return res.status(500).json({ error: "Failed to delete email" });
   }
 };
+
+const VALID_PRESETS = new Set([
+  "checkin",
+  "pricing",
+  "promo",
+  "feature",
+  "listening",
+  "correction", // TEMPORARY: remove with the LAUNCH30 follow-ups
+]);
+
+const parseEmailInput = (body: any) => {
+  const preset = body?.preset;
+  if (!preset || !VALID_PRESETS.has(preset)) {
+    return { error: "Invalid or missing preset" as const };
+  }
+  const promoCode =
+    typeof body?.promoCode === "string" ? body.promoCode.trim() : undefined;
+  const featureName =
+    typeof body?.featureName === "string" ? body.featureName.trim() : undefined;
+  if (preset === "promo" && !promoCode) {
+    return { error: "promoCode required for promo preset" as const };
+  }
+  if (preset === "feature" && !featureName) {
+    return { error: "featureName required for feature preset" as const };
+  }
+  return { preset, promoCode, featureName };
+};
+
+export const sendUserEmailController = async (req: Request, res: Response) => {
+  const parsed = parseEmailInput(req.body);
+  if ("error" in parsed) {
+    return res.status(400).json({ error: parsed.error });
+  }
+  try {
+    const result = await AdminService.sendUserEmail(
+      req.params.id,
+      parsed,
+      req.user?.id,
+    );
+    return res.status(200).json(result);
+  } catch (error: any) {
+    console.error("[Admin] Error sending user email:", error);
+    return res
+      .status(500)
+      .json({ error: error?.message ?? "Failed to send email" });
+  }
+};
+
+export const listUserEmailsController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const result = await AdminService.listUserEmails(req.params.id);
+    return res.status(200).json(result);
+  } catch (error: any) {
+    console.error("[Admin] Error listing user emails:", error);
+    return res
+      .status(500)
+      .json({ error: error?.message ?? "Failed to list emails" });
+  }
+};
+
+export const previewUserEmailController = async (
+  req: Request,
+  res: Response,
+) => {
+  const parsed = parseEmailInput(req.body);
+  if ("error" in parsed) {
+    return res.status(400).json({ error: parsed.error });
+  }
+  try {
+    const result = await AdminService.previewUserEmail(req.params.id, parsed);
+    return res.status(200).json(result);
+  } catch (error: any) {
+    console.error("[Admin] Error previewing user email:", error);
+    return res
+      .status(500)
+      .json({ error: error?.message ?? "Failed to render preview" });
+  }
+};

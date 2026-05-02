@@ -22,6 +22,23 @@ export interface AdminUser {
   storageLimit: string;
   galleryCount: number;
   createdAt: string;
+  galleriesThisMonth: number;
+  uploadBytesThisMonth: string;
+  storageTrend: "up" | "flat" | "down";
+  healthScore: number;
+  atRisk: boolean;
+  emailCount: number;
+  lastEmail: { preset: string; sentAt: string } | null;
+}
+
+export interface AdminUserEmail {
+  id: string;
+  preset: string;
+  subject: string;
+  promoCode: string | null;
+  featureName: string | null;
+  sentAt: string;
+  sentBy: { id: string; name: string; email: string } | null;
 }
 
 export interface AdminUserDetail extends AdminUser {

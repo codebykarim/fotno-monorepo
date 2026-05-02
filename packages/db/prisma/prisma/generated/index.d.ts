@@ -64,6 +64,11 @@ export type UploadSession = $Result.DefaultSelection<Prisma.$UploadSessionPayloa
  */
 export type StorageEvent = $Result.DefaultSelection<Prisma.$StorageEventPayload>
 /**
+ * Model AdminMessageLog
+ * 
+ */
+export type AdminMessageLog = $Result.DefaultSelection<Prisma.$AdminMessageLogPayload>
+/**
  * Model Album
  * 
  */
@@ -607,6 +612,16 @@ export class PrismaClient<
     * ```
     */
   get storageEvent(): Prisma.StorageEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.adminMessageLog`: Exposes CRUD operations for the **AdminMessageLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdminMessageLogs
+    * const adminMessageLogs = await prisma.adminMessageLog.findMany()
+    * ```
+    */
+  get adminMessageLog(): Prisma.AdminMessageLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.album`: Exposes CRUD operations for the **Album** model.
@@ -1281,6 +1296,7 @@ export namespace Prisma {
     Photo: 'Photo',
     UploadSession: 'UploadSession',
     StorageEvent: 'StorageEvent',
+    AdminMessageLog: 'AdminMessageLog',
     Album: 'Album',
     AlbumPhoto: 'AlbumPhoto',
     GalleryComment: 'GalleryComment',
@@ -1319,7 +1335,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "galleryView" | "driveImportJob" | "pricingTier" | "tierFeature" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain" | "notification" | "inboundEmail"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "userOnboarding" | "gallery" | "photo" | "uploadSession" | "storageEvent" | "adminMessageLog" | "album" | "albumPhoto" | "galleryComment" | "galleryFavorite" | "favoriteShare" | "downloadEvent" | "galleryView" | "driveImportJob" | "pricingTier" | "tierFeature" | "regionalPricing" | "regionalTierOverride" | "driveImportItem" | "smartAlbumConfig" | "smartAlbumProduct" | "smartAlbumDesign" | "smartAlbumSubmission" | "smartAlbumTransaction" | "notificationPreference" | "fcmToken" | "customDomain" | "notification" | "inboundEmail"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2060,6 +2076,80 @@ export namespace Prisma {
           count: {
             args: Prisma.StorageEventCountArgs<ExtArgs>
             result: $Utils.Optional<StorageEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      AdminMessageLog: {
+        payload: Prisma.$AdminMessageLogPayload<ExtArgs>
+        fields: Prisma.AdminMessageLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminMessageLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminMessageLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminMessageLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminMessageLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          findMany: {
+            args: Prisma.AdminMessageLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>[]
+          }
+          create: {
+            args: Prisma.AdminMessageLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          createMany: {
+            args: Prisma.AdminMessageLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminMessageLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminMessageLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          update: {
+            args: Prisma.AdminMessageLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminMessageLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminMessageLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminMessageLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminMessageLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminMessageLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminMessageLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdminMessageLog>
+          }
+          groupBy: {
+            args: Prisma.AdminMessageLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminMessageLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminMessageLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminMessageLogCountAggregateOutputType> | number
           }
         }
       }
@@ -3883,6 +3973,7 @@ export namespace Prisma {
     photo?: PhotoOmit
     uploadSession?: UploadSessionOmit
     storageEvent?: StorageEventOmit
+    adminMessageLog?: AdminMessageLogOmit
     album?: AlbumOmit
     albumPhoto?: AlbumPhotoOmit
     galleryComment?: GalleryCommentOmit
@@ -3994,6 +4085,8 @@ export namespace Prisma {
     driveImportJobs: number
     fcmTokens: number
     notifications: number
+    adminMessagesReceived: number
+    adminMessagesSent: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4005,6 +4098,8 @@ export namespace Prisma {
     driveImportJobs?: boolean | UserCountOutputTypeCountDriveImportJobsArgs
     fcmTokens?: boolean | UserCountOutputTypeCountFcmTokensArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    adminMessagesReceived?: boolean | UserCountOutputTypeCountAdminMessagesReceivedArgs
+    adminMessagesSent?: boolean | UserCountOutputTypeCountAdminMessagesSentArgs
   }
 
   // Custom InputTypes
@@ -4072,6 +4167,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminMessagesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminMessageLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminMessagesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminMessageLogWhereInput
   }
 
 
@@ -4874,6 +4983,8 @@ export namespace Prisma {
     fcmTokens?: boolean | User$fcmTokensArgs<ExtArgs>
     customDomain?: boolean | User$customDomainArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    adminMessagesReceived?: boolean | User$adminMessagesReceivedArgs<ExtArgs>
+    adminMessagesSent?: boolean | User$adminMessagesSentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4975,6 +5086,8 @@ export namespace Prisma {
     fcmTokens?: boolean | User$fcmTokensArgs<ExtArgs>
     customDomain?: boolean | User$customDomainArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    adminMessagesReceived?: boolean | User$adminMessagesReceivedArgs<ExtArgs>
+    adminMessagesSent?: boolean | User$adminMessagesSentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4995,6 +5108,8 @@ export namespace Prisma {
       fcmTokens: Prisma.$FcmTokenPayload<ExtArgs>[]
       customDomain: Prisma.$CustomDomainPayload<ExtArgs> | null
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      adminMessagesReceived: Prisma.$AdminMessageLogPayload<ExtArgs>[]
+      adminMessagesSent: Prisma.$AdminMessageLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5428,6 +5543,8 @@ export namespace Prisma {
     fcmTokens<T extends User$fcmTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$fcmTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FcmTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     customDomain<T extends User$customDomainArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminMessagesReceived<T extends User$adminMessagesReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$adminMessagesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminMessagesSent<T extends User$adminMessagesSentArgs<ExtArgs> = {}>(args?: Subset<T, User$adminMessagesSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6140,6 +6257,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminMessagesReceived
+   */
+  export type User$adminMessagesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    where?: AdminMessageLogWhereInput
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    cursor?: AdminMessageLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminMessageLogScalarFieldEnum | AdminMessageLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminMessagesSent
+   */
+  export type User$adminMessagesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    where?: AdminMessageLogWhereInput
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    cursor?: AdminMessageLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminMessageLogScalarFieldEnum | AdminMessageLogScalarFieldEnum[]
   }
 
   /**
@@ -17317,6 +17482,1135 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: StorageEventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AdminMessageLog
+   */
+
+  export type AggregateAdminMessageLog = {
+    _count: AdminMessageLogCountAggregateOutputType | null
+    _min: AdminMessageLogMinAggregateOutputType | null
+    _max: AdminMessageLogMaxAggregateOutputType | null
+  }
+
+  export type AdminMessageLogMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    sentByUserId: string | null
+    preset: string | null
+    subject: string | null
+    promoCode: string | null
+    featureName: string | null
+    sentAt: Date | null
+  }
+
+  export type AdminMessageLogMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    sentByUserId: string | null
+    preset: string | null
+    subject: string | null
+    promoCode: string | null
+    featureName: string | null
+    sentAt: Date | null
+  }
+
+  export type AdminMessageLogCountAggregateOutputType = {
+    id: number
+    userId: number
+    sentByUserId: number
+    preset: number
+    subject: number
+    promoCode: number
+    featureName: number
+    sentAt: number
+    _all: number
+  }
+
+
+  export type AdminMessageLogMinAggregateInputType = {
+    id?: true
+    userId?: true
+    sentByUserId?: true
+    preset?: true
+    subject?: true
+    promoCode?: true
+    featureName?: true
+    sentAt?: true
+  }
+
+  export type AdminMessageLogMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    sentByUserId?: true
+    preset?: true
+    subject?: true
+    promoCode?: true
+    featureName?: true
+    sentAt?: true
+  }
+
+  export type AdminMessageLogCountAggregateInputType = {
+    id?: true
+    userId?: true
+    sentByUserId?: true
+    preset?: true
+    subject?: true
+    promoCode?: true
+    featureName?: true
+    sentAt?: true
+    _all?: true
+  }
+
+  export type AdminMessageLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminMessageLog to aggregate.
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminMessageLogs to fetch.
+     */
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminMessageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminMessageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminMessageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdminMessageLogs
+    **/
+    _count?: true | AdminMessageLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminMessageLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminMessageLogMaxAggregateInputType
+  }
+
+  export type GetAdminMessageLogAggregateType<T extends AdminMessageLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdminMessageLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdminMessageLog[P]>
+      : GetScalarType<T[P], AggregateAdminMessageLog[P]>
+  }
+
+
+
+
+  export type AdminMessageLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminMessageLogWhereInput
+    orderBy?: AdminMessageLogOrderByWithAggregationInput | AdminMessageLogOrderByWithAggregationInput[]
+    by: AdminMessageLogScalarFieldEnum[] | AdminMessageLogScalarFieldEnum
+    having?: AdminMessageLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminMessageLogCountAggregateInputType | true
+    _min?: AdminMessageLogMinAggregateInputType
+    _max?: AdminMessageLogMaxAggregateInputType
+  }
+
+  export type AdminMessageLogGroupByOutputType = {
+    id: string
+    userId: string
+    sentByUserId: string | null
+    preset: string
+    subject: string
+    promoCode: string | null
+    featureName: string | null
+    sentAt: Date
+    _count: AdminMessageLogCountAggregateOutputType | null
+    _min: AdminMessageLogMinAggregateOutputType | null
+    _max: AdminMessageLogMaxAggregateOutputType | null
+  }
+
+  type GetAdminMessageLogGroupByPayload<T extends AdminMessageLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminMessageLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminMessageLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminMessageLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminMessageLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminMessageLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sentByUserId?: boolean
+    preset?: boolean
+    subject?: boolean
+    promoCode?: boolean
+    featureName?: boolean
+    sentAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminMessageLog"]>
+
+  export type AdminMessageLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sentByUserId?: boolean
+    preset?: boolean
+    subject?: boolean
+    promoCode?: boolean
+    featureName?: boolean
+    sentAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminMessageLog"]>
+
+  export type AdminMessageLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sentByUserId?: boolean
+    preset?: boolean
+    subject?: boolean
+    promoCode?: boolean
+    featureName?: boolean
+    sentAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminMessageLog"]>
+
+  export type AdminMessageLogSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    sentByUserId?: boolean
+    preset?: boolean
+    subject?: boolean
+    promoCode?: boolean
+    featureName?: boolean
+    sentAt?: boolean
+  }
+
+  export type AdminMessageLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sentByUserId" | "preset" | "subject" | "promoCode" | "featureName" | "sentAt", ExtArgs["result"]["adminMessageLog"]>
+  export type AdminMessageLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }
+  export type AdminMessageLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }
+  export type AdminMessageLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    sentByUser?: boolean | AdminMessageLog$sentByUserArgs<ExtArgs>
+  }
+
+  export type $AdminMessageLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdminMessageLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      sentByUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      sentByUserId: string | null
+      preset: string
+      subject: string
+      promoCode: string | null
+      featureName: string | null
+      sentAt: Date
+    }, ExtArgs["result"]["adminMessageLog"]>
+    composites: {}
+  }
+
+  type AdminMessageLogGetPayload<S extends boolean | null | undefined | AdminMessageLogDefaultArgs> = $Result.GetResult<Prisma.$AdminMessageLogPayload, S>
+
+  type AdminMessageLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminMessageLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminMessageLogCountAggregateInputType | true
+    }
+
+  export interface AdminMessageLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdminMessageLog'], meta: { name: 'AdminMessageLog' } }
+    /**
+     * Find zero or one AdminMessageLog that matches the filter.
+     * @param {AdminMessageLogFindUniqueArgs} args - Arguments to find a AdminMessageLog
+     * @example
+     * // Get one AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminMessageLogFindUniqueArgs>(args: SelectSubset<T, AdminMessageLogFindUniqueArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdminMessageLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminMessageLogFindUniqueOrThrowArgs} args - Arguments to find a AdminMessageLog
+     * @example
+     * // Get one AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminMessageLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminMessageLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminMessageLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogFindFirstArgs} args - Arguments to find a AdminMessageLog
+     * @example
+     * // Get one AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminMessageLogFindFirstArgs>(args?: SelectSubset<T, AdminMessageLogFindFirstArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminMessageLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogFindFirstOrThrowArgs} args - Arguments to find a AdminMessageLog
+     * @example
+     * // Get one AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminMessageLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminMessageLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdminMessageLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdminMessageLogs
+     * const adminMessageLogs = await prisma.adminMessageLog.findMany()
+     * 
+     * // Get first 10 AdminMessageLogs
+     * const adminMessageLogs = await prisma.adminMessageLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminMessageLogWithIdOnly = await prisma.adminMessageLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminMessageLogFindManyArgs>(args?: SelectSubset<T, AdminMessageLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdminMessageLog.
+     * @param {AdminMessageLogCreateArgs} args - Arguments to create a AdminMessageLog.
+     * @example
+     * // Create one AdminMessageLog
+     * const AdminMessageLog = await prisma.adminMessageLog.create({
+     *   data: {
+     *     // ... data to create a AdminMessageLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminMessageLogCreateArgs>(args: SelectSubset<T, AdminMessageLogCreateArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdminMessageLogs.
+     * @param {AdminMessageLogCreateManyArgs} args - Arguments to create many AdminMessageLogs.
+     * @example
+     * // Create many AdminMessageLogs
+     * const adminMessageLog = await prisma.adminMessageLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminMessageLogCreateManyArgs>(args?: SelectSubset<T, AdminMessageLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdminMessageLogs and returns the data saved in the database.
+     * @param {AdminMessageLogCreateManyAndReturnArgs} args - Arguments to create many AdminMessageLogs.
+     * @example
+     * // Create many AdminMessageLogs
+     * const adminMessageLog = await prisma.adminMessageLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdminMessageLogs and only return the `id`
+     * const adminMessageLogWithIdOnly = await prisma.adminMessageLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminMessageLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminMessageLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdminMessageLog.
+     * @param {AdminMessageLogDeleteArgs} args - Arguments to delete one AdminMessageLog.
+     * @example
+     * // Delete one AdminMessageLog
+     * const AdminMessageLog = await prisma.adminMessageLog.delete({
+     *   where: {
+     *     // ... filter to delete one AdminMessageLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminMessageLogDeleteArgs>(args: SelectSubset<T, AdminMessageLogDeleteArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdminMessageLog.
+     * @param {AdminMessageLogUpdateArgs} args - Arguments to update one AdminMessageLog.
+     * @example
+     * // Update one AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminMessageLogUpdateArgs>(args: SelectSubset<T, AdminMessageLogUpdateArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdminMessageLogs.
+     * @param {AdminMessageLogDeleteManyArgs} args - Arguments to filter AdminMessageLogs to delete.
+     * @example
+     * // Delete a few AdminMessageLogs
+     * const { count } = await prisma.adminMessageLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminMessageLogDeleteManyArgs>(args?: SelectSubset<T, AdminMessageLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminMessageLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdminMessageLogs
+     * const adminMessageLog = await prisma.adminMessageLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminMessageLogUpdateManyArgs>(args: SelectSubset<T, AdminMessageLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminMessageLogs and returns the data updated in the database.
+     * @param {AdminMessageLogUpdateManyAndReturnArgs} args - Arguments to update many AdminMessageLogs.
+     * @example
+     * // Update many AdminMessageLogs
+     * const adminMessageLog = await prisma.adminMessageLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdminMessageLogs and only return the `id`
+     * const adminMessageLogWithIdOnly = await prisma.adminMessageLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminMessageLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminMessageLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdminMessageLog.
+     * @param {AdminMessageLogUpsertArgs} args - Arguments to update or create a AdminMessageLog.
+     * @example
+     * // Update or create a AdminMessageLog
+     * const adminMessageLog = await prisma.adminMessageLog.upsert({
+     *   create: {
+     *     // ... data to create a AdminMessageLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdminMessageLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminMessageLogUpsertArgs>(args: SelectSubset<T, AdminMessageLogUpsertArgs<ExtArgs>>): Prisma__AdminMessageLogClient<$Result.GetResult<Prisma.$AdminMessageLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdminMessageLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogCountArgs} args - Arguments to filter AdminMessageLogs to count.
+     * @example
+     * // Count the number of AdminMessageLogs
+     * const count = await prisma.adminMessageLog.count({
+     *   where: {
+     *     // ... the filter for the AdminMessageLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminMessageLogCountArgs>(
+      args?: Subset<T, AdminMessageLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminMessageLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdminMessageLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminMessageLogAggregateArgs>(args: Subset<T, AdminMessageLogAggregateArgs>): Prisma.PrismaPromise<GetAdminMessageLogAggregateType<T>>
+
+    /**
+     * Group by AdminMessageLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminMessageLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminMessageLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminMessageLogGroupByArgs['orderBy'] }
+        : { orderBy?: AdminMessageLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminMessageLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminMessageLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdminMessageLog model
+   */
+  readonly fields: AdminMessageLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdminMessageLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminMessageLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sentByUser<T extends AdminMessageLog$sentByUserArgs<ExtArgs> = {}>(args?: Subset<T, AdminMessageLog$sentByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdminMessageLog model
+   */
+  interface AdminMessageLogFieldRefs {
+    readonly id: FieldRef<"AdminMessageLog", 'String'>
+    readonly userId: FieldRef<"AdminMessageLog", 'String'>
+    readonly sentByUserId: FieldRef<"AdminMessageLog", 'String'>
+    readonly preset: FieldRef<"AdminMessageLog", 'String'>
+    readonly subject: FieldRef<"AdminMessageLog", 'String'>
+    readonly promoCode: FieldRef<"AdminMessageLog", 'String'>
+    readonly featureName: FieldRef<"AdminMessageLog", 'String'>
+    readonly sentAt: FieldRef<"AdminMessageLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdminMessageLog findUnique
+   */
+  export type AdminMessageLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminMessageLog to fetch.
+     */
+    where: AdminMessageLogWhereUniqueInput
+  }
+
+  /**
+   * AdminMessageLog findUniqueOrThrow
+   */
+  export type AdminMessageLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminMessageLog to fetch.
+     */
+    where: AdminMessageLogWhereUniqueInput
+  }
+
+  /**
+   * AdminMessageLog findFirst
+   */
+  export type AdminMessageLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminMessageLog to fetch.
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminMessageLogs to fetch.
+     */
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminMessageLogs.
+     */
+    cursor?: AdminMessageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminMessageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminMessageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminMessageLogs.
+     */
+    distinct?: AdminMessageLogScalarFieldEnum | AdminMessageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminMessageLog findFirstOrThrow
+   */
+  export type AdminMessageLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminMessageLog to fetch.
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminMessageLogs to fetch.
+     */
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminMessageLogs.
+     */
+    cursor?: AdminMessageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminMessageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminMessageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminMessageLogs.
+     */
+    distinct?: AdminMessageLogScalarFieldEnum | AdminMessageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminMessageLog findMany
+   */
+  export type AdminMessageLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminMessageLogs to fetch.
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminMessageLogs to fetch.
+     */
+    orderBy?: AdminMessageLogOrderByWithRelationInput | AdminMessageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdminMessageLogs.
+     */
+    cursor?: AdminMessageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminMessageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminMessageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminMessageLogs.
+     */
+    distinct?: AdminMessageLogScalarFieldEnum | AdminMessageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AdminMessageLog create
+   */
+  export type AdminMessageLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AdminMessageLog.
+     */
+    data: XOR<AdminMessageLogCreateInput, AdminMessageLogUncheckedCreateInput>
+  }
+
+  /**
+   * AdminMessageLog createMany
+   */
+  export type AdminMessageLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdminMessageLogs.
+     */
+    data: AdminMessageLogCreateManyInput | AdminMessageLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminMessageLog createManyAndReturn
+   */
+  export type AdminMessageLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdminMessageLogs.
+     */
+    data: AdminMessageLogCreateManyInput | AdminMessageLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AdminMessageLog update
+   */
+  export type AdminMessageLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AdminMessageLog.
+     */
+    data: XOR<AdminMessageLogUpdateInput, AdminMessageLogUncheckedUpdateInput>
+    /**
+     * Choose, which AdminMessageLog to update.
+     */
+    where: AdminMessageLogWhereUniqueInput
+  }
+
+  /**
+   * AdminMessageLog updateMany
+   */
+  export type AdminMessageLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdminMessageLogs.
+     */
+    data: XOR<AdminMessageLogUpdateManyMutationInput, AdminMessageLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminMessageLogs to update
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * Limit how many AdminMessageLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminMessageLog updateManyAndReturn
+   */
+  export type AdminMessageLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AdminMessageLogs.
+     */
+    data: XOR<AdminMessageLogUpdateManyMutationInput, AdminMessageLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminMessageLogs to update
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * Limit how many AdminMessageLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AdminMessageLog upsert
+   */
+  export type AdminMessageLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AdminMessageLog to update in case it exists.
+     */
+    where: AdminMessageLogWhereUniqueInput
+    /**
+     * In case the AdminMessageLog found by the `where` argument doesn't exist, create a new AdminMessageLog with this data.
+     */
+    create: XOR<AdminMessageLogCreateInput, AdminMessageLogUncheckedCreateInput>
+    /**
+     * In case the AdminMessageLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminMessageLogUpdateInput, AdminMessageLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AdminMessageLog delete
+   */
+  export type AdminMessageLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
+    /**
+     * Filter which AdminMessageLog to delete.
+     */
+    where: AdminMessageLogWhereUniqueInput
+  }
+
+  /**
+   * AdminMessageLog deleteMany
+   */
+  export type AdminMessageLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminMessageLogs to delete
+     */
+    where?: AdminMessageLogWhereInput
+    /**
+     * Limit how many AdminMessageLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminMessageLog.sentByUser
+   */
+  export type AdminMessageLog$sentByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AdminMessageLog without action
+   */
+  export type AdminMessageLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminMessageLog
+     */
+    select?: AdminMessageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminMessageLog
+     */
+    omit?: AdminMessageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminMessageLogInclude<ExtArgs> | null
   }
 
 
@@ -43818,6 +45112,20 @@ export namespace Prisma {
   export type StorageEventScalarFieldEnum = (typeof StorageEventScalarFieldEnum)[keyof typeof StorageEventScalarFieldEnum]
 
 
+  export const AdminMessageLogScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    sentByUserId: 'sentByUserId',
+    preset: 'preset',
+    subject: 'subject',
+    promoCode: 'promoCode',
+    featureName: 'featureName',
+    sentAt: 'sentAt'
+  };
+
+  export type AdminMessageLogScalarFieldEnum = (typeof AdminMessageLogScalarFieldEnum)[keyof typeof AdminMessageLogScalarFieldEnum]
+
+
   export const AlbumScalarFieldEnum: {
     id: 'id',
     galleryId: 'galleryId',
@@ -44567,6 +45875,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenListRelationFilter
     customDomain?: XOR<CustomDomainNullableScalarRelationFilter, CustomDomainWhereInput> | null
     notifications?: NotificationListRelationFilter
+    adminMessagesReceived?: AdminMessageLogListRelationFilter
+    adminMessagesSent?: AdminMessageLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -44607,6 +45917,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenOrderByRelationAggregateInput
     customDomain?: CustomDomainOrderByWithRelationInput
     notifications?: NotificationOrderByRelationAggregateInput
+    adminMessagesReceived?: AdminMessageLogOrderByRelationAggregateInput
+    adminMessagesSent?: AdminMessageLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -44650,6 +45962,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenListRelationFilter
     customDomain?: XOR<CustomDomainNullableScalarRelationFilter, CustomDomainWhereInput> | null
     notifications?: NotificationListRelationFilter
+    adminMessagesReceived?: AdminMessageLogListRelationFilter
+    adminMessagesSent?: AdminMessageLogListRelationFilter
   }, "id" | "id" | "stripeCustomerId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -45649,6 +46963,79 @@ export namespace Prisma {
     delta?: BigIntWithAggregatesFilter<"StorageEvent"> | bigint | number
     reason?: StringWithAggregatesFilter<"StorageEvent"> | string
     createdAt?: DateTimeWithAggregatesFilter<"StorageEvent"> | Date | string
+  }
+
+  export type AdminMessageLogWhereInput = {
+    AND?: AdminMessageLogWhereInput | AdminMessageLogWhereInput[]
+    OR?: AdminMessageLogWhereInput[]
+    NOT?: AdminMessageLogWhereInput | AdminMessageLogWhereInput[]
+    id?: StringFilter<"AdminMessageLog"> | string
+    userId?: StringFilter<"AdminMessageLog"> | string
+    sentByUserId?: StringNullableFilter<"AdminMessageLog"> | string | null
+    preset?: StringFilter<"AdminMessageLog"> | string
+    subject?: StringFilter<"AdminMessageLog"> | string
+    promoCode?: StringNullableFilter<"AdminMessageLog"> | string | null
+    featureName?: StringNullableFilter<"AdminMessageLog"> | string | null
+    sentAt?: DateTimeFilter<"AdminMessageLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sentByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type AdminMessageLogOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sentByUserId?: SortOrderInput | SortOrder
+    preset?: SortOrder
+    subject?: SortOrder
+    promoCode?: SortOrderInput | SortOrder
+    featureName?: SortOrderInput | SortOrder
+    sentAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    sentByUser?: UserOrderByWithRelationInput
+  }
+
+  export type AdminMessageLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AdminMessageLogWhereInput | AdminMessageLogWhereInput[]
+    OR?: AdminMessageLogWhereInput[]
+    NOT?: AdminMessageLogWhereInput | AdminMessageLogWhereInput[]
+    userId?: StringFilter<"AdminMessageLog"> | string
+    sentByUserId?: StringNullableFilter<"AdminMessageLog"> | string | null
+    preset?: StringFilter<"AdminMessageLog"> | string
+    subject?: StringFilter<"AdminMessageLog"> | string
+    promoCode?: StringNullableFilter<"AdminMessageLog"> | string | null
+    featureName?: StringNullableFilter<"AdminMessageLog"> | string | null
+    sentAt?: DateTimeFilter<"AdminMessageLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sentByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type AdminMessageLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sentByUserId?: SortOrderInput | SortOrder
+    preset?: SortOrder
+    subject?: SortOrder
+    promoCode?: SortOrderInput | SortOrder
+    featureName?: SortOrderInput | SortOrder
+    sentAt?: SortOrder
+    _count?: AdminMessageLogCountOrderByAggregateInput
+    _max?: AdminMessageLogMaxOrderByAggregateInput
+    _min?: AdminMessageLogMinOrderByAggregateInput
+  }
+
+  export type AdminMessageLogScalarWhereWithAggregatesInput = {
+    AND?: AdminMessageLogScalarWhereWithAggregatesInput | AdminMessageLogScalarWhereWithAggregatesInput[]
+    OR?: AdminMessageLogScalarWhereWithAggregatesInput[]
+    NOT?: AdminMessageLogScalarWhereWithAggregatesInput | AdminMessageLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AdminMessageLog"> | string
+    userId?: StringWithAggregatesFilter<"AdminMessageLog"> | string
+    sentByUserId?: StringNullableWithAggregatesFilter<"AdminMessageLog"> | string | null
+    preset?: StringWithAggregatesFilter<"AdminMessageLog"> | string
+    subject?: StringWithAggregatesFilter<"AdminMessageLog"> | string
+    promoCode?: StringNullableWithAggregatesFilter<"AdminMessageLog"> | string | null
+    featureName?: StringNullableWithAggregatesFilter<"AdminMessageLog"> | string | null
+    sentAt?: DateTimeWithAggregatesFilter<"AdminMessageLog"> | Date | string
   }
 
   export type AlbumWhereInput = {
@@ -47504,6 +48891,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -47544,6 +48933,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUpdateInput = {
@@ -47584,6 +48975,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -47624,6 +49017,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -48795,6 +50190,81 @@ export namespace Prisma {
     delta?: BigIntFieldUpdateOperationsInput | bigint | number
     reason?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogCreateInput = {
+    id?: string
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+    user: UserCreateNestedOneWithoutAdminMessagesReceivedInput
+    sentByUser?: UserCreateNestedOneWithoutAdminMessagesSentInput
+  }
+
+  export type AdminMessageLogUncheckedCreateInput = {
+    id?: string
+    userId: string
+    sentByUserId?: string | null
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+  }
+
+  export type AdminMessageLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAdminMessagesReceivedNestedInput
+    sentByUser?: UserUpdateOneWithoutAdminMessagesSentNestedInput
+  }
+
+  export type AdminMessageLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogCreateManyInput = {
+    id?: string
+    userId: string
+    sentByUserId?: string | null
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+  }
+
+  export type AdminMessageLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sentByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AlbumCreateInput = {
@@ -50940,6 +52410,12 @@ export namespace Prisma {
     none?: NotificationWhereInput
   }
 
+  export type AdminMessageLogListRelationFilter = {
+    every?: AdminMessageLogWhereInput
+    some?: AdminMessageLogWhereInput
+    none?: AdminMessageLogWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -50974,6 +52450,10 @@ export namespace Prisma {
   }
 
   export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AdminMessageLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -52024,6 +53504,44 @@ export namespace Prisma {
 
   export type StorageEventSumOrderByAggregateInput = {
     delta?: SortOrder
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type AdminMessageLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sentByUserId?: SortOrder
+    preset?: SortOrder
+    subject?: SortOrder
+    promoCode?: SortOrder
+    featureName?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type AdminMessageLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sentByUserId?: SortOrder
+    preset?: SortOrder
+    subject?: SortOrder
+    promoCode?: SortOrder
+    featureName?: SortOrder
+    sentAt?: SortOrder
+  }
+
+  export type AdminMessageLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sentByUserId?: SortOrder
+    preset?: SortOrder
+    subject?: SortOrder
+    promoCode?: SortOrder
+    featureName?: SortOrder
+    sentAt?: SortOrder
   }
 
   export type AlbumCountOrderByAggregateInput = {
@@ -53378,6 +54896,20 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type AdminMessageLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput> | AdminMessageLogCreateWithoutUserInput[] | AdminMessageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutUserInput | AdminMessageLogCreateOrConnectWithoutUserInput[]
+    createMany?: AdminMessageLogCreateManyUserInputEnvelope
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+  }
+
+  export type AdminMessageLogCreateNestedManyWithoutSentByUserInput = {
+    create?: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput> | AdminMessageLogCreateWithoutSentByUserInput[] | AdminMessageLogUncheckedCreateWithoutSentByUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutSentByUserInput | AdminMessageLogCreateOrConnectWithoutSentByUserInput[]
+    createMany?: AdminMessageLogCreateManySentByUserInputEnvelope
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -53456,6 +54988,20 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type AdminMessageLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput> | AdminMessageLogCreateWithoutUserInput[] | AdminMessageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutUserInput | AdminMessageLogCreateOrConnectWithoutUserInput[]
+    createMany?: AdminMessageLogCreateManyUserInputEnvelope
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+  }
+
+  export type AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput = {
+    create?: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput> | AdminMessageLogCreateWithoutSentByUserInput[] | AdminMessageLogUncheckedCreateWithoutSentByUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutSentByUserInput | AdminMessageLogCreateOrConnectWithoutSentByUserInput[]
+    createMany?: AdminMessageLogCreateManySentByUserInputEnvelope
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -53654,6 +55200,34 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
+  export type AdminMessageLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput> | AdminMessageLogCreateWithoutUserInput[] | AdminMessageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutUserInput | AdminMessageLogCreateOrConnectWithoutUserInput[]
+    upsert?: AdminMessageLogUpsertWithWhereUniqueWithoutUserInput | AdminMessageLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AdminMessageLogCreateManyUserInputEnvelope
+    set?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    disconnect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    delete?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    update?: AdminMessageLogUpdateWithWhereUniqueWithoutUserInput | AdminMessageLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AdminMessageLogUpdateManyWithWhereWithoutUserInput | AdminMessageLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
+  }
+
+  export type AdminMessageLogUpdateManyWithoutSentByUserNestedInput = {
+    create?: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput> | AdminMessageLogCreateWithoutSentByUserInput[] | AdminMessageLogUncheckedCreateWithoutSentByUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutSentByUserInput | AdminMessageLogCreateOrConnectWithoutSentByUserInput[]
+    upsert?: AdminMessageLogUpsertWithWhereUniqueWithoutSentByUserInput | AdminMessageLogUpsertWithWhereUniqueWithoutSentByUserInput[]
+    createMany?: AdminMessageLogCreateManySentByUserInputEnvelope
+    set?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    disconnect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    delete?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    update?: AdminMessageLogUpdateWithWhereUniqueWithoutSentByUserInput | AdminMessageLogUpdateWithWhereUniqueWithoutSentByUserInput[]
+    updateMany?: AdminMessageLogUpdateManyWithWhereWithoutSentByUserInput | AdminMessageLogUpdateManyWithWhereWithoutSentByUserInput[]
+    deleteMany?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -53804,6 +55378,34 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput> | AdminMessageLogCreateWithoutUserInput[] | AdminMessageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutUserInput | AdminMessageLogCreateOrConnectWithoutUserInput[]
+    upsert?: AdminMessageLogUpsertWithWhereUniqueWithoutUserInput | AdminMessageLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AdminMessageLogCreateManyUserInputEnvelope
+    set?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    disconnect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    delete?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    update?: AdminMessageLogUpdateWithWhereUniqueWithoutUserInput | AdminMessageLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AdminMessageLogUpdateManyWithWhereWithoutUserInput | AdminMessageLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
+  }
+
+  export type AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput = {
+    create?: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput> | AdminMessageLogCreateWithoutSentByUserInput[] | AdminMessageLogUncheckedCreateWithoutSentByUserInput[]
+    connectOrCreate?: AdminMessageLogCreateOrConnectWithoutSentByUserInput | AdminMessageLogCreateOrConnectWithoutSentByUserInput[]
+    upsert?: AdminMessageLogUpsertWithWhereUniqueWithoutSentByUserInput | AdminMessageLogUpsertWithWhereUniqueWithoutSentByUserInput[]
+    createMany?: AdminMessageLogCreateManySentByUserInputEnvelope
+    set?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    disconnect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    delete?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    connect?: AdminMessageLogWhereUniqueInput | AdminMessageLogWhereUniqueInput[]
+    update?: AdminMessageLogUpdateWithWhereUniqueWithoutSentByUserInput | AdminMessageLogUpdateWithWhereUniqueWithoutSentByUserInput[]
+    updateMany?: AdminMessageLogUpdateManyWithWhereWithoutSentByUserInput | AdminMessageLogUpdateManyWithWhereWithoutSentByUserInput[]
+    deleteMany?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -54560,6 +56162,36 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutStorageEventsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStorageEventsInput, UserUpdateWithoutStorageEventsInput>, UserUncheckedUpdateWithoutStorageEventsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAdminMessagesReceivedInput = {
+    create?: XOR<UserCreateWithoutAdminMessagesReceivedInput, UserUncheckedCreateWithoutAdminMessagesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminMessagesReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdminMessagesSentInput = {
+    create?: XOR<UserCreateWithoutAdminMessagesSentInput, UserUncheckedCreateWithoutAdminMessagesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminMessagesSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAdminMessagesReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutAdminMessagesReceivedInput, UserUncheckedCreateWithoutAdminMessagesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminMessagesReceivedInput
+    upsert?: UserUpsertWithoutAdminMessagesReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminMessagesReceivedInput, UserUpdateWithoutAdminMessagesReceivedInput>, UserUncheckedUpdateWithoutAdminMessagesReceivedInput>
+  }
+
+  export type UserUpdateOneWithoutAdminMessagesSentNestedInput = {
+    create?: XOR<UserCreateWithoutAdminMessagesSentInput, UserUncheckedCreateWithoutAdminMessagesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminMessagesSentInput
+    upsert?: UserUpsertWithoutAdminMessagesSentInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminMessagesSentInput, UserUpdateWithoutAdminMessagesSentInput>, UserUncheckedUpdateWithoutAdminMessagesSentInput>
   }
 
   export type GalleryCreateNestedOneWithoutAlbumsInput = {
@@ -56381,6 +58013,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AdminMessageLogCreateWithoutUserInput = {
+    id?: string
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+    sentByUser?: UserCreateNestedOneWithoutAdminMessagesSentInput
+  }
+
+  export type AdminMessageLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    sentByUserId?: string | null
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+  }
+
+  export type AdminMessageLogCreateOrConnectWithoutUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    create: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AdminMessageLogCreateManyUserInputEnvelope = {
+    data: AdminMessageLogCreateManyUserInput | AdminMessageLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AdminMessageLogCreateWithoutSentByUserInput = {
+    id?: string
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+    user: UserCreateNestedOneWithoutAdminMessagesReceivedInput
+  }
+
+  export type AdminMessageLogUncheckedCreateWithoutSentByUserInput = {
+    id?: string
+    userId: string
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+  }
+
+  export type AdminMessageLogCreateOrConnectWithoutSentByUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    create: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput>
+  }
+
+  export type AdminMessageLogCreateManySentByUserInputEnvelope = {
+    data: AdminMessageLogCreateManySentByUserInput | AdminMessageLogCreateManySentByUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -56797,6 +58489,52 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Notification"> | Date | string
   }
 
+  export type AdminMessageLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    update: XOR<AdminMessageLogUpdateWithoutUserInput, AdminMessageLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AdminMessageLogCreateWithoutUserInput, AdminMessageLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AdminMessageLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    data: XOR<AdminMessageLogUpdateWithoutUserInput, AdminMessageLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AdminMessageLogUpdateManyWithWhereWithoutUserInput = {
+    where: AdminMessageLogScalarWhereInput
+    data: XOR<AdminMessageLogUpdateManyMutationInput, AdminMessageLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AdminMessageLogScalarWhereInput = {
+    AND?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
+    OR?: AdminMessageLogScalarWhereInput[]
+    NOT?: AdminMessageLogScalarWhereInput | AdminMessageLogScalarWhereInput[]
+    id?: StringFilter<"AdminMessageLog"> | string
+    userId?: StringFilter<"AdminMessageLog"> | string
+    sentByUserId?: StringNullableFilter<"AdminMessageLog"> | string | null
+    preset?: StringFilter<"AdminMessageLog"> | string
+    subject?: StringFilter<"AdminMessageLog"> | string
+    promoCode?: StringNullableFilter<"AdminMessageLog"> | string | null
+    featureName?: StringNullableFilter<"AdminMessageLog"> | string | null
+    sentAt?: DateTimeFilter<"AdminMessageLog"> | Date | string
+  }
+
+  export type AdminMessageLogUpsertWithWhereUniqueWithoutSentByUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    update: XOR<AdminMessageLogUpdateWithoutSentByUserInput, AdminMessageLogUncheckedUpdateWithoutSentByUserInput>
+    create: XOR<AdminMessageLogCreateWithoutSentByUserInput, AdminMessageLogUncheckedCreateWithoutSentByUserInput>
+  }
+
+  export type AdminMessageLogUpdateWithWhereUniqueWithoutSentByUserInput = {
+    where: AdminMessageLogWhereUniqueInput
+    data: XOR<AdminMessageLogUpdateWithoutSentByUserInput, AdminMessageLogUncheckedUpdateWithoutSentByUserInput>
+  }
+
+  export type AdminMessageLogUpdateManyWithWhereWithoutSentByUserInput = {
+    where: AdminMessageLogScalarWhereInput
+    data: XOR<AdminMessageLogUpdateManyMutationInput, AdminMessageLogUncheckedUpdateManyWithoutSentByUserInput>
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -56834,6 +58572,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -56873,6 +58613,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -56928,6 +58670,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -56967,6 +58711,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -57006,6 +58752,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -57045,6 +58793,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -57100,6 +58850,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -57139,6 +58891,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -57178,6 +58932,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -57217,6 +58973,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -57272,6 +59030,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -57311,6 +59071,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutUserOnboardingInput = {
@@ -57350,6 +59112,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutUserOnboardingInput = {
@@ -57389,6 +59153,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutUserOnboardingInput = {
@@ -57444,6 +59210,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserOnboardingInput = {
@@ -57483,6 +59251,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutGalleriesInput = {
@@ -57522,6 +59292,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutGalleriesInput = {
@@ -57561,6 +59333,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutGalleriesInput = {
@@ -58001,6 +59775,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGalleriesInput = {
@@ -58040,6 +59816,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type PhotoUpsertWithoutUsedAsCoverInInput = {
@@ -59057,6 +60835,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutStorageEventsInput = {
@@ -59096,6 +60876,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutStorageEventsInput = {
@@ -59151,6 +60933,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStorageEventsInput = {
@@ -59190,6 +60974,368 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
+  }
+
+  export type UserCreateWithoutAdminMessagesReceivedInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    country?: string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminMessagesReceivedInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    country?: string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminMessagesReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminMessagesReceivedInput, UserUncheckedCreateWithoutAdminMessagesReceivedInput>
+  }
+
+  export type UserCreateWithoutAdminMessagesSentInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    country?: string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingCreateNestedOneWithoutUserInput
+    galleries?: GalleryCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainCreateNestedOneWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminMessagesSentInput = {
+    id?: string
+    name: string
+    email: string
+    plan?: $Enums.Plan
+    storageUsed?: bigint | number
+    storageLimit?: bigint | number
+    galleryLimit?: number | null
+    downgradedAt?: Date | string | null
+    storageReserved?: bigint | number
+    overageBytes?: bigint | number
+    overageResetAt?: Date | string | null
+    stripeCustomerId?: string | null
+    warningEmailSent80?: boolean
+    warningEmailSent95?: boolean
+    emailVerified: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    role?: string | null
+    banned?: boolean | null
+    banReason?: string | null
+    banExpires?: Date | string | null
+    country?: string | null
+    subscribed?: boolean | null
+    finishOnboarding?: boolean | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    userOnboarding?: UserOnboardingUncheckedCreateNestedOneWithoutUserInput
+    galleries?: GalleryUncheckedCreateNestedManyWithoutUserInput
+    storageEvents?: StorageEventUncheckedCreateNestedManyWithoutUserInput
+    driveImportJobs?: DriveImportJobUncheckedCreateNestedManyWithoutUserInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedCreateNestedOneWithoutUserInput
+    notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+    fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
+    customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminMessagesSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminMessagesSentInput, UserUncheckedCreateWithoutAdminMessagesSentInput>
+  }
+
+  export type UserUpsertWithoutAdminMessagesReceivedInput = {
+    update: XOR<UserUpdateWithoutAdminMessagesReceivedInput, UserUncheckedUpdateWithoutAdminMessagesReceivedInput>
+    create: XOR<UserCreateWithoutAdminMessagesReceivedInput, UserUncheckedCreateWithoutAdminMessagesReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminMessagesReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminMessagesReceivedInput, UserUncheckedUpdateWithoutAdminMessagesReceivedInput>
+  }
+
+  export type UserUpdateWithoutAdminMessagesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminMessagesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
+  }
+
+  export type UserUpsertWithoutAdminMessagesSentInput = {
+    update: XOR<UserUpdateWithoutAdminMessagesSentInput, UserUncheckedUpdateWithoutAdminMessagesSentInput>
+    create: XOR<UserCreateWithoutAdminMessagesSentInput, UserUncheckedCreateWithoutAdminMessagesSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminMessagesSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminMessagesSentInput, UserUncheckedUpdateWithoutAdminMessagesSentInput>
+  }
+
+  export type UserUpdateWithoutAdminMessagesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminMessagesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    storageUsed?: BigIntFieldUpdateOperationsInput | bigint | number
+    storageLimit?: BigIntFieldUpdateOperationsInput | bigint | number
+    galleryLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    downgradedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storageReserved?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageBytes?: BigIntFieldUpdateOperationsInput | bigint | number
+    overageResetAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    warningEmailSent80?: BoolFieldUpdateOperationsInput | boolean
+    warningEmailSent95?: BoolFieldUpdateOperationsInput | boolean
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    banned?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    banExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    subscribed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    finishOnboarding?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    userOnboarding?: UserOnboardingUncheckedUpdateOneWithoutUserNestedInput
+    galleries?: GalleryUncheckedUpdateManyWithoutUserNestedInput
+    storageEvents?: StorageEventUncheckedUpdateManyWithoutUserNestedInput
+    driveImportJobs?: DriveImportJobUncheckedUpdateManyWithoutUserNestedInput
+    smartAlbumConfig?: SmartAlbumConfigUncheckedUpdateOneWithoutUserNestedInput
+    notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+    fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
+    customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type GalleryCreateWithoutAlbumsInput = {
@@ -60871,6 +63017,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutDriveImportJobsInput = {
@@ -60910,6 +63058,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutDriveImportJobsInput = {
@@ -61007,6 +63157,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDriveImportJobsInput = {
@@ -61046,6 +63198,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type DriveImportItemUpsertWithWhereUniqueWithoutJobInput = {
@@ -61601,6 +63755,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutSmartAlbumConfigInput = {
@@ -61640,6 +63796,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutSmartAlbumConfigInput = {
@@ -61749,6 +63907,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSmartAlbumConfigInput = {
@@ -61788,6 +63948,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type SmartAlbumProductUpsertWithWhereUniqueWithoutConfigInput = {
@@ -62524,6 +64686,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationPreferenceInput = {
@@ -62563,6 +64727,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationPreferenceInput = {
@@ -62618,6 +64784,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationPreferenceInput = {
@@ -62657,6 +64825,8 @@ export namespace Prisma {
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutFcmTokensInput = {
@@ -62696,6 +64866,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutFcmTokensInput = {
@@ -62735,6 +64907,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutFcmTokensInput = {
@@ -62790,6 +64964,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFcmTokensInput = {
@@ -62829,6 +65005,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutCustomDomainInput = {
@@ -62868,6 +65046,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutCustomDomainInput = {
@@ -62907,6 +65087,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutCustomDomainInput = {
@@ -62962,6 +65144,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomDomainInput = {
@@ -63001,6 +65185,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -63040,6 +65226,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceCreateNestedOneWithoutUserInput
     fcmTokens?: FcmTokenCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainCreateNestedOneWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -63079,6 +65267,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
     fcmTokens?: FcmTokenUncheckedCreateNestedManyWithoutUserInput
     customDomain?: CustomDomainUncheckedCreateNestedOneWithoutUserInput
+    adminMessagesReceived?: AdminMessageLogUncheckedCreateNestedManyWithoutUserInput
+    adminMessagesSent?: AdminMessageLogUncheckedCreateNestedManyWithoutSentByUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -63134,6 +65324,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUpdateOneWithoutUserNestedInput
     fcmTokens?: FcmTokenUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUpdateOneWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUpdateManyWithoutSentByUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -63173,6 +65365,8 @@ export namespace Prisma {
     notificationPreference?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
     fcmTokens?: FcmTokenUncheckedUpdateManyWithoutUserNestedInput
     customDomain?: CustomDomainUncheckedUpdateOneWithoutUserNestedInput
+    adminMessagesReceived?: AdminMessageLogUncheckedUpdateManyWithoutUserNestedInput
+    adminMessagesSent?: AdminMessageLogUncheckedUpdateManyWithoutSentByUserNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -63290,6 +65484,26 @@ export namespace Prisma {
     isRead?: boolean
     isArchived?: boolean
     createdAt?: Date | string
+  }
+
+  export type AdminMessageLogCreateManyUserInput = {
+    id?: string
+    sentByUserId?: string | null
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
+  }
+
+  export type AdminMessageLogCreateManySentByUserInput = {
+    id?: string
+    userId: string
+    preset: string
+    subject: string
+    promoCode?: string | null
+    featureName?: string | null
+    sentAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -63661,6 +65875,66 @@ export namespace Prisma {
     isRead?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentByUser?: UserUpdateOneWithoutAdminMessagesSentNestedInput
+  }
+
+  export type AdminMessageLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogUpdateWithoutSentByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAdminMessagesReceivedNestedInput
+  }
+
+  export type AdminMessageLogUncheckedUpdateWithoutSentByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminMessageLogUncheckedUpdateManyWithoutSentByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    preset?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    promoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    featureName?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PhotoCreateManyGalleryInput = {

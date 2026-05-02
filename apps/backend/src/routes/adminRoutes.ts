@@ -132,6 +132,21 @@ const adminMethods: { [key: string]: MethodInfo } = {
     controllerFunction: AdminController.deleteInboundEmailController,
     authFunction: isAdmin,
   },
+  "send-user-email": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.sendUserEmailController,
+    authFunction: isAdmin,
+  },
+  "preview-user-email": {
+    httpMethod: "POST",
+    controllerFunction: AdminController.previewUserEmailController,
+    authFunction: isAdmin,
+  },
+  "list-user-emails": {
+    httpMethod: "GET",
+    controllerFunction: AdminController.listUserEmailsController,
+    authFunction: isAdmin,
+  },
 };
 
 const mappedMethods = init(adminMethods);
@@ -171,5 +186,13 @@ adminRoutes.get("/admin/inbox", handleMethod("list-inbox"));
 adminRoutes.get("/admin/inbox/:id", handleMethod("get-inbox-email"));
 adminRoutes.patch("/admin/inbox/:id", handleMethod("update-inbox-email"));
 adminRoutes.delete("/admin/inbox/:id", handleMethod("delete-inbox-email"));
+
+// At-risk user re-engagement emails
+adminRoutes.post("/admin/users/:id/email", handleMethod("send-user-email"));
+adminRoutes.post(
+  "/admin/users/:id/email/preview",
+  handleMethod("preview-user-email"),
+);
+adminRoutes.get("/admin/users/:id/emails", handleMethod("list-user-emails"));
 
 export default adminRoutes;

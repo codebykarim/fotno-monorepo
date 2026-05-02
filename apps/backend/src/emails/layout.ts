@@ -1,6 +1,8 @@
 const FONT_STACK =
   'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
+const LOGO_URL = "https://fotno.com/fotno-logo.png";
+
 type EmailLayoutOptions = {
   preheaderText?: string;
 };
@@ -31,7 +33,7 @@ export function wrapEmailLayout(
       <tr style="width:100%">
         <td>
           <div style="background-color:rgb(255,255,255);border-radius:12px;padding:40px;">
-            <p style="color:rgb(201,122,58);font-size:22px;font-weight:700;letter-spacing:1.5px;margin:0 0 32px;line-height:24px;">FOTNO</p>
+            <img src="${LOGO_URL}" alt="Fotno" width="140" height="140" style="display:block;border:0;outline:none;text-decoration:none;margin:0 0 16px -16px;" />
             ${contentHtml}
             <hr style="border-width:0;border-top-width:1px;border-style:solid;border-color:rgb(229,231,235);margin-top:32px;margin-bottom:32px;" />
             <p style="color:rgb(107,114,128);font-size:13px;margin:0 0 8px;line-height:24px;">If you believe you are getting this email in error, please visit fotno.com.</p>

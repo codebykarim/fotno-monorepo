@@ -297,6 +297,17 @@ exports.Prisma.StorageEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AdminMessageLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sentByUserId: 'sentByUserId',
+  preset: 'preset',
+  subject: 'subject',
+  promoCode: 'promoCode',
+  featureName: 'featureName',
+  sentAt: 'sentAt'
+};
+
 exports.Prisma.AlbumScalarFieldEnum = {
   id: 'id',
   galleryId: 'galleryId',
@@ -717,6 +728,7 @@ exports.Prisma.ModelName = {
   Photo: 'Photo',
   UploadSession: 'UploadSession',
   StorageEvent: 'StorageEvent',
+  AdminMessageLog: 'AdminMessageLog',
   Album: 'Album',
   AlbumPhoto: 'AlbumPhoto',
   GalleryComment: 'GalleryComment',

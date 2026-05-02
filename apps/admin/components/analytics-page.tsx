@@ -70,7 +70,9 @@ function TimeSeriesAreaChart({
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+          {title}
+        </h3>
         <p className="text-sm text-muted-foreground">No data for this period</p>
       </div>
     );
@@ -78,9 +80,14 @@ function TimeSeriesAreaChart({
 
   return (
     <div className="rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">
+        {title}
+      </h3>
       <ChartContainer config={chartConfig} className="h-48 w-full">
-        <AreaChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+        <AreaChart
+          data={data}
+          margin={{ top: 4, right: 4, bottom: 0, left: 0 }}
+        >
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis
             dataKey={data[0]?.date !== undefined ? "date" : "month"}
@@ -111,8 +118,16 @@ function TimeSeriesAreaChart({
           />
           <defs>
             <linearGradient id={`fill-${valueKey}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={`var(--color-${valueKey})`} stopOpacity={0.3} />
-              <stop offset="95%" stopColor={`var(--color-${valueKey})`} stopOpacity={0.05} />
+              <stop
+                offset="5%"
+                stopColor={`var(--color-${valueKey})`}
+                stopOpacity={0.3}
+              />
+              <stop
+                offset="95%"
+                stopColor={`var(--color-${valueKey})`}
+                stopOpacity={0.05}
+              />
             </linearGradient>
           </defs>
           <Area
@@ -146,7 +161,9 @@ function TimeSeriesBarChart({
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+          {title}
+        </h3>
         <p className="text-sm text-muted-foreground">No data for this period</p>
       </div>
     );
@@ -154,7 +171,9 @@ function TimeSeriesBarChart({
 
   return (
     <div className="rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">{title}</h3>
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">
+        {title}
+      </h3>
       <ChartContainer config={chartConfig} className="h-48 w-full">
         <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -220,15 +239,21 @@ function CountryPieChart({
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-medium text-muted-foreground mb-4">Users by Country</h3>
-        <p className="text-sm text-muted-foreground">No country data available</p>
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+          Users by Country
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          No country data available
+        </p>
       </div>
     );
   }
 
   return (
     <div className="rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">Users by Country</h3>
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">
+        Users by Country
+      </h3>
       <div className="flex items-start gap-6">
         <ChartContainer config={chartConfig} className="h-52 w-52 shrink-0">
           <PieChart>
@@ -284,12 +309,16 @@ function CountryPieChart({
             <div key={d.country} className="flex items-center gap-2 text-sm">
               <div
                 className="h-2.5 w-2.5 rounded-sm shrink-0"
-                style={{ backgroundColor: COUNTRY_COLORS[i % COUNTRY_COLORS.length] }}
+                style={{
+                  backgroundColor: COUNTRY_COLORS[i % COUNTRY_COLORS.length],
+                }}
               />
               <span className="truncate">
                 {getCountryFlag(d.country)} {d.country}
               </span>
-              <span className="ml-auto font-medium tabular-nums">{d.count}</span>
+              <span className="ml-auto font-medium tabular-nums">
+                {d.count}
+              </span>
             </div>
           ))}
           {data.length > 10 && (
@@ -320,19 +349,34 @@ function CountryBarChart({
   if (!top10.length) {
     return (
       <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-medium text-muted-foreground mb-4">Top Countries</h3>
-        <p className="text-sm text-muted-foreground">No country data available</p>
+        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+          Top Countries
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          No country data available
+        </p>
       </div>
     );
   }
 
   return (
     <div className="rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">Top Countries</h3>
+      <h3 className="text-sm font-medium text-muted-foreground mb-4">
+        Top Countries
+      </h3>
       <ChartContainer config={chartConfig} className="h-64 w-full">
-        <BarChart data={top10} layout="vertical" margin={{ top: 4, right: 4, bottom: 0, left: 60 }}>
+        <BarChart
+          data={top10}
+          layout="vertical"
+          margin={{ top: 4, right: 4, bottom: 0, left: 60 }}
+        >
           <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-          <XAxis type="number" tickLine={false} axisLine={false} fontSize={11} />
+          <XAxis
+            type="number"
+            tickLine={false}
+            axisLine={false}
+            fontSize={11}
+          />
           <YAxis
             type="category"
             dataKey="label"
@@ -342,7 +386,11 @@ function CountryBarChart({
             width={60}
           />
           <ChartTooltip content={<ChartTooltipContent />} />
-          <Bar dataKey="count" fill="var(--color-count)" radius={[0, 4, 4, 0]} />
+          <Bar
+            dataKey="count"
+            fill="var(--color-count)"
+            radius={[0, 4, 4, 0]}
+          />
         </BarChart>
       </ChartContainer>
     </div>
@@ -357,7 +405,7 @@ export function AnalyticsPage() {
   const { data, isLoading } = useSWR<AnalyticsData>(
     `/api/analytics?period=${period}`,
     jsonFetcher,
-    { refreshInterval: 60000 }
+    { refreshInterval: 60000, revalidateOnFocus: false },
   );
 
   return (
@@ -373,7 +421,7 @@ export function AnalyticsPage() {
                 "px-3 py-1.5 text-sm transition-colors",
                 period === p
                   ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted"
+                  : "hover:bg-muted",
               )}
             >
               {p}
@@ -388,7 +436,10 @@ export function AnalyticsPage() {
         <>
           {/* Summary cards */}
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <StatCard title="Total Revenue" value={formatCurrency(data.summary.totalRevenue)} />
+            <StatCard
+              title="Total Revenue"
+              value={formatCurrency(data.summary.totalRevenue)}
+            />
             <StatCard title="MRR" value={formatCurrency(data.summary.mrr)} />
             <StatCard
               title="Avg Galleries/User"
@@ -411,10 +462,13 @@ export function AnalyticsPage() {
                   <div
                     className={cn(
                       "h-3 w-3 rounded-sm",
-                      p.plan === "FREE" ? "bg-green-500" :
-                      p.plan === "PRO" ? "bg-emerald-500" :
-                      p.plan === "EXPIRED" ? "bg-zinc-400" :
-                      "bg-zinc-400"
+                      p.plan === "FREE"
+                        ? "bg-green-500"
+                        : p.plan === "PRO"
+                          ? "bg-emerald-500"
+                          : p.plan === "EXPIRED"
+                            ? "bg-zinc-400"
+                            : "bg-zinc-400",
                     )}
                   />
                   <span className="text-sm">{p.plan}</span>
@@ -433,8 +487,14 @@ export function AnalyticsPage() {
           {/* Time series charts */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <TimeSeriesAreaChart title="User Signups" data={data.userSignups} />
-            <TimeSeriesAreaChart title="Gallery Creations" data={data.galleryCreations} />
-            <TimeSeriesBarChart title="Upload Volume (count)" data={data.uploadVolume} />
+            <TimeSeriesAreaChart
+              title="Gallery Creations"
+              data={data.galleryCreations}
+            />
+            <TimeSeriesBarChart
+              title="Upload Volume (count)"
+              data={data.uploadVolume}
+            />
             <TimeSeriesAreaChart
               title="Upload Volume (bytes)"
               data={data.uploadVolume}

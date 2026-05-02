@@ -23,7 +23,12 @@ function ServiceCard({ service }: { service: ServiceHealth }) {
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium">{service.name}</h3>
         <div className="flex items-center gap-2">
-          <div className={cn("h-2.5 w-2.5 rounded-full", statusDot[service.status])} />
+          <div
+            className={cn(
+              "h-2.5 w-2.5 rounded-full",
+              statusDot[service.status],
+            )}
+          />
           <span className="text-sm text-muted-foreground">
             {statusLabel[service.status]}
           </span>
@@ -36,7 +41,10 @@ function ServiceCard({ service }: { service: ServiceHealth }) {
       {service.details && Object.keys(service.details).length > 0 && (
         <div className="mt-3 border-t border-border pt-3 space-y-1">
           {Object.entries(service.details).map(([key, value]) => (
-            <div key={key} className="flex items-center justify-between text-xs">
+            <div
+              key={key}
+              className="flex items-center justify-between text-xs"
+            >
               <span className="text-muted-foreground">{key}</span>
               <span className="font-mono">{String(value)}</span>
             </div>
@@ -51,7 +59,7 @@ export function ServicesPage() {
   const { data, isLoading } = useSWR<ServicesHealthResponse>(
     "/api/services/health",
     jsonFetcher,
-    { refreshInterval: 10000 }
+    { refreshInterval: 10000, revalidateOnFocus: false },
   );
 
   if (isLoading || !data) {
@@ -59,13 +67,15 @@ export function ServicesPage() {
   }
 
   const appServices = data.services.filter(
-    (s) => !["PostgreSQL", "Redis", "PGVector"].includes(s.name)
+    (s) => !["PostgreSQL", "Redis", "PGVector"].includes(s.name),
   );
   const infraServices = data.services.filter((s) =>
-    ["PostgreSQL", "Redis", "PGVector"].includes(s.name)
+    ["PostgreSQL", "Redis", "PGVector"].includes(s.name),
   );
 
-  const healthyCount = data.services.filter((s) => s.status === "healthy").length;
+  const healthyCount = data.services.filter(
+    (s) => s.status === "healthy",
+  ).length;
   const totalCount = data.services.length;
 
   return (

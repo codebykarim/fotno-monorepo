@@ -6,10 +6,35 @@ import { jsonFetcher, apiRequest } from "@/lib/api/client";
 import { DataTable, type Column } from "@/components/data-table";
 import { StatusBadge } from "@/components/status-badge";
 import { formatBytes, formatDate } from "@/lib/format";
-import type { AdminUser, AdminUserDetail, PaginatedResponse } from "@/lib/types/admin";
+import type {
+  AdminUser,
+  AdminUserDetail,
+  PaginatedResponse,
+} from "@/lib/types/admin";
 import { toast } from "sonner";
+import { EmailUserModal } from "@/components/email-user-modal";
 
 const PLANS = ["all", "FREE", "PRO", "EXPIRED"];
+
+const PRESET_LABELS: Record<string, string> = {
+  checkin: "Check in",
+  pricing: "Subscription",
+  promo: "Promo code",
+  feature: "Feature",
+  listening: "Listening",
+};
+
+function formatRelative(iso: string): string {
+  const ms = Date.now() - new Date(iso).getTime();
+  const days = Math.floor(ms / 86400000);
+  if (days < 1) {
+    const hours = Math.floor(ms / 3600000);
+    return hours < 1 ? "just now" : `${hours}h ago`;
+  }
+  if (days < 30) return `${days}d ago`;
+  if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+  return `${Math.floor(days / 365)}y ago`;
+}
 
 function getCountryFlag(countryCode: string): string {
   const codePoints = countryCode
@@ -24,6 +49,11 @@ export function UsersPage() {
   const [plan, setPlan] = useState("all");
   const [page, setPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [emailUser, setEmailUser] = useState<{
+    id: string;
+    name: string;
+    email: string;
+  } | null>(null);
 
   const queryParams = new URLSearchParams({
     q: search,
@@ -35,43 +65,58 @@ export function UsersPage() {
   const { data, isLoading, mutate } = useSWR<PaginatedResponse<AdminUser>>(
     `/api/users?${queryParams}`,
     jsonFetcher,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000, revalidateOnFocus: false },
   );
 
-  const handleBan = useCallback(async (userId: string) => {
-    if (!confirm("Ban this user?")) return;
-    try {
-      await apiRequest(`/api/users/${userId}/ban`, { method: "POST", body: JSON.stringify({}) });
-      toast.success("User banned");
-      mutate();
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  }, [mutate]);
+  const handleBan = useCallback(
+    async (userId: string) => {
+      if (!confirm("Ban this user?")) return;
+      try {
+        await apiRequest(`/api/users/${userId}/ban`, {
+          method: "POST",
+          body: JSON.stringify({}),
+        });
+        toast.success("User banned");
+        mutate();
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    },
+    [mutate],
+  );
 
-  const handleUnban = useCallback(async (userId: string) => {
-    try {
-      await apiRequest(`/api/users/${userId}/unban`, { method: "POST", body: JSON.stringify({}) });
-      toast.success("User unbanned");
-      mutate();
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  }, [mutate]);
+  const handleUnban = useCallback(
+    async (userId: string) => {
+      try {
+        await apiRequest(`/api/users/${userId}/unban`, {
+          method: "POST",
+          body: JSON.stringify({}),
+        });
+        toast.success("User unbanned");
+        mutate();
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    },
+    [mutate],
+  );
 
-  const handleRoleChange = useCallback(async (userId: string, newRole: string) => {
-    if (!confirm(`Set role to "${newRole}"?`)) return;
-    try {
-      await apiRequest(`/api/users/${userId}/role`, {
-        method: "POST",
-        body: JSON.stringify({ role: newRole }),
-      });
-      toast.success(`Role set to ${newRole}`);
-      mutate();
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  }, [mutate]);
+  const handleRoleChange = useCallback(
+    async (userId: string, newRole: string) => {
+      if (!confirm(`Set role to "${newRole}"?`)) return;
+      try {
+        await apiRequest(`/api/users/${userId}/role`, {
+          method: "POST",
+          body: JSON.stringify({ role: newRole }),
+        });
+        toast.success(`Role set to ${newRole}`);
+        mutate();
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    },
+    [mutate],
+  );
 
   const columns: Column<AdminUser>[] = [
     {
@@ -80,7 +125,11 @@ export function UsersPage() {
       render: (u) => (
         <div className="flex items-center gap-3">
           {u.image ? (
-            <img src={u.image} alt="" className="h-8 w-8 rounded-full object-cover" />
+            <img
+              src={u.image}
+              alt=""
+              className="h-8 w-8 rounded-full object-cover"
+            />
           ) : (
             <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
               {u.name.charAt(0).toUpperCase()}
@@ -101,7 +150,9 @@ export function UsersPage() {
     {
       key: "role",
       header: "Role",
-      render: (u) => <StatusBadge status={u.banned ? "banned" : (u.role ?? "user")} />,
+      render: (u) => (
+        <StatusBadge status={u.banned ? "banned" : (u.role ?? "user")} />
+      ),
     },
     {
       key: "country",
@@ -129,7 +180,9 @@ export function UsersPage() {
           <div className="min-w-[120px]">
             <div className="flex justify-between text-xs mb-1">
               <span>{formatBytes(u.storageUsed)}</span>
-              <span className="text-muted-foreground">{formatBytes(u.storageLimit)}</span>
+              <span className="text-muted-foreground">
+                {formatBytes(u.storageLimit)}
+              </span>
             </div>
             <div className="h-1.5 rounded-full bg-muted overflow-hidden">
               <div
@@ -147,6 +200,36 @@ export function UsersPage() {
       render: (u) => u.galleryCount,
     },
     {
+      key: "health",
+      header: "Health",
+      render: (u) => {
+        const color =
+          u.healthScore >= 70
+            ? "text-emerald-600"
+            : u.healthScore >= 30
+              ? "text-amber-600"
+              : "text-red-600";
+        const trendArrow =
+          u.storageTrend === "up" ? "↑" : u.storageTrend === "down" ? "↓" : "→";
+        return (
+          <div className="flex items-center gap-2">
+            <span className={`font-medium ${color}`}>{u.healthScore}</span>
+            <span
+              className="text-xs text-muted-foreground"
+              title={`Storage trend this month: ${u.storageTrend}`}
+            >
+              {trendArrow}
+            </span>
+            {u.atRisk && (
+              <span className="rounded bg-red-500/10 px-1.5 py-0.5 text-xs text-red-600">
+                At risk
+              </span>
+            )}
+          </div>
+        );
+      },
+    },
+    {
       key: "created",
       header: "Created",
       render: (u) => formatDate(u.createdAt),
@@ -162,6 +245,27 @@ export function UsersPage() {
           >
             Details
           </button>
+          {u.atRisk && (
+            <button
+              onClick={() =>
+                setEmailUser({ id: u.id, name: u.name, email: u.email })
+              }
+              className="rounded px-2 py-1 text-xs text-amber-700 hover:bg-amber-500/10"
+              title={
+                u.lastEmail
+                  ? `Last email: ${PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset} — ${new Date(u.lastEmail.sentAt).toLocaleString()}`
+                  : "No emails sent yet"
+              }
+            >
+              Email
+              {u.lastEmail && (
+                <span className="ml-1 text-muted-foreground">
+                  ({PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset},{" "}
+                  {formatRelative(u.lastEmail.sentAt)})
+                </span>
+              )}
+            </button>
+          )}
           {u.banned ? (
             <button
               onClick={() => handleUnban(u.id)}
@@ -178,7 +282,9 @@ export function UsersPage() {
             </button>
           )}
           <button
-            onClick={() => handleRoleChange(u.id, u.role === "admin" ? "user" : "admin")}
+            onClick={() =>
+              handleRoleChange(u.id, u.role === "admin" ? "user" : "admin")
+            }
             className="rounded px-2 py-1 text-xs hover:bg-muted"
           >
             {u.role === "admin" ? "Demote" : "Promote"}
@@ -200,13 +306,19 @@ export function UsersPage() {
         pageSize={50}
         onPageChange={setPage}
         searchValue={search}
-        onSearchChange={(v) => { setSearch(v); setPage(1); }}
+        onSearchChange={(v) => {
+          setSearch(v);
+          setPage(1);
+        }}
         searchPlaceholder="Search by name or email..."
         isLoading={isLoading}
         filters={
           <select
             value={plan}
-            onChange={(e) => { setPlan(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setPlan(e.target.value);
+              setPage(1);
+            }}
             className="h-9 rounded-lg border border-border bg-background px-3 text-sm"
           >
             {PLANS.map((p) => (
@@ -218,21 +330,50 @@ export function UsersPage() {
         }
       />
 
-      {selectedUser && <UserDetailPanel userId={selectedUser} onClose={() => setSelectedUser(null)} />}
+      {selectedUser && (
+        <UserDetailPanel
+          userId={selectedUser}
+          onClose={() => setSelectedUser(null)}
+        />
+      )}
+
+      {emailUser && (
+        <EmailUserModal
+          userId={emailUser.id}
+          userName={emailUser.name}
+          userEmail={emailUser.email}
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) setEmailUser(null);
+          }}
+          onSent={() => mutate()}
+        />
+      )}
     </div>
   );
 }
 
-function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => void }) {
+function UserDetailPanel({
+  userId,
+  onClose,
+}: {
+  userId: string;
+  onClose: () => void;
+}) {
   const { data, isLoading } = useSWR<AdminUserDetail>(
     `/api/users/${userId}`,
-    jsonFetcher
+    jsonFetcher,
   );
 
   if (isLoading || !data) {
     return (
       <div className="fixed inset-y-0 right-0 w-96 border-l border-border bg-card p-6 shadow-lg z-40">
-        <button onClick={onClose} className="text-sm text-muted-foreground mb-4">Close</button>
+        <button
+          onClick={onClose}
+          className="text-sm text-muted-foreground mb-4"
+        >
+          Close
+        </button>
         <p className="text-muted-foreground">Loading...</p>
       </div>
     );
@@ -240,7 +381,10 @@ function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => v
 
   return (
     <div className="fixed inset-y-0 right-0 w-96 border-l border-border bg-card p-6 shadow-lg z-40 overflow-y-auto">
-      <button onClick={onClose} className="text-sm text-muted-foreground mb-4 hover:text-foreground">
+      <button
+        onClick={onClose}
+        className="text-sm text-muted-foreground mb-4 hover:text-foreground"
+      >
         &times; Close
       </button>
       <div className="space-y-4">
@@ -255,7 +399,9 @@ function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => v
           </div>
           <div>
             <p className="text-muted-foreground">Role</p>
-            <StatusBadge status={data.banned ? "banned" : (data.role ?? "user")} />
+            <StatusBadge
+              status={data.banned ? "banned" : (data.role ?? "user")}
+            />
           </div>
           <div>
             <p className="text-muted-foreground">Storage Used</p>
@@ -277,18 +423,29 @@ function UserDetailPanel({ userId, onClose }: { userId: string; onClose: () => v
 
         {data.subscriptions.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-muted-foreground mb-2">Subscriptions</h4>
+            <h4 className="text-sm font-medium text-muted-foreground mb-2">
+              Subscriptions
+            </h4>
             <div className="space-y-2">
               {data.subscriptions.map((s) => (
-                <div key={s.id} className="flex items-center justify-between text-sm rounded-lg border border-border p-2">
+                <div
+                  key={s.id}
+                  className="flex items-center justify-between text-sm rounded-lg border border-border p-2"
+                >
                   <div className="flex items-center gap-2">
                     <StatusBadge status={s.status} />
-                    <span>{s.storageTierGb >= 1000 ? `${s.storageTierGb / 1000} TB` : `${s.storageTierGb} GB`}</span>
+                    <span>
+                      {s.storageTierGb >= 1000
+                        ? `${s.storageTierGb / 1000} TB`
+                        : `${s.storageTierGb} GB`}
+                    </span>
                     <span className="text-xs text-muted-foreground">
                       {s.source === "STRIPE" ? "Stripe" : "Manual"}
                     </span>
                   </div>
-                  <span className="font-medium">${(s.priceCents / 100).toFixed(2)}/mo</span>
+                  <span className="font-medium">
+                    ${(s.priceCents / 100).toFixed(2)}/mo
+                  </span>
                 </div>
               ))}
             </div>

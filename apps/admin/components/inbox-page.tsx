@@ -142,7 +142,7 @@ export function InboxPage() {
   const { data, isLoading, mutate } = useSWR<InboxResponse>(
     `/api/inbox?${queryParams}`,
     jsonFetcher,
-    { revalidateOnFocus: false },
+    { refreshInterval: 30000, revalidateOnFocus: false },
   );
 
   const handleRefresh = useCallback(async () => {
@@ -423,9 +423,7 @@ export function InboxPage() {
               <ChevronLeft className="h-4 w-4" />
             </ToolbarButton>
             <ToolbarButton
-              onClick={() =>
-                setPage((p) => Math.min(data.totalPages, p + 1))
-              }
+              onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
               disabled={page >= data.totalPages}
               title="Older"
             >
@@ -457,9 +455,7 @@ export function InboxPage() {
                   "flex items-center h-10 px-2 cursor-pointer border-b border-border/40 text-[13px] transition-colors",
                   "hover:shadow-[inset_0_-1px_0_0_rgba(0,0,0,0.05),inset_0_1px_0_0_rgba(0,0,0,0.05)]",
                   "dark:hover:shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.05),inset_0_1px_0_0_rgba(255,255,255,0.05)]",
-                  !email.isRead
-                    ? "bg-card font-semibold"
-                    : "bg-muted/30",
+                  !email.isRead ? "bg-card font-semibold" : "bg-muted/30",
                 )}
               >
                 {/* Star */}
@@ -496,9 +492,7 @@ export function InboxPage() {
                   <span
                     className={cn(
                       "truncate",
-                      !email.isRead
-                        ? "text-foreground"
-                        : "text-foreground/80",
+                      !email.isRead ? "text-foreground" : "text-foreground/80",
                     )}
                   >
                     {email.subject || "(no subject)"}
@@ -515,9 +509,7 @@ export function InboxPage() {
                 <div
                   className={cn(
                     "shrink-0 text-xs whitespace-nowrap pl-2",
-                    !email.isRead
-                      ? "text-foreground"
-                      : "text-muted-foreground",
+                    !email.isRead ? "text-foreground" : "text-muted-foreground",
                   )}
                 >
                   {formatSmartDate(email.sentAt)}

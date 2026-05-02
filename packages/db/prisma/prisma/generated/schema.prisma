@@ -46,6 +46,8 @@ model User {
   fcmTokens              FcmToken[]
   customDomain           CustomDomain?
   notifications          Notification[]
+  adminMessagesReceived  AdminMessageLog[]       @relation("AdminMessagesReceived")
+  adminMessagesSent      AdminMessageLog[]       @relation("AdminMessagesSent")
 
   @@unique([email])
   @@map("user")
@@ -289,6 +291,22 @@ model StorageEvent {
 
   @@index([userId, createdAt])
   @@map("storage_event")
+}
+
+model AdminMessageLog {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation("AdminMessagesReceived", fields: [userId], references: [id], onDelete: Cascade)
+  sentByUserId String?
+  sentByUser   User?    @relation("AdminMessagesSent", fields: [sentByUserId], references: [id], onDelete: SetNull)
+  preset       String
+  subject      String
+  promoCode    String?
+  featureName  String?
+  sentAt       DateTime @default(now())
+
+  @@index([userId, sentAt])
+  @@map("admin_message_log")
 }
 
 model Album {

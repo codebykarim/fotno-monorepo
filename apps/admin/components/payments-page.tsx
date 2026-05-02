@@ -46,7 +46,10 @@ export function PaymentsPage() {
       page: number;
       pageSize: number;
     }
-  >(`/api/payments?${queryParams}`, jsonFetcher, { refreshInterval: 60000 });
+  >(`/api/payments?${queryParams}`, jsonFetcher, {
+    refreshInterval: 60000,
+    revalidateOnFocus: false,
+  });
 
   const columns: Column<AdminSubscription>[] = [
     {

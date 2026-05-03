@@ -1,5 +1,8 @@
+// Quotes are HTML-encoded so this can sit inside a style="..." attribute
+// without prematurely closing it (which silently strips every style after
+// font-family — that's what made the CTA buttons render as plain blue links).
 const FONT_STACK =
-  'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+  "ui-sans-serif, system-ui, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;";
 
 const LOGO_URL = "https://fotno.com/fotno-logo.png";
 
@@ -48,12 +51,16 @@ export function wrapEmailLayout(
 }
 
 /**
- * Helper to render a styled CTA button for use inside email content.
+ * Renders a CTA button using the bulletproof table pattern: the background
+ * and border-radius live on the <td>, the link only carries text + padding.
+ * This is the only structure that renders as a real button across Gmail,
+ * Outlook, Apple Mail, Yahoo, and most webmail clients — a styled <a> on
+ * its own gets stripped to a default blue underlined link in many of them.
  */
 export function emailButton(
   text: string,
   href: string,
   color = "#c97a3a",
 ): string {
-  return `<a href="${href}" style="display:inline-block;padding:12px 24px;background-color:${color};color:#ffffff;border-radius:8px;text-decoration:none;font-weight:600;font-family:${FONT_STACK};font-size:15px;line-height:1;text-align:center;" target="_blank">${text}</a>`;
+  return `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="border-collapse:separate;"><tr><td align="center" bgcolor="${color}" style="background-color:${color};border-radius:8px;"><a href="${href}" target="_blank" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-weight:600;font-family:${FONT_STACK};font-size:15px;line-height:1;border-radius:8px;">${text}</a></td></tr></table>`;
 }

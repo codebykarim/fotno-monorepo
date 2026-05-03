@@ -490,6 +490,9 @@ export default function GalleryPageClient({
   const settings = gallery.settings;
   const downloadsEnabled = settings?.downloadEnabled !== false;
   const favoritesEnabled = settings?.favoritesEnabled !== false;
+  const albumInView = gallery.albums?.find((a) => a.id === filterMode);
+  const canDownloadCurrentScope =
+    downloadsEnabled && (!albumInView || albumInView.downloadEnabled);
   const hasDownloadPin = settings?.hasDownloadPin === true;
   const favoriteNotesEnabled =
     favoritesEnabled && settings?.favoriteNotesEnabled !== false;
@@ -1278,18 +1281,50 @@ export default function GalleryPageClient({
   };
 
   const handleDownloadAll = async () => {
+    const albumInScope = gallery.albums?.find((a) => a.id === filterMode);
+    let scope:
+      | { kind: "all" }
+      | { kind: "album"; album: { id: string; title: string } }
+      | { kind: "loved"; photoIds: string[] };
+    let filenameSuffix = "";
+
+    if (albumInScope) {
+      if (!albumInScope.downloadEnabled) {
+        toast.error("Downloads are disabled for this album");
+        return;
+      }
+      scope = { kind: "album", album: albumInScope };
+      filenameSuffix = `-${albumInScope.title.replace(/\s+/g, "-").toLowerCase()}`;
+    } else if (filterMode === "loved") {
+      if (favorites.length === 0) {
+        toast.error("No loved photos to download yet");
+        return;
+      }
+      scope = { kind: "loved", photoIds: favorites };
+      filenameSuffix = "-loved";
+    } else {
+      scope = { kind: "all" };
+    }
+
     const doDownload = async () => {
       setIsDownloadingAll(true);
       try {
-        const response = await fetch(
+        const headers: Record<string, string> = {
+          ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
+          ...(sessionToken ? { "x-gallery-session": sessionToken } : {}),
+        };
+
+        const url = new URL(
           `/api/gallery/${gallery.shareToken}/download-all`,
-          {
-            headers: {
-              ...(galleryJwt ? { Authorization: `Bearer ${galleryJwt}` } : {}),
-              ...(sessionToken ? { "x-gallery-session": sessionToken } : {}),
-            },
-          },
+          window.location.origin,
         );
+        if (scope.kind === "album") {
+          url.searchParams.set("albumId", scope.album.id);
+        } else if (scope.kind === "loved") {
+          url.searchParams.set("photoIds", scope.photoIds.join(","));
+        }
+
+        const response = await fetch(url.toString(), { headers });
 
         if (!response.ok) {
           throw new Error(await readErrorText(response));
@@ -1299,7 +1334,8 @@ export default function GalleryPageClient({
         const objectUrl = URL.createObjectURL(blob);
         const anchor = document.createElement("a");
         anchor.href = objectUrl;
-        anchor.download = `${gallery.title.replace(/\s+/g, "-").toLowerCase()}.zip`;
+        const baseName = gallery.title.replace(/\s+/g, "-").toLowerCase();
+        anchor.download = `${baseName}${filenameSuffix}.zip`;
         anchor.click();
         URL.revokeObjectURL(objectUrl);
         void trackDownloadEvent("gallery");
@@ -2164,7 +2200,7 @@ export default function GalleryPageClient({
                   </span>
                 </button>
               )}
-            {downloadsEnabled && (
+            {canDownloadCurrentScope && (
               <button
                 type="button"
                 onClick={handleDownloadAll}

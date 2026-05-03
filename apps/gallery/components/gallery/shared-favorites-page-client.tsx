@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  DownloadCloud,
   ImageIcon,
   Minus,
   Pause,
@@ -12,6 +13,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
+import { toast } from "sonner";
 import type {
   SharedFavoritesData,
   SharedFavoritesPhoto,
@@ -33,6 +35,38 @@ export default function SharedFavoritesPageClient({
   const { viewerName, gallery, photos } = data;
   const settings = gallery.settings;
   const slideshowEnabled = settings?.slideshowEnabled !== false;
+  const downloadsEnabled = settings?.downloadEnabled !== false;
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(
+        `/api/shared-favorites/${encodeURIComponent(favoriteShareToken)}/download`,
+      );
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Unable to download ZIP");
+      }
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = objectUrl;
+      const gallerySlug =
+        gallery.title.replace(/\s+/g, "-").toLowerCase() || "gallery";
+      const viewerSlug =
+        viewerName.replace(/\s+/g, "-").toLowerCase() || "favorites";
+      anchor.download = `${gallerySlug}-${viewerSlug}-favorites.zip`;
+      anchor.click();
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unable to download ZIP";
+      toast.error(message);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const [activePhotoId, setActivePhotoId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(MIN_ZOOM);
@@ -393,6 +427,17 @@ export default function SharedFavoritesPageClient({
               >
                 <Play className="h-4 w-4" />
                 Slideshow
+              </button>
+            )}
+            {downloadsEnabled && photos.length > 0 && (
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background shadow-sm transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <DownloadCloud className="h-4 w-4" />
+                {isDownloading ? "Preparing..." : "Download"}
               </button>
             )}
           </div>

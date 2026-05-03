@@ -238,34 +238,32 @@ export function UsersPage() {
       key: "actions",
       header: "",
       render: (u) => (
-        <div className="flex items-center gap-1">
+        <div className="flex flex-col items-center gap-1">
           <button
             onClick={() => setSelectedUser(selectedUser === u.id ? null : u.id)}
             className="rounded px-2 py-1 text-xs hover:bg-muted"
           >
             Details
           </button>
-          {u.atRisk && (
-            <button
-              onClick={() =>
-                setEmailUser({ id: u.id, name: u.name, email: u.email })
-              }
-              className="rounded px-2 py-1 text-xs text-amber-700 hover:bg-amber-500/10"
-              title={
-                u.lastEmail
-                  ? `Last email: ${PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset} — ${new Date(u.lastEmail.sentAt).toLocaleString()}`
-                  : "No emails sent yet"
-              }
-            >
-              Email
-              {u.lastEmail && (
-                <span className="ml-1 text-muted-foreground">
-                  ({PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset},{" "}
-                  {formatRelative(u.lastEmail.sentAt)})
-                </span>
-              )}
-            </button>
-          )}
+          <button
+            onClick={() =>
+              setEmailUser({ id: u.id, name: u.name, email: u.email })
+            }
+            className="rounded px-2 py-1 text-xs text-amber-700 hover:bg-amber-500/10"
+            title={
+              u.lastEmail
+                ? `Last email: ${PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset} — ${new Date(u.lastEmail.sentAt).toLocaleString()}`
+                : "No emails sent yet"
+            }
+          >
+            Email
+            {u.lastEmail && (
+              <span className="ml-1 text-muted-foreground">
+                ({PRESET_LABELS[u.lastEmail.preset] ?? u.lastEmail.preset},{" "}
+                {formatRelative(u.lastEmail.sentAt)})
+              </span>
+            )}
+          </button>
           {u.banned ? (
             <button
               onClick={() => handleUnban(u.id)}

@@ -57,7 +57,7 @@ const renderPromo = (p: AdminMessageParams) =>
     "Just a small thank-you for being part of Fotno. Here's a promo code you can use on any paid plan:"
   ) +
   codeBox(p.promoCode ?? "") +
-  paragraph("Apply it at checkout. no expiry pressure, take your time.") +
+  paragraph(`Valid until ${CORRECTION_VALID_UNTIL}.`) +
   `<div style="margin:0 0 24px;">${emailButton("Use code", `${dashboardUrl}/billing`)}</div>` +
   signoff;
 
@@ -88,7 +88,7 @@ const renderListening = (p: AdminMessageParams) =>
 // // PRESETS list) once all affected users have been re-emailed.
 // const CORRECTION_CODE = "LAUNCH30";
 // const CORRECTION_DISCOUNT = "30% off any paid plan";
-// const CORRECTION_VALID_UNTIL = "June 1";
+const CORRECTION_VALID_UNTIL = "June 1";
 // const renderCorrection = (p: AdminMessageParams) =>
 //   greeting(p.userName) +
 //   paragraph(

@@ -349,11 +349,11 @@ function TierDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-2">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldInput label="GB" value={gb} onChange={setGb} type="number" />
             <FieldInput label="Label" value={label} onChange={setLabel} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldInput
               label="Monthly Price (cents)"
               value={priceCents}
@@ -369,7 +369,7 @@ function TierDialog({
               placeholder="Optional · e.g. 7000 for $70/yr"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldInput
               label="Stripe Price ID (monthly)"
               value={stripePriceId}
@@ -383,7 +383,7 @@ function TierDialog({
               placeholder="price_... · Optional"
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldInput
               label="Gallery Limit"
               value={galleryLimit}
@@ -564,11 +564,11 @@ function RegionCard({
   return (
     <div className="rounded-xl border border-border bg-card">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4">
-        <div className="flex items-center gap-4">
+      <div className="flex items-start justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4">
+        <div className="flex min-w-0 items-start gap-3 sm:gap-4">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="rounded p-0.5 hover:bg-muted"
+            className="rounded p-0.5 hover:bg-muted shrink-0 mt-0.5"
           >
             {expanded ? (
               <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -576,21 +576,25 @@ function RegionCard({
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
             )}
           </button>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="font-semibold text-sm">
                 {region.countryCode}
               </span>
               <StatusBadge status={region.active ? "ACTIVE" : "EXPIRED"} />
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5 break-words">
               {region.currency} ({region.symbol}) &middot; PPP{" "}
               {region.pppMultiplier.toFixed(2)} &middot; Locale: {region.locale}
             </p>
+            <p className="text-xs text-muted-foreground mt-1 sm:hidden">
+              {region.tierOverrides.length} override
+              {region.tierOverrides.length !== 1 ? "s" : ""}
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <span className="hidden text-xs text-muted-foreground sm:inline">
             {region.tierOverrides.length} override
             {region.tierOverrides.length !== 1 ? "s" : ""}
           </span>
@@ -611,7 +615,7 @@ function RegionCard({
 
       {/* Expanded tier overrides */}
       {expanded && region.tierOverrides.length > 0 && (
-        <div className="border-t border-border">
+        <div className="border-t border-border overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/30">
@@ -794,7 +798,7 @@ function RegionDialog({
         </DialogHeader>
 
         <div className="grid gap-4 py-2">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldInput
               label="Country Code"
               value={countryCode}
@@ -808,7 +812,7 @@ function RegionDialog({
               placeholder="e.g. BRL"
             />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FieldInput
               label="Symbol"
               value={symbol}
@@ -859,11 +863,14 @@ function RegionDialog({
             {overrides.map((ov, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_1fr_1fr_1fr_auto] gap-2 items-end"
+                className="rounded-lg border border-border p-3 sm:border-0 sm:p-0 sm:grid sm:grid-cols-[1fr_1fr_1fr_1fr_auto] sm:gap-2 sm:items-end"
               >
-                <div>
+                <div className="mb-2 sm:mb-0">
+                  <label className="text-xs text-muted-foreground mb-1 block sm:hidden">
+                    Tier GB
+                  </label>
                   {i === 0 && (
-                    <label className="text-xs text-muted-foreground mb-1 block">
+                    <label className="hidden text-xs text-muted-foreground mb-1 sm:block">
                       Tier GB
                     </label>
                   )}
@@ -882,9 +889,12 @@ function RegionDialog({
                     ))}
                   </select>
                 </div>
-                <div>
+                <div className="mb-2 sm:mb-0">
+                  <label className="text-xs text-muted-foreground mb-1 block sm:hidden">
+                    Local Price (cents)
+                  </label>
                   {i === 0 && (
-                    <label className="text-xs text-muted-foreground mb-1 block">
+                    <label className="hidden text-xs text-muted-foreground mb-1 sm:block">
                       Local Price (cents)
                     </label>
                   )}
@@ -898,9 +908,12 @@ function RegionDialog({
                     placeholder="Cents"
                   />
                 </div>
-                <div>
+                <div className="mb-2 sm:mb-0">
+                  <label className="text-xs text-muted-foreground mb-1 block sm:hidden">
+                    Checkout USD (cents)
+                  </label>
                   {i === 0 && (
-                    <label className="text-xs text-muted-foreground mb-1 block">
+                    <label className="hidden text-xs text-muted-foreground mb-1 sm:block">
                       Checkout USD (cents)
                     </label>
                   )}
@@ -914,9 +927,12 @@ function RegionDialog({
                     placeholder="Optional"
                   />
                 </div>
-                <div>
+                <div className="mb-2 sm:mb-0">
+                  <label className="text-xs text-muted-foreground mb-1 block sm:hidden">
+                    Storage Override GB
+                  </label>
                   {i === 0 && (
-                    <label className="text-xs text-muted-foreground mb-1 block">
+                    <label className="hidden text-xs text-muted-foreground mb-1 sm:block">
                       Storage Override GB
                     </label>
                   )}
@@ -932,9 +948,10 @@ function RegionDialog({
                 </div>
                 <button
                   onClick={() => removeOverride(i)}
-                  className="h-9 rounded p-2 text-muted-foreground hover:bg-red-500/10 hover:text-red-600"
+                  className="inline-flex h-9 items-center gap-1 rounded p-2 text-xs text-muted-foreground hover:bg-red-500/10 hover:text-red-600 sm:gap-0"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
+                  <span className="sm:hidden">Remove</span>
                 </button>
               </div>
             ))}

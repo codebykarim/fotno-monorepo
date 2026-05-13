@@ -25,7 +25,7 @@ export function StoragePage() {
     <div className="space-y-8">
       <h1 className="text-2xl font-semibold">Storage</h1>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <StatCard
           title="Total Used"
           value={formatBytes(data.totalUsed)}
@@ -56,21 +56,24 @@ export function StoragePage() {
               limitBytes > 0 ? (userBytes / limitBytes) * 100 : 0;
 
             return (
-              <div key={u.id} className="flex items-center gap-3">
-                <div className="w-48 truncate text-sm">
+              <div
+                key={u.id}
+                className="flex flex-wrap items-center gap-2 sm:gap-3"
+              >
+                <div className="w-full min-w-0 truncate text-sm sm:w-48">
                   <span className="font-medium">{u.name}</span>
                   <span className="ml-2 text-xs text-muted-foreground">
                     {u.email}
                   </span>
                 </div>
                 <StatusBadge status={u.plan} />
-                <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                <div className="h-2 flex-1 min-w-[80px] overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full bg-primary transition-all"
                     style={{ width: `${barWidth}%` }}
                   />
                 </div>
-                <span className="text-sm font-medium w-20 text-right">
+                <span className="w-20 text-right text-sm font-medium">
                   {formatBytes(u.storageUsed)}
                 </span>
               </div>
@@ -81,6 +84,7 @@ export function StoragePage() {
 
       {/* Full user storage table */}
       <div className="rounded-xl border border-border overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
@@ -139,6 +143,7 @@ export function StoragePage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

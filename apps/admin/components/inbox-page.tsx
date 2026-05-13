@@ -229,7 +229,7 @@ export function InboxPage() {
 
   if (selectedEmail) {
     return (
-      <div className="-m-6 lg:-m-8 flex flex-col h-screen">
+      <div className="-m-4 sm:-m-6 lg:-m-8 flex flex-col h-[calc(100svh-3.5rem)] lg:h-screen">
         {/* Top toolbar */}
         <div className="flex items-center justify-between h-12 px-2 border-b border-border bg-card shrink-0">
           <div className="flex items-center">
@@ -261,7 +261,7 @@ export function InboxPage() {
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-auto bg-background">
-          <div className="max-w-[900px] mx-auto px-6 lg:px-10">
+          <div className="max-w-[900px] mx-auto px-3 sm:px-6 lg:px-10">
             {/* Subject */}
             <h1 className="text-[22px] font-normal text-foreground pt-6 pb-5 leading-tight">
               {selectedEmail.subject || "(no subject)"}
@@ -322,7 +322,7 @@ export function InboxPage() {
               </div>
 
               {/* Email body */}
-              <div className="px-4 py-5 pl-[72px]">
+              <div className="px-4 py-5 sm:pl-[72px]">
                 {selectedEmail.html ? (
                   <iframe
                     srcDoc={selectedEmail.html}
@@ -368,7 +368,7 @@ export function InboxPage() {
   const rangeEnd = data ? Math.min(page * data.pageSize, data.total) : 0;
 
   return (
-    <div className="-m-6 lg:-m-8 flex flex-col h-screen">
+    <div className="-m-4 sm:-m-6 lg:-m-8 flex flex-col h-[calc(100svh-3.5rem)] lg:h-screen">
       {/* Toolbar */}
       <div className="flex items-center justify-between h-12 px-2 border-b border-border bg-card shrink-0">
         <div className="flex items-center gap-0.5">
@@ -475,7 +475,7 @@ export function InboxPage() {
                 </button>
 
                 {/* Sender — fixed width like Gmail */}
-                <div className="w-[200px] shrink-0 truncate pr-4">
+                <div className="w-[110px] shrink-0 truncate pr-2 sm:w-[200px] sm:pr-4">
                   <span
                     className={cn(
                       !email.isRead

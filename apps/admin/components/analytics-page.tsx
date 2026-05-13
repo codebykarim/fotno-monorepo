@@ -254,7 +254,7 @@ function CountryPieChart({
       <h3 className="text-sm font-medium text-muted-foreground mb-4">
         Users by Country
       </h3>
-      <div className="flex items-start gap-6">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-6">
         <ChartContainer config={chartConfig} className="h-52 w-52 shrink-0">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -304,7 +304,7 @@ function CountryPieChart({
             </Pie>
           </PieChart>
         </ChartContainer>
-        <div className="flex flex-col gap-1.5 pt-2 min-w-0">
+        <div className="flex w-full flex-col gap-1.5 pt-2 min-w-0 sm:w-auto">
           {data.slice(0, 10).map((d, i) => (
             <div key={d.country} className="flex items-center gap-2 text-sm">
               <div
@@ -410,7 +410,7 @@ export function AnalyticsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">Analytics</h1>
         <div className="flex rounded-lg border border-border overflow-hidden">
           {PERIODS.map((p) => (
@@ -456,7 +456,7 @@ export function AnalyticsPage() {
             <h3 className="text-sm font-medium text-muted-foreground mb-3">
               Plan Distribution
             </h3>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               {data.planDistribution.map((p) => (
                 <div key={p.plan} className="flex items-center gap-2">
                   <div

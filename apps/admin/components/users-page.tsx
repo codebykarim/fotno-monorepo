@@ -365,20 +365,33 @@ function UserDetailPanel({
 
   if (isLoading || !data) {
     return (
-      <div className="fixed inset-y-0 right-0 w-96 border-l border-border bg-card p-6 shadow-lg z-40">
-        <button
+      <>
+        <div
           onClick={onClose}
-          className="text-sm text-muted-foreground mb-4"
-        >
-          Close
-        </button>
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          aria-hidden
+        />
+        <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-border bg-card p-6 shadow-lg sm:w-96">
+          <button
+            onClick={onClose}
+            className="text-sm text-muted-foreground mb-4"
+          >
+            Close
+          </button>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 w-96 border-l border-border bg-card p-6 shadow-lg z-40 overflow-y-auto">
+    <>
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+        aria-hidden
+      />
+      <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm overflow-y-auto border-l border-border bg-card p-6 shadow-lg sm:w-96">
       <button
         onClick={onClose}
         className="text-sm text-muted-foreground mb-4 hover:text-foreground"
@@ -428,9 +441,9 @@ function UserDetailPanel({
               {data.subscriptions.map((s) => (
                 <div
                   key={s.id}
-                  className="flex items-center justify-between text-sm rounded-lg border border-border p-2"
+                  className="flex flex-wrap items-center justify-between gap-2 text-sm rounded-lg border border-border p-2"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={s.status} />
                     <span>
                       {s.storageTierGb >= 1000
@@ -450,6 +463,7 @@ function UserDetailPanel({
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

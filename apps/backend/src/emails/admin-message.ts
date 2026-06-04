@@ -54,11 +54,13 @@ const renderPricing = (p: AdminMessageParams) =>
 const renderPromo = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    "Just a small thank-you for being part of Fotno. Here's a promo code you can use on any paid plan:",
+    `We appreciate having you as part of Fotno. To say thank you, we're giving you 50% off your next subscription. Simply use the promo code below on any paid plan and unlock premium features for half the cost.`,
   ) +
   codeBox(p.promoCode ?? "") +
-  paragraph(`Valid until ${CORRECTION_VALID_UNTIL}.`) +
-  `<div style="margin:0 0 24px;">${emailButton("Use code", `${dashboardUrl}/billing`)}</div>` +
+  paragraph(
+    `Don't miss out — this offer expires on ${CORRECTION_VALID_UNTIL}.`,
+  ) +
+  `<div style="margin:0 0 24px;">${emailButton("Redeem 50% Off", `${dashboardUrl}/billing`)}</div>` +
   signoff;
 
 const renderFeature = (p: AdminMessageParams) =>

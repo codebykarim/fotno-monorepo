@@ -5,8 +5,8 @@ export type AdminPresetId =
   | "pricing"
   | "promo"
   | "feature"
-  | "listening"
-  // | "correction"; // TEMPORARY: remove once LAUNCH30 follow-ups are done
+  | "listening";
+// | "correction"; // TEMPORARY: remove once LAUNCH30 follow-ups are done
 
 export type AdminMessageParams = {
   preset: AdminPresetId;
@@ -16,7 +16,7 @@ export type AdminMessageParams = {
 };
 
 const dashboardUrl =
-process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://app.fotno.com";
+  process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://app.fotno.com";
 
 const paragraph = (html: string) =>
   `<p style="color:rgb(55,65,81);font-size:16px;margin:0 0 24px;line-height:24px;">${html}</p>`;
@@ -33,20 +33,20 @@ const greeting = (name: string) => paragraph(`Hi ${name || "there"},`);
 const renderCheckin = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    "I wanted to check in personally. is there anything getting in your way with Fotno right now?"
+    "I wanted to check in personally. is there anything getting in your way with Fotno right now?",
   ) +
   paragraph(
-    "If something isn't clicking, I'd love to hear about it. Just reply to this email and it'll come straight to me."
+    "If something isn't clicking, I'd love to hear about it. Just reply to this email and it'll come straight to me.",
   ) +
   signoff;
 
 const renderPricing = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    "I noticed your subscription didn't renew. I wanted to reach out in case the pricing wasn't working for you, or if there's something we could do differently."
+    "I noticed your subscription didn't renew. I wanted to reach out in case the pricing wasn't working for you, or if there's something we could do differently.",
   ) +
   paragraph(
-    "If you have a minute, I'd love to know what changed. And if you'd like to come back, you can resubscribe here:"
+    "If you have a minute, I'd love to know what changed. And if you'd like to come back, you can resubscribe here:",
   ) +
   `<div style="margin:0 0 24px;">${emailButton("Manage subscription", `${dashboardUrl}/billing`)}</div>` +
   signoff;
@@ -54,7 +54,7 @@ const renderPricing = (p: AdminMessageParams) =>
 const renderPromo = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    "Just a small thank-you for being part of Fotno. Here's a promo code you can use on any paid plan:"
+    "Just a small thank-you for being part of Fotno. Here's a promo code you can use on any paid plan:",
   ) +
   codeBox(p.promoCode ?? "") +
   paragraph(`Valid until ${CORRECTION_VALID_UNTIL}.`) +
@@ -64,10 +64,10 @@ const renderPromo = (p: AdminMessageParams) =>
 const renderFeature = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    `Have you tried <strong>${p.featureName ?? ""}</strong> yet? It's something we built for photographers like you, and we think it could save you real time.`
+    `Have you tried <strong>${p.featureName ?? ""}</strong> yet? It's something we built for photographers like you, and we think it could save you real time.`,
   ) +
   paragraph(
-    "Take it for a spin. and if anything feels off, hit reply and tell me."
+    "Take it for a spin. and if anything feels off, hit reply and tell me.",
   ) +
   `<div style="margin:0 0 24px;">${emailButton("Open Fotno", dashboardUrl)}</div>` +
   signoff;
@@ -75,10 +75,10 @@ const renderFeature = (p: AdminMessageParams) =>
 const renderListening = (p: AdminMessageParams) =>
   greeting(p.userName) +
   paragraph(
-    "I'm working on the next round of Fotno improvements and I genuinely want your input."
+    "I'm working on the next round of Fotno improvements and I genuinely want your input.",
   ) +
   paragraph(
-    "What's the one thing. big or small. that would make Fotno better for you? Just reply to this email."
+    "What's the one thing. big or small. that would make Fotno better for you? Just reply to this email.",
   ) +
   signoff;
 
@@ -88,7 +88,7 @@ const renderListening = (p: AdminMessageParams) =>
 // // PRESETS list) once all affected users have been re-emailed.
 // const CORRECTION_CODE = "LAUNCH30";
 // const CORRECTION_DISCOUNT = "30% off any paid plan";
-const CORRECTION_VALID_UNTIL = "June 1";
+const CORRECTION_VALID_UNTIL = "June 07 2026";
 // const renderCorrection = (p: AdminMessageParams) =>
 //   greeting(p.userName) +
 //   paragraph(
@@ -157,7 +157,7 @@ export const ADMIN_PRESETS: Record<
 };
 
 export const renderAdminMessageEmail = (
-  params: AdminMessageParams
+  params: AdminMessageParams,
 ): { subject: string; html: string } => {
   const preset = ADMIN_PRESETS[params.preset];
   if (!preset) {

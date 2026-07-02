@@ -1,15 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ExternalLink, Heart, Link2, Loader2, Phone, User } from "lucide-react";
+import { Heart, Image as ImageIcon, Loader2, Phone, User } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Switch } from "@workspace/ui/components/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { apiRequest } from "@/lib/api/client";
 import { GetGalleryResponse } from "@/lib/types/api";
-import Link from "next/link";
 import { FeatureGate } from "@/components/dashboard/feature-gate";
 import { useHasFeature } from "@/lib/hooks/use-features";
+
+type FavoritePhoto = {
+  id: string;
+  thumbnailUrl: string;
+  previewUrl: string;
+  originalUrl: string;
+  originalFilename: string;
+};
 
 type FavoriteViewer = {
   viewerId: string;
@@ -20,8 +32,11 @@ type FavoriteViewer = {
     photoId: string;
     note: string | null;
     createdAt: string;
+    photo: FavoritePhoto | null;
   }[];
 };
+
+type FavoriteItem = FavoriteViewer["favorites"][number];
 
 type Props = {
   galleryId: string;
@@ -127,6 +142,9 @@ function FavoritesActivity({
   const [viewers, setViewers] = useState<FavoriteViewer[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [lightboxFavorite, setLightboxFavorite] = useState<FavoriteItem | null>(
+    null,
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -176,57 +194,124 @@ function FavoritesActivity({
   const isPhone = (id: string) => id.startsWith("+");
 
   return (
-    <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium">Favorites Activity</h4>
-        <span className="text-xs text-muted-foreground">
-          {total} total {total === 1 ? "favorite" : "favorites"}
-        </span>
-      </div>
-      <div className="space-y-3">
-        {viewers.map((viewer) => (
-          <div
-            key={viewer.viewerId}
-            className="rounded-lg border border-border/50 p-3 space-y-2"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {isPhone(viewer.viewerId) ? (
-                  <Phone className="h-3.5 w-3.5 text-muted-foreground" />
-                ) : (
-                  <User className="h-3.5 w-3.5 text-muted-foreground" />
-                )}
-                <div>
-                  {viewer.viewerName && (
-                    <span className="text-sm font-medium">
-                      {viewer.viewerName}
-                    </span>
+    <>
+      <section className="space-y-4 rounded-xl border border-border/60 bg-card p-5">
+        <div className="flex items-center justify-between">
+          <h4 className="text-sm font-medium">Favorites Activity</h4>
+          <span className="text-xs text-muted-foreground">
+            {total} total {total === 1 ? "favorite" : "favorites"}
+          </span>
+        </div>
+        <div className="space-y-3">
+          {viewers.map((viewer) => (
+            <div
+              key={viewer.viewerId}
+              className="space-y-3 rounded-lg border border-border/50 p-3"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  {isPhone(viewer.viewerId) ? (
+                    <Phone className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  ) : (
+                    <User className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                   )}
-                  {isPhone(viewer.viewerId) && (
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      {viewer.viewerId}
-                    </span>
-                  )}
-                  {!viewer.viewerName && !isPhone(viewer.viewerId) && (
-                    <span className="text-sm text-muted-foreground">
-                      Anonymous
-                    </span>
-                  )}
+                  <div className="min-w-0">
+                    {viewer.viewerName && (
+                      <span className="block truncate text-sm font-medium">
+                        {viewer.viewerName}
+                      </span>
+                    )}
+                    {isPhone(viewer.viewerId) && (
+                      <span className="block truncate text-xs text-muted-foreground">
+                        {viewer.viewerId}
+                      </span>
+                    )}
+                    {!viewer.viewerName && !isPhone(viewer.viewerId) && (
+                      <span className="text-sm text-muted-foreground">
+                        Anonymous
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-5">
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <span className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
                   <Heart className="h-3 w-3" />
                   {viewer.count}
                 </span>
-                {/* <Link href={``} className="text-xs text-muted-foreground">
-                  <ExternalLink className="h-3 w-3" />
-                </Link> */}
+              </div>
+
+              <div className="grid gap-2 sm:grid-cols-2">
+                {viewer.favorites.map((favorite) => (
+                  <button
+                    key={favorite.id}
+                    type="button"
+                    onClick={() =>
+                      favorite.photo && setLightboxFavorite(favorite)
+                    }
+                    disabled={!favorite.photo}
+                    title={favorite.photo?.originalFilename ?? "Deleted photo"}
+                    className="group flex min-w-0 items-center gap-2 rounded-md border border-border bg-muted/40 p-1.5 text-left transition-shadow hover:ring-2 hover:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <span className="h-14 w-14 shrink-0 overflow-hidden rounded border border-border bg-muted">
+                      {favorite.photo ? (
+                        <img
+                          src={favorite.photo.thumbnailUrl}
+                          alt={favorite.photo.originalFilename}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center">
+                          <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                        </span>
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-xs font-medium">
+                        {favorite.photo?.originalFilename ?? "Deleted photo"}
+                      </span>
+                      {favorite.note && (
+                        <span className="mt-1 line-clamp-2 block text-xs text-muted-foreground">
+                          {favorite.note}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+
+      <Dialog
+        open={!!lightboxFavorite?.photo}
+        onOpenChange={(open) => !open && setLightboxFavorite(null)}
+      >
+        <DialogContent className="max-w-5xl max-h-fit p-2 sm:p-4">
+          <DialogTitle className="sr-only">
+            {lightboxFavorite?.photo?.originalFilename ?? "Favorite photo"}
+          </DialogTitle>
+          {lightboxFavorite?.photo && (
+            <div className="flex flex-col items-center gap-3">
+              <img
+                src={
+                  lightboxFavorite.photo.originalUrl ??
+                  lightboxFavorite.photo.previewUrl
+                }
+                alt={lightboxFavorite.photo.originalFilename}
+                className="max-h-[80vh] w-auto rounded-lg object-contain"
+              />
+              <div className="max-w-full space-y-1 text-center">
+                <p className="truncate text-sm text-muted-foreground">
+                  {lightboxFavorite.photo.originalFilename}
+                </p>
+                {lightboxFavorite.note && (
+                  <p className="max-w-2xl text-sm">{lightboxFavorite.note}</p>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

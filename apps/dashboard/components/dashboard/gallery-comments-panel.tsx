@@ -18,9 +18,20 @@ import {
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
 import { Skeleton } from "@workspace/ui/components/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@workspace/ui/components/dialog";
 import { cn } from "@workspace/ui/lib/utils";
 import { apiRequest, jsonFetcher } from "@/lib/api/client";
 import { useSession } from "@workspace/lib/auth/auth-client";
+
+type CommentPhoto = {
+  thumbnailSrc: string;
+  originalSrc: string;
+  originalFilename: string;
+};
 
 type GalleryComment = {
   id: string;
@@ -34,7 +45,7 @@ type GalleryComment = {
   updatedAt: string;
   viewerId: string | null;
   replies: GalleryComment[];
-  photo?: { thumbnailSrc: string } | null;
+  photo?: CommentPhoto | null;
 };
 
 type CommentsResponse = {
@@ -85,6 +96,7 @@ function CommentNode({
   onDelete,
   onReply,
   onToggleLike,
+  onPhotoClick,
 }: {
   comment: GalleryComment;
   depth: number;
@@ -98,6 +110,7 @@ function CommentNode({
   onDelete: (c: GalleryComment) => void;
   onReply: (c: GalleryComment) => void;
   onToggleLike: (c: GalleryComment) => void;
+  onPhotoClick: (photo: CommentPhoto) => void;
 }) {
   const isEditing = editingComment?.id === comment.id;
   const isPhotographerComment = comment.authorRole === "photographer";
@@ -143,17 +156,21 @@ function CommentNode({
 
         {/* Referenced photo */}
         {comment.photoId && comment.photo?.thumbnailSrc && (
-          <div className="mt-2 flex items-center gap-2 rounded-lg border border-border/70 bg-muted/40 p-1.5">
+          <button
+            type="button"
+            onClick={() => comment.photo && onPhotoClick(comment.photo)}
+            className="mt-2 flex items-center gap-2 rounded-lg border border-border/70 bg-muted/40 p-1.5 text-left transition-shadow hover:ring-2 hover:ring-primary/40"
+          >
             <img
               src={comment.photo.thumbnailSrc}
-              alt="Referenced photo"
+              alt={comment.photo.originalFilename}
               className="h-10 w-10 rounded object-cover"
               draggable={false}
             />
             <span className="text-[11px] text-muted-foreground">
               Referenced photo
             </span>
-          </div>
+          </button>
         )}
 
         {/* Message or edit form */}
@@ -205,9 +222,7 @@ function CommentNode({
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              <ThumbsUp
-                className={cn("h-3 w-3", liked && "fill-primary")}
-              />
+              <ThumbsUp className={cn("h-3 w-3", liked && "fill-primary")} />
               {comment.likes.length > 0 ? comment.likes.length : null}
             </button>
 
@@ -269,6 +284,7 @@ function CommentNode({
               onDelete={onDelete}
               onReply={onReply}
               onToggleLike={onToggleLike}
+              onPhotoClick={onPhotoClick}
             />
           ))}
         </div>
@@ -277,11 +293,7 @@ function CommentNode({
   );
 }
 
-export function GalleryCommentsPanel({
-  galleryId,
-}: {
-  galleryId: string;
-}) {
+export function GalleryCommentsPanel({ galleryId }: { galleryId: string }) {
   const { data: session } = useSession();
   const currentUserId = session?.user?.id ?? "";
 
@@ -295,9 +307,12 @@ export function GalleryCommentsPanel({
 
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState<GalleryComment | null>(null);
-  const [editingComment, setEditingComment] = useState<GalleryComment | null>(null);
+  const [editingComment, setEditingComment] = useState<GalleryComment | null>(
+    null,
+  );
   const [editText, setEditText] = useState("");
   const [sending, setSending] = useState(false);
+  const [lightboxPhoto, setLightboxPhoto] = useState<CommentPhoto | null>(null);
 
   const postComment = useCallback(async () => {
     if (!commentText.trim() || sending) return;
@@ -325,13 +340,10 @@ export function GalleryCommentsPanel({
   const editComment = useCallback(
     async (comment: GalleryComment, message: string) => {
       try {
-        await apiRequest(
-          `/api/galleries/${galleryId}/comments/${comment.id}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({ message }),
-          },
-        );
+        await apiRequest(`/api/galleries/${galleryId}/comments/${comment.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ message }),
+        });
         setEditingComment(null);
         setEditText("");
         await mutate();
@@ -347,10 +359,9 @@ export function GalleryCommentsPanel({
   const deleteComment = useCallback(
     async (comment: GalleryComment) => {
       try {
-        await apiRequest(
-          `/api/galleries/${galleryId}/comments/${comment.id}`,
-          { method: "DELETE" },
-        );
+        await apiRequest(`/api/galleries/${galleryId}/comments/${comment.id}`, {
+          method: "DELETE",
+        });
         await mutate();
         toast.success("Comment deleted");
       } catch (error) {
@@ -494,10 +505,34 @@ export function GalleryCommentsPanel({
                 setCommentText("");
               }}
               onToggleLike={(c) => void toggleLike(c)}
+              onPhotoClick={setLightboxPhoto}
             />
           ))
         )}
       </div>
+
+      <Dialog
+        open={!!lightboxPhoto}
+        onOpenChange={(open) => !open && setLightboxPhoto(null)}
+      >
+        <DialogContent className="max-w-5xl max-h-fit p-2 sm:p-4">
+          <DialogTitle className="sr-only">
+            {lightboxPhoto?.originalFilename ?? "Referenced photo"}
+          </DialogTitle>
+          {lightboxPhoto && (
+            <div className="flex flex-col items-center gap-3">
+              <img
+                src={lightboxPhoto.originalSrc}
+                alt={lightboxPhoto.originalFilename}
+                className="max-h-[80vh] w-auto rounded-lg object-contain"
+              />
+              <p className="max-w-full truncate text-sm text-muted-foreground">
+                {lightboxPhoto.originalFilename}
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

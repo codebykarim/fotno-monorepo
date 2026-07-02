@@ -11,7 +11,11 @@ type SerializedComment = {
   likes: string[];
   createdAt: string;
   updatedAt: string;
-  photo: { thumbnailSrc: string } | null;
+  photo: {
+    thumbnailSrc: string;
+    originalSrc: string;
+    originalFilename: string;
+  } | null;
   viewerId: string | null;
   replies: SerializedComment[];
 };
@@ -22,11 +26,20 @@ async function buildTree(rows: any[]): Promise<SerializedComment[]> {
   const map = new Map<string, SerializedComment>();
 
   for (const row of rows) {
-    let photo: { thumbnailSrc: string } | null = null;
+    let photo: SerializedComment["photo"] = null;
     if (row.photo) {
-      const key = row.photo.thumbnailKey ?? row.photo.previewKey ?? row.photo.s3Key;
+      const key =
+        row.photo.thumbnailKey ?? row.photo.previewKey ?? row.photo.s3Key;
       if (key) {
-        photo = { thumbnailSrc: await getPresignedDownloadUrl(key, THUMBNAIL_URL_TTL) };
+        const [thumbnailSrc, originalSrc] = await Promise.all([
+          getPresignedDownloadUrl(key, THUMBNAIL_URL_TTL),
+          getPresignedDownloadUrl(row.photo.s3Key, THUMBNAIL_URL_TTL),
+        ]);
+        photo = {
+          thumbnailSrc,
+          originalSrc,
+          originalFilename: row.photo.originalFilename,
+        };
       }
     }
 
@@ -63,7 +76,10 @@ async function buildTree(rows: any[]): Promise<SerializedComment[]> {
   return roots;
 }
 
-export const listGalleryComments = async (userId: string, galleryId: string) => {
+export const listGalleryComments = async (
+  userId: string,
+  galleryId: string,
+) => {
   const gallery = await db.gallery.findFirst({
     where: { id: galleryId, userId },
     select: { id: true },
@@ -77,7 +93,15 @@ export const listGalleryComments = async (userId: string, galleryId: string) => 
     where: { galleryId: gallery.id },
     orderBy: { createdAt: "asc" },
     include: {
-      photo: { select: { id: true, thumbnailKey: true, previewKey: true, s3Key: true } },
+      photo: {
+        select: {
+          id: true,
+          thumbnailKey: true,
+          previewKey: true,
+          s3Key: true,
+          originalFilename: true,
+        },
+      },
     },
   });
 
